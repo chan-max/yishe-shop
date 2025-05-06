@@ -7,3 +7,18 @@
     <LayoutPageFooter class="h-[52px] md:h-[42px]" />
   </div>
 </template>
+
+<style>
+
+@font-face {
+  font-family: 'ChillRound';
+  src: url('/ChillRoundM.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 使用示例 */
+.font-1 {
+  font-family: 'ChillRound', sans-serif;
+}
+</style>

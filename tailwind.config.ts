@@ -4,6 +4,19 @@ import colors from 'tailwindcss/colors'
 
 const MyTheme = {
   colors: {
+    purple: {
+      DEFAULT: '#6900ff',
+      '50':  '#eadeff',
+      '100': '#d7bfff',
+      '200': '#b88aff',
+      '300': '#9955ff',
+      '400': '#7a20ff',
+      '500': '#6900ff',
+      '600': '#5200cc',
+      '700': '#3c0099',
+      '800': '#260066',
+      '900': '#100033',
+    },
     green: {
       DEFAULT: '#3BA676',
       '50': '#B4E4CF',
@@ -65,7 +78,7 @@ export default <Partial<Config>>{
         '8xl': '90rem',
       },
       colors: {
-        primary: MyTheme.colors.green,
+        primary: MyTheme.colors.purple,
         // if want to change primary color to blue
         // primary: MyTheme.colors.blue,
         green: MyTheme.colors.green,

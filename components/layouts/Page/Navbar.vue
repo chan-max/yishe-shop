@@ -25,12 +25,12 @@ const showDrawer = ref(false)
       <!-- title -->
       <div>
         <slot name="title">
-          <NuxtLink to="/" class="font-bold text-lg text-primary-500">
+          <NuxtLink to="/" class="font-bold text-lg ">
             <Icon
               name="simple-icons:nuxtdotjs"
               class="font-black text-xl font-mono mr-2 inline-block"
             />
-            <span class="capitalize">{{ awesome.name }}</span>
+            <span class="capitalize font-bold font-1">1s 衣设服装设计</span>
           </NuxtLink>
         </slot>
       </div>

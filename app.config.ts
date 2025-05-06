@@ -37,11 +37,11 @@ export interface NuxtAwesomeAppConfig {
       disableInfoReplaceIndexInWelcomePage?: boolean
       primaryActionButton?: {
         title?: string
-        to?: RouteLocationRaw | ((nuxt) => RouteLocationRaw)
+        to?: RouteLocationRaw | ((nuxt:any) => RouteLocationRaw)
       }
       secondaryActionButton?: {
         title?: string
-        to?: RouteLocationRaw | ((nuxt) => RouteLocationRaw)
+        to?: RouteLocationRaw | ((nuxt:any) => RouteLocationRaw)
       }
     }
   }
@@ -73,7 +73,7 @@ declare module '@nuxt/schema' {
 
 export default defineAppConfig({
   awesome: {
-    name: 'Nuxt 3 Awesome Starter',
+    name: '衣设服装设计',
     description:
       'a starter template for Nuxt 3 with minimalist themes design, built in components, drawer & menus, and more.',
     project: {

@@ -2,12 +2,12 @@ import type { AppConfigInput } from 'nuxt/schema'
 
 export default defineAppConfig({
   awesome: {
-    name: 'Nuxt 3 Awesome Starter',
+    name: '衣设服装设计',
     description:
       'a starter template for Nuxt 3 with minimalist themes design, built in components, drawer & menus, and more.',
     project: {
       links: {
-        github: 'https://github.com/viandwi24/nuxt3-awesome-starter',
+        github: '',
       },
     },
     layout: {
