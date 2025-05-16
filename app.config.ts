@@ -1,6 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
 
-
 export interface NuxtAwesomeAppConfig {
   /** title name */
   name?: string
@@ -74,8 +73,7 @@ declare module '@nuxt/schema' {
 export default defineAppConfig({
   awesome: {
     name: '衣设服装设计',
-    description:
-      'a starter template for Nuxt 3 with minimalist themes design, built in components, drawer & menus, and more.',
+    description: '专业的服装设计交流平台，汇聚创意灵感，连接设计师与品牌',
     project: {
       links: {
         github: 'https://github.com/viandwi24/nuxt3-awesome-starter',
@@ -91,24 +89,24 @@ export default defineAppConfig({
         year: new Date().getFullYear(),
       },
       welcome: {
-        title: 'Nuxt&nbsp;3 Awesome Starter',
+        title: '衣设&nbsp;服装设计',
         disableInfoReplaceIndexInWelcomePage: true,
         primaryActionButton: {
-          title: 'Nuxt 3',
-          to: 'https://nuxt.com/',
+          title: '开始设计',
+          to: '/design',
         },
         secondaryActionButton: {
-          title: 'Github',
-          to: 'https://github.com/viandwi24/nuxt3-awesome-starter',
+          title: '加入社区',
+          to: '/community',
         },
       },
     },
     author: {
-      name: 'viandwi24',
+      name: '衣设团队',
       links: {
         github: 'https://github.com/viandwi24',
         medium: 'https://viandwi24.medium.com',
-        website: 'https://viandwi24.site',
+        website: 'https://yishe.design',
       },
     },
     disableInfoReplaceIndexInWelcomePage: false,

@@ -14,35 +14,25 @@ const showAlert = ref(
     : props.withAlert,
 )
 
-const titlesText = computed<string[]>(() =>
-  (
-    awesome?.layout?.welcome?.title ||
-    awesome?.name ||
-    'Nuxt&nbsp;3 Awesome Starter'
-  )
-    .replaceAll('&nbsp;', '[space]')
-    .split(' ')
-    .map((item) => item.replaceAll('[space]', ' ')),
-)
 const leadingsText = computed(() => [
   {
-    text: titlesText.value[0],
+    text: '最具创意的',
     startColor: '#007CF0',
     endColor: '#00DFD8',
     delay: 0,
   },
   {
-    text: titlesText.value[1],
+    text: '开放式服装设计平台',
     startColor: '#7928CA',
     endColor: '#FF0080',
     delay: 2,
   },
-  {
-    text: titlesText.value[2],
-    startColor: '#FF4D4D',
-    endColor: '#F9CB28',
-    delay: 4,
-  },
+  // {
+  //   text: titlesText.value[2],
+  //   startColor: '#FF4D4D',
+  //   endColor: '#F9CB28',
+  //   delay: 4,
+  // },
 ])
 
 onMounted(() => {
@@ -73,10 +63,7 @@ onMounted(() => {
           </span>
         </h1>
         <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px]">
-          {{
-            awesome?.description ||
-            'a starter template for Nuxt 3 with minimalist themes design, built in components, drawer & menus, and more.'
-          }}
+          {{ awesome?.description || '最具创意的开放式服装设计平台' }}
         </div>
         <div
           v-if="showAlert"
