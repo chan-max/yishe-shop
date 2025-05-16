@@ -3,6 +3,8 @@ const { resolve } = createResolver(import.meta.url)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
+
   // exp
   experimental: {
     localLayerAliases: true,
@@ -23,23 +25,13 @@ export default defineNuxtConfig({
   // },
 
   // modules
-  modules: [
-    // chore
-    '@nuxtjs/eslint-module',
-    // styling & ui
-    '@nuxtjs/tailwindcss',
-    'nuxt-headlessui',
-    'nuxt-icon',
-    '@nuxtjs/color-mode',
-    // management
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    // contents,
-    '@nuxt/content',
-
+  modules: [// chore
+    '@nuxtjs/eslint-module', // styling & ui
+    '@nuxtjs/tailwindcss', 'nuxt-headlessui', 'nuxt-icon', '@nuxtjs/color-mode', // management
+    '@pinia/nuxt', '@vueuse/nuxt', // contents,
     // todo: feat/localization
     // '@nuxtjs/i18n'
-  ],
+    '@nuxt/content', '@nuxtjs/sitemap'],
 
   css: [
     resolve('./assets/scss/_variables.scss'),
@@ -87,34 +79,27 @@ export default defineNuxtConfig({
       theme: 'github-dark',
     },
   },
-
-  // todo: feat/localization
-  // module::i18n
-  // i18n: {
-  //   strategy: 'no_prefix',
-  //   defaultLocale: 'en',
-  //   langDir: 'locales',
-  //   vueI18n: {
-  //     fallbackLocale: 'en',
-  //   },
-  //   detectBrowserLanguage: {
-  //     useCookie: true,
-  //     fallbackLocale: 'en',
-  //     redirectOn: 'root',
-  //   },
-  //   locales: [
-  //     {
-  //       code: 'en', // English
-  //       iso: 'en-US',
-  //       name: 'English',
-  //       file: 'en.yml',
-  //     },
-  //     {
-  //       code: 'id', // Indonesia
-  //       iso: 'id-ID',
-  //       name: 'Indonesia',
-  //       file: 'id.yml',
-  //     }
-  //   ]
-  // },
+  site: {
+    url: 'https://1s.design',
+    name: '1s',
+    defaults: {
+      lastmod: '2025-05-16',
+      changefreq: 'monthly',
+      priority: 0.8
+    }
+    // ...etc
+  },
+  sitemap: {
+    autoLastmod: true,
+    cacheMaxAgeSeconds: 1000 * 60 * 60 * 3, // 三个小时的更新频率
+    exclude: [], // 排除路径
+    sources: [
+      // '/api/__sitemap__/urls',
+      '/api/sitemap'
+    ],
+    sitemaps: true, // sitemap多文件开关
+    defaultSitemapsChunkSize: 1000,
+  },
+  hooks: {
+  },
 })
