@@ -102,4 +102,9 @@ export default defineNuxtConfig({
   },
   hooks: {
   },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://localhost:4321/api',
+    },
+  },
 })
