@@ -15,7 +15,7 @@ export default defineNuxtSchema({
       description: '开放式的创意服装社区',
       project: {
         links: {
-          github: 'https://github.com/viandwi24/nuxt3-awesome-starter',
+          github: '',
         },
       },
       layout: {
@@ -33,11 +33,8 @@ export default defineNuxtSchema({
         },
       },
       author: {
-        name: 'viandwi24',
+        name: 'jackie chan',
         links: {
-          github: 'https://github.com/viandwi24',
-          medium: 'https://viandwi24.medium.com',
-          website: 'https://viandwi24.site',
         },
       },
     } as NuxtAwesomeAppConfig,

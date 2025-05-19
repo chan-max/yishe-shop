@@ -1,17 +1,15 @@
 <script lang="ts" setup>
-const { awesome } = useAppConfig()
-const { parseMenuRoute, parseMenuTitle } = useNavbarParser()
-const $screen = useAwesomeScreen()
-const nuxtApp = useNuxtApp()
+const { awesome } = useAppConfig();
+const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
+const $screen = useAwesomeScreen();
+const nuxtApp = useNuxtApp();
 
 const menus = computed(
-  () =>
-    (awesome?.layout?.page?.navbar?.menus ||
-      []) as AwesomeLayoutPageNavbarMenu[],
-)
+  () => (awesome?.layout?.page?.navbar?.menus || []) as AwesomeLayoutPageNavbarMenu[]
+);
 
 // drawer
-const showDrawer = ref(false)
+const showDrawer = ref(false);
 </script>
 
 <template>
@@ -19,20 +17,17 @@ const showDrawer = ref(false)
     class="flex fixed backdrop-filter backdrop-blur-md top-0 z-40 w-full flex-none transition-colors duration-300 lg:z-50 border-b border-gray-950/10 dark:border-gray-50/[0.2] bg-white/[0.5] dark:bg-gray-950/[0.5]"
   >
     <!-- content -->
-    <div
-      class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4"
-    >
+    <div class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4">
       <!-- title -->
-      <div>
-        <slot name="title">
-          <NuxtLink to="/" class="font-bold text-lg ">
-            <Icon
-              name="simple-icons:nuxtdotjs"
-              class="font-black text-xl font-mono mr-2 inline-block"
-            />
-            <span class="capitalize font-bold font-1">1s 衣设服装设计</span>
-          </NuxtLink>
-        </slot>
+      <div class="flex items-center">
+        <NuxtLink to="/" class="font-bold text-lg flex items-center">
+          <img
+            src="/logo.png"
+            alt="1s.design logo"
+            class="h-8 w-auto mr-2 inline-block"
+          />
+          <span class="capitalize font-bold font-1" style="text-wrap: nowrap;">衣设服装设计</span>
+        </NuxtLink>
       </div>
       <!-- menus -->
       <div
@@ -130,9 +125,7 @@ const showDrawer = ref(false)
                         open ? 'font-bold' : '',
                       ]"
                     >
-                      <span>{{
-                        parseMenuTitle(item?.title)
-                      }}</span>
+                      <span>{{ parseMenuTitle(item?.title) }}</span>
                       <Icon
                         name="carbon:chevron-right"
                         class="ml-1"
@@ -152,10 +145,7 @@ const showDrawer = ref(false)
                       leave-to-class="transform scale-95 opacity-0"
                     >
                       <HeadlessDisclosurePanel class="text-gray-500 pb-2">
-                        <template
-                          v-for="(child, j) in item?.children || []"
-                          :key="j"
-                        >
+                        <template v-for="(child, j) in item?.children || []" :key="j">
                           <NuxtLink
                             :to="parseMenuRoute(child.to)"
                             #="{ isActive }"
@@ -167,9 +157,7 @@ const showDrawer = ref(false)
                                   ? 'text-gray-900 dark:text-gray-100 font-bold'
                                   : 'text-gray-700 dark:text-gray-300',
                               ]"
-                              >{{
-                                parseMenuTitle(child?.title)
-                              }}</span
+                              >{{ parseMenuTitle(child?.title) }}</span
                             >
                           </NuxtLink>
                         </template>
@@ -183,9 +171,7 @@ const showDrawer = ref(false)
         </AwesomeActionSheetItem>
         <AwesomeActionSheetItem class="flex flex-col">
           <div class="pb-2">
-            <div class="mt-2 mb-2 text-sm font-bold capitalize">
-              Change Theme
-            </div>
+            <div class="mt-2 mb-2 text-sm font-bold capitalize">Change Theme</div>
             <LayoutPageNavbarDropdownThemeSwitcher type="select-box" />
           </div>
         </AwesomeActionSheetItem>

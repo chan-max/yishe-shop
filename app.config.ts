@@ -76,7 +76,7 @@ export default defineAppConfig({
     description: '专业的服装设计交流平台，汇聚创意灵感，连接设计师与品牌',
     project: {
       links: {
-        github: 'https://github.com/viandwi24/nuxt3-awesome-starter',
+        github: '',
       },
     },
     layout: {
@@ -93,20 +93,18 @@ export default defineAppConfig({
         disableInfoReplaceIndexInWelcomePage: true,
         primaryActionButton: {
           title: '开始设计',
-          to: '/design',
+          // to: '/design',
         },
         secondaryActionButton: {
           title: '加入社区',
-          to: '/community',
+          // to: '/community',
         },
       },
     },
     author: {
       name: '衣设团队',
       links: {
-        github: 'https://github.com/viandwi24',
-        medium: 'https://viandwi24.medium.com',
-        website: 'https://yishe.design',
+        website: 'https://1s.design',
       },
     },
     disableInfoReplaceIndexInWelcomePage: false,
