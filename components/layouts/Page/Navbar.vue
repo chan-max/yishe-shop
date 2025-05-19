@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-const { awesome } = useAppConfig();
-const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
-const $screen = useAwesomeScreen();
-const nuxtApp = useNuxtApp();
+const { awesome } = useAppConfig()
+const { parseMenuRoute, parseMenuTitle } = useNavbarParser()
+const $screen = useAwesomeScreen()
+const nuxtApp = useNuxtApp()
 
 const menus = computed(
-  () => (awesome?.layout?.page?.navbar?.menus || []) as AwesomeLayoutPageNavbarMenu[]
-);
+  () =>
+    (awesome?.layout?.page?.navbar?.menus ||
+      []) as AwesomeLayoutPageNavbarMenu[],
+)
 
 // drawer
-const showDrawer = ref(false);
+const showDrawer = ref(false)
 </script>
 
 <template>
@@ -17,19 +19,22 @@ const showDrawer = ref(false);
     class="flex fixed backdrop-filter backdrop-blur-md top-0 z-40 w-full flex-none transition-colors duration-300 lg:z-50 border-b border-gray-950/10 dark:border-gray-50/[0.2] bg-white/[0.5] dark:bg-gray-950/[0.5]"
   >
     <!-- content -->
-    <div class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4">
+    <div
+      class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4"
+    >
       <!-- title -->
-      <div class="flex items-center">
-        <NuxtLink to="/" class="font-bold text-lg flex items-center">
-          <img
-            src="/logo.png"
-            alt="1s.design logo"
-            class="h-8 w-auto mr-2 inline-block"
-          />
-          <span class="capitalize font-bold font-1" style="text-wrap: nowrap;">衣设服装设计</span>
-        </NuxtLink>
+      <div>
+        <slot name="title">
+          <NuxtLink to="/" class="font-bold text-lg text-primary-500">
+            <Icon
+              name="simple-icons:nuxtdotjs"
+              class="font-black text-xl font-mono mr-2 inline-block"
+            />
+            <span class="capitalize">{{ awesome.name }}</span>
+          </NuxtLink>
+        </slot>
       </div>
-      <!-- menus -->
+      <!-- 桌面端菜单 -->
       <div
         v-if="$screen.higherThan('md', $screen.current.value)"
         class="flex space-x-4 items-center"
@@ -50,34 +55,29 @@ const showDrawer = ref(false);
           <LayoutPageNavbarDropdownThemeSwitcher />
           <AwesomeLink
             v-if="awesome?.project?.links?.github"
-            class="dark:text-gray-400 text-gray-600"
+            class="text-gray-400 hover:text-gray-100"
             :href="awesome?.project?.links?.github"
           >
             <Icon name="mdi:github-face" />
           </AwesomeLink>
         </div>
       </div>
-      <!-- drawer:btn -->
+      <!-- 移动端菜单按钮 -->
       <div
         v-else
-        class="flex space-x-4 items-center"
-        :class="{ 'divide-x divide-gray-500': menus.length > 0 }"
+        class="pl-4 flex space-x-3 text-xl"
       >
-        <div class="pl-4 flex space-x-3 text-xl">
-          <AwesomeLink
-            v-if="awesome?.project?.links?.github"
-            class="text-gray-400 hover:text-gray-100"
-            @click.prevent="() => (showDrawer = !showDrawer)"
-          >
-            <Icon name="heroicons:bars-3-bottom-right-20-solid" />
-          </AwesomeLink>
-        </div>
+        <AwesomeLink
+          @click.prevent="() => (showDrawer = !showDrawer)"
+          class="text-gray-400 hover:text-gray-100"
+        >
+          <Icon name="heroicons:bars-3-bottom-right-20-solid" />
+        </AwesomeLink>
       </div>
     </div>
-    <!-- misc -->
-    <!-- drawer -->
+    <!-- 移动端抽屉菜单 -->
     <AwesomeActionSheet
-      v-if="!$screen.higherThan('md', $screen.current.value) && showDrawer"
+      v-if="showDrawer"
       @close="() => (showDrawer = false)"
     >
       <AwesomeActionSheetGroup>
@@ -125,7 +125,9 @@ const showDrawer = ref(false);
                         open ? 'font-bold' : '',
                       ]"
                     >
-                      <span>{{ parseMenuTitle(item?.title) }}</span>
+                      <span>{{
+                        parseMenuTitle(item?.title)
+                      }}</span>
                       <Icon
                         name="carbon:chevron-right"
                         class="ml-1"
@@ -145,7 +147,10 @@ const showDrawer = ref(false);
                       leave-to-class="transform scale-95 opacity-0"
                     >
                       <HeadlessDisclosurePanel class="text-gray-500 pb-2">
-                        <template v-for="(child, j) in item?.children || []" :key="j">
+                        <template
+                          v-for="(child, j) in item?.children || []"
+                          :key="j"
+                        >
                           <NuxtLink
                             :to="parseMenuRoute(child.to)"
                             #="{ isActive }"
@@ -157,7 +162,9 @@ const showDrawer = ref(false);
                                   ? 'text-gray-900 dark:text-gray-100 font-bold'
                                   : 'text-gray-700 dark:text-gray-300',
                               ]"
-                              >{{ parseMenuTitle(child?.title) }}</span
+                              >{{
+                                parseMenuTitle(child?.title)
+                              }}</span
                             >
                           </NuxtLink>
                         </template>
@@ -169,20 +176,6 @@ const showDrawer = ref(false);
             </template>
           </div>
         </AwesomeActionSheetItem>
-        <AwesomeActionSheetItem class="flex flex-col">
-          <div class="pb-2">
-            <div class="mt-2 mb-2 text-sm font-bold capitalize">Change Theme</div>
-            <LayoutPageNavbarDropdownThemeSwitcher type="select-box" />
-          </div>
-        </AwesomeActionSheetItem>
-      </AwesomeActionSheetGroup>
-      <AwesomeActionSheetGroup>
-        <AwesomeActionSheetItemButton
-          class="flex justify-center items-center text-base space-x-2"
-        >
-          <Icon name="mdi:github-face" class="text-lg font-bold" />
-          <span class="text-sm">Github</span>
-        </AwesomeActionSheetItemButton>
       </AwesomeActionSheetGroup>
     </AwesomeActionSheet>
   </header>
