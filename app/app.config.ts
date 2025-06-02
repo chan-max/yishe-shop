@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-05-19 05:29:50
+ * @LastEditTime: 2025-06-02 11:42:30
  * @FilePath: /yishe-nuxt/app/app.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,6 +22,7 @@ export default defineAppConfig({
       page: {
         navbar: {
           menus: [
+            { type: 'link', title: 'Shop', to: { name: 'shop' } },
             { type: 'link', title: 'Blank', to: { name: 'blank' } },
             { type: 'link', title: 'Post', to: { name: 'post' } },
             { type: 'link', title: 'Test', to: { name: 'test' } },

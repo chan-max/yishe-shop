@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   // modules
   modules: [
     // chore
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // styling & ui
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
@@ -84,6 +84,8 @@ export default defineNuxtConfig({
   // module::color-mode
   colorMode: {
     classSuffix: '',
+    preference: 'dark',
+    fallback: 'dark',
   },
 
   // module::content

@@ -1,3 +1,11 @@
+<!--
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-04-03 05:45:40
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-06-01 06:12:28
+ * @FilePath: /yishe-admin/Users/jackie/workspace/yishe-nuxt/components/awesome/ActionSheet/index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script lang="ts" setup>
 const emit = defineEmits<{
   (e: 'close', event: MouseEvent): void
@@ -53,6 +61,7 @@ onMounted(() => {
       <div class="flex flex-col overflow-hidden relative">
         <div
           class="action-sheet-container flex-1 overflow-y-auto space-y-1 justify-end px-4 pb-2 pt-4"
+          style=" padding-bottom: calc(20vh + env(safe-area-inset-bottom));"
         >
           <slot />
           <AwesomeActionSheetGroup v-if="closeButton">

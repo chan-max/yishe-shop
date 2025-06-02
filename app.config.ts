@@ -82,7 +82,13 @@ export default defineAppConfig({
     layout: {
       page: {
         navbar: {
-          menus: [],
+          menus: [
+            {
+              type: 'link',
+              title: '首页',
+              to: '/'
+            }
+          ],
         },
       },
       footer: {

@@ -15,66 +15,79 @@ const showDrawer = ref(false)
 </script>
 
 <template>
-  <header
-    class="flex fixed backdrop-filter backdrop-blur-md top-0 z-40 w-full flex-none transition-colors duration-300 lg:z-50 border-b border-gray-950/10 dark:border-gray-50/[0.2] bg-white/[0.5] dark:bg-gray-950/[0.5]"
-  >
-    <!-- content -->
-    <div
-      class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4"
-    >
-      <!-- title -->
-      <div>
-        <slot name="title">
-          <NuxtLink to="/" class="font-bold text-lg text-primary-500">
-            <Icon
-              name="simple-icons:nuxtdotjs"
-              class="font-black text-xl font-mono mr-2 inline-block"
-            />
-            <span class="capitalize">{{ awesome.name }}</span>
-          </NuxtLink>
-        </slot>
-      </div>
-      <!-- 桌面端菜单 -->
-      <div
-        v-if="$screen.higherThan('md', $screen.current.value)"
-        class="flex space-x-4 items-center"
-        :class="{ 'divide-x divide-gray-500': menus.length > 0 }"
-      >
-        <div class="flex space-x-4 text-sm items-center">
-          <!-- dynamic menus -->
-          <template v-for="(item, i) in menus" :key="i">
-            <LayoutPageNavbarMenuWrapper :menu="item" />
-          </template>
+  <div class="fixed top-0 left-0 right-0 z-50">
+    <!-- 广告内容 -->
+    <div class="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white py-2">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-center text-center">
+          <span class="text-sm md:text-base font-medium">
+            🎉 限时优惠：新用户注册即送100积分，首单立减50元！立即体验 →
+          </span>
         </div>
-        <!-- others -->
-        <div class="pl-4 flex space-x-3 text-xl">
-          <!-- todo: feat/localization -->
-          <!-- <AwesomeLink class="text-gray-400 hover:text-gray-100">
-            <Icon name="la:language" />
-          </AwesomeLink> -->
-          <LayoutPageNavbarDropdownThemeSwitcher />
+      </div>
+    </div>
+    <!-- 导航栏 -->
+    <header
+      class="flex h-16 backdrop-filter backdrop-blur-md w-full flex-none transition-colors duration-300 lg:z-50 border-b border-gray-950/10 dark:border-gray-50/[0.2] bg-white/[0.5] dark:bg-gray-950/[0.5]"
+    >
+      <!-- content -->
+      <div
+        class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4"
+      >
+        <!-- title -->
+        <div class="flex items-center space-x-4">
+          <slot name="title">
+            <NuxtLink to="/" class="font-bold text-lg text-primary-500">
+              <Icon
+                name="simple-icons:nuxtdotjs"
+                class="font-black text-xl font-mono mr-2 inline-block"
+              />
+              <span class="capitalize">{{ awesome.name }}</span>
+            </NuxtLink>
+          </slot>
+        </div>
+        <!-- 桌面端菜单 -->
+        <div
+          v-if="$screen.higherThan('md', $screen.current.value)"
+          class="flex space-x-4 items-center"
+          :class="{ 'divide-x divide-gray-500': menus.length > 0 }"
+        >
+          <div class="flex space-x-4 text-sm items-center">
+            <!-- dynamic menus -->
+            <template v-for="(item, i) in menus" :key="i">
+              <LayoutPageNavbarMenuWrapper :menu="item" />
+            </template>
+          </div>
+          <!-- others -->
+          <div class="pl-4 flex space-x-3 text-xl">
+            <!-- todo: feat/localization -->
+            <!-- <AwesomeLink class="text-gray-400 hover:text-gray-100">
+              <Icon name="la:language" />
+            </AwesomeLink> -->
+            <LayoutPageNavbarDropdownThemeSwitcher />
+            <AwesomeLink
+              v-if="awesome?.project?.links?.github"
+              class="text-gray-400 hover:text-gray-100"
+              :href="awesome?.project?.links?.github"
+            >
+              <Icon name="mdi:github-face" />
+            </AwesomeLink>
+          </div>
+        </div>
+        <!-- 移动端菜单按钮 -->
+        <div
+          v-else
+          class="pl-4 flex space-x-3 text-xl"
+        >
           <AwesomeLink
-            v-if="awesome?.project?.links?.github"
+            @click.prevent="() => (showDrawer = !showDrawer)"
             class="text-gray-400 hover:text-gray-100"
-            :href="awesome?.project?.links?.github"
           >
-            <Icon name="mdi:github-face" />
+            <Icon name="uil:bars" />
           </AwesomeLink>
         </div>
       </div>
-      <!-- 移动端菜单按钮 -->
-      <div
-        v-else
-        class="pl-4 flex space-x-3 text-xl"
-      >
-        <AwesomeLink
-          @click.prevent="() => (showDrawer = !showDrawer)"
-          class="text-gray-400 hover:text-gray-100"
-        >
-          <Icon name="heroicons:bars-3-bottom-right-20-solid" />
-        </AwesomeLink>
-      </div>
-    </div>
+    </header>
     <!-- 移动端抽屉菜单 -->
     <AwesomeActionSheet
       v-if="showDrawer"
@@ -125,9 +138,7 @@ const showDrawer = ref(false)
                         open ? 'font-bold' : '',
                       ]"
                     >
-                      <span>{{
-                        parseMenuTitle(item?.title)
-                      }}</span>
+                      <span>{{ parseMenuTitle(item?.title) }}</span>
                       <Icon
                         name="carbon:chevron-right"
                         class="ml-1"
@@ -162,9 +173,7 @@ const showDrawer = ref(false)
                                   ? 'text-gray-900 dark:text-gray-100 font-bold'
                                   : 'text-gray-700 dark:text-gray-300',
                               ]"
-                              >{{
-                                parseMenuTitle(child?.title)
-                              }}</span
+                              >{{ parseMenuTitle(child?.title) }}</span
                             >
                           </NuxtLink>
                         </template>
@@ -178,5 +187,5 @@ const showDrawer = ref(false)
         </AwesomeActionSheetItem>
       </AwesomeActionSheetGroup>
     </AwesomeActionSheet>
-  </header>
+  </div>
 </template>
