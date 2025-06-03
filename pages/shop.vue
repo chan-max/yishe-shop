@@ -22,9 +22,14 @@
                     class="px-3 py-2 rounded cursor-pointer">
                     {{ category.name }}
                   </div>
+
+
+                  
                 </div>
               </div>
             </div>
+
+
 
             <div class="relative">
               <button 

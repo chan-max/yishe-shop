@@ -53,7 +53,7 @@ jobs:
       - name: Static HTML export with Nuxt
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
         
-        - name: Deploy to Tencent Cloud
+      - name: Deploy to Tencent Cloud
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
