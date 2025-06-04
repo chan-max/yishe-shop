@@ -125,7 +125,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production' 
-        ? 'https://49.232.186.238:7788/api'
+        ? 'https://1s.design:7788/api'
         : 'https://localhost:7788/api')
     }
   },
