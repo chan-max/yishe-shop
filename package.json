@@ -36,7 +36,9 @@
     "dev:starter": "nuxt dev ./examples/starter",
     "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
     "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
-    "release": "release-it"
+    "release": "release-it",
+    "build:prod": "NUXT_PUBLIC_API_BASE=http://49.232.186.238:7788 nuxt generate",
+    "build:dev": "NUXT_PUBLIC_API_BASE=http://localhost:7788 nuxt generate"
   },
   "dependencies": {
     "@nuxt/content": "^2.9.0",

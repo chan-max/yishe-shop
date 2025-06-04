@@ -136,11 +136,23 @@
       <!-- 分页 -->
       <div class="flex justify-center mt-8">
         <nav class="flex items-center gap-2">
-          <button class="px-3 py-1 border rounded">上一页</button>
-          <button class="px-3 py-1 border rounded">1</button>
-          <button class="px-3 py-1 border rounded">2</button>
-          <button class="px-3 py-1 border rounded">3</button>
-          <button class="px-3 py-1 border rounded">下一页</button>
+          <button 
+            class="px-3 py-1 border rounded"
+            :disabled="currentPage === 1"
+            @click="currentPage--"
+          >上一页</button>
+          <button 
+            v-for="page in Math.ceil(total / pageSize)" 
+            :key="page"
+            class="px-3 py-1 border rounded"
+            :class="{ 'bg-primary text-white': currentPage === page }"
+            @click="currentPage = page"
+          >{{ page }}</button>
+          <button 
+            class="px-3 py-1 border rounded"
+            :disabled="currentPage >= Math.ceil(total / pageSize)"
+            @click="currentPage++"
+          >下一页</button>
         </nav>
       </div>
     </div>
@@ -151,10 +163,71 @@
 definePageMeta({ layout: 'page' })
 useHead({ titleTemplate: '', title: '商店 - 衣设服装设计' })
 
+// 商品类型定义
+interface Product {
+  id: number
+  name: string
+  description: string
+  price: number
+  originalPrice?: number
+  image: string
+  tag?: string
+  likes: number
+}
+
+interface PageResponse {
+  list: Product[]
+  total: number
+  page: number
+  pageSize: number
+}
+
 // 状态管理
 const showCategoryDropdown = ref(false)
 const showPriceDropdown = ref(false)
 const showSizeDropdown = ref(false)
+
+// 分页相关状态
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+const loading = ref(false)
+
+// 商品列表
+const products = ref<Product[]>([])
+
+// 获取商品列表
+const fetchProducts = async () => {
+  loading.value = true
+  try {
+    const { $customFetch } = useNuxtApp()
+    const response = await $customFetch<PageResponse>('/product/page', {
+      method: 'POST',
+      body: {
+        currentPage: currentPage.value,
+        pageSize: pageSize.value,
+        // 这里可以添加其他筛选条件
+      }
+    })
+    products.value = response.list
+    total.value = response.total
+    
+  } catch (error) {
+    console.error('获取商品列表失败:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 监听分页变化
+watch([currentPage], () => {
+  fetchProducts()
+})
+
+// 初始化加载
+onMounted(() => {
+  fetchProducts()
+})
 
 // 模拟数据
 const categories = [
@@ -168,139 +241,6 @@ const categories = [
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const tags = ['新品', '热销', '折扣', '设计师款', '限量款', '联名款']
-
-const products = [
-  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },
-  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },  {
-    id: 1,
-    name: '2024春季新款法式复古连衣裙',
-    description: '优雅气质，显瘦显高',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '新品',
-    likes: 128
-  },
-  {
-    id: 2,
-    name: '设计师联名款休闲西装外套',
-    description: '商务休闲两相宜',
-    price: 599,
-    originalPrice: 799,
-    image: 'https://via.placeholder.com/300x400',
-    tag: '联名款',
-    likes: 256
-  },
-  // 更多商品数据...
-]
 </script>
 
 <style scoped>
