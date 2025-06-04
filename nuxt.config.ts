@@ -84,8 +84,8 @@ export default defineNuxtConfig({
   // module::color-mode
   colorMode: {
     classSuffix: '',
-    preference: 'dark',
-    fallback: 'dark',
+    preference: 'system',
+    fallback: 'light',
   },
 
   // module::content
@@ -124,7 +124,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://localhost:4321/api',
-    },
+      apiBase: process.env.NUXT_PUBLIC_API_BASE
+    }
   },
 })

@@ -23,13 +23,9 @@
                     {{ category.name }}
                   </div>
 
-
-                  
                 </div>
               </div>
             </div>
-
-
 
             <div class="relative">
               <button 

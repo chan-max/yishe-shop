@@ -1,7 +1,16 @@
+/*
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-05-16 07:16:24
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-06-05 06:45:17
+ * @FilePath: /design-server/Users/jackie/workspace/yishe-nuxt/utils/request.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { ofetch } from 'ofetch'
 import { useLocalStorage } from '@vueuse/core'
 
-const BASE_URL = 'https://localhost:4321/api'
+// 使用 Nuxt 环境变量
+const BASE_URL = useRuntimeConfig().public.apiBase
 
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'

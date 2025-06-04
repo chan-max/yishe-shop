@@ -54,6 +54,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
         
       - name: Deploy to Tencent Cloud
+        id: deploy
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -68,3 +69,27 @@ jobs:
           command_timeout: "10m"
           timeout: "10m"
           debug: true
+
+      - name: Send Feishu Notification
+        if: steps.deploy.outcome == 'success'
+        run: |
+          curl -X POST ${{ secrets.FEISHU_WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "msg_type": "text",
+              "content": {
+                "text": "🎉 衣设前端nuxt项目部署成功！\n\n📌 部署信息：\n• 环境：生产环境\n• 分支：main\n• 时间：'"$(date +'%Y-%m-%d %H:%M:%S')"'\n• 服务器：'"${{ secrets.SERVER_HOST }}"'\n\n✨ 静态文件已成功部署到 /www/wwwroot/1s.design"
+              }
+            }'
+
+      - name: Send Failure Notification
+        if: steps.deploy.outcome == 'failure'
+        run: |
+          curl -X POST ${{ secrets.FEISHU_WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "msg_type": "text",
+              "content": {
+                "text": "❌ 衣设前端nuxt项目部署失败！\n分支: main\n时间: '"$(date +'%Y-%m-%d %H:%M:%S')"'"
+              }
+            }'
