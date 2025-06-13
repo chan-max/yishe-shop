@@ -30,11 +30,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 right-0 z-50">
+  <div class=" top-0 left-0 right-0 z-50">
     <!-- 广告内容 -->
-    <div class="w-full bg-black text-white py-1">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-center text-center overflow-hidden h-8" style="height: 2rem;">
+    <div class="w-full bg-white text-black py-1">
+      <div class="container mx-auto">
+        <div class="flex items-center justify-center text-center overflow-hidden h-8" style="height: 1.2rem;">
           <Transition
             mode="out-in"
             enter-active-class="transition duration-500 ease-out"
@@ -47,7 +47,7 @@ onMounted(() => {
             <a
               :key="currentAdIndex"
               :href="adItems[currentAdIndex].link"
-              class="hover:underline block py-1 text-xs md:text-sm font-normal"
+              class="hover:underline block py-1 text-xs md:text-sm font-normal text-black"
             >
               {{ adItems[currentAdIndex].text }}
             </a>
@@ -56,67 +56,35 @@ onMounted(() => {
       </div>
     </div>
     <!-- 导航栏 -->
-    <header
-      class="flex h-16 backdrop-filter backdrop-blur-md w-full flex-none transition-colors duration-300 lg:z-50 border-b border-gray-950/10 dark:border-gray-50/[0.2] bg-white/[0.5] dark:bg-gray-950/[0.5]"
-    >
-      <!-- content -->
-      <div
-        class="flex-1 flex items-center justify-between max-w-screen-2xl mx-auto px-4"
-      >
-        <!-- title -->
-        <div class="flex items-center space-x-4">
-          <slot name="title">
-            <NuxtLink to="/" class="font-bold text-lg text-primary-500">
-              <Icon
-                name="simple-icons:nuxtdotjs"
-                class="font-black text-xl font-mono mr-2 inline-block"
-              />
-              <span class="capitalize">{{ awesome.name }}</span>
-            </NuxtLink>
-          </slot>
-        </div>
-        <!-- 桌面端菜单 -->
-        <div
-          v-if="$screen.higherThan('md', $screen.current.value)"
-          class="flex space-x-4 items-center"
-          :class="{ 'divide-x divide-gray-500': menus.length > 0 }"
-        >
-          <div class="flex space-x-4 text-sm items-center">
-            <!-- dynamic menus -->
-            <template v-for="(item, i) in menus" :key="i">
-              <LayoutPageNavbarMenuWrapper :menu="item" />
-            </template>
+    <header class="bg-[#2D2D2D] text-white">
+      <div class="container mx-auto">
+        <div class="flex h-16 items-center justify-between">
+          <!-- title -->
+          <div class="flex items-center space-x-4">
+            <slot name="title">
+              <NuxtLink to="/" class="font-bold text-lg text-white">
+                <div class="flex items-center gap-2">
+                  <img src="logo.svg" class="h-10">
+                  <img src="logo_t.svg" class="h-5">
+                </div>
+              </NuxtLink>
+            </slot>
           </div>
-          <!-- others -->
-          <div class="pl-4 flex space-x-3 text-xl">
-            <!-- todo: feat/localization -->
-            <!-- <AwesomeLink class="text-gray-400 hover:text-gray-100">
-              <Icon name="la:language" />
-            </AwesomeLink> -->
-            <LayoutPageNavbarDropdownThemeSwitcher />
-            <AwesomeLink
-              v-if="awesome?.project?.links?.github"
-              class="text-gray-400 hover:text-gray-100"
-              :href="awesome?.project?.links?.github"
-            >
-              <Icon name="mdi:github-face" />
-            </AwesomeLink>
-          </div>
-        </div>
-        <!-- 移动端菜单按钮 -->
-        <div
-          v-else
-          class="pl-4 flex space-x-3 text-xl"
-        >
-          <AwesomeLink
-            @click.prevent="() => (showDrawer = !showDrawer)"
-            class="text-gray-400 hover:text-gray-100"
-          >
-            <Icon name="uil:bars" />
-          </AwesomeLink>
+          <div> menu </div>
         </div>
       </div>
     </header>
+    <!-- 小菜单 -->
+    <div class="bg-[#525051] text-white">
+      <div class="container mx-auto">
+        <div class="flex h-12 items-center space-x-6 text-sm">
+          <NuxtLink to="/" class="hover:text-gray-300">首页</NuxtLink>
+          <NuxtLink to="/products" class="hover:text-gray-300">产品</NuxtLink>
+          <NuxtLink to="/about" class="hover:text-gray-300">关于我们</NuxtLink>
+          <NuxtLink to="/contact" class="hover:text-gray-300">联系我们</NuxtLink>
+        </div>
+      </div>
+    </div>
     <!-- 移动端抽屉菜单 -->
     <AwesomeActionSheet
       v-if="showDrawer"

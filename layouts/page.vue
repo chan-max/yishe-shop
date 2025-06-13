@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="overflow-x-hidden">
-    <LayoutPageNavbar class="h-[64px] max-h-[64px]" />
+    <LayoutPageNavbar />
     <LayoutPageContent>
       <slot />
     </LayoutPageContent>
