@@ -58,7 +58,7 @@ onMounted(() => {
     </div>
     <!-- 导航栏 -->
     <header class="bg-[#2D2D2D] text-white">
-      <div class="container mx-auto">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <!-- title -->
           <div class="flex items-center space-x-4">
