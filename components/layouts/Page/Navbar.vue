@@ -3,6 +3,7 @@ const { awesome } = useAppConfig()
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser()
 const $screen = useAwesomeScreen()
 const nuxtApp = useNuxtApp()
+const route = useRoute()
 
 const menus = computed(
   () =>
@@ -76,114 +77,27 @@ onMounted(() => {
     </header>
     <!-- 小菜单 -->
     <div class="bg-[#525051] text-white">
-      <div class="container mx-auto">
-        <div class="flex h-12 items-center space-x-6 text-sm">
-          <NuxtLink to="/" class="hover:text-gray-300">首页</NuxtLink>
-          <NuxtLink to="/products" class="hover:text-gray-300">产品</NuxtLink>
-          <NuxtLink to="/about" class="hover:text-gray-300">关于我们</NuxtLink>
-          <NuxtLink to="/contact" class="hover:text-gray-300">联系我们</NuxtLink>
+      <div class="container mx-auto px-8">
+        <div class="flex h-12 items-center space-x-0 text-[10px] font-bold">
+          <NuxtLink to="/" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+            <span class="relative z-10">首页</span>
+            <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/' }"></div>
+          </NuxtLink>
+          <NuxtLink to="/products" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+            <span class="relative z-10">产品</span>
+            <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/products' }"></div>
+          </NuxtLink>
+          <NuxtLink to="/about" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+            <span class="relative z-10">关于我们</span>
+            <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/about' }"></div>
+          </NuxtLink>
+          <NuxtLink to="/contact" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+            <span class="relative z-10">联系我们</span>
+            <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/contact' }"></div>
+          </NuxtLink>
         </div>
       </div>
     </div>
-    <!-- 移动端抽屉菜单 -->
-    <AwesomeActionSheet
-      v-if="showDrawer"
-      @close="() => (showDrawer = false)"
-    >
-      <AwesomeActionSheetGroup>
-        <AwesomeActionSheetHeader>
-          <AwesomeActionSheetHeaderTitle text="Menu" />
-        </AwesomeActionSheetHeader>
-        <!-- dynamic menus -->
-        <AwesomeActionSheetItem>
-          <div
-            class="flex flex-col text-sm items-center divide-y divide-gray-400 dark:divide-gray-700 text-center"
-          >
-            <template v-for="(item, i) in menus">
-              <template v-if="item?.type === 'link'">
-                <NuxtLink
-                  :key="i"
-                  :to="parseMenuRoute(item.to)"
-                  #="{ isActive }"
-                  class="w-full py-2"
-                >
-                  <span
-                    :class="{
-                      'text-gray-900 dark:text-gray-100 font-bold': isActive,
-                      'text-gray-700 dark:text-gray-300': !isActive,
-                    }"
-                    >{{ parseMenuTitle(item?.title) }}</span
-                  >
-                </NuxtLink>
-              </template>
-              <template v-if="item?.type === 'button'">
-                <AwesomeButton
-                  :key="i"
-                  :text="parseMenuTitle(item?.title)"
-                  size="sm"
-                  :to="parseMenuRoute(item.to)"
-                  class="w-full"
-                />
-              </template>
-              <template v-if="item?.type === 'dropdown'">
-                <div :key="i" class="w-full">
-                  <HeadlessDisclosure v-slot="{ open }">
-                    <HeadlessDisclosureButton
-                      :key="i"
-                      :class="[
-                        'text-gray-700 dark:text-gray-300 w-full py-2 flex items-center justify-center duration-300 transition-all',
-                        open ? 'font-bold' : '',
-                      ]"
-                    >
-                      <span>{{ parseMenuTitle(item?.title) }}</span>
-                      <Icon
-                        name="carbon:chevron-right"
-                        class="ml-1"
-                        :class="[
-                          open
-                            ? 'duration-300 transition-all transform rotate-90'
-                            : 'rotate-0',
-                        ]"
-                      />
-                    </HeadlessDisclosureButton>
-                    <Transition
-                      enter-active-class="transition duration-100 ease-out"
-                      enter-from-class="transform scale-95 opacity-0"
-                      enter-to-class="transform scale-100 opacity-100"
-                      leave-active-class="transition duration-75 ease-out"
-                      leave-from-class="transform scale-100 opacity-100"
-                      leave-to-class="transform scale-95 opacity-0"
-                    >
-                      <HeadlessDisclosurePanel class="text-gray-500 pb-2">
-                        <template
-                          v-for="(child, j) in item?.children || []"
-                          :key="j"
-                        >
-                          <NuxtLink
-                            :to="parseMenuRoute(child.to)"
-                            #="{ isActive }"
-                            class="w-full py-2"
-                          >
-                            <span
-                              :class="[
-                                isActive
-                                  ? 'text-gray-900 dark:text-gray-100 font-bold'
-                                  : 'text-gray-700 dark:text-gray-300',
-                              ]"
-                              >{{ parseMenuTitle(child?.title) }}</span
-                            >
-                          </NuxtLink>
-                        </template>
-                      </HeadlessDisclosurePanel>
-                    </Transition>
-                  </HeadlessDisclosure>
-                </div>
-              </template>
-            </template>
-          </div>
-        </AwesomeActionSheetItem>
-      </AwesomeActionSheetGroup>
-    </AwesomeActionSheet>
   </div>
 </template>
 
