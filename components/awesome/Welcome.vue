@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
 
 <div class="w-full h-12 bg-black"></div>
-<div class="w-full h-24 mt-[2px]" style="background-color: #6900ff"></div>
+<div class="w-full h-24 mt-[1px] " style="background-color: #6900ff"></div>
 <div class="w-full h-12 bg-white"></div>
 <div class="w-full h-80 bg-black"></div>
 

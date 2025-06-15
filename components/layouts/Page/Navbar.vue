@@ -187,7 +187,7 @@ onClickOutside(searchRef, closeSearch)
                         <button
                           v-for="suggestion in searchSuggestions"
                           :key="suggestion"
-                          class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#d01345] hover:text-white transition-colors"
+                          class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
                         >
                           {{ suggestion }}
                         </button>
@@ -201,7 +201,7 @@ onClickOutside(searchRef, closeSearch)
                         <button
                           v-for="(item, index) in hotSearches"
                           :key="index"
-                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-[#2d2d2d] hover:text-white rounded-lg transition-colors"
                         >
                           <span class="text-gray-700">{{ item.text }}</span>
                           <span class="text-xs text-gray-400">{{ item.count }}次搜索</span>
@@ -213,21 +213,21 @@ onClickOutside(searchRef, closeSearch)
               </div>
               <div class="flex items-center space-x-4 flex-shrink-0">
                 <button class="text-white/70 hover:text-white transition-colors relative group">
-                  <i class="i-heroicons-heart-20-solid w-6 h-6"></i>
+                  <Icon name="uil:heart" class="w-6 h-6" />
                   <span class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span>
                 </button>
                 <button class="text-white/70 hover:text-white transition-colors relative group">
-                  <i class="i-heroicons-shopping-cart-20-solid w-6 h-6"></i>
+                  <Icon name="uil:shopping-cart" class="w-6 h-6" />
                   <span class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
                 </button>
                 <button class="text-white/70 hover:text-white transition-colors">
-                  <i class="i-heroicons-user-20-solid w-6 h-6"></i>
+                  <Icon name="uil:user" class="w-6 h-6" />
                 </button>
                 <button class="text-white/70 hover:text-white transition-colors">
-                  <i class="i-heroicons-bell-20-solid w-6 h-6"></i>
+                  <Icon name="uil:bell" class="w-6 h-6" />
                 </button>
                 <button class="text-white/70 hover:text-white transition-colors">
-                  <i class="i-heroicons-chat-bubble-left-right-20-solid w-6 h-6"></i>
+                  <Icon name="uil:comment-dots" class="w-6 h-6" />
                 </button>
               </div>
             </div>
@@ -282,43 +282,43 @@ onClickOutside(searchRef, closeSearch)
       <div class="bg-[#525051] text-white">
         <!-- PC端菜单 -->
         <div class="hidden lg:block">
-          <div class="container mx-auto px-8">
+          <div class="container mx-auto px-24">
             <div class="flex h-12 items-center space-x-0 text-[10px] font-bold">
               <NuxtLink to="/" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">首页</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/' }"></div>
               </NuxtLink>
               <NuxtLink to="/new-arrivals" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">新品上市</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/new-arrivals' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/new-arrivals' }"></div>
               </NuxtLink>
               <NuxtLink to="/hot-sales" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">热销商品</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/hot-sales' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/hot-sales' }"></div>
               </NuxtLink>
               <NuxtLink to="/designers" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">设计师专区</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/designers' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/designers' }"></div>
               </NuxtLink>
               <NuxtLink to="/member" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">会员中心</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/member' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/member' }"></div>
               </NuxtLink>
               <NuxtLink to="/shopping-guide" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">购物指南</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/shopping-guide' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/shopping-guide' }"></div>
               </NuxtLink>
               <NuxtLink to="/fashion-news" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">时尚资讯</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/fashion-news' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/fashion-news' }"></div>
               </NuxtLink>
               <NuxtLink to="/about" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">关于我们</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/about' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/about' }"></div>
               </NuxtLink>
               <NuxtLink to="/contact" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
                 <span class="relative z-10">联系我们</span>
-                <div class="absolute inset-0 bg-[#d01345] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/contact' }"></div>
+                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/contact' }"></div>
               </NuxtLink>
             </div>
           </div>
