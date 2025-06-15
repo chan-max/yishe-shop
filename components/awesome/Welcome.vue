@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { getEnvironmentInfo } from "~/utils/environment";
-import CustomSelect from './CustomSelect.vue'
 
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
@@ -455,59 +454,83 @@ const selectedFilters = ref({
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <!-- 价格区间 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.price"
           :options="filterOptions.price"
-          placeholder="价格区间"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'价格区间'"
+          class="w-full"
         />
 
         <!-- 风格 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.style"
           :options="filterOptions.style"
-          placeholder="风格"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'风格'"
+          class="w-full"
         />
 
         <!-- 季节 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.season"
           :options="filterOptions.season"
-          placeholder="季节"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'季节'"
+          class="w-full"
         />
 
         <!-- 材质 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.material"
           :options="filterOptions.material"
-          placeholder="材质"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'材质'"
+          class="w-full"
         />
 
         <!-- 颜色 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.color"
           :options="filterOptions.color"
-          placeholder="颜色"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'颜色'"
+          class="w-full"
         />
 
         <!-- 尺码 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.size"
           :options="filterOptions.size"
-          placeholder="尺码"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'尺码'"
+          class="w-full"
         />
 
         <!-- 品牌 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.brand"
           :options="filterOptions.brand"
-          placeholder="品牌"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'品牌'"
+          class="w-full"
         />
 
         <!-- 折扣 -->
-        <CustomSelect
+        <Dropdown
           v-model="selectedFilters.discount"
           :options="filterOptions.discount"
-          placeholder="折扣"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="'折扣'"
+          class="w-full"
         />
       </div>
     </div>
@@ -519,7 +542,7 @@ const selectedFilters = ref({
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto">
           <!-- 商品卡片 -->
           <div v-for="product in products" :key="product.id" 
-            class="rounded-lg overflow-hidden shadow-sm border">
+            class="rounded-lg overflow-hidden">
             <!-- 商品图片 -->
             <div class="relative aspect-[4/5]">
               <img :src="product.images[0]" :alt="product.name" class="w-full h-full object-cover" />
@@ -530,16 +553,16 @@ const selectedFilters = ref({
             </div>
             
             <!-- 商品信息 -->
-            <div class="p-4">
-              <h3 class="font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
-              <p class="text-sm mb-2">{{ product.description }}</p>
+            <div class="p-3">
+              <h3 class="text-sm font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
+              <p class="text-xs mb-2 text-gray-600">{{ product.description }}</p>
               <div class="flex items-center justify-between">
                 <div class="flex items-baseline gap-1">
-                  <span class="text-lg font-bold">¥{{ product.price }}</span>
-                  <span v-if="product.originalPrice" class="text-sm line-through">¥{{ product.originalPrice }}</span>
+                  <span class="text-base font-bold">¥{{ product.price }}</span>
+                  <span v-if="product.originalPrice" class="text-xs line-through">¥{{ product.originalPrice }}</span>
                 </div>
-                <div class="flex items-center gap-1 text-sm">
-                  <Icon name="heroicons:heart" class="w-4 h-4" />
+                <div class="flex items-center gap-1 text-xs">
+                  <Icon name="heroicons:heart" class="w-3 h-3" />
                   <span>{{ product.likes }}</span>
                 </div>
               </div>
@@ -669,5 +692,55 @@ html.dark {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* 添加 PrimeVue Dropdown 自定义样式 */
+.p-dropdown {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+
+  &.p-focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+  }
+
+  .p-dropdown-label {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    color: #4b5563;
+  }
+
+  .p-dropdown-trigger {
+    width: 2.5rem;
+  }
+}
+
+.p-dropdown-panel {
+  .p-dropdown-items {
+    padding: 0.25rem 0;
+  }
+
+  .p-dropdown-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    color: #4b5563;
+    transition: all 0.15s;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    &.p-highlight {
+      background: #f3f4f6;
+      color: var(--primary-color);
+    }
+  }
 }
 </style>
