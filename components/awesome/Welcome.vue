@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { getEnvironmentInfo } from "~/utils/environment";
+
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
 
@@ -13,6 +15,24 @@ const showAlert = ref(
     ? !awesome?.layout?.welcome?.disableInfoReplaceIndexInWelcomePage
     : props.withAlert
 );
+
+const showDesignModal = ref(false);
+const designForm = ref({
+  style: "",
+  requirements: "",
+  contact: "",
+  email: "",
+});
+
+const submitDesignRequest = async () => {
+  try {
+    // TODO: 实现发送到后台的逻辑
+    console.log("提交设计需求:", designForm.value);
+    showDesignModal.value = false;
+  } catch (error) {
+    console.error("提交失败:", error);
+  }
+};
 
 const leadingsText = computed(() => [
   {
@@ -35,6 +55,9 @@ const leadingsText = computed(() => [
   // },
 ]);
 
+const envInfo = getEnvironmentInfo();
+console.log(envInfo);
+
 onMounted(() => {
   try {
     console.log("aweawe", parseMenuTitle("aweawe"), this);
@@ -45,20 +68,88 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- 设计需求弹窗 -->
+  <div
+    v-if="showDesignModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">提交设计需求</h3>
+        <button
+          @click="showDesignModal = false"
+          class="text-gray-500 hover:text-gray-700"
+        >
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
 
-<div class="w-full h-12 bg-black"></div>
-<div class="w-full h-24 mt-[1px] " style="background-color: #6900ff"></div>
-<div class="w-full h-12 bg-white"></div>
-<div class="w-full h-80 bg-black"></div>
+      <form @submit.prevent="submitDesignRequest" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">设计风格</label>
+          <input
+            v-model="designForm.style"
+            type="text"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="例如：简约、复古、运动等"
+          />
+        </div>
 
+        <div>
+          <label class="block text-sm font-medium text-gray-700">具体需求</label>
+          <textarea
+            v-model="designForm.requirements"
+            rows="3"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="请详细描述您的设计需求..."
+          ></textarea>
+        </div>
 
+        <div>
+          <label class="block text-sm font-medium text-gray-700">联系方式</label>
+          <input
+            v-model="designForm.contact"
+            type="text"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="您的手机号或微信号"
+          />
+        </div>
 
-  <LayoutPageWrapper class="flex-1 flex">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">邮箱</label>
+          <input
+            v-model="designForm.email"
+            type="email"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            placeholder="您的邮箱地址"
+          />
+        </div>
+
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            提交需求
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="w-full h-12 bg-black flex items-center justify-center"></div>
+
+  <div
+    class="w-full h-24 mt-[1px]"
+    style="background-color: rgba(105, 0, 255, 0.6)"
+  ></div>
+  <!-- <div class="w-full h-12 bg-white"></div> -->
+  <!-- <div class="w-full h-80 bg-black"></div> -->
+
+  <LayoutPageWrapper class="flex-1 flex bg-black">
     <LayoutPageSection class="flex-1 flex">
-
-      <div class="flex-1 flex flex-col items-center ">
-
-        <h1 class="text-center mt-4">
+      <div class="flex-1 flex flex-col items-center my-20">
+        <h1 class="text-center ">
           <span
             v-for="(item, i) in leadingsText"
             :key="i"
@@ -70,56 +161,24 @@ onMounted(() => {
             <span class="animated-text-fg">{{ item.text }}</span>
           </span>
         </h1>
-        <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px]">
+        <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-white">
           {{ awesome?.description || "最具创意的开放式服装设计平台" }}
         </div>
-        <div
-          v-if="showAlert"
-          class="mt-4 w-auto text-center text-white bg-gray-800 rounded px-4 py-1 text-sm"
-        >
-          create file "~/pages/index.vue" to replace this page
-        </div>
         <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
-          <AwesomeButton
-            size="lg"
-            :text="
-              parseMenuTitle(
-                awesome?.layout?.welcome?.primaryActionButton?.title || 'Nuxt 3'
-              )
-            "
-            :to="
-              parseMenuRoute(
-                awesome?.layout?.welcome?.primaryActionButton?.to || 'https://nuxt.com'
-              )
-            "
-            class="font-extrabold"
-          />
-          <AwesomeButton
-            v-if="
-              parseMenuRoute(
-                awesome?.layout?.welcome?.secondaryActionButton?.to ||
-                  awesome?.project?.links?.github
-              )
-            "
-            :text="
-              parseMenuTitle(
-                awesome?.layout?.welcome?.secondaryActionButton?.title || 'Github'
-              )
-            "
-            :to="
-              parseMenuRoute(
-                awesome?.layout?.welcome?.secondaryActionButton?.to ||
-                  awesome?.project?.links?.github
-              )
-            "
-            size="lg"
-            class="font-extrabold"
-            type="secondary"
-          />
+          <button
+            class="border-2 border-white text-white px-10 py-4 rounded-full hover:bg-white/10 transition-all duration-300 font-bold text-xl"
+          >
+            免费设计
+          </button>
         </div>
       </div>
     </LayoutPageSection>
   </LayoutPageWrapper>
+
+
+  <div style="height: 1200px;">
+  
+  </div>
 </template>
 
 <style lang="scss">
@@ -171,7 +230,7 @@ onMounted(() => {
   content: var(--content);
   display: block;
   width: 100%;
-  color: theme("colors.slate.800");
+  color: theme("colors.slate.300");
   top: 0;
   bottom: 0;
   left: 0;
@@ -183,7 +242,7 @@ onMounted(() => {
     position: absolute;
     display: block;
     width: 100%;
-    color: theme("colors.slate.800");
+    color: theme("colors.slate.300");
     top: 0;
     bottom: 0;
     left: 0;
