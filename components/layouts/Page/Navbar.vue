@@ -155,10 +155,10 @@ onClickOutside(searchRef, closeSearch)
               <div class="relative w-full" ref="searchRef">
                 <button
                   @click="toggleSearch"
-                  class="w-full px-4 py-2 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors flex items-center justify-between"
+                  class="w-full px-3 py-1.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors flex items-center justify-between text-sm"
                 >
-                  <span class="text-gray-400">搜索商品...</span>
-                  <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5 text-gray-400"></i>
+                  <span class="text-gray-400 text-sm">搜索商品...</span>
+                  <i class="i-heroicons-magnifying-glass-20-solid w-4 h-4 text-gray-400"></i>
                 </button>
 
                 <!-- 搜索弹出层 -->
@@ -173,7 +173,7 @@ onClickOutside(searchRef, closeSearch)
                         v-model="searchQuery"
                         type="text"
                         placeholder="搜索商品..."
-                        class="w-full px-4 py-3 rounded-lg bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors"
+                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
                       >
                       <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors">
                         <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></i>
@@ -253,7 +253,7 @@ onClickOutside(searchRef, closeSearch)
                     <input
                       type="text"
                       placeholder="搜索商品..."
-                      class="w-full px-4 py-3 rounded-full bg-gray-100 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors"
+                      class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
                     >
                     <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors">
                       <Icon name="uil:search" class="w-5 h-5" />

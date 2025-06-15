@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getEnvironmentInfo } from "~/utils/environment";
+import CustomSelect from './CustomSelect.vue'
 
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
@@ -17,20 +18,189 @@ const showAlert = ref(
 );
 
 const showDesignModal = ref(false);
+const showSuccessToast = ref(false);
+const showErrorToast = ref(false);
 const designForm = ref({
-  style: "",
-  requirements: "",
-  contact: "",
+  name: "",
+  description: "",
+  phoneNumber: "",
   email: "",
 });
 
-const submitDesignRequest = async () => {
+// 商品类型定义
+interface Product {
+  id: number
+  name: string
+  description: string
+  price: number
+  originalPrice?: number
+  images: string[]
+  tag?: string
+  likes: number
+}
+
+interface PageResponse {
+  list: Product[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+// 分页相关状态
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+const loading = ref(false)
+
+// 商品列表
+const products = ref<Product[]>([])
+
+// 获取商品列表
+const fetchProducts = async () => {
+  loading.value = true
   try {
-    // TODO: 实现发送到后台的逻辑
-    console.log("提交设计需求:", designForm.value);
+    const { $customFetch } = useNuxtApp()
+    const response = await $customFetch<PageResponse>('/product/page', {
+      method: 'POST',
+      body: {
+        currentPage: currentPage.value,
+        pageSize: pageSize.value,
+      }
+    })
+    products.value = response.list
+    total.value = response.total
+    
+  } catch (error) {
+    console.error('获取商品列表失败:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 监听分页变化
+watch([currentPage], () => {
+  fetchProducts()
+})
+
+// 初始化加载
+onMounted(() => {
+  fetchProducts()
+})
+
+const formErrors = ref({
+  name: "",
+  description: "",
+  phoneNumber: "",
+  email: "",
+});
+
+const validateForm = () => {
+  let isValid = true;
+  formErrors.value = {
+    name: "",
+    description: "",
+    phoneNumber: "",
+    email: "",
+  };
+
+  if (!designForm.value.name.trim()) {
+    formErrors.value.name = "请输入设计名称";
+    isValid = false;
+  } else if (designForm.value.name.length > 50) {
+    formErrors.value.name = "设计名称不能超过50个字符";
+    isValid = false;
+  }
+
+  if (!designForm.value.description.trim()) {
+    formErrors.value.description = "请输入设计需求描述";
+    isValid = false;
+  } else if (designForm.value.description.length < 10) {
+    formErrors.value.description = "设计需求描述至少需要10个字符";
+    isValid = false;
+  } else if (designForm.value.description.length > 1000) {
+    formErrors.value.description = "设计需求描述不能超过1000个字符";
+    isValid = false;
+  }
+
+  // 验证手机号
+  const phoneRegex = /^1[3-9]\d{9}$/;
+  if (!designForm.value.phoneNumber.trim()) {
+    formErrors.value.phoneNumber = "请输入手机号";
+    isValid = false;
+  } else if (!phoneRegex.test(designForm.value.phoneNumber)) {
+    formErrors.value.phoneNumber = "请输入有效的手机号";
+    isValid = false;
+  }
+
+  // 验证邮箱
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!designForm.value.email.trim()) {
+    formErrors.value.email = "请输入邮箱";
+    isValid = false;
+  } else if (!emailRegex.test(designForm.value.email)) {
+    formErrors.value.email = "请输入有效的邮箱地址";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+interface DesignRequestResponse {
+  name: string;
+  description: string;
+  phoneNumber: string;
+  email: string;
+  userId: string | null;
+  id: string;
+  createTime: string;
+  updateTime: string;
+}
+
+interface ApiResponse<T = any> {
+  data: T;
+  code: number;
+  status: boolean;
+}
+
+const submitDesignRequest = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  try {
+    const { $customFetch } = useNuxtApp();
+    const response = await $customFetch<ApiResponse<DesignRequestResponse>>(
+      "/design-request",
+      {
+        method: "POST",
+        body: {
+          name: designForm.value.name,
+          description: designForm.value.description,
+          phoneNumber: designForm.value.phoneNumber,
+          email: designForm.value.email,
+        },
+      }
+    );
+
+    showSuccessToast.value = true;
+
     showDesignModal.value = false;
+    // 重置表单
+    designForm.value = {
+      name: "",
+      description: "",
+      phoneNumber: "",
+      email: "",
+    };
+    formErrors.value = {
+      name: "",
+      description: "",
+      phoneNumber: "",
+      email: "",
+    };
   } catch (error) {
     console.error("提交失败:", error);
+    showErrorToast.value = true;
   }
 };
 
@@ -65,70 +235,158 @@ onMounted(() => {
     console.log("aweawe error", error);
   }
 });
+
+// 过滤条件数据
+const filterOptions = {
+  price: [
+    { value: '0-100', label: '0-100元' },
+    { value: '100-300', label: '100-300元' },
+    { value: '300-500', label: '300-500元' },
+    { value: '500+', label: '500元以上' }
+  ],
+  style: [
+    { value: 'casual', label: '休闲' },
+    { value: 'formal', label: '正装' },
+    { value: 'sports', label: '运动' },
+    { value: 'vintage', label: '复古' }
+  ],
+  season: [
+    { value: 'spring', label: '春季' },
+    { value: 'summer', label: '夏季' },
+    { value: 'autumn', label: '秋季' },
+    { value: 'winter', label: '冬季' }
+  ],
+  material: [
+    { value: 'cotton', label: '棉质' },
+    { value: 'wool', label: '羊毛' },
+    { value: 'silk', label: '丝绸' },
+    { value: 'linen', label: '亚麻' }
+  ],
+  color: [
+    { value: 'black', label: '黑色' },
+    { value: 'white', label: '白色' },
+    { value: 'red', label: '红色' },
+    { value: 'blue', label: '蓝色' }
+  ],
+  size: [
+    { value: 's', label: 'S' },
+    { value: 'm', label: 'M' },
+    { value: 'l', label: 'L' },
+    { value: 'xl', label: 'XL' }
+  ],
+  brand: [
+    { value: 'brand1', label: '品牌1' },
+    { value: 'brand2', label: '品牌2' },
+    { value: 'brand3', label: '品牌3' }
+  ],
+  discount: [
+    { value: 'discount1', label: '9折以上' },
+    { value: 'discount2', label: '7-9折' },
+    { value: 'discount3', label: '5-7折' },
+    { value: 'discount4', label: '5折以下' }
+  ]
+}
+
+// 选中的过滤条件
+const selectedFilters = ref({
+  price: '',
+  style: '',
+  season: '',
+  material: '',
+  color: '',
+  size: '',
+  brand: '',
+  discount: ''
+})
 </script>
 
 <template>
   <!-- 设计需求弹窗 -->
   <div
     v-if="showDesignModal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
   >
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+    <div
+      class="bg-white rounded-2xl p-6 w-full max-w-md transform transition-all duration-300 shadow-2xl hover:shadow-3xl"
+    >
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold">提交设计需求</h3>
+        <h3
+          class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+        >
+          提交设计需求
+        </h3>
         <button
           @click="showDesignModal = false"
-          class="text-gray-500 hover:text-gray-700"
+          class="text-gray-500 hover:text-gray-700 transition-colors duration-200"
         >
           <span class="text-2xl">&times;</span>
         </button>
       </div>
 
-      <form @submit.prevent="submitDesignRequest" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">设计风格</label>
+      <form @submit.prevent="submitDesignRequest" class="space-y-6">
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">设计名称</label>
           <input
-            v-model="designForm.style"
+            v-model="designForm.name"
             type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="例如：简约、复古、运动等"
+            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
+            :class="{ 'border-red-500': formErrors.name }"
+            placeholder="请输入设计名称"
           />
+          <p v-if="formErrors.name" class="text-red-500 text-sm mt-1">
+            {{ formErrors.name }}
+          </p>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700">具体需求</label>
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">设计需求描述</label>
           <textarea
-            v-model="designForm.requirements"
-            rows="3"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="请详细描述您的设计需求..."
+            v-model="designForm.description"
+            rows="4"
+            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm resize-none"
+            :class="{ 'border-red-500': formErrors.description }"
+            placeholder="请详细描述您的设计需求，包括：&#10;1. 设计风格偏好&#10;2. 具体用途&#10;3. 特殊要求&#10;4. 参考案例（如有）"
           ></textarea>
+          <p v-if="formErrors.description" class="text-red-500 text-sm mt-1">
+            {{ formErrors.description }}
+          </p>
+          <p class="text-gray-500 text-sm mt-1">
+            已输入 {{ designForm.description.length }}/1000 字符
+          </p>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700">联系方式</label>
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">手机号</label>
           <input
-            v-model="designForm.contact"
-            type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="您的手机号或微信号"
+            v-model="designForm.phoneNumber"
+            type="tel"
+            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
+            :class="{ 'border-red-500': formErrors.phoneNumber }"
+            placeholder="请输入手机号"
           />
+          <p v-if="formErrors.phoneNumber" class="text-red-500 text-sm mt-1">
+            {{ formErrors.phoneNumber }}
+          </p>
         </div>
 
-        <div>
+        <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">邮箱</label>
           <input
             v-model="designForm.email"
             type="email"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="您的邮箱地址"
+            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
+            :class="{ 'border-red-500': formErrors.email }"
+            placeholder="请输入邮箱地址"
           />
+          <p v-if="formErrors.email" class="text-red-500 text-sm mt-1">
+            {{ formErrors.email }}
+          </p>
         </div>
 
-        <div class="flex justify-end">
+        <div class="flex justify-end pt-4">
           <button
             type="submit"
-            class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+            class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
           >
             提交需求
           </button>
@@ -136,6 +394,21 @@ onMounted(() => {
       </form>
     </div>
   </div>
+
+  <!-- 提示框 -->
+  <AwesomeToast
+    v-model:show="showSuccessToast"
+    type="success"
+    title="提交成功"
+    text="我们会尽快联系您"
+  />
+
+  <AwesomeToast
+    v-model:show="showErrorToast"
+    type="danger"
+    title="提交失败"
+    text="请稍后重试"
+  />
 
   <div class="w-full h-12 bg-black flex items-center justify-center"></div>
 
@@ -146,10 +419,10 @@ onMounted(() => {
   <!-- <div class="w-full h-12 bg-white"></div> -->
   <!-- <div class="w-full h-80 bg-black"></div> -->
 
-  <LayoutPageWrapper class="flex-1 flex bg-black">
+  <LayoutPageWrapper class="flex-1 flex bg-white">
     <LayoutPageSection class="flex-1 flex">
       <div class="flex-1 flex flex-col items-center my-20">
-        <h1 class="text-center ">
+        <h1 class="text-center">
           <span
             v-for="(item, i) in leadingsText"
             :key="i"
@@ -161,12 +434,13 @@ onMounted(() => {
             <span class="animated-text-fg">{{ item.text }}</span>
           </span>
         </h1>
-        <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-white">
+        <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
           {{ awesome?.description || "最具创意的开放式服装设计平台" }}
         </div>
         <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
           <button
-            class="border-2 border-white text-white px-10 py-4 rounded-full hover:bg-white/10 transition-all duration-300 font-bold text-xl"
+            @click="showDesignModal = true"
+            class="border-2 border-black text-black px-10 py-4 rounded-full hover:bg-white/10 transition-all duration-300 font-bold text-xl"
           >
             免费设计
           </button>
@@ -175,9 +449,128 @@ onMounted(() => {
     </LayoutPageSection>
   </LayoutPageWrapper>
 
+  <!-- 商品列表 -->
 
-  <div style="height: 1200px;">
-  
+  <div class="w-full bg-[#eee]">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <!-- 价格区间 -->
+        <CustomSelect
+          v-model="selectedFilters.price"
+          :options="filterOptions.price"
+          placeholder="价格区间"
+        />
+
+        <!-- 风格 -->
+        <CustomSelect
+          v-model="selectedFilters.style"
+          :options="filterOptions.style"
+          placeholder="风格"
+        />
+
+        <!-- 季节 -->
+        <CustomSelect
+          v-model="selectedFilters.season"
+          :options="filterOptions.season"
+          placeholder="季节"
+        />
+
+        <!-- 材质 -->
+        <CustomSelect
+          v-model="selectedFilters.material"
+          :options="filterOptions.material"
+          placeholder="材质"
+        />
+
+        <!-- 颜色 -->
+        <CustomSelect
+          v-model="selectedFilters.color"
+          :options="filterOptions.color"
+          placeholder="颜色"
+        />
+
+        <!-- 尺码 -->
+        <CustomSelect
+          v-model="selectedFilters.size"
+          :options="filterOptions.size"
+          placeholder="尺码"
+        />
+
+        <!-- 品牌 -->
+        <CustomSelect
+          v-model="selectedFilters.brand"
+          :options="filterOptions.brand"
+          placeholder="品牌"
+        />
+
+        <!-- 折扣 -->
+        <CustomSelect
+          v-model="selectedFilters.discount"
+          :options="filterOptions.discount"
+          placeholder="折扣"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1440px] mx-auto">
+      <div class="px-4 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto">
+          <!-- 商品卡片 -->
+          <div v-for="product in products" :key="product.id" 
+            class="rounded-lg overflow-hidden shadow-sm border">
+            <!-- 商品图片 -->
+            <div class="relative aspect-[4/5]">
+              <img :src="product.images[0]" :alt="product.name" class="w-full h-full object-cover" />
+              <!-- 商品标签 -->
+              <div v-if="product.tag" class="absolute top-2 left-2 px-2 py-1 text-xs rounded border">
+                {{ product.tag }}
+              </div>
+            </div>
+            
+            <!-- 商品信息 -->
+            <div class="p-4">
+              <h3 class="font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
+              <p class="text-sm mb-2">{{ product.description }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-baseline gap-1">
+                  <span class="text-lg font-bold">¥{{ product.price }}</span>
+                  <span v-if="product.originalPrice" class="text-sm line-through">¥{{ product.originalPrice }}</span>
+                </div>
+                <div class="flex items-center gap-1 text-sm">
+                  <Icon name="heroicons:heart" class="w-4 h-4" />
+                  <span>{{ product.likes }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="flex justify-center mt-8">
+          <nav class="flex items-center gap-2">
+            <button 
+              class="px-3 py-1 border rounded"
+              :disabled="currentPage === 1"
+              @click="currentPage--"
+            >上一页</button>
+            <button 
+              v-for="page in Math.ceil(total / pageSize)" 
+              :key="page"
+              class="px-3 py-1 border rounded"
+              :class="{ 'bg-primary text-white': currentPage === page }"
+              @click="currentPage = page"
+            >{{ page }}</button>
+            <button 
+              class="px-3 py-1 border rounded"
+              :disabled="currentPage >= Math.ceil(total / pageSize)"
+              @click="currentPage++"
+            >下一页</button>
+          </nav>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -230,7 +623,7 @@ onMounted(() => {
   content: var(--content);
   display: block;
   width: 100%;
-  color: theme("colors.slate.300");
+  color: theme("colors.slate.800");
   top: 0;
   bottom: 0;
   left: 0;
@@ -242,7 +635,7 @@ onMounted(() => {
     position: absolute;
     display: block;
     width: 100%;
-    color: theme("colors.slate.300");
+    color: theme("colors.slate.800");
     top: 0;
     bottom: 0;
     left: 0;
@@ -270,5 +663,11 @@ html.dark {
       color: theme("colors.gray.100");
     }
   }
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

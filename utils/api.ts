@@ -32,6 +32,20 @@ interface LoginResponse {
   token: string
 }
 
+// 设计请求的请求参数类型
+interface DesignRequestParams {
+  name: string
+  phone: string
+  description: string
+}
+
+// 设计请求的返回数据类型
+interface DesignRequestResponse {
+  name: string
+  phone: string
+  description: string
+}
+
 // API 方法封装
 export const api = {
   // 测试接口
@@ -42,6 +56,14 @@ export const api = {
   auth: {
     login: (params: LoginParams) => 
       request<ApiResponse<LoginResponse>>('/auth/login', {
+        method: 'POST',
+        body: params,
+      }),
+  },
+  // 设计请求相关接口
+  design: {
+    submit: (params: DesignRequestParams) =>
+      request<ApiResponse<DesignRequestResponse>>('/design-request', {
         method: 'POST',
         body: params,
       }),
