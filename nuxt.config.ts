@@ -53,11 +53,8 @@ export default defineNuxtConfig({
   },
 
   css: [
-    // resolve('./assets/scss/_variables.scss'),
-    // resolve('./assets/scss/app.scss'),
-    // 'primevue/resources/themes/lara-light-blue/theme.css',
-    // 'primevue/resources/primevue.css',
-    // 'primeicons/primeicons.css',
+    resolve('/assets/scss/_variables.scss'),
+    resolve('/assets/scss/app.scss'),
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.css',
   ],

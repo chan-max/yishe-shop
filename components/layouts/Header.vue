@@ -12,7 +12,9 @@
       <div class="flex h-16 justify-between">
         <div class="flex">
           <div class="flex flex-shrink-0 items-center">
-            <NuxtLink to="/" class="text-xl font-bold">Logo</NuxtLink>
+            <NuxtLink to="/" class="text-xl font-bold">
+              <span style="font-family: logo;">衣设服装设计</span>
+            </NuxtLink>
           </div>
         </div>
 

@@ -1,102 +1,94 @@
 <script lang="ts" setup>
-const { awesome } = useAppConfig()
-const { parseMenuRoute, parseMenuTitle } = useNavbarParser()
-const $screen = useAwesomeScreen()
-const nuxtApp = useNuxtApp()
-const route = useRoute()
+const { awesome } = useAppConfig();
+const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
+const $screen = useAwesomeScreen();
+const nuxtApp = useNuxtApp();
+const route = useRoute();
 
 const menus = computed(
-  () =>
-    (awesome?.layout?.page?.navbar?.menus ||
-      []) as AwesomeLayoutPageNavbarMenu[],
-)
+  () => (awesome?.layout?.page?.navbar?.menus || []) as AwesomeLayoutPageNavbarMenu[]
+);
 
 // drawer
-const showDrawer = ref(false)
+const showDrawer = ref(false);
 
 // 广告轮播
 const adItems = ref([
-  { text: '🎉 新人注册送100积分，快来领取！', link: '/promo1' },
-  { text: '🔥 首单立减50元，限时专享！', link: '/promo2' },
-  { text: '💡 加入会员，享专属福利！', link: '/promo3' }
-])
-const currentAdIndex = ref(0)
+  { text: "🎉 新人注册送100积分，快来领取！", link: "/promo1" },
+  { text: "🔥 首单立减50元，限时专享！", link: "/promo2" },
+  { text: "💡 加入会员，享专属福利！", link: "/promo3" },
+]);
+const currentAdIndex = ref(0);
 
 // 自动轮播
 onMounted(() => {
   setInterval(() => {
-    currentAdIndex.value = (currentAdIndex.value + 1) % adItems.value.length
-  }, 3000)
-})
+    currentAdIndex.value = (currentAdIndex.value + 1) % adItems.value.length;
+  }, 3000);
+});
 
 // 添加滚动监听
-const isFixed = ref(false)
-const lastScrollY = ref(0)
-const SCROLL_THRESHOLD = 200 // 滚动阈值，可以根据需要调整
+const isFixed = ref(false);
+const lastScrollY = ref(0);
+const SCROLL_THRESHOLD = 200; // 滚动阈值，可以根据需要调整
 
 const handleScroll = () => {
-  const currentScrollY = window.scrollY
-  isFixed.value = currentScrollY > SCROLL_THRESHOLD
-  lastScrollY.value = currentScrollY
-}
+  const currentScrollY = window.scrollY;
+  isFixed.value = currentScrollY > SCROLL_THRESHOLD;
+  lastScrollY.value = currentScrollY;
+};
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
+  window.addEventListener("scroll", handleScroll);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+  window.removeEventListener("scroll", handleScroll);
+});
 
 // 移动端菜单状态
-const isMobileMenuOpen = ref(false)
-const isMobileSearchOpen = ref(false)
+const isMobileMenuOpen = ref(false);
+const isMobileSearchOpen = ref(false);
 
 // 移动端搜索控制
 const toggleMobileSearch = () => {
-  isMobileSearchOpen.value = !isMobileSearchOpen.value
+  isMobileSearchOpen.value = !isMobileSearchOpen.value;
   if (isMobileSearchOpen.value) {
-    isMobileMenuOpen.value = false
+    isMobileMenuOpen.value = false;
   }
-}
+};
 
 // 移动端菜单控制
 const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
   if (isMobileMenuOpen.value) {
-    isMobileSearchOpen.value = false
+    isMobileSearchOpen.value = false;
   }
-}
+};
 
 // 搜索相关
-const isSearchOpen = ref(false)
-const searchQuery = ref('')
-const searchSuggestions = ref([
-  '连衣裙',
-  '牛仔裤',
-  'T恤',
-  '运动鞋',
-  '休闲裤'
-])
+const isSearchOpen = ref(false);
+const searchQuery = ref("");
+const searchSuggestions = ref(["连衣裙", "牛仔裤", "T恤", "运动鞋", "休闲裤"]);
 const hotSearches = ref([
-  { text: '春季新品', count: 1234 },
-  { text: '设计师联名', count: 986 },
-  { text: '限时折扣', count: 876 },
-  { text: '时尚配饰', count: 765 },
-  { text: '运动系列', count: 654 }
-])
+  { text: "春季新品", count: 1234 },
+  { text: "设计师联名", count: 986 },
+  { text: "限时折扣", count: 876 },
+  { text: "时尚配饰", count: 765 },
+  { text: "运动系列", count: 654 },
+]);
 
 const toggleSearch = () => {
-  isSearchOpen.value = !isSearchOpen.value
-}
+  isSearchOpen.value = !isSearchOpen.value;
+};
 
 const closeSearch = () => {
-  isSearchOpen.value = false
-}
+  isSearchOpen.value = false;
+};
 
 // 点击外部关闭搜索
-const searchRef = ref(null)
-onClickOutside(searchRef, closeSearch)
+const searchRef = ref(null);
+onClickOutside(searchRef, closeSearch);
 </script>
 
 <template>
@@ -104,16 +96,19 @@ onClickOutside(searchRef, closeSearch)
     <!-- 占位元素，防止固定定位导致的内容跳动 -->
     <div class="h-[120px]" v-if="isFixed"></div>
     <!-- 导航栏 -->
-    <div 
+    <div
       :class="[
         'z-50 transition-all duration-300',
-        isFixed ? 'fixed top-0 left-0 right-0 shadow-lg' : 'relative'
+        isFixed ? 'fixed top-0 left-0 right-0 shadow-lg' : 'relative',
       ]"
     >
       <!-- 广告内容 -->
       <div class="w-full bg-white text-black py-1">
         <div class="container mx-auto">
-          <div class="flex items-center justify-center text-center overflow-hidden h-8" style="height: 1.2rem;">
+          <div
+            class="flex items-center justify-center text-center overflow-hidden h-8"
+            style="height: 1.2rem"
+          >
             <Transition
               mode="out-in"
               enter-active-class="transition duration-500 ease-out"
@@ -143,8 +138,10 @@ onClickOutside(searchRef, closeSearch)
               <slot name="title">
                 <NuxtLink to="/" class="font-bold text-lg text-white">
                   <div class="flex items-center gap-2">
-                    <img src="/logo.svg" class="h-8 lg:h-10">
-                    <img src="/logo_t.svg" class="h-4 lg:h-5" style="background-size: 100% 100%;">
+                    <img src="/logo.svg" class="h-8 lg:h-10" />
+                    <NuxtLink to="/" class="text-xl font-thin">
+                      <span style="font-family: logo!important;">衣设服装设计</span>
+                    </NuxtLink>
                   </div>
                 </NuxtLink>
               </slot>
@@ -158,7 +155,9 @@ onClickOutside(searchRef, closeSearch)
                   class="w-full px-3 py-1.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors flex items-center justify-between text-sm"
                 >
                   <span class="text-gray-400 text-sm">搜索商品...</span>
-                  <i class="i-heroicons-magnifying-glass-20-solid w-4 h-4 text-gray-400"></i>
+                  <i
+                    class="i-heroicons-magnifying-glass-20-solid w-4 h-4 text-gray-400"
+                  ></i>
                 </button>
 
                 <!-- 搜索弹出层 -->
@@ -174,8 +173,10 @@ onClickOutside(searchRef, closeSearch)
                         type="text"
                         placeholder="搜索商品..."
                         class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
+                      />
+                      <button
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
                       >
-                      <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors">
                         <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></i>
                       </button>
                     </div>
@@ -204,7 +205,9 @@ onClickOutside(searchRef, closeSearch)
                           class="w-full flex items-center justify-between px-3 py-2 hover:bg-[#2d2d2d] hover:text-white rounded-lg transition-colors"
                         >
                           <span class="text-gray-700">{{ item.text }}</span>
-                          <span class="text-xs text-gray-400">{{ item.count }}次搜索</span>
+                          <span class="text-xs text-gray-400"
+                            >{{ item.count }}次搜索</span
+                          >
                         </button>
                       </div>
                     </div>
@@ -212,13 +215,23 @@ onClickOutside(searchRef, closeSearch)
                 </div>
               </div>
               <div class="flex items-center space-x-4 flex-shrink-0">
-                <button class="text-white/70 hover:text-white transition-colors relative group">
+                <button
+                  class="text-white/70 hover:text-white transition-colors relative group"
+                >
                   <Icon name="uil:heart" class="w-6 h-6" />
-                  <span class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span>
+                  <span
+                    class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+                    >2</span
+                  >
                 </button>
-                <button class="text-white/70 hover:text-white transition-colors relative group">
+                <button
+                  class="text-white/70 hover:text-white transition-colors relative group"
+                >
                   <Icon name="uil:shopping-cart" class="w-6 h-6" />
-                  <span class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                  <span
+                    class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+                    >3</span
+                  >
                 </button>
                 <button class="text-white/70 hover:text-white transition-colors">
                   <Icon name="uil:user" class="w-6 h-6" />
@@ -234,11 +247,17 @@ onClickOutside(searchRef, closeSearch)
 
             <!-- 移动端搜索和购物车按钮 -->
             <div class="flex lg:hidden items-center space-x-4">
-              <button @click="toggleMobileSearch" class="text-white/70 hover:text-white transition-colors">
+              <button
+                @click="toggleMobileSearch"
+                class="text-white/70 hover:text-white transition-colors"
+              >
                 <Icon name="uil:search" class="w-6 h-6" />
               </button>
 
-              <button @click="toggleMobileMenu" class="text-white/70 hover:text-white transition-colors">
+              <button
+                @click="toggleMobileMenu"
+                class="text-white/70 hover:text-white transition-colors"
+              >
                 <Icon name="uil:bars" class="w-6 h-6" />
               </button>
             </div>
@@ -254,12 +273,17 @@ onClickOutside(searchRef, closeSearch)
                       type="text"
                       placeholder="搜索商品..."
                       class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
+                    />
+                    <button
+                      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
                     >
-                    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors">
                       <Icon name="uil:search" class="w-5 h-5" />
                     </button>
                   </div>
-                  <button @click="toggleMobileSearch" class="text-gray-500 hover:text-gray-700 transition-colors">
+                  <button
+                    @click="toggleMobileSearch"
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                  >
                     <Icon name="uil:multiply" class="w-6 h-6" />
                   </button>
                 </div>
@@ -267,9 +291,15 @@ onClickOutside(searchRef, closeSearch)
                 <div class="mt-4">
                   <h3 class="text-sm font-medium text-gray-500 mb-2">搜索历史</h3>
                   <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">连衣裙</span>
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">牛仔裤</span>
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">T恤</span>
+                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                      >连衣裙</span
+                    >
+                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                      >牛仔裤</span
+                    >
+                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                      >T恤</span
+                    >
                   </div>
                 </div>
               </div>
@@ -284,41 +314,95 @@ onClickOutside(searchRef, closeSearch)
         <div class="hidden lg:block">
           <div class="container mx-auto px-24">
             <div class="flex h-12 items-center space-x-0 text-[10px] font-bold">
-              <NuxtLink to="/" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">首页</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/new-arrivals" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/new-arrivals"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">新品上市</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/new-arrivals' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/new-arrivals' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/hot-sales" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/hot-sales"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">热销商品</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/hot-sales' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/hot-sales' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/designers" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/designers"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">设计师专区</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/designers' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/designers' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/member" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/member"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">会员中心</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/member' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/member' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/shopping-guide" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/shopping-guide"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">购物指南</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/shopping-guide' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/shopping-guide' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/fashion-news" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/fashion-news"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">时尚资讯</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/fashion-news' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/fashion-news' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/about" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/about"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">关于我们</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/about' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/about' }"
+                ></div>
               </NuxtLink>
-              <NuxtLink to="/contact" class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group">
+              <NuxtLink
+                to="/contact"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
                 <span class="relative z-10">联系我们</span>
-                <div class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity" :class="{ 'opacity-100': route.path === '/contact' }"></div>
+                <div
+                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/contact' }"
+                ></div>
               </NuxtLink>
             </div>
           </div>
@@ -329,12 +413,15 @@ onClickOutside(searchRef, closeSearch)
           <div class="bg-white h-full w-4/5 max-w-sm ml-auto">
             <div class="container mx-auto px-4 py-2">
               <div class="flex justify-end py-4">
-                <button @click="toggleMobileMenu" class="text-gray-500 hover:text-gray-700 transition-colors">
+                <button
+                  @click="toggleMobileMenu"
+                  class="text-gray-500 hover:text-gray-700 transition-colors"
+                >
                   <Icon name="uil:multiply" class="w-6 h-6" />
                 </button>
               </div>
               <div class="flex flex-col space-y-1">
-                <NuxtLink 
+                <NuxtLink
                   v-for="(item, index) in [
                     { path: '/', title: '首页' },
                     { path: '/new-arrivals', title: '新品上市' },
@@ -344,7 +431,7 @@ onClickOutside(searchRef, closeSearch)
                     { path: '/shopping-guide', title: '购物指南' },
                     { path: '/fashion-news', title: '时尚资讯' },
                     { path: '/about', title: '关于我们' },
-                    { path: '/contact', title: '联系我们' }
+                    { path: '/contact', title: '联系我们' },
                   ]"
                   :key="index"
                   :to="item.path"
@@ -365,11 +452,21 @@ onClickOutside(searchRef, closeSearch)
 
 <style scoped>
 @keyframes advert-vertical {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-1.5rem); }
-  50% { transform: translateY(-3rem); }
-  75% { transform: translateY(-1.5rem); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-1.5rem);
+  }
+  50% {
+    transform: translateY(-3rem);
+  }
+  75% {
+    transform: translateY(-1.5rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 .animate-advert-vertical .advert-vertical-list {
   animation: advert-vertical 6s infinite;
