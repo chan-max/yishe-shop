@@ -144,7 +144,7 @@ onClickOutside(searchRef, closeSearch)
                 <NuxtLink to="/" class="font-bold text-lg text-white">
                   <div class="flex items-center gap-2">
                     <img src="/logo.svg" class="h-8 lg:h-10">
-                    <img src="/logo_t.svg" class="h-4 lg:h-5">
+                    <img src="/logo_t.svg" class="h-4 lg:h-5" style="background-size: 100% 100%;">
                   </div>
                 </NuxtLink>
               </slot>
