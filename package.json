@@ -41,6 +41,7 @@
     "build:dev": "NUXT_PUBLIC_API_BASE=http://localhost:7788 nuxt generate"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@nuxt/content": "^2.9.0",
     "@nuxt/devtools": "^1.0.0",
     "@nuxtjs/color-mode": "^3.3.0",
@@ -48,23 +49,22 @@
     "@pinia/nuxt": "^0.5.1",
     "@primeuix/themes": "^1.1.1",
     "@vueuse/core": "^10.5.0",
-    "@vueuse/nuxt": "^10.5.0",
+    "@vueuse/nuxt": "^10.7.0",
     "nuxt-headlessui": "^1.1.4",
     "nuxt-icon": "^0.6.1",
     "pinia": "^2.1.7",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.3.5",
     "sass": "^1.69.5",
     "stringify": "^5.2.0",
     "tailwindcss": "^3.3.5",
     "ua-parser-js": "^2.0.3",
-    "unplugin-vue-components": "^0.25.2"
+    "unplugin-vue-components": "^0.25.2",
+    "vuetify": "^3.8.9",
+    "@nuxtjs/sitemap": "^3.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/sitemap": "^7.2.10",
-    "@primevue/nuxt-module": "^4.3.5",
     "consola": "^3.2.3",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",

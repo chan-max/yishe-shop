@@ -1,6 +1,5 @@
 import { createResolver } from '@nuxt/kit'
 const { resolve } = createResolver(import.meta.url)
-import Aura from '@primeuix/themes/aura';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // exp
@@ -47,19 +46,10 @@ export default defineNuxtConfig({
     // contents
     '@nuxt/content',
     '@nuxtjs/sitemap',
-     '@primevue/nuxt-module',
   ],
 
-  primevue: {
-    /* Configuration */
-    options: {
-      theme: {
-          preset: Aura
-      }
-  }
-},
   build: {
-    transpile: ['primevue']
+    transpile: ['vuetify']
   },
 
   css: [
@@ -68,6 +58,8 @@ export default defineNuxtConfig({
     // 'primevue/resources/themes/lara-light-blue/theme.css',
     // 'primevue/resources/primevue.css',
     // 'primeicons/primeicons.css',
+    'vuetify/styles',
+    '@mdi/font/css/materialdesignicons.css',
   ],
 
   components: [

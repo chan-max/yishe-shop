@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { getEnvironmentInfo } from "~/utils/environment";
 
+
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
 
@@ -301,113 +302,95 @@ const selectedFilters = ref({
 
 <template>
   <!-- 设计需求弹窗 -->
-  <div
-    v-if="showDesignModal"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+  <v-dialog
+    v-model="showDesignModal"
+    max-width="500"
+    persistent
   >
-    <div
-      class="bg-white rounded-2xl p-6 w-full max-w-md transform transition-all duration-300 shadow-2xl hover:shadow-3xl"
-    >
-      <div class="flex justify-between items-center mb-4">
-        <h3
-          class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-        >
-          提交设计需求
-        </h3>
-        <button
+    <v-card class="rounded-lg">
+      <v-card-title class="d-flex justify-space-between align-center pa-4">
+        <span class="text-h5 font-weight-bold">提交设计需求</span>
+        <v-btn
+          icon
+          variant="text"
           @click="showDesignModal = false"
-          class="text-gray-500 hover:text-gray-700 transition-colors duration-200"
         >
-          <span class="text-2xl">&times;</span>
-        </button>
-      </div>
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
 
-      <form @submit.prevent="submitDesignRequest" class="space-y-6">
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-700">设计名称</label>
-          <input
+      <v-card-text class="pa-4">
+        <v-form @submit.prevent="submitDesignRequest">
+          <v-text-field
             v-model="designForm.name"
-            type="text"
-            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
-            :class="{ 'border-red-500': formErrors.name }"
-            placeholder="请输入设计名称"
-          />
-          <p v-if="formErrors.name" class="text-red-500 text-sm mt-1">
-            {{ formErrors.name }}
-          </p>
-        </div>
+            label="设计名称"
+            :error-messages="formErrors.name"
+            variant="outlined"
+            density="comfortable"
+            class="mb-4"
+          ></v-text-field>
 
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-700">设计需求描述</label>
-          <textarea
+          <v-textarea
             v-model="designForm.description"
+            label="设计需求描述"
+            :error-messages="formErrors.description"
+            variant="outlined"
+            density="comfortable"
             rows="4"
-            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm resize-none"
-            :class="{ 'border-red-500': formErrors.description }"
-            placeholder="请详细描述您的设计需求，包括：&#10;1. 设计风格偏好&#10;2. 具体用途&#10;3. 特殊要求&#10;4. 参考案例（如有）"
-          ></textarea>
-          <p v-if="formErrors.description" class="text-red-500 text-sm mt-1">
-            {{ formErrors.description }}
-          </p>
-          <p class="text-gray-500 text-sm mt-1">
-            已输入 {{ designForm.description.length }}/1000 字符
-          </p>
-        </div>
+            class="mb-4"
+            :hint="`已输入 ${designForm.description.length}/1000 字符`"
+            persistent-hint
+          ></v-textarea>
 
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-700">手机号</label>
-          <input
+          <v-text-field
             v-model="designForm.phoneNumber"
-            type="tel"
-            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
-            :class="{ 'border-red-500': formErrors.phoneNumber }"
-            placeholder="请输入手机号"
-          />
-          <p v-if="formErrors.phoneNumber" class="text-red-500 text-sm mt-1">
-            {{ formErrors.phoneNumber }}
-          </p>
-        </div>
+            label="手机号"
+            :error-messages="formErrors.phoneNumber"
+            variant="outlined"
+            density="comfortable"
+            class="mb-4"
+          ></v-text-field>
 
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-700">邮箱</label>
-          <input
+          <v-text-field
             v-model="designForm.email"
-            type="email"
-            class="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 bg-white/80 backdrop-blur-sm"
-            :class="{ 'border-red-500': formErrors.email }"
-            placeholder="请输入邮箱地址"
-          />
-          <p v-if="formErrors.email" class="text-red-500 text-sm mt-1">
-            {{ formErrors.email }}
-          </p>
-        </div>
+            label="邮箱"
+            :error-messages="formErrors.email"
+            variant="outlined"
+            density="comfortable"
+            class="mb-4"
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
 
-        <div class="flex justify-end pt-4">
-          <button
-            type="submit"
-            class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
-          >
-            提交需求
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <v-card-actions class="pa-4">
+        <v-spacer></v-spacer>
+        <v-btn
+          color="primary"
+          variant="elevated"
+          @click="submitDesignRequest"
+        >
+          提交需求
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
   <!-- 提示框 -->
-  <AwesomeToast
-    v-model:show="showSuccessToast"
-    type="success"
-    title="提交成功"
-    text="我们会尽快联系您"
-  />
+  <v-snackbar
+    v-model="showSuccessToast"
+    color="success"
+    timeout="3000"
+  >
+    提交成功 - 我们会尽快联系您
+  </v-snackbar>
 
-  <AwesomeToast
-    v-model:show="showErrorToast"
-    type="danger"
-    title="提交失败"
-    text="请稍后重试"
-  />
+  <v-snackbar
+    v-model="showErrorToast"
+    color="error"
+    timeout="3000"
+  >
+    提交失败 - 请稍后重试
+  </v-snackbar>
 
   <div class="w-full h-12 bg-black flex items-center justify-center"></div>
 
@@ -437,12 +420,15 @@ const selectedFilters = ref({
           {{ awesome?.description || "最具创意的开放式服装设计平台" }}
         </div>
         <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
-          <button
+          <v-btn
             @click="showDesignModal = true"
-            class="border-2 border-black text-black px-10 py-4 rounded-full hover:bg-white/10 transition-all duration-300 font-bold text-xl"
+            variant="tonal"
+            color="black"
+            size="large"
+            class="text-black font-bold text-xl"
           >
             免费设计
-          </button>
+          </v-btn>
         </div>
       </div>
     </LayoutPageSection>
@@ -454,82 +440,106 @@ const selectedFilters = ref({
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <!-- 价格区间 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.price"
-          :options="filterOptions.price"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'价格区间'"
+          :items="filterOptions.price"
+          item-title="label"
+          item-value="value"
+          label="价格区间"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 风格 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.style"
-          :options="filterOptions.style"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'风格'"
+          :items="filterOptions.style"
+          item-title="label"
+          item-value="value"
+          label="风格"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 季节 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.season"
-          :options="filterOptions.season"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'季节'"
+          :items="filterOptions.season"
+          item-title="label"
+          item-value="value"
+          label="季节"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 材质 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.material"
-          :options="filterOptions.material"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'材质'"
+          :items="filterOptions.material"
+          item-title="label"
+          item-value="value"
+          label="材质"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 颜色 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.color"
-          :options="filterOptions.color"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'颜色'"
+          :items="filterOptions.color"
+          item-title="label"
+          item-value="value"
+          label="颜色"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 尺码 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.size"
-          :options="filterOptions.size"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'尺码'"
+          :items="filterOptions.size"
+          item-title="label"
+          item-value="value"
+          label="尺码"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 品牌 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.brand"
-          :options="filterOptions.brand"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'品牌'"
+          :items="filterOptions.brand"
+          item-title="label"
+          item-value="value"
+          label="品牌"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
 
         <!-- 折扣 -->
-        <Dropdown
+        <v-select
           v-model="selectedFilters.discount"
-          :options="filterOptions.discount"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="'折扣'"
+          :items="filterOptions.discount"
+          item-title="label"
+          item-value="value"
+          label="折扣"
+          variant="outlined"
+          density="comfortable"
+          hide-details
           class="w-full"
         />
       </div>
@@ -572,25 +582,13 @@ const selectedFilters = ref({
 
         <!-- 分页 -->
         <div class="flex justify-center mt-8">
-          <nav class="flex items-center gap-2">
-            <button 
-              class="px-3 py-1 border rounded"
-              :disabled="currentPage === 1"
-              @click="currentPage--"
-            >上一页</button>
-            <button 
-              v-for="page in Math.ceil(total / pageSize)" 
-              :key="page"
-              class="px-3 py-1 border rounded"
-              :class="{ 'bg-primary text-white': currentPage === page }"
-              @click="currentPage = page"
-            >{{ page }}</button>
-            <button 
-              class="px-3 py-1 border rounded"
-              :disabled="currentPage >= Math.ceil(total / pageSize)"
-              @click="currentPage++"
-            >下一页</button>
-          </nav>
+          <v-pagination
+            v-model="currentPage"
+            :length="Math.ceil(total / pageSize)"
+            :total-visible="7"
+            rounded="circle"
+            color="primary"
+          ></v-pagination>
         </div>
       </div>
     </div>
@@ -694,53 +692,5 @@ html.dark {
   overflow: hidden;
 }
 
-/* 添加 PrimeVue Dropdown 自定义样式 */
-.p-dropdown {
-  width: 100%;
-  background: transparent;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-
-  &:hover {
-    border-color: #d1d5db;
-  }
-
-  &.p-focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
-  }
-
-  .p-dropdown-label {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9em;
-    color: #4b5563;
-  }
-
-  .p-dropdown-trigger {
-    width: 2.5rem;
-  }
-}
-
-.p-dropdown-panel {
-  .p-dropdown-items {
-    padding: 0.25rem 0;
-  }
-
-  .p-dropdown-item {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9em;
-    color: #4b5563;
-    transition: all 0.15s;
-
-    &:hover {
-      background: #f3f4f6;
-    }
-
-    &.p-highlight {
-      background: #f3f4f6;
-      color: var(--primary-color);
-    }
-  }
-}
+/* 删除 PrimeVue Dropdown 相关样式 */
 </style>
