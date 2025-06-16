@@ -20,7 +20,11 @@ export default defineNuxtConfig({
           content: '衣设是一个开放式的创意服装设计平台，汇聚全球设计师的创意灵感，连接设计师与品牌，打造最具创意的服装设计社区。',
         },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'preload', as: 'font', href: '/main2.ttf', type: 'font/ttf', crossorigin: 'anonymous' },
+        { rel: 'preload', as: 'font', href: '/logo.ttf', type: 'font/ttf', crossorigin: 'anonymous' }
+      ],
     },
   },
 
@@ -53,10 +57,9 @@ export default defineNuxtConfig({
   },
 
   css: [
-    resolve('/assets/scss/_variables.scss'),
-    resolve('/assets/scss/app.scss'),
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.css',
+    '~/assets/css/fonts.scss',
   ],
 
   components: [
