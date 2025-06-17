@@ -21,39 +21,5 @@
 
 <style lang="scss">
 
-// 字体变量
-$font-version: '1.0.0';
-
-// 字体声明
-@font-face {
-  font-family: 'main';
-  src: url('/main2.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'logo';
-  src: url('/logo.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-// 全局字体设置
-:root {
-  --version: #{$font-version};
-  font-family: 'main', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-// 添加测试类
-.test-font {
-  font-family: 'main', sans-serif;
-  font-size: 24px;
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-} 
 </style>
 
