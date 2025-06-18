@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { getEnvironmentInfo } from "~/utils/environment";
-
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
 
@@ -24,65 +22,6 @@ const designForm = ref({
   description: "",
   phoneNumber: "",
   email: "",
-});
-
-// 商品类型定义
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice?: number;
-  images: string[];
-  tag?: string;
-  likes: number;
-}
-
-interface PageResponse {
-  list: Product[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
-
-// 分页相关状态
-const currentPage = ref(1);
-const pageSize = ref(10);
-const total = ref(0);
-const loading = ref(false);
-
-// 商品列表
-const products = ref<Product[]>([]);
-
-// 获取商品列表
-const fetchProducts = async () => {
-  loading.value = true;
-  try {
-    const { $customFetch } = useNuxtApp();
-    const response = await $customFetch<PageResponse>("/product/page", {
-      method: "POST",
-      body: {
-        currentPage: currentPage.value,
-        pageSize: pageSize.value,
-      },
-    });
-    products.value = response.list;
-    total.value = response.total;
-  } catch (error) {
-    console.error("获取商品列表失败:", error);
-  } finally {
-    loading.value = false;
-  }
-};
-
-// 监听分页变化
-watch([currentPage], () => {
-  fetchProducts();
-});
-
-// 初始化加载
-onMounted(() => {
-  fetchProducts();
 });
 
 const formErrors = ref({
@@ -223,9 +162,6 @@ const leadingsText = computed(() => [
   // },
 ]);
 
-const envInfo = getEnvironmentInfo();
-console.log(envInfo);
-
 onMounted(() => {
   try {
     console.log("aweawe", parseMenuTitle("aweawe"), this);
@@ -233,500 +169,256 @@ onMounted(() => {
     console.log("aweawe error", error);
   }
 });
-
-// 过滤条件数据
-const filterOptions = {
-  price: [
-    { value: "0-100", label: "0-100元" },
-    { value: "100-300", label: "100-300元" },
-    { value: "300-500", label: "300-500元" },
-    { value: "500+", label: "500元以上" },
-  ],
-  style: [
-    { value: "casual", label: "休闲" },
-    { value: "formal", label: "正装" },
-    { value: "sports", label: "运动" },
-    { value: "vintage", label: "复古" },
-  ],
-  season: [
-    { value: "spring", label: "春季" },
-    { value: "summer", label: "夏季" },
-    { value: "autumn", label: "秋季" },
-    { value: "winter", label: "冬季" },
-  ],
-  material: [
-    { value: "cotton", label: "棉质" },
-    { value: "wool", label: "羊毛" },
-    { value: "silk", label: "丝绸" },
-    { value: "linen", label: "亚麻" },
-  ],
-  color: [
-    { value: "black", label: "黑色" },
-    { value: "white", label: "白色" },
-    { value: "red", label: "红色" },
-    { value: "blue", label: "蓝色" },
-  ],
-  size: [
-    { value: "s", label: "S" },
-    { value: "m", label: "M" },
-    { value: "l", label: "L" },
-    { value: "xl", label: "XL" },
-  ],
-  brand: [
-    { value: "brand1", label: "品牌1" },
-    { value: "brand2", label: "品牌2" },
-    { value: "brand3", label: "品牌3" },
-  ],
-  discount: [
-    { value: "discount1", label: "9折以上" },
-    { value: "discount2", label: "7-9折" },
-    { value: "discount3", label: "5-7折" },
-    { value: "discount4", label: "5折以下" },
-  ],
-};
-
-// 选中的过滤条件
-const selectedFilters = ref({
-  price: "",
-  style: "",
-  season: "",
-  material: "",
-  color: "",
-  size: "",
-  brand: "",
-  discount: "",
-});
 </script>
 
 <template>
-  <!-- 设计需求弹窗 -->
-  <v-dialog
-    v-model="showDesignModal"
-    max-width="600"
-    persistent
-    class="design-request-dialog"
-  >
-    <v-card class="rounded-lg">
-      <v-card-title class="d-flex justify-space-between align-center pa-6 border-bottom">
-        <span class="text-h5 font-weight-bold">提交设计需求</span>
-        <v-btn icon variant="text" @click="showDesignModal = false" class="close-btn">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
-
-      <v-card-text class="pa-6">
-        <v-form @submit.prevent="submitDesignRequest" class="design-form">
-          <v-text-field
-            v-model="designForm.name"
-            label="设计名称"
-            :error-messages="formErrors.name"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4 form-field"
-            bg-color="grey-lighten-4"
-            hide-details="auto"
-          ></v-text-field>
-
-          <v-textarea
-            v-model="designForm.description"
-            label="设计需求描述"
-            :error-messages="formErrors.description"
-            variant="outlined"
-            density="comfortable"
-            rows="4"
-            class="mb-4 form-field"
-            :hint="`已输入 ${designForm.description.length}/1000 字符`"
-            persistent-hint
-            bg-color="grey-lighten-4"
-            hide-details="auto"
-          ></v-textarea>
-
-          <v-text-field
-            v-model="designForm.phoneNumber"
-            label="手机号"
-            :error-messages="formErrors.phoneNumber"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4 form-field"
-            bg-color="grey-lighten-4"
-            hide-details="auto"
-          ></v-text-field>
-
-          <v-text-field
-            v-model="designForm.email"
-            label="邮箱"
-            :error-messages="formErrors.email"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4 form-field"
-            bg-color="grey-lighten-4"
-            hide-details="auto"
-          ></v-text-field>
-        </v-form>
-      </v-card-text>
-
-      <v-card-actions class="pa-6 pt-0">
-        <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          variant="elevated"
-          @click="submitDesignRequest"
-          class="submit-btn"
-          size="large"
-          min-width="120"
-        >
-          提交需求
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-  <!-- 提示框 -->
-  <v-snackbar v-model="showSuccessToast" color="success" timeout="3000">
-    提交成功 - 我们会尽快联系您
-  </v-snackbar>
-
-  <v-snackbar v-model="showErrorToast" color="error" timeout="3000">
-    提交失败 - 请稍后重试
-  </v-snackbar>
-
-  <div class="w-full h-12 bg-black flex items-center justify-center"></div>
-
-  <!-- <div
-    class="w-full h-24 mt-[1px]"
-    style="background-color: rgba(105, 0, 255, 0.6)"
-  ></div> -->
-  <!-- <div class="w-full h-12 bg-white"></div> -->
-  <!-- <div class="w-full h-80 bg-black"></div> -->
-
-  <LayoutPageWrapper class="flex-1 flex bg-white">
-    <LayoutPageSection class="flex-1 flex">
-      <div class="flex-1 flex flex-col items-center my-20">
-        <h1 class="text-center">
-          <span
-            v-for="(item, i) in leadingsText"
-            :key="i"
-            :style="`--content: '${item.text}'; --start-color: ${
-              item.startColor
-            }; --end-color: ${item.endColor}; --animation-name: anim-fg-${i + 1}`"
-            class="animated-text-bg drop-shadow-xl text-6xl sm:text-8xl md:text-8xl lg:text-8xl 2xl:text-8xl block font-black uppercase"
-          >
-            <span class="animated-text-fg">{{ item.text }}</span>
-          </span>
-        </h1>
-        <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
-          {{ awesome?.description || "最具创意的开放式服装设计平台" }}
-        </div>
-        <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
-          <v-btn
-            @click="showDesignModal = true"
-            variant="tonal"
-            color="black"
-            size="large"
-            class="text-black font-bold text-xl"
-          >
-            免费设计
+  <div>
+    <!-- 设计需求弹窗 -->
+    <v-dialog
+      v-model="showDesignModal"
+      max-width="600"
+      persistent
+      class="design-request-dialog"
+    >
+      <v-card class="rounded-lg">
+        <v-card-title class="d-flex justify-space-between align-center pa-6 border-bottom">
+          <span class="text-h5 font-weight-bold">提交设计需求</span>
+          <v-btn icon variant="text" @click="showDesignModal = false" class="close-btn">
+            <v-icon>mdi-close</v-icon>
           </v-btn>
-        </div>
-      </div>
-    </LayoutPageSection>
-  </LayoutPageWrapper>
+        </v-card-title>
 
-  <!-- 设计介绍部分 -->
-  <div class="my-16 w-full">
-    <h2 class="text-3xl font-bold text-center mb-8">选择您的设计方式</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3">
-      <!-- 个人定制卡片 -->
-      <v-card class="design-card" elevation="0">
-        <div class="design-card-content">
-          <div class="design-left">
-            <div class="design-icon-wrapper">
-              <v-icon size="x-large" color="primary">mdi-account-edit</v-icon>
-            </div>
-          </div>
-          <div class="design-right">
-            <v-card-title class="text-xl font-bold mb-3">个人定制</v-card-title>
-            <v-card-text>
-              <p class="text-gray-600">
-                完全由您主导的个性化设计体验。您可以自由选择服装类型、颜色、图案和做工等细节，打造专属于您的独特服装。
-              </p>
-            </v-card-text>
-            <v-card-actions class="pt-4">
-              <v-btn
-                variant="tonal"
-                color="black"
-                size="large"
-                class="text-black font-bold text-xl"
-                @click="showDesignModal = true"
-              >
-                开始定制
-              </v-btn>
-            </v-card-actions>
-          </div>
-        </div>
-      </v-card>
+        <v-card-text class="pa-6">
+          <v-form @submit.prevent="submitDesignRequest" class="design-form">
+            <v-text-field
+              v-model="designForm.name"
+              label="设计名称"
+              :error-messages="formErrors.name"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4 form-field"
+              bg-color="grey-lighten-4"
+              hide-details="auto"
+            ></v-text-field>
 
-      <!-- 设计师设计卡片 -->
-      <v-card class="design-card" elevation="0">
-        <div class="design-card-content">
-          <div class="design-left">
-            <div class="design-icon-wrapper">
-              <v-icon size="x-large" color="primary">mdi-palette</v-icon>
-            </div>
-          </div>
-          <div class="design-right">
-            <v-card-title class="text-xl font-bold mb-3">设计师设计</v-card-title>
-            <v-card-text>
-              <p class="text-gray-600">
-                由专业设计师为您量身定制。您只需提供设计灵感和需求，我们的设计师将为您打造独特的服装款式。
-              </p>
-            </v-card-text>
-            <v-card-actions class="pt-4">
-              <v-btn
-                variant="tonal"
-                color="black"
-                size="large"
-                class="text-black font-bold text-xl"
-                @click="showDesignModal = true"
-              >
-                联系设计师
-              </v-btn>
-            </v-card-actions>
-          </div>
-        </div>
-      </v-card>
+            <v-textarea
+              v-model="designForm.description"
+              label="设计需求描述"
+              :error-messages="formErrors.description"
+              variant="outlined"
+              density="comfortable"
+              rows="4"
+              class="mb-4 form-field"
+              :hint="`已输入 ${designForm.description.length}/1000 字符`"
+              persistent-hint
+              bg-color="grey-lighten-4"
+              hide-details="auto"
+            ></v-textarea>
 
-      <!-- AI设计卡片 -->
-      <v-card class="design-card" elevation="0">
-        <div class="design-card-content">
-          <div class="design-left">
-            <div class="design-icon-wrapper">
-              <v-icon size="x-large" color="primary">mdi-robot</v-icon>
-            </div>
-          </div>
-          <div class="design-right">
-            <v-card-title class="text-xl font-bold mb-3">AI设计</v-card-title>
-            <v-card-text>
-              <p class="text-gray-600">
-                通过AI技术实现智能设计。只需描述您的需求，AI将全程参与服装设计过程，为您提供专业的设计方案。
-              </p>
-            </v-card-text>
-            <v-card-actions class="pt-4">
-              <v-btn
-                variant="tonal"
-                color="black"
-                size="large"
-                class="text-black font-bold text-xl"
-                @click="showDesignModal = true"
-              >
-                体验AI设计
-              </v-btn>
-            </v-card-actions>
-          </div>
-        </div>
-      </v-card>
-    </div>
-  </div>
+            <v-text-field
+              v-model="designForm.phoneNumber"
+              label="手机号"
+              :error-messages="formErrors.phoneNumber"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4 form-field"
+              bg-color="grey-lighten-4"
+              hide-details="auto"
+            ></v-text-field>
 
-  <!-- 商品列表 -->
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-[1440px] mx-auto">
-      <div class="px-4 py-8">
-        <!-- 商品列表标题 -->
-        <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold mb-2">精选商品</h2>
-          <p class="text-gray-600 mb-4">发现独特的服装设计，展现您的个性风格</p>
-          
-          <!-- 关键词标签 -->
-          <div class="border-t border-b border-gray-50 py-4">
-            <div class="flex flex-wrap justify-center gap-2">
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                新品上市
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                设计师款
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                限时折扣
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                热销榜单
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                定制服务
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                季节精选
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                潮流趋势
-              </button>
-              <button class="px-3 py-1.5 rounded-full bg-gray-100 text-black hover:bg-gray-200 transition-colors text-xs">
-                明星同款
-              </button>
-            </div>
-          </div>
-        </div>
+            <v-text-field
+              v-model="designForm.email"
+              label="邮箱"
+              :error-messages="formErrors.email"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4 form-field"
+              bg-color="grey-lighten-4"
+              hide-details="auto"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto">
-          <!-- 价格区间 -->
-          <v-select
-            v-model="selectedFilters.price"
-            :items="filterOptions.price"
-            item-title="label"
-            item-value="value"
-            label="价格区间"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 风格 -->
-          <v-select
-            v-model="selectedFilters.style"
-            :items="filterOptions.style"
-            item-title="label"
-            item-value="value"
-            label="风格"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 季节 -->
-          <v-select
-            v-model="selectedFilters.season"
-            :items="filterOptions.season"
-            item-title="label"
-            item-value="value"
-            label="季节"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 材质 -->
-          <v-select
-            v-model="selectedFilters.material"
-            :items="filterOptions.material"
-            item-title="label"
-            item-value="value"
-            label="材质"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 颜色 -->
-          <v-select
-            v-model="selectedFilters.color"
-            :items="filterOptions.color"
-            item-title="label"
-            item-value="value"
-            label="颜色"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 尺码 -->
-          <v-select
-            v-model="selectedFilters.size"
-            :items="filterOptions.size"
-            item-title="label"
-            item-value="value"
-            label="尺码"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 品牌 -->
-          <v-select
-            v-model="selectedFilters.brand"
-            :items="filterOptions.brand"
-            item-title="label"
-            item-value="value"
-            label="品牌"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-
-          <!-- 折扣 -->
-          <v-select
-            v-model="selectedFilters.discount"
-            :items="filterOptions.discount"
-            item-title="label"
-            item-value="value"
-            label="折扣"
-            variant="outlined"
-            density="comfortable"
-            hide-details
-            class="w-full"
-          />
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto">
-          <!-- 商品卡片 -->
-          <div
-            v-for="product in products"
-            :key="product.id"
-            class="rounded-lg overflow-hidden"
-          >
-            <!-- 商品图片 -->
-            <div class="relative aspect-[4/5]">
-              <img
-                :src="product.images[0]"
-                :alt="product.name"
-                class="w-full h-full object-cover"
-              />
-              <!-- 商品标签 -->
-              <div
-                v-if="product.tag"
-                class="absolute top-2 left-2 px-2 py-1 text-xs rounded border"
-              >
-                {{ product.tag }}
-              </div>
-            </div>
-
-            <!-- 商品信息 -->
-            <div class="p-3">
-              <h3 class="text-sm font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
-              <p class="text-xs mb-2 text-gray-600">{{ product.description }}</p>
-              <div class="flex items-center justify-between">
-                <div class="flex items-baseline gap-1">
-                  <span class="text-base font-bold">¥{{ product.price }}</span>
-                  <span v-if="product.originalPrice" class="text-xs line-through"
-                    >¥{{ product.originalPrice }}</span
-                  >
-                </div>
-                <div class="flex items-center gap-1 text-xs">
-                  <Icon name="heroicons:heart" class="w-3 h-3" />
-                  <span>{{ product.likes }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 分页 -->
-        <div class="flex justify-center mt-8">
-          <v-pagination
-            v-model="currentPage"
-            :length="Math.ceil(total / pageSize)"
-            :total-visible="7"
-            rounded="circle"
+        <v-card-actions class="pa-6 pt-0">
+          <v-spacer></v-spacer>
+          <v-btn
             color="primary"
-          ></v-pagination>
+            variant="elevated"
+            @click="submitDesignRequest"
+            class="submit-btn"
+            size="large"
+            min-width="120"
+          >
+            提交需求
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- 提示框 -->
+    <v-snackbar v-model="showSuccessToast" color="success" timeout="3000">
+      提交成功 - 我们会尽快联系您
+    </v-snackbar>
+
+    <v-snackbar v-model="showErrorToast" color="error" timeout="3000">
+      提交失败 - 请稍后重试
+    </v-snackbar>
+
+    <div class="w-full h-12 bg-black flex items-center justify-center"></div>
+
+    <!-- <div
+      class="w-full h-24 mt-[1px]"
+      style="background-color: rgba(105, 0, 255, 0.6)"
+    ></div> -->
+    <!-- <div class="w-full h-12 bg-white"></div> -->
+    <!-- <div class="w-full h-80 bg-black"></div> -->
+
+    <LayoutPageWrapper class="flex-1 flex bg-white">
+      <LayoutPageSection class="flex-1 flex">
+        <div class="flex-1 flex flex-col items-center my-20">
+          <h1 class="text-center">
+            <span
+              v-for="(item, i) in leadingsText"
+              :key="i"
+              :style="`--content: '${item.text}'; --start-color: ${
+                item.startColor
+              }; --end-color: ${item.endColor}; --animation-name: anim-fg-${i + 1}`"
+              class="animated-text-bg drop-shadow-xl text-6xl sm:text-8xl md:text-8xl lg:text-8xl 2xl:text-8xl block font-black uppercase"
+            >
+              <span class="animated-text-fg">{{ item.text }}</span>
+            </span>
+          </h1>
+          <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
+            {{ awesome?.description || "最具创意的开放式服装设计平台" }}
+          </div>
+          <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
+            <v-btn
+              @click="showDesignModal = true"
+              variant="tonal"
+              color="black"
+              size="large"
+              class="text-black font-bold text-xl"
+            >
+              免费设计
+            </v-btn>
+          </div>
         </div>
+      </LayoutPageSection>
+    </LayoutPageWrapper>
+
+    <!-- 设计介绍部分 -->
+    <div class="my-16 w-full">
+      <h2 class="text-3xl font-bold text-center mb-8">选择您的设计方式</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3">
+        <!-- 个人定制卡片 -->
+        <v-card class="design-card" elevation="0">
+          <div class="design-card-content">
+            <div class="design-left">
+              <div class="design-icon-wrapper">
+                <v-icon size="x-large" color="primary">mdi-account-edit</v-icon>
+              </div>
+            </div>
+            <div class="design-right">
+              <v-card-title class="text-xl font-bold mb-3">个人定制</v-card-title>
+              <v-card-text>
+                <p class="text-gray-600">
+                  完全由您主导的个性化设计体验。您可以自由选择服装类型、颜色、图案和做工等细节，打造专属于您的独特服装。
+                </p>
+              </v-card-text>
+              <v-card-actions class="pt-4">
+                <v-btn
+                  variant="tonal"
+                  color="black"
+                  size="large"
+                  class="text-black font-bold text-xl"
+                  @click="showDesignModal = true"
+                >
+                  开始定制
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </div>
+        </v-card>
+
+        <!-- 设计师设计卡片 -->
+        <v-card class="design-card" elevation="0">
+          <div class="design-card-content">
+            <div class="design-left">
+              <div class="design-icon-wrapper">
+                <v-icon size="x-large" color="primary">mdi-palette</v-icon>
+              </div>
+            </div>
+            <div class="design-right">
+              <v-card-title class="text-xl font-bold mb-3">设计师设计</v-card-title>
+              <v-card-text>
+                <p class="text-gray-600">
+                  由专业设计师为您量身定制。您只需提供设计灵感和需求，我们的设计师将为您打造独特的服装款式。
+                </p>
+              </v-card-text>
+              <v-card-actions class="pt-4">
+                <v-btn
+                  variant="tonal"
+                  color="black"
+                  size="large"
+                  class="text-black font-bold text-xl"
+                  @click="showDesignModal = true"
+                >
+                  联系设计师
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </div>
+        </v-card>
+
+        <!-- AI设计卡片 -->
+        <v-card class="design-card" elevation="0">
+          <div class="design-card-content">
+            <div class="design-left">
+              <div class="design-icon-wrapper">
+                <v-icon size="x-large" color="primary">mdi-robot</v-icon>
+              </div>
+            </div>
+            <div class="design-right">
+              <v-card-title class="text-xl font-bold mb-3">AI设计</v-card-title>
+              <v-card-text>
+                <p class="text-gray-600">
+                  通过AI技术实现智能设计。只需描述您的需求，AI将全程参与服装设计过程，为您提供专业的设计方案。
+                </p>
+              </v-card-text>
+              <v-card-actions class="pt-4">
+                <v-btn
+                  variant="tonal"
+                  color="black"
+                  size="large"
+                  class="text-black font-bold text-xl"
+                  @click="showDesignModal = true"
+                >
+                  体验AI设计
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </div>
+        </v-card>
+      </div>
+    </div>
+
+    <!-- 商品展示链接部分 -->
+    <div class="my-16 w-full bg-gray-50 py-16">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">探索精选商品</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+          发现独特的服装设计，展现您的个性风格。我们精心挑选了各种风格的服装，满足您的不同需求。
+        </p>
+        <NuxtLink to="/products">
+          <v-btn
+            color="primary"
+            size="x-large"
+            variant="elevated"
+            class="text-white font-bold text-lg px-8 py-4"
+          >
+            浏览商品
+          </v-btn>
+        </NuxtLink>
       </div>
     </div>
   </div>

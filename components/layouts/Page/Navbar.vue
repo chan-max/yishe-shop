@@ -1,9 +1,15 @@
 <script lang="ts" setup>
+import { useSearchStore } from '../../../stores/use-search'
+
 const { awesome } = useAppConfig();
 const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
 const $screen = useAwesomeScreen();
 const nuxtApp = useNuxtApp();
 const route = useRoute();
+const router = useRouter();
+
+// 引入搜索store
+const searchStore = useSearchStore();
 
 const menus = computed(
   () => (awesome?.layout?.page?.navbar?.menus || []) as AwesomeLayoutPageNavbarMenu[]
@@ -67,7 +73,6 @@ const toggleMobileMenu = () => {
 };
 
 // 搜索相关
-const isSearchOpen = ref(false);
 const searchQuery = ref("");
 const searchSuggestions = ref(["连衣裙", "牛仔裤", "T恤", "运动鞋", "休闲裤"]);
 const hotSearches = ref([
@@ -78,17 +83,56 @@ const hotSearches = ref([
   { text: "运动系列", count: 654 },
 ]);
 
-const toggleSearch = () => {
-  isSearchOpen.value = !isSearchOpen.value;
+// 搜索框聚焦状态
+const isSearchFocused = ref(false);
+
+// 搜索框失去焦点处理
+const handleSearchBlur = () => {
+  // 延迟关闭，避免点击建议时立即关闭
+  setTimeout(() => {
+    isSearchFocused.value = false;
+  }, 200);
 };
 
-const closeSearch = () => {
-  isSearchOpen.value = false;
+// 执行搜索
+const performSearch = () => {
+  if (searchQuery.value.trim()) {
+    // 设置全局搜索关键词
+    searchStore.setSearchKeyword(searchQuery.value.trim());
+    
+    // 跳转到商品列表页
+    router.push({
+      path: '/products',
+      query: { search: searchQuery.value.trim() }
+    });
+    
+    // 关闭搜索框
+    isSearchFocused.value = false;
+    isMobileSearchOpen.value = false;
+  }
+};
+
+// 点击搜索建议
+const selectSuggestion = (suggestion: string) => {
+  searchQuery.value = suggestion;
+  performSearch();
+  // 确保移动端搜索框关闭
+  isMobileSearchOpen.value = false;
+};
+
+// 点击热门搜索
+const selectHotSearch = (hotSearch: { text: string; count: number }) => {
+  searchQuery.value = hotSearch.text;
+  performSearch();
+  // 确保移动端搜索框关闭
+  isMobileSearchOpen.value = false;
 };
 
 // 点击外部关闭搜索
 const searchRef = ref(null);
-onClickOutside(searchRef, closeSearch);
+onClickOutside(searchRef, () => {
+  isSearchFocused.value = false;
+});
 </script>
 
 <template>
@@ -149,38 +193,33 @@ onClickOutside(searchRef, closeSearch);
 
             <!-- 搜索框和图标按钮 -->
             <div class="hidden lg:flex items-center space-x-6 ml-auto flex-1 max-w-3xl">
-              <div class="relative w-full" ref="searchRef">
-                <button
-                  @click="toggleSearch"
-                  class="w-full px-3 py-1.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors flex items-center justify-between text-sm"
-                >
-                  <span class="text-gray-400 text-sm">搜索商品...</span>
-                  <i
-                    class="i-heroicons-magnifying-glass-20-solid w-4 h-4 text-gray-400"
-                  ></i>
-                </button>
+              <!-- 搜索框容器 -->
+              <div class="relative flex-1 max-w-md" ref="searchRef">
+                <!-- 搜索输入框 -->
+                <div class="relative">
+                  <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="搜索商品..."
+                    class="w-full px-4 py-2.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-12"
+                    @keyup.enter="performSearch"
+                    @focus="isSearchFocused = true"
+                    @blur="handleSearchBlur"
+                  />
+                  <button
+                    @click="performSearch"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
+                  >
+                    <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></i>
+                  </button>
+                </div>
 
-                <!-- 搜索弹出层 -->
+                <!-- 搜索下拉提示 -->
                 <div
-                  v-if="isSearchOpen"
-                  class="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl z-50"
+                  v-if="isSearchFocused"
+                  class="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl z-50 border border-gray-200"
                 >
                   <div class="p-4">
-                    <!-- 搜索输入框 -->
-                    <div class="relative mb-4">
-                      <input
-                        v-model="searchQuery"
-                        type="text"
-                        placeholder="搜索商品..."
-                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
-                      />
-                      <button
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
-                      >
-                        <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></i>
-                      </button>
-                    </div>
-
                     <!-- 搜索建议 -->
                     <div v-if="searchQuery" class="mb-4">
                       <h3 class="text-sm font-medium text-gray-500 mb-2">搜索建议</h3>
@@ -188,6 +227,7 @@ onClickOutside(searchRef, closeSearch);
                         <button
                           v-for="suggestion in searchSuggestions"
                           :key="suggestion"
+                          @click="selectSuggestion(suggestion)"
                           class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
                         >
                           {{ suggestion }}
@@ -202,6 +242,7 @@ onClickOutside(searchRef, closeSearch);
                         <button
                           v-for="(item, index) in hotSearches"
                           :key="index"
+                          @click="selectHotSearch(item)"
                           class="w-full flex items-center justify-between px-3 py-2 hover:bg-[#2d2d2d] hover:text-white rounded-lg transition-colors"
                         >
                           <span class="text-gray-700">{{ item.text }}</span>
@@ -270,11 +311,14 @@ onClickOutside(searchRef, closeSearch);
                 <div class="flex items-center justify-between mb-4">
                   <div class="relative flex-1 mr-4">
                     <input
+                      v-model="searchQuery"
                       type="text"
                       placeholder="搜索商品..."
                       class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
+                      @keyup.enter="performSearch"
                     />
                     <button
+                      @click="performSearch"
                       class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
                     >
                       <Icon name="uil:search" class="w-5 h-5" />
@@ -287,19 +331,50 @@ onClickOutside(searchRef, closeSearch);
                     <Icon name="uil:multiply" class="w-6 h-6" />
                   </button>
                 </div>
+                
+                <!-- 搜索建议 -->
+                <div v-if="searchQuery" class="mb-4">
+                  <h3 class="text-sm font-medium text-gray-500 mb-2">搜索建议</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      v-for="suggestion in searchSuggestions"
+                      :key="suggestion"
+                      @click="selectSuggestion(suggestion)"
+                      class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
+                    >
+                      {{ suggestion }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 热门搜索 -->
+                <div class="mb-4">
+                  <h3 class="text-sm font-medium text-gray-500 mb-2">热门搜索</h3>
+                  <div class="space-y-2">
+                    <button
+                      v-for="(item, index) in hotSearches"
+                      :key="index"
+                      @click="selectHotSearch(item)"
+                      class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <span class="text-gray-700">{{ item.text }}</span>
+                      <span class="text-xs text-gray-400">{{ item.count }}次搜索</span>
+                    </button>
+                  </div>
+                </div>
+
                 <!-- 搜索历史 -->
-                <div class="mt-4">
+                <div>
                   <h3 class="text-sm font-medium text-gray-500 mb-2">搜索历史</h3>
                   <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
-                      >连衣裙</span
+                    <button
+                      v-for="history in ['连衣裙', '牛仔裤', 'T恤']"
+                      :key="history"
+                      @click="selectSuggestion(history)"
+                      class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
                     >
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
-                      >牛仔裤</span
-                    >
-                    <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
-                      >T恤</span
-                    >
+                      {{ history }}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -313,34 +388,61 @@ onClickOutside(searchRef, closeSearch);
         <!-- PC端菜单 -->
         <div class="hidden lg:block">
           <div class="container mx-auto px-24">
-            <div class="flex h-12 items-center space-x-0 text-[10px] font-bold">
+            <div class="flex h-12 items-center space-x-0 text-[10px] font-normal">
               <NuxtLink
                 to="/"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">首页</span>
+              <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/' }">首页</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/' }"
                 ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/' }"
+                ></div>
+
               </NuxtLink>
               <NuxtLink
                 to="/new-arrivals"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">新品上市</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/new-arrivals' }">新品上市</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/new-arrivals' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/new-arrivals' }"
+                ></div>
+              </NuxtLink>
+              <NuxtLink
+                to="/products"
+                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
+              >
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/products' }">精选商品</span>
+                <div
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/products' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/products' }"
                 ></div>
               </NuxtLink>
               <NuxtLink
                 to="/hot-sales"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">热销商品</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/hot-sales' }">热销商品</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/hot-sales' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/hot-sales' }"
                 ></div>
               </NuxtLink>
@@ -348,9 +450,13 @@ onClickOutside(searchRef, closeSearch);
                 to="/designers"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">设计师专区</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/designers' }">设计师专区</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/designers' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/designers' }"
                 ></div>
               </NuxtLink>
@@ -358,9 +464,13 @@ onClickOutside(searchRef, closeSearch);
                 to="/member"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">会员中心</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/member' }">会员中心</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/member' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/member' }"
                 ></div>
               </NuxtLink>
@@ -368,9 +478,13 @@ onClickOutside(searchRef, closeSearch);
                 to="/shopping-guide"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">购物指南</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/shopping-guide' }">购物指南</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/shopping-guide' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/shopping-guide' }"
                 ></div>
               </NuxtLink>
@@ -378,9 +492,13 @@ onClickOutside(searchRef, closeSearch);
                 to="/fashion-news"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">时尚资讯</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/fashion-news' }">时尚资讯</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/fashion-news' }"
+                ></div>
+                <div
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/fashion-news' }"
                 ></div>
               </NuxtLink>
@@ -388,20 +506,14 @@ onClickOutside(searchRef, closeSearch);
                 to="/about"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10">关于我们</span>
+                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/about' }">关于我们</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/about' }"
                 ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/contact"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10">联系我们</span>
                 <div
-                  class="absolute inset-0 bg-[#2d2d2d] transform -skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/contact' }"
+                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  :class="{ 'opacity-100': route.path === '/about' }"
                 ></div>
               </NuxtLink>
             </div>
@@ -425,13 +537,13 @@ onClickOutside(searchRef, closeSearch);
                   v-for="(item, index) in [
                     { path: '/', title: '首页' },
                     { path: '/new-arrivals', title: '新品上市' },
+                    { path: '/products', title: '精选商品' },
                     { path: '/hot-sales', title: '热销商品' },
                     { path: '/designers', title: '设计师专区' },
                     { path: '/member', title: '会员中心' },
                     { path: '/shopping-guide', title: '购物指南' },
                     { path: '/fashion-news', title: '时尚资讯' },
                     { path: '/about', title: '关于我们' },
-                    { path: '/contact', title: '联系我们' },
                   ]"
                   :key="index"
                   :to="item.path"

@@ -13,10 +13,8 @@
       <slot />
     </LayoutPageContent>
     <LayoutPageFooter class="h-[52px] md:h-[42px]" />
-  </div>
 
-
-  <div v-if="shouldShowMenu" class="fixed bottom-6 right-6 z-[9999]">
+    <div v-if="shouldShowMenu" class="fixed bottom-6 right-6 z-[9999]">
       <!-- 主菜单按钮 -->
       <button
         @click="isOpen = !isOpen"
@@ -39,6 +37,14 @@
         >
           <Icon name="heroicons:envelope" class="w-5 h-5 text-gray-600" />
           <span>联系我们</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/products"
+          class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+        >
+          <Icon name="heroicons:shopping-bag" class="w-5 h-5 text-gray-600" />
+          <span>精选商品</span>
         </NuxtLink>
 
         <NuxtLink
@@ -66,10 +72,10 @@
         </button>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-
 const route = useRoute()
 const isOpen = ref(false)
 

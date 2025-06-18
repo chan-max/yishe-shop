@@ -25,6 +25,14 @@
       </NuxtLink>
 
       <NuxtLink
+        to="/products"
+        class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+      >
+        <Icon name="heroicons:shopping-bag" class="w-5 h-5 text-gray-600" />
+        <span>精选商品</span>
+      </NuxtLink>
+
+      <NuxtLink
         to="/quick-design"
         class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
