@@ -393,13 +393,9 @@ onClickOutside(searchRef, () => {
                 to="/"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-              <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/' }">首页</span>
+              <span class="relative z-10" :class="{ 'text-white': route.path === '/' }">首页</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/' }"
                 ></div>
 
@@ -408,13 +404,9 @@ onClickOutside(searchRef, () => {
                 to="/new-arrivals"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/new-arrivals' }">新品上市</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/new-arrivals' }">新品上市</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/new-arrivals' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/new-arrivals' }"
                 ></div>
               </NuxtLink>
@@ -422,13 +414,9 @@ onClickOutside(searchRef, () => {
                 to="/products"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/products' }">精选商品</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/products' }">精选商品</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/products' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/products' }"
                 ></div>
               </NuxtLink>
@@ -436,13 +424,9 @@ onClickOutside(searchRef, () => {
                 to="/hot-sales"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/hot-sales' }">热销商品</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/hot-sales' }">热销商品</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/hot-sales' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/hot-sales' }"
                 ></div>
               </NuxtLink>
@@ -450,13 +434,9 @@ onClickOutside(searchRef, () => {
                 to="/designers"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/designers' }">设计师专区</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/designers' }">设计师专区</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/designers' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/designers' }"
                 ></div>
               </NuxtLink>
@@ -464,13 +444,9 @@ onClickOutside(searchRef, () => {
                 to="/member"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/member' }">会员中心</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/member' }">会员中心</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/member' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/member' }"
                 ></div>
               </NuxtLink>
@@ -478,13 +454,9 @@ onClickOutside(searchRef, () => {
                 to="/shopping-guide"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/shopping-guide' }">购物指南</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/shopping-guide' }">购物指南</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/shopping-guide' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/shopping-guide' }"
                 ></div>
               </NuxtLink>
@@ -492,13 +464,9 @@ onClickOutside(searchRef, () => {
                 to="/fashion-news"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/fashion-news' }">时尚资讯</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/fashion-news' }">时尚资讯</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/fashion-news' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/fashion-news' }"
                 ></div>
               </NuxtLink>
@@ -506,13 +474,9 @@ onClickOutside(searchRef, () => {
                 to="/about"
                 class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
               >
-                <span class="relative z-10" :class="{ 'text-gray-800 text-[11px]': route.path === '/about' }">关于我们</span>
+                <span class="relative z-10" :class="{ 'text-white': route.path === '/about' }">关于我们</span>
                 <div
-                  class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/about' }"
-                ></div>
-                <div
-                  class="absolute inset-0.5 border-2 border-[#6900ff] border-opacity-40 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
                   :class="{ 'opacity-100': route.path === '/about' }"
                 ></div>
               </NuxtLink>
@@ -548,7 +512,7 @@ onClickOutside(searchRef, () => {
                   :key="index"
                   :to="item.path"
                   class="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#d01345] transition-colors rounded-lg"
-                  :class="{ 'bg-gray-50 text-[#d01345]': route.path === item.path }"
+                  :class="{ 'bg-[#2D2D2D] text-white': route.path === item.path }"
                   @click="toggleMobileMenu"
                 >
                   {{ item.title }}
