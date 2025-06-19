@@ -160,13 +160,7 @@
         </div>
 
         <!-- 商品列表 -->
-        <div v-if="loading" class="flex justify-center items-center py-12">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            size="64"
-          ></v-progress-circular>
-        </div>
+        <Loading v-if="loading || !hasInitialized" />
 
         <div v-else-if="products.length === 0" class="text-center py-12">
           <v-icon
@@ -276,6 +270,7 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const loading = ref(false);
+const hasInitialized = ref(false);
 
 // 商品列表
 const products = ref<Product[]>([]);
@@ -313,8 +308,10 @@ const fetchProducts = async () => {
     });
     products.value = response.list;
     total.value = response.total;
+    hasInitialized.value = true;
   } catch (error) {
     console.error("获取商品列表失败:", error);
+    hasInitialized.value = true; // 即使出错也要标记为已初始化
   } finally {
     loading.value = false;
   }
