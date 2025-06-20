@@ -176,7 +176,7 @@ onClickOutside(searchRef, () => {
       <!-- 导航栏 -->
       <header class="bg-[#2D2D2D] text-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex h-16 items-center justify-between">
+          <div class="flex h-16 items-center">
             <!-- title -->
             <div class="flex items-center">
               <slot name="title">
@@ -190,7 +190,30 @@ onClickOutside(searchRef, () => {
                 </NuxtLink>
               </slot>
             </div>
-
+            <!-- PC端菜单 -->
+            <div class="hidden lg:flex items-center ml-8 h-16">
+              <NuxtLink
+                to="/"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                首页
+              </NuxtLink>
+              <NuxtLink
+                to="/new-arrivals"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/new-arrivals' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                新品上市
+              </NuxtLink>
+              <NuxtLink
+                to="/products"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/products' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                精选商品
+              </NuxtLink>
+            </div>
             <!-- 搜索框和图标按钮 -->
             <div class="hidden lg:flex items-center space-x-6 ml-auto flex-1 max-w-3xl">
               <!-- 搜索框容器 -->
@@ -383,145 +406,6 @@ onClickOutside(searchRef, () => {
         </div>
       </header>
 
-      <!-- 小菜单 -->
-      <div class="bg-[#525051] text-white">
-        <!-- PC端菜单 -->
-        <div class="hidden lg:block">
-          <div class="container mx-auto px-24">
-            <div class="flex h-12 items-center space-x-0 text-[10px] font-normal">
-              <NuxtLink
-                to="/"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-              <span class="relative z-10" :class="{ 'text-white': route.path === '/' }">首页</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/' }"
-                ></div>
-
-              </NuxtLink>
-              <NuxtLink
-                to="/new-arrivals"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/new-arrivals' }">新品上市</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/new-arrivals' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/products"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/products' }">精选商品</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/products' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/hot-sales"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/hot-sales' }">热销商品</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/hot-sales' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/designers"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/designers' }">设计师专区</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/designers' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/member"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/member' }">会员中心</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/member' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/shopping-guide"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/shopping-guide' }">购物指南</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/shopping-guide' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/fashion-news"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/fashion-news' }">时尚资讯</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/fashion-news' }"
-                ></div>
-              </NuxtLink>
-              <NuxtLink
-                to="/about"
-                class="hover:text-gray-300 px-6 py-0 h-full flex items-center relative group"
-              >
-                <span class="relative z-10" :class="{ 'text-white': route.path === '/about' }">关于我们</span>
-                <div
-                  class="absolute inset-0 bg-[#2D2D2D] opacity-0 group-hover:opacity-100 transition-opacity"
-                  :class="{ 'opacity-100': route.path === '/about' }"
-                ></div>
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-
-        <!-- 移动端菜单 -->
-        <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50">
-          <div class="bg-white h-full w-4/5 max-w-sm ml-auto">
-            <div class="container mx-auto px-4 py-2">
-              <div class="flex justify-end py-4">
-                <button
-                  @click="toggleMobileMenu"
-                  class="text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  <Icon name="uil:multiply" class="w-6 h-6" />
-                </button>
-              </div>
-              <div class="flex flex-col space-y-1">
-                <NuxtLink
-                  v-for="(item, index) in [
-                    { path: '/', title: '首页' },
-                    { path: '/new-arrivals', title: '新品上市' },
-                    { path: '/products', title: '精选商品' },
-                    { path: '/hot-sales', title: '热销商品' },
-                    { path: '/designers', title: '设计师专区' },
-                    { path: '/member', title: '会员中心' },
-                    { path: '/shopping-guide', title: '购物指南' },
-                    { path: '/fashion-news', title: '时尚资讯' },
-                    { path: '/about', title: '关于我们' },
-                  ]"
-                  :key="index"
-                  :to="item.path"
-                  class="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#d01345] transition-colors rounded-lg"
-                  :class="{ 'bg-[#2D2D2D] text-white': route.path === item.path }"
-                  @click="toggleMobileMenu"
-                >
-                  {{ item.title }}
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
