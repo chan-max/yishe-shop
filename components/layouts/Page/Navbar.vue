@@ -191,7 +191,7 @@ onClickOutside(searchRef, () => {
               </slot>
               
               <!-- 小菜单 - 只显示前三个 -->
-              <div class="hidden lg:flex items-center space-x-6 text-[10px] font-normal">
+              <div class="hidden lg:flex items-center space-x-6 text-[10px] font-normal mr-4">
                 <NuxtLink
                   to="/"
                   class="hover:text-gray-300 px-3 py-2 h-full flex items-center relative group"
