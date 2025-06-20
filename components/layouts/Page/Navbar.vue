@@ -178,7 +178,7 @@ onClickOutside(searchRef, () => {
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 items-center justify-between">
             <!-- title 和 小菜单 -->
-            <div class="flex items-center space-x-8">
+            <div class="flex items-center space-x-8 mr-4">
               <slot name="title">
                 <NuxtLink to="/" class="font-bold text-lg text-white">
                   <div class="flex items-center gap-2">
@@ -431,7 +431,7 @@ onClickOutside(searchRef, () => {
             </div>
             <div class="flex flex-col space-y-1">
               <NuxtLink
-                v-for="(item, index) in [
+                v-for="item in [
                   { path: '/', title: '首页' },
                   { path: '/new-arrivals', title: '新品上市' },
                   { path: '/products', title: '精选商品' },
@@ -442,10 +442,10 @@ onClickOutside(searchRef, () => {
                   { path: '/fashion-news', title: '时尚资讯' },
                   { path: '/about', title: '关于我们' },
                 ]"
-                :key="index"
+                :key="item.path"
                 :to="item.path"
                 class="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#d01345] transition-colors rounded-lg"
-                :class="{ 'bg-[#2D2D2D] text-white': route.path === item.path }"
+                :class="route.path === item.path ? 'bg-[#2D2D2D] text-white' : ''"
                 @click="toggleMobileMenu"
               >
                 {{ item.title }}
