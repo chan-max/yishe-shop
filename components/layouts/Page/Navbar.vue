@@ -176,9 +176,9 @@ onClickOutside(searchRef, () => {
       <!-- 导航栏 -->
       <header class="bg-[#2D2D2D] text-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex h-16 items-center justify-between">
-            <!-- title 和 小菜单 -->
-            <div class="flex items-center space-x-8 mr-4">
+          <div class="flex h-16 items-center">
+            <!-- title -->
+            <div class="flex items-center">
               <slot name="title">
                 <NuxtLink to="/" class="font-bold text-lg text-white">
                   <div class="flex items-center gap-2">
@@ -189,42 +189,31 @@ onClickOutside(searchRef, () => {
                   </div>
                 </NuxtLink>
               </slot>
-              
-              <!-- 小菜单 - 只显示前三个 -->
-              <div class="hidden lg:flex items-center space-x-6 text-[10px] font-normal">
-                <NuxtLink
-                  to="/"
-                  class="hover:text-gray-300 px-3 py-2 h-full flex items-center relative group"
-                >
-                  <span class="relative z-10" :class="{ 'text-white': route.path === '/' }">首页</span>
-                  <div
-                    class="absolute inset-0 bg-[#525051] opacity-0 group-hover:opacity-100 transition-opacity"
-                    :class="{ 'opacity-100': route.path === '/' }"
-                  ></div>
-                </NuxtLink>
-                <NuxtLink
-                  to="/new-arrivals"
-                  class="hover:text-gray-300 px-3 py-2 h-full flex items-center relative group"
-                >
-                  <span class="relative z-10" :class="{ 'text-white': route.path === '/new-arrivals' }">新品上市</span>
-                  <div
-                    class="absolute inset-0 bg-[#525051] opacity-0 group-hover:opacity-100 transition-opacity"
-                    :class="{ 'opacity-100': route.path === '/new-arrivals' }"
-                  ></div>
-                </NuxtLink>
-                <NuxtLink
-                  to="/products"
-                  class="hover:text-gray-300 px-3 py-2 h-full flex items-center relative group"
-                >
-                  <span class="relative z-10" :class="{ 'text-white': route.path === '/products' }">精选商品</span>
-                  <div
-                    class="absolute inset-0 bg-[#525051] opacity-0 group-hover:opacity-100 transition-opacity"
-                    :class="{ 'opacity-100': route.path === '/products' }"
-                  ></div>
-                </NuxtLink>
-              </div>
             </div>
-
+            <!-- PC端菜单 -->
+            <div class="hidden lg:flex items-center ml-8 h-16">
+              <NuxtLink
+                to="/"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                首页
+              </NuxtLink>
+              <NuxtLink
+                to="/new-arrivals"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/new-arrivals' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                新品上市
+              </NuxtLink>
+              <NuxtLink
+                to="/products"
+                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
+                :class="[route.path === '/products' ? 'text-white bg-[#444] rounded font-bold' : '']"
+              >
+                精选商品
+              </NuxtLink>
+            </div>
             <!-- 搜索框和图标按钮 -->
             <div class="hidden lg:flex items-center space-x-6 ml-auto flex-1 max-w-3xl">
               <!-- 搜索框容器 -->
@@ -417,6 +406,7 @@ onClickOutside(searchRef, () => {
         </div>
       </header>
 
+<<<<<<< HEAD
       <!-- 移动端菜单 -->
       <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50">
         <div class="bg-white h-full w-4/5 max-w-sm ml-auto">
@@ -454,6 +444,8 @@ onClickOutside(searchRef, () => {
           </div>
         </div>
       </div>
+=======
+>>>>>>> dc629db1ab2fa9966ec70103b08a46270ae8ee21
     </div>
   </div>
 </template>
