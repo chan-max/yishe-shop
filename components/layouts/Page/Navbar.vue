@@ -155,7 +155,7 @@ onClickOutside(searchRef, () => {
                   to="/new-arrivals"
                   class="hover:text-gray-300 px-3 py-2 h-full flex items-center relative group"
                 >
-                  <span class="relative z-10" :class="{ 'text-white': route.path === '/new-arrivals' }">新品上市</span>
+                  <span class="relative z-10" :class="{ 'text-white': route.path === '/new-arrivals' }">新品上市!!</span>
                   <div
                     class="absolute inset-0 bg-[#525051] opacity-0 group-hover:opacity-100 transition-opacity"
                     :class="{ 'opacity-100': route.path === '/new-arrivals' }"
