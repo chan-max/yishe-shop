@@ -1,22 +1,9 @@
 <script lang="ts" setup>
 import { useSearchStore } from '../../../stores/use-search'
 
-const { awesome } = useAppConfig();
-const { parseMenuRoute, parseMenuTitle } = useNavbarParser();
-const $screen = useAwesomeScreen();
-const nuxtApp = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
-
-// 引入搜索store
 const searchStore = useSearchStore();
-
-const menus = computed(
-  () => (awesome?.layout?.page?.navbar?.menus || []) as AwesomeLayoutPageNavbarMenu[]
-);
-
-// drawer
-const showDrawer = ref(false);
 
 // 广告轮播
 const adItems = ref([
@@ -26,50 +13,35 @@ const adItems = ref([
 ]);
 const currentAdIndex = ref(0);
 
-// 自动轮播
 onMounted(() => {
   setInterval(() => {
     currentAdIndex.value = (currentAdIndex.value + 1) % adItems.value.length;
   }, 3000);
 });
 
-// 添加滚动监听
+// 滚动监听
 const isFixed = ref(false);
-const lastScrollY = ref(0);
-const SCROLL_THRESHOLD = 200; // 滚动阈值，可以根据需要调整
-
+const SCROLL_THRESHOLD = 200;
 const handleScroll = () => {
-  const currentScrollY = window.scrollY;
-  isFixed.value = currentScrollY > SCROLL_THRESHOLD;
-  lastScrollY.value = currentScrollY;
+  isFixed.value = window.scrollY > SCROLL_THRESHOLD;
 };
-
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
 });
-
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-// 移动端菜单状态
+// 移动端菜单与搜索
 const isMobileMenuOpen = ref(false);
 const isMobileSearchOpen = ref(false);
-
-// 移动端搜索控制
 const toggleMobileSearch = () => {
   isMobileSearchOpen.value = !isMobileSearchOpen.value;
-  if (isMobileSearchOpen.value) {
-    isMobileMenuOpen.value = false;
-  }
+  if (isMobileSearchOpen.value) isMobileMenuOpen.value = false;
 };
-
-// 移动端菜单控制
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
-  if (isMobileMenuOpen.value) {
-    isMobileSearchOpen.value = false;
-  }
+  if (isMobileMenuOpen.value) isMobileSearchOpen.value = false;
 };
 
 // 搜索相关
@@ -82,53 +54,30 @@ const hotSearches = ref([
   { text: "时尚配饰", count: 765 },
   { text: "运动系列", count: 654 },
 ]);
-
-// 搜索框聚焦状态
 const isSearchFocused = ref(false);
-
-// 搜索框失去焦点处理
 const handleSearchBlur = () => {
-  // 延迟关闭，避免点击建议时立即关闭
   setTimeout(() => {
     isSearchFocused.value = false;
   }, 200);
 };
-
-// 执行搜索
 const performSearch = () => {
   if (searchQuery.value.trim()) {
-    // 设置全局搜索关键词
     searchStore.setSearchKeyword(searchQuery.value.trim());
-    
-    // 跳转到商品列表页
-    router.push({
-      path: '/products',
-      query: { search: searchQuery.value.trim() }
-    });
-    
-    // 关闭搜索框
+    router.push({ path: '/products', query: { search: searchQuery.value.trim() } });
     isSearchFocused.value = false;
     isMobileSearchOpen.value = false;
   }
 };
-
-// 点击搜索建议
 const selectSuggestion = (suggestion: string) => {
   searchQuery.value = suggestion;
   performSearch();
-  // 确保移动端搜索框关闭
   isMobileSearchOpen.value = false;
 };
-
-// 点击热门搜索
 const selectHotSearch = (hotSearch: { text: string; count: number }) => {
   searchQuery.value = hotSearch.text;
   performSearch();
-  // 确保移动端搜索框关闭
   isMobileSearchOpen.value = false;
 };
-
-// 点击外部关闭搜索
 const searchRef = ref(null);
 onClickOutside(searchRef, () => {
   isSearchFocused.value = false;
@@ -136,7 +85,7 @@ onClickOutside(searchRef, () => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="navbar-root relative">
     <!-- 占位元素，防止固定定位导致的内容跳动 -->
     <div class="h-[120px]" v-if="isFixed"></div>
     <!-- 导航栏 -->
@@ -476,7 +425,35 @@ onClickOutside(searchRef, () => {
     transform: translateY(0);
   }
 }
-.animate-advert-vertical .advert-vertical-list {
+
+.navbar-root {
+  /* 可加全局防护样式 */
+}
+
+.navbar-root .animate-advert-vertical .advert-vertical-list {
   animation: advert-vertical 6s infinite;
 }
+
+.navbar-root header {
+  background: #2D2D2D !important;
+  color: #fff !important;
+}
+
+.navbar-root .h-\[120px\] {
+  height: 120px !important;
+}
+
+.navbar-root .bg-white {
+  background: #fff !important;
+}
+
+.navbar-root .text-black {
+  color: #000 !important;
+}
+
+.navbar-root .text-white {
+  color: #fff !important;
+}
+
+/* 你可以继续为其他容易被污染的类加 .navbar-root 前缀和 !important */
 </style>
