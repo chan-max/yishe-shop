@@ -295,6 +295,7 @@ const fetchProducts = async () => {
     const requestBody: any = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
+      isPublish: true, // 固定传递，只查询已上架的商品
     };
     
     // 如果有搜索关键词，添加到请求体中
