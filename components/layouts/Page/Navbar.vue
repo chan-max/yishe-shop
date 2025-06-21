@@ -72,6 +72,16 @@ const toggleMobileMenu = () => {
   }
 };
 
+// 关闭移动端菜单
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+};
+
+// 关闭移动端搜索
+const closeMobileSearch = () => {
+  isMobileSearchOpen.value = false;
+};
+
 // 搜索相关
 const searchQuery = ref("");
 const searchSuggestions = ref(["连衣裙", "牛仔裤", "T恤", "运动鞋", "休闲裤"]);
@@ -82,6 +92,25 @@ const hotSearches = ref([
   { text: "时尚配饰", count: 765 },
   { text: "运动系列", count: 654 },
 ]);
+
+// 搜索历史
+const searchHistory = ref(["连衣裙", "牛仔裤", "T恤"]);
+
+// 添加搜索历史
+const addToSearchHistory = (keyword: string) => {
+  if (!searchHistory.value.includes(keyword)) {
+    searchHistory.value.unshift(keyword);
+    // 限制历史记录数量
+    if (searchHistory.value.length > 10) {
+      searchHistory.value = searchHistory.value.slice(0, 10);
+    }
+  }
+};
+
+// 清除搜索历史
+const clearSearchHistory = () => {
+  searchHistory.value = [];
+};
 
 // 搜索框聚焦状态
 const isSearchFocused = ref(false);
@@ -97,6 +126,9 @@ const handleSearchBlur = () => {
 // 执行搜索
 const performSearch = () => {
   if (searchQuery.value.trim()) {
+    // 添加到搜索历史
+    addToSearchHistory(searchQuery.value.trim());
+    
     // 设置全局搜索关键词
     searchStore.setSearchKeyword(searchQuery.value.trim());
     
@@ -115,6 +147,7 @@ const performSearch = () => {
 // 点击搜索建议
 const selectSuggestion = (suggestion: string) => {
   searchQuery.value = suggestion;
+  addToSearchHistory(suggestion);
   performSearch();
   // 确保移动端搜索框关闭
   isMobileSearchOpen.value = false;
@@ -123,6 +156,7 @@ const selectSuggestion = (suggestion: string) => {
 // 点击热门搜索
 const selectHotSearch = (hotSearch: { text: string; count: number }) => {
   searchQuery.value = hotSearch.text;
+  addToSearchHistory(hotSearch.text);
   performSearch();
   // 确保移动端搜索框关闭
   isMobileSearchOpen.value = false;
@@ -132,6 +166,18 @@ const selectHotSearch = (hotSearch: { text: string; count: number }) => {
 const searchRef = ref(null);
 onClickOutside(searchRef, () => {
   isSearchFocused.value = false;
+});
+
+// 点击外部关闭移动端菜单和搜索
+const mobileMenuRef = ref(null);
+const mobileSearchRef = ref(null);
+
+onClickOutside(mobileMenuRef, () => {
+  isMobileMenuOpen.value = false;
+});
+
+onClickOutside(mobileSearchRef, () => {
+  isMobileSearchOpen.value = false;
 });
 </script>
 
@@ -310,17 +356,34 @@ onClickOutside(searchRef, () => {
             </div>
 
             <!-- 移动端搜索和购物车按钮 -->
-            <div class="flex lg:hidden items-center space-x-4">
+            <div class="flex lg:hidden items-center space-x-4 ml-auto">
+              <button
+                class="text-white/70 hover:text-white transition-colors relative group mobile-button"
+              >
+                <Icon name="uil:heart" class="w-6 h-6" />
+                <span
+                  class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+                  >2</span
+                >
+              </button>
+              <button
+                class="text-white/70 hover:text-white transition-colors relative group mobile-button"
+              >
+                <Icon name="uil:shopping-cart" class="w-6 h-6" />
+                <span
+                  class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+                  >3</span
+                >
+              </button>
               <button
                 @click="toggleMobileSearch"
-                class="text-white/70 hover:text-white transition-colors"
+                class="text-white/70 hover:text-white transition-colors mobile-button"
               >
                 <Icon name="uil:search" class="w-6 h-6" />
               </button>
-
               <button
                 @click="toggleMobileMenu"
-                class="text-white/70 hover:text-white transition-colors"
+                class="text-white/70 hover:text-white transition-colors mobile-button"
               >
                 <Icon name="uil:bars" class="w-6 h-6" />
               </button>
@@ -328,81 +391,178 @@ onClickOutside(searchRef, () => {
           </div>
 
           <!-- 移动端搜索框 -->
-          <div v-if="isMobileSearchOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50">
-            <div class="bg-white h-full w-full">
-              <div class="container mx-auto px-4 py-4">
-                <div class="flex items-center justify-between mb-4">
-                  <div class="relative flex-1 mr-4">
-                    <input
-                      v-model="searchQuery"
-                      type="text"
-                      placeholder="搜索商品..."
-                      class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
-                      @keyup.enter="performSearch"
-                    />
+          <Transition name="mobile-search">
+            <div v-if="isMobileSearchOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50" ref="mobileSearchRef">
+              <div class="bg-white h-full w-full">
+                <div class="container mx-auto px-4 py-4">
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="relative flex-1 mr-4">
+                      <input
+                        v-model="searchQuery"
+                        type="text"
+                        placeholder="搜索商品..."
+                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
+                        @keyup.enter="performSearch"
+                      />
+                      <button
+                        @click="performSearch"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
+                      >
+                        <Icon name="uil:search" class="w-5 h-5" />
+                      </button>
+                    </div>
                     <button
-                      @click="performSearch"
-                      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
+                      @click="closeMobileSearch"
+                      class="text-gray-500 hover:text-gray-700 transition-colors"
                     >
-                      <Icon name="uil:search" class="w-5 h-5" />
+                      <Icon name="uil:multiply" class="w-6 h-6" />
                     </button>
                   </div>
+                  
+                  <!-- 搜索建议 -->
+                  <div v-if="searchQuery" class="mb-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">搜索建议</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        v-for="suggestion in searchSuggestions"
+                        :key="suggestion"
+                        @click="selectSuggestion(suggestion)"
+                        class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
+                      >
+                        {{ suggestion }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 热门搜索 -->
+                  <div class="mb-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">热门搜索</h3>
+                    <div class="space-y-2">
+                      <button
+                        v-for="(item, index) in hotSearches"
+                        :key="index"
+                        @click="selectHotSearch(item)"
+                        class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        <span class="text-gray-700">{{ item.text }}</span>
+                        <span class="text-xs text-gray-400">{{ item.count }}次搜索</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 搜索历史 -->
+                  <div v-if="searchHistory.length > 0">
+                    <div class="flex items-center justify-between mb-2">
+                      <h3 class="text-sm font-medium text-gray-500">搜索历史</h3>
+                      <button
+                        @click="clearSearchHistory"
+                        class="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        清除历史
+                      </button>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        v-for="history in searchHistory"
+                        :key="history"
+                        @click="selectSuggestion(history)"
+                        class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
+                      >
+                        {{ history }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Transition>
+
+          <!-- 移动端菜单 -->
+          <Transition name="mobile-menu">
+            <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50" ref="mobileMenuRef">
+              <div class="bg-white h-full w-full flex flex-col">
+                <!-- 菜单头部 -->
+                <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                  <div class="flex items-center gap-2">
+                    <img src="/logo.svg" class="h-8" />
+                    <span class="text-xl font-thin" style="font-family: logo!important;">衣设服装设计</span>
+                  </div>
                   <button
-                    @click="toggleMobileSearch"
+                    @click="closeMobileMenu"
                     class="text-gray-500 hover:text-gray-700 transition-colors"
                   >
                     <Icon name="uil:multiply" class="w-6 h-6" />
                   </button>
                 </div>
-                
-                <!-- 搜索建议 -->
-                <div v-if="searchQuery" class="mb-4">
-                  <h3 class="text-sm font-medium text-gray-500 mb-2">搜索建议</h3>
-                  <div class="flex flex-wrap gap-2">
-                    <button
-                      v-for="suggestion in searchSuggestions"
-                      :key="suggestion"
-                      @click="selectSuggestion(suggestion)"
-                      class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
-                    >
-                      {{ suggestion }}
-                    </button>
-                  </div>
-                </div>
 
-                <!-- 热门搜索 -->
-                <div class="mb-4">
-                  <h3 class="text-sm font-medium text-gray-500 mb-2">热门搜索</h3>
-                  <div class="space-y-2">
-                    <button
-                      v-for="(item, index) in hotSearches"
-                      :key="index"
-                      @click="selectHotSearch(item)"
-                      class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      <span class="text-gray-700">{{ item.text }}</span>
-                      <span class="text-xs text-gray-400">{{ item.count }}次搜索</span>
-                    </button>
+                <!-- 菜单内容 -->
+                <div class="flex-1 overflow-y-auto">
+                  <!-- 主导航菜单 - 与PC端保持一致 -->
+                  <div class="p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-3">导航菜单</h3>
+                    <div class="space-y-1">
+                      <NuxtLink
+                        to="/"
+                        @click="closeMobileMenu"
+                        class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        :class="[route.path === '/' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                      >
+                        <Icon name="uil:home" class="w-5 h-5 mr-3" />
+                        <span>首页</span>
+                      </NuxtLink>
+                      <NuxtLink
+                        to="/new-arrivals"
+                        @click="closeMobileMenu"
+                        class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        :class="[route.path === '/new-arrivals' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                      >
+                        <Icon name="uil:star" class="w-5 h-5 mr-3" />
+                        <span>新品上市</span>
+                      </NuxtLink>
+                      <NuxtLink
+                        to="/products"
+                        @click="closeMobileMenu"
+                        class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        :class="[route.path === '/products' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                      >
+                        <Icon name="uil:shopping-bag" class="w-5 h-5 mr-3" />
+                        <span>精选商品</span>
+                      </NuxtLink>
+                    </div>
                   </div>
-                </div>
 
-                <!-- 搜索历史 -->
-                <div>
-                  <h3 class="text-sm font-medium text-gray-500 mb-2">搜索历史</h3>
-                  <div class="flex flex-wrap gap-2">
-                    <button
-                      v-for="history in ['连衣裙', '牛仔裤', 'T恤']"
-                      :key="history"
-                      @click="selectSuggestion(history)"
-                      class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
-                    >
-                      {{ history }}
-                    </button>
+                  <!-- 功能按钮 - 与PC端保持一致 -->
+                  <div class="p-4 border-t border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-500 mb-3">功能服务</h3>
+                    <div class="space-y-1">
+                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
+                        <Icon name="uil:heart" class="w-5 h-5 mr-3" />
+                        <span>我的收藏</span>
+                        <span class="ml-auto bg-[#d01345] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                      </button>
+                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
+                        <Icon name="uil:shopping-cart" class="w-5 h-5 mr-3" />
+                        <span>购物车</span>
+                        <span class="ml-auto bg-[#d01345] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                      </button>
+                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
+                        <Icon name="uil:user" class="w-5 h-5 mr-3" />
+                        <span>个人中心</span>
+                      </button>
+                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
+                        <Icon name="uil:bell" class="w-5 h-5 mr-3" />
+                        <span>消息通知</span>
+                      </button>
+                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
+                        <Icon name="uil:comment-dots" class="w-5 h-5 mr-3" />
+                        <span>客服咨询</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Transition>
         </div>
       </header>
 
@@ -430,5 +590,40 @@ onClickOutside(searchRef, () => {
 }
 .animate-advert-vertical .advert-vertical-list {
   animation: advert-vertical 6s infinite;
+}
+
+/* 移动端菜单和搜索动画 */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.mobile-search-enter-active,
+.mobile-search-leave-active {
+  transition: all 0.3s ease;
+}
+
+.mobile-search-enter-from,
+.mobile-search-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* 移动端按钮悬停效果 */
+@media (hover: hover) {
+  .mobile-button:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* 移动端触摸反馈 */
+.mobile-button:active {
+  transform: scale(0.95);
 }
 </style>
