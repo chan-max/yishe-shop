@@ -406,46 +406,6 @@ onClickOutside(searchRef, () => {
         </div>
       </header>
 
-<<<<<<< HEAD
-      <!-- 移动端菜单 -->
-      <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50">
-        <div class="bg-white h-full w-4/5 max-w-sm ml-auto">
-          <div class="container mx-auto px-4 py-2">
-            <div class="flex justify-end py-4">
-              <button
-                @click="toggleMobileMenu"
-                class="text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                <Icon name="uil:multiply" class="w-6 h-6" />
-              </button>
-            </div>
-            <div class="flex flex-col space-y-1">
-              <NuxtLink
-                v-for="item in [
-                  { path: '/', title: '首页' },
-                  { path: '/new-arrivals', title: '新品上市' },
-                  { path: '/products', title: '精选商品' },
-                  { path: '/hot-sales', title: '热销商品' },
-                  { path: '/designers', title: '设计师专区' },
-                  { path: '/member', title: '会员中心' },
-                  { path: '/shopping-guide', title: '购物指南' },
-                  { path: '/fashion-news', title: '时尚资讯' },
-                  { path: '/about', title: '关于我们' },
-                ]"
-                :key="item.path"
-                :to="item.path"
-                class="px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-[#d01345] transition-colors rounded-lg"
-                :class="route.path === item.path ? 'bg-[#2D2D2D] text-white' : ''"
-                @click="toggleMobileMenu"
-              >
-                {{ item.title }}
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-      </div>
-=======
->>>>>>> dc629db1ab2fa9966ec70103b08a46270ae8ee21
     </div>
   </div>
 </template>
