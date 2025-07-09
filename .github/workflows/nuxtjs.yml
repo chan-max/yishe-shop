@@ -53,6 +53,16 @@ jobs:
       - name: Static HTML export with Nuxt
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
         
+      - name: Ensure target directory exists
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          script: |
+            mkdir -p /www/wwwroot/1s.design/shop
+
       - name: Deploy to Tencent Cloud
         id: deploy
         uses: appleboy/scp-action@v0.1.7
@@ -62,7 +72,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           source: "app/.output/public/**"
-          target: "/www/wwwroot/1s.design"
+          target: "/www/wwwroot/1s.design/shop"
           rm: false
           strip_components: 3
           overwrite: true
