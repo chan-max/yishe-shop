@@ -160,7 +160,33 @@
         </div>
 
         <!-- 商品列表 -->
-        <Loading v-if="loading || !hasInitialized" />
+        <div v-if="loading || !hasInitialized" class="w-full">
+          <!-- 个性化Loading效果 -->
+          <div class="text-center py-16">
+            <!-- 主Loading动画 -->
+            <div class="relative inline-block mb-6">
+              <!-- 外圈旋转 -->
+              <div class="w-20 h-20 border-4 border-gray-200 border-t-gray-400 rounded-full animate-spin"></div>
+              <!-- 内圈脉冲 -->
+              <div class="absolute inset-2 w-16 h-16 bg-gray-300 rounded-full animate-pulse"></div>
+              <!-- 中心图标 -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <Icon name="heroicons:shopping-bag" class="w-8 h-8 text-white animate-bounce" />
+              </div>
+            </div>
+            
+            <!-- 加载文字 -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-medium text-gray-800">正在为您精选商品</h3>
+              <div class="flex justify-center items-center gap-1">
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+              </div>
+              <p class="text-sm text-gray-500">发现更多时尚单品...</p>
+            </div>
+          </div>
+        </div>
 
         <div v-else-if="products.length === 0" class="text-center py-12">
           <v-icon
@@ -185,11 +211,66 @@
             >
               <!-- 商品图片 -->
               <div class="relative aspect-[4/5]">
+                <!-- 有图片时显示图片 -->
                 <img
+                  v-if="hasValidImage(product)"
                   :src="product.images[0]"
                   :alt="product.name"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover transition-opacity duration-300"
+                  @load="onImageLoad($event, product.id)"
+                  @error="onImageError($event, product.id)"
+                  :class="{ 'opacity-0': !getImageLoadStatus(product.id) }"
                 />
+                
+                <!-- 没有图片时显示空状态 -->
+                <div 
+                  v-else
+                  class="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center p-4"
+                >
+                  <!-- 空状态图标 -->
+                  <div class="relative mb-3">
+                    <!-- 外圈装饰 -->
+                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                      <Icon name="heroicons:photo" class="w-6 h-6 text-gray-400" />
+                    </div>
+                    <!-- 小图标装饰 -->
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
+                      <Icon name="heroicons:plus" class="w-2 h-2 text-gray-500" />
+                    </div>
+                  </div>
+                  
+                  <!-- 空状态文字 -->
+                  <div class="text-center">
+                    <p class="text-xs text-gray-500 font-medium mb-1">暂无图片</p>
+                  </div>
+                  
+                  <!-- 装饰性元素 -->
+                  <div class="absolute bottom-2 right-2">
+                    <div class="flex gap-1">
+                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- 图片加载中的波浪效果 -->
+                <div 
+                  v-if="hasValidImage(product) && !getImageLoadStatus(product.id)"
+                  class="absolute inset-0 bg-gray-100 flex items-center justify-center"
+                >
+                  <div class="relative">
+                    <!-- 波浪动画 -->
+                    <div class="flex items-center gap-1">
+                      <div class="w-1 h-4 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 0ms;"></div>
+                      <div class="w-1 h-6 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 150ms;"></div>
+                      <div class="w-1 h-8 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 300ms;"></div>
+                      <div class="w-1 h-6 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 450ms;"></div>
+                      <div class="w-1 h-4 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 600ms;"></div>
+                    </div>
+                  </div>
+                </div>
+                
                 <!-- 商品标签 -->
                 <div
                   v-if="product.tag"
@@ -201,15 +282,34 @@
 
               <!-- 商品信息 -->
               <div class="p-3">
-                <h3 class="text-sm font-medium mb-1 line-clamp-2">{{ product.name }}</h3>
-                <p class="text-xs mb-2 text-gray-600">{{ product.description }}</p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-base font-bold">¥{{ product.price }}</span>
-                    <span v-if="product.originalPrice" class="text-xs line-through text-gray-500"
-                      >¥{{ product.originalPrice }}</span
+                <h3 class="text-sm font-medium mb-2 line-clamp-2">{{ product.name }}</h3>
+                
+                <!-- 商品描述 -->
+                <div v-if="product.description" class="mb-2">
+                  <p class="text-xs text-gray-600 line-clamp-2">{{ product.description }}</p>
+                </div>
+                
+                <!-- 关键词标签 -->
+                <div v-if="getProductKeywords(product).length > 0" class="mb-2">
+                  <div class="flex flex-wrap gap-1">
+                    <span 
+                      v-for="keyword in getProductKeywords(product).slice(0, 3)" 
+                      :key="keyword"
+                      class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full"
                     >
+                      {{ keyword }}
+                    </span>
+                    <span 
+                      v-if="getProductKeywords(product).length > 3" 
+                      class="px-2 py-1 text-xs bg-gray-100 text-gray-500 rounded-full"
+                    >
+                      +{{ getProductKeywords(product).length - 3 }}
+                    </span>
                   </div>
+                </div>
+                
+                <!-- 点赞数 -->
+                <div class="flex items-center justify-end">
                   <div class="flex items-center gap-1 text-xs text-gray-500">
                     <Icon name="heroicons:heart" class="w-3 h-3" />
                     <span>{{ product.likes }}</span>
@@ -256,6 +356,7 @@ interface Product {
   images: string[];
   tag?: string;
   likes: number;
+  keywords?: string;
 }
 
 interface PageResponse {
@@ -274,6 +375,30 @@ const hasInitialized = ref(false);
 
 // 商品列表
 const products = ref<Product[]>([]);
+
+// 图片加载状态
+const imageLoaded = ref<Record<number, boolean>>({});
+
+// 图片加载成功处理
+const onImageLoad = (event: Event, productId: number) => {
+  imageLoaded.value[productId] = true;
+};
+
+// 图片加载失败处理
+const onImageError = (event: Event, productId: number) => {
+  console.error("图片加载失败:", event);
+  imageLoaded.value[productId] = false;
+};
+
+// 检查商品是否有有效图片
+const hasValidImage = (product: Product) => {
+  return product.images && product.images.length > 0 && product.images[0];
+};
+
+// 获取商品图片加载状态
+const getImageLoadStatus = (productId: number) => {
+  return imageLoaded.value[productId] || false;
+};
 
 // 搜索关键词
 const searchKeyword = computed(() => {
@@ -416,6 +541,17 @@ const selectedFilters = ref({
   brand: "",
   discount: "",
 });
+
+// 获取产品关键词
+const getProductKeywords = (product: Product) => {
+  if (!product.keywords) return [];
+  
+  // 将逗号分隔的字符串转换为数组，并去除空格
+  return product.keywords
+    .split(',')
+    .map(keyword => keyword.trim())
+    .filter(keyword => keyword.length > 0);
+};
 </script>
 
 <style scoped>
