@@ -214,7 +214,7 @@
                 <!-- 有图片时显示图片 -->
                 <img
                   v-if="hasValidImage(product)"
-                  :src="product.images[0]"
+                  :src="product?.customModel?.thumbnail"
                   :alt="product.name"
                   class="w-full h-full object-cover transition-opacity duration-300"
                   @load="onImageLoad($event, product.id)"
@@ -335,7 +335,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useSearchStore } from '../stores/use-search'
 
 definePageMeta({ layout: 'page' })
@@ -346,26 +346,6 @@ const searchStore = useSearchStore();
 const route = useRoute();
 const router = useRouter();
 
-// 商品类型定义
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice?: number;
-  images: string[];
-  tag?: string;
-  likes: number;
-  keywords?: string;
-}
-
-interface PageResponse {
-  list: Product[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
-
 // 分页相关状态
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -374,36 +354,36 @@ const loading = ref(false);
 const hasInitialized = ref(false);
 
 // 商品列表
-const products = ref<Product[]>([]);
+const products = ref([]);
 
 // 图片加载状态
-const imageLoaded = ref<Record<number, boolean>>({});
+const imageLoaded = ref({});
 
 // 图片加载成功处理
-const onImageLoad = (event: Event, productId: number) => {
+const onImageLoad = (event, productId) => {
   imageLoaded.value[productId] = true;
 };
 
 // 图片加载失败处理
-const onImageError = (event: Event, productId: number) => {
+const onImageError = (event, productId) => {
   console.error("图片加载失败:", event);
   imageLoaded.value[productId] = false;
 };
 
 // 检查商品是否有有效图片
-const hasValidImage = (product: Product) => {
-  return product.images && product.images.length > 0 && product.images[0];
+const hasValidImage = (product) => {
+  return product.customModel?.thumbnail
 };
 
 // 获取商品图片加载状态
-const getImageLoadStatus = (productId: number) => {
+const getImageLoadStatus = (productId) => {
   return imageLoaded.value[productId] || false;
 };
 
 // 搜索关键词
 const searchKeyword = computed(() => {
   // 优先使用URL参数，其次使用全局状态
-  return route.query.search as string || searchStore.searchKeyword;
+  return route.query.search || searchStore.searchKeyword;
 });
 
 // 清空搜索
@@ -417,7 +397,7 @@ const fetchProducts = async () => {
   loading.value = true;
   try {
     const { $customFetch } = useNuxtApp();
-    const requestBody: any = {
+    const requestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
       isPublish: true, // 固定传递，只查询已上架的商品
@@ -428,7 +408,7 @@ const fetchProducts = async () => {
       requestBody.keyword = searchKeyword.value;
     }
     
-    const response = await $customFetch<PageResponse>("/product/page", {
+    const response = await $customFetch("/product/page", {
       method: "POST",
       body: requestBody,
     });
@@ -462,7 +442,7 @@ watch(searchKeyword, (newKeyword) => {
 watch(() => route.query.search, (newSearch) => {
   if (newSearch) {
     // 更新全局搜索状态
-    searchStore.setSearchKeyword(newSearch as string);
+    searchStore.setSearchKeyword(newSearch);
     // 重置到第一页
     currentPage.value = 1;
     // 获取数据
@@ -474,7 +454,7 @@ watch(() => route.query.search, (newSearch) => {
 onMounted(() => {
   // 检查URL参数
   if (route.query.search) {
-    searchStore.setSearchKeyword(route.query.search as string);
+    searchStore.setSearchKeyword(route.query.search);
   }
   fetchProducts();
 });
@@ -543,7 +523,7 @@ const selectedFilters = ref({
 });
 
 // 获取产品关键词
-const getProductKeywords = (product: Product) => {
+const getProductKeywords = (product) => {
   if (!product.keywords) return [];
   
   // 将逗号分隔的字符串转换为数组，并去除空格
