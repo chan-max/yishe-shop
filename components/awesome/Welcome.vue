@@ -792,6 +792,20 @@ onMounted(() => {
       </div>
     </div>
 
+    <!-- 黑色菜单栏 -->
+    <div class="black-menu-bar">
+      <div class="container mx-auto">
+        <div class="black-menu-content">
+          <!-- 内容待定 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 渐变Banner -->
+    <div class="gradient-banner">
+      <!-- 内容待定 -->
+    </div>
+
     <!-- <div
       class="w-full h-24 mt-[1px]"
       style="background-color: rgba(105, 0, 255, 0.6)"
@@ -1169,7 +1183,6 @@ html.dark {
 /* 导航菜单样式 */
 .navigation-menu {
   position: relative;
-  z-index: 1000;
 }
 
 .nav-container {
@@ -1578,6 +1591,337 @@ html.dark {
   .nav-link {
     font-size: 12px;
     padding: 4px 6px;
+  }
+}
+
+// 黑色菜单栏样式
+.black-menu-bar {
+  background: #000000;
+  padding: 8px 0;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.black-menu-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.black-menu-item {
+  position: relative;
+}
+
+.black-menu-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  &:hover::after {
+    width: 80%;
+  }
+}
+
+// 渐变Banner样式
+.gradient-banner {
+  background: radial-gradient(circle, #F5F5F5 0%, #736F7A 100%);
+  height: 100vh;
+  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%);
+    pointer-events: none;
+  }
+}
+
+.banner-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-text {
+  color: white;
+}
+
+.banner-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.banner-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 32px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.banner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  
+  &.primary {
+    background: white;
+    color: #667eea;
+    
+    &:hover {
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+  }
+  
+  &.secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    
+    &:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.banner-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outfit-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.outfit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.outfit-placeholder {
+  width: 80px;
+  height: 120px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
+  
+  &.floral {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    &::after {
+      content: '🌸';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+  }
+  
+  &.pinstripe {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    &::after {
+      content: '⚡';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+  }
+  
+  &.cream {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    &::after {
+      content: '✨';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+  }
+}
+
+.outfit-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.9;
+}
+
+// 响应式设计
+@media (max-width: 1024px) {
+  .banner-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .banner-title {
+    font-size: 2.5rem;
+  }
+  
+  .outfit-showcase {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gradient-banner {
+    height: 100vh;
+  }
+  
+  .banner-title {
+    font-size: 2rem;
+  }
+  
+  .banner-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .banner-buttons {
+    justify-content: center;
+  }
+  
+  .outfit-showcase {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 280px;
+  }
+  
+  .outfit-placeholder {
+    width: 60px;
+    height: 90px;
+  }
+  
+  .outfit-label {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .black-menu-content {
+    gap: 20px;
+    padding: 0 16px;
+  }
+  
+  .black-menu-link {
+    font-size: 0.875rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .black-menu-bar {
+    padding: 6px 0;
+  }
+  
+  .black-menu-content {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  
+  .black-menu-link {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gradient-banner {
+    height: 100vh;
+  }
+  
+  .banner-title {
+    font-size: 1.75rem;
+  }
+  
+  .banner-subtitle {
+    font-size: 1rem;
+  }
+  
+  .banner-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .banner-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .outfit-showcase {
+    gap: 12px;
+  }
+  
+  .outfit-placeholder {
+    width: 50px;
+    height: 75px;
   }
 }
 </style>
