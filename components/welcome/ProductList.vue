@@ -1,6 +1,6 @@
 <template>
   <!-- 商品展示区 -->
-  <div class="w-full px-4 py-8">
+  <div class="w-full px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       <!-- 商品卡片 -->
       <div v-for="product in products" :key="product.id" 

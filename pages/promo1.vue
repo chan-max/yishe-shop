@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
     <h1 class="text-3xl font-bold mb-6">新人注册送100积分</h1>
     <div class="bg-white rounded-lg shadow-lg p-6">
       <p class="text-lg mb-4">欢迎加入我们！</p>

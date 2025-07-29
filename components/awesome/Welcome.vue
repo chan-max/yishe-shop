@@ -604,7 +604,7 @@ onMounted(() => {
     </v-snackbar>
 
     <!-- 导航菜单 -->
-    <div class="navigation-menu">
+    <div class="navigation-menu" v-if="false">
       <div class="nav-container">
         <div class="nav-bar">
           <div class="container mx-auto">
@@ -724,13 +724,13 @@ onMounted(() => {
     </div>
 
     <!-- 黑色菜单栏 -->
-    <div class="black-menu-bar">
+    <!-- <div class="black-menu-bar">
       <div class="container mx-auto">
         <div class="black-menu-content">
-          <!-- 内容待定 -->
+
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 渐变Banner -->
     <div class="gradient-banner">
@@ -759,7 +759,7 @@ onMounted(() => {
               <span class="animated-text-fg">{{ item.text }}</span>
             </span>
           </h1>
-          <div class="px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
+          <div class="px-2 sm:px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
             {{ awesome?.description || "最具创意的开放式服装设计平台" }}
           </div>
           <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
@@ -875,7 +875,7 @@ onMounted(() => {
 
     <!-- 商品展示链接部分 -->
     <div class="my-16 w-full bg-gray-50 py-16">
-      <div class="container mx-auto px-4 text-center">
+              <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
         <h2 class="text-3xl font-bold mb-4">探索精选商品</h2>
         <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
           发现独特的服装设计，展现您的个性风格。我们精心挑选了各种风格的服装，满足您的不同需求。

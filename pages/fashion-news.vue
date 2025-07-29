@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
     <h1 class="text-2xl font-bold mb-6">时尚资讯</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- 这里后续可以添加时尚资讯文章列表 -->

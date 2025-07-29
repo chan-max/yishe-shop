@@ -8,7 +8,7 @@
 -->
 <template>
   <header class="bg-white shadow">
-    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <nav class="mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 2xl:px-12 max-w-7xl">
       <div class="flex h-16 justify-between">
         <div class="flex">
           <div class="flex flex-shrink-0 items-center">

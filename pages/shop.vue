@@ -2,7 +2,7 @@
   <div class="min-h-screen w-full">
     <!-- 顶部筛选栏 -->
     <div class="sticky top-16 z-40 shadow-sm">
-      <div class="w-full px-4">
+      <div class="w-full px-2 sm:px-4 lg:px-6 xl:px-8">
         <!-- 主要筛选条件 -->
         <div class="flex flex-wrap items-center justify-between py-4 gap-4">
           <!-- 左侧筛选组 -->
@@ -101,7 +101,7 @@
     </div>
 
     <!-- 商品展示区 -->
-    <div class="w-full px-4 py-8">
+            <div class="w-full px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <!-- 商品卡片 -->
         <div v-for="product in products" :key="product.id" 

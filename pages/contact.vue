@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
     <h1 class="text-3xl font-bold mb-6">联系我们</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="bg-white rounded-lg shadow-lg p-6">

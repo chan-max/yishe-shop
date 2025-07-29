@@ -184,7 +184,7 @@ onClickOutside(mobileSearchRef, () => {
 <template>
   <div class="relative">
     <!-- 占位元素，防止固定定位导致的内容跳动 -->
-    <div class="h-[120px]" v-if="isFixed"></div>
+    <!-- <div class="h-[120px]" v-if="isFixed"></div> -->
     <!-- 导航栏 -->
     <div
       :class="[
@@ -193,7 +193,7 @@ onClickOutside(mobileSearchRef, () => {
       ]"
     >
       <!-- 广告内容 -->
-      <div class="w-full bg-white text-black py-1">
+      <!-- <div class="w-full bg-white text-black py-1">
         <div class="container mx-auto">
           <div
             class="flex items-center justify-center text-center overflow-hidden h-8"
@@ -218,17 +218,17 @@ onClickOutside(mobileSearchRef, () => {
             </Transition>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- 导航栏 -->
-      <header class="bg-[#2D2D2D] text-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex h-18 items-center gap-4">
+      <header class="bg-white text-black">
+        <div class=" mx-auto px-6 sm:px-4 lg:px-6 xl:px-8 2xl:px-12">
+          <div class="flex h-[54px] items-center gap-4">
             <!-- title -->
             <div class="flex items-center flex-shrink-0">
               <slot name="title">
-                <NuxtLink to="/" class="font-bold text-lg text-white">
+                <NuxtLink to="/" class="font-bold text-lg text-black">
                   <div class="flex items-center gap-2">
-                    <!-- <img src="/logo.svg" class="h-8 lg:h-10" /> -->
+                    <img src="/logo.svg" class="h-8 lg:h-10" />
                     <NuxtLink to="/" class="text-xl font-thin">
                       <span style="font-family: logo!important;">衣设服装设计</span>
                     </NuxtLink>
@@ -237,25 +237,25 @@ onClickOutside(mobileSearchRef, () => {
               </slot>
             </div>
             <!-- PC端菜单 -->
-            <div class="hidden lg:flex items-center h-16 flex-shrink-0">
+            <div class="hidden lg:flex items-center h-[54px] flex-shrink-0">
               <NuxtLink
                 to="/"
-                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
-                :class="[route.path === '/' ? 'text-white bg-[#444] rounded font-bold' : '']"
+                class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
+                :class="[route.path === '/' ? 'text-black bg-gray-200 rounded' : '']"
               >
                 首页
               </NuxtLink>
               <NuxtLink
                 to="/new-arrivals"
-                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
-                :class="[route.path === '/new-arrivals' ? 'text-white bg-[#444] rounded font-bold' : '']"
+                class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
+                :class="[route.path === '/new-arrivals' ? 'text-black bg-gray-200 rounded' : '']"
               >
                 新品上市
               </NuxtLink>
               <NuxtLink
                 to="/products"
-                class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
-                :class="[route.path === '/products' ? 'text-white bg-[#444] rounded font-bold' : '']"
+                class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
+                :class="[route.path === '/products' ? 'text-black bg-gray-200 rounded' : '']"
               >
                 精选商品
               </NuxtLink>
@@ -270,16 +270,16 @@ onClickOutside(mobileSearchRef, () => {
                     v-model="searchQuery"
                     type="text"
                     placeholder="搜索商品..."
-                    class="w-full px-4 py-2.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-16"
+                    class="w-full px-4 py-2.5 rounded-full bg-gray-100 border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-[10px] pr-12"
                     @keyup.enter="performSearch"
                     @focus="isSearchFocused = true"
                     @blur="handleSearchBlur"
                   />
                   <button
                     @click="performSearch"
-                    class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-3 py-2 transition-colors shadow-sm"
+                    class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-3 py-1.5 transition-colors shadow-sm"
                   >
-                    <Icon name="uil:search" class="w-5 h-5" />
+                    <Icon name="uil:search" class="w-4 h-4" />
                   </button>
                 </div>
 
@@ -297,7 +297,7 @@ onClickOutside(mobileSearchRef, () => {
                           v-for="suggestion in searchSuggestions"
                           :key="suggestion"
                           @click="selectSuggestion(suggestion)"
-                          class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
+                          class="px-3 py-1 bg-gray-100 text-gray-600 text-[10px] rounded-full hover:bg-gray-300 hover:text-black transition-colors"
                         >
                           {{ suggestion }}
                         </button>
@@ -312,7 +312,7 @@ onClickOutside(mobileSearchRef, () => {
                           v-for="(item, index) in hotSearches"
                           :key="index"
                           @click="selectHotSearch(item)"
-                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-[#2d2d2d] hover:text-white rounded-lg transition-colors"
+                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-200 hover:text-black rounded-lg transition-colors"
                         >
                           <span class="text-gray-700">{{ item.text }}</span>
                           <span class="text-xs text-gray-400"
@@ -325,7 +325,7 @@ onClickOutside(mobileSearchRef, () => {
                 </div>
               </div>
               <div class="flex items-center gap-4 flex-shrink-0">
-                <button class="text-white/70 hover:text-white transition-colors">
+                <button class="text-gray-600 hover:text-black transition-colors">
                   <Icon name="uil:comment-dots" class="w-6 h-6" />
                 </button>
               </div>
@@ -335,7 +335,7 @@ onClickOutside(mobileSearchRef, () => {
             <div class="flex lg:hidden items-center gap-4 ml-auto flex-shrink-0">
               <button
                 @click="toggleMobileMenu"
-                class="text-white/70 hover:text-white transition-colors mobile-button"
+                class="text-gray-600 hover:text-black transition-colors mobile-button"
               >
                 <Icon name="uil:bars" class="w-6 h-6" />
               </button>
@@ -346,14 +346,14 @@ onClickOutside(mobileSearchRef, () => {
           <Transition name="mobile-search">
             <div v-if="isMobileSearchOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50" ref="mobileSearchRef">
               <div class="bg-white h-full w-full">
-                <div class="container mx-auto px-4 py-4">
+                                  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-4">
                   <div class="flex items-center justify-between mb-4">
                     <div class="relative flex-1 mr-4">
                       <input
                         v-model="searchQuery"
                         type="text"
                         placeholder="搜索商品..."
-                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-16"
+                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-[10px] pr-16"
                         @keyup.enter="performSearch"
                       />
                       <button
@@ -371,7 +371,7 @@ onClickOutside(mobileSearchRef, () => {
                     </button>
                   </div>
                   
-                  <!-- 搜索建议 -->
+                                    <!-- 搜索建议 -->
                   <div v-if="searchQuery" class="mb-4">
                     <h3 class="text-sm font-medium text-gray-500 mb-2">搜索建议</h3>
                     <div class="flex flex-wrap gap-2">
@@ -379,7 +379,7 @@ onClickOutside(mobileSearchRef, () => {
                         v-for="suggestion in searchSuggestions"
                         :key="suggestion"
                         @click="selectSuggestion(suggestion)"
-                        class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
+                        class="px-3 py-1 bg-gray-100 text-gray-600 text-[10px] rounded-full hover:bg-gray-300 hover:text-black transition-colors"
                       >
                         {{ suggestion }}
                       </button>
@@ -414,14 +414,14 @@ onClickOutside(mobileSearchRef, () => {
                       </button>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                      <button
-                        v-for="history in searchHistory"
-                        :key="history"
-                        @click="selectSuggestion(history)"
-                        class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-[#2d2d2d] hover:text-white transition-colors"
-                      >
-                        {{ history }}
-                      </button>
+                                              <button
+                          v-for="history in searchHistory"
+                          :key="history"
+                          @click="selectSuggestion(history)"
+                          class="px-3 py-1 bg-gray-100 text-gray-600 text-[10px] rounded-full hover:bg-gray-300 hover:text-black transition-colors"
+                        >
+                          {{ history }}
+                        </button>
                     </div>
                   </div>
                 </div>
@@ -457,7 +457,7 @@ onClickOutside(mobileSearchRef, () => {
                         to="/"
                         @click="closeMobileMenu"
                         class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="[route.path === '/' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                        :class="[route.path === '/' ? 'bg-gray-200 text-black' : 'text-gray-700']"
                       >
                         <Icon name="uil:home" class="w-5 h-5 mr-3" />
                         <span>首页</span>
@@ -466,7 +466,7 @@ onClickOutside(mobileSearchRef, () => {
                         to="/new-arrivals"
                         @click="closeMobileMenu"
                         class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="[route.path === '/new-arrivals' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                        :class="[route.path === '/new-arrivals' ? 'bg-gray-200 text-black' : 'text-gray-700']"
                       >
                         <Icon name="uil:star" class="w-5 h-5 mr-3" />
                         <span>新品上市</span>
@@ -475,7 +475,7 @@ onClickOutside(mobileSearchRef, () => {
                         to="/products"
                         @click="closeMobileMenu"
                         class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="[route.path === '/products' ? 'bg-[#2d2d2d] text-white' : 'text-gray-700']"
+                        :class="[route.path === '/products' ? 'bg-gray-200 text-black' : 'text-gray-700']"
                       >
                         <Icon name="uil:shopping-bag" class="w-5 h-5 mr-3" />
                         <span>精选商品</span>

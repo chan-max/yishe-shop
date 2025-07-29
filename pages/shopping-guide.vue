@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
     <h1 class="text-2xl font-bold mb-6">购物指南</h1>
     <div class="space-y-6">
       <div class="bg-white p-6 rounded-lg shadow">

@@ -1,7 +1,7 @@
 <template>
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
     <div class="max-w-[1440px] mx-auto">
-      <div class="px-4 py-8">
+              <div class="px-2 sm:px-4 py-8">
         <!-- 商品列表标题 -->
         <div class="text-center mb-8">
           <h2 class="text-3xl font-bold mb-2">精选商品</h2>
