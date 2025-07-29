@@ -141,6 +141,414 @@ const submitDesignRequest = async () => {
   }
 };
 
+const categories = ref([
+  {
+    name: '上衣',
+    path: '/category/tops',
+    subcategories: [
+      { name: 'T恤', path: '/category/tops/t-shirts' },
+      { name: '衬衫', path: '/category/tops/shirts' },
+      { name: '卫衣', path: '/category/tops/hoodies' },
+      { name: '毛衣', path: '/category/tops/sweaters' },
+      { name: '背心', path: '/category/tops/tank-tops' },
+      { name: 'POLO衫', path: '/category/tops/polo-shirts' },
+      { name: '针织衫', path: '/category/tops/knitwear' },
+      { name: '马甲', path: '/category/tops/vests' },
+      { name: '开衫', path: '/category/tops/cardigans' },
+      { name: '高领衫', path: '/category/tops/turtlenecks' },
+      { name: '吊带', path: '/category/tops/straps' },
+      { name: '抹胸', path: '/category/tops/tube-tops' },
+      { name: '露肩上衣', path: '/category/tops/off-shoulder' },
+      { name: '一字肩上衣', path: '/category/tops/one-shoulder' },
+      { name: '荷叶边上衣', path: '/category/tops/ruffle-tops' }
+    ],
+    brands: [
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' },
+      { name: 'COS', image: '/brands/cos.jpg' },
+      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
+      { name: 'Mango', image: '/brands/mango.jpg' },
+      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
+      { name: 'Bershka', image: '/brands/bershka.jpg' },
+      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
+      { name: 'C&A', image: '/brands/ca.jpg' }
+    ],
+    styles: [
+      { name: '基础款T恤', path: '/category/tops/basic-tees' },
+      { name: '印花T恤', path: '/category/tops/printed-tees' },
+      { name: '条纹衬衫', path: '/category/tops/striped-shirts' },
+      { name: '格子衬衫', path: '/category/tops/plaid-shirts' },
+      { name: '连帽卫衣', path: '/category/tops/hooded-sweatshirts' },
+      { name: '圆领卫衣', path: '/category/tops/crew-neck-sweatshirts' },
+      { name: 'V领毛衣', path: '/category/tops/v-neck-sweaters' },
+      { name: '圆领毛衣', path: '/category/tops/crew-neck-sweaters' },
+      { name: '高领毛衣', path: '/category/tops/turtleneck-sweaters' },
+      { name: '开衫毛衣', path: '/category/tops/cardigan-sweaters' },
+      { name: '针织背心', path: '/category/tops/knit-vests' },
+      { name: 'Polo衫', path: '/category/tops/polo-shirts' },
+      { name: '吊带上衣', path: '/category/tops/strappy-tops' },
+      { name: '露肩上衣', path: '/category/tops/off-shoulder-tops' },
+      { name: '一字肩上衣', path: '/category/tops/one-shoulder-tops' }
+    ],
+    featured: [
+      { name: '基础款T恤', image: '/featured/basic-tee.jpg' },
+      { name: '连帽卫衣', image: '/featured/hoodie.jpg' },
+      { name: '商务衬衫', image: '/featured/business-shirt.jpg' }
+    ],
+    trending: [
+      { name: '新品上市', path: '/category/tops/new-arrivals' },
+      { name: '热销商品', path: '/category/tops/bestsellers' },
+      { name: '限时特惠', path: '/category/tops/sale' },
+      { name: '春季新品', path: '/category/tops/spring-collection' },
+      { name: '夏季必备', path: '/category/tops/summer-essentials' },
+      { name: '秋季系列', path: '/category/tops/autumn-collection' }
+    ]
+  },
+  {
+    name: '裤子',
+    path: '/category/pants',
+    subcategories: [
+      { name: '牛仔裤', path: '/category/pants/jeans' },
+      { name: '休闲裤', path: '/category/pants/casual' },
+      { name: '运动裤', path: '/category/pants/sports' },
+      { name: '短裤', path: '/category/pants/shorts' },
+      { name: '工装裤', path: '/category/pants/workwear' },
+      { name: '西裤', path: '/category/pants/suit-pants' },
+      { name: '阔腿裤', path: '/category/pants/wide-leg' },
+      { name: '紧身裤', path: '/category/pants/skinny' },
+      { name: '哈伦裤', path: '/category/pants/harem' },
+      { name: '背带裤', path: '/category/pants/overalls' },
+      { name: '九分裤', path: '/category/pants/cropped' },
+      { name: '高腰裤', path: '/category/pants/high-waist' },
+      { name: '低腰裤', path: '/category/pants/low-waist' },
+      { name: '直筒裤', path: '/category/pants/straight' },
+      { name: '喇叭裤', path: '/category/pants/flare' },
+      { name: '烟管裤', path: '/category/pants/skinny-fit' },
+      { name: '老爹裤', path: '/category/pants/dad-jeans' },
+      { name: '破洞牛仔裤', path: '/category/pants/ripped-jeans' }
+    ],
+    brands: [
+      { name: 'Levi\'s', image: '/brands/levis.jpg' },
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' },
+      { name: 'COS', image: '/brands/cos.jpg' },
+      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
+      { name: 'Mango', image: '/brands/mango.jpg' },
+      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
+      { name: 'Bershka', image: '/brands/bershka.jpg' },
+      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
+      { name: 'C&A', image: '/brands/ca.jpg' },
+      { name: 'Lee', image: '/brands/lee.jpg' },
+      { name: 'Wrangler', image: '/brands/wrangler.jpg' }
+    ],
+    styles: [
+      { name: '直筒牛仔裤', path: '/category/pants/straight-jeans' },
+      { name: '修身牛仔裤', path: '/category/pants/slim-jeans' },
+      { name: '阔腿裤', path: '/category/pants/wide-leg-pants' },
+      { name: '运动裤', path: '/category/pants/track-pants' },
+      { name: '工装裤', path: '/category/pants/cargo-pants' },
+      { name: '西装裤', path: '/category/pants/suit-pants' },
+      { name: '九分裤', path: '/category/pants/cropped-pants' },
+      { name: '高腰裤', path: '/category/pants/high-waist' },
+      { name: '低腰裤', path: '/category/pants/low-waist' },
+      { name: '喇叭裤', path: '/category/pants/flare-pants' },
+      { name: '烟管裤', path: '/category/pants/skinny-fit-pants' },
+      { name: '老爹牛仔裤', path: '/category/pants/dad-jeans' },
+      { name: '破洞牛仔裤', path: '/category/pants/ripped-jeans' },
+      { name: '背带裤', path: '/category/pants/overalls' },
+      { name: '哈伦裤', path: '/category/pants/harem-pants' }
+    ],
+    featured: [
+      { name: '直筒牛仔裤', image: '/featured/straight-jeans.jpg' },
+      { name: '运动裤', image: '/featured/track-pants.jpg' },
+      { name: '工装裤', image: '/featured/cargo-pants.jpg' }
+    ],
+    trending: [
+      { name: '新品上市', path: '/category/pants/new-arrivals' },
+      { name: '热销商品', path: '/category/pants/bestsellers' },
+      { name: '限时特惠', path: '/category/pants/sale' },
+      { name: '春季新品', path: '/category/pants/spring-collection' },
+      { name: '夏季必备', path: '/category/pants/summer-essentials' },
+      { name: '秋季系列', path: '/category/pants/autumn-collection' },
+      { name: '牛仔裤专区', path: '/category/pants/jeans-zone' },
+      { name: '运动裤专区', path: '/category/pants/sports-zone' }
+    ]
+  },
+  {
+    name: '裙子',
+    path: '/category/dresses',
+    subcategories: [
+      { name: '连衣裙', path: '/category/dresses/dresses' },
+      { name: '半身裙', path: '/category/dresses/skirts' },
+      { name: '迷你裙', path: '/category/dresses/mini-skirts' },
+      { name: '长裙', path: '/category/dresses/maxi-dresses' },
+      { name: '礼服裙', path: '/category/dresses/formal' },
+      { name: '百褶裙', path: '/category/dresses/pleated' },
+      { name: 'A字裙', path: '/category/dresses/a-line' },
+      { name: '包臀裙', path: '/category/dresses/pencil' },
+      { name: '蓬蓬裙', path: '/category/dresses/tutu' },
+      { name: '鱼尾裙', path: '/category/dresses/mermaid' },
+      { name: '吊带裙', path: '/category/dresses/strappy' },
+      { name: '碎花裙', path: '/category/dresses/floral' },
+      { name: '小黑裙', path: '/category/dresses/little-black' },
+      { name: '晚礼服', path: '/category/dresses/evening' },
+      { name: '婚纱', path: '/category/dresses/wedding' },
+      { name: '旗袍', path: '/category/dresses/qipao' },
+      { name: '汉服', path: '/category/dresses/hanfu' },
+      { name: '洛丽塔', path: '/category/dresses/lolita' }
+    ],
+    brands: [
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' },
+      { name: 'COS', image: '/brands/cos.jpg' },
+      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
+      { name: 'Mango', image: '/brands/mango.jpg' },
+      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
+      { name: 'Bershka', image: '/brands/bershka.jpg' },
+      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
+      { name: 'C&A', image: '/brands/ca.jpg' },
+      { name: 'Forever 21', image: '/brands/forever21.jpg' },
+      { name: 'Topshop', image: '/brands/topshop.jpg' }
+    ],
+    styles: [
+      { name: 'A字裙', path: '/category/dresses/a-line-dresses' },
+      { name: '吊带裙', path: '/category/dresses/strappy-dresses' },
+      { name: '碎花裙', path: '/category/dresses/floral-dresses' },
+      { name: '小黑裙', path: '/category/dresses/little-black-dress' },
+      { name: '百褶裙', path: '/category/dresses/pleated-skirts' },
+      { name: '包臀裙', path: '/category/dresses/pencil-skirts' },
+      { name: '蓬蓬裙', path: '/category/dresses/tutu-skirts' },
+      { name: '鱼尾裙', path: '/category/dresses/mermaid-skirts' },
+      { name: '迷你裙', path: '/category/dresses/mini-skirts' },
+      { name: '长裙', path: '/category/dresses/maxi-skirts' },
+      { name: '晚礼服', path: '/category/dresses/evening-dresses' },
+      { name: '婚纱', path: '/category/dresses/wedding-dresses' },
+      { name: '旗袍', path: '/category/dresses/qipao-dresses' },
+      { name: '汉服', path: '/category/dresses/hanfu-dresses' },
+      { name: '洛丽塔', path: '/category/dresses/lolita-dresses' }
+    ],
+    featured: [
+      { name: 'A字裙', image: '/featured/a-line-dress.jpg' },
+      { name: '碎花裙', image: '/featured/floral-dress.jpg' },
+      { name: '小黑裙', image: '/featured/little-black-dress.jpg' }
+    ],
+    trending: [
+      { name: '新品上市', path: '/category/dresses/new-arrivals' },
+      { name: '热销商品', path: '/category/dresses/bestsellers' },
+      { name: '限时特惠', path: '/category/dresses/sale' },
+      { name: '春季新品', path: '/category/dresses/spring-collection' },
+      { name: '夏季必备', path: '/category/dresses/summer-essentials' },
+      { name: '秋季系列', path: '/category/dresses/autumn-collection' },
+      { name: '连衣裙专区', path: '/category/dresses/dresses-zone' },
+      { name: '半身裙专区', path: '/category/dresses/skirts-zone' },
+      { name: '礼服专区', path: '/category/dresses/formal-zone' }
+    ]
+  },
+  {
+    name: '外套',
+    path: '/category/outerwear',
+    subcategories: [
+      { name: '夹克', path: '/category/outerwear/jackets' },
+      { name: '风衣', path: '/category/outerwear/trench-coats' },
+      { name: '羽绒服', path: '/category/outerwear/down-jackets' },
+      { name: '西装外套', path: '/category/outerwear/blazers' },
+      { name: '皮衣', path: '/category/outerwear/leather' },
+      { name: '毛呢大衣', path: '/category/outerwear/wool-coats' }
+    ],
+    brands: [
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' }
+    ],
+    styles: [
+      { name: '牛仔夹克', path: '/category/outerwear/denim-jackets' },
+      { name: '飞行员夹克', path: '/category/outerwear/bomber-jackets' },
+      { name: '风衣', path: '/category/outerwear/trench-coats' },
+      { name: '羽绒服', path: '/category/outerwear/down-jackets' },
+      { name: '西装外套', path: '/category/outerwear/blazers' },
+      { name: '皮衣', path: '/category/outerwear/leather-jackets' }
+    ],
+    featured: [
+      { name: '牛仔夹克', image: '/featured/denim-jacket.jpg' },
+      { name: '飞行员夹克', image: '/featured/bomber-jacket.jpg' },
+      { name: '风衣', image: '/featured/trench-coat.jpg' }
+    ],
+    trending: [
+      { name: '新品上市', path: '/category/outerwear/new-arrivals' },
+      { name: '热销商品', path: '/category/outerwear/bestsellers' },
+      { name: '限时特惠', path: '/category/outerwear/sale' }
+    ]
+  },
+  {
+    name: '内衣',
+    path: '/category/underwear',
+    subcategories: [
+      { name: '内裤', path: '/category/underwear/underwear' },
+      { name: '胸罩', path: '/category/underwear/bras' },
+      { name: '家居服', path: '/category/underwear/loungewear' },
+      { name: '睡衣', path: '/category/underwear/pajamas' },
+      { name: '塑身衣', path: '/category/underwear/shapewear' },
+      { name: '运动内衣', path: '/category/underwear/sports-bras' }
+    ],
+    brands: [
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' }
+    ],
+    styles: [
+      { name: '基础款内衣', path: '/category/underwear/basic-underwear' },
+      { name: '蕾丝内衣', path: '/category/underwear/lace-underwear' },
+      { name: '运动内衣', path: '/category/underwear/sports-bras' },
+      { name: '家居服', path: '/category/underwear/loungewear' },
+      { name: '睡衣', path: '/category/underwear/pajamas' },
+      { name: '塑身衣', path: '/category/underwear/shapewear' }
+    ],
+    featured: [
+      { name: '基础款内衣', image: '/featured/basic-underwear.jpg' },
+      { name: '运动内衣', image: '/featured/sports-bra.jpg' },
+      { name: '家居服', image: '/featured/loungewear.jpg' }
+    ]
+  },
+  {
+    name: '配饰',
+    path: '/category/accessories',
+    subcategories: [
+      { name: '帽子', path: '/category/accessories/hats' },
+      { name: '围巾', path: '/category/accessories/scarves' },
+      { name: '手套', path: '/category/accessories/gloves' },
+      { name: '腰带', path: '/category/accessories/belts' },
+      { name: '袜子', path: '/category/accessories/socks' },
+      { name: '太阳镜', path: '/category/accessories/sunglasses' }
+    ],
+    brands: [
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' }
+    ],
+    styles: [
+      { name: '棒球帽', path: '/category/accessories/baseball-caps' },
+      { name: '贝雷帽', path: '/category/accessories/berets' },
+      { name: '围巾', path: '/category/accessories/scarves' },
+      { name: '手套', path: '/category/accessories/gloves' },
+      { name: '腰带', path: '/category/accessories/belts' },
+      { name: '太阳镜', path: '/category/accessories/sunglasses' }
+    ],
+    featured: [
+      { name: '棒球帽', image: '/featured/baseball-cap.jpg' },
+      { name: '围巾', image: '/featured/scarf.jpg' },
+      { name: '太阳镜', image: '/featured/sunglasses.jpg' }
+    ]
+  },
+  {
+    name: '鞋靴',
+    path: '/category/shoes',
+    subcategories: [
+      { name: '运动鞋', path: '/category/shoes/sneakers' },
+      { name: '皮鞋', path: '/category/shoes/dress-shoes' },
+      { name: '靴子', path: '/category/shoes/boots' },
+      { name: '凉鞋', path: '/category/shoes/sandals' },
+      { name: '拖鞋', path: '/category/shoes/slippers' },
+      { name: '高跟鞋', path: '/category/shoes/heels' }
+    ],
+    brands: [
+      { name: 'Nike', image: '/brands/nike.jpg' },
+      { name: 'Adidas', image: '/brands/adidas.jpg' },
+      { name: 'Converse', image: '/brands/converse.jpg' },
+      { name: 'Vans', image: '/brands/vans.jpg' },
+      { name: 'New Balance', image: '/brands/new-balance.jpg' }
+    ],
+    styles: [
+      { name: 'Nike Air Force 1', path: '/category/shoes/nike-air-force-1' },
+      { name: 'Adidas Stan Smith', path: '/category/shoes/adidas-stan-smith' },
+      { name: 'Converse Chuck Taylor', path: '/category/shoes/converse-chuck-taylor' },
+      { name: 'Vans Old Skool', path: '/category/shoes/vans-old-skool' },
+      { name: 'New Balance 574', path: '/category/shoes/new-balance-574' },
+      { name: 'Dr. Martens', path: '/category/shoes/dr-martens' }
+    ],
+    featured: [
+      { name: '黑色运动鞋', image: '/featured/black-sneakers.jpg' },
+      { name: '切尔西靴', image: '/featured/chelsea-boots.jpg' },
+      { name: '复古运动鞋', image: '/featured/retro-sneakers.jpg' }
+    ],
+    trending: [
+      { name: '新品上市', path: '/category/shoes/new-arrivals' },
+      { name: '热销商品', path: '/category/shoes/bestsellers' },
+      { name: '限时特惠', path: '/category/shoes/sale' }
+    ]
+  },
+  {
+    name: '包包',
+    path: '/category/bags',
+    subcategories: [
+      { name: '手提包', path: '/category/bags/handbags' },
+      { name: '双肩包', path: '/category/bags/backpacks' },
+      { name: '钱包', path: '/category/bags/wallets' },
+      { name: '旅行包', path: '/category/bags/travel-bags' },
+      { name: '单肩包', path: '/category/bags/shoulder-bags' },
+      { name: '腰包', path: '/category/bags/fanny-packs' }
+    ],
+    brands: [
+      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
+      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
+      { name: 'H&M', image: '/brands/hm.jpg' },
+      { name: 'ZARA', image: '/brands/zara.jpg' },
+      { name: 'GAP', image: '/brands/gap.jpg' }
+    ],
+    styles: [
+      { name: '托特包', path: '/category/bags/tote-bags' },
+      { name: '双肩包', path: '/category/bags/backpacks' },
+      { name: '钱包', path: '/category/bags/wallets' },
+      { name: '旅行包', path: '/category/bags/travel-bags' },
+      { name: '单肩包', path: '/category/bags/shoulder-bags' },
+      { name: '腰包', path: '/category/bags/fanny-packs' }
+    ],
+    featured: [
+      { name: '托特包', image: '/featured/tote-bag.jpg' },
+      { name: '双肩包', image: '/featured/backpack.jpg' },
+      { name: '钱包', image: '/featured/wallet.jpg' }
+    ]
+  }
+]);
+
+const activeCategory = ref<number | null>(null);
+const isDropdownVisible = ref(false);
+
+const showDropdown = (index: number) => {
+  activeCategory.value = index;
+  isDropdownVisible.value = true;
+};
+
+const hideDropdown = () => {
+  isDropdownVisible.value = false;
+  setTimeout(() => {
+    if (!isDropdownVisible.value) {
+      activeCategory.value = null;
+    }
+  }, 150);
+};
+
+const handleMouseEnter = (index: number) => {
+  showDropdown(index);
+};
+
+const handleMouseLeave = () => {
+  hideDropdown();
+};
+
 const leadingsText = computed(() => [
   {
     text: "最具创意的",
@@ -264,7 +672,125 @@ onMounted(() => {
       提交失败 - 请稍后重试
     </v-snackbar>
 
-    <div class="w-full h-12 bg-black flex items-center justify-center"></div>
+    <!-- 导航菜单 -->
+    <div class="navigation-menu">
+      <div class="nav-container">
+        <div class="nav-bar">
+          <div class="container mx-auto">
+            <div class="nav-items pl-4">
+              <div
+                v-for="(category, index) in categories"
+                :key="index"
+                class="nav-item"
+                @mouseenter="handleMouseEnter(index)"
+                @mouseleave="handleMouseLeave"
+              >
+                <NuxtLink :to="category.path" class="nav-link">
+                  {{ category.name }}
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 下拉菜单 -->
+        <Transition name="dropdown">
+          <div
+            v-if="isDropdownVisible && activeCategory !== null"
+            class="dropdown-menu"
+            @mouseenter="showDropdown(activeCategory!)"
+            @mouseleave="handleMouseLeave"
+          >
+            <div class="container mx-auto">
+              <div class="dropdown-content pl-8">
+                <div class="dropdown-grid">
+                  <!-- 左侧文本区域 -->
+                  <div class="text-sections">
+                    <!-- 按产品分类 -->
+                    <div class="text-section">
+                      <h3 class="section-title">按产品分类</h3>
+                      <div class="section-list">
+                        <NuxtLink
+                          v-for="subcategory in categories[activeCategory!].subcategories"
+                          :key="subcategory.path"
+                          :to="subcategory.path"
+                          class="section-item"
+                        >
+                          {{ subcategory.name }}
+                        </NuxtLink>
+                      </div>
+                    </div>
+
+                    <!-- 按品牌分类 -->
+                    <div class="text-section">
+                      <h3 class="section-title">按品牌分类</h3>
+                      <div class="brand-list">
+                        <div
+                          v-for="brand in categories[activeCategory!].brands"
+                          :key="brand.name"
+                          class="brand-item"
+                        >
+                          <div class="brand-image">
+                            <div class="brand-placeholder">{{ brand.name.charAt(0) }}</div>
+                          </div>
+                          <span class="brand-name">{{ brand.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 按款式分类 -->
+                    <div class="text-section">
+                      <h3 class="section-title">按款式分类</h3>
+                      <div class="section-list">
+                        <NuxtLink
+                          v-for="style in categories[activeCategory!].styles"
+                          :key="style.path"
+                          :to="style.path"
+                          class="section-item"
+                        >
+                          {{ style.name }}
+                        </NuxtLink>
+                      </div>
+                    </div>
+
+                    <!-- 热门趋势 -->
+                    <div class="text-section">
+                      <h3 class="section-title">热门趋势</h3>
+                      <div class="section-list">
+                        <NuxtLink
+                          v-for="trend in categories[activeCategory!].trending"
+                          :key="trend.path"
+                          :to="trend.path"
+                          class="section-item trending-item"
+                        >
+                          {{ trend.name }}
+                        </NuxtLink>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 右侧图片区域 -->
+                  <div class="image-sections">
+                    <div
+                      v-for="featured in categories[activeCategory!].featured"
+                      :key="featured.name"
+                      class="image-section"
+                    >
+                      <div class="image-content">
+                        <div class="image-text">{{ featured.name }}</div>
+                        <div class="image-placeholder">
+                          <div class="featured-placeholder">{{ featured.name.charAt(0) }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </div>
 
     <!-- <div
       class="w-full h-24 mt-[1px]"
@@ -640,8 +1166,370 @@ html.dark {
   }
 }
 
+/* 导航菜单样式 */
+.navigation-menu {
+  position: relative;
+  z-index: 1000;
+}
+
+.nav-container {
+  position: relative;
+}
+
+.nav-bar {
+  background-color: #525050;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: 0;
+  justify-content: flex-start;
+}
+
+.nav-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-top: 1px solid #e5e7eb;
+  z-index: 1001;
+}
+
+.dropdown-content {
+  padding: 32px 0;
+}
+
+.dropdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* 左侧文本区域 */
+.text-sections {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.text-section {
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+}
+
+.section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 300px;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+    
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+.section-item {
+  display: block;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  padding: 4px 0;
+  
+  &:hover {
+    color: #374151;
+    transform: translateX(4px);
+  }
+  
+  &.trending-item {
+    font-weight: 500;
+    color: #059669;
+    
+    &:hover {
+      color: #047857;
+    }
+  }
+}
+
+/* 品牌列表 */
+.brand-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+    
+    &:hover {
+      background: #94a3b8;
+    }
+  }
+}
+
+.brand-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    .brand-name {
+      color: #059669;
+    }
+  }
+}
+
+.brand-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.brand-name {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+/* 右侧图片区域 */
+.image-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.image-section {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+  }
+}
+
+.image-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  height: 80px;
+}
+
+.image-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+}
+
+.image-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featured-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+// 过渡动画
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.3s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 /* 响应式调整 */
+@media (max-width: 1024px) {
+  .dropdown-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .text-sections {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .section-list,
+  .brand-list {
+    max-height: 250px;
+  }
+  
+  .image-sections {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
+  .text-sections {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .section-title {
+    font-size: 13px !important;
+  }
+  
+  .section-item {
+    font-size: 13px;
+  }
+  
+  .brand-name {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-items {
+    gap: 16px;
+    padding: 0 16px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  
+  .nav-link {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  
+  .dropdown-content {
+    padding: 24px 16px;
+  }
+  
+  .subcategory-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-title {
+    font-size: 20px;
+  }
+  
   .design-card {
     height: auto;
     
@@ -679,6 +1567,17 @@ html.dark {
     .v-btn {
       align-self: center;
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-items {
+    gap: 12px;
+  }
+  
+  .nav-link {
+    font-size: 12px;
+    padding: 4px 6px;
   }
 }
 </style>

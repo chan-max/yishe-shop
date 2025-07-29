@@ -222,13 +222,13 @@ onClickOutside(mobileSearchRef, () => {
       <!-- 导航栏 -->
       <header class="bg-[#2D2D2D] text-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex h-16 items-center">
+          <div class="flex h-18 items-center gap-4">
             <!-- title -->
-            <div class="flex items-center">
+            <div class="flex items-center flex-shrink-0">
               <slot name="title">
                 <NuxtLink to="/" class="font-bold text-lg text-white">
                   <div class="flex items-center gap-2">
-                    <img src="/logo.svg" class="h-8 lg:h-10" />
+                    <!-- <img src="/logo.svg" class="h-8 lg:h-10" /> -->
                     <NuxtLink to="/" class="text-xl font-thin">
                       <span style="font-family: logo!important;">衣设服装设计</span>
                     </NuxtLink>
@@ -237,7 +237,7 @@ onClickOutside(mobileSearchRef, () => {
               </slot>
             </div>
             <!-- PC端菜单 -->
-            <div class="hidden lg:flex items-center ml-8 h-16">
+            <div class="hidden lg:flex items-center h-16 flex-shrink-0">
               <NuxtLink
                 to="/"
                 class="hover:text-gray-300 px-3 py-0 h-full flex items-center relative group text-xs"
@@ -261,25 +261,25 @@ onClickOutside(mobileSearchRef, () => {
               </NuxtLink>
             </div>
             <!-- 搜索框和图标按钮 -->
-            <div class="hidden lg:flex items-center space-x-6 ml-auto flex-1 max-w-3xl">
+            <div class="hidden lg:flex items-center gap-6 flex-1 min-w-0">
               <!-- 搜索框容器 -->
-              <div class="relative flex-1 max-w-md" ref="searchRef">
+              <div class="relative flex-1 min-w-0" ref="searchRef">
                 <!-- 搜索输入框 -->
                 <div class="relative">
                   <input
                     v-model="searchQuery"
                     type="text"
                     placeholder="搜索商品..."
-                    class="w-full px-4 py-2.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-12"
+                    class="w-full px-4 py-2.5 rounded-full bg-white border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-16"
                     @keyup.enter="performSearch"
                     @focus="isSearchFocused = true"
                     @blur="handleSearchBlur"
                   />
                   <button
                     @click="performSearch"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
+                    class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-3 py-2 transition-colors shadow-sm"
                   >
-                    <i class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></i>
+                    <Icon name="uil:search" class="w-5 h-5" />
                   </button>
                 </div>
 
@@ -324,31 +324,7 @@ onClickOutside(mobileSearchRef, () => {
                   </div>
                 </div>
               </div>
-              <div class="flex items-center space-x-4 flex-shrink-0">
-                <button
-                  class="text-white/70 hover:text-white transition-colors relative group"
-                >
-                  <Icon name="uil:heart" class="w-6 h-6" />
-                  <span
-                    class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
-                    >2</span
-                  >
-                </button>
-                <button
-                  class="text-white/70 hover:text-white transition-colors relative group"
-                >
-                  <Icon name="uil:shopping-cart" class="w-6 h-6" />
-                  <span
-                    class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
-                    >3</span
-                  >
-                </button>
-                <button class="text-white/70 hover:text-white transition-colors">
-                  <Icon name="uil:user" class="w-6 h-6" />
-                </button>
-                <button class="text-white/70 hover:text-white transition-colors">
-                  <Icon name="uil:bell" class="w-6 h-6" />
-                </button>
+              <div class="flex items-center gap-4 flex-shrink-0">
                 <button class="text-white/70 hover:text-white transition-colors">
                   <Icon name="uil:comment-dots" class="w-6 h-6" />
                 </button>
@@ -356,31 +332,7 @@ onClickOutside(mobileSearchRef, () => {
             </div>
 
             <!-- 移动端搜索和购物车按钮 -->
-            <div class="flex lg:hidden items-center space-x-4 ml-auto">
-              <button
-                class="text-white/70 hover:text-white transition-colors relative group mobile-button"
-              >
-                <Icon name="uil:heart" class="w-6 h-6" />
-                <span
-                  class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
-                  >2</span
-                >
-              </button>
-              <button
-                class="text-white/70 hover:text-white transition-colors relative group mobile-button"
-              >
-                <Icon name="uil:shopping-cart" class="w-6 h-6" />
-                <span
-                  class="absolute -top-2 -right-2 bg-[#d01345] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
-                  >3</span
-                >
-              </button>
-              <button
-                @click="toggleMobileSearch"
-                class="text-white/70 hover:text-white transition-colors mobile-button"
-              >
-                <Icon name="uil:search" class="w-6 h-6" />
-              </button>
+            <div class="flex lg:hidden items-center gap-4 ml-auto flex-shrink-0">
               <button
                 @click="toggleMobileMenu"
                 class="text-white/70 hover:text-white transition-colors mobile-button"
@@ -401,14 +353,14 @@ onClickOutside(mobileSearchRef, () => {
                         v-model="searchQuery"
                         type="text"
                         placeholder="搜索商品..."
-                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm"
+                        class="w-full px-3 py-2 rounded-full bg-gray-50 border-2 border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-sm pr-16"
                         @keyup.enter="performSearch"
                       />
                       <button
                         @click="performSearch"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#d01345] transition-colors"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-2.5 py-1.5 transition-colors shadow-sm"
                       >
-                        <Icon name="uil:search" class="w-5 h-5" />
+                        <Icon name="uil:search" class="w-4 h-4" />
                       </button>
                     </div>
                     <button
@@ -535,24 +487,6 @@ onClickOutside(mobileSearchRef, () => {
                   <div class="p-4 border-t border-gray-200">
                     <h3 class="text-sm font-medium text-gray-500 mb-3">功能服务</h3>
                     <div class="space-y-1">
-                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
-                        <Icon name="uil:heart" class="w-5 h-5 mr-3" />
-                        <span>我的收藏</span>
-                        <span class="ml-auto bg-[#d01345] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
-                      </button>
-                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
-                        <Icon name="uil:shopping-cart" class="w-5 h-5 mr-3" />
-                        <span>购物车</span>
-                        <span class="ml-auto bg-[#d01345] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
-                      </button>
-                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
-                        <Icon name="uil:user" class="w-5 h-5 mr-3" />
-                        <span>个人中心</span>
-                      </button>
-                      <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
-                        <Icon name="uil:bell" class="w-5 h-5 mr-3" />
-                        <span>消息通知</span>
-                      </button>
                       <button class="w-full flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700">
                         <Icon name="uil:comment-dots" class="w-5 h-5 mr-3" />
                         <span>客服咨询</span>
