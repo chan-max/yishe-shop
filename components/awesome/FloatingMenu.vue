@@ -1,3 +1,11 @@
+<!--
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-06-17 08:47:24
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-07-30 18:37:44
+ * @FilePath: /yishe-scripts/Users/jackie/workspace/yishe-nuxt/components/awesome/FloatingMenu.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <div class="fixed bottom-6 right-6 z-[9999]">
     <!-- 主菜单按钮 -->
@@ -20,7 +28,6 @@
         to="/contact"
         class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
-        <Icon name="heroicons:envelope" class="w-5 h-5 text-gray-600" />
         <span>联系我们</span>
       </NuxtLink>
 
@@ -28,7 +35,7 @@
         to="/products"
         class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
-        <Icon name="heroicons:shopping-bag" class="w-5 h-5 text-gray-600" />
+      
         <span>精选商品</span>
       </NuxtLink>
 
@@ -36,7 +43,6 @@
         to="/quick-design"
         class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
-        <Icon name="heroicons:pencil-square" class="w-5 h-5 text-gray-600" />
         <span>快速设计</span>
       </NuxtLink>
 
@@ -44,7 +50,6 @@
         @click="openCustomerService"
         class="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
-        <Icon name="heroicons:chat-bubble-left-right" class="w-5 h-5 text-gray-600" />
         <span>在线客服</span>
       </button>
 
@@ -52,7 +57,6 @@
         @click="scrollToTop"
         class="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
       >
-        <Icon name="heroicons:arrow-up" class="w-5 h-5 text-gray-600" />
         <span>返回顶部</span>
       </button>
     </div>
