@@ -246,18 +246,18 @@ onClickOutside(mobileSearchRef, () => {
                 首页
               </NuxtLink>
               <NuxtLink
-                to="/new-arrivals"
-                class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
-                :class="[route.path === '/new-arrivals' ? 'text-black bg-gray-200 rounded' : '']"
-              >
-                新品上市
-              </NuxtLink>
-              <NuxtLink
                 to="/products"
                 class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
                 :class="[route.path === '/products' ? 'text-black bg-gray-200 rounded' : '']"
               >
                 精选商品
+              </NuxtLink>
+              <NuxtLink
+                to="/custom-design"
+                class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
+                :class="[route.path === '/custom-design' ? 'text-black bg-gray-200 rounded' : '']"
+              >
+                私人订制
               </NuxtLink>
             </div>
             <!-- 搜索框和图标按钮 -->
@@ -463,15 +463,6 @@ onClickOutside(mobileSearchRef, () => {
                         <span>首页</span>
                       </NuxtLink>
                       <NuxtLink
-                        to="/new-arrivals"
-                        @click="closeMobileMenu"
-                        class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="[route.path === '/new-arrivals' ? 'bg-gray-200 text-black' : 'text-gray-700']"
-                      >
-                        <Icon name="uil:star" class="w-5 h-5 mr-3" />
-                        <span>新品上市</span>
-                      </NuxtLink>
-                      <NuxtLink
                         to="/products"
                         @click="closeMobileMenu"
                         class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
@@ -479,6 +470,15 @@ onClickOutside(mobileSearchRef, () => {
                       >
                         <Icon name="uil:shopping-bag" class="w-5 h-5 mr-3" />
                         <span>精选商品</span>
+                      </NuxtLink>
+                      <NuxtLink
+                        to="/custom-design"
+                        @click="closeMobileMenu"
+                        class="flex items-center px-3 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                        :class="[route.path === '/custom-design' ? 'bg-gray-200 text-black' : 'text-gray-700']"
+                      >
+                        <Icon name="uil:scissors" class="w-5 h-5 mr-3" />
+                        <span>私人订制</span>
                       </NuxtLink>
                     </div>
                   </div>

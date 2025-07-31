@@ -53,7 +53,20 @@
         </div>
 
         <!-- 筛选条件 -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-[1440px] mx-auto mb-8">
+          <!-- 排序方式 -->
+          <v-select
+            v-model="selectedFilters.sort"
+            :items="filterOptions.sort"
+            item-title="label"
+            item-value="value"
+            label="排序方式"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            class="w-full"
+          />
+
           <!-- 价格区间 -->
           <v-select
             v-model="selectedFilters.price"
@@ -61,6 +74,32 @@
             item-title="label"
             item-value="value"
             label="价格区间"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            class="w-full"
+          />
+
+          <!-- 性别 -->
+          <v-select
+            v-model="selectedFilters.gender"
+            :items="filterOptions.gender"
+            item-title="label"
+            item-value="value"
+            label="性别"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            class="w-full"
+          />
+
+          <!-- 年龄段 -->
+          <v-select
+            v-model="selectedFilters.ageGroup"
+            :items="filterOptions.ageGroup"
+            item-title="label"
+            item-value="value"
+            label="年龄段"
             variant="outlined"
             density="comfortable"
             hide-details
@@ -132,6 +171,19 @@
             class="w-full"
           />
 
+          <!-- 场合 -->
+          <v-select
+            v-model="selectedFilters.occasion"
+            :items="filterOptions.occasion"
+            item-title="label"
+            item-value="value"
+            label="场合"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            class="w-full"
+          />
+
           <!-- 品牌 -->
           <v-select
             v-model="selectedFilters.brand"
@@ -157,6 +209,73 @@
             hide-details
             class="w-full"
           />
+        </div>
+
+        <!-- 快速筛选按钮 -->
+        <div class="flex flex-wrap gap-2 mb-6 justify-center">
+          <button 
+            @click="applyQuickFilter('latest')"
+            :class="[
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
+              quickFilter === 'latest' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]"
+          >
+            最新上架
+          </button>
+          <button 
+            @click="applyQuickFilter('popular')"
+            :class="[
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
+              quickFilter === 'popular' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]"
+          >
+            最受欢迎
+          </button>
+          <button 
+            @click="applyQuickFilter('rating')"
+            :class="[
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
+              quickFilter === 'rating' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]"
+          >
+            好评如潮
+          </button>
+          <button 
+            @click="applyQuickFilter('price_asc')"
+            :class="[
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
+              quickFilter === 'price_asc' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]"
+          >
+            价格从低到高
+          </button>
+          <button 
+            @click="applyQuickFilter('price_desc')"
+            :class="[
+              'px-4 py-2 rounded-full text-sm font-medium transition-colors',
+              quickFilter === 'price_desc' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ]"
+          >
+            价格从高到低
+          </button>
+          
+          <!-- 清除筛选按钮 -->
+          <button 
+            @click="clearAllFilters"
+            class="px-4 py-2 rounded-full text-sm font-medium bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+          >
+            清除筛选
+          </button>
         </div>
 
         <!-- 商品列表 -->
@@ -392,6 +511,54 @@ const clearSearch = () => {
   router.push({ path: '/products', query: {} });
 };
 
+// 快速筛选状态
+const quickFilter = ref('');
+
+// 选中的过滤条件
+const selectedFilters = ref({
+  sort: "",
+  price: "",
+  gender: "",
+  ageGroup: "",
+  style: "",
+  season: "",
+  material: "",
+  color: "",
+  size: "",
+  occasion: "",
+  brand: "",
+  discount: "",
+});
+
+// 应用快速筛选
+const applyQuickFilter = (filterType) => {
+  quickFilter.value = filterType;
+  selectedFilters.value.sort = filterType;
+  currentPage.value = 1;
+  fetchProducts();
+};
+
+// 清除所有筛选条件
+const clearAllFilters = () => {
+  quickFilter.value = '';
+  selectedFilters.value = {
+    sort: "",
+    price: "",
+    gender: "",
+    ageGroup: "",
+    style: "",
+    season: "",
+    material: "",
+    color: "",
+    size: "",
+    occasion: "",
+    brand: "",
+    discount: "",
+  };
+  currentPage.value = 1;
+  fetchProducts();
+};
+
 // 获取商品列表
 const fetchProducts = async () => {
   loading.value = true;
@@ -406,6 +573,53 @@ const fetchProducts = async () => {
     // 如果有搜索关键词，添加到请求体中
     if (searchKeyword.value) {
       requestBody.keyword = searchKeyword.value;
+    }
+    
+    // 添加排序条件
+    if (selectedFilters.value.sort) {
+      requestBody.sort = selectedFilters.value.sort;
+    }
+    
+    // 添加过滤条件
+    const filters = {};
+    
+    if (selectedFilters.value.price) {
+      filters.price = selectedFilters.value.price;
+    }
+    if (selectedFilters.value.gender) {
+      filters.gender = selectedFilters.value.gender;
+    }
+    if (selectedFilters.value.ageGroup) {
+      filters.ageGroup = selectedFilters.value.ageGroup;
+    }
+    if (selectedFilters.value.style) {
+      filters.style = selectedFilters.value.style;
+    }
+    if (selectedFilters.value.season) {
+      filters.season = selectedFilters.value.season;
+    }
+    if (selectedFilters.value.material) {
+      filters.material = selectedFilters.value.material;
+    }
+    if (selectedFilters.value.color) {
+      filters.color = selectedFilters.value.color;
+    }
+    if (selectedFilters.value.size) {
+      filters.size = selectedFilters.value.size;
+    }
+    if (selectedFilters.value.occasion) {
+      filters.occasion = selectedFilters.value.occasion;
+    }
+    if (selectedFilters.value.brand) {
+      filters.brand = selectedFilters.value.brand;
+    }
+    if (selectedFilters.value.discount) {
+      filters.discount = selectedFilters.value.discount;
+    }
+    
+    // 如果有过滤条件，添加到请求体中
+    if (Object.keys(filters).length > 0) {
+      requestBody.filters = filters;
     }
     
     const response = await $customFetch("/product/page", {
@@ -427,6 +641,12 @@ const fetchProducts = async () => {
 watch([currentPage], () => {
   fetchProducts();
 });
+
+// 监听筛选条件变化
+watch(selectedFilters, () => {
+  currentPage.value = 1; // 重置到第一页
+  fetchProducts();
+}, { deep: true });
 
 // 监听搜索关键词变化
 watch(searchKeyword, (newKeyword) => {
@@ -461,41 +681,84 @@ onMounted(() => {
 
 // 过滤条件数据
 const filterOptions = {
+  sort: [
+    { value: "latest", label: "最新上架" },
+    { value: "popular", label: "最受欢迎" },
+    { value: "rating", label: "好评如潮" },
+    { value: "price_asc", label: "价格从低到高" },
+    { value: "price_desc", label: "价格从高到低" },
+  ],
   price: [
     { value: "0-100", label: "0-100元" },
     { value: "100-300", label: "100-300元" },
     { value: "300-500", label: "300-500元" },
-    { value: "500+", label: "500元以上" },
+    { value: "500-1000", label: "500-1000元" },
+    { value: "1000+", label: "1000元以上" },
+  ],
+  gender: [
+    { value: "male", label: "男装" },
+    { value: "female", label: "女装" },
+    { value: "unisex", label: "中性" },
+  ],
+  ageGroup: [
+    { value: "all", label: "全部年龄" },
+    { value: "youth", label: "青年(18-25)" },
+    { value: "adult", label: "成人(25-40)" },
+    { value: "senior", label: "老年(40+)" },
   ],
   style: [
     { value: "casual", label: "休闲" },
     { value: "formal", label: "正装" },
     { value: "sports", label: "运动" },
     { value: "vintage", label: "复古" },
+    { value: "street", label: "街头" },
+    { value: "business", label: "商务" },
+    { value: "sweet", label: "甜美" },
+    { value: "cool", label: "酷炫" },
   ],
   season: [
     { value: "spring", label: "春季" },
     { value: "summer", label: "夏季" },
     { value: "autumn", label: "秋季" },
     { value: "winter", label: "冬季" },
+    { value: "all_season", label: "四季" },
   ],
   material: [
     { value: "cotton", label: "棉质" },
     { value: "wool", label: "羊毛" },
     { value: "silk", label: "丝绸" },
     { value: "linen", label: "亚麻" },
+    { value: "denim", label: "牛仔" },
+    { value: "knit", label: "针织" },
+    { value: "leather", label: "皮革" },
   ],
   color: [
     { value: "black", label: "黑色" },
     { value: "white", label: "白色" },
     { value: "red", label: "红色" },
     { value: "blue", label: "蓝色" },
+    { value: "green", label: "绿色" },
+    { value: "yellow", label: "黄色" },
+    { value: "pink", label: "粉色" },
+    { value: "purple", label: "紫色" },
+    { value: "gray", label: "灰色" },
+    { value: "brown", label: "棕色" },
   ],
   size: [
+    { value: "xs", label: "XS" },
     { value: "s", label: "S" },
     { value: "m", label: "M" },
     { value: "l", label: "L" },
     { value: "xl", label: "XL" },
+    { value: "xxl", label: "XXL" },
+  ],
+  occasion: [
+    { value: "daily", label: "日常" },
+    { value: "work", label: "工作" },
+    { value: "party", label: "聚会" },
+    { value: "sport", label: "运动" },
+    { value: "formal", label: "正式场合" },
+    { value: "date", label: "约会" },
   ],
   brand: [
     { value: "brand1", label: "品牌1" },
@@ -503,24 +766,13 @@ const filterOptions = {
     { value: "brand3", label: "品牌3" },
   ],
   discount: [
-    { value: "discount1", label: "9折以上" },
-    { value: "discount2", label: "7-9折" },
-    { value: "discount3", label: "5-7折" },
-    { value: "discount4", label: "5折以下" },
+    { value: "no_discount", label: "无折扣" },
+    { value: "discount_90", label: "9折以上" },
+    { value: "discount_70_90", label: "7-9折" },
+    { value: "discount_50_70", label: "5-7折" },
+    { value: "discount_50", label: "5折以下" },
   ],
 };
-
-// 选中的过滤条件
-const selectedFilters = ref({
-  price: "",
-  style: "",
-  season: "",
-  material: "",
-  color: "",
-  size: "",
-  brand: "",
-  discount: "",
-});
 
 // 获取产品关键词
 const getProductKeywords = (product) => {

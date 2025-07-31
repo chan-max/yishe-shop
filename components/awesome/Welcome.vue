@@ -458,6 +458,21 @@ const categories = ref([
 const activeCategory = ref<number | null>(null);
 const isDropdownVisible = ref(false);
 
+// 商品数据状态
+const productsData = ref({
+  newArrivals: [],
+  popular: [],
+  recommended: [],
+  categoryProducts: {} as Record<string, any[]>
+});
+
+const loading = ref({
+  newArrivals: false,
+  popular: false,
+  recommended: false,
+  categoryProducts: {} as Record<string, boolean>
+});
+
 const showDropdown = (index: number) => {
   activeCategory.value = index;
   isDropdownVisible.value = true;
@@ -478,6 +493,68 @@ const handleMouseEnter = (index: number) => {
 
 const handleMouseLeave = () => {
   hideDropdown();
+};
+
+// 获取商品数据的通用函数
+const fetchProducts = async (params: any, type: string) => {
+  loading.value[type] = true;
+  try {
+    const { $customFetch } = useNuxtApp();
+    const requestBody = {
+      currentPage: 1,
+      pageSize: 8, // 首页展示8个商品
+      isPublish: true,
+      ...params
+    };
+    
+    const response = await $customFetch("/product/page", {
+      method: "POST",
+      body: requestBody,
+    });
+    
+    if (type === 'categoryProducts') {
+      const categoryKey = params.filters?.style || params.filters?.gender || 'default';
+      productsData.value.categoryProducts[categoryKey] = response.list || [];
+    } else {
+      productsData.value[type] = response.list || [];
+    }
+  } catch (error) {
+    console.error(`获取${type}商品失败:`, error);
+  } finally {
+    loading.value[type] = false;
+  }
+};
+
+// 获取新品上市
+const fetchNewArrivals = () => {
+  fetchProducts({ sort: 'latest' }, 'newArrivals');
+};
+
+// 获取热门商品
+const fetchPopularProducts = () => {
+  fetchProducts({ sort: 'popular' }, 'popular');
+};
+
+// 获取推荐商品
+const fetchRecommendedProducts = () => {
+  fetchProducts({ sort: 'rating' }, 'recommended');
+};
+
+// 获取分类商品
+const fetchCategoryProducts = (category: string, filters: any = {}) => {
+  const params = {
+    filters: {
+      style: category,
+      ...filters
+    }
+  };
+  fetchProducts(params, 'categoryProducts');
+};
+
+// 跳转到商品详情页
+const navigateToProduct = (productId: string) => {
+  // 这里可以根据实际路由结构调整
+  navigateTo(`/product/${productId}`);
 };
 
 const leadingsText = computed(() => [
@@ -507,6 +584,16 @@ onMounted(() => {
   } catch (error) {
     console.log("aweawe error", error);
   }
+  
+  // 初始化商品数据
+  fetchNewArrivals();
+  fetchPopularProducts();
+  fetchRecommendedProducts();
+  
+  // 获取一些分类商品
+  fetchCategoryProducts('casual');
+  fetchCategoryProducts('formal');
+  fetchCategoryProducts('sports');
 });
 </script>
 
@@ -873,23 +960,272 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 商品展示链接部分 -->
+    <!-- 商品展示区域 -->
     <div class="my-16 w-full bg-gray-50 py-16">
-              <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-4">探索精选商品</h2>
-        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
-          发现独特的服装设计，展现您的个性风格。我们精心挑选了各种风格的服装，满足您的不同需求。
-        </p>
-        <NuxtLink to="/products">
-          <v-btn
-            color="primary"
-            size="x-large"
-            variant="elevated"
-            class="text-white font-bold text-lg px-8 py-4"
-          >
-            浏览商品
-          </v-btn>
-        </NuxtLink>
+      <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
+        
+        <!-- 新品上市 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">新品上市</h2>
+            <NuxtLink to="/products?sort=latest" class="text-blue-600 hover:text-blue-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.newArrivals" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.newArrivals.length === 0" class="text-center py-12 text-gray-500">
+            暂无新品
+          </div>
+                      <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+              <div
+                v-for="product in productsData.newArrivals.slice(0, 8)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+              <div class="product-image">
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 热门商品 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">热门商品</h2>
+            <NuxtLink to="/products?sort=popular" class="text-blue-600 hover:text-blue-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.popular" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.popular.length === 0" class="text-center py-12 text-gray-500">
+            暂无热门商品
+          </div>
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                          <div
+                v-for="product in productsData.popular.slice(0, 8)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+              <div class="product-image">
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 推荐商品 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">推荐商品</h2>
+            <NuxtLink to="/products?sort=rating" class="text-blue-600 hover:text-blue-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.recommended" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.recommended.length === 0" class="text-center py-12 text-gray-500">
+            暂无推荐商品
+          </div>
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                          <div
+                v-for="product in productsData.recommended.slice(0, 8)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+              <div class="product-image">
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分类商品展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">分类精选</h2>
+          
+          <!-- 休闲风格 -->
+          <div class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-semibold">休闲风格</h3>
+              <NuxtLink to="/products?filters[style]=casual" class="text-blue-600 hover:text-blue-800 font-medium">
+                查看更多 →
+              </NuxtLink>
+            </div>
+            <div v-if="loading.categoryProducts['casual']" class="flex justify-center py-8">
+              <v-progress-circular indeterminate color="primary" size="32"></v-progress-circular>
+            </div>
+            <div v-else-if="!productsData.categoryProducts['casual'] || productsData.categoryProducts['casual'].length === 0" class="text-center py-8 text-gray-500">
+              暂无休闲风格商品
+            </div>
+            <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div
+                v-for="product in productsData.categoryProducts['casual'].slice(0, 6)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+                <div class="product-image">
+                  <img
+                    v-if="product?.customModel?.thumbnail"
+                    :src="product.customModel.thumbnail"
+                    :alt="product.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <v-icon>mdi-image</v-icon>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-title">{{ product.name }}</h3>
+                  <p class="product-price">¥{{ product.price || '待定' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 正装风格 -->
+          <div class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-semibold">正装风格</h3>
+              <NuxtLink to="/products?filters[style]=formal" class="text-blue-600 hover:text-blue-800 font-medium">
+                查看更多 →
+              </NuxtLink>
+            </div>
+            <div v-if="loading.categoryProducts['formal']" class="flex justify-center py-8">
+              <v-progress-circular indeterminate color="primary" size="32"></v-progress-circular>
+            </div>
+            <div v-else-if="!productsData.categoryProducts['formal'] || productsData.categoryProducts['formal'].length === 0" class="text-center py-8 text-gray-500">
+              暂无正装风格商品
+            </div>
+            <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div
+                v-for="product in productsData.categoryProducts['formal'].slice(0, 6)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+                <div class="product-image">
+                  <img
+                    v-if="product?.customModel?.thumbnail"
+                    :src="product.customModel.thumbnail"
+                    :alt="product.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <v-icon>mdi-image</v-icon>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-title">{{ product.name }}</h3>
+                  <p class="product-price">¥{{ product.price || '待定' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 运动风格 -->
+          <div class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-semibold">运动风格</h3>
+              <NuxtLink to="/products?filters[style]=sports" class="text-blue-600 hover:text-blue-800 font-medium">
+                查看更多 →
+              </NuxtLink>
+            </div>
+            <div v-if="loading.categoryProducts['sports']" class="flex justify-center py-8">
+              <v-progress-circular indeterminate color="primary" size="32"></v-progress-circular>
+            </div>
+            <div v-else-if="!productsData.categoryProducts['sports'] || productsData.categoryProducts['sports'].length === 0" class="text-center py-8 text-gray-500">
+              暂无运动风格商品
+            </div>
+            <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div
+                v-for="product in productsData.categoryProducts['sports'].slice(0, 6)"
+                :key="product.id"
+                class="product-card"
+                @click="navigateToProduct(product.id)"
+              >
+                <div class="product-image">
+                  <img
+                    v-if="product?.customModel?.thumbnail"
+                    :src="product.customModel.thumbnail"
+                    :alt="product.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <v-icon>mdi-image</v-icon>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-title">{{ product.name }}</h3>
+                  <p class="product-price">¥{{ product.price || '待定' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品展示链接部分 -->
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-4">探索更多精选商品</h2>
+          <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+            发现独特的服装设计，展现您的个性风格。我们精心挑选了各种风格的服装，满足您的不同需求。
+          </p>
+          <NuxtLink to="/products">
+            <v-btn
+              color="primary"
+              size="x-large"
+              variant="elevated"
+              class="text-white font-bold text-lg px-8 py-4"
+            >
+              浏览全部商品
+            </v-btn>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
@@ -1853,6 +2189,96 @@ html.dark {
   .outfit-placeholder {
     width: 50px;
     height: 75px;
+  }
+}
+
+/* 商品卡片样式 */
+.product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.product-image {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  
+  img {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.product-info {
+  padding: 12px;
+}
+
+.product-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-price {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #059669;
+  margin: 0;
+}
+
+/* 响应式商品卡片 */
+@media (max-width: 768px) {
+  .product-image {
+    height: 100px;
+  }
+  
+  .product-info {
+    padding: 8px;
+  }
+  
+  .product-title {
+    font-size: 0.8rem;
+  }
+  
+  .product-price {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-image {
+    height: 80px;
+  }
+  
+  .product-info {
+    padding: 6px;
+  }
+  
+  .product-title {
+    font-size: 0.75rem;
+  }
+  
+  .product-price {
+    font-size: 0.75rem;
   }
 }
 </style>
