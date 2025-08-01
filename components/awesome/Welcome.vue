@@ -143,314 +143,216 @@ const submitDesignRequest = async () => {
 
 const categories = ref([
   {
-    name: '上衣',
-    path: '/category/tops',
+    name: '全部商品',
+    path: '/products',
     subcategories: [
-      { name: 'T恤', path: '/category/tops/t-shirts' },
-      { name: '衬衫', path: '/category/tops/shirts' },
-      { name: '卫衣', path: '/category/tops/hoodies' },
-      { name: '毛衣', path: '/category/tops/sweaters' },
-      { name: '背心', path: '/category/tops/tank-tops' },
-      { name: 'POLO衫', path: '/category/tops/polo-shirts' },
-      { name: '针织衫', path: '/category/tops/knitwear' },
-      { name: '马甲', path: '/category/tops/vests' },
-      { name: '开衫', path: '/category/tops/cardigans' },
-      { name: '高领衫', path: '/category/tops/turtlenecks' },
-      { name: '吊带', path: '/category/tops/straps' },
-      { name: '抹胸', path: '/category/tops/tube-tops' },
-      { name: '露肩上衣', path: '/category/tops/off-shoulder' },
-      { name: '一字肩上衣', path: '/category/tops/one-shoulder' },
-      { name: '荷叶边上衣', path: '/category/tops/ruffle-tops' }
+      { name: '新品上市', path: '/products?sort=latest' },
+      { name: '热销商品', path: '/products?sort=popular' },
+      { name: '推荐商品', path: '/products?sort=rating' },
+      { name: '特价商品', path: '/products?sale=true' }
     ],
     brands: [
       { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
       { name: 'ZARA', image: '/brands/zara.jpg' },
       { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
-      { name: 'GAP', image: '/brands/gap.jpg' },
-      { name: 'COS', image: '/brands/cos.jpg' },
-      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
-      { name: 'Mango', image: '/brands/mango.jpg' },
-      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
-      { name: 'Bershka', image: '/brands/bershka.jpg' },
-      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
-      { name: 'C&A', image: '/brands/ca.jpg' }
-    ],
-    styles: [
-      { name: '基础款T恤', path: '/category/tops/basic-tees' },
-      { name: '印花T恤', path: '/category/tops/printed-tees' },
-      { name: '条纹衬衫', path: '/category/tops/striped-shirts' },
-      { name: '格子衬衫', path: '/category/tops/plaid-shirts' },
-      { name: '连帽卫衣', path: '/category/tops/hooded-sweatshirts' },
-      { name: '圆领卫衣', path: '/category/tops/crew-neck-sweatshirts' },
-      { name: 'V领毛衣', path: '/category/tops/v-neck-sweaters' },
-      { name: '圆领毛衣', path: '/category/tops/crew-neck-sweaters' },
-      { name: '高领毛衣', path: '/category/tops/turtleneck-sweaters' },
-      { name: '开衫毛衣', path: '/category/tops/cardigan-sweaters' },
-      { name: '针织背心', path: '/category/tops/knit-vests' },
-      { name: 'Polo衫', path: '/category/tops/polo-shirts' },
-      { name: '吊带上衣', path: '/category/tops/strappy-tops' },
-      { name: '露肩上衣', path: '/category/tops/off-shoulder-tops' },
-      { name: '一字肩上衣', path: '/category/tops/one-shoulder-tops' }
-    ],
-    featured: [
-      { name: '基础款T恤', image: '/featured/basic-tee.jpg' },
-      { name: '连帽卫衣', image: '/featured/hoodie.jpg' },
-      { name: '商务衬衫', image: '/featured/business-shirt.jpg' }
-    ],
-    trending: [
-      { name: '新品上市', path: '/category/tops/new-arrivals' },
-      { name: '热销商品', path: '/category/tops/bestsellers' },
-      { name: '限时特惠', path: '/category/tops/sale' },
-      { name: '春季新品', path: '/category/tops/spring-collection' },
-      { name: '夏季必备', path: '/category/tops/summer-essentials' },
-      { name: '秋季系列', path: '/category/tops/autumn-collection' }
-    ]
-  },
-  {
-    name: '裤子',
-    path: '/category/pants',
-    subcategories: [
-      { name: '牛仔裤', path: '/category/pants/jeans' },
-      { name: '休闲裤', path: '/category/pants/casual' },
-      { name: '运动裤', path: '/category/pants/sports' },
-      { name: '短裤', path: '/category/pants/shorts' },
-      { name: '工装裤', path: '/category/pants/workwear' },
-      { name: '西裤', path: '/category/pants/suit-pants' },
-      { name: '阔腿裤', path: '/category/pants/wide-leg' },
-      { name: '紧身裤', path: '/category/pants/skinny' },
-      { name: '哈伦裤', path: '/category/pants/harem' },
-      { name: '背带裤', path: '/category/pants/overalls' },
-      { name: '九分裤', path: '/category/pants/cropped' },
-      { name: '高腰裤', path: '/category/pants/high-waist' },
-      { name: '低腰裤', path: '/category/pants/low-waist' },
-      { name: '直筒裤', path: '/category/pants/straight' },
-      { name: '喇叭裤', path: '/category/pants/flare' },
-      { name: '烟管裤', path: '/category/pants/skinny-fit' },
-      { name: '老爹裤', path: '/category/pants/dad-jeans' },
-      { name: '破洞牛仔裤', path: '/category/pants/ripped-jeans' }
-    ],
-    brands: [
-      { name: 'Levi\'s', image: '/brands/levis.jpg' },
-      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
-      { name: 'ZARA', image: '/brands/zara.jpg' },
-      { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: 'GAP', image: '/brands/gap.jpg' },
-      { name: 'COS', image: '/brands/cos.jpg' },
-      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
-      { name: 'Mango', image: '/brands/mango.jpg' },
-      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
-      { name: 'Bershka', image: '/brands/bershka.jpg' },
-      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
-      { name: 'C&A', image: '/brands/ca.jpg' },
-      { name: 'Lee', image: '/brands/lee.jpg' },
-      { name: 'Wrangler', image: '/brands/wrangler.jpg' }
-    ],
-    styles: [
-      { name: '直筒牛仔裤', path: '/category/pants/straight-jeans' },
-      { name: '修身牛仔裤', path: '/category/pants/slim-jeans' },
-      { name: '阔腿裤', path: '/category/pants/wide-leg-pants' },
-      { name: '运动裤', path: '/category/pants/track-pants' },
-      { name: '工装裤', path: '/category/pants/cargo-pants' },
-      { name: '西装裤', path: '/category/pants/suit-pants' },
-      { name: '九分裤', path: '/category/pants/cropped-pants' },
-      { name: '高腰裤', path: '/category/pants/high-waist' },
-      { name: '低腰裤', path: '/category/pants/low-waist' },
-      { name: '喇叭裤', path: '/category/pants/flare-pants' },
-      { name: '烟管裤', path: '/category/pants/skinny-fit-pants' },
-      { name: '老爹牛仔裤', path: '/category/pants/dad-jeans' },
-      { name: '破洞牛仔裤', path: '/category/pants/ripped-jeans' },
-      { name: '背带裤', path: '/category/pants/overalls' },
-      { name: '哈伦裤', path: '/category/pants/harem-pants' }
-    ],
-    featured: [
-      { name: '直筒牛仔裤', image: '/featured/straight-jeans.jpg' },
-      { name: '运动裤', image: '/featured/track-pants.jpg' },
-      { name: '工装裤', image: '/featured/cargo-pants.jpg' }
-    ],
-    trending: [
-      { name: '新品上市', path: '/category/pants/new-arrivals' },
-      { name: '热销商品', path: '/category/pants/bestsellers' },
-      { name: '限时特惠', path: '/category/pants/sale' },
-      { name: '春季新品', path: '/category/pants/spring-collection' },
-      { name: '夏季必备', path: '/category/pants/summer-essentials' },
-      { name: '秋季系列', path: '/category/pants/autumn-collection' },
-      { name: '牛仔裤专区', path: '/category/pants/jeans-zone' },
-      { name: '运动裤专区', path: '/category/pants/sports-zone' }
-    ]
-  },
-  {
-    name: '裙子',
-    path: '/category/dresses',
-    subcategories: [
-      { name: '连衣裙', path: '/category/dresses/dresses' },
-      { name: '半身裙', path: '/category/dresses/skirts' },
-      { name: '迷你裙', path: '/category/dresses/mini-skirts' },
-      { name: '长裙', path: '/category/dresses/maxi-dresses' },
-      { name: '礼服裙', path: '/category/dresses/formal' },
-      { name: '百褶裙', path: '/category/dresses/pleated' },
-      { name: 'A字裙', path: '/category/dresses/a-line' },
-      { name: '包臀裙', path: '/category/dresses/pencil' },
-      { name: '蓬蓬裙', path: '/category/dresses/tutu' },
-      { name: '鱼尾裙', path: '/category/dresses/mermaid' },
-      { name: '吊带裙', path: '/category/dresses/strappy' },
-      { name: '碎花裙', path: '/category/dresses/floral' },
-      { name: '小黑裙', path: '/category/dresses/little-black' },
-      { name: '晚礼服', path: '/category/dresses/evening' },
-      { name: '婚纱', path: '/category/dresses/wedding' },
-      { name: '旗袍', path: '/category/dresses/qipao' },
-      { name: '汉服', path: '/category/dresses/hanfu' },
-      { name: '洛丽塔', path: '/category/dresses/lolita' }
-    ],
-    brands: [
-      { name: 'ZARA', image: '/brands/zara.jpg' },
-      { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
-      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
-      { name: 'GAP', image: '/brands/gap.jpg' },
-      { name: 'COS', image: '/brands/cos.jpg' },
-      { name: 'Massimo Dutti', image: '/brands/massimo-dutti.jpg' },
-      { name: 'Mango', image: '/brands/mango.jpg' },
-      { name: 'Pull&Bear', image: '/brands/pull-bear.jpg' },
-      { name: 'Bershka', image: '/brands/bershka.jpg' },
-      { name: 'Stradivarius', image: '/brands/stradivarius.jpg' },
-      { name: 'C&A', image: '/brands/ca.jpg' },
-      { name: 'Forever 21', image: '/brands/forever21.jpg' },
-      { name: 'Topshop', image: '/brands/topshop.jpg' }
-    ],
-    styles: [
-      { name: 'A字裙', path: '/category/dresses/a-line-dresses' },
-      { name: '吊带裙', path: '/category/dresses/strappy-dresses' },
-      { name: '碎花裙', path: '/category/dresses/floral-dresses' },
-      { name: '小黑裙', path: '/category/dresses/little-black-dress' },
-      { name: '百褶裙', path: '/category/dresses/pleated-skirts' },
-      { name: '包臀裙', path: '/category/dresses/pencil-skirts' },
-      { name: '蓬蓬裙', path: '/category/dresses/tutu-skirts' },
-      { name: '鱼尾裙', path: '/category/dresses/mermaid-skirts' },
-      { name: '迷你裙', path: '/category/dresses/mini-skirts' },
-      { name: '长裙', path: '/category/dresses/maxi-skirts' },
-      { name: '晚礼服', path: '/category/dresses/evening-dresses' },
-      { name: '婚纱', path: '/category/dresses/wedding-dresses' },
-      { name: '旗袍', path: '/category/dresses/qipao-dresses' },
-      { name: '汉服', path: '/category/dresses/hanfu-dresses' },
-      { name: '洛丽塔', path: '/category/dresses/lolita-dresses' }
-    ],
-    featured: [
-      { name: 'A字裙', image: '/featured/a-line-dress.jpg' },
-      { name: '碎花裙', image: '/featured/floral-dress.jpg' },
-      { name: '小黑裙', image: '/featured/little-black-dress.jpg' }
-    ],
-    trending: [
-      { name: '新品上市', path: '/category/dresses/new-arrivals' },
-      { name: '热销商品', path: '/category/dresses/bestsellers' },
-      { name: '限时特惠', path: '/category/dresses/sale' },
-      { name: '春季新品', path: '/category/dresses/spring-collection' },
-      { name: '夏季必备', path: '/category/dresses/summer-essentials' },
-      { name: '秋季系列', path: '/category/dresses/autumn-collection' },
-      { name: '连衣裙专区', path: '/category/dresses/dresses-zone' },
-      { name: '半身裙专区', path: '/category/dresses/skirts-zone' },
-      { name: '礼服专区', path: '/category/dresses/formal-zone' }
-    ]
-  },
-  {
-    name: '外套',
-    path: '/category/outerwear',
-    subcategories: [
-      { name: '夹克', path: '/category/outerwear/jackets' },
-      { name: '风衣', path: '/category/outerwear/trench-coats' },
-      { name: '羽绒服', path: '/category/outerwear/down-jackets' },
-      { name: '西装外套', path: '/category/outerwear/blazers' },
-      { name: '皮衣', path: '/category/outerwear/leather' },
-      { name: '毛呢大衣', path: '/category/outerwear/wool-coats' }
-    ],
-    brands: [
-      { name: 'ZARA', image: '/brands/zara.jpg' },
-      { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
-      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
       { name: 'GAP', image: '/brands/gap.jpg' }
     ],
     styles: [
-      { name: '牛仔夹克', path: '/category/outerwear/denim-jackets' },
-      { name: '飞行员夹克', path: '/category/outerwear/bomber-jackets' },
-      { name: '风衣', path: '/category/outerwear/trench-coats' },
-      { name: '羽绒服', path: '/category/outerwear/down-jackets' },
-      { name: '西装外套', path: '/category/outerwear/blazers' },
-      { name: '皮衣', path: '/category/outerwear/leather-jackets' }
+      { name: '基础款', path: '/products?style=basic' },
+      { name: '时尚款', path: '/products?style=fashion' },
+      { name: '经典款', path: '/products?style=classic' },
+      { name: '潮流款', path: '/products?style=trendy' }
     ],
     featured: [
-      { name: '牛仔夹克', image: '/featured/denim-jacket.jpg' },
-      { name: '飞行员夹克', image: '/featured/bomber-jacket.jpg' },
-      { name: '风衣', image: '/featured/trench-coat.jpg' }
+      { name: '春季新品', image: '/featured/spring-new.jpg' },
+      { name: '夏季必备', image: '/featured/summer-essential.jpg' },
+      { name: '秋季系列', image: '/featured/autumn-collection.jpg' }
     ],
     trending: [
-      { name: '新品上市', path: '/category/outerwear/new-arrivals' },
-      { name: '热销商品', path: '/category/outerwear/bestsellers' },
-      { name: '限时特惠', path: '/category/outerwear/sale' }
+      { name: '新品上市', path: '/products?sort=latest' },
+      { name: '热销商品', path: '/products?sort=popular' },
+      { name: '限时特惠', path: '/products?sale=true' },
+      { name: '春季新品', path: '/products?season=spring' },
+      { name: '夏季必备', path: '/products?season=summer' }
     ]
   },
   {
-    name: '内衣',
-    path: '/category/underwear',
+    name: '快速配送',
+    path: '/products?shipping=fast',
     subcategories: [
-      { name: '内裤', path: '/category/underwear/underwear' },
-      { name: '胸罩', path: '/category/underwear/bras' },
-      { name: '家居服', path: '/category/underwear/loungewear' },
-      { name: '睡衣', path: '/category/underwear/pajamas' },
-      { name: '塑身衣', path: '/category/underwear/shapewear' },
-      { name: '运动内衣', path: '/category/underwear/sports-bras' }
+      { name: '24小时发货', path: '/products?shipping=24h' },
+      { name: '48小时发货', path: '/products?shipping=48h' },
+      { name: '同城配送', path: '/products?shipping=local' }
     ],
     brands: [
-      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
-      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
-      { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: 'ZARA', image: '/brands/zara.jpg' },
-      { name: 'GAP', image: '/brands/gap.jpg' }
+      { name: '本地品牌', image: '/brands/local.jpg' },
+      { name: '快速配送', image: '/brands/fast-shipping.jpg' }
     ],
     styles: [
-      { name: '基础款内衣', path: '/category/underwear/basic-underwear' },
-      { name: '蕾丝内衣', path: '/category/underwear/lace-underwear' },
-      { name: '运动内衣', path: '/category/underwear/sports-bras' },
-      { name: '家居服', path: '/category/underwear/loungewear' },
-      { name: '睡衣', path: '/category/underwear/pajamas' },
-      { name: '塑身衣', path: '/category/underwear/shapewear' }
+      { name: '现货商品', path: '/products?stock=in-stock' },
+      { name: '快速发货', path: '/products?shipping=fast' }
     ],
     featured: [
-      { name: '基础款内衣', image: '/featured/basic-underwear.jpg' },
-      { name: '运动内衣', image: '/featured/sports-bra.jpg' },
-      { name: '家居服', image: '/featured/loungewear.jpg' }
+      { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
+      { name: '同城配送', image: '/featured/local-delivery.jpg' },
+      { name: '快速物流', image: '/featured/fast-logistics.jpg' }
+    ],
+    trending: [
+      { name: '24小时发货', path: '/products?shipping=24h' },
+      { name: '48小时发货', path: '/products?shipping=48h' },
+      { name: '同城配送', path: '/products?shipping=local' },
+      { name: '现货商品', path: '/products?stock=in-stock' },
+      { name: '快速物流', path: '/products?shipping=fast' }
     ]
   },
   {
-    name: '配饰',
-    path: '/category/accessories',
+    name: '编辑精选',
+    path: '/products?featured=true',
     subcategories: [
-      { name: '帽子', path: '/category/accessories/hats' },
-      { name: '围巾', path: '/category/accessories/scarves' },
-      { name: '手套', path: '/category/accessories/gloves' },
-      { name: '腰带', path: '/category/accessories/belts' },
-      { name: '袜子', path: '/category/accessories/socks' },
-      { name: '太阳镜', path: '/category/accessories/sunglasses' }
+      { name: '设计师推荐', path: '/products?featured=designer' },
+      { name: '编辑推荐', path: '/products?featured=editor' },
+      { name: '精选系列', path: '/products?featured=curated' }
     ],
     brands: [
-      { name: 'UNIQLO', image: '/brands/uniqlo.jpg' },
-      { name: '优衣库', image: '/brands/uniqlo-cn.jpg' },
-      { name: 'H&M', image: '/brands/hm.jpg' },
-      { name: 'ZARA', image: '/brands/zara.jpg' },
-      { name: 'GAP', image: '/brands/gap.jpg' }
+      { name: '设计师品牌', image: '/brands/designer.jpg' },
+      { name: '精选品牌', image: '/brands/curated.jpg' }
     ],
     styles: [
-      { name: '棒球帽', path: '/category/accessories/baseball-caps' },
-      { name: '贝雷帽', path: '/category/accessories/berets' },
-      { name: '围巾', path: '/category/accessories/scarves' },
-      { name: '手套', path: '/category/accessories/gloves' },
-      { name: '腰带', path: '/category/accessories/belts' },
-      { name: '太阳镜', path: '/category/accessories/sunglasses' }
+      { name: '设计师款', path: '/products?style=designer' },
+      { name: '精选款', path: '/products?style=curated' },
+      { name: '推荐款', path: '/products?style=recommended' }
     ],
     featured: [
-      { name: '棒球帽', image: '/featured/baseball-cap.jpg' },
-      { name: '围巾', image: '/featured/scarf.jpg' },
-      { name: '太阳镜', image: '/featured/sunglasses.jpg' }
+      { name: '设计师推荐', image: '/featured/designer-pick.jpg' },
+      { name: '编辑精选', image: '/featured/editor-choice.jpg' },
+      { name: '精选系列', image: '/featured/curated-collection.jpg' }
+    ],
+    trending: [
+      { name: '设计师推荐', path: '/products?featured=designer' },
+      { name: '编辑精选', path: '/products?featured=editor' },
+      { name: '精选系列', path: '/products?featured=curated' },
+      { name: '热门推荐', path: '/products?featured=hot' },
+      { name: '新品推荐', path: '/products?featured=new' }
+    ]
+  },
+  {
+    name: '筹款活动',
+    path: '/products?fundraiser=true',
+    subcategories: [
+      { name: '慈善筹款', path: '/products?fundraiser=charity' },
+      { name: '公益项目', path: '/products?fundraiser=public' },
+      { name: '社区支持', path: '/products?fundraiser=community' }
+    ],
+    brands: [
+      { name: '慈善品牌', image: '/brands/charity.jpg' },
+      { name: '公益品牌', image: '/brands/public-welfare.jpg' }
+    ],
+    styles: [
+      { name: '慈善款', path: '/products?style=charity' },
+      { name: '公益款', path: '/products?style=public-welfare' }
+    ],
+    featured: [
+      { name: '慈善筹款', image: '/featured/charity-fundraiser.jpg' },
+      { name: '公益项目', image: '/featured/public-welfare.jpg' },
+      { name: '社区支持', image: '/featured/community-support.jpg' }
+    ],
+    trending: [
+      { name: '慈善筹款', path: '/products?fundraiser=charity' },
+      { name: '公益项目', path: '/products?fundraiser=public' },
+      { name: '社区支持', path: '/products?fundraiser=community' },
+      { name: '爱心捐赠', path: '/products?fundraiser=donation' },
+      { name: '公益行动', path: '/products?fundraiser=action' }
+    ]
+  },
+  {
+    name: 'LGBTQ+创作者',
+    path: '/products?creator=lgbtq',
+    subcategories: [
+      { name: '彩虹系列', path: '/products?style=rainbow' },
+      { name: '包容设计', path: '/products?style=inclusive' },
+      { name: '多元文化', path: '/products?style=diverse' }
+    ],
+    brands: [
+      { name: '彩虹品牌', image: '/brands/rainbow.jpg' },
+      { name: '包容品牌', image: '/brands/inclusive.jpg' }
+    ],
+    styles: [
+      { name: '彩虹款', path: '/products?style=rainbow' },
+      { name: '包容款', path: '/products?style=inclusive' },
+      { name: '多元款', path: '/products?style=diverse' }
+    ],
+    featured: [
+      { name: '彩虹系列', image: '/featured/rainbow-collection.jpg' },
+      { name: '包容设计', image: '/featured/inclusive-design.jpg' },
+      { name: '多元文化', image: '/featured/diverse-culture.jpg' }
+    ],
+    trending: [
+      { name: '彩虹系列', path: '/products?style=rainbow' },
+      { name: '包容设计', path: '/products?style=inclusive' },
+      { name: '多元文化', path: '/products?style=diverse' },
+      { name: '平等时尚', path: '/products?style=equality' },
+      { name: '自由表达', path: '/products?style=freedom' }
+    ]
+  },
+  {
+    name: '女性创作者',
+    path: '/products?creator=female',
+    subcategories: [
+      { name: '女性设计', path: '/products?designer=female' },
+      { name: '女性品牌', path: '/products?brand=female' },
+      { name: '女性力量', path: '/products?theme=empowerment' }
+    ],
+    brands: [
+      { name: '女性品牌', image: '/brands/female-brand.jpg' },
+      { name: '女性设计', image: '/brands/female-design.jpg' }
+    ],
+    styles: [
+      { name: '女性款', path: '/products?style=female' },
+      { name: '力量款', path: '/products?style=empowerment' },
+      { name: '独立款', path: '/products?style=independent' }
+    ],
+    featured: [
+      { name: '女性设计', image: '/featured/female-design.jpg' },
+      { name: '女性品牌', image: '/featured/female-brand.jpg' },
+      { name: '女性力量', image: '/featured/female-empowerment.jpg' }
+    ],
+    trending: [
+      { name: '女性设计', path: '/products?designer=female' },
+      { name: '女性品牌', path: '/products?brand=female' },
+      { name: '女性力量', path: '/products?theme=empowerment' },
+      { name: '独立女性', path: '/products?theme=independent' },
+      { name: '女性时尚', path: '/products?style=female-fashion' }
+    ]
+  },
+  {
+    name: '更多',
+    path: '/products',
+    subcategories: [
+      { name: '所有分类', path: '/categories' },
+      { name: '品牌专区', path: '/brands' },
+      { name: '设计师', path: '/designers' },
+      { name: '活动', path: '/events' }
+    ],
+    brands: [
+      { name: '更多品牌', image: '/brands/more.jpg' },
+      { name: '设计师', image: '/brands/designers.jpg' }
+    ],
+    styles: [
+      { name: '更多款式', path: '/styles' },
+      { name: '定制设计', path: '/custom' },
+      { name: '限量版', path: '/limited' }
+    ],
+    featured: [
+      { name: '所有分类', image: '/featured/all-categories.jpg' },
+      { name: '品牌专区', image: '/featured/brand-zone.jpg' },
+      { name: '设计师', image: '/featured/designers.jpg' }
+    ],
+    trending: [
+      { name: '所有分类', path: '/categories' },
+      { name: '品牌专区', path: '/brands' },
+      { name: '设计师', path: '/designers' },
+      { name: '活动', path: '/events' },
+      { name: '定制设计', path: '/custom' }
     ]
   }
 ]);
@@ -2597,7 +2499,7 @@ html.dark {
   border-radius: 50%;
   margin: 0 auto 12px;
   overflow: hidden;
-  background: #f3f4f6;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;

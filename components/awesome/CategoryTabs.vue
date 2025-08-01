@@ -43,29 +43,21 @@ const handleTabChange = (index: number) => {
   <div class="navigation-menu">
     <!-- Tab 栏 -->
     <div class="tab-bar">
-      <div class="mx-auto">
+      <div class="container mx-auto">
         <div class="tab-container">
           <div 
             v-for="(category, index) in categories" 
             :key="`tab-group-${index}`"
             class="tab-group"
           >
-            <input 
-              type="radio" 
-              :name="'tab'" 
-              :id="`tab${index}`" 
-              :class="`tab tab--${index + 1}`"
-              :checked="activeCategory === index"
-              @change="handleTabChange(index)"
-            />
-            <label 
-              :class="`tab_label`" 
-              :for="`tab${index}`"
+            <button 
+              :class="`tab-button ${activeCategory === index ? 'active' : ''}`"
+              @click="handleTabChange(index)"
               @mouseenter="handleMouseEnter(index)"
               @mouseleave="handleMouseLeave"
             >
               {{ category.name }}
-            </label>
+            </button>
           </div>
         </div>
       </div>
@@ -78,7 +70,7 @@ const handleTabChange = (index: number) => {
       @mouseenter="handleMouseEnter(activeCategory)"
       @mouseleave="handleMouseLeave"
     >
-      <div class="mx-auto">
+      <div class="container mx-auto">
         <div class="menu-content">
           <!-- 左侧热门搜索 -->
           <div class="menu-left">
@@ -136,81 +128,61 @@ const handleTabChange = (index: number) => {
 .tab-bar {
   background: white;
   border-bottom: 1px solid #e9ecef;
-  padding: 8px 0;
+  padding: 12px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .tab-container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 8px;
-  margin: 8px 32px;
-  gap: 8px;
-  
-  @media (max-width: 768px) {
-    margin: 8px 20px;
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-}
-
-
-
-.tab-group {
-  position: relative;
-}
-
-.tab {
-  display: none;
-}
-
-.tab_label {
-  width: 130px;
-  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0;
-  font-size: 0.75rem;
-  color: #374151;
-  opacity: 0.7;
+  gap: 8px;
+  overflow-x: auto;
+  
+  @media (max-width: 768px) {
+    gap: 6px;
+  }
+}
+
+.tab-group {
+  flex-shrink: 0;
+}
+
+.tab-button {
+  padding: 6px 12px;
+  background: white;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  background-color: #f3f4f6;
-  border-radius: 50px;
-  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: center;
+  border: none;
   
-  &:focus {
-    outline: none;
+  &:hover {
+    background: #f9fafb;
+    color: #374151;
+  }
+  
+  &.active {
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    font-size: 11px;
+    min-width: 60px;
   }
 }
-
-/* 激活状态的样式 */
-.tab:checked + .tab_label {
-  color: #4d4d4d;
-  background-color: #ffffff;
-  box-shadow: inset 2px 2px 5px #bcbcbc, inset -2px -2px 5px #ffffff, 2px 2px 5px #bcbcbc, -2px -2px 5px #ffffff;
-  
-  &:focus {
-    outline: none;
-    box-shadow: inset 1px 1px 3px #bcbcbc, inset -1px -1px 3px #ffffff, 3px 3px 8px #bcbcbc, -3px -3px 8px #ffffff;
-  }
-}
-
-/* hover效果 */
-.tab_label:hover {
-  opacity: 1;
-  background-color: #e5e7eb;
-  border-color: #d1d5db;
-}
-
-.tab:checked + .tab_label:hover {
-  box-shadow: inset 1px 1px 3px #bcbcbc, inset -1px -1px 3px #ffffff, 3px 3px 8px #bcbcbc, -3px -3px 8px #ffffff;
-}
-
-
 
 .dropdown-menu {
   position: absolute;
@@ -238,9 +210,11 @@ const handleTabChange = (index: number) => {
 
 .menu-content {
   display: flex;
-  padding: 40px 32px;
+  padding: 40px 20px;
   gap: 48px;
   min-height: 200px;
+  max-width: 1200px;
+  margin: 0 auto;
   
   @media (max-width: 768px) {
     padding: 32px 20px;
@@ -364,14 +338,25 @@ const handleTabChange = (index: number) => {
 @media (max-width: 768px) {
   .tab-container {
     overflow-x: auto;
-    margin: 8px 20px;
-  }
-  
-  .tab_label {
-    min-width: 100px;
-    white-space: nowrap;
-    width: auto;
-    padding: 0 20px;
+    padding-bottom: 4px;
+    
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 2px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 2px;
+      
+      &:hover {
+        background: #94a3b8;
+      }
+    }
   }
   
   .menu-content {
