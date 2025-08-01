@@ -463,15 +463,137 @@ const productsData = ref({
   newArrivals: [],
   popular: [],
   recommended: [],
-  categoryProducts: {} as Record<string, any[]>
+  categoryProducts: {} as Record<string, any[]>,
+  // 新增分类数据
+  genderProducts: {} as Record<string, any[]>,
+  seasonProducts: {} as Record<string, any[]>,
+  priceProducts: {} as Record<string, any[]>,
+  brandProducts: {} as Record<string, any[]>,
+  materialProducts: {} as Record<string, any[]>,
+  colorProducts: {} as Record<string, any[]>,
+  sizeProducts: {} as Record<string, any[]>,
+  ageProducts: {} as Record<string, any[]>,
+  occasionProducts: {} as Record<string, any[]>,
+  trendingProducts: [] as any[],
+  saleProducts: [] as any[],
+  featuredProducts: [] as any[]
 });
 
 const loading = ref({
   newArrivals: false,
   popular: false,
   recommended: false,
-  categoryProducts: {} as Record<string, boolean>
+  categoryProducts: {} as Record<string, boolean>,
+  // 新增加载状态
+  genderProducts: {} as Record<string, boolean>,
+  seasonProducts: {} as Record<string, boolean>,
+  priceProducts: {} as Record<string, boolean>,
+  brandProducts: {} as Record<string, boolean>,
+  materialProducts: {} as Record<string, boolean>,
+  colorProducts: {} as Record<string, boolean>,
+  sizeProducts: {} as Record<string, boolean>,
+  ageProducts: {} as Record<string, boolean>,
+  occasionProducts: {} as Record<string, boolean>,
+  trendingProducts: false,
+  saleProducts: false,
+  featuredProducts: false
 });
+
+// 新增分类配置
+const genderCategories = ref([
+  { name: '男装', value: 'male', icon: 'mdi-gender-male' },
+  { name: '女装', value: 'female', icon: 'mdi-gender-female' },
+  { name: '童装', value: 'kids', icon: 'mdi-baby-face' },
+  { name: '中性', value: 'unisex', icon: 'mdi-gender-male-female' }
+]);
+
+const seasonCategories = ref([
+  { name: '春季', value: 'spring', icon: 'mdi-flower', color: '#4ade80' },
+  { name: '夏季', value: 'summer', icon: 'mdi-weather-sunny', color: '#fbbf24' },
+  { name: '秋季', value: 'autumn', icon: 'mdi-leaf', color: '#f97316' },
+  { name: '冬季', value: 'winter', icon: 'mdi-weather-snowy', color: '#60a5fa' }
+]);
+
+const priceCategories = ref([
+  { name: '经济实惠', value: 'budget', range: '0-100', icon: 'mdi-currency-cny' },
+  { name: '中端价位', value: 'mid-range', range: '100-500', icon: 'mdi-currency-cny' },
+  { name: '高端精品', value: 'premium', range: '500-2000', icon: 'mdi-currency-cny' },
+  { name: '奢侈品牌', value: 'luxury', range: '2000+', icon: 'mdi-currency-cny' }
+]);
+
+const brandCategories = ref([
+  { name: 'UNIQLO', value: 'uniqlo', image: '/brands/uniqlo.jpg' },
+  { name: 'ZARA', value: 'zara', image: '/brands/zara.jpg' },
+  { name: 'H&M', value: 'hm', image: '/brands/hm.jpg' },
+  { name: 'GAP', value: 'gap', image: '/brands/gap.jpg' },
+  { name: 'COS', value: 'cos', image: '/brands/cos.jpg' },
+  { name: 'Massimo Dutti', value: 'massimo-dutti', image: '/brands/massimo-dutti.jpg' },
+  { name: 'Mango', value: 'mango', image: '/brands/mango.jpg' },
+  { name: 'Pull&Bear', value: 'pull-bear', image: '/brands/pull-bear.jpg' }
+]);
+
+const materialCategories = ref([
+  { name: '棉质', value: 'cotton', icon: 'mdi-cotton' },
+  { name: '丝绸', value: 'silk', icon: 'mdi-silk' },
+  { name: '羊毛', value: 'wool', icon: 'mdi-wool' },
+  { name: '牛仔', value: 'denim', icon: 'mdi-denim' },
+  { name: '皮革', value: 'leather', icon: 'mdi-leather' },
+  { name: '针织', value: 'knit', icon: 'mdi-knit' }
+]);
+
+const colorCategories = ref([
+  { name: '黑色', value: 'black', color: '#000000' },
+  { name: '白色', value: 'white', color: '#ffffff' },
+  { name: '红色', value: 'red', color: '#ef4444' },
+  { name: '蓝色', value: 'blue', color: '#3b82f6' },
+  { name: '绿色', value: 'green', color: '#10b981' },
+  { name: '黄色', value: 'yellow', color: '#f59e0b' },
+  { name: '紫色', value: 'purple', color: '#8b5cf6' },
+  { name: '粉色', value: 'pink', color: '#ec4899' }
+]);
+
+const sizeCategories = ref([
+  { name: 'XS', value: 'xs' },
+  { name: 'S', value: 's' },
+  { name: 'M', value: 'm' },
+  { name: 'L', value: 'l' },
+  { name: 'XL', value: 'xl' },
+  { name: 'XXL', value: 'xxl' }
+]);
+
+const ageCategories = ref([
+  { name: '青少年', value: 'teen', range: '13-19岁' },
+  { name: '青年', value: 'young', range: '20-30岁' },
+  { name: '中年', value: 'middle', range: '31-50岁' },
+  { name: '老年', value: 'senior', range: '50岁以上' }
+]);
+
+const occasionCategories = ref([
+  { name: '日常休闲', value: 'casual', icon: 'mdi-tshirt-crew' },
+  { name: '商务正装', value: 'business', icon: 'mdi-account-tie' },
+  { name: '运动健身', value: 'sports', icon: 'mdi-run' },
+  { name: '派对聚会', value: 'party', icon: 'mdi-party-popper' },
+  { name: '婚礼庆典', value: 'wedding', icon: 'mdi-heart' },
+  { name: '户外活动', value: 'outdoor', icon: 'mdi-hiking' }
+]);
+
+// 新增UI状态管理
+const activeFilters = ref({
+  gender: '',
+  season: '',
+  price: '',
+  brand: '',
+  material: '',
+  color: '',
+  size: '',
+  age: '',
+  occasion: ''
+});
+
+const showAdvancedFilters = ref(false);
+const showFilterModal = ref(false);
+const selectedViewMode = ref('grid'); // grid, list, masonry
+const sortBy = ref('latest'); // latest, price-asc, price-desc, popularity, rating
 
 const showDropdown = (index: number) => {
   activeCategory.value = index;
@@ -497,7 +619,9 @@ const handleMouseLeave = () => {
 
 // 获取商品数据的通用函数
 const fetchProducts = async (params: any, type: string) => {
-  loading.value[type] = true;
+  if (loading.value[type as keyof typeof loading.value]) {
+    loading.value[type as keyof typeof loading.value] = true;
+  }
   try {
     const { $customFetch } = useNuxtApp();
     const requestBody = {
@@ -510,18 +634,47 @@ const fetchProducts = async (params: any, type: string) => {
     const response = await $customFetch("/product/page", {
       method: "POST",
       body: requestBody,
-    });
+    }) as any;
     
     if (type === 'categoryProducts') {
       const categoryKey = params.filters?.style || params.filters?.gender || 'default';
       productsData.value.categoryProducts[categoryKey] = response.list || [];
+    } else if (type.startsWith('genderProducts')) {
+      const genderKey = params.filters?.gender || 'default';
+      productsData.value.genderProducts[genderKey] = response.list || [];
+    } else if (type.startsWith('seasonProducts')) {
+      const seasonKey = params.filters?.season || 'default';
+      productsData.value.seasonProducts[seasonKey] = response.list || [];
+    } else if (type.startsWith('priceProducts')) {
+      const priceKey = params.filters?.priceRange || 'default';
+      productsData.value.priceProducts[priceKey] = response.list || [];
+    } else if (type.startsWith('brandProducts')) {
+      const brandKey = params.filters?.brand || 'default';
+      productsData.value.brandProducts[brandKey] = response.list || [];
+    } else if (type.startsWith('materialProducts')) {
+      const materialKey = params.filters?.material || 'default';
+      productsData.value.materialProducts[materialKey] = response.list || [];
+    } else if (type.startsWith('colorProducts')) {
+      const colorKey = params.filters?.color || 'default';
+      productsData.value.colorProducts[colorKey] = response.list || [];
+    } else if (type.startsWith('sizeProducts')) {
+      const sizeKey = params.filters?.size || 'default';
+      productsData.value.sizeProducts[sizeKey] = response.list || [];
+    } else if (type.startsWith('ageProducts')) {
+      const ageKey = params.filters?.ageGroup || 'default';
+      productsData.value.ageProducts[ageKey] = response.list || [];
+    } else if (type.startsWith('occasionProducts')) {
+      const occasionKey = params.filters?.occasion || 'default';
+      productsData.value.occasionProducts[occasionKey] = response.list || [];
     } else {
-      productsData.value[type] = response.list || [];
+      (productsData.value as any)[type] = response.list || [];
     }
   } catch (error) {
     console.error(`获取${type}商品失败:`, error);
   } finally {
-    loading.value[type] = false;
+    if (loading.value[type as keyof typeof loading.value]) {
+      loading.value[type as keyof typeof loading.value] = false;
+    }
   }
 };
 
@@ -549,6 +702,120 @@ const fetchCategoryProducts = (category: string, filters: any = {}) => {
     }
   };
   fetchProducts(params, 'categoryProducts');
+};
+
+// 新增分类获取函数
+const fetchGenderProducts = (gender: string) => {
+  const params = {
+    filters: { gender }
+  };
+  fetchProducts(params, `genderProducts_${gender}`);
+};
+
+const fetchSeasonProducts = (season: string) => {
+  const params = {
+    filters: { season }
+  };
+  fetchProducts(params, `seasonProducts_${season}`);
+};
+
+const fetchPriceProducts = (priceRange: string) => {
+  const params = {
+    filters: { priceRange }
+  };
+  fetchProducts(params, `priceProducts_${priceRange}`);
+};
+
+const fetchBrandProducts = (brand: string) => {
+  const params = {
+    filters: { brand }
+  };
+  fetchProducts(params, `brandProducts_${brand}`);
+};
+
+const fetchMaterialProducts = (material: string) => {
+  const params = {
+    filters: { material }
+  };
+  fetchProducts(params, `materialProducts_${material}`);
+};
+
+const fetchColorProducts = (color: string) => {
+  const params = {
+    filters: { color }
+  };
+  fetchProducts(params, `colorProducts_${color}`);
+};
+
+const fetchSizeProducts = (size: string) => {
+  const params = {
+    filters: { size }
+  };
+  fetchProducts(params, `sizeProducts_${size}`);
+};
+
+const fetchAgeProducts = (ageGroup: string) => {
+  const params = {
+    filters: { ageGroup }
+  };
+  fetchProducts(params, `ageProducts_${ageGroup}`);
+};
+
+const fetchOccasionProducts = (occasion: string) => {
+  const params = {
+    filters: { occasion }
+  };
+  fetchProducts(params, `occasionProducts_${occasion}`);
+};
+
+// 获取特价商品
+const fetchSaleProducts = () => {
+  fetchProducts({ filters: { onSale: true } }, 'saleProducts');
+};
+
+// 获取精选商品
+const fetchFeaturedProducts = () => {
+  fetchProducts({ filters: { featured: true } }, 'featuredProducts');
+};
+
+// 获取趋势商品
+const fetchTrendingProducts = () => {
+  fetchProducts({ sort: 'trending' }, 'trendingProducts');
+};
+
+// 筛选器相关函数
+const applyFilter = (filterType: string, value: string) => {
+  activeFilters.value[filterType as keyof typeof activeFilters.value] = value;
+  // 这里可以根据筛选条件重新获取商品
+};
+
+const clearFilter = (filterType: string) => {
+  activeFilters.value[filterType as keyof typeof activeFilters.value] = '';
+};
+
+const clearAllFilters = () => {
+  activeFilters.value = {
+    gender: '',
+    season: '',
+    price: '',
+    brand: '',
+    material: '',
+    color: '',
+    size: '',
+    age: '',
+    occasion: ''
+  };
+};
+
+// 切换视图模式
+const toggleViewMode = (mode: string) => {
+  selectedViewMode.value = mode;
+};
+
+// 切换排序方式
+const changeSortBy = (sort: string) => {
+  sortBy.value = sort;
+  // 重新获取商品数据
 };
 
 // 跳转到商品详情页
@@ -580,7 +847,7 @@ const leadingsText = computed(() => [
 
 onMounted(() => {
   try {
-    console.log("aweawe", parseMenuTitle("aweawe"), this);
+    console.log("aweawe", parseMenuTitle("aweawe"));
   } catch (error) {
     console.log("aweawe error", error);
   }
@@ -589,11 +856,42 @@ onMounted(() => {
   fetchNewArrivals();
   fetchPopularProducts();
   fetchRecommendedProducts();
+  fetchSaleProducts();
+  fetchFeaturedProducts();
+  fetchTrendingProducts();
   
   // 获取一些分类商品
   fetchCategoryProducts('casual');
   fetchCategoryProducts('formal');
   fetchCategoryProducts('sports');
+  
+  // 获取性别分类商品
+  fetchGenderProducts('male');
+  fetchGenderProducts('female');
+  
+  // 获取季节分类商品
+  fetchSeasonProducts('spring');
+  fetchSeasonProducts('summer');
+  
+  // 获取价格分类商品
+  fetchPriceProducts('budget');
+  fetchPriceProducts('mid-range');
+  
+  // 获取品牌分类商品
+  fetchBrandProducts('uniqlo');
+  fetchBrandProducts('zara');
+  
+  // 获取材质分类商品
+  fetchMaterialProducts('cotton');
+  fetchMaterialProducts('denim');
+  
+  // 获取颜色分类商品
+  fetchColorProducts('black');
+  fetchColorProducts('white');
+  
+  // 获取场合分类商品
+  fetchOccasionProducts('casual');
+  fetchOccasionProducts('business');
 });
 </script>
 
@@ -964,6 +1262,458 @@ onMounted(() => {
     <div class="my-16 w-full bg-gray-50 py-16">
       <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         
+        <!-- 筛选器和视图控制 -->
+        <div class="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div class="flex items-center gap-4">
+            <h2 class="text-2xl font-bold">商品筛选</h2>
+            <v-btn
+              variant="outlined"
+              size="small"
+              @click="showAdvancedFilters = !showAdvancedFilters"
+              class="filter-toggle-btn"
+            >
+              <v-icon left>mdi-filter-variant</v-icon>
+              高级筛选
+            </v-btn>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <!-- 视图模式切换 -->
+            <div class="flex items-center gap-2">
+              <v-btn
+                icon
+                variant="text"
+                :color="selectedViewMode === 'grid' ? 'primary' : 'default'"
+                @click="toggleViewMode('grid')"
+              >
+                <v-icon>mdi-view-grid</v-icon>
+              </v-btn>
+              <v-btn
+                icon
+                variant="text"
+                :color="selectedViewMode === 'list' ? 'primary' : 'default'"
+                @click="toggleViewMode('list')"
+              >
+                <v-icon>mdi-view-list</v-icon>
+              </v-btn>
+              <v-btn
+                icon
+                variant="text"
+                :color="selectedViewMode === 'masonry' ? 'primary' : 'default'"
+                @click="toggleViewMode('masonry')"
+              >
+                <v-icon>mdi-view-module</v-icon>
+              </v-btn>
+            </div>
+            
+            <!-- 排序选择 -->
+            <v-select
+              v-model="sortBy"
+              :items="[
+                { title: '最新上架', value: 'latest' },
+                { title: '价格从低到高', value: 'price-asc' },
+                { title: '价格从高到低', value: 'price-desc' },
+                { title: '人气排序', value: 'popularity' },
+                { title: '评分排序', value: 'rating' }
+              ]"
+              label="排序方式"
+              variant="outlined"
+              density="compact"
+              hide-details
+              class="sort-select"
+              @update:model-value="changeSortBy"
+            ></v-select>
+          </div>
+        </div>
+
+        <!-- 高级筛选面板 -->
+        <v-expand-transition>
+          <div v-if="showAdvancedFilters" class="mb-8">
+            <v-card class="filter-panel">
+              <v-card-text>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <!-- 性别筛选 -->
+                  <div class="filter-section">
+                    <h3 class="text-lg font-semibold mb-3">性别</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <v-chip
+                        v-for="gender in genderCategories"
+                        :key="gender.value"
+                        :color="activeFilters.gender === gender.value ? 'primary' : 'default'"
+                        variant="outlined"
+                        @click="applyFilter('gender', gender.value)"
+                        class="filter-chip"
+                      >
+                        <v-icon left size="small">{{ gender.icon }}</v-icon>
+                        {{ gender.name }}
+                      </v-chip>
+                    </div>
+                  </div>
+
+                  <!-- 季节筛选 -->
+                  <div class="filter-section">
+                    <h3 class="text-lg font-semibold mb-3">季节</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <v-chip
+                        v-for="season in seasonCategories"
+                        :key="season.value"
+                        :color="activeFilters.season === season.value ? 'primary' : 'default'"
+                        variant="outlined"
+                        @click="applyFilter('season', season.value)"
+                        class="filter-chip"
+                      >
+                        <v-icon left size="small" :color="season.color">{{ season.icon }}</v-icon>
+                        {{ season.name }}
+                      </v-chip>
+                    </div>
+                  </div>
+
+                  <!-- 价格筛选 -->
+                  <div class="filter-section">
+                    <h3 class="text-lg font-semibold mb-3">价格区间</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <v-chip
+                        v-for="price in priceCategories"
+                        :key="price.value"
+                        :color="activeFilters.price === price.value ? 'primary' : 'default'"
+                        variant="outlined"
+                        @click="applyFilter('price', price.value)"
+                        class="filter-chip"
+                      >
+                        <v-icon left size="small">{{ price.icon }}</v-icon>
+                        {{ price.name }}
+                      </v-chip>
+                    </div>
+                  </div>
+
+                  <!-- 品牌筛选 -->
+                  <div class="filter-section">
+                    <h3 class="text-lg font-semibold mb-3">品牌</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <v-chip
+                        v-for="brand in brandCategories.slice(0, 6)"
+                        :key="brand.value"
+                        :color="activeFilters.brand === brand.value ? 'primary' : 'default'"
+                        variant="outlined"
+                        @click="applyFilter('brand', brand.value)"
+                        class="filter-chip"
+                      >
+                        {{ brand.name }}
+                      </v-chip>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 清除筛选按钮 -->
+                <div class="mt-6 flex justify-end">
+                  <v-btn
+                    variant="outlined"
+                    color="error"
+                    @click="clearAllFilters"
+                    class="clear-filters-btn"
+                  >
+                    <v-icon left>mdi-close</v-icon>
+                    清除所有筛选
+                  </v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </div>
+        </v-expand-transition>
+
+        <!-- 性别分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按性别分类</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              v-for="gender in genderCategories"
+              :key="gender.value"
+              class="gender-category-card"
+              @click="fetchGenderProducts(gender.value)"
+            >
+              <div class="gender-card-content">
+                <div class="gender-icon-wrapper">
+                  <v-icon size="x-large" :color="gender.value === 'male' ? 'blue' : gender.value === 'female' ? 'pink' : 'green'">
+                    {{ gender.icon }}
+                  </v-icon>
+                </div>
+                <h3 class="gender-title">{{ gender.name }}</h3>
+                <p class="gender-count">
+                  {{ productsData.genderProducts[gender.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 季节分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按季节分类</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              v-for="season in seasonCategories"
+              :key="season.value"
+              class="season-category-card"
+              @click="fetchSeasonProducts(season.value)"
+            >
+              <div class="season-card-content">
+                <div class="season-icon-wrapper" :style="{ backgroundColor: season.color + '20' }">
+                  <v-icon size="x-large" :color="season.color">
+                    {{ season.icon }}
+                  </v-icon>
+                </div>
+                <h3 class="season-title">{{ season.name }}</h3>
+                <p class="season-count">
+                  {{ productsData.seasonProducts[season.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 价格分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按价格分类</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              v-for="price in priceCategories"
+              :key="price.value"
+              class="price-category-card"
+              @click="fetchPriceProducts(price.value)"
+            >
+              <div class="price-card-content">
+                <div class="price-icon-wrapper">
+                  <v-icon size="x-large" color="orange">
+                    {{ price.icon }}
+                  </v-icon>
+                </div>
+                <h3 class="price-title">{{ price.name }}</h3>
+                <p class="price-range">{{ price.range }}</p>
+                <p class="price-count">
+                  {{ productsData.priceProducts[price.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 品牌分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">热门品牌</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="brand in brandCategories"
+              :key="brand.value"
+              class="brand-category-card"
+              @click="fetchBrandProducts(brand.value)"
+            >
+              <div class="brand-card-content">
+                <div class="brand-image-wrapper">
+                  <div class="brand-placeholder">{{ brand.name.charAt(0) }}</div>
+                </div>
+                <h3 class="brand-title">{{ brand.name }}</h3>
+                <p class="brand-count">
+                  {{ productsData.brandProducts[brand.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 材质分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按材质分类</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div
+              v-for="material in materialCategories"
+              :key="material.value"
+              class="material-category-card"
+              @click="fetchMaterialProducts(material.value)"
+            >
+              <div class="material-card-content">
+                <div class="material-icon-wrapper">
+                  <v-icon size="large" color="brown">
+                    {{ material.icon }}
+                  </v-icon>
+                </div>
+                <h3 class="material-title">{{ material.name }}</h3>
+                <p class="material-count">
+                  {{ productsData.materialProducts[material.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 颜色分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按颜色分类</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="color in colorCategories"
+              :key="color.value"
+              class="color-category-card"
+              @click="fetchColorProducts(color.value)"
+            >
+              <div class="color-card-content">
+                <div class="color-circle" :style="{ backgroundColor: color.color }"></div>
+                <h3 class="color-title">{{ color.name }}</h3>
+                <p class="color-count">
+                  {{ productsData.colorProducts[color.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 场合分类展示 -->
+        <div class="mb-16">
+          <h2 class="text-3xl font-bold mb-8">按场合分类</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div
+              v-for="occasion in occasionCategories"
+              :key="occasion.value"
+              class="occasion-category-card"
+              @click="fetchOccasionProducts(occasion.value)"
+            >
+              <div class="occasion-card-content">
+                <div class="occasion-icon-wrapper">
+                  <v-icon size="large" color="purple">
+                    {{ occasion.icon }}
+                  </v-icon>
+                </div>
+                <h3 class="occasion-title">{{ occasion.name }}</h3>
+                <p class="occasion-count">
+                  {{ productsData.occasionProducts[occasion.value]?.length || 0 }} 件商品
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 特价商品 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">特价商品</h2>
+            <NuxtLink to="/products?sale=true" class="text-red-600 hover:text-red-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.saleProducts" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.saleProducts.length === 0" class="text-center py-12 text-gray-500">
+            暂无特价商品
+          </div>
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="product in productsData.saleProducts.slice(0, 8)"
+              :key="product.id"
+              class="product-card sale-product-card"
+              @click="navigateToProduct(product.id)"
+            >
+              <div class="product-image">
+                <div class="sale-badge">特价</div>
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price sale-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 精选商品 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">精选商品</h2>
+            <NuxtLink to="/products?featured=true" class="text-blue-600 hover:text-blue-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.featuredProducts" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.featuredProducts.length === 0" class="text-center py-12 text-gray-500">
+            暂无精选商品
+          </div>
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="product in productsData.featuredProducts.slice(0, 8)"
+              :key="product.id"
+              class="product-card featured-product-card"
+              @click="navigateToProduct(product.id)"
+            >
+              <div class="product-image">
+                <div class="featured-badge">精选</div>
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 趋势商品 -->
+        <div class="mb-16">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">趋势商品</h2>
+            <NuxtLink to="/products?trending=true" class="text-orange-600 hover:text-orange-800 font-medium">
+              查看更多 →
+            </NuxtLink>
+          </div>
+          <div v-if="loading.trendingProducts" class="flex justify-center py-12">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+          </div>
+          <div v-else-if="productsData.trendingProducts.length === 0" class="text-center py-12 text-gray-500">
+            暂无趋势商品
+          </div>
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="product in productsData.trendingProducts.slice(0, 8)"
+              :key="product.id"
+              class="product-card trending-product-card"
+              @click="navigateToProduct(product.id)"
+            >
+              <div class="product-image">
+                <div class="trending-badge">热门</div>
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="w-full h-full object-cover"
+                />
+                <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">¥{{ product.price || '待定' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- 新品上市 -->
         <div class="mb-16">
           <div class="flex justify-between items-center mb-8">
@@ -978,14 +1728,15 @@ onMounted(() => {
           <div v-else-if="productsData.newArrivals.length === 0" class="text-center py-12 text-gray-500">
             暂无新品
           </div>
-                      <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-              <div
-                v-for="product in productsData.newArrivals.slice(0, 8)"
-                :key="product.id"
-                class="product-card"
-                @click="navigateToProduct(product.id)"
-              >
+          <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <div
+              v-for="product in productsData.newArrivals.slice(0, 8)"
+              :key="product.id"
+              class="product-card new-product-card"
+              @click="navigateToProduct(product.id)"
+            >
               <div class="product-image">
+                <div class="new-badge">新品</div>
                 <img
                   v-if="product?.customModel?.thumbnail"
                   :src="product.customModel.thumbnail"
@@ -1019,12 +1770,12 @@ onMounted(() => {
             暂无热门商品
           </div>
           <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-                          <div
-                v-for="product in productsData.popular.slice(0, 8)"
-                :key="product.id"
-                class="product-card"
-                @click="navigateToProduct(product.id)"
-              >
+            <div
+              v-for="product in productsData.popular.slice(0, 8)"
+              :key="product.id"
+              class="product-card"
+              @click="navigateToProduct(product.id)"
+            >
               <div class="product-image">
                 <img
                   v-if="product?.customModel?.thumbnail"
@@ -1059,12 +1810,12 @@ onMounted(() => {
             暂无推荐商品
           </div>
           <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-                          <div
-                v-for="product in productsData.recommended.slice(0, 8)"
-                :key="product.id"
-                class="product-card"
-                @click="navigateToProduct(product.id)"
-              >
+            <div
+              v-for="product in productsData.recommended.slice(0, 8)"
+              :key="product.id"
+              class="product-card"
+              @click="navigateToProduct(product.id)"
+            >
               <div class="product-image">
                 <img
                   v-if="product?.customModel?.thumbnail"
@@ -2200,6 +2951,7 @@ html.dark {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
   
   &:hover {
     transform: translateY(-4px);
@@ -2245,6 +2997,196 @@ html.dark {
   margin: 0;
 }
 
+/* 筛选器样式 */
+.filter-toggle-btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.filter-panel {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.filter-section {
+  .filter-chip {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.clear-filters-btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.sort-select {
+  min-width: 150px;
+}
+
+/* 分类卡片样式 */
+.gender-category-card,
+.season-category-card,
+.price-category-card,
+.brand-category-card,
+.material-category-card,
+.color-category-card,
+.occasion-category-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: rgba(var(--v-theme-primary), 0.2);
+  }
+}
+
+.gender-card-content,
+.season-card-content,
+.price-card-content,
+.brand-card-content,
+.material-card-content,
+.color-card-content,
+.occasion-card-content {
+  text-align: center;
+}
+
+.gender-icon-wrapper,
+.season-icon-wrapper,
+.price-icon-wrapper,
+.material-icon-wrapper,
+.occasion-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  background: rgba(var(--v-theme-primary), 0.1);
+  transition: all 0.3s ease;
+}
+
+.brand-image-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.color-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  border: 3px solid #e5e7eb;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    border-color: rgba(var(--v-theme-primary), 0.5);
+  }
+}
+
+.gender-title,
+.season-title,
+.price-title,
+.brand-title,
+.material-title,
+.color-title,
+.occasion-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.price-range {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.gender-count,
+.season-count,
+.price-count,
+.brand-count,
+.material-count,
+.color-count,
+.occasion-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* 商品徽章样式 */
+.sale-badge,
+.featured-badge,
+.trending-badge,
+.new-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  z-index: 2;
+}
+
+.sale-badge {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.featured-badge {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.trending-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.new-badge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* 特价商品样式 */
+.sale-product-card {
+  .product-price {
+    color: #ef4444;
+    font-weight: 700;
+  }
+}
+
 /* 响应式商品卡片 */
 @media (max-width: 768px) {
   .product-image {
@@ -2260,6 +3202,37 @@ html.dark {
   }
   
   .product-price {
+    font-size: 0.8rem;
+  }
+  
+  .gender-icon-wrapper,
+  .season-icon-wrapper,
+  .price-icon-wrapper,
+  .material-icon-wrapper,
+  .occasion-icon-wrapper,
+  .brand-image-wrapper,
+  .color-circle {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .gender-title,
+  .season-title,
+  .price-title,
+  .brand-title,
+  .material-title,
+  .color-title,
+  .occasion-title {
+    font-size: 0.9rem;
+  }
+  
+  .gender-count,
+  .season-count,
+  .price-count,
+  .brand-count,
+  .material-count,
+  .color-count,
+  .occasion-count {
     font-size: 0.8rem;
   }
 }
@@ -2278,6 +3251,37 @@ html.dark {
   }
   
   .product-price {
+    font-size: 0.75rem;
+  }
+  
+  .gender-icon-wrapper,
+  .season-icon-wrapper,
+  .price-icon-wrapper,
+  .material-icon-wrapper,
+  .occasion-icon-wrapper,
+  .brand-image-wrapper,
+  .color-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .gender-title,
+  .season-title,
+  .price-title,
+  .brand-title,
+  .material-title,
+  .color-title,
+  .occasion-title {
+    font-size: 0.8rem;
+  }
+  
+  .gender-count,
+  .season-count,
+  .price-count,
+  .brand-count,
+  .material-count,
+  .color-count,
+  .occasion-count {
     font-size: 0.75rem;
   }
 }
