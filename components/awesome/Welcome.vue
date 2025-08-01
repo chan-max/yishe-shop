@@ -459,41 +459,73 @@ const activeCategory = ref<number>(0); // 默认显示第一个tab
 const isDropdownVisible = ref(true); // 默认显示下拉菜单
 
 // 商品数据状态
-const productsData = ref({
+const productsData = ref<{
+  newArrivals: any[];
+  popular: any[];
+  recommended: any[];
+  categoryProducts: Record<string, any[]>;
+  genderProducts: Record<string, any[]>;
+  seasonProducts: Record<string, any[]>;
+  priceProducts: Record<string, any[]>;
+  brandProducts: Record<string, any[]>;
+  materialProducts: Record<string, any[]>;
+  colorProducts: Record<string, any[]>;
+  sizeProducts: Record<string, any[]>;
+  ageProducts: Record<string, any[]>;
+  occasionProducts: Record<string, any[]>;
+  trendingProducts: any[];
+  saleProducts: any[];
+  featuredProducts: any[];
+}>({
   newArrivals: [],
   popular: [],
   recommended: [],
-  categoryProducts: {} as Record<string, any[]>,
-  // 新增分类数据
-  genderProducts: {} as Record<string, any[]>,
-  seasonProducts: {} as Record<string, any[]>,
-  priceProducts: {} as Record<string, any[]>,
-  brandProducts: {} as Record<string, any[]>,
-  materialProducts: {} as Record<string, any[]>,
-  colorProducts: {} as Record<string, any[]>,
-  sizeProducts: {} as Record<string, any[]>,
-  ageProducts: {} as Record<string, any[]>,
-  occasionProducts: {} as Record<string, any[]>,
-  trendingProducts: [] as any[],
-  saleProducts: [] as any[],
-  featuredProducts: [] as any[]
+  categoryProducts: {},
+  genderProducts: {},
+  seasonProducts: {},
+  priceProducts: {},
+  brandProducts: {},
+  materialProducts: {},
+  colorProducts: {},
+  sizeProducts: {},
+  ageProducts: {},
+  occasionProducts: {},
+  trendingProducts: [],
+  saleProducts: [],
+  featuredProducts: []
 });
 
-const loading = ref({
+const loading = ref<{
+  newArrivals: boolean;
+  popular: boolean;
+  recommended: boolean;
+  categoryProducts: Record<string, boolean>;
+  genderProducts: Record<string, boolean>;
+  seasonProducts: Record<string, boolean>;
+  priceProducts: Record<string, boolean>;
+  brandProducts: Record<string, boolean>;
+  materialProducts: Record<string, boolean>;
+  colorProducts: Record<string, boolean>;
+  sizeProducts: Record<string, boolean>;
+  ageProducts: Record<string, boolean>;
+  occasionProducts: Record<string, boolean>;
+  trendingProducts: boolean;
+  saleProducts: boolean;
+  featuredProducts: boolean;
+}>({
   newArrivals: false,
   popular: false,
   recommended: false,
-  categoryProducts: {} as Record<string, boolean>,
-  // 新增加载状态
-  genderProducts: {} as Record<string, boolean>,
-  seasonProducts: {} as Record<string, boolean>,
-  priceProducts: {} as Record<string, boolean>,
-  brandProducts: {} as Record<string, boolean>,
-  materialProducts: {} as Record<string, boolean>,
-  colorProducts: {} as Record<string, boolean>,
-  sizeProducts: {} as Record<string, boolean>,
-  ageProducts: {} as Record<string, boolean>,
-  occasionProducts: {} as Record<string, boolean>,
+  categoryProducts: {},
+  genderProducts: {},
+  seasonProducts: {},
+  priceProducts: {},
+  brandProducts: {},
+  materialProducts: {},
+  colorProducts: {},
+  sizeProducts: {},
+  ageProducts: {},
+  occasionProducts: {},
   trendingProducts: false,
   saleProducts: false,
   featuredProducts: false
@@ -622,8 +654,9 @@ const handleTabChange = (index: number) => {
 
 // 获取商品数据的通用函数
 const fetchProducts = async (params: any, type: string) => {
-  if (loading.value[type as keyof typeof loading.value]) {
-    loading.value[type as keyof typeof loading.value] = true;
+  const loadingKey = type as keyof typeof loading.value;
+  if (loadingKey in loading.value) {
+    (loading.value as any)[loadingKey] = true;
   }
   try {
     const { $customFetch } = useNuxtApp();
@@ -675,8 +708,8 @@ const fetchProducts = async (params: any, type: string) => {
   } catch (error) {
     console.error(`获取${type}商品失败:`, error);
   } finally {
-    if (loading.value[type as keyof typeof loading.value]) {
-      loading.value[type as keyof typeof loading.value] = false;
+    if (loadingKey in loading.value) {
+      (loading.value as any)[loadingKey] = false;
     }
   }
 };
@@ -991,125 +1024,7 @@ onMounted(() => {
       提交失败 - 请稍后重试
     </v-snackbar>
 
-    <!-- 导航菜单 -->
-    <div class="navigation-menu" v-if="false">
-      <div class="nav-container">
-        <div class="nav-bar">
-          <div class="container mx-auto">
-            <div class="nav-items pl-4">
-              <div
-                v-for="(category, index) in categories"
-                :key="index"
-                class="nav-item"
-                @mouseenter="handleMouseEnter(index)"
-                @mouseleave="handleMouseLeave"
-              >
-                <NuxtLink :to="category.path" class="nav-link">
-                  {{ category.name }}
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- 下拉菜单 -->
-        <Transition name="dropdown">
-          <div
-            v-if="isDropdownVisible && activeCategory !== null"
-            class="dropdown-menu"
-            @mouseenter="showDropdown(activeCategory!)"
-            @mouseleave="handleMouseLeave"
-          >
-            <div class="container mx-auto">
-              <div class="dropdown-content pl-8">
-                <div class="dropdown-grid">
-                  <!-- 左侧文本区域 -->
-                  <div class="text-sections">
-                    <!-- 按产品分类 -->
-                    <div class="text-section">
-                      <h3 class="section-title">按产品分类</h3>
-                      <div class="section-list">
-                        <NuxtLink
-                          v-for="subcategory in categories[activeCategory!].subcategories"
-                          :key="subcategory.path"
-                          :to="subcategory.path"
-                          class="section-item"
-                        >
-                          {{ subcategory.name }}
-                        </NuxtLink>
-                      </div>
-                    </div>
-
-                    <!-- 按品牌分类 -->
-                    <div class="text-section">
-                      <h3 class="section-title">按品牌分类</h3>
-                      <div class="brand-list">
-                        <div
-                          v-for="brand in categories[activeCategory!].brands"
-                          :key="brand.name"
-                          class="brand-item"
-                        >
-                          <div class="brand-image">
-                            <div class="brand-placeholder">{{ brand.name.charAt(0) }}</div>
-                          </div>
-                          <span class="brand-name">{{ brand.name }}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- 按款式分类 -->
-                    <div class="text-section">
-                      <h3 class="section-title">按款式分类</h3>
-                      <div class="section-list">
-                        <NuxtLink
-                          v-for="style in categories[activeCategory!].styles"
-                          :key="style.path"
-                          :to="style.path"
-                          class="section-item"
-                        >
-                          {{ style.name }}
-                        </NuxtLink>
-                      </div>
-                    </div>
-
-                    <!-- 热门趋势 -->
-                    <div class="text-section">
-                      <h3 class="section-title">热门趋势</h3>
-                      <div class="section-list">
-                        <NuxtLink
-                          v-for="trend in categories[activeCategory!].trending"
-                          :key="trend.path"
-                          :to="trend.path"
-                          class="section-item trending-item"
-                        >
-                          {{ trend.name }}
-                        </NuxtLink>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- 右侧图片区域 -->
-                  <div class="image-sections">
-                    <div
-                      v-for="featured in categories[activeCategory!].featured"
-                      :key="featured.name"
-                      class="image-section"
-                    >
-                      <div class="image-content">
-                        <div class="image-text">{{ featured.name }}</div>
-                        <div class="image-placeholder">
-                          <div class="featured-placeholder">{{ featured.name.charAt(0) }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </div>
-    </div>
 
     <!-- 黑色菜单栏 -->
     <!-- <div class="black-menu-bar">
@@ -1121,89 +1036,14 @@ onMounted(() => {
     </div> -->
 
     <!-- 导航菜单栏 -->
-    <div class="navigation-menu">
-      <!-- Tab 栏 -->
-      <div class="tab-bar">
-        <div class="container mx-auto">
-          <div class="tab-container">
-            <input 
-              v-for="(category, index) in categories" 
-              :key="`tab-${index}`"
-              type="radio" 
-              :name="'tab'" 
-              :id="`tab${index}`" 
-              :class="`tab tab--${index + 1}`"
-              :checked="activeCategory === index"
-              @change="handleTabChange(index)"
-            />
-            <label 
-              v-for="(category, index) in categories" 
-              :key="`label-${index}`"
-              :class="`tab_label`" 
-              :for="`tab${index}`"
-              @mouseenter="handleMouseEnter(index)"
-              @mouseleave="handleMouseLeave"
-            >
-              {{ category.name }}
-            </label>
-            <div class="indicator"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 大菜单 -->
-      <div 
-        v-if="isDropdownVisible"
-        class="dropdown-menu"
-        @mouseenter="handleMouseEnter(activeCategory)"
-        @mouseleave="handleMouseLeave"
-      >
-        <div class="container mx-auto">
-          <div class="menu-content">
-            <!-- 左侧热门搜索 -->
-            <div class="menu-left">
-              <h3 class="menu-title">热门搜索</h3>
-              <div class="trending-items">
-                <div 
-                  v-for="(item, index) in categories[activeCategory]?.trending?.slice(0, 5)" 
-                  :key="index"
-                  class="trending-item"
-                >
-                  <div class="trending-image">
-                    <img 
-                      :src="`/featured/${item.name.toLowerCase().replace(/\s+/g, '-')}.jpg`" 
-                      :alt="item.name"
-                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
-                    />
-                  </div>
-                  <span class="trending-name">{{ item.name }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 右侧特色商品 -->
-            <div class="menu-right">
-              <div class="featured-cards">
-                <div 
-                  v-for="(featured, index) in categories[activeCategory]?.featured?.slice(0, 3)" 
-                  :key="index"
-                  class="featured-card"
-                >
-                  <div class="featured-image">
-                    <img 
-                      :src="featured.image" 
-                      :alt="featured.name"
-                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
-                    />
-                  </div>
-                  <div class="featured-title">{{ featured.name }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AwesomeCategoryTabs
+      :categories="categories"
+      :active-category="activeCategory"
+      :is-dropdown-visible="isDropdownVisible"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @tab-change="handleTabChange"
+    />
 
     <!-- <div
       class="w-full h-24 mt-[1px]"
@@ -2281,419 +2121,7 @@ html.dark {
   }
 }
 
-/* 导航菜单样式 */
-.navigation-menu {
-  position: relative;
-}
 
-.nav-container {
-  position: relative;
-}
-
-.nav-bar {
-  background-color: #525050;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.nav-items {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  padding: 0;
-  justify-content: flex-start;
-}
-
-.nav-item {
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-  }
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-top: 1px solid #e5e7eb;
-  z-index: 1001;
-}
-
-.dropdown-content {
-  padding: 32px 0;
-}
-
-.dropdown-grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 48px;
-  align-items: start;
-}
-
-/* 左侧文本区域 */
-.text-sections {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.text-section {
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #374151;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-  }
-}
-
-.section-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 300px;
-  overflow-y: auto;
-  
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 2px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 2px;
-    
-    &:hover {
-      background: #94a3b8;
-    }
-  }
-}
-
-.section-item {
-  display: block;
-  color: #6b7280;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 400;
-  transition: all 0.2s ease;
-  padding: 4px 0;
-  
-  &:hover {
-    color: #374151;
-    transform: translateX(4px);
-  }
-  
-  &.trending-item {
-    font-weight: 500;
-    color: #059669;
-    
-    &:hover {
-      color: #047857;
-    }
-  }
-}
-
-/* 品牌列表 */
-.brand-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 280px;
-  overflow-y: auto;
-  
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 2px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 2px;
-    
-    &:hover {
-      background: #94a3b8;
-    }
-  }
-}
-
-.brand-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid #f3f4f6;
-  transition: all 0.2s ease;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  &:hover {
-    .brand-name {
-      color: #059669;
-    }
-  }
-}
-
-.brand-image {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #f3f4f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.brand-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.brand-name {
-  font-size: 14px;
-  font-weight: 400;
-  color: #6b7280;
-  transition: color 0.2s ease;
-}
-
-/* 右侧图片区域 */
-.image-sections {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.image-section {
-  background-color: #f9fafb;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background-color: #f3f4f6;
-    transform: translateY(-2px);
-  }
-}
-
-.image-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  height: 80px;
-}
-
-.image-text {
-  font-size: 14px;
-  font-weight: 700;
-  color: #374151;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  flex: 1;
-}
-
-.image-placeholder {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.featured-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-}
-
-// 过渡动画
-.dropdown-enter-active,
-.dropdown-leave-active {
-  transition: all 0.3s ease;
-}
-
-.dropdown-enter-from,
-.dropdown-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* 响应式调整 */
-@media (max-width: 1024px) {
-  .dropdown-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  
-  .text-sections {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  
-  .section-list,
-  .brand-list {
-    max-height: 250px;
-  }
-  
-  .image-sections {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .text-sections {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  
-  .section-title {
-    font-size: 13px !important;
-  }
-  
-  .section-item {
-    font-size: 13px;
-  }
-  
-  .brand-name {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .text-sections {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-items {
-    gap: 16px;
-    padding: 0 16px;
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-  
-  .nav-link {
-    font-size: 13px;
-    padding: 6px 8px;
-  }
-  
-  .dropdown-content {
-    padding: 24px 16px;
-  }
-  
-  .subcategory-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .category-title {
-    font-size: 20px;
-  }
-  
-  .design-card {
-    height: auto;
-    
-    .design-card-content {
-      flex-direction: column;
-      padding: 20px;
-    }
-    
-    .design-left {
-      flex: none;
-      padding-right: 0;
-      margin-bottom: 12px;
-    }
-    
-    .design-icon-wrapper {
-      width: 60px;
-      height: 60px;
-    }
-    
-    .v-card-title {
-      font-size: 1.25rem;
-      text-align: center;
-      margin-bottom: 4px;
-    }
-    
-    .v-card-text {
-      text-align: center;
-      margin-bottom: 4px;
-    }
-    
-    .v-card-actions {
-      padding-top: 4px !important;
-    }
-    
-    .v-btn {
-      align-self: center;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-items {
-    gap: 12px;
-  }
-  
-  .nav-link {
-    font-size: 12px;
-    padding: 4px 6px;
-  }
-}
 
 // 黑色菜单栏样式
 .black-menu-bar {
@@ -3026,288 +2454,7 @@ html.dark {
   }
 }
 
-/* 导航菜单样式 */
-.navigation-menu {
-  position: relative;
-  z-index: 1000;
-}
 
-.tab-bar {
-  background: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
-  padding: 8px 0;
-}
-
-.tab-container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 2px;
-  background-color: #dadadb;
-  border-radius: 9px;
-  margin: 8px 32px;
-  
-  @media (max-width: 768px) {
-    margin: 8px 20px;
-  }
-}
-
-.indicator {
-  content: "";
-  width: 130px;
-  height: 28px;
-  background: #ffffff;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  z-index: 9;
-  border: 0.5px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
-  border-radius: 7px;
-  transition: all 0.2s ease-out;
-}
-
-.tab {
-  width: 130px;
-  height: 28px;
-  position: absolute;
-  z-index: 99;
-  outline: none;
-  opacity: 0;
-}
-
-.tab_label {
-  width: 130px;
-  height: 28px;
-  position: relative;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  font-size: 0.75rem;
-  color: #6c757d;
-  opacity: 0.6;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-/* 动态定位indicator */
-.tab--1:checked ~ .indicator {
-  left: 2px;
-}
-
-.tab--2:checked ~ .indicator {
-  left: calc(130px + 2px);
-}
-
-.tab--3:checked ~ .indicator {
-  left: calc(130px * 2 + 2px);
-}
-
-.tab--4:checked ~ .indicator {
-  left: calc(130px * 3 + 2px);
-}
-
-.tab--5:checked ~ .indicator {
-  left: calc(130px * 4 + 2px);
-}
-
-.tab--6:checked ~ .indicator {
-  left: calc(130px * 5 + 2px);
-}
-
-.tab--7:checked ~ .indicator {
-  left: calc(130px * 6 + 2px);
-}
-
-.tab--8:checked ~ .indicator {
-  left: calc(130px * 7 + 2px);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
-  animation: slideDown 0.3s ease;
-  min-height: 280px;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.menu-content {
-  display: flex;
-  padding: 40px 32px;
-  gap: 48px;
-  min-height: 200px;
-  
-  @media (max-width: 768px) {
-    padding: 32px 20px;
-    gap: 24px;
-    min-height: 180px;
-  }
-}
-
-.menu-left {
-  flex: 1;
-  max-width: 300px;
-}
-
-.menu-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.trending-items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.trending-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: #f9fafb;
-    padding-left: 8px;
-  }
-}
-
-.trending-image {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #f3f4f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.trending-name {
-  font-size: 14px;
-  color: #374151;
-  font-weight: 500;
-}
-
-.menu-right {
-  flex: 2;
-}
-
-.featured-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.featured-card {
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.featured-image {
-  width: 100%;
-  height: 120px;
-  overflow: hidden;
-  background: #f3f4f6;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
-    transform: scale(1.05);
-  }
-}
-
-.featured-title {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* 响应式导航菜单 */
-@media (max-width: 768px) {
-  .tab-container {
-    overflow-x: auto;
-    margin: 8px 20px;
-  }
-  
-  .tab_label {
-    min-width: 100px;
-    white-space: nowrap;
-  }
-  
-  .menu-content {
-    flex-direction: column;
-    padding: 32px 20px;
-    gap: 24px;
-  }
-  
-  .menu-left {
-    max-width: none;
-  }
-  
-  .featured-cards {
-    grid-template-columns: 1fr;
-  }
-  
-  .featured-image {
-    height: 100px;
-  }
-}
 
 /* 商品卡片样式 */
 .product-card {
