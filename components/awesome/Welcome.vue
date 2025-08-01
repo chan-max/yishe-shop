@@ -455,8 +455,8 @@ const categories = ref([
   }
 ]);
 
-const activeCategory = ref<number | null>(null);
-const isDropdownVisible = ref(false);
+const activeCategory = ref<number>(0); // 默认显示第一个tab
+const isDropdownVisible = ref(true); // 默认显示下拉菜单
 
 // 商品数据状态
 const productsData = ref({
@@ -597,16 +597,13 @@ const sortBy = ref('latest'); // latest, price-asc, price-desc, popularity, rati
 
 const showDropdown = (index: number) => {
   activeCategory.value = index;
+  // 保持下拉菜单始终显示
   isDropdownVisible.value = true;
 };
 
 const hideDropdown = () => {
   isDropdownVisible.value = false;
-  setTimeout(() => {
-    if (!isDropdownVisible.value) {
-      activeCategory.value = null;
-    }
-  }, 150);
+  // 保持当前选中的tab，不重置为null
 };
 
 const handleMouseEnter = (index: number) => {
@@ -614,7 +611,13 @@ const handleMouseEnter = (index: number) => {
 };
 
 const handleMouseLeave = () => {
-  hideDropdown();
+  // 不隐藏下拉菜单，保持内容始终显示
+  // hideDropdown();
+};
+
+const handleTabChange = (index: number) => {
+  activeCategory.value = index;
+  isDropdownVisible.value = true;
 };
 
 // 获取商品数据的通用函数
@@ -1117,9 +1120,89 @@ onMounted(() => {
       </div>
     </div> -->
 
-    <!-- 渐变Banner -->
-    <div class="gradient-banner">
-      <!-- 内容待定 -->
+    <!-- 导航菜单栏 -->
+    <div class="navigation-menu">
+      <!-- Tab 栏 -->
+      <div class="tab-bar">
+        <div class="container mx-auto">
+          <div class="tab-container">
+            <input 
+              v-for="(category, index) in categories" 
+              :key="`tab-${index}`"
+              type="radio" 
+              :name="'tab'" 
+              :id="`tab${index}`" 
+              :class="`tab tab--${index + 1}`"
+              :checked="activeCategory === index"
+              @change="handleTabChange(index)"
+            />
+            <label 
+              v-for="(category, index) in categories" 
+              :key="`label-${index}`"
+              :class="`tab_label`" 
+              :for="`tab${index}`"
+              @mouseenter="handleMouseEnter(index)"
+              @mouseleave="handleMouseLeave"
+            >
+              {{ category.name }}
+            </label>
+            <div class="indicator"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 大菜单 -->
+      <div 
+        v-if="isDropdownVisible"
+        class="dropdown-menu"
+        @mouseenter="handleMouseEnter(activeCategory)"
+        @mouseleave="handleMouseLeave"
+      >
+        <div class="container mx-auto">
+          <div class="menu-content">
+            <!-- 左侧热门搜索 -->
+            <div class="menu-left">
+              <h3 class="menu-title">热门搜索</h3>
+              <div class="trending-items">
+                <div 
+                  v-for="(item, index) in categories[activeCategory]?.trending?.slice(0, 5)" 
+                  :key="index"
+                  class="trending-item"
+                >
+                  <div class="trending-image">
+                    <img 
+                      :src="`/featured/${item.name.toLowerCase().replace(/\s+/g, '-')}.jpg`" 
+                      :alt="item.name"
+                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                    />
+                  </div>
+                  <span class="trending-name">{{ item.name }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右侧特色商品 -->
+            <div class="menu-right">
+              <div class="featured-cards">
+                <div 
+                  v-for="(featured, index) in categories[activeCategory]?.featured?.slice(0, 3)" 
+                  :key="index"
+                  class="featured-card"
+                >
+                  <div class="featured-image">
+                    <img 
+                      :src="featured.image" 
+                      :alt="featured.name"
+                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                    />
+                  </div>
+                  <div class="featured-title">{{ featured.name }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- <div
@@ -2940,6 +3023,289 @@ html.dark {
   .outfit-placeholder {
     width: 50px;
     height: 75px;
+  }
+}
+
+/* 导航菜单样式 */
+.navigation-menu {
+  position: relative;
+  z-index: 1000;
+}
+
+.tab-bar {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 8px 0;
+}
+
+.tab-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 2px;
+  background-color: #dadadb;
+  border-radius: 9px;
+  margin: 8px 32px;
+  
+  @media (max-width: 768px) {
+    margin: 8px 20px;
+  }
+}
+
+.indicator {
+  content: "";
+  width: 130px;
+  height: 28px;
+  background: #ffffff;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 9;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 7px;
+  transition: all 0.2s ease-out;
+}
+
+.tab {
+  width: 130px;
+  height: 28px;
+  position: absolute;
+  z-index: 99;
+  outline: none;
+  opacity: 0;
+}
+
+.tab_label {
+  width: 130px;
+  height: 28px;
+  position: relative;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  font-size: 0.75rem;
+  color: #6c757d;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+/* 动态定位indicator */
+.tab--1:checked ~ .indicator {
+  left: 2px;
+}
+
+.tab--2:checked ~ .indicator {
+  left: calc(130px + 2px);
+}
+
+.tab--3:checked ~ .indicator {
+  left: calc(130px * 2 + 2px);
+}
+
+.tab--4:checked ~ .indicator {
+  left: calc(130px * 3 + 2px);
+}
+
+.tab--5:checked ~ .indicator {
+  left: calc(130px * 4 + 2px);
+}
+
+.tab--6:checked ~ .indicator {
+  left: calc(130px * 5 + 2px);
+}
+
+.tab--7:checked ~ .indicator {
+  left: calc(130px * 6 + 2px);
+}
+
+.tab--8:checked ~ .indicator {
+  left: calc(130px * 7 + 2px);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  animation: slideDown 0.3s ease;
+  min-height: 280px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-content {
+  display: flex;
+  padding: 40px 32px;
+  gap: 48px;
+  min-height: 200px;
+  
+  @media (max-width: 768px) {
+    padding: 32px 20px;
+    gap: 24px;
+    min-height: 180px;
+  }
+}
+
+.menu-left {
+  flex: 1;
+  max-width: 300px;
+}
+
+.menu-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trending-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trending-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #f9fafb;
+    padding-left: 8px;
+  }
+}
+
+.trending-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.trending-name {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.menu-right {
+  flex: 2;
+}
+
+.featured-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.featured-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.featured-image {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: #f3f4f6;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.featured-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 响应式导航菜单 */
+@media (max-width: 768px) {
+  .tab-container {
+    overflow-x: auto;
+    margin: 8px 20px;
+  }
+  
+  .tab_label {
+    min-width: 100px;
+    white-space: nowrap;
+  }
+  
+  .menu-content {
+    flex-direction: column;
+    padding: 32px 20px;
+    gap: 24px;
+  }
+  
+  .menu-left {
+    max-width: none;
+  }
+  
+  .featured-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .featured-image {
+    height: 100px;
   }
 }
 

@@ -228,7 +228,7 @@ onClickOutside(mobileSearchRef, () => {
               <slot name="title">
                 <NuxtLink to="/" class="font-bold text-lg text-black">
                   <div class="flex items-center gap-2">
-                    <img src="/logo.svg" class="h-8 lg:h-10" />
+                    <!-- <img src="/logo.svg" class="h-8 lg:h-10" /> -->
                     <NuxtLink to="/" class="text-xl font-thin">
                       <span style="font-family: logo!important;">衣设服装设计</span>
                     </NuxtLink>
