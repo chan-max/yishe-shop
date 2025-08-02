@@ -63,11 +63,7 @@ const handleTabChange = (index: number) => {
 const getTrendingItems = (categoryIndex: number) => {
   const trendingData = {
     0: [ // 全部商品
-      { name: '新品上市1', image: '/featured/new-arrivals.jpg' },
-      { name: '热销商品', image: '/featured/popular.jpg' },
-      { name: '限时特惠', image: '/featured/sale.jpg' },
-      { name: '春季新品', image: '/featured/spring-new.jpg' },
-      { name: '夏季必备', image: '/featured/summer-essential.jpg' }
+      // 清空内容
     ],
     1: [ // 快速配送
       { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
@@ -120,9 +116,7 @@ const getTrendingItems = (categoryIndex: number) => {
 const getFeaturedItems = (categoryIndex: number) => {
   const featuredData = {
     0: [ // 全部商品
-      { name: '春季新品', image: '/featured/spring-new.jpg' },
-      { name: '夏季必备', image: '/featured/summer-essential.jpg' },
-      { name: '秋季系列', image: '/featured/autumn-collection.jpg' }
+      // 清空内容
     ],
     1: [ // 快速配送
       { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
@@ -185,7 +179,7 @@ const getFeaturedItems = (categoryIndex: number) => {
     </div>
 
     <!-- 描述Banner -->
-    <div 
+    <!-- <div 
       v-if="isDropdownVisible && categories[activeCategory]?.description"
       class="description-banner"
     >
@@ -194,12 +188,12 @@ const getFeaturedItems = (categoryIndex: number) => {
           <span class="banner-text">{{ categories[activeCategory].description }}</span>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 大菜单 -->
     <div 
       v-if="isDropdownVisible"
-      :class="`dropdown-menu ${categories[activeCategory]?.description ? 'with-banner' : ''}`"
+      class="dropdown-menu"
       @mouseenter="handleMouseEnter(activeCategory)"
       @mouseleave="handleMouseLeave"
     >
@@ -357,10 +351,6 @@ const getFeaturedItems = (categoryIndex: number) => {
   z-index: 1001;
   animation: slideDown 0.3s ease;
   min-height: 280px;
-  
-  &.with-banner {
-    top: calc(100% + 48px); /* 48px 是banner的高度 */
-  }
 }
 
 @keyframes slideDown {
@@ -519,10 +509,7 @@ const getFeaturedItems = (categoryIndex: number) => {
     }
   }
   
-  .dropdown-menu.with-banner {
-    top: calc(100% + 40px); /* 移动端banner高度调整 */
-  }
-  
+
   .tab-container {
     overflow-x: auto;
     padding-bottom: 4px;
