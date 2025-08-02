@@ -102,14 +102,26 @@ const getTrendingItems = (categoryIndex: number) => {
         ]
       },
       { 
-        name: 'BRAND DROPS',
+        name: '设计风格',
         items: [
-          { name: 'ASOS DESIGN', image: '@/thumbnail/asos-design.jpg' },
-          { name: 'adidas', image: '@/thumbnail/adidas.jpg' },
-          { name: 'British Brands', image: '@/thumbnail/british-brands.jpg' },
-          { name: 'New Balance', image: '@/thumbnail/new-balance.jpg' },
-          { name: 'New Look', image: '@/thumbnail/new-look.jpg' },
-          { name: 'The North Face', image: '@/thumbnail/north-face.jpg' }
+          { name: '动漫风', icon: 'uil:smile-dizzy' },
+          { name: '简约风', icon: 'uil:minus-circle' },
+          { name: '商务风', icon: 'uil:briefcase' },
+          { name: '抽象风格', icon: 'uil:palette' },
+          { name: '搞笑风', icon: 'uil:smile' },
+          { name: '复古风', icon: 'uil:clock' },
+          { name: '科技风', icon: 'uil:setting' },
+          { name: '自然风', icon: 'uil:flower' },
+          { name: '艺术风', icon: 'uil:brush-alt' },
+          { name: '运动风', icon: 'uil:football' },
+          { name: '可爱风', icon: 'uil:heart' },
+          { name: '酷炫风', icon: 'uil:star' },
+          { name: '工业风', icon: 'uil:cog' },
+          { name: '未来风', icon: 'uil:rocket' },
+          { name: '民族风', icon: 'uil:globe' },
+          { name: '街头风', icon: 'uil:music' },
+          { name: '优雅风', icon: 'uil:star' },
+          { name: '朋克风', icon: 'uil:bolt' }
         ]
       },
 
@@ -283,22 +295,28 @@ const getFeaturedItems = (categoryIndex: number) => {
               <div 
                 v-for="(section, index) in getTrendingItems(activeCategory)" 
                 :key="index"
-                class="menu-section"
+                :class="`menu-section ${section.name === '设计风格' ? 'style-section' : ''}`"
               >
                 <h3 class="section-title">{{ section.name }}</h3>
-                <div class="section-items">
+                <div :class="`section-items ${section.name === '设计风格' ? 'style-items' : ''}`">
                   <div 
                     v-for="(item, itemIndex) in section.items" 
                     :key="itemIndex"
                     class="menu-item"
                     @click="handleItemClick(section.name, item.name)"
                   >
-                    <div v-if="item.image" class="item-with-image">
+                    <div v-if="item.image || item.icon" class="item-with-image">
                       <div class="item-image">
                         <img 
+                          v-if="item.image"
                           :src="item.image" 
                           :alt="item.name"
                           @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                        />
+                        <Icon 
+                          v-else-if="item.icon"
+                          :name="item.icon" 
+                          class="w-4 h-4 text-gray-600"
                         />
                       </div>
                       <span class="item-name">{{ item.name }}</span>
@@ -555,15 +573,32 @@ const getFeaturedItems = (categoryIndex: number) => {
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
-  background: #f3f4f6;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 0.5px solid #f0f0f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  padding: 2px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 0.5px solid #e8e8e8;
+    border-radius: 50%;
+    z-index: -1;
+  }
   
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
   }
 }
 
@@ -602,6 +637,12 @@ const getFeaturedItems = (categoryIndex: number) => {
   &:last-child {
     border-right: none;
   }
+  
+  // 设计风格部分增加宽度
+  &.style-section {
+    min-width: 280px;
+    flex: 1.5;
+  }
 }
 
 .section-title {
@@ -619,6 +660,13 @@ const getFeaturedItems = (categoryIndex: number) => {
   display: flex;
   flex-direction: column;
   gap: 0;
+  
+  // 设计风格部分使用两列布局
+  &.style-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
 }
 
 .menu-item {
@@ -632,6 +680,26 @@ const getFeaturedItems = (categoryIndex: number) => {
     text-decoration-color: #374151;
     text-decoration-thickness: 1px;
   }
+  
+  // 设计风格部分的菜单项样式
+  .style-items & {
+    padding: 4px 0;
+    margin: 0;
+    
+    .item-image {
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      
+      &::before {
+        display: none;
+      }
+    }
+    
+    .item-with-image {
+      gap: 6px;
+    }
+  }
 }
 
 .item-with-image {
@@ -639,7 +707,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   align-items: center;
   gap: 12px;
   padding: 6px 0;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #fff;
   margin: 0;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -662,13 +730,33 @@ const getFeaturedItems = (categoryIndex: number) => {
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  background: #f3f4f6;
+  background: #fff;
   flex-shrink: 0;
+  border: 0.5px solid #f0f0f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 0.5px solid #e8e8e8;
+    border-radius: 50%;
+    z-index: -1;
+  }
   
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
   }
 }
 
@@ -712,7 +800,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   width: 100%;
   height: 120px;
   overflow: hidden;
-  background: #f3f4f6;
+  background: #fff;
   
   img {
     width: 100%;
@@ -846,6 +934,22 @@ const getFeaturedItems = (categoryIndex: number) => {
   .item-image {
     width: 32px;
     height: 32px;
+    border: 0.5px solid #f0f0f0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding: 2px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border: 0.5px solid #e8e8e8;
+      border-radius: 50%;
+      z-index: -1;
+    }
   }
   
   .item-name {
