@@ -2,6 +2,7 @@
 interface Category {
   name: string;
   path: string;
+  description?: string;
   subcategories: Array<{ name: string; path: string }>;
   brands: Array<{ name: string; image: string }>;
   styles: Array<{ name: string; path: string }>;
@@ -63,10 +64,22 @@ const handleTabChange = (index: number) => {
       </div>
     </div>
 
+    <!-- 描述Banner -->
+    <div 
+      v-if="isDropdownVisible && categories[activeCategory]?.description"
+      class="description-banner"
+    >
+      <div class="container mx-auto">
+        <div class="banner-content">
+          <span class="banner-text">{{ categories[activeCategory].description }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 大菜单 -->
     <div 
       v-if="isDropdownVisible"
-      class="dropdown-menu"
+      :class="`dropdown-menu ${categories[activeCategory]?.description ? 'with-banner' : ''}`"
       @mouseenter="handleMouseEnter(activeCategory)"
       @mouseleave="handleMouseLeave"
     >
@@ -122,12 +135,11 @@ const handleTabChange = (index: number) => {
 /* 导航菜单样式 */
 .navigation-menu {
   position: relative;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .tab-bar {
   background: white;
-  border-bottom: 1px solid #e9ecef;
   padding: 12px 0;
 }
 
@@ -173,8 +185,9 @@ const handleTabChange = (index: number) => {
   }
   
   &.active {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: #F0F0F0;
+    color: #111;
+    border-radius: 4px;
   }
   
   @media (max-width: 768px) {
@@ -182,6 +195,29 @@ const handleTabChange = (index: number) => {
     font-size: 11px;
     min-width: 60px;
   }
+}
+
+.description-banner {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  z-index: 1001;
+  animation: slideDown 0.3s ease;
+}
+
+.banner-content {
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.banner-text {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .dropdown-menu {
@@ -195,6 +231,10 @@ const handleTabChange = (index: number) => {
   z-index: 1001;
   animation: slideDown 0.3s ease;
   min-height: 280px;
+  
+  &.with-banner {
+    top: calc(100% + 48px); /* 48px 是banner的高度 */
+  }
 }
 
 @keyframes slideDown {
@@ -336,6 +376,20 @@ const handleTabChange = (index: number) => {
 
 /* 响应式导航菜单 */
 @media (max-width: 768px) {
+  .description-banner {
+    .banner-content {
+      padding: 8px 16px;
+    }
+    
+    .banner-text {
+      font-size: 13px;
+    }
+  }
+  
+  .dropdown-menu.with-banner {
+    top: calc(100% + 40px); /* 移动端banner高度调整 */
+  }
+  
   .tab-container {
     overflow-x: auto;
     padding-bottom: 4px;

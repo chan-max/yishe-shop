@@ -112,7 +112,29 @@ const clearSearchHistory = () => {
   searchHistory.value = [];
 };
 
-// 搜索框聚焦状态
+// 全屏搜索状态
+const isFullscreenSearchOpen = ref(false);
+
+// 输入框聚焦时打开全屏搜索
+const openFullscreenSearch = () => {
+  console.log('输入框聚焦 - 打开全屏搜索');
+  isFullscreenSearchOpen.value = true;
+  // 聚焦到全屏搜索输入框
+  nextTick(() => {
+    const fullscreenInput = document.getElementById('fullscreen-search-input');
+    if (fullscreenInput) {
+      fullscreenInput.focus();
+    }
+  });
+};
+
+// 关闭全屏搜索
+const closeFullscreenSearch = () => {
+  isFullscreenSearchOpen.value = false;
+  searchQuery.value = '';
+};
+
+// 全屏搜索框聚焦状态
 const isSearchFocused = ref(false);
 
 // 搜索框失去焦点处理
@@ -141,6 +163,7 @@ const performSearch = () => {
     // 关闭搜索框
     isSearchFocused.value = false;
     isMobileSearchOpen.value = false;
+    isFullscreenSearchOpen.value = false;
   }
 };
 
@@ -149,8 +172,9 @@ const selectSuggestion = (suggestion: string) => {
   searchQuery.value = suggestion;
   addToSearchHistory(suggestion);
   performSearch();
-  // 确保移动端搜索框关闭
+  // 确保搜索框关闭
   isMobileSearchOpen.value = false;
+  isFullscreenSearchOpen.value = false;
 };
 
 // 点击热门搜索
@@ -158,8 +182,9 @@ const selectHotSearch = (hotSearch: { text: string; count: number }) => {
   searchQuery.value = hotSearch.text;
   addToSearchHistory(hotSearch.text);
   performSearch();
-  // 确保移动端搜索框关闭
+  // 确保搜索框关闭
   isMobileSearchOpen.value = false;
+  isFullscreenSearchOpen.value = false;
 };
 
 // 点击外部关闭搜索
@@ -270,14 +295,14 @@ onClickOutside(mobileSearchRef, () => {
                     v-model="searchQuery"
                     type="text"
                     placeholder="搜索商品..."
-                    class="w-full px-4 py-2.5 rounded-full bg-gray-100 border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-[10px] pr-12"
+                    class="w-full px-4 py-2.5 rounded-full bg-gray-100 border-2 border-white/30 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#d01345] transition-colors text-[10px] pr-12 cursor-pointer"
+                    @focus="openFullscreenSearch"
                     @keyup.enter="performSearch"
-                    @focus="isSearchFocused = true"
-                    @blur="handleSearchBlur"
                   />
                   <button
                     @click="performSearch"
-                    class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-3 py-1.5 transition-colors shadow-sm"
+                    class="absolute right-1 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full px-3 py-1.5 transition-colors shadow-sm z-10 cursor-pointer"
+                    type="button"
                   >
                     <Icon name="uil:search" class="w-4 h-4" />
                   </button>
@@ -286,7 +311,7 @@ onClickOutside(mobileSearchRef, () => {
                 <!-- 搜索下拉提示 -->
                 <div
                   v-if="isSearchFocused"
-                  class="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl z-50 border border-gray-200"
+                  class="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl z-[9999] border border-gray-200"
                 >
                   <div class="p-4">
                     <!-- 搜索建议 -->
@@ -334,6 +359,12 @@ onClickOutside(mobileSearchRef, () => {
             <!-- 移动端搜索和购物车按钮 -->
             <div class="flex lg:hidden items-center gap-4 ml-auto flex-shrink-0">
               <button
+                @click="performSearch"
+                class="text-gray-600 hover:text-black transition-colors mobile-button"
+              >
+                <Icon name="uil:search" class="w-6 h-6" />
+              </button>
+              <button
                 @click="toggleMobileMenu"
                 class="text-gray-600 hover:text-black transition-colors mobile-button"
               >
@@ -344,7 +375,7 @@ onClickOutside(mobileSearchRef, () => {
 
           <!-- 移动端搜索框 -->
           <Transition name="mobile-search">
-            <div v-if="isMobileSearchOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50" ref="mobileSearchRef">
+            <div v-if="isMobileSearchOpen" class="lg:hidden fixed inset-0 bg-black/50 z-[9999]" ref="mobileSearchRef">
               <div class="bg-white h-full w-full">
                                   <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-4">
                   <div class="flex items-center justify-between mb-4">
@@ -431,7 +462,7 @@ onClickOutside(mobileSearchRef, () => {
 
           <!-- 移动端菜单 -->
           <Transition name="mobile-menu">
-            <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-50" ref="mobileMenuRef">
+            <div v-if="isMobileMenuOpen" class="lg:hidden fixed inset-0 bg-black/50 z-[9999]" ref="mobileMenuRef">
               <div class="bg-white h-full w-full flex flex-col">
                 <!-- 菜单头部 -->
                 <div class="flex items-center justify-between p-4 border-b border-gray-200">
@@ -500,6 +531,39 @@ onClickOutside(mobileSearchRef, () => {
         </div>
       </header>
 
+      <!-- 全屏搜索蒙层 -->
+      <Transition name="fullscreen-search">
+        <div 
+          v-if="isFullscreenSearchOpen" 
+          class="fixed inset-0 bg-black/20 backdrop-blur-md z-[99999] flex items-center justify-center"
+          @click="closeFullscreenSearch"
+        >
+          <div 
+            class="w-full max-w-xl mx-4"
+            @click.stop
+          >
+            <!-- 搜索输入框 -->
+            <div class="relative">
+              <input
+                id="fullscreen-search-input"
+                v-model="searchQuery"
+                type="text"
+                placeholder="搜索商品..."
+                class="w-full px-6 py-4 text-xl bg-white/90 backdrop-blur-lg border-2 border-white/40 rounded-2xl focus:outline-none focus:border-white focus:bg-white/95 shadow-2xl text-gray-800 placeholder-gray-500"
+                @keyup.enter="performSearch"
+                @keyup.esc="closeFullscreenSearch"
+              />
+              <button
+                @click="performSearch"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#d01345] hover:bg-[#b0113a] text-white rounded-xl px-4 py-2 transition-colors shadow-lg"
+              >
+                <Icon name="uil:search" class="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
     </div>
   </div>
 </template>
@@ -559,5 +623,26 @@ onClickOutside(mobileSearchRef, () => {
 /* 移动端触摸反馈 */
 .mobile-button:active {
   transform: scale(0.95);
+}
+
+/* 全屏搜索动画 */
+.fullscreen-search-enter-active,
+.fullscreen-search-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fullscreen-search-enter-from,
+.fullscreen-search-leave-to {
+  opacity: 0;
+}
+
+.fullscreen-search-enter-from .w-full,
+.fullscreen-search-leave-to .w-full {
+  transform: scale(0.8) translateY(-30px);
+}
+
+.fullscreen-search-enter-to .w-full,
+.fullscreen-search-leave-from .w-full {
+  transform: scale(1) translateY(0);
 }
 </style>
