@@ -62,50 +62,87 @@ const handleTabChange = (index: number) => {
 // 根据activeCategory返回对应的热门搜索项目
 const getTrendingItems = (categoryIndex: number) => {
   const trendingData = {
-    0: [ // 全部商品
-      // 清空内容
+    0: [ // 全部商品 - 参考ASOS风格
+      { 
+        name: 'NEW PRODUCTS',
+        items: [
+          { name: 'View all', isBold: false },
+          { name: 'Clothing', isBold: false },
+          { name: 'Shoes', isBold: false },
+          { name: 'New In: Today', isBold: true },
+          { name: 'New In: Selling Fast', isBold: true },
+          { name: 'T-Shirts & Vests', isBold: false },
+          { name: 'Jeans & Trousers', isBold: false },
+          { name: 'Accessories', isBold: false },
+          { name: 'Underwear', isBold: false },
+          { name: 'Jumpers', isBold: false }
+        ]
+      },
+      { 
+        name: '品类',
+        items: [
+          { name: '服装 &T恤', image: '/thumbnail/tshirt.png' },
+          { name: '杯子 & 马克杯', image: '/thumbnail/cup.png' },
+          { name: '挎包', image: '/thumbnail/bag.png' },
+          { name: '挂毯', image: '/thumbnail/tapestry.png' },
+          { name: '毛巾', image: '/thumbnail/towel.png' },
+          { name: '鼠标垫', image: '/thumbnail/mousepad.png' }
+        ]
+      },
+      { 
+        name: 'BRAND DROPS',
+        items: [
+          { name: 'ASOS DESIGN', image: '@/thumbnail/asos-design.jpg' },
+          { name: 'adidas', image: '@/thumbnail/adidas.jpg' },
+          { name: 'British Brands', image: '@/thumbnail/british-brands.jpg' },
+          { name: 'New Balance', image: '@/thumbnail/new-balance.jpg' },
+          { name: 'New Look', image: '@/thumbnail/new-look.jpg' },
+          { name: 'The North Face', image: '@/thumbnail/north-face.jpg' }
+        ]
+      },
+
     ],
     1: [ // 快速配送
-      { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
-      { name: '48小时发货', image: '/featured/48h-shipping.jpg' },
-      { name: '同城配送', image: '/featured/local-delivery.jpg' },
-      { name: '现货商品', image: '/featured/in-stock.jpg' },
-      { name: '快速物流', image: '/featured/fast-logistics.jpg' }
+      { name: '24小时发货', image: '@/thumbnail/24h-shipping.jpg' },
+      { name: '48小时发货', image: '@/thumbnail/48h-shipping.jpg' },
+      { name: '同城配送', image: '@/thumbnail/local-delivery.jpg' },
+      { name: '现货商品', image: '@/thumbnail/in-stock.jpg' },
+      { name: '快速物流', image: '@/thumbnail/fast-logistics.jpg' }
     ],
     2: [ // 编辑精选
-      { name: '设计师推荐', image: '/featured/designer-pick.jpg' },
-      { name: '编辑精选', image: '/featured/editor-choice.jpg' },
-      { name: '精选系列', image: '/featured/curated-collection.jpg' },
-      { name: '热门推荐', image: '/featured/hot-recommend.jpg' },
-      { name: '新品推荐', image: '/featured/new-recommend.jpg' }
+      { name: '设计师推荐', image: '@/thumbnail/designer-pick.jpg' },
+      { name: '编辑精选', image: '@/thumbnail/editor-choice.jpg' },
+      { name: '精选系列', image: '@/thumbnail/curated-collection.jpg' },
+      { name: '热门推荐', image: '@/thumbnail/hot-recommend.jpg' },
+      { name: '新品推荐', image: '@/thumbnail/new-recommend.jpg' }
     ],
     3: [ // 筹款活动
-      { name: '慈善筹款', image: '/featured/charity-fundraiser.jpg' },
-      { name: '公益项目', image: '/featured/public-welfare.jpg' },
-      { name: '社区支持', image: '/featured/community-support.jpg' },
-      { name: '爱心捐赠', image: '/featured/donation.jpg' },
-      { name: '公益行动', image: '/featured/action.jpg' }
+      { name: '慈善筹款', image: '@/thumbnail/charity-fundraiser.jpg' },
+      { name: '公益项目', image: '@/thumbnail/public-welfare.jpg' },
+      { name: '社区支持', image: '@/thumbnail/community-support.jpg' },
+      { name: '爱心捐赠', image: '@/thumbnail/donation.jpg' },
+      { name: '公益行动', image: '@/thumbnail/action.jpg' }
     ],
     4: [ // LGBTQ+创作者
-      { name: '彩虹系列', image: '/featured/rainbow-collection.jpg' },
-      { name: '包容设计', image: '/featured/inclusive-design.jpg' },
-      { name: '多元文化', image: '/featured/diverse-culture.jpg' },
-      { name: '平等时尚', image: '/featured/equality-fashion.jpg' },
-      { name: '自由表达', image: '/featured/freedom-expression.jpg' }
+      { name: '彩虹系列', image: '@/thumbnail/rainbow-collection.jpg' },
+      { name: '包容设计', image: '@/thumbnail/inclusive-design.jpg' },
+      { name: '多元文化', image: '@/thumbnail/diverse-culture.jpg' },
+      { name: '平等时尚', image: '@/thumbnail/equality-fashion.jpg' },
+      { name: '自由表达', image: '@/thumbnail/freedom-expression.jpg' }
     ],
     5: [ // 女性创作者
-      { name: '女性设计', image: '/featured/female-design.jpg' },
-      { name: '女性品牌', image: '/featured/female-brand.jpg' },
-      { name: '女性力量', image: '/featured/female-empowerment.jpg' },
-      { name: '独立女性', image: '/featured/independent-woman.jpg' },
-      { name: '女性时尚', image: '/featured/female-fashion.jpg' }
+      { name: '女性设计', image: '@/thumbnail/female-design.jpg' },
+      { name: '女性品牌', image: '@/thumbnail/female-brand.jpg' },
+      { name: '女性力量', image: '@/thumbnail/female-empowerment.jpg' },
+      { name: '独立女性', image: '@/thumbnail/independent-woman.jpg' },
+      { name: '女性时尚', image: '@/thumbnail/female-fashion.jpg' }
     ],
     6: [ // 更多
-      { name: '所有分类', image: '/featured/all-categories.jpg' },
-      { name: '品牌专区', image: '/featured/brand-zone.jpg' },
-      { name: '设计师', image: '/featured/designers.jpg' },
-      { name: '活动', image: '/featured/events.jpg' },
-      { name: '定制设计', image: '/featured/custom-design.jpg' }
+      { name: '所有分类', image: '@/thumbnail/all-categories.jpg' },
+      { name: '品牌专区', image: '@/thumbnail/brand-zone.jpg' },
+      { name: '设计师', image: '@/thumbnail/designers.jpg' },
+      { name: '活动', image: '@/thumbnail/events.jpg' },
+      { name: '定制设计', image: '@/thumbnail/custom-design.jpg' }
     ]
   };
   
@@ -115,8 +152,37 @@ const getTrendingItems = (categoryIndex: number) => {
 // 根据activeCategory返回对应的特色商品
 const getFeaturedItems = (categoryIndex: number) => {
   const featuredData = {
-    0: [ // 全部商品
-      // 清空内容
+    0: [ // 全部商品 - 特色分类导航
+      { 
+        name: '按年龄段', 
+        image: '/featured/age-group.jpg',
+        subItems: ['青少年', '青年', '中年', '老年']
+      },
+      { 
+        name: '按性别', 
+        image: '/featured/gender.jpg',
+        subItems: ['男士', '女士', '中性', '儿童']
+      },
+      { 
+        name: '按风格', 
+        image: '/featured/style.jpg',
+        subItems: ['休闲', '商务', '运动', '时尚']
+      },
+      { 
+        name: '按颜色', 
+        image: '/featured/color.jpg',
+        subItems: ['黑色', '白色', '红色', '蓝色']
+      },
+      { 
+        name: '按季节', 
+        image: '/featured/season.jpg',
+        subItems: ['春季', '夏季', '秋季', '冬季']
+      },
+      { 
+        name: '按场合', 
+        image: '/featured/occasion.jpg',
+        subItems: ['日常', '聚会', '工作', '旅行']
+      }
     ],
     1: [ // 快速配送
       { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
@@ -158,7 +224,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   <div class="navigation-menu">
     <!-- Tab 栏 -->
     <div class="tab-bar">
-      <div class="container mx-auto">
+      <div class="mx-auto">
         <div class="tab-container">
           <div 
             v-for="(category, index) in categories" 
@@ -197,31 +263,70 @@ const getFeaturedItems = (categoryIndex: number) => {
       @mouseenter="handleMouseEnter(activeCategory)"
       @mouseleave="handleMouseLeave"
     >
-      <div class="container mx-auto">
+      <div class=" mx-auto">
         <div class="menu-content">
           <!-- 左侧热门搜索 -->
           <div class="menu-left">
-            <h3 class="menu-title">热门搜索</h3>
-            <div class="trending-items">
+            <div v-if="activeCategory === 0" class="asos-style-menu">
               <div 
-                v-for="(item, index) in getTrendingItems(activeCategory)" 
+                v-for="(section, index) in getTrendingItems(activeCategory)" 
                 :key="index"
-                class="trending-item"
+                class="menu-section"
               >
-                <div class="trending-image">
-                  <img 
-                    :src="item.image" 
-                    :alt="item.name"
-                    @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
-                  />
+                <h3 class="section-title">{{ section.name }}</h3>
+                <div class="section-items">
+                  <div 
+                    v-for="(item, itemIndex) in section.items" 
+                    :key="itemIndex"
+                    class="menu-item"
+                  >
+                    <div v-if="item.image" class="item-with-image">
+                      <div class="item-image">
+                        <img 
+                          :src="item.image" 
+                          :alt="item.name"
+                          @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                        />
+                      </div>
+                      <span class="item-name">{{ item.name }}</span>
+                    </div>
+                    <span 
+                      v-else 
+                      :class="`item-name ${item.isBold ? 'bold' : ''}`"
+                    >
+                      {{ item.name }}
+                    </span>
+                  </div>
                 </div>
-                <span class="trending-name">{{ item.name }}</span>
+              </div>
+            </div>
+            <div v-else>
+              <h3 class="menu-title">热门搜索</h3>
+              <div class="trending-items">
+                <div 
+                  v-for="(item, index) in getTrendingItems(activeCategory)" 
+                  :key="index"
+                  class="trending-item"
+                >
+                  <div class="trending-image">
+                    <img 
+                      :src="item.image" 
+                      :alt="item.name"
+                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                    />
+                  </div>
+                  <div class="trending-content">
+                    <span class="trending-name">{{ item.name }}</span>
+                    <span v-if="item.count" class="trending-count">{{ item.count }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- 右侧特色商品 -->
           <div class="menu-right">
+            <h3 v-if="activeCategory === 0" class="menu-title">筛选分类</h3>
             <div class="featured-cards">
               <div 
                 v-for="(featured, index) in getFeaturedItems(activeCategory)" 
@@ -235,7 +340,18 @@ const getFeaturedItems = (categoryIndex: number) => {
                     @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
                   />
                 </div>
-                <div class="featured-title">{{ featured.name }}</div>
+                <div class="featured-content">
+                  <div class="featured-title">{{ featured.name }}</div>
+                  <div v-if="activeCategory === 0 && featured.subItems" class="featured-sub-items">
+                    <span 
+                      v-for="(subItem, subIndex) in featured.subItems" 
+                      :key="subIndex"
+                      class="sub-item"
+                    >
+                      {{ subItem }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -369,19 +485,22 @@ const getFeaturedItems = (categoryIndex: number) => {
   padding: 40px 20px;
   gap: 48px;
   min-height: 200px;
-  max-width: 1200px;
+  // max-width: 1200px;
   margin: 0 auto;
+  align-items: flex-start;
   
   @media (max-width: 768px) {
     padding: 32px 20px;
     gap: 24px;
     min-height: 180px;
+    flex-direction: column;
   }
 }
 
 .menu-left {
   flex: 1;
-  max-width: 300px;
+  max-width: 800px;
+  min-width: 600px;
 }
 
 .menu-title {
@@ -408,8 +527,11 @@ const getFeaturedItems = (categoryIndex: number) => {
   transition: all 0.2s ease;
   
   &:hover {
-    background: #f9fafb;
-    padding-left: 8px;
+    .trending-name {
+      text-decoration: underline;
+      text-decoration-color: #374151;
+      text-decoration-thickness: 1px;
+    }
   }
 }
 
@@ -430,14 +552,126 @@ const getFeaturedItems = (categoryIndex: number) => {
   }
 }
 
+.trending-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .trending-name {
   font-size: 14px;
   color: #374151;
   font-weight: 500;
 }
 
+.trending-count {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* ASOS 风格菜单样式 */
+.asos-style-menu {
+  display: flex;
+  gap: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.menu-section {
+  flex: 1;
+  padding: 0 32px;
+  border-right: 1px solid #e5e7eb;
+  min-width: 200px;
+  
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.menu-item {
+  padding: 6px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+  
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: #374151;
+    text-decoration-thickness: 1px;
+  }
+}
+
+.item-with-image {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f3f4f6;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    .item-name {
+      text-decoration: underline;
+      text-decoration-color: #374151;
+      text-decoration-thickness: 1px;
+    }
+  }
+}
+
+.item-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f3f4f6;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.item-name {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 400;
+  line-height: 1.4;
+  
+  &.bold {
+    font-weight: 600;
+    color: #374151;
+  }
+}
+
 .menu-right {
-  flex: 2;
+  flex: 1;
+  min-width: 350px;
 }
 
 .featured-cards {
@@ -477,17 +711,36 @@ const getFeaturedItems = (categoryIndex: number) => {
   }
 }
 
-.featured-title {
+.featured-content {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 12px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
+}
+
+.featured-title {
   font-size: 14px;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 4px;
+}
+
+.featured-sub-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.sub-item {
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
 }
 
 /* 响应式导航菜单 */
@@ -541,6 +794,47 @@ const getFeaturedItems = (categoryIndex: number) => {
   
   .menu-left {
     max-width: none;
+  }
+  
+  .asos-style-menu {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .menu-section {
+    padding: 0 20px;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    min-width: auto;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .section-title {
+    font-size: 13px;
+    margin: 0 0 12px 0;
+  }
+  
+  .menu-item {
+    padding: 4px 0;
+    margin: 0;
+  }
+  
+  .item-with-image {
+    gap: 6px;
+    padding: 4px 0;
+    margin: 0;
+  }
+  
+  .item-image {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .item-name {
+    font-size: 11px;
   }
   
   .featured-cards {
