@@ -275,7 +275,7 @@ onClickOutside(mobileSearchRef, () => {
                 class="hover:text-gray-600 px-3 py-0 h-full flex items-center relative group text-[10px]"
                 :class="[route.path === '/products' ? 'text-black bg-gray-200 rounded' : '']"
               >
-                精选商品
+                寻找商品
               </NuxtLink>
               <NuxtLink
                 to="/custom-design"
@@ -500,7 +500,7 @@ onClickOutside(mobileSearchRef, () => {
                         :class="[route.path === '/products' ? 'bg-gray-200 text-black' : 'text-gray-700']"
                       >
                         <Icon name="uil:shopping-bag" class="w-5 h-5 mr-3" />
-                        <span>精选商品</span>
+                        <span>寻找商品</span>
                       </NuxtLink>
                       <NuxtLink
                         to="/custom-design"

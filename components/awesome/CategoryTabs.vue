@@ -59,23 +59,35 @@ const handleTabChange = (index: number) => {
   emit('tabChange', index);
 };
 
+// 处理小导航点击事件
+const handleItemClick = (categoryName: string, itemName: string) => {
+  // 只传递搜索关键字
+  const searchParams = {
+    search: itemName
+  };
+  
+  // 跳转到 products 页面并携带参数
+  navigateTo({
+    path: '/products',
+    query: searchParams
+  });
+};
+
 // 根据activeCategory返回对应的热门搜索项目
 const getTrendingItems = (categoryIndex: number) => {
   const trendingData = {
     0: [ // 全部商品 - 参考ASOS风格
       { 
-        name: 'NEW PRODUCTS',
+        name: '商品分类',
         items: [
-          { name: 'View all', isBold: false },
-          { name: 'Clothing', isBold: false },
-          { name: 'Shoes', isBold: false },
-          { name: 'New In: Today', isBold: true },
-          { name: 'New In: Selling Fast', isBold: true },
-          { name: 'T-Shirts & Vests', isBold: false },
-          { name: 'Jeans & Trousers', isBold: false },
-          { name: 'Accessories', isBold: false },
-          { name: 'Underwear', isBold: false },
-          { name: 'Jumpers', isBold: false }
+          { name: '最近发布', isBold: false },
+          { name: '人气最高', isBold: false },
+          { name: '好评最高', isBold: false },
+          { name: '情侣装', isBold: false },
+          { name: '童装专属', isBold: false },
+          { name: '团队风格', isBold: false },
+          { name: '限量发售', isBold: true },
+          { name: '热销爆款', isBold: true }
         ]
       },
       { 
@@ -279,6 +291,7 @@ const getFeaturedItems = (categoryIndex: number) => {
                     v-for="(item, itemIndex) in section.items" 
                     :key="itemIndex"
                     class="menu-item"
+                    @click="handleItemClick(section.name, item.name)"
                   >
                     <div v-if="item.image" class="item-with-image">
                       <div class="item-image">
@@ -307,6 +320,7 @@ const getFeaturedItems = (categoryIndex: number) => {
                   v-for="(item, index) in getTrendingItems(activeCategory)" 
                   :key="index"
                   class="trending-item"
+                  @click="handleItemClick('热门搜索', item.name)"
                 >
                   <div class="trending-image">
                     <img 
@@ -332,6 +346,7 @@ const getFeaturedItems = (categoryIndex: number) => {
                 v-for="(featured, index) in getFeaturedItems(activeCategory)" 
                 :key="index"
                 class="featured-card"
+                @click="handleItemClick('特色商品', featured.name)"
               >
                 <div class="featured-image">
                   <img 

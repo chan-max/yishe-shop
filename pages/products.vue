@@ -505,6 +505,8 @@ const searchKeyword = computed(() => {
   return route.query.search || searchStore.searchKeyword;
 });
 
+
+
 // 清空搜索
 const clearSearch = () => {
   searchStore.clearSearchKeyword();
@@ -575,13 +577,15 @@ const fetchProducts = async () => {
       requestBody.keyword = searchKeyword.value;
     }
     
+
+    
     // 添加排序条件
     if (selectedFilters.value.sort) {
       requestBody.sort = selectedFilters.value.sort;
     }
     
     // 添加过滤条件
-    const filters = {};
+    const filters = requestBody.filters || {};
     
     if (selectedFilters.value.price) {
       filters.price = selectedFilters.value.price;
@@ -669,6 +673,8 @@ watch(() => route.query.search, (newSearch) => {
     fetchProducts();
   }
 }, { immediate: true });
+
+
 
 // 初始化加载
 onMounted(() => {
