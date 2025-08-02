@@ -490,10 +490,10 @@ const getFeaturedItems = (categoryIndex: number) => {
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  // position: absolute;
+  // top: 100%;
+  // left: 0;
+  // right: 0;
   background: white;
   border-bottom: 1px solid #e5e7eb;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);

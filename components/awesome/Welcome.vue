@@ -928,17 +928,12 @@ onMounted(() => {
 
 
 
-    <!-- 黑色菜单栏 -->
-    <!-- <div class="black-menu-bar">
-      <div class="container mx-auto">
-        <div class="black-menu-content">
 
-        </div>
-      </div>
-    </div> -->
+    <LayoutPageWrapper class="flex-1 flex bg-white">
+      <LayoutPageSection class="flex-1 flex flex-col">
 
-    <!-- 导航菜单栏 -->
-    <AwesomeCategoryTabs
+        <div>
+          <AwesomeCategoryTabs
       :categories="categories"
       :active-category="activeCategory"
       :is-dropdown-visible="isDropdownVisible"
@@ -946,17 +941,12 @@ onMounted(() => {
       @mouseleave="handleMouseLeave"
       @tab-change="handleTabChange"
     />
+        </div>
 
-    <!-- <div
-      class="w-full h-24 mt-[1px]"
-      style="background-color: rgba(105, 0, 255, 0.6)"
-    ></div> -->
-    <!-- <div class="w-full h-12 bg-white"></div> -->
-    <!-- <div class="w-full h-80 bg-black"></div> -->
+        <div class="flex-1 flex flex-col items-center my-20 pt-32">
 
-    <LayoutPageWrapper class="flex-1 flex bg-white">
-      <LayoutPageSection class="flex-1 flex">
-        <div class="flex-1 flex flex-col items-center my-20">
+          
+
           <h1 class="text-center">
             <span
               v-for="(item, i) in leadingsText"
@@ -988,7 +978,7 @@ onMounted(() => {
     </LayoutPageWrapper>
 
     <!-- 设计介绍部分 -->
-    <div class="my-16 w-full">
+    <div class="my-16 w-full mt-8">
       <h2 class="text-3xl font-bold text-center mb-8">选择您的设计方式</h2>
       <div class="grid grid-cols-1 md:grid-cols-3">
         <!-- 个人定制卡片 -->
@@ -1084,7 +1074,7 @@ onMounted(() => {
     </div>
 
     <!-- 商品展示区域 -->
-    <div class="my-16 w-full bg-gray-50 py-16">
+    <div class="my-16 w-full bg-gray-50 py-16 mt-8">
       <div class="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         
         <!-- 筛选器和视图控制 -->
