@@ -93,6 +93,41 @@ const hotSearches = ref([
   { text: "运动系列", count: 654 },
 ]);
 
+// 全屏搜索相关数据
+const fullscreenSearchSuggestions = ref([
+  "连衣裙", "牛仔裤", "T恤", "运动鞋", "休闲裤", "衬衫", "外套", "裙子", "短裤", "长裤"
+]);
+
+const fullscreenHotSearches = ref([
+  { text: "春季新品", count: 1234, tag: "new" },
+  { text: "设计师联名", count: 986, tag: "designer" },
+  { text: "限时折扣", count: 876, tag: "sale" },
+  { text: "时尚配饰", count: 765, tag: "accessories" },
+  { text: "运动系列", count: 654, tag: "sports" },
+  { text: "情侣装", count: 543, tag: "couple" },
+  { text: "童装专属", count: 432, tag: "kids" },
+  { text: "团队风格", count: 321, tag: "team" }
+]);
+
+const fullscreenCategories = ref([
+  { name: "服装", items: ["T恤", "衬衫", "外套", "连衣裙", "牛仔裤", "休闲裤"] },
+  { name: "配饰", items: ["包包", "帽子", "围巾", "腰带", "手套", "袜子"] },
+  { name: "家居", items: ["杯子", "挂毯", "毛巾", "抱枕", "装饰画", "桌布"] },
+  { name: "数码", items: ["鼠标垫", "手机壳", "键盘", "耳机", "充电器", "数据线"] }
+]);
+
+const fullscreenBrands = ref([
+  "ASOS DESIGN", "adidas", "British Brands", "New Balance", "New Look", "The North Face"
+]);
+
+const fullscreenTrending = ref([
+  { text: "最近发布", icon: "uil:clock" },
+  { text: "人气最高", icon: "uil:fire" },
+  { text: "好评最高", icon: "uil:star" },
+  { text: "限量发售", icon: "uil:gift" },
+  { text: "热销爆款", icon: "uil:trending-up" }
+]);
+
 // 搜索历史
 const searchHistory = ref(["连衣裙", "牛仔裤", "T恤"]);
 
@@ -184,6 +219,42 @@ const selectHotSearch = (hotSearch: { text: string; count: number }) => {
   performSearch();
   // 确保搜索框关闭
   isMobileSearchOpen.value = false;
+  isFullscreenSearchOpen.value = false;
+};
+
+// 全屏搜索相关函数
+const selectFullscreenSuggestion = (suggestion: string) => {
+  searchQuery.value = suggestion;
+  addToSearchHistory(suggestion);
+  performSearch();
+  isFullscreenSearchOpen.value = false;
+};
+
+const selectFullscreenHotSearch = (hotSearch: { text: string; count: number; tag: string }) => {
+  searchQuery.value = hotSearch.text;
+  addToSearchHistory(hotSearch.text);
+  performSearch();
+  isFullscreenSearchOpen.value = false;
+};
+
+const selectFullscreenCategory = (category: string, item: string) => {
+  searchQuery.value = item;
+  addToSearchHistory(item);
+  performSearch();
+  isFullscreenSearchOpen.value = false;
+};
+
+const selectFullscreenBrand = (brand: string) => {
+  searchQuery.value = brand;
+  addToSearchHistory(brand);
+  performSearch();
+  isFullscreenSearchOpen.value = false;
+};
+
+const selectFullscreenTrending = (trending: { text: string; icon: string }) => {
+  searchQuery.value = trending.text;
+  addToSearchHistory(trending.text);
+  performSearch();
   isFullscreenSearchOpen.value = false;
 };
 
@@ -532,33 +603,153 @@ onClickOutside(mobileSearchRef, () => {
       </header>
 
       <!-- 全屏搜索蒙层 -->
-      <Transition name="fullscreen-search">
+      <Transition name="fullscreen-search" appear>
         <div 
           v-if="isFullscreenSearchOpen" 
-          class="fixed inset-0 bg-black/20 backdrop-blur-md z-[99999] flex items-center justify-center"
+          class="fixed inset-0 bg-black/20 backdrop-blur-md z-[99999] flex flex-col items-center justify-center p-6"
           @click="closeFullscreenSearch"
         >
-          <div 
-            class="w-full max-w-xl mx-4"
-            @click.stop
-          >
+          <div class="w-full max-w-4xl mx-auto" @click.stop>
             <!-- 搜索输入框 -->
-            <div class="relative">
+            <div class="relative mb-8 max-w-2xl mx-auto">
               <input
                 id="fullscreen-search-input"
                 v-model="searchQuery"
                 type="text"
-                placeholder="搜索商品..."
-                class="w-full px-6 py-4 text-xl bg-white/90 backdrop-blur-lg border-2 border-white/40 rounded-2xl focus:outline-none focus:border-white focus:bg-white/95 shadow-2xl text-gray-800 placeholder-gray-500"
+                placeholder="搜索商品、品牌、分类..."
+                class="input w-full h-10 px-4 text-lg border-2 border-transparent outline-none overflow-hidden bg-[#f3f3f3] rounded-[10px] hover:border-[#4a9dec] hover:shadow-[0px_0px_0px_7px_rgba(74,157,236,20%)] hover:bg-white focus:border-[#4a9dec] focus:shadow-[0px_0px_0px_7px_rgba(74,157,236,20%)] focus:bg-white"
                 @keyup.enter="performSearch"
                 @keyup.esc="closeFullscreenSearch"
               />
               <button
                 @click="performSearch"
-                class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#d01345] hover:bg-[#b0113a] text-white rounded-xl px-4 py-2 transition-colors shadow-lg"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#4a9dec] hover:bg-[#3a8ddc] text-white rounded-lg px-3 py-1.5 transition-colors shadow-lg"
               >
-                <Icon name="uil:search" class="w-5 h-5" />
+                <Icon name="uil:search" class="w-4 h-4" />
               </button>
+            </div>
+
+            <!-- 推荐内容区域 -->
+            <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
+              <div class="grid grid-cols-3 gap-6">
+                <!-- 第一列 -->
+                <div class="space-y-4">
+                  <!-- 搜索建议 -->
+                  <div v-if="searchQuery">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">搜索建议</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        v-for="suggestion in fullscreenSearchSuggestions.filter(s => s.includes(searchQuery)).slice(0, 4)"
+                        :key="suggestion"
+                        @click="selectFullscreenSuggestion(suggestion)"
+                        class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors text-sm"
+                      >
+                        {{ suggestion }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 热门搜索 -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">热门搜索</h3>
+                    <div class="space-y-2">
+                      <button
+                        v-for="hotSearch in fullscreenHotSearches.slice(0, 3)"
+                        :key="hotSearch.text"
+                        @click="selectFullscreenHotSearch(hotSearch)"
+                        class="w-full flex items-center justify-between p-2 bg-gray-50 hover:bg-gray-100 rounded transition-colors"
+                      >
+                        <span class="text-gray-700 text-sm">{{ hotSearch.text }}</span>
+                        <span class="text-xs text-gray-400">{{ hotSearch.count }}次</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 第二列 -->
+                <div class="space-y-4">
+                  <!-- 商品分类 -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">商品分类</h3>
+                    <div class="space-y-3">
+                      <div
+                        v-for="category in fullscreenCategories.slice(0, 2)"
+                        :key="category.name"
+                        class="bg-gray-50 rounded p-3"
+                      >
+                        <h4 class="font-medium text-gray-700 mb-2 text-sm">{{ category.name }}</h4>
+                        <div class="flex flex-wrap gap-1">
+                          <button
+                            v-for="item in category.items.slice(0, 3)"
+                            :key="item"
+                            @click="selectFullscreenCategory(category.name, item)"
+                            class="px-2 py-1 text-xs bg-white hover:bg-gray-100 text-gray-600 rounded transition-colors"
+                          >
+                            {{ item }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 趋势推荐 -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">趋势推荐</h3>
+                    <div class="space-y-2">
+                      <button
+                        v-for="trending in fullscreenTrending.slice(0, 2)"
+                        :key="trending.text"
+                        @click="selectFullscreenTrending(trending)"
+                        class="w-full flex items-center gap-2 p-2 bg-gradient-to-r from-orange-50 to-red-50 hover:from-orange-100 hover:to-red-100 rounded transition-colors"
+                      >
+                        <Icon :name="trending.icon" class="w-3 h-3 text-orange-500" />
+                        <span class="text-gray-700 text-sm">{{ trending.text }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 第三列 -->
+                <div class="space-y-4">
+                  <!-- 品牌专区 -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">品牌专区</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        v-for="brand in fullscreenBrands.slice(0, 4)"
+                        :key="brand"
+                        @click="selectFullscreenBrand(brand)"
+                        class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full transition-colors text-sm"
+                      >
+                        {{ brand }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 搜索历史 -->
+                  <div v-if="searchHistory.length > 0">
+                    <div class="flex items-center justify-between mb-2">
+                      <h3 class="text-sm font-semibold text-gray-700">搜索历史</h3>
+                      <button
+                        @click="clearSearchHistory"
+                        class="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        清除
+                      </button>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      <button
+                        v-for="history in searchHistory.slice(0, 4)"
+                        :key="history"
+                        @click="selectFullscreenSuggestion(history)"
+                        class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full text-sm transition-colors"
+                      >
+                        {{ history }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -621,28 +812,25 @@ onClickOutside(mobileSearchRef, () => {
 }
 
 /* 移动端触摸反馈 */
-.mobile-button:active {
-  transform: scale(0.95);
-}
+  .mobile-button:active {
+    transform: scale(0.95);
+  }
 
-/* 全屏搜索动画 */
-.fullscreen-search-enter-active,
-.fullscreen-search-leave-active {
+/* 全屏搜索显示动画 */
+.fullscreen-search-enter-active {
   transition: all 0.3s ease;
 }
 
-.fullscreen-search-enter-from,
-.fullscreen-search-leave-to {
+.fullscreen-search-enter-from {
   opacity: 0;
 }
 
-.fullscreen-search-enter-from .w-full,
-.fullscreen-search-leave-to .w-full {
+.fullscreen-search-enter-from .w-full {
   transform: scale(0.8) translateY(-30px);
 }
 
-.fullscreen-search-enter-to .w-full,
-.fullscreen-search-leave-from .w-full {
+.fullscreen-search-enter-to .w-full {
   transform: scale(1) translateY(0);
 }
+
 </style>
