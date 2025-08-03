@@ -425,29 +425,6 @@ const getFeaturedItems = (categoryIndex: number) => {
                 </div>
               </div>
             </div>
-            <div v-else>
-              <h3 class="menu-title">热门搜索</h3>
-              <div class="trending-items">
-                <div 
-                  v-for="(item, index) in getTrendingItems(activeCategory)" 
-                  :key="index"
-                  class="trending-item"
-                  @click="handleItemClick('热门搜索', item.name)"
-                >
-                  <div class="trending-image">
-                    <img 
-                      :src="item.image" 
-                      :alt="item.name"
-                      @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
-                    />
-                  </div>
-                  <div class="trending-content">
-                    <span class="trending-name">{{ item.name }}</span>
-                    <span v-if="item.count" class="trending-count">{{ item.count }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- 右侧特色商品 -->
