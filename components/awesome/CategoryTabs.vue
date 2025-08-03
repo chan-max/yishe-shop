@@ -26,8 +26,8 @@ const categories = [
     description: '24小时内发货，让您快速获得心仪的服装'
   },
   {
-    name: '编辑精选',
-    description: '由专业编辑精心挑选的优质服装，品质保证'
+    name: '艺术字设计',
+    description: '个性化文字设计服务，将您的想法转化为独特的艺术字体作品'
   },
   {
     name: '筹款活动',
@@ -61,12 +61,11 @@ const handleTabChange = (index: number) => {
 
 // 处理小导航点击事件
 const handleItemClick = (categoryName: string, itemName: string) => {
-  // 只传递搜索关键字
+  // 跳转到 products 页面并携带参数
   const searchParams = {
     search: itemName
   };
   
-  // 跳转到 products 页面并携带参数
   navigateTo({
     path: '/products',
     query: searchParams
@@ -133,12 +132,44 @@ const getTrendingItems = (categoryIndex: number) => {
       { name: '现货商品', image: '@/thumbnail/in-stock.jpg' },
       { name: '快速物流', image: '@/thumbnail/fast-logistics.jpg' }
     ],
-    2: [ // 编辑精选
-      { name: '设计师推荐', image: '@/thumbnail/designer-pick.jpg' },
-      { name: '编辑精选', image: '@/thumbnail/editor-choice.jpg' },
-      { name: '精选系列', image: '@/thumbnail/curated-collection.jpg' },
-      { name: '热门推荐', image: '@/thumbnail/hot-recommend.jpg' },
-      { name: '新品推荐', image: '@/thumbnail/new-recommend.jpg' }
+    2: [ // 艺术字设计 - 功能展示
+      { 
+        name: '设计服务',
+        items: [
+          { name: '个性化定制', isBold: false },
+          { name: '艺术字体设计', isBold: false },
+          { name: '创意文字设计', isBold: false },
+          { name: '品牌标识设计', isBold: false },
+          { name: '节日祝福设计', isBold: false },
+          { name: '服装印花设计', isBold: false },
+          { name: '家居装饰设计', isBold: true },
+          { name: '数字媒体设计', isBold: true }
+        ]
+      },
+      { 
+        name: '设计风格',
+        items: [
+          { name: '现代简约', icon: 'uil:minus-circle' },
+          { name: '艺术创意', icon: 'uil:palette' },
+          { name: '商务专业', icon: 'uil:briefcase' },
+          { name: '复古经典', icon: 'uil:clock' },
+          { name: '浪漫温馨', icon: 'uil:heart' },
+          { name: '科技未来', icon: 'uil:rocket' },
+          { name: '自然清新', icon: 'uil:flower' },
+          { name: '街头潮流', icon: 'uil:music' }
+        ]
+      },
+      { 
+        name: '应用场景',
+        items: [
+          { name: '品牌标识', image: '/thumbnail/brand-logo.png' },
+          { name: '节日祝福', image: '/thumbnail/festival-greeting.png' },
+          { name: '服装印花', image: '/thumbnail/clothing-print.png' },
+          { name: '家居装饰', image: '/thumbnail/home-decoration.png' },
+          { name: '贺卡设计', image: '/thumbnail/greeting-card.png' },
+          { name: '数字媒体', image: '/thumbnail/digital-media.png' }
+        ]
+      }
     ],
     3: [ // 筹款活动
       { name: '慈善筹款', image: '@/thumbnail/charity-fundraiser.jpg' },
@@ -213,10 +244,10 @@ const getFeaturedItems = (categoryIndex: number) => {
       { name: '同城配送', image: '/featured/local-delivery.jpg' },
       { name: '快速物流', image: '/featured/fast-logistics.jpg' }
     ],
-    2: [ // 编辑精选
-      { name: '设计师推荐', image: '/featured/designer-pick.jpg' },
-      { name: '编辑精选', image: '/featured/editor-choice.jpg' },
-      { name: '精选系列', image: '/featured/curated-collection.jpg' }
+    2: [ // 艺术字设计
+      { name: '个性化定制', image: '/featured/custom-text.jpg', subItems: ['品牌标识', '节日祝福', '服装印花'] },
+      { name: '艺术字体', image: '/featured/artistic-font.jpg', subItems: ['现代简约', '艺术创意', '商务专业'] },
+      { name: '创意文字', image: '/featured/creative-text.jpg', subItems: ['家居装饰', '贺卡设计', '数字媒体'] }
     ],
     3: [ // 筹款活动
       { name: '慈善筹款', image: '/featured/charity-fundraiser.jpg' },
@@ -331,6 +362,69 @@ const getFeaturedItems = (categoryIndex: number) => {
                 </div>
               </div>
             </div>
+            
+            <!-- 艺术字设计专用UI -->
+            <div v-if="activeCategory === 2" class="artistic-text-design-menu">
+              <!-- 功能介绍 -->
+              <div class="design-intro">
+                <h3 class="intro-title">艺术字设计</h3>
+                <p class="intro-desc">将您的文字转化为独特的艺术作品</p>
+              </div>
+              
+              <!-- 设计风格 -->
+              <div class="design-styles">
+                <h4 class="section-title">设计风格</h4>
+                <div class="styles-list">
+                  <div class="style-item" @click="handleItemClick('设计风格', '现代简约')">
+                    <Icon name="uil:minus-circle" class="w-4 h-4" />
+                    <span>现代简约</span>
+                  </div>
+                  <div class="style-item" @click="handleItemClick('设计风格', '艺术创意')">
+                    <Icon name="uil:palette" class="w-4 h-4" />
+                    <span>艺术创意</span>
+                  </div>
+                  <div class="style-item" @click="handleItemClick('设计风格', '商务专业')">
+                    <Icon name="uil:briefcase" class="w-4 h-4" />
+                    <span>商务专业</span>
+                  </div>
+                  <div class="style-item" @click="handleItemClick('设计风格', '复古经典')">
+                    <Icon name="uil:clock" class="w-4 h-4" />
+                    <span>复古经典</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 应用场景 -->
+              <div class="design-applications">
+                <h4 class="section-title">应用场景</h4>
+                <div class="applications-list">
+                  <div class="app-item" @click="handleItemClick('应用场景', '品牌标识')">
+                    <Icon name="uil:building" class="w-4 h-4" />
+                    <span>品牌标识</span>
+                  </div>
+                  <div class="app-item" @click="handleItemClick('应用场景', '节日祝福')">
+                    <Icon name="uil:gift" class="w-4 h-4" />
+                    <span>节日祝福</span>
+                  </div>
+                  <div class="app-item" @click="handleItemClick('应用场景', '服装印花')">
+                    <Icon name="uil:tshirt" class="w-4 h-4" />
+                    <span>服装印花</span>
+                  </div>
+                  <div class="app-item" @click="handleItemClick('应用场景', '家居装饰')">
+                    <Icon name="uil:home" class="w-4 h-4" />
+                    <span>家居装饰</span>
+                  </div>
+                  <div class="app-item" @click="handleItemClick('应用场景', '贺卡设计')">
+                    <Icon name="uil:envelope" class="w-4 h-4" />
+                    <span>贺卡设计</span>
+                  </div>
+                  <div class="app-item" @click="handleItemClick('应用场景', '数字媒体')">
+                    <Icon name="uil:mobile" class="w-4 h-4" />
+                    <span>数字媒体</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div v-else>
               <h3 class="menu-title">热门搜索</h3>
               <div class="trending-items">
@@ -359,7 +453,7 @@ const getFeaturedItems = (categoryIndex: number) => {
           <!-- 右侧特色商品 -->
           <div class="menu-right">
             <h3 v-if="activeCategory === 0" class="menu-title">筛选分类</h3>
-            <div class="featured-cards">
+            <div v-if="activeCategory === 0" class="featured-cards">
               <div 
                 v-for="(featured, index) in getFeaturedItems(activeCategory)" 
                 :key="index"
@@ -375,7 +469,7 @@ const getFeaturedItems = (categoryIndex: number) => {
                 </div>
                 <div class="featured-content">
                   <div class="featured-title">{{ featured.name }}</div>
-                  <div v-if="activeCategory === 0 && featured.subItems" class="featured-sub-items">
+                  <div v-if="featured.subItems" class="featured-sub-items">
                     <span 
                       v-for="(subItem, subIndex) in featured.subItems" 
                       :key="subIndex"
@@ -385,6 +479,46 @@ const getFeaturedItems = (categoryIndex: number) => {
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+            
+            <!-- 艺术字设计右侧展示区域 -->
+            <div v-if="activeCategory === 2" class="artistic-design-showcase">
+              <div class="showcase-header">
+                <h3 class="showcase-title">设计服务</h3>
+                <p class="showcase-subtitle">个性化文字设计</p>
+              </div>
+              
+              <div class="service-list">
+                <div class="service-item" @click="handleItemClick('设计服务', '个性化定制')">
+                  <Icon name="uil:pen" class="w-5 h-5" />
+                  <div class="service-info">
+                    <h4>个性化定制</h4>
+                    <p>根据您的需求定制独特字体</p>
+                  </div>
+                </div>
+                
+                <div class="service-item" @click="handleItemClick('设计服务', '创意设计')">
+                  <Icon name="uil:palette" class="w-5 h-5" />
+                  <div class="service-info">
+                    <h4>创意设计</h4>
+                    <p>专业设计师创意无限</p>
+                  </div>
+                </div>
+                
+                <div class="service-item" @click="handleItemClick('设计服务', '多格式输出')">
+                  <Icon name="uil:download" class="w-5 h-5" />
+                  <div class="service-info">
+                    <h4>多格式输出</h4>
+                    <p>支持多种文件格式</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="contact-section">
+                <button class="contact-btn" @click="handleItemClick('联系咨询', '立即咨询')">
+                  立即咨询
+                </button>
               </div>
             </div>
           </div>
@@ -964,4 +1098,187 @@ const getFeaturedItems = (categoryIndex: number) => {
     height: 100px;
   }
 }
-</style> 
+
+/* 艺术字设计专用UI样式 */
+.artistic-text-design-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.design-intro {
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.intro-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.intro-desc {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.design-styles,
+.design-applications {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.design-applications {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.styles-list,
+.applications-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.style-item,
+.app-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  color: #374151;
+}
+
+.style-item:hover,
+.app-item:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.style-item svg,
+.app-item svg {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+/* 右侧展示区域样式 */
+.artistic-design-showcase {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.showcase-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.showcase-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.showcase-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.service-item:hover {
+  background: #f3f4f6;
+}
+
+.service-item svg {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.service-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.service-info p {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.contact-section {
+  text-align: center;
+}
+
+.contact-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-btn:hover {
+  background: #2563eb;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .artistic-text-design-menu {
+    padding: 16px;
+    gap: 20px;
+  }
+  
+  .styles-list,
+  .applications-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .artistic-design-showcase {
+    padding: 16px;
+  }
+}
+</style> 可以结合用户想要的文字内容，做出合理的设计，这部分主要是作这方面的功能介绍和展示，请提供一个合理的页面
