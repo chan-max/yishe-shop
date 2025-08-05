@@ -209,22 +209,22 @@ const getFeaturedItems = (categoryIndex: number) => {
   const featuredData = {
     0: [ // 全部商品 - 特色分类导航
       { 
-        name: '按年龄段', 
-        image: '/featured/age-group.jpg',
-        description: '根据不同年龄段的喜好和需求，为您推荐最适合的服装款式',
-        subItems: ['青少年', '青年', '中年', '老年', '儿童', '学生', '职场新人', '成熟人士']
+        name: '受众人群', 
+        image: '/thumbnail/people_bg.jpg',
+        description: '针对不同人群特点，量身定制的时尚选择',
+        subItems: ['年轻人', '中年人', '老年人', '男性', '女性', '儿童', '青少年', '情侣', '闺蜜', '亲子', '职场人士', '学生党']
       },
       { 
-        name: '按性别', 
-        image: '/featured/gender.jpg',
-        description: '专为不同性别设计的服装，展现独特的个人魅力',
-        subItems: ['男士', '女士', '中性', '儿童', '情侣', '亲子', '闺蜜装', '兄弟装']
+        name: '按生活场景', 
+        image: '/thumbnail/scene_bg.jpg',
+        description: '不同生活场景的着装需求，让您在每个场合都能穿出精彩',
+        subItems: ['日常', '夜晚', '外出', '职场', '聚会', '工作', '约会', '旅行', '运动', '居家', '派对', '商务']
       },
       { 
-        name: '按风格', 
-        image: '/featured/style.jpg',
-        description: '从休闲到正式，从简约到奢华，总有一款风格适合您',
-        subItems: ['休闲', '商务', '运动', '时尚', '复古', '街头', '优雅', '可爱', '酷炫', '文艺']
+        name: '按元素', 
+        image: '/thumbnail/element_bg.jpg',
+        description: '服装上的设计元素，让每件衣服都独一无二',
+        subItems: ['文字', '艺术字', '图片', '拼图', '徽章', '印章', 'logo', '图案', '符号', '标语', '数字', '字母']
       },
       { 
         name: '按颜色', 
@@ -233,16 +233,16 @@ const getFeaturedItems = (categoryIndex: number) => {
         subItems: ['黑色', '白色', '红色', '蓝色', '绿色', '黄色', '粉色', '紫色', '橙色', '灰色', '棕色', '彩虹色']
       },
       { 
-        name: '按季节', 
-        image: '/featured/season.jpg',
-        description: '四季分明的服装搭配，让您在每个季节都能穿出精彩',
-        subItems: ['春季', '夏季', '秋季', '冬季', '春秋', '夏秋', '四季通用', '换季必备']
+        name: '按定制类型', 
+        image: '/thumbnail/custom_bg.jpg',
+        description: '个性化定制服务，让每件衣服都独一无二',
+        subItems: ['个人定制', '情侣定制', '团队定制', '品牌定制', '节日定制', '纪念定制', '艺术定制', '主题定制', '限量定制', '专属定制', '创意定制', '个性定制']
       },
       { 
-        name: '按场合', 
-        image: '/featured/occasion.jpg',
-        description: '不同场合的着装需求，从日常到特殊时刻的完美搭配',
-        subItems: ['日常', '聚会', '工作', '旅行', '约会', '派对', '婚礼', '运动', '户外', '居家', '商务会议', '休闲娱乐']
+        name: '按设计主题', 
+        image: '/thumbnail/theme_bg.jpg',
+        description: '独特设计主题，传递不同的文化内涵',
+        subItems: ['动漫', '游戏', '电影', '音乐', '艺术', '文化', '科技', '自然', '城市', '历史', '未来', '童话']
       }
     ],
     1: [ // 快速配送
