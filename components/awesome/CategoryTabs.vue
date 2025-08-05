@@ -211,32 +211,38 @@ const getFeaturedItems = (categoryIndex: number) => {
       { 
         name: '按年龄段', 
         image: '/featured/age-group.jpg',
-        subItems: ['青少年', '青年', '中年', '老年']
+        description: '根据不同年龄段的喜好和需求，为您推荐最适合的服装款式',
+        subItems: ['青少年', '青年', '中年', '老年', '儿童', '学生', '职场新人', '成熟人士']
       },
       { 
         name: '按性别', 
         image: '/featured/gender.jpg',
-        subItems: ['男士', '女士', '中性', '儿童']
+        description: '专为不同性别设计的服装，展现独特的个人魅力',
+        subItems: ['男士', '女士', '中性', '儿童', '情侣', '亲子', '闺蜜装', '兄弟装']
       },
       { 
         name: '按风格', 
         image: '/featured/style.jpg',
-        subItems: ['休闲', '商务', '运动', '时尚']
+        description: '从休闲到正式，从简约到奢华，总有一款风格适合您',
+        subItems: ['休闲', '商务', '运动', '时尚', '复古', '街头', '优雅', '可爱', '酷炫', '文艺']
       },
       { 
         name: '按颜色', 
-        image: '/featured/color.jpg',
-        subItems: ['黑色', '白色', '红色', '蓝色']
+        image: '/thumbnail/color_bg.jpg',
+        description: '丰富的色彩选择，让您的穿搭更加生动有趣',
+        subItems: ['黑色', '白色', '红色', '蓝色', '绿色', '黄色', '粉色', '紫色', '橙色', '灰色', '棕色', '彩虹色']
       },
       { 
         name: '按季节', 
         image: '/featured/season.jpg',
-        subItems: ['春季', '夏季', '秋季', '冬季']
+        description: '四季分明的服装搭配，让您在每个季节都能穿出精彩',
+        subItems: ['春季', '夏季', '秋季', '冬季', '春秋', '夏秋', '四季通用', '换季必备']
       },
       { 
         name: '按场合', 
         image: '/featured/occasion.jpg',
-        subItems: ['日常', '聚会', '工作', '旅行']
+        description: '不同场合的着装需求，从日常到特殊时刻的完美搭配',
+        subItems: ['日常', '聚会', '工作', '旅行', '约会', '派对', '婚礼', '运动', '户外', '居家', '商务会议', '休闲娱乐']
       }
     ],
     1: [ // 快速配送
@@ -435,7 +441,6 @@ const getFeaturedItems = (categoryIndex: number) => {
                 v-for="(featured, index) in getFeaturedItems(activeCategory)" 
                 :key="index"
                 class="featured-card"
-                @click="handleItemClick('特色商品', featured.name)"
               >
                 <div class="featured-image">
                   <img 
@@ -446,11 +451,15 @@ const getFeaturedItems = (categoryIndex: number) => {
                 </div>
                 <div class="featured-content">
                   <div class="featured-title">{{ featured.name }}</div>
+                  <div v-if="featured.description" class="featured-description">
+                    {{ featured.description }}
+                  </div>
                   <div v-if="featured.subItems" class="featured-sub-items">
                     <span 
                       v-for="(subItem, subIndex) in featured.subItems" 
                       :key="subIndex"
-                      class="sub-item"
+                      class="sub-item clickable-label"
+                      @click="handleItemClick('筛选分类', subItem)"
                     >
                       {{ subItem }}
                     </span>
@@ -890,26 +899,24 @@ const getFeaturedItems = (categoryIndex: number) => {
 
 .featured-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .featured-card {
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
 .featured-image {
   width: 100%;
-  height: 120px;
+  height: 160px;
   overflow: hidden;
   background: #fff;
   
@@ -930,31 +937,57 @@ const getFeaturedItems = (categoryIndex: number) => {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
   color: white;
 }
 
 .featured-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.featured-description {
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+  margin-bottom: 8px;
+  opacity: 0.9;
+  font-weight: 400;
 }
 
 .featured-sub-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3px;
   justify-content: center;
+  align-items: flex-start;
 }
 
 .sub-item {
-  font-size: 10px;
+  font-size: 9px;
   background: rgba(255, 255, 255, 0.2);
-  padding: 2px 6px;
-  border-radius: 10px;
+  padding: 2px 5px;
+  border-radius: 8px;
   backdrop-filter: blur(4px);
+  white-space: nowrap;
+  
+  &.clickable-label {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
 }
 
 /* 响应式导航菜单 */
@@ -1069,10 +1102,34 @@ const getFeaturedItems = (categoryIndex: number) => {
   
   .featured-cards {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .featured-image {
-    height: 100px;
+    height: 140px;
+  }
+  
+  .featured-content {
+    padding: 12px;
+  }
+  
+  .featured-title {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .featured-description {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  
+  .featured-sub-items {
+    gap: 2px;
+  }
+  
+  .sub-item {
+    font-size: 8px;
+    padding: 1px 4px;
   }
 }
 
