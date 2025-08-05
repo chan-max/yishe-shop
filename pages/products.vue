@@ -326,16 +326,17 @@
             <div
               v-for="product in products"
               :key="product.id"
-              class="rounded-lg overflow-hidden shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+              class="group relative bg-white rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              @click="goToProductDetail(product.id)"
             >
               <!-- 商品图片 -->
-              <div class="relative aspect-[4/5]">
+              <div class="relative aspect-[4/5] overflow-hidden">
                 <!-- 有图片时显示图片 -->
                 <img
                   v-if="hasValidImage(product)"
                   :src="product?.customModel?.thumbnail"
                   :alt="product.name"
-                  class="w-full h-full object-cover transition-opacity duration-300"
+                  class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                   @load="onImageLoad($event, product.id)"
                   @error="onImageError($event, product.id)"
                   :class="{ 'opacity-0': !getImageLoadStatus(product.id) }"
@@ -344,16 +345,16 @@
                 <!-- 没有图片时显示空状态 -->
                 <div 
                   v-else
-                  class="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center p-4"
+                  class="w-full h-full bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 flex flex-col items-center justify-center p-4"
                 >
                   <!-- 空状态图标 -->
                   <div class="relative mb-3">
                     <!-- 外圈装饰 -->
-                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center shadow-inner">
                       <Icon name="heroicons:photo" class="w-6 h-6 text-gray-400" />
                     </div>
                     <!-- 小图标装饰 -->
-                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-gray-300 rounded-full flex items-center justify-center">
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-sm">
                       <Icon name="heroicons:plus" class="w-2 h-2 text-gray-500" />
                     </div>
                   </div>
@@ -366,9 +367,9 @@
                   <!-- 装饰性元素 -->
                   <div class="absolute bottom-2 right-2">
                     <div class="flex gap-1">
-                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
-                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
-                      <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                      <div class="w-1 h-1 bg-gray-300 rounded-full animate-pulse"></div>
+                      <div class="w-1 h-1 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 150ms;"></div>
+                      <div class="w-1 h-1 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 300ms;"></div>
                     </div>
                   </div>
                 </div>
@@ -376,7 +377,7 @@
                 <!-- 图片加载中的波浪效果 -->
                 <div 
                   v-if="hasValidImage(product) && !getImageLoadStatus(product.id)"
-                  class="absolute inset-0 bg-gray-100 flex items-center justify-center"
+                  class="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
                 >
                   <div class="relative">
                     <!-- 波浪动画 -->
@@ -393,45 +394,36 @@
                 <!-- 商品标签 -->
                 <div
                   v-if="product.tag"
-                  class="absolute top-2 left-2 px-2 py-1 text-xs rounded border bg-white/90"
+                  class="absolute top-3 left-3 px-3 py-1.5 text-xs font-medium rounded-full bg-white/95 backdrop-blur-sm shadow-sm"
                 >
                   {{ product.tag }}
                 </div>
+                
+                <!-- 悬停时的遮罩效果 -->
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
               </div>
 
               <!-- 商品信息 -->
-              <div class="p-3">
-                <h3 class="text-sm font-medium mb-2 line-clamp-2">{{ product.name }}</h3>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold mb-3 line-clamp-2 text-gray-900 group-hover:text-gray-700 transition-colors">
+                  {{ product.name }}
+                </h3>
                 
                 <!-- 商品描述 -->
-                <div v-if="product.description" class="mb-2">
-                  <p class="text-xs text-gray-600 line-clamp-2">{{ product.description }}</p>
+                <div v-if="product.description" class="mb-4">
+                  <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">{{ product.description }}</p>
                 </div>
                 
-                <!-- 关键词标签 -->
+                <!-- 关键词标签 - 显示所有标签 -->
                 <div v-if="getProductKeywords(product).length > 0" class="mb-2">
-                  <div class="flex flex-wrap gap-1">
+                  <div class="flex flex-wrap gap-1.5">
                     <span 
-                      v-for="keyword in getProductKeywords(product).slice(0, 3)" 
+                      v-for="keyword in getProductKeywords(product)" 
                       :key="keyword"
-                      class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full"
+                      class="px-2.5 py-1 text-xs font-medium bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 rounded-full hover:from-gray-100 hover:to-gray-200 transition-all duration-200"
                     >
                       {{ keyword }}
                     </span>
-                    <span 
-                      v-if="getProductKeywords(product).length > 3" 
-                      class="px-2 py-1 text-xs bg-gray-100 text-gray-500 rounded-full"
-                    >
-                      +{{ getProductKeywords(product).length - 3 }}
-                    </span>
-                  </div>
-                </div>
-                
-                <!-- 点赞数 -->
-                <div class="flex items-center justify-end">
-                  <div class="flex items-center gap-1 text-xs text-gray-500">
-                    <Icon name="heroicons:heart" class="w-3 h-3" />
-                    <span>{{ product.likes }}</span>
                   </div>
                 </div>
               </div>
@@ -789,6 +781,11 @@ const getProductKeywords = (product) => {
     .split(',')
     .map(keyword => keyword.trim())
     .filter(keyword => keyword.length > 0);
+};
+
+// 跳转到商品详情页
+const goToProductDetail = (productId) => {
+  router.push(`/product/${productId}`);
 };
 </script>
 
