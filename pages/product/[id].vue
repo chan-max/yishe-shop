@@ -3,13 +3,13 @@
     <div class="max-w-4xl mx-auto">
       <!-- 返回按钮 -->
       <div class="mb-4">
-        <button
-          @click="router.push('/products')"
-          class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md border border-gray-200 hover:border-gray-300 transition-all duration-200"
+        <NuxtLink
+          to="/products"
+          class="inline-flex items-center space-x-1.5 text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200"
         >
-          <Icon name="heroicons:arrow-left" class="w-3.5 h-3.5" />
+          <Icon name="heroicons:arrow-left" class="w-4 h-4" />
           <span>返回商品列表</span>
-        </button>
+        </NuxtLink>
       </div>
 
       <!-- 加载状态 -->
