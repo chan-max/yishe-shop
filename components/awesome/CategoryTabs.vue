@@ -15,6 +15,27 @@ interface Emits {
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
+// 移动端适配：基于窗口宽度判断是否为移动端
+const isMobile = ref(false);
+const updateIsMobile = () => {
+  if (process.client) {
+    isMobile.value = window.matchMedia('(max-width: 768px)').matches;
+  }
+};
+
+onMounted(() => {
+  updateIsMobile();
+  if (process.client) {
+    window.addEventListener('resize', updateIsMobile, { passive: true } as AddEventListenerOptions);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (process.client) {
+    window.removeEventListener('resize', updateIsMobile as EventListener);
+  }
+});
+
 // 直接在组件中定义tab数据
 const categories = [
   {
@@ -57,6 +78,13 @@ const handleMouseLeave = () => {
 
 const handleTabChange = (index: number) => {
   emit('tabChange', index);
+  // 在移动端点击 Tab 时，切换展开/收起下拉菜单（PC 端保持不变，依旧用 hover 控制）
+  if (isMobile.value) {
+    const isSameTab = props.activeCategory === index;
+    const nextVisible = isSameTab ? !props.isDropdownVisible : true;
+    emit('update:activeCategory', index);
+    emit('update:isDropdownVisible', nextVisible);
+  }
 };
 
 // 处理小导航点击事件
@@ -280,6 +308,21 @@ const getFeaturedItems = (categoryIndex: number) => {
   
   return featuredData[categoryIndex as keyof typeof featuredData] || featuredData[0];
 };
+
+// 类型声明用于改善模板中的类型提示与校验
+interface TrendingSectionItem { name: string; isBold?: boolean; image?: string; icon?: string }
+interface TrendingSection { name: string; items: TrendingSectionItem[] }
+interface FeaturedCard { name: string; image: string; description?: string; subItems?: string[] }
+
+// 辅助函数：仅用于“全部商品”分栏（activeCategory === 0）
+const getAllProductsTrendingSections = (): TrendingSection[] => {
+  return getTrendingItems(0) as unknown as TrendingSection[];
+};
+
+// 辅助函数：为模板提供统一的卡片结构（包含可选字段）
+const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
+  return getFeaturedItems(index) as unknown as FeaturedCard[];
+};
 </script>
 
 <template>
@@ -331,7 +374,7 @@ const getFeaturedItems = (categoryIndex: number) => {
           <div class="menu-left">
             <div v-if="activeCategory === 0" class="asos-style-menu">
               <div 
-                v-for="(section, index) in getTrendingItems(activeCategory)" 
+                v-for="(section, index) in getAllProductsTrendingSections()" 
                 :key="index"
                 :class="`menu-section ${section.name === '设计风格' ? 'style-section' : ''}`"
               >
@@ -439,7 +482,7 @@ const getFeaturedItems = (categoryIndex: number) => {
             <h3 v-if="activeCategory === 0" class="menu-title">筛选分类</h3>
             <div v-if="activeCategory === 0" class="featured-cards">
               <div 
-                v-for="(featured, index) in getFeaturedItems(activeCategory)" 
+                v-for="(featured, index) in getFeaturedCardsForCategory(activeCategory)" 
                 :key="index"
                 class="featured-card"
               >
@@ -539,6 +582,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   justify-content: center;
   gap: 8px;
   overflow-x: auto;
+  scroll-snap-type: x proximity;
   
   @media (max-width: 768px) {
     gap: 6px;
@@ -562,6 +606,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   min-width: 70px;
   text-align: center;
   border: none;
+  scroll-snap-align: start;
   
   &:hover {
     background: #f9fafb;
@@ -993,6 +1038,10 @@ const getFeaturedItems = (categoryIndex: number) => {
 
 /* 响应式导航菜单 */
 @media (max-width: 768px) {
+  .dropdown-menu {
+    min-height: auto;
+  }
+
   .description-banner {
     .banner-content {
       padding: 8px 16px;
@@ -1042,6 +1091,7 @@ const getFeaturedItems = (categoryIndex: number) => {
   
   .menu-left {
     max-width: none;
+    min-width: auto;
   }
   
   .asos-style-menu {
@@ -1099,6 +1149,10 @@ const getFeaturedItems = (categoryIndex: number) => {
   
   .item-name {
     font-size: 11px;
+  }
+
+  .menu-right {
+    min-width: auto;
   }
   
   .featured-cards {
