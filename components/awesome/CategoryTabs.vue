@@ -129,7 +129,6 @@ const getTrendingItems = (categoryIndex: number) => {
           { name: '帽子', image: '/thumbnail/hat.png' },
           { name: '抱枕 & 靠枕', image: '/thumbnail/pillow.png' },
           { name: '手机壳', image: '/thumbnail/phonecover.png' }
-          
         ]
       },
       { 
@@ -1373,4 +1372,4 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     padding: 16px;
   }
 }
-</style> 可以结合用户想要的文字内容，做出合理的设计，这部分主要是作这方面的功能介绍和展示，请提供一个合理的页面
+</style>
