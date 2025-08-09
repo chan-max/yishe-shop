@@ -126,7 +126,10 @@ const getTrendingItems = (categoryIndex: number) => {
           { name: '挂毯', image: '/thumbnail/tapestry.png' },
           { name: '毛巾', image: '/thumbnail/towel.png' },
           { name: '鼠标垫', image: '/thumbnail/mousepad.png' },
-          { name: '帽子', image: '/thumbnail/hat.png' }
+          { name: '帽子', image: '/thumbnail/hat.png' },
+          { name: '抱枕 & 靠枕', image: '/thumbnail/pillow.png' },
+          { name: '手机壳', image: '/thumbnail/phonecover.png' }
+          
         ]
       },
       { 
