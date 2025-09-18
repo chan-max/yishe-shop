@@ -41,13 +41,11 @@ const totalResults = ref(0)
 const currentPage = ref(1)
 const pageSize = ref(20)
 
-// 搜索建议和历史
+// 搜索建议
 const searchSuggestions = ref([
-  '连衣裙', '牛仔裤', 'T恤', '运动鞋', '休闲裤', '衬衫', '外套', '裙子', '短裤', '长裤',
-  '春季新品', '设计师联名', '限时折扣', '时尚配饰', '运动系列', '正装', '休闲装', '运动装'
+  '连衣裙', '牛仔裤', 'T恤', '运动鞋', '休闲裤', '衬衫', '外套', '裙子', '短裤', '长裤'
 ])
 
-const searchHistory = ref<string[]>([])
 const showSuggestions = ref(false)
 
 // 筛选条件
@@ -66,8 +64,11 @@ const filters = ref({
   discount: ''
 })
 
-const showFilters = ref(false)
 const showMobileSidebar = ref(false)
+
+// 照片墙数据
+const photoWallData = ref<any[]>([])
+const loadingMore = ref(false)
 
 // 筛选选项
 const filterOptions = {
@@ -158,20 +159,141 @@ const filterOptions = {
   ]
 }
 
-// 热门搜索
-const hotSearches = ref([
-  { text: '春季新品', count: 1234, tag: 'hot' },
-  { text: '设计师联名', count: 986, tag: 'trending' },
-  { text: '限时折扣', count: 876, tag: 'sale' },
-  { text: '时尚配饰', count: 765, tag: 'accessories' },
-  { text: '运动系列', count: 654, tag: 'sports' },
-  { text: '正装', count: 543, tag: 'formal' },
-  { text: '休闲装', count: 432, tag: 'casual' },
-  { text: '运动装', count: 321, tag: 'active' }
-])
+
+// 初始化照片墙数据
+const initPhotoWall = () => {
+  const mockPhotos = [
+    {
+      id: 1,
+      title: '时尚连衣裙设计',
+      description: '优雅的春季连衣裙，展现女性魅力',
+      image: 'https://picsum.photos/400/600?random=1',
+      likes: 1234,
+      views: 5678
+    },
+    {
+      id: 2,
+      title: '休闲T恤系列',
+      description: '舒适百搭的日常穿搭选择',
+      image: 'https://picsum.photos/300/400?random=2',
+      likes: 856,
+      views: 2345
+    },
+    {
+      id: 3,
+      title: '商务正装套装',
+      description: '专业职场形象的最佳选择',
+      image: 'https://picsum.photos/350/500?random=3',
+      likes: 2341,
+      views: 4567
+    },
+    {
+      id: 4,
+      title: '运动休闲装',
+      description: '活力四射的运动风格设计',
+      image: 'https://picsum.photos/400/500?random=4',
+      likes: 1890,
+      views: 3456
+    },
+    {
+      id: 5,
+      title: '复古牛仔系列',
+      description: '经典永不过时的牛仔风格',
+      image: 'https://picsum.photos/300/450?random=5',
+      likes: 1456,
+      views: 2789
+    },
+    {
+      id: 6,
+      title: '优雅晚礼服',
+      description: '华丽晚宴的完美选择',
+      image: 'https://picsum.photos/350/600?random=6',
+      likes: 2789,
+      views: 4567
+    },
+    {
+      id: 7,
+      title: '街头潮流风',
+      description: '年轻时尚的街头文化',
+      image: 'https://picsum.photos/400/450?random=7',
+      likes: 1678,
+      views: 3123
+    },
+    {
+      id: 8,
+      title: '简约基础款',
+      description: '百搭实用的基础单品',
+      image: 'https://picsum.photos/300/400?random=8',
+      likes: 987,
+      views: 1987
+    },
+    {
+      id: 9,
+      title: '民族风情设计',
+      description: '独特的民族元素融合',
+      image: 'https://picsum.photos/350/500?random=9',
+      likes: 1234,
+      views: 2345
+    },
+    {
+      id: 10,
+      title: '未来科技感',
+      description: '前卫的科技时尚风格',
+      image: 'https://picsum.photos/400/500?random=10',
+      likes: 2100,
+      views: 3789
+    },
+    {
+      id: 11,
+      title: '自然田园风',
+      description: '清新自然的田园风格',
+      image: 'https://picsum.photos/300/450?random=11',
+      likes: 1456,
+      views: 2567
+    },
+    {
+      id: 12,
+      title: '奢华皮草系列',
+      description: '高端奢华的皮草设计',
+      image: 'https://picsum.photos/350/600?random=12',
+      likes: 3456,
+      views: 5678
+    }
+  ]
+  
+  photoWallData.value = mockPhotos
+}
+
+// 加载更多照片
+const loadMorePhotos = async () => {
+  loadingMore.value = true
+  
+  // 模拟加载延迟
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // 生成更多模拟数据
+  const newPhotos = []
+  for (let i = 0; i < 8; i++) {
+    const id = photoWallData.value.length + i + 1
+    newPhotos.push({
+      id,
+      title: `设计作品 ${id}`,
+      description: `创意设计作品，展现独特风格`,
+      image: `https://picsum.photos/${300 + Math.random() * 100}/${400 + Math.random() * 200}?random=${id}`,
+      likes: Math.floor(Math.random() * 3000) + 500,
+      views: Math.floor(Math.random() * 5000) + 1000
+    })
+  }
+  
+  photoWallData.value.push(...newPhotos)
+  loadingMore.value = false
+}
 
 // 初始化搜索查询
 onMounted(() => {
+  // 初始化照片墙
+  initPhotoWall()
+  
   // 从URL参数获取搜索关键词
   if (route.query.q) {
     searchQuery.value = route.query.q as string
@@ -183,32 +305,8 @@ onMounted(() => {
   //   performSearch()
   // }
   
-  // 加载搜索历史
-  loadSearchHistory()
 })
 
-// 加载搜索历史
-const loadSearchHistory = () => {
-  const history = localStorage.getItem('searchHistory')
-  if (history) {
-    searchHistory.value = JSON.parse(history)
-  }
-}
-
-// 保存搜索历史
-const saveSearchHistory = (keyword: string) => {
-  if (!keyword.trim()) return
-  
-  // 移除重复项
-  searchHistory.value = searchHistory.value.filter(item => item !== keyword)
-  // 添加到开头
-  searchHistory.value.unshift(keyword)
-  // 限制历史记录数量
-  searchHistory.value = searchHistory.value.slice(0, 10)
-  
-  // 保存到本地存储
-  localStorage.setItem('searchHistory', JSON.stringify(searchHistory.value))
-}
 
 // 执行搜索
 const performSearch = async () => {
@@ -257,8 +355,6 @@ const performSearch = async () => {
     searchResults.value = response.list || []
     totalResults.value = response.total || 0
     
-    // 保存搜索历史
-    saveSearchHistory(searchQuery.value.trim())
     
     // 更新URL
     updateURL()
@@ -309,13 +405,6 @@ const selectSuggestion = (suggestion: string) => {
   performSearch()
 }
 
-// 选择热门搜索
-const selectHotSearch = (hotSearch: { text: string; count: number }) => {
-  searchQuery.value = hotSearch.text
-  showSuggestions.value = false
-  performSearch()
-}
-
 // 清空搜索
 const clearSearch = () => {
   searchQuery.value = ''
@@ -323,47 +412,9 @@ const clearSearch = () => {
   hasSearched.value = false
   totalResults.value = 0
   showSuggestions.value = false
-  // searchStore.clearSearchKeyword()
   router.replace({ path: '/search' })
 }
 
-// 清空筛选条件
-const clearFilters = () => {
-  filters.value = {
-    sort: 'latest',
-    price: '',
-    gender: '',
-    ageGroup: '',
-    style: '',
-    season: '',
-    material: '',
-    color: '',
-    size: '',
-    occasion: '',
-    brand: '',
-    discount: ''
-  }
-  currentPage.value = 1
-  performSearch()
-}
-
-// 应用筛选条件
-const applyFilters = () => {
-  currentPage.value = 1
-  performSearch()
-}
-
-// 获取活跃筛选条件数量
-const activeFiltersCount = computed(() => {
-  return Object.values(filters.value).filter(value => value && value !== 'latest').length
-})
-
-// 监听筛选条件变化
-watch(filters, () => {
-  if (hasSearched.value) {
-    applyFilters()
-  }
-}, { deep: true })
 
 // 监听分页变化
 watch(currentPage, () => {
@@ -404,6 +455,7 @@ const handleBlur = () => {
     showSuggestions.value = false
   }, 200)
 }
+
 </script>
 
 <template>
@@ -425,7 +477,7 @@ const handleBlur = () => {
             <span class="brand-text">衣设</span>
           </NuxtLink>
         </div>
-
+        
         <!-- 搜索框 -->
         <div class="sidebar-search">
           <v-text-field
@@ -459,31 +511,12 @@ const handleBlur = () => {
           
           <!-- 搜索建议下拉框 -->
           <v-card
-            v-if="showSuggestions && (filteredSuggestions.length > 0 || searchHistory.length > 0)"
+            v-if="showSuggestions && filteredSuggestions.length > 0"
             class="suggestions-dropdown"
             elevation="4"
           >
-            <!-- 搜索历史 -->
-            <div v-if="searchHistory.length > 0 && !searchQuery.trim()" class="suggestions-section">
-              <div class="suggestions-title">
-                <v-icon size="small">mdi-history</v-icon>
-                <span>搜索历史</span>
-              </div>
-              <div class="suggestions-list">
-                <div
-                  v-for="(history, index) in searchHistory.slice(0, 5)"
-                  :key="index"
-                  class="suggestion-item"
-                  @click="selectSuggestion(history)"
-                >
-                  <v-icon size="small">mdi-clock-outline</v-icon>
-                  <span>{{ history }}</span>
-                </div>
-              </div>
-            </div>
-            
             <!-- 搜索建议 -->
-            <div v-if="filteredSuggestions.length > 0" class="suggestions-section">
+            <div class="suggestions-section">
               <div class="suggestions-title">
                 <v-icon size="small">mdi-lightbulb-outline</v-icon>
                 <span>搜索建议</span>
@@ -502,32 +535,7 @@ const handleBlur = () => {
             </div>
           </v-card>
         </div>
-
-        <!-- 导航菜单 -->
-        <div class="sidebar-nav">
-          <nav class="nav-menu">
-            <NuxtLink to="/" class="nav-item">
-              <v-icon>mdi-home</v-icon>
-              <span>首页</span>
-            </NuxtLink>
-            <NuxtLink to="/products" class="nav-item">
-              <v-icon>mdi-package-variant</v-icon>
-              <span>商品</span>
-            </NuxtLink>
-            <NuxtLink to="/custom-design" class="nav-item">
-              <v-icon>mdi-palette</v-icon>
-              <span>定制设计</span>
-            </NuxtLink>
-            <NuxtLink to="/designers" class="nav-item">
-              <v-icon>mdi-account-group</v-icon>
-              <span>设计师</span>
-            </NuxtLink>
-            <NuxtLink to="/contact" class="nav-item">
-              <v-icon>mdi-email</v-icon>
-              <span>联系我们</span>
-            </NuxtLink>
-          </nav>
-        </div>
+        
       </div>
     </aside>
 
@@ -546,172 +554,118 @@ const handleBlur = () => {
             <v-icon>mdi-menu</v-icon>
           </v-btn>
           
-          <!-- 导航菜单 -->
-          <nav class="header-nav">
-            <NuxtLink to="/" class="nav-link">首页</NuxtLink>
-            <NuxtLink to="/products" class="nav-link">商品</NuxtLink>
-            <NuxtLink to="/custom-design" class="nav-link">定制设计</NuxtLink>
-            <NuxtLink to="/designers" class="nav-link">设计师</NuxtLink>
-            <NuxtLink to="/contact" class="nav-link">联系我们</NuxtLink>
-          </nav>
-          
-          <!-- 用户操作 -->
-          <div class="header-actions">
-            <NuxtLink to="/member" class="action-link">
-              <v-icon>mdi-account</v-icon>
-              <span>会员中心</span>
-            </NuxtLink>
-          </div>
-        </div>
+          <!-- 页面标题 -->
+          <h1 class="page-title">搜索</h1>
+              </div>
       </header>
 
-      <!-- 主要内容区域 -->
+    <!-- 主要内容区域 -->
       <div class="content-area">
-        <!-- 未搜索状态 -->
-        <div v-if="!hasSearched" class="search-placeholder">
-          <div class="placeholder-content">
-            <v-icon size="64" color="primary" class="placeholder-icon">mdi-magnify</v-icon>
-            <h2 class="placeholder-title">开始您的搜索之旅</h2>
-            <p class="placeholder-description">
-              在衣设服装设计平台搜索您想要的服装设计，支持智能筛选和个性化推荐
+      <!-- 未搜索状态 -->
+      <div v-if="!hasSearched" class="search-placeholder">
+        <div class="placeholder-content">
+          <v-icon size="64" color="primary" class="placeholder-icon">mdi-magnify</v-icon>
+            <h2 class="placeholder-title">开始搜索</h2>
+          <p class="placeholder-description">
+              在左侧搜索框中输入关键词开始搜索
             </p>
-            
-            <!-- 热门搜索 -->
-            <div class="hot-searches">
-              <h3 class="hot-searches-title">热门搜索</h3>
-              <div class="hot-searches-list">
-                <v-chip
-                  v-for="(hotSearch, index) in hotSearches"
-                  :key="index"
-                  :color="hotSearch.tag === 'hot' ? 'red' : hotSearch.tag === 'trending' ? 'orange' : 'primary'"
-                  variant="outlined"
-                  class="hot-search-chip"
-                  @click="selectHotSearch(hotSearch)"
-                >
-                  <v-icon left size="small">
-                    {{ hotSearch.tag === 'hot' ? 'mdi-fire' : hotSearch.tag === 'trending' ? 'mdi-trending-up' : 'mdi-tag' }}
-                  </v-icon>
-                  {{ hotSearch.text }}
-                  <span class="search-count">({{ hotSearch.count }})</span>
-                </v-chip>
+        </div>
+      </div>
+      
+        <!-- 照片墙 -->
+        <div class="photo-wall">
+          <div class="photo-wall-header">
+            <h2 class="photo-wall-title">精选设计作品</h2>
+            <p class="photo-wall-subtitle">发现更多创意灵感</p>
+          </div>
+          
+          <div class="photo-grid">
+            <div
+              v-for="(photo, index) in photoWallData"
+              :key="index"
+              class="photo-item"
+              :class="{ 'large': index % 7 === 0, 'medium': index % 7 === 3 || index % 7 === 6 }"
+            >
+              <div class="photo-container">
+                <img
+                  :src="photo.image"
+                  :alt="photo.title"
+                  class="photo-image"
+                  @load="onImageLoad(photo.id)"
+                />
+                <div class="photo-overlay">
+                  <div class="photo-info">
+                    <h3 class="photo-title">{{ photo.title }}</h3>
+                    <p class="photo-description">{{ photo.description }}</p>
+                    <div class="photo-meta">
+                      <span class="photo-likes">
+                        <v-icon size="small">mdi-heart</v-icon>
+                        {{ photo.likes }}
+                      </span>
+                      <span class="photo-views">
+                        <v-icon size="small">mdi-eye</v-icon>
+                        {{ photo.views }}
+                  </span>
+                </div>
+                  </div>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- 搜索结果 -->
-        <div v-else class="search-results">
-          <!-- 搜索结果头部 -->
-          <div class="results-header">
-            <div class="results-info">
-              <h2 class="results-title">
-                搜索结果
-                <span class="results-count">({{ totalResults }} 件商品)</span>
-              </h2>
-              <p class="results-query">
-                关键词: <strong>"{{ searchQuery }}"</strong>
-              </p>
-            </div>
-          </div>
-          
-          <!-- 加载状态 -->
-          <div v-if="loading" class="loading-container">
-            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
-            <p class="loading-text">正在搜索中...</p>
-          </div>
-          
-          <!-- 无结果 -->
-          <div v-else-if="searchResults.length === 0" class="no-results">
-            <v-icon size="64" color="grey">mdi-magnify-remove</v-icon>
-            <h3 class="no-results-title">未找到相关商品</h3>
-            <p class="no-results-description">
-              尝试使用不同的关键词或调整筛选条件
-            </p>
+          <!-- 加载更多按钮 -->
+          <div class="load-more-container">
             <v-btn
-              color="primary"
               variant="outlined"
-              @click="clearFilters"
-              class="no-results-btn"
+              @click="loadMorePhotos"
+              :loading="loadingMore"
+              class="load-more-btn"
             >
-              清空筛选条件
+              <v-icon left>mdi-plus</v-icon>
+              加载更多
             </v-btn>
-          </div>
-          
-          <!-- 搜索结果列表 -->
-          <div v-else class="results-grid">
-            <div
-              v-for="product in searchResults"
-              :key="product.id"
-              class="product-card"
-              @click="goToProduct(product.id)"
-            >
-              <div class="product-image">
-                <img
-                  v-if="product?.customModel?.thumbnail"
-                  :src="product.customModel.thumbnail"
-                  :alt="product.name"
-                  class="product-img"
-                  @load="onImageLoad(product.id)"
-                  @error="onImageError(product.id)"
-                />
-                <div v-else class="product-placeholder">
-                  <v-icon>mdi-image</v-icon>
-                </div>
-                
-                <!-- 商品标签 -->
-                <div v-if="product.tag" class="product-tag">
-                  {{ product.tag }}
-                </div>
-              </div>
-              
-              <div class="product-info">
-                <h3 class="product-title">{{ product.name }}</h3>
-                <p class="product-description">{{ product.description }}</p>
-                
-                <div class="product-meta">
-                  <div class="product-price">
-                    <span class="current-price">¥{{ product.price || '待定' }}</span>
-                    <span v-if="product.originalPrice && product.originalPrice > product.price" class="original-price">
-                      ¥{{ product.originalPrice }}
-                    </span>
-                  </div>
-                  
-                  <div class="product-stats">
-                    <div class="stat-item">
-                      <v-icon size="small">mdi-heart</v-icon>
-                      <span>{{ product.likes || 0 }}</span>
-                    </div>
-                    <div class="stat-item">
-                      <v-icon size="small">mdi-star</v-icon>
-                      <span>{{ product.rating || 0 }}</span>
-                    </div>
-                    <div class="stat-item">
-                      <v-icon size="small">mdi-shopping</v-icon>
-                      <span>{{ product.sales || 0 }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- 分页 -->
-          <div v-if="totalResults > pageSize" class="pagination-container">
-            <v-pagination
-              v-model="currentPage"
-              :length="Math.ceil(totalResults / pageSize)"
-              :total-visible="7"
-              color="primary"
-              class="pagination"
-            />
-          </div>
         </div>
       </div>
+    </div>
     </main>
-  </div>
+          </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+// 全局滚动条样式
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #404040 #2a2a2a;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+  
+  &:hover {
+    background: #555555;
+  }
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: #666666;
+}
+
+*::-webkit-scrollbar-corner {
+  background: #2a2a2a;
+}
+
 // Freepik 深色主题布局
 .search-page {
   min-height: 100vh;
@@ -777,23 +731,23 @@ const handleBlur = () => {
 }
 
 .sidebar-search {
-  position: relative;
+    position: relative;
   padding: 1.5rem 1rem;
   border-bottom: 1px solid #404040;
-  
-  .search-input {
-    .v-field {
+
+.search-input {
+  .v-field {
       background: #1a1a1a;
       border: 1px solid #404040;
-      border-radius: 8px;
+    border-radius: 8px;
       color: #ffffff;
-      transition: all 0.3s ease;
-      
-      &:hover {
+    transition: all 0.3s ease;
+    
+    &:hover {
         border-color: #666666;
-      }
-      
-      &.v-field--focused {
+    }
+    
+    &.v-field--focused {
         border-color: #ff6b35;
         box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
       }
@@ -804,18 +758,18 @@ const handleBlur = () => {
       
       &::placeholder {
         color: #999999;
-      }
     }
   }
-  
-  .search-btn {
+}
+
+.search-btn {
     background: #ff6b35;
     color: #ffffff;
     border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    
-    &:hover:not(:disabled) {
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
       background: #e55a2b;
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
@@ -882,50 +836,6 @@ const handleBlur = () => {
   }
 }
 
-.sidebar-nav {
-  flex: 1;
-  padding: 1.5rem 1rem;
-  overflow: hidden;
-}
-
-.nav-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  color: #cccccc;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  font-size: 0.95rem;
-  
-  &:hover {
-    background: rgba(255, 107, 53, 0.1);
-    color: #ff6b35;
-  }
-  
-  &.router-link-active {
-    background: rgba(255, 107, 53, 0.15);
-    color: #ff6b35;
-    border-left: 3px solid #ff6b35;
-  }
-  
-  .v-icon {
-    font-size: 1.25rem;
-    min-width: 24px;
-  }
-  
-  span {
-    font-weight: 500;
-  }
-}
 
 // 主内容区域
 .main-content {
@@ -951,78 +861,25 @@ const handleBlur = () => {
   padding: 0 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1rem;
   height: 72px;
 }
 
-.header-nav {
-  display: flex;
-  gap: 2.5rem;
-  
-  .nav-link {
-    color: #cccccc;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.75rem 0;
-    position: relative;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    
-    &:hover {
-      color: #ff6b35;
-    }
-    
-    &.router-link-active {
-      color: #ff6b35;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #ff6b35;
-        border-radius: 1px;
-      }
-    }
-  }
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
 }
 
-.header-actions {
-  .action-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #cccccc;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background: #1a1a1a;
-    border: 1px solid #404040;
-    
-    &:hover {
-      color: #ff6b35;
-      background: #2a2a2a;
-      border-color: #ff6b35;
-    }
-    
-    .v-icon {
-      font-size: 1.25rem;
-    }
-  }
-}
 
 // 内容区域
 .content-area {
   flex: 1;
   padding: 2rem;
   background: #1a1a1a;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .search-placeholder {
@@ -1046,45 +903,162 @@ const handleBlur = () => {
   font-size: 2rem;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 1rem;
-}
-
+    margin-bottom: 1rem;
+  }
+  
 .placeholder-description {
   font-size: 1.125rem;
   color: #cccccc;
   margin-bottom: 2rem;
-  line-height: 1.6;
+    line-height: 1.6;
 }
 
-.hot-searches {
-  .hot-searches-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 1rem;
+
+// 照片墙样式
+.photo-wall {
+  .photo-wall-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    
+    .photo-wall-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .photo-wall-subtitle {
+    font-size: 1.125rem;
+      color: #cccccc;
+  margin: 0;
+    }
   }
-}
-
-.hot-searches-list {
+  
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    
+    .photo-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #2a2a2a;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        
+        .photo-overlay {
+          opacity: 1;
+        }
+      }
+      
+      &.large {
+        grid-row: span 2;
+      }
+      
+      &.medium {
+        grid-row: span 1.5;
+      }
+      
+      .photo-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+        
+        .photo-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+        
+        .photo-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            transparent 50%,
+            rgba(0, 0, 0, 0.8) 100%
+          );
+          opacity: 0;
+          transition: opacity 0.3s ease;
+    display: flex;
+          align-items: flex-end;
+          padding: 1.5rem;
+          
+          .photo-info {
+            color: #ffffff;
+            
+            .photo-title {
+      font-size: 1.25rem;
+              font-weight: 600;
+              margin-bottom: 0.5rem;
+              color: #ffffff;
+            }
+            
+            .photo-description {
+    font-size: 0.875rem;
+              color: #cccccc;
+              margin-bottom: 1rem;
+              line-height: 1.4;
+            }
+            
+            .photo-meta {
+              display: flex;
+              gap: 1rem;
+              
+              .photo-likes,
+              .photo-views {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-}
-
-.hot-search-chip {
-  cursor: pointer;
+  align-items: center;
+                gap: 0.25rem;
+                font-size: 0.875rem;
+                color: #cccccc;
+                
+                .v-icon {
+                  color: #ff6b35;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .load-more-container {
+    text-align: center;
+    margin-top: 2rem;
+    
+    .load-more-btn {
+      background: #2a2a2a;
+      border: 1px solid #404040;
+      color: #ffffff;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
   transition: all 0.3s ease;
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: #ff6b35;
+        border-color: #ff6b35;
+        color: #ffffff;
   }
 }
-
-.search-count {
-  font-size: 0.75rem;
-  opacity: 0.8;
+  }
 }
 
 .search-results {
@@ -1379,18 +1353,6 @@ const handleBlur = () => {
     padding: 1rem;
   }
   
-  .sidebar-nav {
-    padding: 1rem;
-  }
-  
-  .nav-item {
-    padding: 0.875rem 1rem;
-    font-size: 0.9rem;
-    
-    .v-icon {
-      font-size: 1.125rem;
-    }
-  }
   
   .main-content {
     margin-left: 0;
@@ -1401,24 +1363,57 @@ const handleBlur = () => {
     height: 64px;
   }
   
-  .header-nav {
-    display: none;
-  }
-  
-  .header-actions {
-    .action-link {
-      padding: 0.5rem;
-      background: #1a1a1a;
-      border: 1px solid #404040;
-      
-      span {
-        display: none;
-      }
-    }
-  }
   
   .content-area {
     padding: 1rem;
+  }
+  
+  .photo-wall {
+    .photo-wall-header {
+      margin-bottom: 2rem;
+      
+      .photo-wall-title {
+        font-size: 2rem;
+      }
+      
+      .photo-wall-subtitle {
+        font-size: 1rem;
+      }
+    }
+    
+    .photo-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+      
+      .photo-item {
+        .photo-container {
+          min-height: 250px;
+        }
+        
+        .photo-overlay {
+          padding: 1rem;
+          
+          .photo-info {
+            .photo-title {
+              font-size: 1.125rem;
+            }
+            
+            .photo-description {
+              font-size: 0.8rem;
+            }
+            
+            .photo-meta {
+              gap: 0.75rem;
+              
+              .photo-likes,
+              .photo-views {
+                font-size: 0.8rem;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   
   .results-grid {
@@ -1443,13 +1438,6 @@ const handleBlur = () => {
     gap: 1rem;
   }
   
-  .hot-searches-list {
-    gap: 0.5rem;
-  }
-  
-  .hot-search-chip {
-    font-size: 0.75rem;
-  }
   
   .product-card {
     border-radius: 8px;
