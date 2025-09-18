@@ -485,7 +485,7 @@ const handleBlur = () => {
             icon
               size="small"
             >
-            <v-icon>{{ sidebarCollapsed ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
+            <v-icon>{{ sidebarCollapsed ? 'mdi-dock-right' : 'mdi-dock-left' }}</v-icon>
           </v-btn>
         </div>
       </div>
@@ -632,18 +632,18 @@ const handleBlur = () => {
   background: #2a2a2a;
   border-right: 1px solid #404040;
   position: fixed;
-        left: 0;
+  left: 0;
   top: 0;
   height: 100vh;
   overflow: hidden;
   z-index: 1000;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-    display: flex;
+  display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.collapsed {
-    width: 60px;
+    width: 80px;
   }
 }
 
@@ -656,21 +656,25 @@ const handleBlur = () => {
 }
 
 .sidebar-toggle {
-        position: absolute;
+  position: absolute;
   top: 1rem;
   right: 0.75rem;
   z-index: 10;
   
   .toggle-btn {
     color: #cccccc;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     background: rgba(42, 42, 42, 0.9);
-    border: 1px solid #404040;
+    transform: scale(1);
     
     &:hover {
-      color: #ff6b35;
-      background: rgba(255, 107, 53, 0.2);
-      border-color: #ff6b35;
+      color: #2196f3;
+      background: rgba(33, 150, 243, 0.2);
+      transform: scale(1.05);
+    }
+    
+    &:active {
+      transform: scale(0.95);
     }
   }
 }
@@ -686,10 +690,10 @@ const handleBlur = () => {
   flex-direction: column;
   min-height: 100vh;
   background: #1a1a1a;
-  transition: margin-left 0.3s ease;
+  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.sidebar-collapsed {
-    margin-left: 60px;
+    margin-left: 80px;
   }
 }
 
@@ -1145,7 +1149,7 @@ const handleBlur = () => {
     width: 220px;
     
     &.collapsed {
-      width: 60px;
+      width: 80px;
     }
   }
   
@@ -1153,7 +1157,7 @@ const handleBlur = () => {
     margin-left: 220px;
     
     &.sidebar-collapsed {
-      margin-left: 60px;
+      margin-left: 80px;
     }
   }
   
@@ -1184,7 +1188,7 @@ const handleBlur = () => {
   
   .sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease, width 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     width: 240px;
     
     &.mobile-open {
@@ -1192,7 +1196,7 @@ const handleBlur = () => {
     }
     
     &.collapsed {
-      width: 60px;
+      width: 80px;
     }
   }
   
