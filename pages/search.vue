@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
+ * @LastEditTime: 2025-09-18 21:32:42
  * @FilePath: /yishe-nuxt/pages/search.vue
  * @Description: 搜索页面 - 智能搜索和筛选
 -->
@@ -51,21 +51,17 @@ const showSuggestions = ref(false)
 // 筛选条件
 const filters = ref({
   sort: 'latest',
-  price: '',
-  gender: '',
-  ageGroup: '',
-  style: '',
-  season: '',
-  material: '',
-  color: '',
-  size: '',
-  occasion: '',
-  brand: '',
-  discount: ''
+  priceMin: null,
+  priceMax: null,
+  styles: [] as string[],
+  colors: [] as string[]
 })
 
 const showMobileSidebar = ref(false)
 const sidebarCollapsed = ref(false)
+
+// 过滤菜单状态
+const showFilterMenu = ref(false)
 
 // 照片墙数据
 const photoWallData = ref<any[]>([])
@@ -74,11 +70,11 @@ const loadingMore = ref(false)
 // 筛选选项
 const filterOptions = {
   sort: [
-    { value: 'latest', label: '最新上架' },
-    { value: 'popular', label: '最受欢迎' },
-    { value: 'rating', label: '好评如潮' },
-    { value: 'price_asc', label: '价格从低到高' },
-    { value: 'price_desc', label: '价格从高到低' }
+    { value: 'latest', text: '最新上架' },
+    { value: 'popular', text: '最受欢迎' },
+    { value: 'rating', text: '好评如潮' },
+    { value: 'price_asc', text: '价格从低到高' },
+    { value: 'price_desc', text: '价格从高到低' }
   ],
   price: [
     { value: '0-100', label: '0-100元' },
@@ -98,14 +94,14 @@ const filterOptions = {
     { value: 'senior', label: '老年(40+)' }
   ],
   style: [
-    { value: 'casual', label: '休闲' },
-    { value: 'formal', label: '正装' },
-    { value: 'sports', label: '运动' },
-    { value: 'vintage', label: '复古' },
-    { value: 'street', label: '街头' },
-    { value: 'business', label: '商务' },
-    { value: 'sweet', label: '甜美' },
-    { value: 'cool', label: '酷炫' }
+    { value: 'casual', text: '休闲' },
+    { value: 'formal', text: '正装' },
+    { value: 'sports', text: '运动' },
+    { value: 'vintage', text: '复古' },
+    { value: 'street', text: '街头' },
+    { value: 'business', text: '商务' },
+    { value: 'sweet', text: '甜美' },
+    { value: 'cool', text: '酷炫' }
   ],
   season: [
     { value: 'spring', label: '春季' },
@@ -159,6 +155,22 @@ const filterOptions = {
     { value: 'discount_50', label: '5折以下' }
   ]
 }
+
+// 颜色选项
+const colorOptions = [
+  { value: '#000000', text: '黑色' },
+  { value: '#FFFFFF', text: '白色' },
+  { value: '#FF0000', text: '红色' },
+  { value: '#0000FF', text: '蓝色' },
+  { value: '#00FF00', text: '绿色' },
+  { value: '#FFFF00', text: '黄色' },
+  { value: '#FF69B4', text: '粉色' },
+  { value: '#800080', text: '紫色' },
+  { value: '#FFA500', text: '橙色' },
+  { value: '#8B4513', text: '棕色' },
+  { value: '#808080', text: '灰色' },
+  { value: '#000080', text: '海军蓝' }
+]
 
 
 // 初始化照片墙数据
@@ -462,6 +474,116 @@ const handleBlur = () => {
   }, 200)
 }
 
+// 切换过滤菜单
+const toggleFilterMenu = () => {
+  showFilterMenu.value = !showFilterMenu.value
+}
+
+// 清空所有筛选条件
+const clearFilters = () => {
+  filters.value = {
+    sort: 'latest',
+    priceMin: null,
+    priceMax: null,
+    styles: [],
+    colors: []
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
+}
+
+// 切换风格选择
+const toggleStyle = (styleValue: string) => {
+  const index = filters.value.styles.indexOf(styleValue)
+  if (index > -1) {
+    filters.value.styles.splice(index, 1)
+  } else {
+    filters.value.styles.push(styleValue)
+  }
+}
+
+// 切换颜色选择
+const toggleColor = (colorValue: string) => {
+  const index = filters.value.colors.indexOf(colorValue)
+  if (index > -1) {
+    filters.value.colors.splice(index, 1)
+  } else {
+    filters.value.colors.push(colorValue)
+  }
+}
+
+// 移除单个筛选条件
+const removeFilter = (filterKey: string) => {
+  if (filterKey === 'sort') {
+    filters.value.sort = 'latest'
+  } else if (filterKey === 'priceMin') {
+    filters.value.priceMin = null
+  } else if (filterKey === 'priceMax') {
+    filters.value.priceMax = null
+  } else if (filterKey === 'styles') {
+    filters.value.styles = []
+  } else if (filterKey === 'colors') {
+    filters.value.colors = []
+  }
+  
+  if (hasSearched.value) {
+    performSearch()
+  }
+}
+
+// 计算活跃的筛选条件
+const activeFilters = computed(() => {
+  const active: any = {}
+  
+  if (filters.value.sort && filters.value.sort !== 'latest') {
+    const sortOption = filterOptions.sort.find(s => s.value === filters.value.sort)
+    if (sortOption) {
+      active.sort = { label: '排序', value: sortOption.text }
+    }
+  }
+  
+  if (filters.value.priceMin || filters.value.priceMax) {
+    const min = filters.value.priceMin || 0
+    const max = filters.value.priceMax || '∞'
+    active.price = { label: '价格', value: `${min}-${max}` }
+  }
+  
+  if (filters.value.styles.length > 0) {
+    const styleTexts = filters.value.styles.map(styleValue => {
+      const styleOption = filterOptions.style.find(s => s.value === styleValue)
+      return styleOption ? styleOption.text : styleValue
+    })
+    active.styles = { label: '风格', value: styleTexts.join(', ') }
+  }
+  
+  if (filters.value.colors.length > 0) {
+    const colorTexts = filters.value.colors.map(colorValue => {
+      const colorOption = colorOptions.find(c => c.value === colorValue)
+      return colorOption ? colorOption.text : colorValue
+    })
+    active.colors = { label: '颜色', value: colorTexts.join(', ') }
+  }
+  
+  return active
+})
+
+// 计算活跃筛选条件数量
+const activeFiltersCount = computed(() => {
+  return Object.keys(activeFilters.value).length
+})
+
+// 应用筛选条件
+const applyFilters = () => {
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
+  // 关闭过滤菜单
+  showFilterMenu.value = false
+}
+
 </script>
 
 <template>
@@ -488,11 +610,93 @@ const handleBlur = () => {
             <v-icon>{{ sidebarCollapsed ? 'mdi-dock-right' : 'mdi-dock-left' }}</v-icon>
           </v-btn>
         </div>
+
+        <!-- 导航菜单 -->
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': true }"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-magnify-expand</v-icon>
+              <template v-else>
+                <v-icon left>mdi-magnify-expand</v-icon>
+                <span>智能搜索</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-tune</v-icon>
+              <template v-else>
+                <v-icon left>mdi-tune</v-icon>
+                <span>高级筛选</span>
+              </template>
+            </v-btn>
+          </div>
+
+          <div class="nav-section">
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-tshirt-crew-outline</v-icon>
+                <span>服装设计</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-palette-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-palette-outline</v-icon>
+                <span>色彩搭配</span>
+              </template>
+            </v-btn>
+          </div>
+
+          <div class="nav-section">
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-heart-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-heart-outline</v-icon>
+                <span>我的收藏</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              @click="() => {}"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-clock-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-clock-outline</v-icon>
+                <span>搜索历史</span>
+              </template>
+            </v-btn>
+          </div>
+        </nav>
       </div>
     </aside>
 
     <!-- 主内容区域 -->
-    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed, 'filter-expanded': showFilterMenu }">
       <!-- 顶部固定导航栏 -->
       <header class="top-header">
         <div class="header-content">
@@ -506,10 +710,179 @@ const handleBlur = () => {
             <v-icon>mdi-menu</v-icon>
           </v-btn>
           
-          <!-- 页面标题 -->
-          <h1 class="page-title">搜索</h1>
+          <!-- 搜索和筛选区域 -->
+          <div class="search-filter-container">
+            <!-- 筛选按钮 -->
+            <v-btn
+              variant="text"
+              @click="toggleFilterMenu"
+              class="filter-toggle-btn"
+              :class="{ 'active': showFilterMenu }"
+              icon
+              size="small"
+            >
+              <v-icon>{{ showFilterMenu ? 'mdi-tune' : 'mdi-tune-variant' }}</v-icon>
+            </v-btn>
+            
+            <!-- 搜索框 -->
+            <div class="search-container">
+              <div class="search-box">
+                <v-icon class="search-icon">mdi-magnify</v-icon>
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="搜索设计作品..."
+                  class="search-input"
+                  @keyup.enter="performSearch"
+                  @focus="showSuggestions = true"
+                  @blur="handleBlur"
+                />
+                <v-btn
+                  v-if="searchQuery"
+                  variant="text"
+                  @click="clearSearch"
+                  class="clear-btn"
+                  icon
+                  size="small"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
               </div>
+              
+              <!-- 搜索建议 -->
+              <div v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions">
+                <div
+                  v-for="(suggestion, index) in filteredSuggestions"
+                  :key="index"
+                  class="suggestion-item"
+                  @click="selectSuggestion(suggestion)"
+                >
+                  <v-icon class="suggestion-icon">mdi-magnify</v-icon>
+                  <span class="suggestion-text">{{ suggestion }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </header>
+
+      <!-- 过滤菜单 -->
+      <div class="filter-section">
+        <div v-show="showFilterMenu" class="filter-content">
+          <!-- 筛选标签显示 -->
+          <div class="filter-chips" v-if="activeFiltersCount > 0">
+            <v-chip
+              v-for="(filter, key) in activeFilters"
+              :key="key"
+              size="small"
+              closable
+              @click:close="removeFilter(key)"
+              class="filter-chip"
+            >
+              {{ filter.label }}: {{ filter.value }}
+            </v-chip>
+          </div>
+          
+          <div class="filter-row-single">
+            <!-- 排序方式 -->
+            <div class="filter-group">
+              <label class="filter-label">排序</label>
+              <v-select
+                v-model="filters.sort"
+                :items="filterOptions.sort"
+                variant="outlined"
+                density="compact"
+                hide-details
+                placeholder="选择排序方式"
+                class="filter-select"
+              />
+            </div>
+            
+            <!-- 价格范围输入框 -->
+            <div class="filter-group filter-group-range">
+              <label class="filter-label">价格范围</label>
+              <div class="price-range-container">
+                <v-text-field
+                  v-model.number="filters.priceMin"
+                  type="number"
+                  placeholder="最低价"
+                  class="price-input"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                />
+                <span class="price-separator">-</span>
+                <v-text-field
+                  v-model.number="filters.priceMax"
+                  type="number"
+                  placeholder="最高价"
+                  class="price-input"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                />
+              </div>
+            </div>
+            
+            <!-- 风格标签选择 -->
+            <div class="filter-group filter-group-chips">
+              <label class="filter-label">风格</label>
+              <div class="style-chips">
+                <v-chip
+                  v-for="style in filterOptions.style"
+                  :key="style.value"
+                  :class="{ 'chip-selected': filters.styles.includes(style.value) }"
+                  @click="toggleStyle(style.value)"
+                  class="style-chip"
+                  size="small"
+                  variant="outlined"
+                >
+                  {{ style.text }}
+                </v-chip>
+              </div>
+            </div>
+            
+            <!-- 颜色选择器 -->
+            <div class="filter-group filter-group-colors">
+              <label class="filter-label">颜色</label>
+              <div class="color-picker">
+                <div
+                  v-for="color in colorOptions"
+                  :key="color.value"
+                  :class="{ 'color-selected': filters.colors.includes(color.value) }"
+                  @click="toggleColor(color.value)"
+                  class="color-option"
+                  :style="{ backgroundColor: color.value }"
+                  :title="color.text"
+                />
+              </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="filter-actions-inline">
+              <v-btn
+                variant="outlined"
+                @click="clearFilters"
+                class="filter-clear-btn"
+                size="small"
+                icon
+              >
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+              <v-btn
+                variant="flat"
+                @click="applyFilters"
+                class="filter-apply-btn"
+                size="small"
+                color="primary"
+                icon
+              >
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- 主要内容区域 -->
       <div class="content-area">
@@ -626,17 +999,17 @@ const handleBlur = () => {
   display: flex;
 }
 
-// 左侧固定侧边栏 - Freepik 深色风格
+// 左侧固定侧边栏 - 深色风格
 .sidebar {
   width: 240px;
-  background: #2a2a2a;
+  background: #1C1C1C;
   border-right: 1px solid #404040;
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 1002; // 高于固定头部，确保不被遮挡
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -660,21 +1033,153 @@ const handleBlur = () => {
   top: 1rem;
   right: 0.75rem;
   z-index: 10;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   .toggle-btn {
-    color: #cccccc;
+    color: #e0e0e0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(42, 42, 42, 0.9);
+    background: rgba(28, 28, 28, 0.9);
     transform: scale(1);
     
     &:hover {
-      color: #2196f3;
-      background: rgba(33, 150, 243, 0.2);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
       transform: scale(1.05);
     }
     
     &:active {
       transform: scale(0.95);
+    }
+  }
+}
+
+// 折叠状态下的折叠按钮居中
+.sidebar.collapsed {
+  .sidebar-toggle {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+// 侧边栏导航菜单
+.sidebar-nav {
+  padding: 3.5rem 0.5rem 1.5rem 0.5rem; // 增加左右padding，为滚动条留出空间
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  .nav-section {
+    margin-bottom: 1.5rem;
+    
+    .nav-btn {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0.625rem 0.875rem;
+      margin: 0.125rem 0;
+      color: #e0e0e0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      text-transform: none;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      min-height: 36px;
+      background: transparent;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      
+      &:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        transform: translateX(2px);
+      }
+      
+      &.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        font-weight: 600;
+        transform: translateX(4px);
+      }
+      
+      .v-icon {
+        margin-right: 0.625rem;
+        font-size: 1.2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 4px;
+        padding: 2px;
+      }
+      
+      span {
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: inherit;
+      }
+    }
+  }
+}
+
+// 折叠状态下的导航样式
+.sidebar.collapsed {
+  .sidebar-nav {
+    padding: 3.5rem 0 1rem;
+    
+    .nav-section {
+      margin-bottom: 1rem;
+      
+      .nav-btn {
+        padding: 0.75rem;
+        justify-content: center;
+        align-items: center;
+        margin: 0.25rem 0.5rem;
+        width: calc(100% - 1rem);
+        background: transparent;
+        min-height: 44px;
+        border-radius: 8px;
+        display: flex !important;
+        flex-direction: row;
+        text-align: center;
+        
+        .v-icon {
+          font-size: 1.4rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          margin: 0 !important;
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          padding: 4px;
+        }
+        
+        &:hover {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.1);
+          transform: scale(1.05);
+        }
+        
+        &.active {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.15);
+          font-weight: 600;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 1px;
+          }
+        }
+      }
     }
   }
 }
@@ -686,25 +1191,48 @@ const handleBlur = () => {
 .main-content {
   flex: 1;
   margin-left: 240px;
+  margin-top: 56px; // 为固定头部留出空间
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px); // 减去头部高度
   background: #1a1a1a;
   transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.sidebar-collapsed {
     margin-left: 80px;
   }
+  
+  // 当过滤菜单展开时，为过滤菜单留出空间
+  &.filter-expanded {
+    margin-top: 100px; // 为过滤菜单留出额外空间
+    min-height: calc(100vh - 100px);
+  }
 }
 
-// 顶部固定导航栏 - Freepik 风格
+// 顶部固定导航栏 - 完全固定
 .top-header {
-  background: #2a2a2a;
-  border-bottom: 1px solid #404040;
-  position: sticky;
+  background: #1a1a1a;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 240px; // 从左侧菜单右侧开始
+  right: 0;
+  z-index: 1001;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  contain: layout style paint;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// 当侧边栏折叠时调整头部位置
+.sidebar-collapsed .top-header {
+  left: 80px;
 }
 
 .header-content {
@@ -713,20 +1241,422 @@ const handleBlur = () => {
   align-items: center;
   gap: 1rem;
   height: 56px;
+  position: relative;
 }
 
 .page-title {
-    font-size: 1.25rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
+  flex-shrink: 0;
 }
 
+// 搜索和筛选容器
+.search-filter-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+// 头部筛选按钮
+.search-filter-container .filter-toggle-btn {
+  color: #cccccc;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  
+  &.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+// 搜索容器
+.search-container {
+  flex: 1;
+  position: relative;
+}
+
+// 搜索框 - 背景色风格
+.search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  height: 40px;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &:focus-within {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.search-icon {
+  color: #999999;
+  margin-right: 0.625rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  
+  .search-box:hover & {
+    color: #cccccc;
+  }
+  
+  .search-box:focus-within & {
+    color: #ffffff;
+  }
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  
+  &::placeholder {
+    color: #888888;
+    font-weight: 400;
+    transition: color 0.3s ease;
+  }
+  
+  &:focus {
+    color: #ffffff;
+    
+    &::placeholder {
+      color: #aaaaaa;
+    }
+  }
+}
+
+.clear-btn {
+  color: #999999;
+  margin-left: 0.375rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  padding: 0.125rem;
+  border-radius: 50%;
+  min-width: 24px;
+  height: 24px;
+  
+  &:hover {
+    color: #ffffff;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+// 搜索建议
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(42, 42, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1001; // 确保在固定头部之上
+  overflow: hidden;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.suggestion-icon {
+  color: #888888;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.suggestion-text {
+  color: #cccccc;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+
+// 过滤菜单样式
+.filter-section {
+  background: #1a1a1a;
+  position: fixed;
+  top: 56px; // 在头部下方
+  left: 240px; // 从左侧菜单右侧开始
+  right: 0;
+  z-index: 1000;
+  margin-top: -1px; // 与头部重叠1px，消除间隙
+  
+  // 当侧边栏折叠时调整位置
+  .sidebar-collapsed & {
+    left: 80px;
+  }
+}
+
+
+.filter-content {
+  padding: 0.75rem; // 增加所有方向的内边距
+  background: #1a1a1a;
+}
+
+.filter-row-single {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0.5rem 0.5rem 1rem 0.5rem; // 增加上下左右padding，为滚动条留出空间
+  
+  // 自定义滚动条
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.filter-group {
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #cccccc;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.filter-select {
+  .v-field {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    &.v-field--focused {
+      border-color: #ffffff;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  .v-field__input {
+    color: #ffffff;
+    
+    &::placeholder {
+      color: #888888;
+    }
+  }
+  
+  .v-field__append-inner {
+    color: #cccccc;
+  }
+}
+
+.filter-actions-inline {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+// 筛选标签显示
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem; // 增加下边距
+  padding: 0.75rem 0 1rem 0; // 增加上下内边距
+}
+
+.filter-chip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #e0e0e0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+}
+
+// 价格范围容器
+.filter-group-range {
+  min-width: 200px;
+}
+
+.price-range-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-input {
+  flex: 1;
+  min-width: 80px;
+}
+
+.price-separator {
+  color: #e0e0e0;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+// 风格标签选择
+.filter-group-chips {
+  min-width: 300px;
+}
+
+.style-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 60px;
+  overflow-y: auto;
+  padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
+}
+
+.style-chip {
+  background: transparent !important;
+  color: #e0e0e0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+  
+  &.chip-selected {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+  }
+}
+
+// 颜色选择器
+.filter-group-colors {
+  min-width: 200px;
+}
+
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 60px;
+  overflow-y: auto;
+  padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  &:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  &.color-selected {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: bold;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+.filter-clear-btn {
+  color: #cccccc;
+  border-color: #404040;
+  min-width: 36px;
+  height: 36px;
+  
+  &:hover {
+    color: #ffffff;
+    border-color: #666666;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.filter-apply-btn {
+  background: #ff6b35;
+  color: #ffffff;
+  min-width: 36px;
+  height: 36px;
+  
+  &:hover {
+    background: #e55a2b;
+  }
+}
 
 // 内容区域
 .content-area {
   flex: 1;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 2rem 1.5rem; // 增加底部padding，为滚动条留出更多空间
   background: #1a1a1a;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1167,7 +2097,24 @@ const handleBlur = () => {
   
   
   .sidebar-nav {
-    padding: 1rem;
+    padding: 3.5rem 0 1rem;
+    
+    .nav-section {
+      margin-bottom: 1.25rem;
+      
+      .nav-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        min-height: 40px;
+        
+        &:hover {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 8px;
+          transform: translateX(2px);
+        }
+      }
+    }
   }
 }
 
@@ -1200,15 +2147,91 @@ const handleBlur = () => {
     }
   }
   
+  // 移动端头部从左侧开始
+  .top-header {
+    left: 0;
+    
+    .sidebar-collapsed & {
+      left: 0;
+    }
+  }
   
+  // 移动端过滤菜单
+  .filter-section {
+    left: 0; // 移动端从左侧开始
+    top: 64px; // 移动端头部高度
+    
+    .sidebar-collapsed & {
+      left: 0;
+    }
+    
+    .filter-content {
+      padding: 0.75rem 1.25rem 1.5rem 1.25rem; // 移动端也增加padding
+    }
+    
+    .filter-row-single {
+      gap: 0.75rem;
+      
+      .filter-group {
+        min-width: 120px;
+      }
+    }
+  }
   
+  // 移动端主内容区域
   .main-content {
     margin-left: 0;
+    margin-top: 64px; // 移动端头部高度
+    min-height: calc(100vh - 64px);
+    
+    &.filter-expanded {
+      margin-top: 120px; // 移动端过滤菜单空间
+      min-height: calc(100vh - 120px);
+    }
   }
   
   .header-content {
     padding: 0 1rem;
     height: 64px;
+    gap: 0.75rem;
+  }
+  
+  .top-header {
+    height: 64px;
+  }
+  
+  .main-content {
+    margin-top: 64px; // 移动端头部高度
+    min-height: calc(100vh - 64px);
+  }
+  
+  .page-title {
+    font-size: 1.125rem;
+  }
+  
+  .search-container {
+    max-width: none;
+  }
+  
+  .search-box {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .search-input {
+    font-size: 0.85rem;
+  }
+  
+  .search-suggestions {
+    border-radius: 8px;
+    margin-top: 0.25rem;
+  }
+  
+  .suggestion-item {
+    padding: 0.625rem 0.75rem;
+  }
+  
+  .suggestion-text {
+    font-size: 0.85rem;
   }
   
   
