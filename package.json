@@ -23,7 +23,6 @@
     "app.config.ts",
     "app.vue",
     "nuxt.config.ts",
-    "nuxt.schema.ts",
     "tailwind.config.ts",
     "tsconfig.json"
   ],

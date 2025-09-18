@@ -189,10 +189,10 @@ const performSearch = () => {
     // 设置全局搜索关键词
     searchStore.setSearchKeyword(searchQuery.value.trim());
     
-    // 跳转到商品列表页
+    // 跳转到搜索页面
     router.push({
-      path: '/products',
-      query: { search: searchQuery.value.trim() }
+      path: '/search',
+      query: { q: searchQuery.value.trim() }
     });
     
     // 关闭搜索框
