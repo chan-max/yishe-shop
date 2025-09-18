@@ -10,7 +10,7 @@
 // import { useSearchStore } from '~/stores/use-search'
 
 const { awesome } = useAppConfig()
-definePageMeta({ layout: false })
+// definePageMeta({ layout: false })
 
 // 获取路由
 const route = useRoute()
@@ -65,6 +65,7 @@ const filters = ref({
 })
 
 const showMobileSidebar = ref(false)
+const sidebarCollapsed = ref(false)
 
 // 照片墙数据
 const photoWallData = ref<any[]>([])
@@ -289,6 +290,11 @@ const loadMorePhotos = async () => {
   loadingMore.value = false
 }
 
+// 切换侧边栏折叠状态
+const toggleSidebar = () => {
+  sidebarCollapsed.value = !sidebarCollapsed.value
+}
+
 // 初始化搜索查询
 onMounted(() => {
   // 初始化照片墙
@@ -468,79 +474,25 @@ const handleBlur = () => {
     ></div>
 
     <!-- 左侧固定侧边栏 -->
-    <aside class="sidebar" :class="{ 'mobile-open': showMobileSidebar }">
+    <aside class="sidebar" :class="{ 'mobile-open': showMobileSidebar, 'collapsed': sidebarCollapsed }">
       <div class="sidebar-content">
-        <!-- Logo -->
-        <div class="sidebar-brand">
-          <NuxtLink to="/" class="brand-link">
-            <img src="/logo.svg" alt="衣设服装设计" class="brand-logo" />
-            <span class="brand-text">衣设</span>
-          </NuxtLink>
+        <!-- 折叠按钮 - 右上角 -->
+        <div class="sidebar-toggle">
+          <v-btn
+            variant="text"
+            @click="toggleSidebar"
+            class="toggle-btn"
+            icon
+              size="small"
+            >
+            <v-icon>{{ sidebarCollapsed ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
+          </v-btn>
         </div>
-        
-        <!-- 搜索框 -->
-        <div class="sidebar-search">
-          <v-text-field
-            v-model="searchQuery"
-            placeholder="搜索服装设计..."
-            variant="outlined"
-            density="compact"
-            class="search-input"
-            prepend-inner-icon="mdi-magnify"
-            append-inner-icon="mdi-close"
-            hide-details
-            @keyup.enter="performSearch"
-            @click:append-inner="clearSearch"
-            @focus="showSuggestions = true"
-            @blur="handleBlur"
-          >
-            <template #append>
-              <v-btn
-                color="primary"
-                variant="elevated"
-                size="small"
-                @click="performSearch"
-                :loading="loading"
-                :disabled="!searchQuery.trim()"
-                class="search-btn"
-              >
-                搜索
-              </v-btn>
-            </template>
-          </v-text-field>
-          
-          <!-- 搜索建议下拉框 -->
-          <v-card
-            v-if="showSuggestions && filteredSuggestions.length > 0"
-            class="suggestions-dropdown"
-            elevation="4"
-          >
-            <!-- 搜索建议 -->
-            <div class="suggestions-section">
-              <div class="suggestions-title">
-                <v-icon size="small">mdi-lightbulb-outline</v-icon>
-                <span>搜索建议</span>
-              </div>
-              <div class="suggestions-list">
-                <div
-                  v-for="(suggestion, index) in filteredSuggestions"
-                  :key="index"
-                  class="suggestion-item"
-                  @click="selectSuggestion(suggestion)"
-                >
-                  <v-icon size="small">mdi-magnify</v-icon>
-                  <span>{{ suggestion }}</span>
-                </div>
-              </div>
-            </div>
-          </v-card>
-        </div>
-        
       </div>
     </aside>
 
     <!-- 主内容区域 -->
-    <main class="main-content">
+    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <!-- 顶部固定导航栏 -->
       <header class="top-header">
         <div class="header-content">
@@ -628,7 +580,7 @@ const handleBlur = () => {
       </div>
     </div>
     </main>
-          </div>
+  </div>
 </template>
 
 <style lang="scss">
@@ -652,8 +604,8 @@ const handleBlur = () => {
   background: #404040;
   border-radius: 2px;
   transition: background 0.3s ease;
-  
-  &:hover {
+    
+    &:hover {
     background: #555555;
   }
 }
@@ -676,18 +628,23 @@ const handleBlur = () => {
 
 // 左侧固定侧边栏 - Freepik 深色风格
 .sidebar {
-  width: 280px;
+  width: 240px;
   background: #2a2a2a;
   border-right: 1px solid #404040;
   position: fixed;
-  left: 0;
+        left: 0;
   top: 0;
   height: 100vh;
   overflow: hidden;
   z-index: 1000;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-  display: flex;
+    display: flex;
   flex-direction: column;
+  transition: width 0.3s ease;
+  
+  &.collapsed {
+    width: 60px;
+  }
 }
 
 .sidebar-content {
@@ -698,153 +655,42 @@ const handleBlur = () => {
   overflow: hidden;
 }
 
-.sidebar-brand {
-  padding: 1.5rem 1rem;
-  border-bottom: 1px solid #404040;
+.sidebar-toggle {
+        position: absolute;
+  top: 1rem;
+  right: 0.75rem;
+  z-index: 10;
   
-  .brand-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
+  .toggle-btn {
+    color: #cccccc;
+    transition: all 0.3s ease;
+    background: rgba(42, 42, 42, 0.9);
+    border: 1px solid #404040;
     
     &:hover {
       color: #ff6b35;
-    }
-  }
-  
-  .brand-logo {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-  }
-  
-  .brand-text {
-    font-family: 'Helvetica Neue LT Std 53 Extended', 'Helvetica Neue', sans-serif;
-    letter-spacing: 0.5px;
-  }
-}
-
-.sidebar-search {
-    position: relative;
-  padding: 1.5rem 1rem;
-  border-bottom: 1px solid #404040;
-
-.search-input {
-  .v-field {
-      background: #1a1a1a;
-      border: 1px solid #404040;
-    border-radius: 8px;
-      color: #ffffff;
-    transition: all 0.3s ease;
-    
-    &:hover {
-        border-color: #666666;
-    }
-    
-    &.v-field--focused {
-        border-color: #ff6b35;
-        box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
-      }
-    }
-    
-    .v-field__input {
-      color: #ffffff;
-      
-      &::placeholder {
-        color: #999999;
+      background: rgba(255, 107, 53, 0.2);
+      border-color: #ff6b35;
     }
   }
 }
 
-.search-btn {
-    background: #ff6b35;
-    color: #ffffff;
-    border-radius: 6px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  
-  &:hover:not(:disabled) {
-      background: #e55a2b;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
-    }
-  }
-}
 
-.suggestions-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  margin-top: 4px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.suggestions-section {
-  padding: 0.75rem;
-  
-  &:not(:last-child) {
-    border-bottom: 1px solid #e2e8f0;
-  }
-}
-
-.suggestions-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-}
-
-.suggestions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: rgba(var(--v-theme-primary), 0.05);
-    color: var(--v-theme-primary);
-  }
-  
-  .v-icon {
-    font-size: 1rem;
-    color: #9ca3af;
-  }
-  
-  span {
-    font-size: 0.75rem;
-  }
-}
 
 
 // 主内容区域
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 240px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background: #1a1a1a;
+  transition: margin-left 0.3s ease;
+  
+  &.sidebar-collapsed {
+    margin-left: 60px;
+  }
 }
 
 // 顶部固定导航栏 - Freepik 风格
@@ -858,15 +704,15 @@ const handleBlur = () => {
 }
 
 .header-content {
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  height: 72px;
+  height: 56px;
 }
 
 .page-title {
-  font-size: 1.5rem;
+    font-size: 1.25rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
@@ -876,7 +722,7 @@ const handleBlur = () => {
 // 内容区域
 .content-area {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   background: #1a1a1a;
   overflow-y: auto;
   overflow-x: hidden;
@@ -921,10 +767,10 @@ const handleBlur = () => {
     margin-bottom: 3rem;
     
     .photo-wall-title {
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
       background: linear-gradient(135deg, #ff6b35, #f7931e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -932,7 +778,7 @@ const handleBlur = () => {
     }
     
     .photo-wall-subtitle {
-    font-size: 1.125rem;
+      font-size: 1rem;
       color: #cccccc;
   margin: 0;
     }
@@ -940,9 +786,9 @@ const handleBlur = () => {
   
   .photo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
     
     .photo-item {
       position: relative;
@@ -973,7 +819,7 @@ const handleBlur = () => {
         position: relative;
         width: 100%;
         height: 100%;
-        min-height: 300px;
+        min-height: 250px;
         
         .photo-image {
           width: 100%;
@@ -1006,30 +852,30 @@ const handleBlur = () => {
             .photo-title {
       font-size: 1.25rem;
               font-weight: 600;
-              margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
               color: #ffffff;
             }
-            
+    
             .photo-description {
-    font-size: 0.875rem;
+      font-size: 0.875rem;
               color: #cccccc;
               margin-bottom: 1rem;
               line-height: 1.4;
             }
             
             .photo-meta {
-              display: flex;
-              gap: 1rem;
-              
+  display: flex;
+  gap: 1rem;
+  
               .photo-likes,
               .photo-views {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
                 gap: 0.25rem;
-                font-size: 0.875rem;
+    font-size: 0.875rem;
                 color: #cccccc;
-                
-                .v-icon {
+    
+    .v-icon {
                   color: #ff6b35;
                 }
               }
@@ -1296,24 +1142,25 @@ const handleBlur = () => {
 // 响应式设计
 @media (max-width: 1024px) {
   .sidebar {
-    width: 260px;
+    width: 220px;
+    
+    &.collapsed {
+      width: 60px;
+    }
   }
   
   .main-content {
-    margin-left: 260px;
+    margin-left: 220px;
+    
+    &.sidebar-collapsed {
+      margin-left: 60px;
+    }
   }
   
   .content-area {
     padding: 1.5rem;
   }
   
-  .sidebar-brand {
-    padding: 1rem;
-  }
-  
-  .sidebar-search {
-    padding: 1rem;
-  }
   
   .sidebar-nav {
     padding: 1rem;
@@ -1337,21 +1184,18 @@ const handleBlur = () => {
   
   .sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    width: 280px;
+    transition: transform 0.3s ease, width 0.3s ease;
+    width: 240px;
     
     &.mobile-open {
       transform: translateX(0);
     }
+    
+    &.collapsed {
+      width: 60px;
+    }
   }
   
-  .sidebar-brand {
-    padding: 1rem;
-  }
-  
-  .sidebar-search {
-    padding: 1rem;
-  }
   
   
   .main-content {
@@ -1382,12 +1226,12 @@ const handleBlur = () => {
     }
     
     .photo-grid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.875rem;
       
       .photo-item {
         .photo-container {
-          min-height: 250px;
+          min-height: 200px;
         }
         
         .photo-overlay {
