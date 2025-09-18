@@ -7,15 +7,15 @@
  * @Description: 搜索页面 - 智能搜索和筛选
 -->
 <script lang="ts" setup>
-import { useSearchStore } from '~/stores/use-search'
+// import { useSearchStore } from '~/stores/use-search'
 
 const { awesome } = useAppConfig()
 definePageMeta({ layout: false })
 
-// 获取路由和搜索store
+// 获取路由
 const route = useRoute()
 const router = useRouter()
-const searchStore = useSearchStore()
+// const searchStore = useSearchStore()
 
 // 设置页面标题
 useHead({
@@ -34,7 +34,7 @@ useHead({
 
 // 搜索相关状态
 const searchQuery = ref('')
-const searchResults = ref([])
+const searchResults = ref<any[]>([])
 const loading = ref(false)
 const hasSearched = ref(false)
 const totalResults = ref(0)
@@ -47,7 +47,7 @@ const searchSuggestions = ref([
   '春季新品', '设计师联名', '限时折扣', '时尚配饰', '运动系列', '正装', '休闲装', '运动装'
 ])
 
-const searchHistory = ref([])
+const searchHistory = ref<string[]>([])
 const showSuggestions = ref(false)
 
 // 筛选条件
@@ -67,6 +67,7 @@ const filters = ref({
 })
 
 const showFilters = ref(false)
+const showMobileSidebar = ref(false)
 
 // 筛选选项
 const filterOptions = {
@@ -174,12 +175,13 @@ onMounted(() => {
   // 从URL参数获取搜索关键词
   if (route.query.q) {
     searchQuery.value = route.query.q as string
-    searchStore.setSearchKeyword(searchQuery.value)
-    performSearch()
-  } else if (searchStore.searchKeyword) {
-    searchQuery.value = searchStore.searchKeyword
+    // searchStore.setSearchKeyword(searchQuery.value)
     performSearch()
   }
+  // else if (searchStore.searchKeyword) {
+  //   searchQuery.value = searchStore.searchKeyword
+  //   performSearch()
+  // }
   
   // 加载搜索历史
   loadSearchHistory()
@@ -223,7 +225,7 @@ const performSearch = async () => {
     const { $customFetch } = useNuxtApp()
     
     // 构建请求参数
-    const requestBody = {
+    const requestBody: any = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
       isPublish: true,
@@ -238,7 +240,7 @@ const performSearch = async () => {
     // 添加筛选条件
     const activeFilters = Object.entries(filters.value)
       .filter(([key, value]) => value && key !== 'sort')
-      .reduce((acc, [key, value]) => {
+      .reduce((acc: any, [key, value]) => {
         acc[key] = value
         return acc
       }, {})
@@ -321,7 +323,7 @@ const clearSearch = () => {
   hasSearched.value = false
   totalResults.value = 0
   showSuggestions.value = false
-  searchStore.clearSearchKeyword()
+  // searchStore.clearSearchKeyword()
   router.replace({ path: '/search' })
 }
 
@@ -371,7 +373,7 @@ watch(currentPage, () => {
 })
 
 // 图片加载状态
-const imageLoaded = ref({})
+const imageLoaded = ref<Record<string, boolean>>({})
 
 const onImageLoad = (productId: string) => {
   imageLoaded.value[productId] = true
@@ -385,50 +387,52 @@ const onImageError = (productId: string) => {
 const goToProduct = (productId: string) => {
   navigateTo(`/product/${productId}`)
 }
+
+// 移动端侧边栏控制
+const toggleMobileSidebar = () => {
+  showMobileSidebar.value = !showMobileSidebar.value
+}
+
+// 点击遮罩层关闭侧边栏
+const closeMobileSidebar = () => {
+  showMobileSidebar.value = false
+}
+
+// 处理搜索框失焦
+const handleBlur = () => {
+  setTimeout(() => {
+    showSuggestions.value = false
+  }, 200)
+}
 </script>
 
 <template>
   <div class="search-page">
-    <!-- 独立页面头部 -->
-    <header class="page-header">
-      <div class="header-container">
-        <!-- Logo和标题 -->
-        <div class="header-brand">
+    <!-- 移动端遮罩层 -->
+    <div 
+      v-if="showMobileSidebar" 
+      class="mobile-overlay"
+      @click="closeMobileSidebar"
+    ></div>
+
+    <!-- 左侧固定侧边栏 -->
+    <aside class="sidebar" :class="{ 'mobile-open': showMobileSidebar }">
+      <div class="sidebar-content">
+        <!-- Logo -->
+        <div class="sidebar-brand">
           <NuxtLink to="/" class="brand-link">
             <img src="/logo.svg" alt="衣设服装设计" class="brand-logo" />
-            <span class="brand-text">衣设服装设计</span>
+            <span class="brand-text">衣设</span>
           </NuxtLink>
         </div>
-        
-        <!-- 导航菜单 -->
-        <nav class="header-nav">
-          <NuxtLink to="/" class="nav-link">首页</NuxtLink>
-          <NuxtLink to="/products" class="nav-link">商品</NuxtLink>
-          <NuxtLink to="/custom-design" class="nav-link">定制设计</NuxtLink>
-          <NuxtLink to="/designers" class="nav-link">设计师</NuxtLink>
-          <NuxtLink to="/contact" class="nav-link">联系我们</NuxtLink>
-        </nav>
-        
-        <!-- 用户操作 -->
-        <div class="header-actions">
-          <NuxtLink to="/member" class="action-link">
-            <v-icon>mdi-account</v-icon>
-            <span>会员中心</span>
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
 
-    <!-- 搜索头部 -->
-    <div class="search-header">
-      <div class="search-container">
         <!-- 搜索框 -->
-        <div class="search-input-wrapper">
+        <div class="sidebar-search">
           <v-text-field
             v-model="searchQuery"
-            placeholder="搜索您想要的服装设计..."
+            placeholder="搜索服装设计..."
             variant="outlined"
-            density="comfortable"
+            density="compact"
             class="search-input"
             prepend-inner-icon="mdi-magnify"
             append-inner-icon="mdi-close"
@@ -436,12 +440,13 @@ const goToProduct = (productId: string) => {
             @keyup.enter="performSearch"
             @click:append-inner="clearSearch"
             @focus="showSuggestions = true"
-            @blur="setTimeout(() => showSuggestions = false, 200)"
+            @blur="handleBlur"
           >
             <template #append>
               <v-btn
                 color="primary"
                 variant="elevated"
+                size="small"
                 @click="performSearch"
                 :loading="loading"
                 :disabled="!searchQuery.trim()"
@@ -461,7 +466,7 @@ const goToProduct = (productId: string) => {
             <!-- 搜索历史 -->
             <div v-if="searchHistory.length > 0 && !searchQuery.trim()" class="suggestions-section">
               <div class="suggestions-title">
-                <v-icon>mdi-history</v-icon>
+                <v-icon size="small">mdi-history</v-icon>
                 <span>搜索历史</span>
               </div>
               <div class="suggestions-list">
@@ -471,7 +476,7 @@ const goToProduct = (productId: string) => {
                   class="suggestion-item"
                   @click="selectSuggestion(history)"
                 >
-                  <v-icon>mdi-clock-outline</v-icon>
+                  <v-icon size="small">mdi-clock-outline</v-icon>
                   <span>{{ history }}</span>
                 </div>
               </div>
@@ -480,7 +485,7 @@ const goToProduct = (productId: string) => {
             <!-- 搜索建议 -->
             <div v-if="filteredSuggestions.length > 0" class="suggestions-section">
               <div class="suggestions-title">
-                <v-icon>mdi-lightbulb-outline</v-icon>
+                <v-icon size="small">mdi-lightbulb-outline</v-icon>
                 <span>搜索建议</span>
               </div>
               <div class="suggestions-list">
@@ -490,575 +495,331 @@ const goToProduct = (productId: string) => {
                   class="suggestion-item"
                   @click="selectSuggestion(suggestion)"
                 >
-                  <v-icon>mdi-magnify</v-icon>
+                  <v-icon size="small">mdi-magnify</v-icon>
                   <span>{{ suggestion }}</span>
                 </div>
               </div>
             </div>
           </v-card>
         </div>
-        
-        <!-- 筛选按钮 -->
-        <div class="filter-controls">
+
+        <!-- 导航菜单 -->
+        <div class="sidebar-nav">
+          <nav class="nav-menu">
+            <NuxtLink to="/" class="nav-item">
+              <v-icon>mdi-home</v-icon>
+              <span>首页</span>
+            </NuxtLink>
+            <NuxtLink to="/products" class="nav-item">
+              <v-icon>mdi-package-variant</v-icon>
+              <span>商品</span>
+            </NuxtLink>
+            <NuxtLink to="/custom-design" class="nav-item">
+              <v-icon>mdi-palette</v-icon>
+              <span>定制设计</span>
+            </NuxtLink>
+            <NuxtLink to="/designers" class="nav-item">
+              <v-icon>mdi-account-group</v-icon>
+              <span>设计师</span>
+            </NuxtLink>
+            <NuxtLink to="/contact" class="nav-item">
+              <v-icon>mdi-email</v-icon>
+              <span>联系我们</span>
+            </NuxtLink>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+      <!-- 顶部固定导航栏 -->
+      <header class="top-header">
+        <div class="header-content">
+          <!-- 移动端菜单按钮 -->
           <v-btn
-            variant="outlined"
-            @click="showFilters = !showFilters"
-            class="filter-toggle-btn"
-          >
-            <v-icon left>mdi-filter-variant</v-icon>
-            筛选
-            <v-chip
-              v-if="activeFiltersCount > 0"
-              size="small"
-              color="primary"
-              class="filter-count-chip"
-            >
-              {{ activeFiltersCount }}
-            </v-chip>
-          </v-btn>
-          
-          <v-btn
-            v-if="activeFiltersCount > 0"
             variant="text"
-            @click="clearFilters"
-            class="clear-filters-btn"
+            @click="showMobileSidebar = !showMobileSidebar"
+            class="mobile-menu-btn"
+            icon
           >
-            <v-icon left>mdi-close</v-icon>
-            清空筛选
+            <v-icon>mdi-menu</v-icon>
           </v-btn>
-        </div>
-      </div>
-    </div>
-
-    <!-- 筛选面板 -->
-    <v-expand-transition>
-      <div v-if="showFilters" class="filters-panel">
-        <v-card class="filters-card">
-          <v-card-text>
-            <div class="filters-grid">
-              <!-- 排序 -->
-              <div class="filter-group">
-                <label class="filter-label">排序方式</label>
-                <v-select
-                  v-model="filters.sort"
-                  :items="filterOptions.sort"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </div>
-              
-              <!-- 价格 -->
-              <div class="filter-group">
-                <label class="filter-label">价格区间</label>
-                <v-select
-                  v-model="filters.price"
-                  :items="filterOptions.price"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 性别 -->
-              <div class="filter-group">
-                <label class="filter-label">性别</label>
-                <v-select
-                  v-model="filters.gender"
-                  :items="filterOptions.gender"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 年龄段 -->
-              <div class="filter-group">
-                <label class="filter-label">年龄段</label>
-                <v-select
-                  v-model="filters.ageGroup"
-                  :items="filterOptions.ageGroup"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 风格 -->
-              <div class="filter-group">
-                <label class="filter-label">风格</label>
-                <v-select
-                  v-model="filters.style"
-                  :items="filterOptions.style"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 季节 -->
-              <div class="filter-group">
-                <label class="filter-label">季节</label>
-                <v-select
-                  v-model="filters.season"
-                  :items="filterOptions.season"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 材质 -->
-              <div class="filter-group">
-                <label class="filter-label">材质</label>
-                <v-select
-                  v-model="filters.material"
-                  :items="filterOptions.material"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 颜色 -->
-              <div class="filter-group">
-                <label class="filter-label">颜色</label>
-                <v-select
-                  v-model="filters.color"
-                  :items="filterOptions.color"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 尺码 -->
-              <div class="filter-group">
-                <label class="filter-label">尺码</label>
-                <v-select
-                  v-model="filters.size"
-                  :items="filterOptions.size"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 场合 -->
-              <div class="filter-group">
-                <label class="filter-label">场合</label>
-                <v-select
-                  v-model="filters.occasion"
-                  :items="filterOptions.occasion"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-              
-              <!-- 折扣 -->
-              <div class="filter-group">
-                <label class="filter-label">折扣</label>
-                <v-select
-                  v-model="filters.discount"
-                  :items="filterOptions.discount"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  clearable
-                />
-              </div>
-            </div>
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-expand-transition>
-
-    <!-- 主要内容区域 -->
-    <div class="search-content">
-      <!-- 未搜索状态 -->
-      <div v-if="!hasSearched" class="search-placeholder">
-        <div class="placeholder-content">
-          <v-icon size="64" color="primary" class="placeholder-icon">mdi-magnify</v-icon>
-          <h2 class="placeholder-title">开始您的搜索之旅</h2>
-          <p class="placeholder-description">
-            在衣设服装设计平台搜索您想要的服装设计，支持智能筛选和个性化推荐
-          </p>
           
-          <!-- 热门搜索 -->
-          <div class="hot-searches">
-            <h3 class="hot-searches-title">热门搜索</h3>
-            <div class="hot-searches-list">
-              <v-chip
-                v-for="(hotSearch, index) in hotSearches"
-                :key="index"
-                :color="hotSearch.tag === 'hot' ? 'red' : hotSearch.tag === 'trending' ? 'orange' : 'primary'"
-                variant="outlined"
-                class="hot-search-chip"
-                @click="selectHotSearch(hotSearch)"
-              >
-                <v-icon left size="small">
-                  {{ hotSearch.tag === 'hot' ? 'mdi-fire' : hotSearch.tag === 'trending' ? 'mdi-trending-up' : 'mdi-tag' }}
-                </v-icon>
-                {{ hotSearch.text }}
-                <span class="search-count">({{ hotSearch.count }})</span>
-              </v-chip>
-            </div>
+          <!-- 导航菜单 -->
+          <nav class="header-nav">
+            <NuxtLink to="/" class="nav-link">首页</NuxtLink>
+            <NuxtLink to="/products" class="nav-link">商品</NuxtLink>
+            <NuxtLink to="/custom-design" class="nav-link">定制设计</NuxtLink>
+            <NuxtLink to="/designers" class="nav-link">设计师</NuxtLink>
+            <NuxtLink to="/contact" class="nav-link">联系我们</NuxtLink>
+          </nav>
+          
+          <!-- 用户操作 -->
+          <div class="header-actions">
+            <NuxtLink to="/member" class="action-link">
+              <v-icon>mdi-account</v-icon>
+              <span>会员中心</span>
+            </NuxtLink>
           </div>
         </div>
-      </div>
-      
-      <!-- 搜索结果 -->
-      <div v-else class="search-results">
-        <!-- 搜索结果头部 -->
-        <div class="results-header">
-          <div class="results-info">
-            <h2 class="results-title">
-              搜索结果
-              <span class="results-count">({{ totalResults }} 件商品)</span>
-            </h2>
-            <p class="results-query">
-              关键词: <strong>"{{ searchQuery }}"</strong>
+      </header>
+
+      <!-- 主要内容区域 -->
+      <div class="content-area">
+        <!-- 未搜索状态 -->
+        <div v-if="!hasSearched" class="search-placeholder">
+          <div class="placeholder-content">
+            <v-icon size="64" color="primary" class="placeholder-icon">mdi-magnify</v-icon>
+            <h2 class="placeholder-title">开始您的搜索之旅</h2>
+            <p class="placeholder-description">
+              在衣设服装设计平台搜索您想要的服装设计，支持智能筛选和个性化推荐
             </p>
+            
+            <!-- 热门搜索 -->
+            <div class="hot-searches">
+              <h3 class="hot-searches-title">热门搜索</h3>
+              <div class="hot-searches-list">
+                <v-chip
+                  v-for="(hotSearch, index) in hotSearches"
+                  :key="index"
+                  :color="hotSearch.tag === 'hot' ? 'red' : hotSearch.tag === 'trending' ? 'orange' : 'primary'"
+                  variant="outlined"
+                  class="hot-search-chip"
+                  @click="selectHotSearch(hotSearch)"
+                >
+                  <v-icon left size="small">
+                    {{ hotSearch.tag === 'hot' ? 'mdi-fire' : hotSearch.tag === 'trending' ? 'mdi-trending-up' : 'mdi-tag' }}
+                  </v-icon>
+                  {{ hotSearch.text }}
+                  <span class="search-count">({{ hotSearch.count }})</span>
+                </v-chip>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 搜索结果 -->
+        <div v-else class="search-results">
+          <!-- 搜索结果头部 -->
+          <div class="results-header">
+            <div class="results-info">
+              <h2 class="results-title">
+                搜索结果
+                <span class="results-count">({{ totalResults }} 件商品)</span>
+              </h2>
+              <p class="results-query">
+                关键词: <strong>"{{ searchQuery }}"</strong>
+              </p>
+            </div>
           </div>
           
-          <!-- 排序选择 -->
-          <div class="results-sort">
-            <v-select
-              v-model="filters.sort"
-              :items="filterOptions.sort"
+          <!-- 加载状态 -->
+          <div v-if="loading" class="loading-container">
+            <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
+            <p class="loading-text">正在搜索中...</p>
+          </div>
+          
+          <!-- 无结果 -->
+          <div v-else-if="searchResults.length === 0" class="no-results">
+            <v-icon size="64" color="grey">mdi-magnify-remove</v-icon>
+            <h3 class="no-results-title">未找到相关商品</h3>
+            <p class="no-results-description">
+              尝试使用不同的关键词或调整筛选条件
+            </p>
+            <v-btn
+              color="primary"
               variant="outlined"
-              density="compact"
-              hide-details
-              label="排序方式"
-              class="sort-select"
+              @click="clearFilters"
+              class="no-results-btn"
+            >
+              清空筛选条件
+            </v-btn>
+          </div>
+          
+          <!-- 搜索结果列表 -->
+          <div v-else class="results-grid">
+            <div
+              v-for="product in searchResults"
+              :key="product.id"
+              class="product-card"
+              @click="goToProduct(product.id)"
+            >
+              <div class="product-image">
+                <img
+                  v-if="product?.customModel?.thumbnail"
+                  :src="product.customModel.thumbnail"
+                  :alt="product.name"
+                  class="product-img"
+                  @load="onImageLoad(product.id)"
+                  @error="onImageError(product.id)"
+                />
+                <div v-else class="product-placeholder">
+                  <v-icon>mdi-image</v-icon>
+                </div>
+                
+                <!-- 商品标签 -->
+                <div v-if="product.tag" class="product-tag">
+                  {{ product.tag }}
+                </div>
+              </div>
+              
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-description">{{ product.description }}</p>
+                
+                <div class="product-meta">
+                  <div class="product-price">
+                    <span class="current-price">¥{{ product.price || '待定' }}</span>
+                    <span v-if="product.originalPrice && product.originalPrice > product.price" class="original-price">
+                      ¥{{ product.originalPrice }}
+                    </span>
+                  </div>
+                  
+                  <div class="product-stats">
+                    <div class="stat-item">
+                      <v-icon size="small">mdi-heart</v-icon>
+                      <span>{{ product.likes || 0 }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <v-icon size="small">mdi-star</v-icon>
+                      <span>{{ product.rating || 0 }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <v-icon size="small">mdi-shopping</v-icon>
+                      <span>{{ product.sales || 0 }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 分页 -->
+          <div v-if="totalResults > pageSize" class="pagination-container">
+            <v-pagination
+              v-model="currentPage"
+              :length="Math.ceil(totalResults / pageSize)"
+              :total-visible="7"
+              color="primary"
+              class="pagination"
             />
           </div>
         </div>
-        
-        <!-- 加载状态 -->
-        <div v-if="loading" class="loading-container">
-          <v-progress-circular indeterminate color="primary" size="48"></v-progress-circular>
-          <p class="loading-text">正在搜索中...</p>
-        </div>
-        
-        <!-- 无结果 -->
-        <div v-else-if="searchResults.length === 0" class="no-results">
-          <v-icon size="64" color="grey">mdi-magnify-remove</v-icon>
-          <h3 class="no-results-title">未找到相关商品</h3>
-          <p class="no-results-description">
-            尝试使用不同的关键词或调整筛选条件
-          </p>
-          <v-btn
-            color="primary"
-            variant="outlined"
-            @click="clearFilters"
-            class="no-results-btn"
-          >
-            清空筛选条件
-          </v-btn>
-        </div>
-        
-        <!-- 搜索结果列表 -->
-        <div v-else class="results-grid">
-          <div
-            v-for="product in searchResults"
-            :key="product.id"
-            class="product-card"
-            @click="goToProduct(product.id)"
-          >
-            <div class="product-image">
-              <img
-                v-if="product?.customModel?.thumbnail"
-                :src="product.customModel.thumbnail"
-                :alt="product.name"
-                class="product-img"
-                @load="onImageLoad(product.id)"
-                @error="onImageError(product.id)"
-              />
-              <div v-else class="product-placeholder">
-                <v-icon>mdi-image</v-icon>
-              </div>
-              
-              <!-- 商品标签 -->
-              <div v-if="product.tag" class="product-tag">
-                {{ product.tag }}
-              </div>
-            </div>
-            
-            <div class="product-info">
-              <h3 class="product-title">{{ product.name }}</h3>
-              <p class="product-description">{{ product.description }}</p>
-              
-              <div class="product-meta">
-                <div class="product-price">
-                  <span class="current-price">¥{{ product.price || '待定' }}</span>
-                  <span v-if="product.originalPrice && product.originalPrice > product.price" class="original-price">
-                    ¥{{ product.originalPrice }}
-                  </span>
-                </div>
-                
-                <div class="product-stats">
-                  <div class="stat-item">
-                    <v-icon size="small">mdi-heart</v-icon>
-                    <span>{{ product.likes || 0 }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <v-icon size="small">mdi-star</v-icon>
-                    <span>{{ product.rating || 0 }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <v-icon size="small">mdi-shopping</v-icon>
-                    <span>{{ product.sales || 0 }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 分页 -->
-        <div v-if="totalResults > pageSize" class="pagination-container">
-          <v-pagination
-            v-model="currentPage"
-            :length="Math.ceil(totalResults / pageSize)"
-            :total-visible="7"
-            color="primary"
-            class="pagination"
-          />
-        </div>
       </div>
-    </div>
-
-    <!-- 页面底部 -->
-    <footer class="page-footer">
-      <div class="footer-container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3 class="footer-title">关于衣设</h3>
-            <p class="footer-description">
-              衣设是一个开放式的创意服装设计平台，汇聚全球设计师的创意灵感，连接设计师与品牌，打造最具创意的服装设计社区。
-            </p>
-          </div>
-          
-          <div class="footer-section">
-            <h3 class="footer-title">快速链接</h3>
-            <ul class="footer-links">
-              <li><NuxtLink to="/products">商品中心</NuxtLink></li>
-              <li><NuxtLink to="/custom-design">定制设计</NuxtLink></li>
-              <li><NuxtLink to="/designers">设计师</NuxtLink></li>
-              <li><NuxtLink to="/fashion-news">时尚资讯</NuxtLink></li>
-            </ul>
-          </div>
-          
-          <div class="footer-section">
-            <h3 class="footer-title">帮助支持</h3>
-            <ul class="footer-links">
-              <li><NuxtLink to="/contact">联系我们</NuxtLink></li>
-              <li><NuxtLink to="/shopping-guide">购物指南</NuxtLink></li>
-              <li><NuxtLink to="/member">会员中心</NuxtLink></li>
-              <li><NuxtLink to="/about">关于我们</NuxtLink></li>
-            </ul>
-          </div>
-          
-          <div class="footer-section">
-            <h3 class="footer-title">关注我们</h3>
-            <div class="social-links">
-              <a href="#" class="social-link">
-                <v-icon>mdi-wechat</v-icon>
-                <span>微信</span>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-weibo</v-icon>
-                <span>微博</span>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-instagram</v-icon>
-                <span>Instagram</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="footer-bottom">
-          <p class="copyright">
-            © 2024 衣设服装设计平台. 保留所有权利.
-          </p>
-        </div>
-      </div>
-    </footer>
+    </main>
   </div>
 </template>
 
 <style lang="scss" scoped>
+// Freepik 深色主题布局
 .search-page {
   min-height: 100vh;
-  background: #f8fafc;
+  background: #1a1a1a;
+  color: #ffffff;
+  display: flex;
+}
+
+// 左侧固定侧边栏 - Freepik 深色风格
+.sidebar {
+  width: 280px;
+  background: #2a2a2a;
+  border-right: 1px solid #404040;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1000;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }
 
-// 页面头部样式
-.page-header {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.sidebar-content {
+  padding: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
-.header-brand {
+.sidebar-brand {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #404040;
+  
   .brand-link {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-    color: #1f2937;
+    color: #ffffff;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     transition: color 0.3s ease;
     
     &:hover {
-      color: var(--v-theme-primary);
+      color: #ff6b35;
     }
   }
   
   .brand-logo {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
+    filter: brightness(0) invert(1);
   }
   
   .brand-text {
     font-family: 'Helvetica Neue LT Std 53 Extended', 'Helvetica Neue', sans-serif;
+    letter-spacing: 0.5px;
   }
 }
 
-.header-nav {
-  display: flex;
-  gap: 2rem;
+.sidebar-search {
+  position: relative;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #404040;
   
-  .nav-link {
-    color: #6b7280;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.5rem 0;
-    position: relative;
-    transition: color 0.3s ease;
-    
-    &:hover {
-      color: var(--v-theme-primary);
+  .search-input {
+    .v-field {
+      background: #1a1a1a;
+      border: 1px solid #404040;
+      border-radius: 8px;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        border-color: #666666;
+      }
+      
+      &.v-field--focused {
+        border-color: #ff6b35;
+        box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+      }
     }
     
-    &.router-link-active {
-      color: var(--v-theme-primary);
+    .v-field__input {
+      color: #ffffff;
       
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: var(--v-theme-primary);
-        border-radius: 1px;
+      &::placeholder {
+        color: #999999;
       }
     }
   }
-}
-
-.header-actions {
-  .action-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #6b7280;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      color: var(--v-theme-primary);
-      background: rgba(var(--v-theme-primary), 0.05);
-    }
-    
-    .v-icon {
-      font-size: 1.25rem;
-    }
-  }
-}
-
-.search-header {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1.5rem 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.search-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.search-input-wrapper {
-  flex: 1;
-  position: relative;
-}
-
-.search-input {
-  .v-field {
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    
-    &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    &.v-field--focused {
-      box-shadow: 0 0 0 3px rgba(var(--v-theme-primary), 0.2);
-    }
-  }
-}
-
-.search-btn {
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
   
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(var(--v-theme-primary), 0.3);
+  .search-btn {
+    background: #ff6b35;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover:not(:disabled) {
+      background: #e55a2b;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+    }
   }
 }
 
@@ -1069,12 +830,12 @@ const goToProduct = (productId: string) => {
   right: 0;
   z-index: 1000;
   margin-top: 4px;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
 .suggestions-section {
-  padding: 1rem;
+  padding: 0.75rem;
   
   &:not(:last-child) {
     border-bottom: 1px solid #e2e8f0;
@@ -1085,10 +846,10 @@ const goToProduct = (productId: string) => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #6b7280;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .suggestions-list {
@@ -1100,9 +861,9 @@ const goToProduct = (productId: string) => {
 .suggestion-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 8px;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   
@@ -1112,152 +873,143 @@ const goToProduct = (productId: string) => {
   }
   
   .v-icon {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: #9ca3af;
   }
   
   span {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
   }
 }
 
-.filter-controls {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.filter-toggle-btn {
-  border-radius: 8px;
-  font-weight: 500;
-  position: relative;
-}
-
-.filter-count-chip {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  min-width: 20px;
-  height: 20px;
-  font-size: 0.75rem;
-}
-
-.clear-filters-btn {
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-.filters-panel {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1.5rem 0;
-}
-
-.filters-card {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
-
-.filter-group {
-  .filter-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-  }
-}
-
-.search-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+.sidebar-nav {
   flex: 1;
+  padding: 1.5rem 1rem;
+  overflow: hidden;
 }
 
-// 页面底部样式
-.page-footer {
-  background: #1f2937;
-  color: white;
-  margin-top: auto;
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 1rem 1rem;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.footer-section {
-  .footer-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: white;
-    margin-bottom: 1rem;
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  color: #cccccc;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+  
+  &:hover {
+    background: rgba(255, 107, 53, 0.1);
+    color: #ff6b35;
   }
   
-  .footer-description {
-    color: #d1d5db;
-    line-height: 1.6;
-    font-size: 0.875rem;
+  &.router-link-active {
+    background: rgba(255, 107, 53, 0.15);
+    color: #ff6b35;
+    border-left: 3px solid #ff6b35;
+  }
+  
+  .v-icon {
+    font-size: 1.25rem;
+    min-width: 24px;
+  }
+  
+  span {
+    font-weight: 500;
   }
 }
 
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+// 主内容区域
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #1a1a1a;
+}
+
+// 顶部固定导航栏 - Freepik 风格
+.top-header {
+  background: #2a2a2a;
+  border-bottom: 1px solid #404040;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 2.5rem;
   
-  li {
-    margin-bottom: 0.5rem;
+  .nav-link {
+    color: #cccccc;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 0;
+    position: relative;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     
-    a {
-      color: #d1d5db;
-      text-decoration: none;
-      font-size: 0.875rem;
-      transition: color 0.3s ease;
+    &:hover {
+      color: #ff6b35;
+    }
+    
+    &.router-link-active {
+      color: #ff6b35;
       
-      &:hover {
-        color: var(--v-theme-primary);
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #ff6b35;
+        border-radius: 1px;
       }
     }
   }
 }
 
-.social-links {
-  display: flex;
-  gap: 1rem;
-  
-  .social-link {
+.header-actions {
+  .action-link {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #d1d5db;
+    color: #cccccc;
     text-decoration: none;
-    font-size: 0.875rem;
-    padding: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
     transition: all 0.3s ease;
+    background: #1a1a1a;
+    border: 1px solid #404040;
     
     &:hover {
-      color: var(--v-theme-primary);
-      background: rgba(255, 255, 255, 0.1);
+      color: #ff6b35;
+      background: #2a2a2a;
+      border-color: #ff6b35;
     }
     
     .v-icon {
@@ -1266,16 +1018,11 @@ const goToProduct = (productId: string) => {
   }
 }
 
-.footer-bottom {
-  border-top: 1px solid #374151;
-  padding-top: 1.5rem;
-  text-align: center;
-  
-  .copyright {
-    color: #9ca3af;
-    font-size: 0.875rem;
-    margin: 0;
-  }
+// 内容区域
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  background: #1a1a1a;
 }
 
 .search-placeholder {
@@ -1298,13 +1045,13 @@ const goToProduct = (productId: string) => {
 .placeholder-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
 .placeholder-description {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #cccccc;
   margin-bottom: 2rem;
   line-height: 1.6;
 }
@@ -1313,7 +1060,7 @@ const goToProduct = (productId: string) => {
   .hot-searches-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #374151;
+    color: #ffffff;
     margin-bottom: 1rem;
   }
 }
@@ -1342,38 +1089,26 @@ const goToProduct = (productId: string) => {
 
 .search-results {
   .results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin-bottom: 2rem;
-    gap: 1rem;
-  }
-  
-  .results-info {
-    flex: 1;
   }
   
   .results-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #ffffff;
     margin-bottom: 0.5rem;
   }
   
   .results-count {
     font-size: 1rem;
     font-weight: 400;
-    color: #6b7280;
+    color: #cccccc;
   }
   
   .results-query {
     font-size: 1rem;
-    color: #6b7280;
+    color: #cccccc;
     margin: 0;
-  }
-  
-  .results-sort {
-    min-width: 200px;
   }
 }
 
@@ -1387,7 +1122,7 @@ const goToProduct = (productId: string) => {
 }
 
 .loading-text {
-  color: #6b7280;
+  color: #cccccc;
   font-size: 1rem;
 }
 
@@ -1404,11 +1139,11 @@ const goToProduct = (productId: string) => {
 .no-results-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #374151;
+  color: #ffffff;
 }
 
 .no-results-description {
-  color: #6b7280;
+  color: #cccccc;
   font-size: 1rem;
 }
 
@@ -1418,30 +1153,33 @@ const goToProduct = (productId: string) => {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
   margin-bottom: 3rem;
 }
 
 .product-card {
-  background: white;
+  background: #2a2a2a;
+  border: 1px solid #404040;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   cursor: pointer;
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    border-color: #ff6b35;
   }
 }
 
 .product-image {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
+  background: #1a1a1a;
   
   .product-img {
     width: 100%;
@@ -1451,7 +1189,7 @@ const goToProduct = (productId: string) => {
   }
   
   &:hover .product-img {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
   
   .product-placeholder {
@@ -1460,46 +1198,51 @@ const goToProduct = (productId: string) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f4f6;
-    color: #9ca3af;
+    background: #1a1a1a;
+    color: #666666;
   }
   
   .product-tag {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: var(--v-theme-primary);
+    background: #ff6b35;
     color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
   }
 }
 
 .product-info {
-  padding: 1rem;
+  padding: 1.25rem;
 }
 
 .product-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .product-description {
   font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
+  color: #cccccc;
+  margin-bottom: 1rem;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1517,31 +1260,32 @@ const goToProduct = (productId: string) => {
   gap: 0.25rem;
   
   .current-price {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #059669;
+    color: #ff6b35;
   }
   
   .original-price {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: #999999;
     text-decoration: line-through;
   }
 }
 
 .product-stats {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   
   .stat-item {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.375rem;
     font-size: 0.75rem;
-    color: #6b7280;
+    color: #cccccc;
     
     .v-icon {
       font-size: 0.875rem;
+      color: #ff6b35;
     }
   }
 }
@@ -1558,70 +1302,134 @@ const goToProduct = (productId: string) => {
   }
 }
 
+// 移动端遮罩层
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+// 移动端菜单按钮
+.mobile-menu-btn {
+  display: none;
+}
+
 // 响应式设计
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 260px;
+  }
+  
+  .main-content {
+    margin-left: 260px;
+  }
+  
+  .content-area {
+    padding: 1.5rem;
+  }
+  
+  .sidebar-brand {
+    padding: 1rem;
+  }
+  
+  .sidebar-search {
+    padding: 1rem;
+  }
+  
+  .sidebar-nav {
+    padding: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .header-container {
+  .mobile-overlay {
+    display: block;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    color: #ffffff;
+    
+    &:hover {
+      background: rgba(255, 107, 53, 0.1);
+    }
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px;
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
+  
+  .sidebar-brand {
+    padding: 1rem;
+  }
+  
+  .sidebar-search {
+    padding: 1rem;
+  }
+  
+  .sidebar-nav {
+    padding: 1rem;
+  }
+  
+  .nav-item {
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+    
+    .v-icon {
+      font-size: 1.125rem;
+    }
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .header-content {
     padding: 0 1rem;
-    height: 56px;
+    height: 64px;
   }
   
   .header-nav {
-    display: none; // 移动端隐藏导航菜单
+    display: none;
   }
   
   .header-actions {
     .action-link {
       padding: 0.5rem;
+      background: #1a1a1a;
+      border: 1px solid #404040;
       
       span {
-        display: none; // 移动端只显示图标
+        display: none;
       }
     }
   }
   
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .social-links {
-    justify-content: center;
-  }
-  
-  .search-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .filter-controls {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .filters-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .results-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-  
-  .results-sort {
-    min-width: auto;
+  .content-area {
+    padding: 1rem;
   }
   
   .results-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
   
   .product-meta {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
   
   .product-stats {
@@ -1630,12 +1438,9 @@ const goToProduct = (productId: string) => {
 }
 
 @media (max-width: 480px) {
-  .search-content {
-    padding: 1rem;
-  }
-  
   .results-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .hot-searches-list {
@@ -1644,6 +1449,18 @@ const goToProduct = (productId: string) => {
   
   .hot-search-chip {
     font-size: 0.75rem;
+  }
+  
+  .product-card {
+    border-radius: 8px;
+  }
+  
+  .product-image {
+    height: 180px;
+  }
+  
+  .product-info {
+    padding: 1rem;
   }
 }
 </style>
