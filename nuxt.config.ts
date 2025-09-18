@@ -128,6 +128,9 @@ export default defineNuxtConfig({
   },
   hooks: {
   },
+  devServer: {
+    port: 15201
+  },
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production' 
