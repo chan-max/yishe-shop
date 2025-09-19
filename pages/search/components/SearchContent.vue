@@ -26,10 +26,12 @@ const emit = defineEmits<Emits>()
 // 照片墙数据
 const photoWallData = ref<any[]>([])
 const loadingMore = ref(false)
+const error = ref<string | null>(null)
 
 // 初始化照片墙数据
 const initPhotoWall = () => {
-  const mockPhotos = [
+  try {
+    const mockPhotos = [
     {
       id: 1,
       title: '优雅连衣裙设计',
@@ -129,31 +131,41 @@ const initPhotoWall = () => {
   ]
   
   photoWallData.value = mockPhotos
+  } catch (err) {
+    console.error('初始化照片墙数据失败:', err)
+    error.value = '初始化照片墙数据失败'
+  }
 }
 
 // 加载更多照片
 const loadMorePhotos = async () => {
-  loadingMore.value = true
-  
-  // 模拟加载延迟
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // 生成更多模拟数据
-  const newPhotos = []
-  for (let i = 0; i < 8; i++) {
-    const id = photoWallData.value.length + i + 1
-    newPhotos.push({
-      id,
-      title: `设计作品 ${id}`,
-      description: `创意设计作品，展现独特风格`,
-      image: `https://picsum.photos/${300 + Math.random() * 100}/${400 + Math.random() * 200}?random=${id}`,
-      likes: Math.floor(Math.random() * 3000) + 500,
-      views: Math.floor(Math.random() * 5000) + 1000
-    })
+  try {
+    loadingMore.value = true
+    
+    // 模拟加载延迟
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // 生成更多模拟数据
+    const newPhotos = []
+    for (let i = 0; i < 8; i++) {
+      const id = photoWallData.value.length + i + 1
+      newPhotos.push({
+        id,
+        title: `设计作品 ${id}`,
+        description: `创意设计作品，展现独特风格`,
+        image: `https://picsum.photos/${300 + Math.random() * 100}/${400 + Math.random() * 200}?random=${id}`,
+        likes: Math.floor(Math.random() * 3000) + 500,
+        views: Math.floor(Math.random() * 5000) + 1000
+      })
+    }
+    
+    photoWallData.value.push(...newPhotos)
+  } catch (err) {
+    console.error('加载更多照片失败:', err)
+    error.value = '加载更多照片失败'
+  } finally {
+    loadingMore.value = false
   }
-  
-  photoWallData.value.push(...newPhotos)
-  loadingMore.value = false
 }
 
 // 初始化
@@ -169,6 +181,17 @@ const handleLoadMore = () => {
 
 <template>
   <div class="content-area">
+    <!-- 错误提示 -->
+    <div v-if="error" class="error-container">
+      <v-alert
+        type="error"
+        :text="error"
+        closable
+        @click:close="error = null"
+        class="error-alert"
+      />
+    </div>
+    
     <!-- 搜索结果 -->
     <div v-if="hasSearched" class="search-results">
       <div class="results-header">

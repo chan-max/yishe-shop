@@ -14,38 +14,62 @@ export const useSearchActions = () => {
 
   // 执行搜索
   const performSearch = async () => {
-    // 这里可以添加搜索逻辑
-    console.log('执行搜索')
+    try {
+      // 这里可以添加搜索逻辑
+      console.log('执行搜索')
+    } catch (error) {
+      console.error('搜索执行失败:', error)
+    }
   }
 
   // 加载更多照片
   const loadMorePhotos = async () => {
-    // 这里可以添加加载更多逻辑
-    console.log('加载更多照片')
+    try {
+      // 这里可以添加加载更多逻辑
+      console.log('加载更多照片')
+    } catch (error) {
+      console.error('加载更多照片失败:', error)
+    }
   }
 
   // 切换侧边栏
   const toggleSidebar = () => {
-    // 这里可以添加侧边栏切换逻辑
-    console.log('切换侧边栏')
+    try {
+      // 这里可以添加侧边栏切换逻辑
+      console.log('切换侧边栏')
+    } catch (error) {
+      console.error('切换侧边栏失败:', error)
+    }
   }
 
   // 切换筛选菜单
   const toggleFilterMenu = () => {
-    // 这里可以添加筛选菜单切换逻辑
-    console.log('切换筛选菜单')
+    try {
+      // 这里可以添加筛选菜单切换逻辑
+      console.log('切换筛选菜单')
+    } catch (error) {
+      console.error('切换筛选菜单失败:', error)
+    }
   }
 
   // 清空筛选条件
   const clearFilters = () => {
-    // 这里可以添加清空筛选逻辑
-    console.log('清空筛选条件')
+    try {
+      // 这里可以添加清空筛选逻辑
+      console.log('清空筛选条件')
+    } catch (error) {
+      console.error('清空筛选条件失败:', error)
+    }
   }
 
   // 应用筛选条件
   const applyFilters = () => {
-    // 这里可以添加应用筛选逻辑
-    console.log('应用筛选条件')
+    try {
+      // 这里可以添加应用筛选逻辑
+      console.log('应用筛选条件')
+    } catch (error) {
+      console.error('应用筛选条件失败:', error)
+    }
   }
 
   return {

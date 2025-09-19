@@ -29,6 +29,9 @@ const filters = ref({
   colors: [] as string[]
 })
 
+// 错误处理
+const error = ref<string | null>(null)
+
 // 筛选选项
 const filterOptions = {
   sort: [
@@ -68,21 +71,31 @@ const colorOptions = [
 
 // 切换风格选择
 const toggleStyle = (styleValue: string) => {
-  const index = filters.value.styles.indexOf(styleValue)
-  if (index > -1) {
-    filters.value.styles.splice(index, 1)
-  } else {
-    filters.value.styles.push(styleValue)
+  try {
+    const index = filters.value.styles.indexOf(styleValue)
+    if (index > -1) {
+      filters.value.styles.splice(index, 1)
+    } else {
+      filters.value.styles.push(styleValue)
+    }
+  } catch (err) {
+    console.error('切换风格选择失败:', err)
+    error.value = '切换风格选择失败'
   }
 }
 
 // 切换颜色选择
 const toggleColor = (colorValue: string) => {
-  const index = filters.value.colors.indexOf(colorValue)
-  if (index > -1) {
-    filters.value.colors.splice(index, 1)
-  } else {
-    filters.value.colors.push(colorValue)
+  try {
+    const index = filters.value.colors.indexOf(colorValue)
+    if (index > -1) {
+      filters.value.colors.splice(index, 1)
+    } else {
+      filters.value.colors.push(colorValue)
+    }
+  } catch (err) {
+    console.error('切换颜色选择失败:', err)
+    error.value = '切换颜色选择失败'
   }
 }
 
@@ -163,6 +176,17 @@ const activeFiltersCount = computed(() => {
 <template>
   <div v-show="show" class="filter-section">
     <div class="filter-content">
+      <!-- 错误提示 -->
+      <div v-if="error" class="error-container">
+        <v-alert
+          type="error"
+          :text="error"
+          closable
+          @click:close="error = null"
+          class="error-alert"
+        />
+      </div>
+      
       <!-- 筛选标签显示 -->
       <div class="filter-chips" v-if="activeFiltersCount > 0">
         <v-chip

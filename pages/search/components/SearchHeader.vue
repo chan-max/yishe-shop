@@ -24,25 +24,48 @@ const emit = defineEmits<Emits>()
 const searchInputRef = ref<HTMLInputElement>()
 const searchBoxRef = ref<HTMLDivElement>()
 
+// 错误处理
+const error = ref<string | null>(null)
+
 // 搜索输入处理
 const handleSearchInput = (value: string) => {
-  emit('update:searchQuery', value)
+  try {
+    emit('update:searchQuery', value)
+  } catch (err) {
+    console.error('搜索输入处理失败:', err)
+    error.value = '搜索输入处理失败'
+  }
 }
 
 // 执行搜索
 const handleSearch = () => {
-  emit('search')
+  try {
+    emit('search')
+  } catch (err) {
+    console.error('执行搜索失败:', err)
+    error.value = '执行搜索失败'
+  }
 }
 
 // 清空搜索
 const clearSearch = () => {
-  emit('update:searchQuery', '')
+  try {
+    emit('update:searchQuery', '')
+  } catch (err) {
+    console.error('清空搜索失败:', err)
+    error.value = '清空搜索失败'
+  }
 }
 
 // 键盘事件处理
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter') {
-    handleSearch()
+  try {
+    if (event.key === 'Enter') {
+      handleSearch()
+    }
+  } catch (err) {
+    console.error('键盘事件处理失败:', err)
+    error.value = '键盘事件处理失败'
   }
 }
 </script>
@@ -50,6 +73,17 @@ const handleKeydown = (event: KeyboardEvent) => {
 <template>
   <header class="top-header">
     <div class="header-content">
+      <!-- 错误提示 -->
+      <div v-if="error" class="error-container">
+        <v-alert
+          type="error"
+          :text="error"
+          closable
+          @click:close="error = null"
+          class="error-alert"
+        />
+      </div>
+      
       <div class="search-filter-container">
         <v-btn
           @click="emit('toggleFilter')"

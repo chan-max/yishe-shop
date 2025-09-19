@@ -109,6 +109,9 @@ const navSections = ref([
 const selectedCategory = ref('')
 const selectedPersonal = ref('')
 
+// 错误处理
+const error = ref<string | null>(null)
+
 // 切换侧边栏
 const toggleSidebar = () => {
   emit('toggle')
@@ -116,18 +119,28 @@ const toggleSidebar = () => {
 
 // 处理分类点击
 const handleCategoryClick = (item: any) => {
-  selectedCategory.value = item.value
-  selectedPersonal.value = '' // 清除个人中心选中状态
-  // 可以在这里添加搜索逻辑
-  console.log('选择分类:', item.text, item.value)
+  try {
+    selectedCategory.value = item.value
+    selectedPersonal.value = '' // 清除个人中心选中状态
+    // 可以在这里添加搜索逻辑
+    console.log('选择分类:', item.text, item.value)
+  } catch (err) {
+    console.error('处理分类点击失败:', err)
+    error.value = '处理分类点击失败'
+  }
 }
 
 // 处理个人中心点击
 const handlePersonalClick = (item: any) => {
-  selectedPersonal.value = item.value
-  selectedCategory.value = '' // 清除分类选中状态
-  // 可以在这里添加导航逻辑
-  console.log('选择个人中心:', item.text, item.value)
+  try {
+    selectedPersonal.value = item.value
+    selectedCategory.value = '' // 清除分类选中状态
+    // 可以在这里添加导航逻辑
+    console.log('选择个人中心:', item.text, item.value)
+  } catch (err) {
+    console.error('处理个人中心点击失败:', err)
+    error.value = '处理个人中心点击失败'
+  }
 }
 
 // 检查是否选中
@@ -144,6 +157,17 @@ const toggleTheme = () => {
 <template>
   <!-- 桌面端侧边栏 -->
   <aside class="sidebar" :class="{ collapsed: collapsed }">
+    <!-- 错误提示 -->
+    <div v-if="error" class="error-container">
+      <v-alert
+        type="error"
+        :text="error"
+        closable
+        @click:close="error = null"
+        class="error-alert"
+      />
+    </div>
+    
     <!-- 侧边栏切换按钮 -->
     <div class="sidebar-toggle">
       <v-btn
