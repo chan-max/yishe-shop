@@ -2202,206 +2202,371 @@ const applyFilters = () => {
   display: none;
 }
 
-// 响应式设计
+// 响应式设计 - 平板端优化
 @media (max-width: 1024px) {
   .sidebar {
-    width: 220px;
+    width: 200px; // 稍微减少宽度，为内容留更多空间
     
     &.collapsed {
-      width: 80px;
+      width: 70px; // 折叠状态也稍微减少
     }
   }
   
   .main-content {
-    margin-left: 220px;
+    margin-left: 200px;
     
     &.sidebar-collapsed {
-      margin-left: 80px;
+      margin-left: 70px;
     }
   }
   
   .content-area {
-    padding: 1.5rem;
+    padding: 1.25rem; // 稍微减少内边距
   }
   
-  
+  // 平板端侧边栏导航优化
   .sidebar-nav {
-    padding: 4.5rem 0.5rem 1rem 0.5rem; // 增加左右padding
+    padding: 4rem 0.75rem 1rem 0.75rem; // 调整平板端间距
     
     .nav-section {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem; // 减少section间距
       
       .nav-btn {
-        padding: 1rem 1.25rem; // 增加按钮内边距
-        font-size: 0.85rem;
-        min-height: 44px; // 稍微增加最小高度
+        padding: 0.875rem 1rem; // 稍微减少按钮内边距
+        font-size: 0.8rem; // 稍微减小字体
+        min-height: 40px; // 减少最小高度
         
         &:hover {
           color: var(--text-primary);
           background: var(--bg-hover);
           border-radius: 8px;
-          transform: translateX(2px);
+          transform: translateX(1px); // 减少移动距离
         }
       }
     }
   }
-}
-
-@media (max-width: 768px) {
-  .mobile-overlay {
-    display: block;
-    background: var(--shadow-secondary);
-  }
   
-  .mobile-menu-btn {
-    display: block;
-    color: var(--text-primary);
-    
-    &:hover {
-      background: var(--bg-hover);
-    }
-  }
-  
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 240px;
-    
-    &.mobile-open {
-      transform: translateX(0);
-    }
-    
-    &.collapsed {
-      width: 80px;
-    }
-  }
-  
-  // 移动端头部从左侧开始
-  .top-header {
-    left: 0;
-    
-    .sidebar-collapsed & {
-      left: 0;
-    }
-  }
-  
-  // 移动端过滤菜单
-  .filter-section {
-    left: 0; // 移动端从左侧开始
-    top: 64px; // 移动端头部高度
-    
-    .sidebar-collapsed & {
-      left: 0;
-    }
-    
-    .filter-content {
-      padding: 0.75rem 1.25rem 1.5rem 1.25rem; // 移动端也增加padding
-    }
-    
-    .filter-row-single {
-      gap: 0.75rem;
+  // 平板端折叠状态优化
+  .sidebar.collapsed {
+    .sidebar-nav {
+      padding: 4rem 0 1rem 0;
       
-      .filter-group {
-        min-width: 120px;
+      .nav-btn {
+        padding: 0.625rem;
+        margin: 0.2rem 0.2rem; // 减少间距
+        min-height: 36px;
       }
     }
   }
   
-  // 移动端主内容区域
-  .main-content {
-    margin-left: 0;
-    min-height: calc(100vh - 64px);
+  // 平板端头部优化
+  .top-header {
+    left: 200px;
     
+    &.sidebar-collapsed {
+      left: 70px;
+    }
   }
   
-  .header-content {
-    padding: 0 1rem;
-    height: 64px;
-    gap: 0.75rem;
+  .filter-section {
+    left: 200px;
+    
+    &.sidebar-collapsed {
+      left: 70px;
+    }
+  }
+}
+
+// 中等屏幕优化 - 平板横屏和小笔记本
+@media (max-width: 900px) and (min-width: 769px) {
+  .sidebar {
+    width: 180px;
+    
+    &.collapsed {
+      width: 60px;
+    }
+  }
+  
+  .main-content {
+    margin-left: 180px;
+    
+    &.sidebar-collapsed {
+      margin-left: 60px;
+    }
   }
   
   .top-header {
-    height: 64px;
+    left: 180px;
+    
+    &.sidebar-collapsed {
+      left: 60px;
+    }
   }
   
-  .main-content {
-    min-height: calc(100vh - 64px);
+  .filter-section {
+    left: 180px;
+    
+    &.sidebar-collapsed {
+      left: 60px;
+    }
   }
   
-  .page-title {
-    font-size: 1.125rem;
+  .sidebar-nav {
+    padding: 3.5rem 0.5rem 1rem 0.5rem;
+    
+    .nav-btn {
+      padding: 0.75rem 0.875rem;
+      font-size: 0.8rem;
+      min-height: 38px;
+    }
   }
   
-  .search-container {
-    max-width: none;
+  .sidebar.collapsed {
+    .sidebar-nav {
+      padding: 3.5rem 0 1rem 0;
+      
+      .nav-btn {
+        padding: 0.5rem;
+        margin: 0.15rem 0.15rem;
+        min-height: 32px;
+      }
+    }
   }
-  
-  .search-box {
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .search-input {
-    font-size: 0.85rem;
-  }
-  
-  .search-suggestions {
-    border-radius: 8px;
-    margin-top: 0.25rem;
-  }
-  
-  .suggestion-item {
-    padding: 0.625rem 0.75rem;
-  }
-  
-  .suggestion-text {
-    font-size: 0.85rem;
-  }
-  
   
   .content-area {
     padding: 1rem;
   }
   
   .photo-wall {
+    .photo-grid {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+// 移动端优化 - 重新设计交互方式
+@media (max-width: 768px) {
+  .mobile-overlay {
+    display: block;
+    background: var(--shadow-secondary);
+    backdrop-filter: blur(4px);
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    color: var(--text-primary);
+    min-width: 44px; // 增加触摸区域
+    height: 44px;
+    
+    &:hover {
+      background: var(--bg-hover);
+    }
+  }
+  
+  // 移动端侧边栏 - 全屏抽屉式
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 280px; // 移动端使用更宽的侧边栏
+    z-index: 1003; // 确保在最上层
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+    
+    // 移动端不支持折叠状态
+    &.collapsed {
+      width: 280px;
+    }
+  }
+  
+  // 移动端侧边栏导航优化
+  .sidebar-nav {
+    padding: 1rem 0.5rem 1rem 0.5rem; // 移动端减少顶部间距
+    
+    .nav-section {
+      margin-bottom: 0.5rem;
+      
+      .nav-btn {
+        padding: 1rem 1.25rem; // 移动端增加触摸区域
+        font-size: 0.9rem;
+        min-height: 48px; // 增加最小高度，便于触摸
+        margin: 0.125rem 0;
+        
+        &:hover {
+          background: var(--bg-hover);
+          transform: none; // 移动端取消hover动画
+        }
+        
+        &:active {
+          background: var(--bg-active);
+          transform: scale(0.98); // 添加点击反馈
+        }
+      }
+    }
+  }
+  
+  // 移动端头部优化 - 自适应高度
+  .top-header {
+    left: 0;
+    min-height: 60px; // 设置最小高度
+    box-shadow: 0 2px 12px var(--shadow-primary);
+  }
+  
+  .header-content {
+    padding: 0.75rem 1rem; // 增加上下padding
+    min-height: 60px; // 设置最小高度
+    gap: 0.75rem;
+    align-items: center; // 确保垂直居中
+    display: flex;
+    flex-wrap: nowrap; // 防止换行
+    overflow: visible; // 允许内容显示
+  }
+  
+  .page-title {
+    font-size: 1.1rem;
+    flex-shrink: 0; // 防止标题被压缩
+  }
+  
+  // 移动端搜索和筛选容器优化
+  .search-filter-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0; // 允许flex子元素收缩
+  }
+  
+  // 移动端搜索框优化
+  .search-container {
+    flex: 1;
+    min-width: 0; // 允许搜索框收缩
+  }
+  
+  .search-box {
+    padding: 0.625rem 0.875rem; // 调整padding适应新高度
+    height: 40px; // 稍微减少搜索框高度
+    min-width: 120px; // 设置最小宽度
+  }
+  
+  .search-input {
+    font-size: 0.9rem;
+  }
+  
+  // 移动端筛选按钮优化
+  .filter-toggle-btn {
+    flex-shrink: 0; // 防止筛选按钮被压缩
+    min-width: 40px;
+    height: 40px;
+  }
+  
+  .search-suggestions {
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    box-shadow: 0 8px 32px var(--shadow-primary);
+  }
+  
+  .suggestion-item {
+    padding: 1rem 1.25rem; // 增加触摸区域
+    min-height: 48px;
+  }
+  
+  .suggestion-text {
+    font-size: 0.9rem;
+  }
+  
+  // 移动端过滤菜单优化
+  .filter-section {
+    left: 0;
+    top: auto; // 让过滤菜单自动定位在头部下方
+    margin-top: -1px; // 与头部重叠1px，消除间隙
+    box-shadow: 0 4px 16px var(--shadow-primary);
+    
+    .filter-content {
+      padding: 1rem 1.25rem 1.5rem 1.25rem;
+    }
+    
+    .filter-row-single {
+      gap: 0.75rem;
+      padding: 0.75rem 0.5rem 1rem 0.5rem;
+      
+      .filter-group {
+        min-width: 140px;
+      }
+    }
+    
+    .filter-actions-inline {
+      margin-top: 0.75rem;
+    }
+  }
+  
+  // 移动端主内容区域
+  .main-content {
+    margin-left: 0;
+    min-height: calc(100vh - 60px); // 使用最小头部高度
+    padding-top: 0; // 移除顶部padding，让内容紧贴头部
+  }
+  
+  .content-area {
+    padding: 1rem 0.75rem; // 减少左右内边距
+  }
+  
+  // 移动端照片墙优化
+  .photo-wall {
     .photo-wall-header {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
       
       .photo-wall-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        line-height: 1.2;
       }
       
       .photo-wall-subtitle {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
       }
     }
     
     .photo-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.875rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
       
       .photo-item {
+        border-radius: 8px;
+        
         .photo-container {
-          min-height: 200px;
+          min-height: 180px;
         }
         
         .photo-overlay {
-          padding: 1rem;
+          padding: 0.75rem;
+          border-radius: 8px;
           
           .photo-info {
             .photo-title {
-              font-size: 1.125rem;
+              font-size: 1rem;
+              margin-bottom: 0.25rem;
             }
             
             .photo-description {
-              font-size: 0.8rem;
+              font-size: 0.75rem;
+              margin-bottom: 0.75rem;
+              line-height: 1.3;
             }
             
             .photo-meta {
-              gap: 0.75rem;
+              gap: 0.5rem;
               
               .photo-likes,
               .photo-views {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
               }
             }
           }
@@ -2410,39 +2575,227 @@ const applyFilters = () => {
     }
   }
   
+  // 移动端搜索结果优化
   .results-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  
+  .product-card {
+    border-radius: 8px;
+    
+    &:hover {
+      transform: translateY(-2px); // 减少移动端hover效果
+    }
+  }
+  
+  .product-image {
+    height: 160px;
+  }
+  
+  .product-info {
+    padding: 0.75rem;
+  }
+  
+  .product-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
   }
   
   .product-meta {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
   
   .product-stats {
     justify-content: space-between;
+    gap: 0.5rem;
   }
 }
 
+// 小屏幕移动端优化
 @media (max-width: 480px) {
-  .results-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  // 小屏幕侧边栏优化
+  .sidebar {
+    width: 260px; // 稍微减少宽度
   }
   
+  .sidebar-nav {
+    padding: 0.75rem 0.5rem 0.75rem 0.5rem;
+    
+    .nav-btn {
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
+      min-height: 44px;
+    }
+  }
+  
+  // 小屏幕头部优化 - 自适应高度
+  .top-header {
+    min-height: 56px; // 设置最小高度
+  }
+  
+  .header-content {
+    min-height: 56px;
+    padding: 0.625rem 0.75rem; // 增加上下padding
+    gap: 0.5rem;
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: visible; // 允许内容显示
+  }
+  
+  .page-title {
+    font-size: 1rem;
+  }
+  
+  .search-box {
+    padding: 0.5rem 0.75rem;
+    height: 36px; // 稍微减少高度
+    min-width: 100px;
+  }
+  
+  .search-input {
+    font-size: 0.85rem;
+  }
+  
+  // 小屏幕搜索和筛选容器
+  .search-filter-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-width: 0;
+  }
+  
+  .search-container {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .filter-toggle-btn {
+    flex-shrink: 0;
+    min-width: 36px;
+    height: 36px;
+  }
+  
+  // 小屏幕过滤菜单优化
+  .filter-section {
+    top: auto; // 让过滤菜单自动定位在头部下方
+    margin-top: -1px; // 与头部重叠1px，消除间隙
+    
+    .filter-content {
+      padding: 0.75rem 1rem 1.25rem 1rem;
+    }
+    
+    .filter-row-single {
+      gap: 0.5rem;
+      padding: 0.5rem 0.25rem 0.75rem 0.25rem;
+      
+      .filter-group {
+        min-width: 120px;
+      }
+    }
+  }
+  
+  // 小屏幕主内容区域
+  .main-content {
+    min-height: calc(100vh - 68px); // 更新为新的头部高度
+  }
+  
+  .content-area {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  // 小屏幕照片墙优化
+  .photo-wall {
+    .photo-wall-header {
+      margin-bottom: 1.25rem;
+      
+      .photo-wall-title {
+        font-size: 1.5rem;
+      }
+      
+      .photo-wall-subtitle {
+        font-size: 0.85rem;
+      }
+    }
+    
+    .photo-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.625rem;
+      
+      .photo-item {
+        .photo-container {
+          min-height: 160px;
+        }
+        
+        .photo-overlay {
+          padding: 0.625rem;
+          
+          .photo-info {
+            .photo-title {
+              font-size: 0.9rem;
+            }
+            
+            .photo-description {
+              font-size: 0.7rem;
+            }
+            
+            .photo-meta {
+              gap: 0.375rem;
+              
+              .photo-likes,
+              .photo-views {
+                font-size: 0.7rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // 小屏幕搜索结果优化
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
   
   .product-card {
-    border-radius: 8px;
+    border-radius: 6px;
   }
   
   .product-image {
-    height: 180px;
+    height: 140px;
   }
   
   .product-info {
-    padding: 1rem;
+    padding: 0.625rem;
+  }
+  
+  .product-title {
+    font-size: 0.85rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  .product-description {
+    font-size: 0.75rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .product-meta {
+    gap: 0.375rem;
+  }
+  
+  .product-stats {
+    gap: 0.375rem;
   }
 }
 </style>
