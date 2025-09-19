@@ -8,7 +8,7 @@
 -->
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter, navigateTo } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 
 // import { useSearchStore } from '~/stores/use-search'
@@ -18,8 +18,8 @@ import ClothingContent from '~/components/search-content/ClothingContent.vue'
 import MaterialsContent from '~/components/search-content/MaterialsContent.vue'
 
 // 导入Header组件
-import ClothingHeader from '~/pages/search/components/headers/ClothingHeader.vue'
-import MaterialsHeader from '~/pages/search/components/headers/MaterialsHeader.vue'
+import ClothingHeader from './search/components/headers/ClothingHeader.vue'
+import MaterialsHeader from './search/components/headers/MaterialsHeader.vue'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
