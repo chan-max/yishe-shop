@@ -7,6 +7,10 @@
  * @Description: 搜索页面 - 设计素材搜索和筛选
 -->
 <script lang="ts" setup>
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter, navigateTo } from 'vue-router'
+import { useHead } from '@unhead/vue'
+
 // import { useSearchStore } from '~/stores/use-search'
 
 // 导入内容区域组件

@@ -7,6 +7,8 @@
  * @Description: 初始化工具函数，防止"Cannot access before initialization"错误
  */
 
+import { ref, computed, type Ref, type ComputedRef } from 'vue'
+
 /**
  * 安全地执行函数，防止初始化错误
  * @param fn 要执行的函数

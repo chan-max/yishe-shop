@@ -7,6 +7,9 @@
  * @Description: 搜索页面主组件
 -->
 <script lang="ts" setup>
+import { ref, computed, onMounted, onErrorCaptured } from 'vue'
+import { useHead } from '@unhead/vue'
+
 // 导入子组件
 import SearchHeader from './SearchHeader.vue'
 import SearchSidebar from './SearchSidebar.vue'

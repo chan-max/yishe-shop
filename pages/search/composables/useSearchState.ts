@@ -7,6 +7,8 @@
  * @Description: 搜索页面状态管理
  */
 
+import { ref } from 'vue'
+
 export const useSearchState = () => {
   // 搜索相关状态
   const searchQuery = ref('')

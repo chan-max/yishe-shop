@@ -7,6 +7,8 @@
  * @Description: 搜索页面操作管理
  */
 
+import { useRoute, useRouter } from 'vue-router'
+
 export const useSearchActions = () => {
   // 获取路由
   const route = useRoute()
