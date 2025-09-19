@@ -15,6 +15,10 @@ interface Props {
   showSuggestions: boolean
   filteredSuggestions: string[]
   showMobileSidebar: boolean
+  filters: any
+  filterOptions: any
+  activeFilters: any
+  activeFiltersCount: number
 }
 
 interface Emits {
@@ -25,6 +29,12 @@ interface Emits {
   (e: 'select-suggestion', suggestion: string): void
   (e: 'toggle-mobile-sidebar'): void
   (e: 'handle-blur'): void
+  (e: 'update:filters', filters: any): void
+  (e: 'remove-filter', key: string): void
+  (e: 'clear-filters'): void
+  (e: 'apply-filters'): void
+  (e: 'toggle-style', style: string): void
+  (e: 'toggle-color', color: string): void
 }
 
 const props = defineProps<Props>()
@@ -43,6 +53,20 @@ const materialsFilterOptions = [
   { value: 'resolution', label: '分辨率', options: ['高清', '超高清', '4K', '8K', '矢量'] },
   { value: 'color', label: '颜色', options: ['彩色', '黑白', '单色', '渐变', '透明'] },
   { value: 'style', label: '风格', options: ['简约', '复古', '现代', '卡通', '写实', '抽象'] }
+]
+
+// 颜色选项
+const colorOptions = [
+  { value: '#FF0000', text: '红色' },
+  { value: '#00FF00', text: '绿色' },
+  { value: '#0000FF', text: '蓝色' },
+  { value: '#FFFF00', text: '黄色' },
+  { value: '#FF00FF', text: '紫色' },
+  { value: '#00FFFF', text: '青色' },
+  { value: '#000000', text: '黑色' },
+  { value: '#FFFFFF', text: '白色' },
+  { value: '#808080', text: '灰色' },
+  { value: '#FFA500', text: '橙色' }
 ]
 
 const handleSearchInput = (value: string) => {
@@ -72,6 +96,31 @@ const toggleMobileSidebar = () => {
 const handleBlur = () => {
   emit('handle-blur')
 }
+
+// 筛选相关方法
+const updateFilters = (filters: any) => {
+  emit('update:filters', filters)
+}
+
+const removeFilter = (key: string) => {
+  emit('remove-filter', key)
+}
+
+const clearFilters = () => {
+  emit('clear-filters')
+}
+
+const applyFilters = () => {
+  emit('apply-filters')
+}
+
+const toggleStyle = (style: string) => {
+  emit('toggle-style', style)
+}
+
+const toggleColor = (color: string) => {
+  emit('toggle-color', color)
+}
 </script>
 
 <template>
@@ -80,7 +129,9 @@ const handleBlur = () => {
     subtitle="高质量设计素材资源"
     icon="mdi-image-multiple-outline"
     :show-mobile-sidebar="showMobileSidebar"
+    :show-filter-menu="showFilterMenu"
     @toggle-mobile-sidebar="toggleMobileSidebar"
+    @toggle-filter-menu="toggleFilter"
   >
     <template #search-filter>
       <!-- 筛选按钮 -->
@@ -132,6 +183,125 @@ const handleBlur = () => {
             <v-icon class="suggestion-icon">mdi-image</v-icon>
             <span class="suggestion-text">{{ suggestion }}</span>
           </div>
+        </div>
+      </div>
+    </template>
+    
+    <!-- 筛选内容 -->
+    <template #filter-content>
+      <!-- 筛选标签显示 -->
+      <div class="filter-chips" v-if="activeFiltersCount > 0">
+        <v-chip
+          v-for="(filter, key) in activeFilters"
+          :key="key"
+          size="small"
+          closable
+          @click:close="removeFilter(key)"
+          class="filter-chip"
+        >
+          {{ filter.label }}: {{ filter.value }}
+        </v-chip>
+      </div>
+      
+      <div class="filter-row-single">
+        <!-- 排序方式 -->
+        <div class="filter-group">
+          <label class="filter-label">排序</label>
+          <v-select
+            v-model="filters.sort"
+            :items="filterOptions.sort"
+            variant="outlined"
+            density="compact"
+            hide-details
+            placeholder="选择排序方式"
+            class="filter-select"
+            @update:model-value="updateFilters(filters)"
+          />
+        </div>
+        
+        <!-- 价格范围输入框 -->
+        <div class="filter-group filter-group-range">
+          <label class="filter-label">价格范围</label>
+          <div class="price-range-container">
+            <v-text-field
+              v-model.number="filters.priceMin"
+              type="number"
+              placeholder="最低价"
+              class="price-input"
+              variant="outlined"
+              density="compact"
+              hide-details
+              @update:model-value="updateFilters(filters)"
+            />
+            <span class="price-separator">-</span>
+            <v-text-field
+              v-model.number="filters.priceMax"
+              type="number"
+              placeholder="最高价"
+              class="price-input"
+              variant="outlined"
+              density="compact"
+              hide-details
+              @update:model-value="updateFilters(filters)"
+            />
+          </div>
+        </div>
+        
+        <!-- 风格标签选择 -->
+        <div class="filter-group filter-group-chips">
+          <label class="filter-label">风格</label>
+          <div class="style-chips">
+            <v-chip
+              v-for="style in filterOptions.style"
+              :key="style.value"
+              :class="{ 'chip-selected': filters.styles.includes(style.value) }"
+              @click="toggleStyle(style.value)"
+              class="style-chip"
+              size="small"
+              variant="outlined"
+            >
+              {{ style.text }}
+            </v-chip>
+          </div>
+        </div>
+        
+        <!-- 颜色选择器 -->
+        <div class="filter-group filter-group-colors">
+          <label class="filter-label">颜色</label>
+          <div class="color-picker">
+            <div
+              v-for="color in colorOptions"
+              :key="color.value"
+              :class="{ 'color-selected': filters.colors.includes(color.value) }"
+              @click="toggleColor(color.value)"
+              class="color-option"
+              :style="{ backgroundColor: color.value }"
+              :title="color.text"
+            />
+          </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="filter-actions-inline">
+          <v-btn
+            variant="outlined"
+            @click="clearFilters"
+            class="filter-clear-btn"
+            size="small"
+            icon
+          >
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+          <v-btn
+            variant="flat"
+            @click="applyFilters"
+            class="filter-apply-btn"
+            size="small"
+            color="primary"
+            icon
+          >
+            <v-icon>mdi-check</v-icon>
+          </v-btn>
         </div>
       </div>
     </template>
@@ -227,10 +397,128 @@ const handleBlur = () => {
   font-size: 0.9rem;
 }
 
+/* 筛选相关样式 */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.filter-chip {
+  background: #e55a2b !important;
+  color: white !important;
+}
+
+.filter-row-single {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: end;
+  padding-bottom: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 150px;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.filter-select {
+  min-width: 150px;
+}
+
+.price-range-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-input {
+  min-width: 80px;
+}
+
+.price-separator {
+  color: #999;
+  font-weight: 500;
+}
+
+.style-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.style-chip {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &.chip-selected {
+    background: #e55a2b !important;
+    color: white !important;
+  }
+}
+
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+  
+  &.color-selected {
+    border-color: #e55a2b;
+    box-shadow: 0 0 0 2px rgba(229, 90, 43, 0.3);
+  }
+}
+
+.filter-actions-inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filter-clear-btn {
+  color: #999 !important;
+}
+
+.filter-apply-btn {
+  background: #e55a2b !important;
+  color: white !important;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .search-box {
     min-width: 200px;
+  }
+  
+  .filter-row-single {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-group {
+    min-width: auto;
   }
 }
 </style>

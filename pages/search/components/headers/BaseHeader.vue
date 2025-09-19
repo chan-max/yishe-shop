@@ -143,10 +143,10 @@ const toggleFilterMenu = () => {
 }
 
 .filter-menu {
-  background: #2a2a2a;
-  border-top: 1px solid #444;
-  padding: 1.5rem 2rem;
-  margin-top: 1rem;
+  background: #1a1a1a;
+  border-top: none;
+  padding: 1.5rem 2rem 0 2rem;
+  margin-top: 0;
 }
 
 /* 移动端适配 */
@@ -178,6 +178,10 @@ const toggleFilterMenu = () => {
 
   .search-filter-container {
     gap: 0.5rem;
+  }
+
+  .filter-menu {
+    padding: 1rem 1rem 0 1rem;
   }
 }
 </style>

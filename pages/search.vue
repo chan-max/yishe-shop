@@ -1452,7 +1452,7 @@ const applyFilters = () => {
 
 
 .filter-content {
-  padding: 0.75rem; // 增加所有方向的内边距
+  padding: 0.75rem 0.75rem 1.5rem 0.75rem; // 增加底部内边距
   background: #1a1a1a;
 }
 

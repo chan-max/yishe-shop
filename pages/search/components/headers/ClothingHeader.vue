@@ -403,6 +403,7 @@ const toggleColor = (color: string) => {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 
 .filter-chip {
@@ -415,6 +416,7 @@ const toggleColor = (color: string) => {
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: end;
+  padding-bottom: 1.5rem;
 }
 
 .filter-group {
