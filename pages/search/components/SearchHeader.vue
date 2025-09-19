@@ -7,6 +7,8 @@
  * @Description: 搜索页面头部组件
 -->
 <script lang="ts" setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+
 interface Props {
   searchQuery: string
   showFilterMenu: boolean

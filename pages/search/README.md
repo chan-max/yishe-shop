@@ -14,9 +14,7 @@ pages/search/
 │   ├── SearchSidebar.vue       # 侧边栏组件
 │   ├── SearchContent.vue       # 内容展示组件
 │   └── SearchFilter.vue        # 筛选组件
-├── composables/                # 可复用逻辑
-│   ├── useSearchState.ts       # 状态管理
-│   └── useSearchActions.ts     # 操作管理
+├── utils/                      # 工具函数
 ├── styles/                     # 样式文件
 │   ├── search-page.scss        # 主页面样式
 │   ├── search-header.scss      # 头部样式
@@ -39,8 +37,8 @@ pages/search/
 - **SearchFilter.vue**: 筛选条件面板
 
 ### 状态管理
-- **useSearchState.ts**: 管理所有响应式状态
-- **useSearchActions.ts**: 管理所有操作方法
+- 所有状态和操作逻辑已整合到 **SearchPage.vue** 主组件中
+- 使用 Vue 3 的 Composition API 管理响应式状态
 
 ### 样式管理
 - 每个组件都有对应的样式文件
@@ -50,7 +48,7 @@ pages/search/
 ## 优势
 
 1. **模块化**: 每个功能独立成组件，便于维护
-2. **可复用**: composables 可以在其他页面复用
+2. **简化结构**: 状态和操作逻辑直接整合在主组件中，减少文件复杂度
 3. **可扩展**: 新功能可以轻松添加新组件
 4. **路由不变**: 保持原有的 `/search` 路由路径
 5. **类型安全**: 使用 TypeScript 提供类型检查
@@ -65,6 +63,6 @@ pages/search/
 ## 开发建议
 
 1. 新增功能时，优先考虑是否可以作为独立组件
-2. 共享逻辑放在 composables 中
+2. 状态和操作逻辑直接写在主组件中，保持代码集中
 3. 样式按组件分离，避免全局污染
 4. 保持组件的单一职责原则

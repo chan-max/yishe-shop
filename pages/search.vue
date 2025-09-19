@@ -9,7 +9,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useHead } from '@unhead/vue'
 
 // import { useSearchStore } from '~/stores/use-search'
 

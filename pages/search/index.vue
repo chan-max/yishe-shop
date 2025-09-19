@@ -7,7 +7,6 @@
  * @Description: 搜索页面主入口 - 智能搜索和筛选
 -->
 <script lang="ts" setup>
-import { useHead } from '@unhead/vue'
 
 // 导入搜索页面组件
 import SearchPage from './components/SearchPage.vue'
