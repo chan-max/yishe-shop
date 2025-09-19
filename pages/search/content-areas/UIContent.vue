@@ -289,7 +289,6 @@ const uiItems = ref([
       background: #2a2a2a;
       border-radius: 12px;
       overflow: hidden;
-      transition: all 0.3s ease;
       
       &:hover {
         transform: translateY(-4px);
@@ -319,7 +318,6 @@ const uiItems = ref([
           justify-content: center;
           gap: 1rem;
           opacity: 0;
-          transition: opacity 0.3s ease;
         }
         
         &:hover .ui-overlay {

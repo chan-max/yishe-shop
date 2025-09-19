@@ -287,7 +287,6 @@ const materialItems = ref([
           border-radius: 50%;
           cursor: pointer;
           border: 2px solid transparent;
-          transition: all 0.3s ease;
           
           &:hover {
             transform: scale(1.1);
@@ -313,7 +312,6 @@ const materialItems = ref([
       background: #2a2a2a;
       border-radius: 12px;
       overflow: hidden;
-      transition: all 0.3s ease;
       
       &:hover {
         transform: translateY(-4px);
@@ -343,7 +341,6 @@ const materialItems = ref([
           justify-content: center;
           gap: 1rem;
           opacity: 0;
-          transition: opacity 0.3s ease;
         }
         
         &:hover .material-overlay {

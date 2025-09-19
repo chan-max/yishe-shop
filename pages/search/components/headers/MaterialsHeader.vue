@@ -12,8 +12,6 @@ import BaseHeader from './BaseHeader.vue'
 interface Props {
   searchQuery: string
   showFilterMenu: boolean
-  showSuggestions: boolean
-  filteredSuggestions: string[]
   showMobileSidebar: boolean
   filters: any
   filterOptions: any
@@ -26,9 +24,7 @@ interface Emits {
   (e: 'toggle-filter-menu'): void
   (e: 'perform-search'): void
   (e: 'clear-search'): void
-  (e: 'select-suggestion', suggestion: string): void
   (e: 'toggle-mobile-sidebar'): void
-  (e: 'handle-blur'): void
   (e: 'update:filters', filters: any): void
   (e: 'remove-filter', key: string): void
   (e: 'clear-filters'): void
@@ -40,11 +36,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-// 素材图相关的搜索建议
-const materialsSuggestions = ref([
-  '背景图', '纹理', '图案', '图标', '插画', '照片', '矢量图', 'PNG', 'JPG', 'SVG',
-  '装饰元素', '边框', '分割线', '按钮', '标签', '徽章', '水印', '蒙版'
-])
+// 搜索建议已移除
 
 // 素材图相关的筛选选项
 const materialsFilterOptions = [
@@ -85,16 +77,8 @@ const clearSearch = () => {
   emit('clear-search')
 }
 
-const selectSuggestion = (suggestion: string) => {
-  emit('select-suggestion', suggestion)
-}
-
 const toggleMobileSidebar = () => {
   emit('toggle-mobile-sidebar')
-}
-
-const handleBlur = () => {
-  emit('handle-blur')
 }
 
 // 筛选相关方法
@@ -149,13 +133,11 @@ const toggleColor = (color: string) => {
           <v-icon class="search-icon">mdi-magnify</v-icon>
           <input
             :value="searchQuery"
-            @input="handleSearchInput($event.target.value)"
+            @input="handleSearchInput(($event.target as HTMLInputElement).value)"
             type="text"
             placeholder="搜索素材图片..."
             class="search-input"
             @keyup.enter="performSearch"
-            @focus="$emit('update:showSuggestions', true)"
-            @blur="handleBlur"
           />
           <v-btn
             v-if="searchQuery"
@@ -167,19 +149,6 @@ const toggleColor = (color: string) => {
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-        </div>
-        
-        <!-- 搜索建议 -->
-        <div v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions">
-          <div
-            v-for="(suggestion, index) in filteredSuggestions"
-            :key="index"
-            class="suggestion-item"
-            @click="selectSuggestion(suggestion)"
-          >
-            <v-icon class="suggestion-icon">mdi-image</v-icon>
-            <span class="suggestion-text">{{ suggestion }}</span>
-          </div>
         </div>
       </div>
     </template>
@@ -308,7 +277,6 @@ const toggleColor = (color: string) => {
 <style scoped>
 .filter-toggle-btn {
   color: var(--text-secondary) !important;
-  transition: all 0.3s ease;
   
   &.active {
     color: var(--theme-primary) !important;
@@ -333,7 +301,6 @@ const toggleColor = (color: string) => {
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   min-width: 300px;
-  transition: all 0.3s ease;
 
   &:hover {
     background: var(--input-bg-hover);
@@ -349,7 +316,7 @@ const toggleColor = (color: string) => {
 .search-icon {
   color: var(--text-tertiary);
   margin-right: 0.5rem;
-  transition: all 0.3s ease;
+  font-size: 1rem;
   
   .search-box:hover & {
     color: var(--text-secondary);
@@ -367,7 +334,6 @@ const toggleColor = (color: string) => {
   outline: none;
   color: var(--text-primary);
   font-size: 0.9rem;
-  transition: all 0.3s ease;
   
   &::placeholder {
     color: var(--text-muted);
@@ -385,7 +351,6 @@ const toggleColor = (color: string) => {
 .clear-btn {
   color: var(--text-tertiary) !important;
   margin-left: 0.5rem;
-  transition: all 0.3s ease;
   
   &:hover {
     color: var(--text-primary) !important;
@@ -393,51 +358,7 @@ const toggleColor = (color: string) => {
   }
 }
 
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1003;
-  box-shadow: 0 4px 12px var(--shadow-primary);
-  transition: all 0.3s ease;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid var(--border-secondary);
-  
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background: var(--bg-hover);
-  }
-}
-
-.suggestion-icon {
-  color: var(--text-muted);
-  margin-right: 0.5rem;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.suggestion-text {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
+/* 搜索建议相关样式已移除 */
 
 /* 筛选相关样式 */
 .filter-chips {
@@ -451,7 +372,6 @@ const toggleColor = (color: string) => {
 .filter-chip {
   background: var(--theme-primary) !important;
   color: var(--text-primary) !important;
-  transition: all 0.3s ease;
   
   &:hover {
     background: var(--theme-primary-hover) !important;
@@ -477,7 +397,6 @@ const toggleColor = (color: string) => {
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 500;
-  transition: all 0.3s ease;
 }
 
 .filter-select {
@@ -507,7 +426,6 @@ const toggleColor = (color: string) => {
 
 .style-chip {
   cursor: pointer;
-  transition: all 0.2s ease;
   
   &.chip-selected {
     background: var(--theme-primary) !important;
@@ -527,7 +445,6 @@ const toggleColor = (color: string) => {
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all 0.2s ease;
   
   &:hover {
     transform: scale(1.1);
@@ -547,7 +464,6 @@ const toggleColor = (color: string) => {
 
 .filter-clear-btn {
   color: var(--text-tertiary) !important;
-  transition: all 0.3s ease;
   
   &:hover {
     color: var(--text-primary) !important;
@@ -558,7 +474,6 @@ const toggleColor = (color: string) => {
 .filter-apply-btn {
   background: var(--theme-primary) !important;
   color: var(--text-primary) !important;
-  transition: all 0.3s ease;
   
   &:hover {
     background: var(--theme-primary-hover) !important;

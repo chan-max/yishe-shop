@@ -63,7 +63,6 @@ const toggleFilterMenu = () => {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-primary);
   padding: 1rem 0;
-  transition: all 0.3s ease;
 }
 
 .header-content {
@@ -81,7 +80,6 @@ const toggleFilterMenu = () => {
   color: var(--text-secondary) !important;
   position: absolute;
   left: 1rem;
-  transition: all 0.3s ease;
   
   &:hover {
     color: var(--text-primary) !important;
@@ -103,7 +101,6 @@ const toggleFilterMenu = () => {
   border-top: none;
   padding: 1.5rem 2rem 0 2rem;
   margin-top: 0;
-  transition: all 0.3s ease;
 }
 
 /* 移动端适配 */

@@ -133,6 +133,12 @@ const handlePersonalClick = (item: any) => {
 // 检查是否选中
 const isCategorySelected = (value: string) => selectedCategory.value === value
 const isPersonalSelected = (value: string) => selectedPersonal.value === value
+
+// 主题切换
+const toggleTheme = () => {
+  // 这里可以添加主题切换逻辑
+  console.log('切换主题')
+}
 </script>
 
 <template>
@@ -178,6 +184,16 @@ const isPersonalSelected = (value: string) => selectedPersonal.value === value
         </div>
       </div>
     </nav>
+    
+    <!-- 主题切换按钮 -->
+    <div class="theme-switcher-container">
+      <div class="theme-switcher" :class="{ 'collapsed': collapsed }" @click="toggleTheme">
+        <div class="theme-btn" :title="collapsed ? '主题切换' : '切换主题'">
+          <v-icon class="theme-icon">mdi-weather-sunny</v-icon>
+        </div>
+        <span v-if="!collapsed" class="theme-text">主题切换</span>
+      </div>
+    </div>
   </aside>
   
   <!-- 移动端遮罩 -->
@@ -231,6 +247,16 @@ const isPersonalSelected = (value: string) => selectedPersonal.value === value
         </div>
       </div>
     </nav>
+    
+    <!-- 移动端主题切换按钮 -->
+    <div class="mobile-theme-switcher">
+      <div class="theme-switcher" @click="toggleTheme">
+        <div class="theme-btn" title="切换主题">
+          <v-icon class="theme-icon">mdi-weather-sunny</v-icon>
+        </div>
+        <span class="theme-text">主题切换</span>
+      </div>
+    </div>
   </aside>
 </template>
 

@@ -270,7 +270,6 @@ const paletteItems = ref([
       background: #2a2a2a;
       border-radius: 12px;
       overflow: hidden;
-      transition: all 0.3s ease;
       
       &:hover {
         transform: translateY(-4px);
@@ -290,7 +289,6 @@ const paletteItems = ref([
             flex: 1;
             height: 100%;
             cursor: pointer;
-            transition: transform 0.2s ease;
             
             &:hover {
               transform: scale(1.05);
@@ -310,7 +308,6 @@ const paletteItems = ref([
           justify-content: center;
           gap: 1rem;
           opacity: 0;
-          transition: opacity 0.3s ease;
         }
         
         &:hover .palette-overlay {

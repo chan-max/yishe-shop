@@ -822,21 +822,29 @@ const applyFilters = () => {
         <!-- 主题切换开关 -->
         <div class="theme-toggle-section">
           <div class="theme-toggle-container">
+            <!-- 折叠状态：使用div -->
+            <div 
+              v-if="sidebarCollapsed"
+              class="theme-toggle-btn theme-toggle-btn-collapsed"
+              @click="toggleTheme"
+              :title="isDarkMode ? '切换到白天模式' : '切换到夜间模式'"
+            >
+              <v-icon>
+                {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+              </v-icon>
+            </div>
+            <!-- 展开状态：使用v-btn -->
             <v-btn
+              v-else
               variant="text"
               class="theme-toggle-btn"
               @click="toggleTheme"
               :title="isDarkMode ? '切换到白天模式' : '切换到夜间模式'"
             >
-              <v-icon v-if="sidebarCollapsed">
+              <v-icon left>
                 {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
               </v-icon>
-              <template v-else>
-                <v-icon left>
-                  {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
-                </v-icon>
-                <span>{{ isDarkMode ? '切换到白天模式' : '切换到夜间模式' }}</span>
-              </template>
+              <span>{{ isDarkMode ? '切换到白天模式' : '切换到夜间模式' }}</span>
             </v-btn>
           </div>
         </div>
@@ -1146,7 +1154,6 @@ const applyFilters = () => {
         
         .v-icon {
           font-size: 1.4rem;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           margin: 0 !important;
           flex-shrink: 0;
           display: inline-flex;
@@ -1237,9 +1244,33 @@ const applyFilters = () => {
 // 折叠状态下的主题切换按钮
 .sidebar.collapsed {
   .theme-toggle-section {
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 0.25rem;
+    display: flex;
+    justify-content: center;
     
     .theme-toggle-container {
+      .theme-toggle-btn-collapsed {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        color: var(--text-tertiary);
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: var(--text-primary);
+        }
+        
+        .v-icon {
+          font-size: 16px;
+          margin: 0;
+        }
+      }
+      
       .theme-toggle-btn {
         padding: 0.75rem;
         justify-content: center;
@@ -1255,7 +1286,6 @@ const applyFilters = () => {
         
         .v-icon {
           font-size: 1.4rem;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           margin: 0 !important;
           flex-shrink: 0;
           display: inline-flex;
@@ -1470,7 +1500,6 @@ const applyFilters = () => {
   align-items: center;
   padding: 0.75rem 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
   border-bottom: 1px solid var(--border-secondary);
   
   &:last-child {
@@ -1655,7 +1684,6 @@ const applyFilters = () => {
   color: var(--text-secondary) !important;
   border: 1px solid var(--border-secondary) !important;
   cursor: pointer;
-  transition: all 0.2s ease;
   
   &:hover {
     background: var(--bg-hover) !important;
@@ -1689,7 +1717,6 @@ const applyFilters = () => {
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all 0.2s ease;
   position: relative;
   
   &:hover {
