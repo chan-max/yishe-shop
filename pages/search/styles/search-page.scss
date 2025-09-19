@@ -10,15 +10,15 @@
 .search-page {
     display: flex;
     min-height: 100vh;
-    background: #1a1a1a;
-    color: #e0e0e0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 // 主要内容区域
 .main-content {
     flex: 1;
     margin-left: 240px; // 为侧边栏留出空间
-    background: #1a1a1a;
+    background: var(--bg-primary);
 
     // 当侧边栏折叠时调整
     &.sidebar-collapsed {
@@ -31,8 +31,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: #1a1a1a;
-    border-bottom: 1px solid #333;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-primary);
     padding: 1rem 0;
 }
 
@@ -46,7 +46,7 @@
 
 .mobile-menu-btn {
     display: none;
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 .header-info {
@@ -78,14 +78,14 @@
 .page-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.2;
 }
 
 .page-subtitle {
     font-size: 0.9rem;
-    color: #999;
+    color: var(--text-tertiary);
     margin: 0.25rem 0 0 0;
     line-height: 1.3;
 }

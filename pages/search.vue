@@ -920,37 +920,53 @@ const applyFilters = () => {
 
 // 白天模式变量
 .light-theme {
-  // 背景色
+  // 背景色 - 更柔和的白色系
   --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #e9ecef;
-  --bg-hover: rgba(0, 0, 0, 0.05);
-  --bg-active: rgba(0, 0, 0, 0.1);
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --bg-active: rgba(0, 0, 0, 0.08);
   
-  // 文字颜色
-  --text-primary: #212529;
-  --text-secondary: #495057;
-  --text-tertiary: #6c757d;
-  --text-muted: #adb5bd;
+  // 文字颜色 - 更好的对比度
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
   
-  // 边框颜色
-  --border-primary: #dee2e6;
-  --border-secondary: rgba(0, 0, 0, 0.1);
-  --border-hover: rgba(0, 0, 0, 0.2);
+  // 边框颜色 - 更细腻的边框
+  --border-primary: #e2e8f0;
+  --border-secondary: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
   
   // 主题色
   --theme-primary: #3b82f6;
   --theme-primary-hover: #2563eb;
   --theme-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
   
-  // 阴影
-  --shadow-primary: rgba(0, 0, 0, 0.1);
-  --shadow-secondary: rgba(0, 0, 0, 0.15);
+  // 阴影 - 更柔和的阴影
+  --shadow-primary: rgba(0, 0, 0, 0.08);
+  --shadow-secondary: rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
   
-  // 输入框背景
-  --input-bg: rgba(0, 0, 0, 0.08);
-  --input-bg-hover: rgba(0, 0, 0, 0.12);
-  --input-bg-focus: rgba(0, 0, 0, 0.15);
+  // 输入框背景 - 更清晰的输入框
+  --input-bg: #ffffff;
+  --input-bg-hover: #f8fafc;
+  --input-bg-focus: #ffffff;
+  --input-border: #d1d5db;
+  --input-border-hover: #9ca3af;
+  --input-border-focus: #3b82f6;
+  
+  // 卡片背景
+  --card-bg: #ffffff;
+  --card-bg-hover: #f8fafc;
+  
+  // 按钮样式
+  --btn-primary-bg: #3b82f6;
+  --btn-primary-hover: #2563eb;
+  --btn-secondary-bg: #f1f5f9;
+  --btn-secondary-hover: #e2e8f0;
+  --btn-text: #475569;
 }
 
 // 全局滚动条样式
@@ -1060,7 +1076,7 @@ const applyFilters = () => {
 
 // 侧边栏导航菜单
 .sidebar-nav {
-  padding: 3.5rem 0.5rem 1.5rem 0.5rem; // 增加左右padding，为滚动条留出空间
+  padding: 4.5rem 1rem 1.5rem 1rem; // 增加上下和左右padding，让菜单不那么靠上
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1071,8 +1087,8 @@ const applyFilters = () => {
     .nav-btn {
       width: 100%;
       justify-content: flex-start;
-      padding: 0.625rem 0.875rem;
-      margin: 0.125rem 0;
+      padding: 1rem 1.25rem; // 增加按钮内边距
+      margin: 0.25rem 0; // 增加按钮间距
       color: var(--text-tertiary);
       font-size: 0.85rem;
       font-weight: 500;
@@ -1134,16 +1150,16 @@ const applyFilters = () => {
 // 折叠状态下的导航样式
 .sidebar.collapsed {
   .sidebar-nav {
-    padding: 3.5rem 0 1rem;
+    padding: 4.5rem 0 1rem 0; // 折叠状态下不需要左右padding，保持居中
     
     .nav-section {
       margin-bottom: 1rem;
       
       .nav-btn {
-        padding: 0.75rem;
+        padding: 0.75rem; // 保持原来的内边距
         justify-content: center;
         align-items: center;
-        margin: 0.25rem 0.5rem;
+        margin: 0.25rem 0.25rem; // 减少左右间距
         width: calc(100% - 1rem);
         background: transparent;
         min-height: 44px;
@@ -2210,15 +2226,15 @@ const applyFilters = () => {
   
   
   .sidebar-nav {
-    padding: 3.5rem 0 1rem;
+    padding: 4.5rem 0.5rem 1rem 0.5rem; // 增加左右padding
     
     .nav-section {
       margin-bottom: 1.25rem;
       
       .nav-btn {
-        padding: 0.75rem 1rem;
+        padding: 1rem 1.25rem; // 增加按钮内边距
         font-size: 0.85rem;
-        min-height: 40px;
+        min-height: 44px; // 稍微增加最小高度
         
         &:hover {
           color: var(--text-primary);

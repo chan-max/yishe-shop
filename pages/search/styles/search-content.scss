@@ -11,7 +11,7 @@
 .content-area {
     flex: 1;
     padding: 1.5rem 1.5rem 2rem 1.5rem; // 增加底部padding，为滚动条留出更多空间
-    background: #1a1a1a;
+    background: var(--bg-primary);
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -24,13 +24,13 @@
 
     .results-title {
         font-size: 1.5rem;
-        color: #e0e0e0;
+        color: var(--text-primary);
         margin: 0 0 0.5rem 0;
         font-weight: 600;
     }
 
     .results-count {
-        color: #999999;
+        color: var(--text-tertiary);
         font-weight: 400;
         font-size: 1rem;
     }
@@ -46,7 +46,7 @@
 
     .loading-text {
         margin-top: 1rem;
-        color: #999999;
+        color: var(--text-tertiary);
         font-size: 0.9rem;
     }
 }

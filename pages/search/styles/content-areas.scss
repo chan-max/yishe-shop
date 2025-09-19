@@ -7,12 +7,12 @@
         align-items: center;
         font-size: 1.5rem;
         font-weight: 600;
-        color: #ffffff;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
     }
 
     .content-subtitle {
-        color: #b0b0b0;
+        color: var(--text-secondary);
         font-size: 0.9rem;
     }
 }
@@ -32,7 +32,7 @@
 
         .filter-label {
             display: block;
-            color: #e0e0e0;
+            color: var(--text-secondary);
             font-size: 0.85rem;
             margin-bottom: 0.5rem;
             font-weight: 500;
@@ -52,7 +52,7 @@
             }
 
             .price-separator {
-                color: #b0b0b0;
+                color: var(--text-tertiary);
                 font-weight: 500;
             }
         }
@@ -78,13 +78,16 @@
     .product-card,
     .logo-card,
     .palette-card {
-        background: #2a2a2a;
+        background: var(--card-bg);
+        border: 1px solid var(--border-primary);
         border-radius: 12px;
         overflow: hidden;
+        box-shadow: var(--shadow-card);
 
         &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-card-hover);
+            background: var(--card-bg-hover);
         }
     }
 

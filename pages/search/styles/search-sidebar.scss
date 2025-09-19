@@ -14,8 +14,8 @@
     left: 0;
     width: 240px;
     height: 100vh;
-    background: #1C1C1C;
-    border-right: 1px solid #404040;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
     z-index: 1002;
     display: flex;
     flex-direction: column;
@@ -46,7 +46,7 @@
 
 // 侧边栏导航菜单
 .sidebar-nav {
-    padding: 3.5rem 0.5rem 1.5rem 0.5rem; // 增加左右padding，为滚动条留出空间
+    padding: 4.5rem 1rem 1.5rem 1rem; // 增加上下和左右padding，让菜单不那么靠上
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
@@ -57,11 +57,11 @@
         .nav-btn {
             display: flex;
             align-items: center;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.25rem; // 增加按钮内边距
             color: #999999;
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem; // 增加按钮间距
             cursor: pointer;
 
             &:hover {
@@ -191,6 +191,10 @@
 
 // 折叠状态下的样式
 .sidebar.collapsed {
+    .sidebar-nav {
+        padding: 4.5rem 0 1rem 0; // 折叠状态下不需要左右padding，保持居中
+    }
+
     .nav-section-title {
         display: none;
     }
@@ -198,6 +202,7 @@
     .nav-btn {
         justify-content: center;
         padding: 0.75rem;
+        margin: 0.25rem 0.25rem; // 减少左右间距
     }
 
     .nav-icon {
@@ -235,7 +240,8 @@
     left: 0;
     width: 280px;
     height: 100vh;
-    background: #1C1C1C;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-primary);
     z-index: 1000;
     transform: translateX(0);
     display: flex;

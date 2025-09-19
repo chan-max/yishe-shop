@@ -286,13 +286,16 @@ const uiItems = ref([
     }
     
     .ui-card {
-      background: #2a2a2a;
+      background: var(--card-bg);
+      border: 1px solid var(--border-primary);
       border-radius: 12px;
       overflow: hidden;
+      box-shadow: var(--shadow-card);
       
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: var(--shadow-card-hover);
+        background: var(--card-bg-hover);
       }
       
       .ui-preview {
