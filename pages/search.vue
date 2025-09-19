@@ -13,8 +13,8 @@ import { useRoute, useRouter } from 'vue-router'
 // import { useSearchStore } from '~/stores/use-search'
 
 // 导入内容区域组件
-import ClothingContent from '~/components/search-content/ClothingContent.vue'
-import MaterialsContent from '~/components/search-content/MaterialsContent.vue'
+import ClothingContent from '~/pages/search/search-content/ClothingContent.vue'
+import MaterialsContent from '~/pages/search/search-content/MaterialsContent.vue'
 
 // 导入Header组件
 import ClothingHeader from './search/components/headers/ClothingHeader.vue'
