@@ -772,17 +772,31 @@ const applyFilters = () => {
     <!-- 左侧固定侧边栏 -->
     <aside class="sidebar" :class="{ 'mobile-open': showMobileSidebar, 'collapsed': sidebarCollapsed }">
       <div class="sidebar-content">
-        <!-- 折叠按钮 - 右上角 -->
-        <div class="sidebar-toggle">
-          <v-btn
-            variant="text"
-            @click="toggleSidebar"
-            class="toggle-btn"
-            icon
-              size="small"
-            >
-            <v-icon>{{ sidebarCollapsed ? 'mdi-dock-right' : 'mdi-dock-left' }}</v-icon>
-          </v-btn>
+        <!-- Logo和折叠按钮区域 -->
+        <div class="sidebar-header">
+          <!-- Logo区域 - 折叠时隐藏 -->
+          <div class="sidebar-logo" v-if="!sidebarCollapsed">
+            <div class="logo-container">
+              <img 
+                src="/logo/logo.svg" 
+                alt="Yishe Logo" 
+                class="logo-image"
+              />
+            </div>
+          </div>
+
+          <!-- 折叠按钮 - 右上角 -->
+          <div class="sidebar-toggle">
+            <v-btn
+              variant="text"
+              @click="toggleSidebar"
+              class="toggle-btn"
+              icon
+                size="small"
+              >
+              <v-icon>{{ sidebarCollapsed ? 'mdi-dock-right' : 'mdi-dock-left' }}</v-icon>
+            </v-btn>
+          </div>
         </div>
 
         <!-- 导航菜单 -->
@@ -832,7 +846,7 @@ const applyFilters = () => {
               <v-icon>
                 {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
               </v-icon>
-            </div>
+          </div>
             <!-- 展开状态：使用v-btn -->
             <v-btn
               v-else
@@ -1042,11 +1056,11 @@ const applyFilters = () => {
 }
 
 .sidebar-toggle {
-  position: absolute;
-  top: 1rem;
-  right: 0.75rem;
+  position: relative; // 改为相对定位，让flex布局控制位置
   z-index: 10;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   .toggle-btn {
     color: var(--text-secondary);
@@ -1066,17 +1080,50 @@ const applyFilters = () => {
   }
 }
 
-// 折叠状态下的折叠按钮居中
+
+// 侧边栏头部区域 - Logo和折叠按钮容器
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0.5rem 1rem 0.5rem;
+  margin-bottom: 0.75rem;
+  min-height: 60px; // 设置最小高度确保垂直居中效果
+}
+
+// 侧边栏Logo区域
+.sidebar-logo {
+  padding: 0;
+  border-bottom: none;
+  margin-bottom: 0;
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin-left: 0.875rem; // 与导航按钮图标左边缘对齐
+  }
+  
+  .logo-image {
+    height: 24px;
+    width: auto;
+    flex-shrink: 0;
+  }
+}
+
+// 折叠状态下的头部样式
 .sidebar.collapsed {
-  .sidebar-toggle {
-    right: 50%;
-    transform: translateX(50%);
+  .sidebar-header {
+    padding: 1rem 0.25rem 0.75rem 0.25rem;
+    justify-content: center;
+    min-height: 50px; // 折叠状态下稍微减少高度
   }
 }
 
 // 侧边栏导航菜单
 .sidebar-nav {
-  padding: 4.5rem 1rem 1.5rem 1rem; // 增加上下和左右padding，让菜单不那么靠上
+  padding: 1rem 0.25rem 1.5rem 0.25rem; // 调整顶部padding，因为现在有logo区域
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1150,7 +1197,7 @@ const applyFilters = () => {
 // 折叠状态下的导航样式
 .sidebar.collapsed {
   .sidebar-nav {
-    padding: 4.5rem 0 1rem 0; // 折叠状态下不需要左右padding，保持居中
+    padding: 1rem 0 1rem 0; // 折叠状态下不需要左右padding，保持居中
     
     .nav-section {
       margin-bottom: 1rem;
@@ -2226,7 +2273,7 @@ const applyFilters = () => {
   
   // 平板端侧边栏导航优化
   .sidebar-nav {
-    padding: 4rem 0.75rem 1rem 0.75rem; // 调整平板端间距
+    padding: 1rem 0.25rem 1rem 0.25rem; // 调整平板端顶部padding
     
     .nav-section {
       margin-bottom: 1rem; // 减少section间距
@@ -2249,7 +2296,7 @@ const applyFilters = () => {
   // 平板端折叠状态优化
   .sidebar.collapsed {
     .sidebar-nav {
-      padding: 4rem 0 1rem 0;
+      padding: 1rem 0 1rem 0;
       
       .nav-btn {
         padding: 0.625rem;
@@ -2312,7 +2359,7 @@ const applyFilters = () => {
   }
   
   .sidebar-nav {
-    padding: 3.5rem 0.5rem 1rem 0.5rem;
+    padding: 1rem 0.25rem 1rem 0.25rem; // 调整中等屏幕顶部padding
     
     .nav-btn {
       padding: 0.75rem 0.875rem;
@@ -2323,7 +2370,7 @@ const applyFilters = () => {
   
   .sidebar.collapsed {
     .sidebar-nav {
-      padding: 3.5rem 0 1rem 0;
+      padding: 1rem 0 1rem 0;
       
       .nav-btn {
         padding: 0.5rem;
@@ -2386,9 +2433,26 @@ const applyFilters = () => {
     }
   }
   
+  // 移动端头部优化
+  .sidebar-header {
+    padding: 1rem 0.5rem 0.75rem 0.5rem;
+    min-height: 56px; // 移动端设置合适的最小高度
+  }
+  
+  .sidebar-logo {
+    .logo-container {
+      justify-content: flex-start;
+      margin-left: 1.25rem; // 移动端与导航按钮图标左边缘对齐
+      
+      .logo-image {
+        height: 22px;
+      }
+    }
+  }
+
   // 移动端侧边栏导航优化
   .sidebar-nav {
-    padding: 1rem 0.5rem 1rem 0.5rem; // 移动端减少顶部间距
+    padding: 0.75rem 0.25rem 1rem 0.25rem; // 调整移动端顶部padding
     
     .nav-section {
       margin-bottom: 0.5rem;
@@ -2536,7 +2600,7 @@ const applyFilters = () => {
     
     .photo-grid {
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 0.75rem;
+    gap: 0.75rem;
       
       .photo-item {
         border-radius: 8px;
@@ -2626,8 +2690,25 @@ const applyFilters = () => {
     width: 260px; // 稍微减少宽度
   }
   
+  // 小屏幕头部优化
+  .sidebar-header {
+    padding: 0.75rem 0.375rem 0.5rem 0.375rem;
+    min-height: 48px; // 小屏幕设置合适的最小高度
+  }
+  
+  .sidebar-logo {
+    .logo-container {
+      justify-content: flex-start;
+      margin-left: 1rem; // 小屏幕与导航按钮图标左边缘对齐
+      
+      .logo-image {
+        height: 20px;
+      }
+    }
+  }
+  
   .sidebar-nav {
-    padding: 0.75rem 0.5rem 0.75rem 0.5rem;
+    padding: 0.5rem 0.25rem 0.75rem 0.25rem; // 调整小屏幕顶部padding
     
     .nav-btn {
       padding: 0.875rem 1rem;
