@@ -129,7 +129,8 @@ export default defineNuxtConfig({
   hooks: {
   },
   devServer: {
-    port: 15201
+    port: 15201,
+    host: '0.0.0.0'
   },
   runtimeConfig: {
     public: {
