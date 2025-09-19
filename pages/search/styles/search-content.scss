@@ -1,0 +1,332 @@
+/**
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-01-27 11:00:00
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-09-18 21:32:42
+ * @FilePath: /yishe-nuxt/pages/search/styles/search-content.scss
+ * @Description: 搜索页面内容组件样式
+ */
+
+// 内容区域
+.content-area {
+    flex: 1;
+    padding: 1.5rem 1.5rem 2rem 1.5rem; // 增加底部padding，为滚动条留出更多空间
+    background: #1a1a1a;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+// 搜索结果
+.search-results {
+    .results-header {
+        margin-bottom: 2rem;
+    }
+
+    .results-title {
+        font-size: 1.5rem;
+        color: #e0e0e0;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+    }
+
+    .results-count {
+        color: #999999;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+}
+
+// 加载状态
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+
+    .loading-text {
+        margin-top: 1rem;
+        color: #999999;
+        font-size: 0.9rem;
+    }
+}
+
+// 无结果状态
+.no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    .no-results-icon {
+        font-size: 4rem;
+        color: #666666;
+        margin-bottom: 1rem;
+    }
+
+    .no-results-title {
+        font-size: 1.25rem;
+        color: #e0e0e0;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+    }
+
+    .no-results-text {
+        color: #999999;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+}
+
+// 结果网格
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.result-item {
+    background: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.result-image {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.05);
+    }
+}
+
+.result-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    .result-item:hover & {
+        opacity: 1;
+    }
+}
+
+.like-btn,
+.view-btn {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    margin-left: 0.5rem;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.3) !important;
+    }
+}
+
+.result-info {
+    padding: 1rem;
+}
+
+.result-title {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.result-description {
+    font-size: 0.85rem;
+    color: #999999;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.result-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: #cccccc;
+
+    .v-icon {
+        font-size: 0.9rem;
+    }
+}
+
+// 照片墙
+.photo-wall {
+    .wall-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .wall-title {
+        font-size: 2rem;
+        color: #e0e0e0;
+        margin: 0 0 0.5rem 0;
+        font-weight: 700;
+    }
+
+    .wall-subtitle {
+        font-size: 1rem;
+        color: #999999;
+        margin: 0;
+    }
+}
+
+.wall-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.wall-item {
+    background: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.wall-image {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.05);
+    }
+}
+
+.wall-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    .wall-item:hover & {
+        opacity: 1;
+    }
+}
+
+.wall-info {
+    padding: 1rem;
+}
+
+.wall-item-title {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.wall-item-description {
+    font-size: 0.85rem;
+    color: #999999;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.wall-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+// 加载更多按钮
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.load-more-btn {
+    color: #e0e0e0 !important;
+    border-color: #404040 !important;
+    padding: 0.75rem 2rem !important;
+    font-size: 0.9rem !important;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: #666666 !important;
+    }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+    .content-area {
+        padding: 1rem;
+    }
+
+    .results-grid,
+    .wall-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .wall-title {
+        font-size: 1.5rem;
+    }
+
+    .wall-subtitle {
+        font-size: 0.9rem;
+    }
+}

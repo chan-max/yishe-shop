@@ -1,0 +1,48 @@
+/**
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-01-27 11:00:00
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-09-18 21:32:42
+ * @FilePath: /yishe-nuxt/pages/search/styles/search-page.scss
+ * @Description: 搜索页面主样式
+ */
+
+.search-page {
+    display: flex;
+    min-height: 100vh;
+    background: #1a1a1a;
+    color: #e0e0e0;
+}
+
+// 主要内容区域
+.main-content {
+    flex: 1;
+    margin-left: 240px; // 为侧边栏留出空间
+    background: #1a1a1a;
+    transition: margin-left 0.3s ease;
+
+    // 当侧边栏折叠时调整
+    &.sidebar-collapsed {
+        margin-left: 80px;
+    }
+
+    // 当过滤菜单展开时，为过滤菜单留出空间
+    &.filter-expanded {
+        margin-top: 100px; // 为过滤菜单留出额外空间
+        min-height: calc(100vh - 100px);
+    }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        margin-top: 64px; // 移动端头部高度
+        min-height: calc(100vh - 64px);
+
+        &.filter-expanded {
+            margin-top: 120px; // 移动端过滤菜单空间
+            min-height: calc(100vh - 120px);
+        }
+    }
+}

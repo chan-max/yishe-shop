@@ -2,12 +2,20 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-18 21:32:42
+ * @LastEditTime: 2025-09-19 08:17:49
  * @FilePath: /yishe-nuxt/pages/search.vue
- * @Description: 搜索页面 - 智能搜索和筛选
+ * @Description: 搜索页面 - 设计素材搜索和筛选
 -->
 <script lang="ts" setup>
 // import { useSearchStore } from '~/stores/use-search'
+
+// 导入内容区域组件
+import ClothingContent from '~/components/search-content/ClothingContent.vue'
+import MaterialsContent from '~/components/search-content/MaterialsContent.vue'
+import LifestyleContent from '~/components/search-content/LifestyleContent.vue'
+import BrandingContent from '~/components/search-content/BrandingContent.vue'
+import ColorContent from '~/components/search-content/ColorContent.vue'
+import UIContent from '~/components/search-content/UIContent.vue'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
@@ -21,8 +29,8 @@ const router = useRouter()
 useHead({
   titleTemplate: '',
   title: computed(() => {
-    const keyword = searchQuery.value
-    return keyword ? `搜索"${keyword}" - 衣设服装设计` : '搜索 - 衣设服装设计'
+  
+    return '搜索 - 衣设服装设计'
   }),
   meta: [
     {
@@ -62,6 +70,9 @@ const sidebarCollapsed = ref(false)
 
 // 过滤菜单状态
 const showFilterMenu = ref(false)
+
+// 侧边栏分类选中状态
+const selectedCategory = ref('clothing') // 默认选中服装设计
 
 // 照片墙数据
 const photoWallData = ref<any[]>([])
@@ -306,6 +317,30 @@ const loadMorePhotos = async () => {
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value
 }
+
+// 内容组件映射
+const contentComponents = {
+  clothing: ClothingContent,
+  materials: MaterialsContent,
+  lifestyle: LifestyleContent,
+  branding: BrandingContent,
+  color: ColorContent,
+  ui: UIContent,
+  packaging: MaterialsContent, // 暂时使用素材图组件
+  graphic: MaterialsContent // 暂时使用素材图组件
+}
+
+// 选择分类
+const selectCategory = (category: string) => {
+  selectedCategory.value = category
+  // 可以在这里添加搜索逻辑
+  console.log('选择分类:', category)
+}
+
+// 获取当前内容组件
+const currentContentComponent = computed(() => {
+  return contentComponents[selectedCategory.value as keyof typeof contentComponents] || ClothingContent
+})
 
 // 初始化搜索查询
 onMounted(() => {
@@ -613,38 +648,13 @@ const applyFilters = () => {
 
         <!-- 导航菜单 -->
         <nav class="sidebar-nav">
-          <div class="nav-section">
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': true }"
-              @click="() => {}"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-magnify-expand</v-icon>
-              <template v-else>
-                <v-icon left>mdi-magnify-expand</v-icon>
-                <span>智能搜索</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              @click="() => {}"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-tune</v-icon>
-              <template v-else>
-                <v-icon left>mdi-tune</v-icon>
-                <span>高级筛选</span>
-              </template>
-            </v-btn>
-          </div>
 
           <div class="nav-section">
             <v-btn
               variant="text"
               class="nav-btn"
-              @click="() => {}"
+              :class="{ 'active': selectedCategory === 'clothing' }"
+              @click="selectCategory('clothing')"
             >
               <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
               <template v-else>
@@ -656,12 +666,91 @@ const applyFilters = () => {
             <v-btn
               variant="text"
               class="nav-btn"
-              @click="() => {}"
+              :class="{ 'active': selectedCategory === 'materials' }"
+              @click="selectCategory('materials')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-image-multiple-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-image-multiple-outline</v-icon>
+                <span>素材图</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'lifestyle' }"
+              @click="selectCategory('lifestyle')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-home-variant-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-home-variant-outline</v-icon>
+                <span>生活用品设计</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'branding' }"
+              @click="selectCategory('branding')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-account-star-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-account-star-outline</v-icon>
+                <span>品牌Logo</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'color' }"
+              @click="selectCategory('color')"
             >
               <v-icon v-if="sidebarCollapsed">mdi-palette-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-palette-outline</v-icon>
                 <span>色彩搭配</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'ui' }"
+              @click="selectCategory('ui')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-vector-square-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-vector-square-outline</v-icon>
+                <span>UI设计</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'packaging' }"
+              @click="selectCategory('packaging')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-package-variant-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-package-variant-outline</v-icon>
+                <span>包装设计</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'graphic' }"
+              @click="selectCategory('graphic')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-book-open-variant-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-book-open-variant-outline</v-icon>
+                <span>平面设计</span>
               </template>
             </v-btn>
           </div>
@@ -885,72 +974,9 @@ const applyFilters = () => {
       </div>
 
     <!-- 主要内容区域 -->
-      <div class="content-area">
-      <!-- 未搜索状态 -->
-      <div v-if="!hasSearched" class="search-placeholder">
-        <div class="placeholder-content">
-          <v-icon size="64" color="primary" class="placeholder-icon">mdi-magnify</v-icon>
-            <h2 class="placeholder-title">开始搜索</h2>
-          <p class="placeholder-description">
-              在左侧搜索框中输入关键词开始搜索
-            </p>
-        </div>
-      </div>
-      
-        <!-- 照片墙 -->
-        <div class="photo-wall">
-          <div class="photo-wall-header">
-            <h2 class="photo-wall-title">精选设计作品</h2>
-            <p class="photo-wall-subtitle">发现更多创意灵感</p>
-          </div>
-          
-          <div class="photo-grid">
-            <div
-              v-for="(photo, index) in photoWallData"
-              :key="index"
-              class="photo-item"
-              :class="{ 'large': index % 7 === 0, 'medium': index % 7 === 3 || index % 7 === 6 }"
-            >
-              <div class="photo-container">
-                <img
-                  :src="photo.image"
-                  :alt="photo.title"
-                  class="photo-image"
-                  @load="onImageLoad(photo.id)"
-                />
-                <div class="photo-overlay">
-                  <div class="photo-info">
-                    <h3 class="photo-title">{{ photo.title }}</h3>
-                    <p class="photo-description">{{ photo.description }}</p>
-                    <div class="photo-meta">
-                      <span class="photo-likes">
-                        <v-icon size="small">mdi-heart</v-icon>
-                        {{ photo.likes }}
-                      </span>
-                      <span class="photo-views">
-                        <v-icon size="small">mdi-eye</v-icon>
-                        {{ photo.views }}
-                  </span>
-                </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-          <!-- 加载更多按钮 -->
-          <div class="load-more-container">
-            <v-btn
-              variant="outlined"
-              @click="loadMorePhotos"
-              :loading="loadingMore"
-              class="load-more-btn"
-            >
-              <v-icon left>mdi-plus</v-icon>
-              加载更多
-            </v-btn>
-        </div>
-      </div>
+    <div class="content-area">
+      <!-- 动态内容组件 -->
+      <component :is="currentContentComponent" />
     </div>
     </main>
   </div>
@@ -1097,11 +1123,23 @@ const applyFilters = () => {
       }
       
       &.active {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 8px;
+        color: #e55a2b;
         font-weight: 600;
+        border-left: 3px solid #e55a2b;
         transform: translateX(4px);
+        
+        .v-icon {
+          color: #e55a2b;
+        }
+        
+        &:hover {
+          color: #ff6b35;
+          transform: translateX(6px);
+          
+          .v-icon {
+            color: #ff6b35;
+          }
+        }
       }
       
       .v-icon {

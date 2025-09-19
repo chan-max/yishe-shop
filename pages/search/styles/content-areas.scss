@@ -1,0 +1,243 @@
+// 内容区域通用样式
+.content-header {
+    margin-bottom: 2rem;
+
+    .content-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+
+    .content-subtitle {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+    }
+}
+
+.content-filters {
+    margin-bottom: 2rem;
+
+    .filter-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: end;
+    }
+
+    .filter-group {
+        min-width: 150px;
+
+        .filter-label {
+            display: block;
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            width: 100%;
+        }
+
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .price-input {
+                flex: 1;
+            }
+
+            .price-separator {
+                color: #b0b0b0;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+.content-body {
+
+    // 通用网格布局
+    .design-grid,
+    .materials-grid,
+    .products-grid,
+    .logos-grid,
+    .color-palettes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    // 卡片通用样式
+    .design-card,
+    .material-card,
+    .product-card,
+    .logo-card,
+    .palette-card {
+        background: #2a2a2a;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    // 图片容器通用样式
+    .design-image,
+    .material-image,
+    .product-image,
+    .logo-preview,
+    .palette-preview {
+        position: relative;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        // 悬停遮罩
+        .design-overlay,
+        .material-overlay,
+        .product-overlay,
+        .logo-overlay,
+        .palette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover .design-overlay,
+        &:hover .material-overlay,
+        &:hover .product-overlay,
+        &:hover .logo-overlay,
+        &:hover .palette-overlay {
+            opacity: 1;
+        }
+    }
+
+    // 信息区域通用样式
+    .design-info,
+    .material-info,
+    .product-info,
+    .logo-info,
+    .palette-info {
+        padding: 1rem;
+
+        .design-title,
+        .material-title,
+        .product-title,
+        .logo-title,
+        .palette-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .design-description,
+        .material-description,
+        .product-description,
+        .logo-description,
+        .palette-description {
+            color: #b0b0b0;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .design-tags,
+        .material-tags,
+        .product-tags,
+        .logo-tags,
+        .palette-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+
+            .design-tag,
+            .material-tag,
+            .product-tag,
+            .logo-tag,
+            .palette-tag {
+                font-size: 0.75rem;
+            }
+        }
+
+        .design-meta,
+        .material-meta,
+        .product-meta,
+        .logo-meta,
+        .palette-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .design-price,
+            .material-price,
+            .product-price,
+            .logo-price,
+            .palette-price {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #e55a2b;
+            }
+
+            .design-likes,
+            .material-downloads,
+            .product-rating,
+            .logo-likes,
+            .palette-likes {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                color: #b0b0b0;
+                font-size: 0.85rem;
+            }
+        }
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .content-filters {
+        .filter-row {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .filter-group {
+            min-width: 100%;
+        }
+    }
+
+    .content-body {
+
+        .design-grid,
+        .materials-grid,
+        .products-grid,
+        .logos-grid,
+        .color-palettes-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    }
+}

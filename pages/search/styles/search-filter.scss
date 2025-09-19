@@ -1,0 +1,274 @@
+/**
+ * @Author: chan-max jackieontheway666@gmail.com
+ * @Date: 2025-01-27 11:00:00
+ * @LastEditors: chan-max jackieontheway666@gmail.com
+ * @LastEditTime: 2025-09-18 21:32:42
+ * @FilePath: /yishe-nuxt/pages/search/styles/search-filter.scss
+ * @Description: 搜索页面筛选组件样式
+ */
+
+// 过滤菜单样式
+.filter-section {
+    background: #1a1a1a;
+    position: fixed;
+    top: 56px; // 在头部下方
+    left: 240px; // 从左侧菜单右侧开始
+    right: 0;
+    z-index: 1000;
+    margin-top: -1px; // 与头部重叠1px，消除间隙
+
+    // 当侧边栏折叠时调整位置
+    .sidebar-collapsed & {
+        left: 80px;
+    }
+}
+
+.filter-content {
+    padding: 0.75rem; // 增加所有方向的内边距
+    background: #1a1a1a;
+}
+
+.filter-row-single {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.5rem 0.5rem 1rem 0.5rem; // 增加上下左右padding，为滚动条留出空间
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    }
+}
+
+.filter-group {
+    flex-shrink: 0;
+    min-width: 140px;
+}
+
+.filter-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #cccccc;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.filter-select {
+    .v-field {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        color: #e0e0e0;
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &.v-field--focused {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .v-field__input {
+        color: #e0e0e0;
+
+        &::placeholder {
+            color: #999999;
+        }
+    }
+
+    .v-field__append-inner {
+        color: #cccccc;
+    }
+}
+
+.filter-actions-inline {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+// 筛选标签显示
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem; // 增加下边距
+    padding: 0.75rem 0 1rem 0; // 增加上下内边距
+}
+
+.filter-chip {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+    }
+}
+
+// 价格范围容器
+.filter-group-range {
+    min-width: 200px;
+}
+
+.price-range-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-input {
+    flex: 1;
+    min-width: 80px;
+}
+
+.price-separator {
+    color: #e0e0e0;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+// 风格标签选择
+.filter-group-chips {
+    min-width: 300px;
+}
+
+.style-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-height: 60px;
+    overflow-y: auto;
+    padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
+}
+
+.style-chip {
+    background: transparent !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    &.chip-selected {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: #ffffff !important;
+        color: #ffffff !important;
+    }
+}
+
+// 颜色选择器
+.filter-group-colors {
+    min-width: 200px;
+}
+
+.color-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-height: 60px;
+    overflow-y: auto;
+    padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
+}
+
+.color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+        transform: scale(1.1);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    &.color-selected {
+        border-color: #ffffff;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+
+        &::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        }
+    }
+}
+
+.filter-clear-btn {
+    color: #cccccc;
+    border-color: #404040;
+    min-width: 36px;
+    height: 36px;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #666666;
+    }
+}
+
+.filter-apply-btn {
+    background: #e55a2b !important;
+    color: #ffffff !important;
+    min-width: 36px;
+    height: 36px;
+
+    &:hover {
+        background: #d44a1b !important;
+    }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+    .filter-section {
+        left: 0;
+        top: 64px;
+
+        .sidebar-collapsed & {
+            left: 0;
+        }
+
+        .filter-content {
+            padding: 0.75rem 1.25rem 1.5rem 1.25rem; // 移动端也增加padding
+        }
+
+        .filter-row-single {
+            gap: 0.75rem;
+
+            .filter-group {
+                min-width: 120px;
+            }
+        }
+    }
+}
