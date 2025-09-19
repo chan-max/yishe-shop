@@ -10,9 +10,6 @@
 import BaseHeader from './BaseHeader.vue'
 
 interface Props {
-  title: string
-  subtitle: string
-  icon: string
   searchQuery: string
   showSuggestions: boolean
   filteredSuggestions: string[]
@@ -58,9 +55,6 @@ const handleBlur = () => {
 
 <template>
   <BaseHeader
-    :title="title"
-    :subtitle="subtitle"
-    :icon="icon"
     :show-mobile-sidebar="showMobileSidebar"
     @toggle-mobile-sidebar="toggleMobileSidebar"
   >
@@ -73,7 +67,7 @@ const handleBlur = () => {
             :value="searchQuery"
             @input="handleSearchInput($event.target.value)"
             type="text"
-            :placeholder="`搜索${title.toLowerCase()}...`"
+            placeholder="搜索内容..."
             class="search-input"
             @keyup.enter="performSearch"
             @focus="$emit('update:showSuggestions', true)"
@@ -124,7 +118,7 @@ const handleBlur = () => {
   transition: border-color 0.2s ease;
 
   &:focus-within {
-    border-color: #e55a2b;
+    border-color: #3b82f6;
   }
 }
 

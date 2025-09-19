@@ -114,7 +114,7 @@
                 <v-rating
                   :model-value="item.rating"
                   size="small"
-                  color="orange"
+                  color="primary"
                   readonly
                   density="compact"
                 />
@@ -406,7 +406,7 @@ const productItems = ref([
             .current-price {
               font-size: 1.1rem;
               font-weight: 600;
-              color: #e55a2b;
+              color: #3b82f6;
             }
             
             .original-price {

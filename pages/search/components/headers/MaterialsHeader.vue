@@ -125,9 +125,6 @@ const toggleColor = (color: string) => {
 
 <template>
   <BaseHeader
-    title="素材图"
-    subtitle="高质量设计素材资源"
-    icon="mdi-image-multiple-outline"
     :show-mobile-sidebar="showMobileSidebar"
     :show-filter-menu="showFilterMenu"
     @toggle-mobile-sidebar="toggleMobileSidebar"
@@ -313,8 +310,8 @@ const toggleColor = (color: string) => {
   color: #e0e0e0 !important;
   
   &.active {
-    color: #e55a2b !important;
-    background: rgba(229, 90, 43, 0.1) !important;
+    color: #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.1) !important;
   }
 }
 
@@ -333,7 +330,7 @@ const toggleColor = (color: string) => {
   transition: border-color 0.2s ease;
 
   &:focus-within {
-    border-color: #e55a2b;
+    border-color: #3b82f6;
   }
 }
 
@@ -407,7 +404,7 @@ const toggleColor = (color: string) => {
 }
 
 .filter-chip {
-  background: #e55a2b !important;
+  background: #3b82f6 !important;
   color: white !important;
 }
 
@@ -462,7 +459,7 @@ const toggleColor = (color: string) => {
   transition: all 0.2s ease;
   
   &.chip-selected {
-    background: #e55a2b !important;
+    background: #3b82f6 !important;
     color: white !important;
   }
 }
@@ -486,8 +483,8 @@ const toggleColor = (color: string) => {
   }
   
   &.color-selected {
-    border-color: #e55a2b;
-    box-shadow: 0 0 0 2px rgba(229, 90, 43, 0.3);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -502,7 +499,7 @@ const toggleColor = (color: string) => {
 }
 
 .filter-apply-btn {
-  background: #e55a2b !important;
+  background: #3b82f6 !important;
   color: white !important;
 }
 

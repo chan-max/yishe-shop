@@ -59,7 +59,7 @@
             display: flex;
             align-items: center;
             padding: 0.75rem 1rem;
-            color: #e0e0e0;
+            color: #999999;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.2s ease;
@@ -75,22 +75,8 @@
                 background: rgba(255, 255, 255, 0.1);
                 color: #ffffff;
                 font-weight: 600;
-                border-left: 3px solid #e55a2b;
-                position: relative;
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    bottom: 0;
-                    width: 3px;
-                    background: linear-gradient(180deg, #e55a2b 0%, #ff6b35 100%);
-                    border-radius: 0 2px 2px 0;
-                }
-
                 .nav-icon {
-                    color: #e55a2b;
+                    color: #ffffff;
                     transform: scale(1.1);
                 }
 
@@ -98,7 +84,7 @@
                     background: rgba(255, 255, 255, 0.15);
 
                     .nav-icon {
-                        color: #ff6b35;
+                        color: #ffffff;
                     }
                 }
             }
@@ -211,7 +197,7 @@
             display: flex;
             align-items: center;
             padding: 0.75rem 1rem;
-            color: #e0e0e0;
+            color: #999999;
             text-decoration: none;
             transition: all 0.2s ease;
             margin-bottom: 0.25rem;
@@ -227,22 +213,8 @@
                 background: rgba(255, 255, 255, 0.1);
                 color: #ffffff;
                 font-weight: 600;
-                border-left: 3px solid #e55a2b;
-                position: relative;
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    bottom: 0;
-                    width: 3px;
-                    background: linear-gradient(180deg, #e55a2b 0%, #ff6b35 100%);
-                    border-radius: 0 2px 2px 0;
-                }
-
                 .nav-icon {
-                    color: #e55a2b;
+                    color: #ffffff;
                     transform: scale(1.1);
                 }
 
@@ -250,7 +222,7 @@
                     background: rgba(255, 255, 255, 0.15);
 
                     .nav-icon {
-                        color: #ff6b35;
+                        color: #ffffff;
                     }
                 }
             }

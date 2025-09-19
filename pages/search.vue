@@ -12,15 +12,10 @@
 // 导入内容区域组件
 import ClothingContent from '~/components/search-content/ClothingContent.vue'
 import MaterialsContent from '~/components/search-content/MaterialsContent.vue'
-import LifestyleContent from '~/components/search-content/LifestyleContent.vue'
-import BrandingContent from '~/components/search-content/BrandingContent.vue'
-import ColorContent from '~/components/search-content/ColorContent.vue'
-import UIContent from '~/components/search-content/UIContent.vue'
 
 // 导入Header组件
 import ClothingHeader from '~/pages/search/components/headers/ClothingHeader.vue'
 import MaterialsHeader from '~/pages/search/components/headers/MaterialsHeader.vue'
-import PersonalHeader from '~/pages/search/components/headers/PersonalHeader.vue'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
@@ -326,29 +321,13 @@ const toggleSidebar = () => {
 // 内容组件映射
 const contentComponents = {
   clothing: ClothingContent,
-  materials: MaterialsContent,
-  lifestyle: LifestyleContent,
-  branding: BrandingContent,
-  color: ColorContent,
-  ui: UIContent,
-  packaging: MaterialsContent, // 暂时使用素材图组件
-  graphic: MaterialsContent // 暂时使用素材图组件
+  materials: MaterialsContent
 }
 
 // Header组件映射
 const headerComponents = {
   clothing: ClothingHeader,
-  materials: MaterialsHeader,
-  lifestyle: MaterialsHeader, // 暂时使用素材图header
-  branding: MaterialsHeader, // 暂时使用素材图header
-  color: MaterialsHeader, // 暂时使用素材图header
-  ui: MaterialsHeader, // 暂时使用素材图header
-  packaging: MaterialsHeader, // 暂时使用素材图header
-  graphic: MaterialsHeader, // 暂时使用素材图header
-  favorites: PersonalHeader,
-  recent: PersonalHeader,
-  downloads: PersonalHeader,
-  profile: PersonalHeader
+  materials: MaterialsHeader
 }
 
 // Header配置映射 - 每个导航项对应的header配置
@@ -369,93 +348,15 @@ const headerConfigs = {
     showFilter: true,
     filterOptions: ['类型', '分辨率', '格式', '颜色']
   },
-  lifestyle: {
-    title: '生活用品设计',
-    subtitle: '创意生活用品设计作品',
-    searchPlaceholder: '搜索生活用品设计...',
-    icon: 'mdi-home-variant-outline',
-    showFilter: true,
-    filterOptions: ['类别', '风格', '材质', '用途']
-  },
-  branding: {
-    title: '品牌Logo',
-    subtitle: '专业品牌标识设计',
-    searchPlaceholder: '搜索品牌Logo...',
-    icon: 'mdi-account-star-outline',
-    showFilter: true,
-    filterOptions: ['行业', '风格', '颜色', '复杂度']
-  },
-  color: {
-    title: '色彩搭配',
-    subtitle: '专业色彩搭配方案',
-    searchPlaceholder: '搜索色彩搭配...',
-    icon: 'mdi-palette-outline',
-    showFilter: true,
-    filterOptions: ['色系', '明度', '饱和度', '风格']
-  },
-  ui: {
-    title: 'UI设计',
-    subtitle: '现代UI界面设计',
-    searchPlaceholder: '搜索UI设计...',
-    icon: 'mdi-vector-square-outline',
-    showFilter: true,
-    filterOptions: ['类型', '平台', '风格', '复杂度']
-  },
-  packaging: {
-    title: '包装设计',
-    subtitle: '创意包装设计作品',
-    searchPlaceholder: '搜索包装设计...',
-    icon: 'mdi-package-variant-outline',
-    showFilter: true,
-    filterOptions: ['类型', '材质', '风格', '用途']
-  },
-  graphic: {
-    title: '平面设计',
-    subtitle: '专业平面设计作品',
-    searchPlaceholder: '搜索平面设计...',
-    icon: 'mdi-book-open-variant-outline',
-    showFilter: true,
-    filterOptions: ['类型', '风格', '用途', '尺寸']
-  },
-  favorites: {
-    title: '我的收藏',
-    subtitle: '您收藏的设计作品',
-    searchPlaceholder: '搜索收藏内容...',
-    icon: 'mdi-heart-outline',
-    showFilter: false,
-    filterOptions: []
-  },
-  recent: {
-    title: '最近浏览',
-    subtitle: '您最近查看的设计作品',
-    searchPlaceholder: '搜索最近浏览...',
-    icon: 'mdi-clock-outline',
-    showFilter: false,
-    filterOptions: []
-  },
-  downloads: {
-    title: '我的下载',
-    subtitle: '您下载的设计资源',
-    searchPlaceholder: '搜索下载内容...',
-    icon: 'mdi-download-outline',
-    showFilter: false,
-    filterOptions: []
-  },
-  profile: {
-    title: '个人资料',
-    subtitle: '管理您的个人信息',
-    searchPlaceholder: '搜索个人资料...',
-    icon: 'mdi-account-outline',
-    showFilter: false,
-    filterOptions: []
-  }
 }
 
 // 选择分类
 const selectCategory = (category: string) => {
-  selectedCategory.value = category
-  // 可以在这里添加搜索逻辑
-  console.log('选择分类:', category)
+  // 只允许clothing和materials分类
+  if (category === 'clothing' || category === 'materials') {
+    selectedCategory.value = category
+    console.log('选择分类:', category)
+  }
 }
 
 // 获取当前内容组件
@@ -475,7 +376,7 @@ const currentHeaderConfig = computed(() => {
 
 // 获取header组件的props
 const getHeaderProps = () => {
-  const baseProps = {
+  return {
     searchQuery: searchQuery.value,
     showFilterMenu: showFilterMenu.value,
     showSuggestions: showSuggestions.value,
@@ -486,19 +387,6 @@ const getHeaderProps = () => {
     activeFilters: activeFilters.value,
     activeFiltersCount: activeFiltersCount.value
   }
-
-  // 如果是个人中心类型，添加特定的props
-  if (['favorites', 'recent', 'downloads', 'profile'].includes(selectedCategory.value)) {
-    const config = currentHeaderConfig.value
-    return {
-      ...baseProps,
-      title: config.title,
-      subtitle: config.subtitle,
-      icon: config.icon
-    }
-  }
-
-  return baseProps
 }
 
 // 初始化搜索查询
@@ -835,110 +723,8 @@ const applyFilters = () => {
               </template>
             </v-btn>
             
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'lifestyle' }"
-              @click="selectCategory('lifestyle')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-home-variant-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-home-variant-outline</v-icon>
-                <span>生活用品设计</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'branding' }"
-              @click="selectCategory('branding')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-account-star-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-account-star-outline</v-icon>
-                <span>品牌Logo</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'color' }"
-              @click="selectCategory('color')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-palette-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-palette-outline</v-icon>
-                <span>色彩搭配</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'ui' }"
-              @click="selectCategory('ui')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-vector-square-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-vector-square-outline</v-icon>
-                <span>UI设计</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'packaging' }"
-              @click="selectCategory('packaging')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-package-variant-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-package-variant-outline</v-icon>
-                <span>包装设计</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              :class="{ 'active': selectedCategory === 'graphic' }"
-              @click="selectCategory('graphic')"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-book-open-variant-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-book-open-variant-outline</v-icon>
-                <span>平面设计</span>
-              </template>
-            </v-btn>
           </div>
 
-          <div class="nav-section">
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              @click="() => {}"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-heart-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-heart-outline</v-icon>
-                <span>我的收藏</span>
-              </template>
-            </v-btn>
-            
-            <v-btn
-              variant="text"
-              class="nav-btn"
-              @click="() => {}"
-            >
-              <v-icon v-if="sidebarCollapsed">mdi-clock-outline</v-icon>
-              <template v-else>
-                <v-icon left>mdi-clock-outline</v-icon>
-                <span>搜索历史</span>
-              </template>
-            </v-btn>
-          </div>
         </nav>
       </div>
     </aside>
@@ -1094,7 +880,7 @@ const applyFilters = () => {
       justify-content: flex-start;
       padding: 0.625rem 0.875rem;
       margin: 0.125rem 0;
-      color: #e0e0e0;
+      color: #999999;
       font-size: 0.85rem;
       font-weight: 500;
       font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1115,21 +901,20 @@ const applyFilters = () => {
       }
       
       &.active {
-        color: #e55a2b;
+        color: #ffffff;
         font-weight: 600;
-        border-left: 3px solid #e55a2b;
-        transform: translateX(4px);
+        transform: translateX(0);
         
         .v-icon {
-          color: #e55a2b;
+          color: #ffffff;
         }
         
         &:hover {
-          color: #ff6b35;
-          transform: translateX(6px);
+          color: #ffffff;
+          transform: translateX(0);
           
           .v-icon {
-            color: #ff6b35;
+            color: #ffffff;
           }
         }
       }
@@ -1667,13 +1452,13 @@ const applyFilters = () => {
 }
 
 .filter-apply-btn {
-  background: #ff6b35;
+  background: #3b82f6;
   color: #ffffff;
   min-width: 36px;
   height: 36px;
   
   &:hover {
-    background: #e55a2b;
+    background: #2563eb;
   }
 }
 
@@ -1729,7 +1514,7 @@ const applyFilters = () => {
       font-weight: 700;
       color: #ffffff;
     margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1834,7 +1619,7 @@ const applyFilters = () => {
                 color: #cccccc;
     
     .v-icon {
-                  color: #ff6b35;
+                  color: #3b82f6;
                 }
               }
             }
@@ -1857,8 +1642,8 @@ const applyFilters = () => {
   transition: all 0.3s ease;
   
   &:hover {
-        background: #ff6b35;
-        border-color: #ff6b35;
+        background: #3b82f6;
+        border-color: #3b82f6;
         color: #ffffff;
   }
 }
@@ -1948,7 +1733,7 @@ const applyFilters = () => {
   &:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-    border-color: #ff6b35;
+    border-color: #3b82f6;
   }
 }
 
@@ -1984,7 +1769,7 @@ const applyFilters = () => {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: #ff6b35;
+    background: #3b82f6;
     color: white;
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
@@ -2040,7 +1825,7 @@ const applyFilters = () => {
   .current-price {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ff6b35;
+    color: #3b82f6;
   }
   
   .original-price {
@@ -2063,7 +1848,7 @@ const applyFilters = () => {
     
     .v-icon {
       font-size: 0.875rem;
-      color: #ff6b35;
+      color: #3b82f6;
     }
   }
 }

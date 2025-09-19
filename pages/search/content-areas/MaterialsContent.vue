@@ -295,7 +295,7 @@ const materialItems = ref([
           
           &.active {
             border-color: #ffffff;
-            box-shadow: 0 0 0 2px #e55a2b;
+            box-shadow: 0 0 0 2px #3b82f6;
           }
         }
       }
@@ -396,7 +396,7 @@ const materialItems = ref([
           .material-price {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #e55a2b;
+            color: #3b82f6;
           }
           
           .material-downloads {

@@ -8,11 +8,8 @@
 -->
 <script lang="ts" setup>
 interface Props {
-  title: string
-  subtitle: string
-  icon: string
   showMobileSidebar: boolean
-  showFilterMenu: boolean
+  showFilterMenu?: boolean
 }
 
 interface Emits {
@@ -45,20 +42,7 @@ const toggleFilterMenu = () => {
         <v-icon>mdi-menu</v-icon>
       </v-btn>
       
-      <!-- Header信息 -->
-      <div class="header-info">
-        <div class="header-title-section">
-          <div class="title-with-icon">
-            <v-icon class="title-icon">{{ icon }}</v-icon>
-            <div class="title-text">
-              <h1 class="page-title">{{ title }}</h1>
-              <p class="page-subtitle">{{ subtitle }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 插槽：搜索和筛选区域 -->
+      <!-- 插槽：搜索和筛选区域 - 居中显示 -->
       <div class="search-filter-container">
         <slot name="search-filter" />
       </div>
@@ -84,62 +68,27 @@ const toggleFilterMenu = () => {
 .header-content {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   padding: 0 2rem;
   max-width: 100%;
+  position: relative;
 }
 
 .mobile-menu-btn {
   display: none;
   color: #e0e0e0 !important;
-}
-
-.header-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.header-title-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.title-with-icon {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.title-icon {
-  color: #e55a2b;
-  font-size: 1.5rem;
-}
-
-.title-text {
-  min-width: 0;
-}
-
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.page-subtitle {
-  font-size: 0.9rem;
-  color: #999;
-  margin: 0.25rem 0 0 0;
-  line-height: 1.3;
+  position: absolute;
+  left: 1rem;
 }
 
 .search-filter-container {
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex-shrink: 0;
+  flex: 1;
+  justify-content: center;
+  max-width: 600px;
 }
 
 .filter-menu {
@@ -160,24 +109,10 @@ const toggleFilterMenu = () => {
     gap: 0.75rem;
   }
 
-  .title-with-icon {
-    gap: 0.5rem;
-  }
-
-  .title-icon {
-    font-size: 1.25rem;
-  }
-
-  .page-title {
-    font-size: 1.25rem;
-  }
-
-  .page-subtitle {
-    font-size: 0.8rem;
-  }
-
   .search-filter-container {
     gap: 0.5rem;
+    max-width: none;
+    margin-left: 3rem; /* 为移动端菜单按钮留出空间 */
   }
 
   .filter-menu {
