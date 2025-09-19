@@ -778,7 +778,7 @@ const applyFilters = () => {
           <div class="sidebar-logo" v-if="!sidebarCollapsed">
             <div class="logo-container">
               <img 
-                src="/logo/logo.svg" 
+                :src="isDarkMode ? '/logo/logo.svg' : '/logo/logo.light.svg'" 
                 alt="Yishe Logo" 
                 class="logo-image"
               />
