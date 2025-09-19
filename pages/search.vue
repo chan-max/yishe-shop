@@ -17,6 +17,11 @@ import BrandingContent from '~/components/search-content/BrandingContent.vue'
 import ColorContent from '~/components/search-content/ColorContent.vue'
 import UIContent from '~/components/search-content/UIContent.vue'
 
+// 导入Header组件
+import ClothingHeader from '~/pages/search/components/headers/ClothingHeader.vue'
+import MaterialsHeader from '~/pages/search/components/headers/MaterialsHeader.vue'
+import PersonalHeader from '~/pages/search/components/headers/PersonalHeader.vue'
+
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
 
@@ -330,6 +335,122 @@ const contentComponents = {
   graphic: MaterialsContent // 暂时使用素材图组件
 }
 
+// Header组件映射
+const headerComponents = {
+  clothing: ClothingHeader,
+  materials: MaterialsHeader,
+  lifestyle: MaterialsHeader, // 暂时使用素材图header
+  branding: MaterialsHeader, // 暂时使用素材图header
+  color: MaterialsHeader, // 暂时使用素材图header
+  ui: MaterialsHeader, // 暂时使用素材图header
+  packaging: MaterialsHeader, // 暂时使用素材图header
+  graphic: MaterialsHeader, // 暂时使用素材图header
+  favorites: PersonalHeader,
+  recent: PersonalHeader,
+  downloads: PersonalHeader,
+  profile: PersonalHeader
+}
+
+// Header配置映射 - 每个导航项对应的header配置
+const headerConfigs = {
+  clothing: {
+    title: '服装设计',
+    subtitle: '探索时尚服装设计灵感',
+    searchPlaceholder: '搜索服装设计...',
+    icon: 'mdi-tshirt-crew-outline',
+    showFilter: true,
+    filterOptions: ['风格', '颜色', '价格', '品牌']
+  },
+  materials: {
+    title: '素材图',
+    subtitle: '高质量设计素材资源',
+    searchPlaceholder: '搜索素材图片...',
+    icon: 'mdi-image-multiple-outline',
+    showFilter: true,
+    filterOptions: ['类型', '分辨率', '格式', '颜色']
+  },
+  lifestyle: {
+    title: '生活用品设计',
+    subtitle: '创意生活用品设计作品',
+    searchPlaceholder: '搜索生活用品设计...',
+    icon: 'mdi-home-variant-outline',
+    showFilter: true,
+    filterOptions: ['类别', '风格', '材质', '用途']
+  },
+  branding: {
+    title: '品牌Logo',
+    subtitle: '专业品牌标识设计',
+    searchPlaceholder: '搜索品牌Logo...',
+    icon: 'mdi-account-star-outline',
+    showFilter: true,
+    filterOptions: ['行业', '风格', '颜色', '复杂度']
+  },
+  color: {
+    title: '色彩搭配',
+    subtitle: '专业色彩搭配方案',
+    searchPlaceholder: '搜索色彩搭配...',
+    icon: 'mdi-palette-outline',
+    showFilter: true,
+    filterOptions: ['色系', '明度', '饱和度', '风格']
+  },
+  ui: {
+    title: 'UI设计',
+    subtitle: '现代UI界面设计',
+    searchPlaceholder: '搜索UI设计...',
+    icon: 'mdi-vector-square-outline',
+    showFilter: true,
+    filterOptions: ['类型', '平台', '风格', '复杂度']
+  },
+  packaging: {
+    title: '包装设计',
+    subtitle: '创意包装设计作品',
+    searchPlaceholder: '搜索包装设计...',
+    icon: 'mdi-package-variant-outline',
+    showFilter: true,
+    filterOptions: ['类型', '材质', '风格', '用途']
+  },
+  graphic: {
+    title: '平面设计',
+    subtitle: '专业平面设计作品',
+    searchPlaceholder: '搜索平面设计...',
+    icon: 'mdi-book-open-variant-outline',
+    showFilter: true,
+    filterOptions: ['类型', '风格', '用途', '尺寸']
+  },
+  favorites: {
+    title: '我的收藏',
+    subtitle: '您收藏的设计作品',
+    searchPlaceholder: '搜索收藏内容...',
+    icon: 'mdi-heart-outline',
+    showFilter: false,
+    filterOptions: []
+  },
+  recent: {
+    title: '最近浏览',
+    subtitle: '您最近查看的设计作品',
+    searchPlaceholder: '搜索最近浏览...',
+    icon: 'mdi-clock-outline',
+    showFilter: false,
+    filterOptions: []
+  },
+  downloads: {
+    title: '我的下载',
+    subtitle: '您下载的设计资源',
+    searchPlaceholder: '搜索下载内容...',
+    icon: 'mdi-download-outline',
+    showFilter: false,
+    filterOptions: []
+  },
+  profile: {
+    title: '个人资料',
+    subtitle: '管理您的个人信息',
+    searchPlaceholder: '搜索个人资料...',
+    icon: 'mdi-account-outline',
+    showFilter: false,
+    filterOptions: []
+  }
+}
+
 // 选择分类
 const selectCategory = (category: string) => {
   selectedCategory.value = category
@@ -341,6 +462,44 @@ const selectCategory = (category: string) => {
 const currentContentComponent = computed(() => {
   return contentComponents[selectedCategory.value as keyof typeof contentComponents] || ClothingContent
 })
+
+// 获取当前header组件
+const currentHeaderComponent = computed(() => {
+  return headerComponents[selectedCategory.value as keyof typeof headerComponents] || ClothingHeader
+})
+
+// 获取当前header配置
+const currentHeaderConfig = computed(() => {
+  return headerConfigs[selectedCategory.value as keyof typeof headerConfigs] || headerConfigs.clothing
+})
+
+// 获取header组件的props
+const getHeaderProps = () => {
+  const baseProps = {
+    searchQuery: searchQuery.value,
+    showFilterMenu: showFilterMenu.value,
+    showSuggestions: showSuggestions.value,
+    filteredSuggestions: filteredSuggestions.value,
+    showMobileSidebar: showMobileSidebar.value,
+    filters: filters.value,
+    filterOptions: filterOptions,
+    activeFilters: activeFilters.value,
+    activeFiltersCount: activeFiltersCount.value
+  }
+
+  // 如果是个人中心类型，添加特定的props
+  if (['favorites', 'recent', 'downloads', 'profile'].includes(selectedCategory.value)) {
+    const config = currentHeaderConfig.value
+    return {
+      ...baseProps,
+      title: config.title,
+      subtitle: config.subtitle,
+      icon: config.icon
+    }
+  }
+
+  return baseProps
+}
 
 // 初始化搜索查询
 onMounted(() => {
@@ -785,193 +944,26 @@ const applyFilters = () => {
     </aside>
 
     <!-- 主内容区域 -->
-    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed, 'filter-expanded': showFilterMenu }">
-      <!-- 顶部固定导航栏 -->
-      <header class="top-header">
-        <div class="header-content">
-          <!-- 移动端菜单按钮 -->
-          <v-btn
-            variant="text"
-            @click="showMobileSidebar = !showMobileSidebar"
-            class="mobile-menu-btn"
-            icon
-          >
-            <v-icon>mdi-menu</v-icon>
-          </v-btn>
-          
-          <!-- 搜索和筛选区域 -->
-          <div class="search-filter-container">
-            <!-- 筛选按钮 -->
-            <v-btn
-              variant="text"
-              @click="toggleFilterMenu"
-              class="filter-toggle-btn"
-              :class="{ 'active': showFilterMenu }"
-              icon
-              size="small"
-            >
-              <v-icon>{{ showFilterMenu ? 'mdi-tune' : 'mdi-tune-variant' }}</v-icon>
-            </v-btn>
-            
-            <!-- 搜索框 -->
-            <div class="search-container">
-              <div class="search-box">
-                <v-icon class="search-icon">mdi-magnify</v-icon>
-                <input
-                  v-model="searchQuery"
-                  type="text"
-                  placeholder="搜索设计作品..."
-                  class="search-input"
-                  @keyup.enter="performSearch"
-                  @focus="showSuggestions = true"
-                  @blur="handleBlur"
-                />
-                <v-btn
-                  v-if="searchQuery"
-                  variant="text"
-                  @click="clearSearch"
-                  class="clear-btn"
-                  icon
-                  size="small"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </div>
-              
-              <!-- 搜索建议 -->
-              <div v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions">
-                <div
-                  v-for="(suggestion, index) in filteredSuggestions"
-                  :key="index"
-                  class="suggestion-item"
-                  @click="selectSuggestion(suggestion)"
-                >
-                  <v-icon class="suggestion-icon">mdi-magnify</v-icon>
-                  <span class="suggestion-text">{{ suggestion }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- 过滤菜单 -->
-      <div class="filter-section">
-        <div v-show="showFilterMenu" class="filter-content">
-          <!-- 筛选标签显示 -->
-          <div class="filter-chips" v-if="activeFiltersCount > 0">
-            <v-chip
-              v-for="(filter, key) in activeFilters"
-              :key="key"
-              size="small"
-              closable
-              @click:close="removeFilter(key)"
-              class="filter-chip"
-            >
-              {{ filter.label }}: {{ filter.value }}
-            </v-chip>
-          </div>
-          
-          <div class="filter-row-single">
-            <!-- 排序方式 -->
-            <div class="filter-group">
-              <label class="filter-label">排序</label>
-              <v-select
-                v-model="filters.sort"
-                :items="filterOptions.sort"
-                variant="outlined"
-                density="compact"
-                hide-details
-                placeholder="选择排序方式"
-                class="filter-select"
-              />
-            </div>
-            
-            <!-- 价格范围输入框 -->
-            <div class="filter-group filter-group-range">
-              <label class="filter-label">价格范围</label>
-              <div class="price-range-container">
-                <v-text-field
-                  v-model.number="filters.priceMin"
-                  type="number"
-                  placeholder="最低价"
-                  class="price-input"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-                <span class="price-separator">-</span>
-                <v-text-field
-                  v-model.number="filters.priceMax"
-                  type="number"
-                  placeholder="最高价"
-                  class="price-input"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </div>
-            </div>
-            
-            <!-- 风格标签选择 -->
-            <div class="filter-group filter-group-chips">
-              <label class="filter-label">风格</label>
-              <div class="style-chips">
-                <v-chip
-                  v-for="style in filterOptions.style"
-                  :key="style.value"
-                  :class="{ 'chip-selected': filters.styles.includes(style.value) }"
-                  @click="toggleStyle(style.value)"
-                  class="style-chip"
-                  size="small"
-                  variant="outlined"
-                >
-                  {{ style.text }}
-                </v-chip>
-              </div>
-            </div>
-            
-            <!-- 颜色选择器 -->
-            <div class="filter-group filter-group-colors">
-              <label class="filter-label">颜色</label>
-              <div class="color-picker">
-                <div
-                  v-for="color in colorOptions"
-                  :key="color.value"
-                  :class="{ 'color-selected': filters.colors.includes(color.value) }"
-                  @click="toggleColor(color.value)"
-                  class="color-option"
-                  :style="{ backgroundColor: color.value }"
-                  :title="color.text"
-                />
-              </div>
-            </div>
-            
-            <!-- 操作按钮 -->
-            <div class="filter-actions-inline">
-              <v-btn
-                variant="outlined"
-                @click="clearFilters"
-                class="filter-clear-btn"
-                size="small"
-                icon
-              >
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-              <v-btn
-                variant="flat"
-                @click="applyFilters"
-                class="filter-apply-btn"
-                size="small"
-                color="primary"
-                icon
-              >
-                <v-icon>mdi-check</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </div>
-      </div>
+    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+      <!-- 动态Header组件 -->
+      <component
+        :is="currentHeaderComponent"
+        v-bind="getHeaderProps()"
+        @update:searchQuery="searchQuery = $event"
+        @toggle-filter-menu="toggleFilterMenu"
+        @perform-search="performSearch"
+        @clear-search="clearSearch"
+        @select-suggestion="selectSuggestion"
+        @toggle-mobile-sidebar="showMobileSidebar = !showMobileSidebar"
+        @handle-blur="handleBlur"
+        @update:showSuggestions="showSuggestions = $event"
+        @update:filters="filters = $event"
+        @remove-filter="removeFilter"
+        @clear-filters="clearFilters"
+        @apply-filters="applyFilters"
+        @toggle-style="toggleStyle"
+        @toggle-color="toggleColor"
+      />
 
     <!-- 主要内容区域 -->
     <div class="content-area">
@@ -1229,7 +1221,6 @@ const applyFilters = () => {
 .main-content {
   flex: 1;
   margin-left: 240px;
-  margin-top: 56px; // 为固定头部留出空间
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 56px); // 减去头部高度
@@ -1240,11 +1231,6 @@ const applyFilters = () => {
     margin-left: 80px;
   }
   
-  // 当过滤菜单展开时，为过滤菜单留出空间
-  &.filter-expanded {
-    margin-top: 100px; // 为过滤菜单留出额外空间
-    min-height: calc(100vh - 100px);
-  }
 }
 
 // 顶部固定导航栏 - 完全固定
@@ -2219,13 +2205,8 @@ const applyFilters = () => {
   // 移动端主内容区域
   .main-content {
     margin-left: 0;
-    margin-top: 64px; // 移动端头部高度
     min-height: calc(100vh - 64px);
     
-    &.filter-expanded {
-      margin-top: 120px; // 移动端过滤菜单空间
-      min-height: calc(100vh - 120px);
-    }
   }
   
   .header-content {
@@ -2239,7 +2220,6 @@ const applyFilters = () => {
   }
   
   .main-content {
-    margin-top: 64px; // 移动端头部高度
     min-height: calc(100vh - 64px);
   }
   
