@@ -60,9 +60,10 @@ const toggleFilterMenu = () => {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-primary);
   padding: 1rem 0;
+  transition: all 0.3s ease;
 }
 
 .header-content {
@@ -77,9 +78,15 @@ const toggleFilterMenu = () => {
 
 .mobile-menu-btn {
   display: none;
-  color: #e0e0e0 !important;
+  color: var(--text-secondary) !important;
   position: absolute;
   left: 1rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--text-primary) !important;
+    background: var(--bg-hover) !important;
+  }
 }
 
 .search-filter-container {
@@ -92,10 +99,11 @@ const toggleFilterMenu = () => {
 }
 
 .filter-menu {
-  background: #1a1a1a;
+  background: var(--bg-primary);
   border-top: none;
   padding: 1.5rem 2rem 0 2rem;
   margin-top: 0;
+  transition: all 0.3s ease;
 }
 
 /* 移动端适配 */

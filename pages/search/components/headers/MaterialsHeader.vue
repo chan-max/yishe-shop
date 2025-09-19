@@ -307,11 +307,17 @@ const toggleColor = (color: string) => {
 
 <style scoped>
 .filter-toggle-btn {
-  color: #e0e0e0 !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease;
   
   &.active {
-    color: #3b82f6 !important;
-    background: rgba(59, 130, 246, 0.1) !important;
+    color: var(--theme-primary) !important;
+    background: var(--bg-hover) !important;
+  }
+  
+  &:hover {
+    color: var(--theme-primary) !important;
+    background: var(--bg-hover) !important;
   }
 }
 
@@ -322,21 +328,36 @@ const toggleColor = (color: string) => {
 .search-box {
   display: flex;
   align-items: center;
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: var(--input-bg);
+  border: 1px solid var(--border-secondary);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   min-width: 300px;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--input-bg-hover);
+  }
 
   &:focus-within {
-    border-color: #3b82f6;
+    background: var(--input-bg-focus);
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 2px var(--border-hover);
   }
 }
 
 .search-icon {
-  color: #999;
+  color: var(--text-tertiary);
   margin-right: 0.5rem;
+  transition: all 0.3s ease;
+  
+  .search-box:hover & {
+    color: var(--text-secondary);
+  }
+  
+  .search-box:focus-within & {
+    color: var(--theme-primary);
+  }
 }
 
 .search-input {
@@ -344,17 +365,32 @@ const toggleColor = (color: string) => {
   background: transparent;
   border: none;
   outline: none;
-  color: #e0e0e0;
+  color: var(--text-primary);
   font-size: 0.9rem;
-
+  transition: all 0.3s ease;
+  
   &::placeholder {
-    color: #666;
+    color: var(--text-muted);
+  }
+  
+  &:focus {
+    color: var(--text-primary);
+    
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
   }
 }
 
 .clear-btn {
-  color: #999 !important;
+  color: var(--text-tertiary) !important;
   margin-left: 0.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--text-primary) !important;
+    background: var(--bg-hover) !important;
+  }
 }
 
 .search-suggestions {
@@ -362,13 +398,15 @@ const toggleColor = (color: string) => {
   top: 100%;
   left: 0;
   right: 0;
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
   border-top: none;
   border-radius: 0 0 8px 8px;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 1003;
+  box-shadow: 0 4px 12px var(--shadow-primary);
+  transition: all 0.3s ease;
 }
 
 .suggestion-item {
@@ -376,22 +414,29 @@ const toggleColor = (color: string) => {
   align-items: center;
   padding: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border-secondary);
+  
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
-    background: #333;
+    background: var(--bg-hover);
   }
 }
 
 .suggestion-icon {
-  color: #999;
+  color: var(--text-muted);
   margin-right: 0.5rem;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .suggestion-text {
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  transition: all 0.3s ease;
 }
 
 /* 筛选相关样式 */
@@ -404,8 +449,13 @@ const toggleColor = (color: string) => {
 }
 
 .filter-chip {
-  background: #3b82f6 !important;
-  color: white !important;
+  background: var(--theme-primary) !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--theme-primary-hover) !important;
+  }
 }
 
 .filter-row-single {
@@ -425,8 +475,9 @@ const toggleColor = (color: string) => {
 
 .filter-label {
   font-size: 0.9rem;
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .filter-select {
@@ -459,8 +510,8 @@ const toggleColor = (color: string) => {
   transition: all 0.2s ease;
   
   &.chip-selected {
-    background: #3b82f6 !important;
-    color: white !important;
+    background: var(--theme-primary) !important;
+    color: var(--text-primary) !important;
   }
 }
 
@@ -483,8 +534,8 @@ const toggleColor = (color: string) => {
   }
   
   &.color-selected {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 2px var(--border-hover);
   }
 }
 
@@ -495,12 +546,23 @@ const toggleColor = (color: string) => {
 }
 
 .filter-clear-btn {
-  color: #999 !important;
+  color: var(--text-tertiary) !important;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--text-primary) !important;
+    background: var(--bg-hover) !important;
+  }
 }
 
 .filter-apply-btn {
-  background: #3b82f6 !important;
-  color: white !important;
+  background: var(--theme-primary) !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--theme-primary-hover) !important;
+  }
 }
 
 /* 移动端适配 */

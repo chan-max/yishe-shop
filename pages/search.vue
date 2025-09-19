@@ -74,6 +74,9 @@ const showFilterMenu = ref(false)
 // 侧边栏分类选中状态
 const selectedCategory = ref('clothing') // 默认选中服装设计
 
+// 主题模式状态
+const isDarkMode = ref(true) // 默认夜间模式
+
 // 照片墙数据
 const photoWallData = ref<any[]>([])
 const loadingMore = ref(false)
@@ -393,6 +396,14 @@ const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
+// 切换主题模式
+const toggleTheme = () => {
+  isDarkMode.value = !isDarkMode.value
+  // 保存主题偏好到localStorage
+  localStorage.setItem('search-page-theme', isDarkMode.value ? 'dark' : 'light')
+  console.log('主题切换:', isDarkMode.value ? '夜间模式' : '白天模式')
+}
+
 // 内容组件映射
 const contentComponents = {
   clothing: ClothingContent,
@@ -429,8 +440,8 @@ const headerConfigs = {
 const selectCategory = (category: string) => {
   // 只允许clothing和materials分类
   if (category === 'clothing' || category === 'materials') {
-    selectedCategory.value = category
-    console.log('选择分类:', category)
+  selectedCategory.value = category
+  console.log('选择分类:', category)
   }
 }
 
@@ -468,6 +479,12 @@ const getHeaderProps = () => {
 onMounted(() => {
   // 初始化照片墙
   initPhotoWall()
+  
+  // 初始化主题设置
+  const savedTheme = localStorage.getItem('search-page-theme')
+  if (savedTheme) {
+    isDarkMode.value = savedTheme === 'dark'
+  }
   
   // 从URL参数获取搜索关键词
   if (route.query.q) {
@@ -744,7 +761,7 @@ const applyFilters = () => {
 </script>
 
 <template>
-  <div class="search-page">
+  <div class="search-page" :class="{ 'light-theme': !isDarkMode }">
     <!-- 移动端遮罩层 -->
     <div 
       v-if="showMobileSidebar" 
@@ -801,6 +818,28 @@ const applyFilters = () => {
           </div>
 
         </nav>
+
+        <!-- 主题切换开关 -->
+        <div class="theme-toggle-section">
+          <div class="theme-toggle-container">
+            <v-btn
+              variant="text"
+              class="theme-toggle-btn"
+              @click="toggleTheme"
+              :title="isDarkMode ? '切换到白天模式' : '切换到夜间模式'"
+            >
+              <v-icon v-if="sidebarCollapsed">
+                {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+              </v-icon>
+              <template v-else>
+                <v-icon left>
+                  {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+                </v-icon>
+                <span>{{ isDarkMode ? '切换到白天模式' : '切换到夜间模式' }}</span>
+              </template>
+            </v-btn>
+          </div>
+        </div>
       </div>
     </aside>
 
@@ -836,10 +875,80 @@ const applyFilters = () => {
 </template>
 
 <style lang="scss">
+// CSS变量定义 - 夜间模式（默认）
+.search-page {
+  // 背景色
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #1C1C1C;
+  --bg-tertiary: #2a2a2a;
+  --bg-hover: rgba(255, 255, 255, 0.08);
+  --bg-active: rgba(255, 255, 255, 0.15);
+  
+  // 文字颜色
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-tertiary: #999999;
+  --text-muted: #888888;
+  
+  // 边框颜色
+  --border-primary: #404040;
+  --border-secondary: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  
+  // 主题色
+  --theme-primary: #3b82f6;
+  --theme-primary-hover: #2563eb;
+  --theme-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  
+  // 阴影
+  --shadow-primary: rgba(0, 0, 0, 0.3);
+  --shadow-secondary: rgba(0, 0, 0, 0.4);
+  
+  // 输入框背景
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-bg-hover: rgba(255, 255, 255, 0.1);
+  --input-bg-focus: rgba(255, 255, 255, 0.15);
+}
+
+// 白天模式变量
+.light-theme {
+  // 背景色
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-active: rgba(0, 0, 0, 0.1);
+  
+  // 文字颜色
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-tertiary: #6c757d;
+  --text-muted: #adb5bd;
+  
+  // 边框颜色
+  --border-primary: #dee2e6;
+  --border-secondary: rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(0, 0, 0, 0.2);
+  
+  // 主题色
+  --theme-primary: #3b82f6;
+  --theme-primary-hover: #2563eb;
+  --theme-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  
+  // 阴影
+  --shadow-primary: rgba(0, 0, 0, 0.1);
+  --shadow-secondary: rgba(0, 0, 0, 0.15);
+  
+  // 输入框背景
+  --input-bg: rgba(0, 0, 0, 0.08);
+  --input-bg-hover: rgba(0, 0, 0, 0.12);
+  --input-bg-focus: rgba(0, 0, 0, 0.15);
+}
+
 // 全局滚动条样式
 * {
   scrollbar-width: thin;
-  scrollbar-color: #404040 #2a2a2a;
+  scrollbar-color: var(--border-primary) var(--bg-tertiary);
 }
 
 *::-webkit-scrollbar {
@@ -848,51 +957,52 @@ const applyFilters = () => {
 }
 
 *::-webkit-scrollbar-track {
-  background: #2a2a2a;
+  background: var(--bg-tertiary);
   border-radius: 2px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #404040;
+  background: var(--border-primary);
   border-radius: 2px;
   transition: background 0.3s ease;
     
     &:hover {
-    background: #555555;
+    background: var(--text-tertiary);
   }
 }
 
 *::-webkit-scrollbar-thumb:active {
-  background: #666666;
+  background: var(--text-secondary);
 }
 
 *::-webkit-scrollbar-corner {
-  background: #2a2a2a;
+  background: var(--bg-tertiary);
 }
 
-// Freepik 深色主题布局
+// 搜索页面布局
 .search-page {
   min-height: 100vh;
-  background: #1a1a1a;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   display: flex;
+  transition: all 0.3s ease;
 }
 
-// 左侧固定侧边栏 - 深色风格
+// 左侧固定侧边栏
 .sidebar {
   width: 240px;
-  background: #1C1C1C;
-  border-right: 1px solid #404040;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
   overflow: hidden;
   z-index: 1002; // 高于固定头部，确保不被遮挡
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 8px var(--shadow-primary);
   display: flex;
   flex-direction: column;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.collapsed {
     width: 80px;
@@ -915,14 +1025,14 @@ const applyFilters = () => {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   .toggle-btn {
-    color: #e0e0e0;
+    color: var(--text-secondary);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(28, 28, 28, 0.9);
+    background: var(--bg-secondary);
     transform: scale(1);
     
     &:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      background: var(--bg-hover);
       transform: scale(1.05);
     }
     
@@ -955,7 +1065,7 @@ const applyFilters = () => {
       justify-content: flex-start;
       padding: 0.625rem 0.875rem;
       margin: 0.125rem 0;
-      color: #999999;
+      color: var(--text-tertiary);
       font-size: 0.85rem;
       font-weight: 500;
       font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -969,27 +1079,27 @@ const applyFilters = () => {
       letter-spacing: 0.01em;
       
       &:hover {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.08);
+        color: var(--text-primary);
+        background: var(--bg-hover);
         border-radius: 8px;
         transform: translateX(2px);
       }
       
       &.active {
-        color: #ffffff;
+        color: var(--text-primary);
         font-weight: 600;
         transform: translateX(0);
         
         .v-icon {
-          color: #ffffff;
+          color: var(--text-primary);
         }
         
         &:hover {
-          color: #ffffff;
+          color: var(--text-primary);
           transform: translateX(0);
           
           .v-icon {
-            color: #ffffff;
+            color: var(--text-primary);
           }
         }
       }
@@ -1047,14 +1157,14 @@ const applyFilters = () => {
         }
         
         &:hover {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.1);
+          color: var(--text-primary);
+          background: var(--bg-hover);
           transform: scale(1.05);
         }
         
         &.active {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.15);
+          color: var(--text-primary);
+          background: var(--bg-active);
           font-weight: 600;
           
           &::after {
@@ -1065,9 +1175,100 @@ const applyFilters = () => {
             transform: translateX(-50%);
             width: 24px;
             height: 2px;
-            background: #ffffff;
+            background: var(--text-primary);
             border-radius: 1px;
           }
+        }
+      }
+    }
+  }
+}
+
+// 主题切换区域
+.theme-toggle-section {
+  padding: 1rem 0.5rem;
+  border-top: 1px solid var(--border-secondary);
+  margin-top: auto;
+  
+  .theme-toggle-container {
+    .theme-toggle-btn {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0.625rem 0.875rem;
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      text-transform: none;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      min-height: 36px;
+      background: transparent;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      
+      &:hover {
+        color: var(--text-primary);
+        background: var(--bg-hover);
+        border-radius: 8px;
+        transform: translateX(2px);
+      }
+      
+      .v-icon {
+        margin-right: 0.625rem;
+        font-size: 1.2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 4px;
+        padding: 2px;
+      }
+      
+      span {
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: inherit;
+      }
+    }
+  }
+}
+
+// 折叠状态下的主题切换按钮
+.sidebar.collapsed {
+  .theme-toggle-section {
+    padding: 1rem 0.5rem;
+    
+    .theme-toggle-container {
+      .theme-toggle-btn {
+        padding: 0.75rem;
+        justify-content: center;
+        align-items: center;
+        margin: 0.25rem 0.5rem;
+        width: calc(100% - 1rem);
+        background: transparent;
+        min-height: 44px;
+        border-radius: 8px;
+        display: flex !important;
+        flex-direction: row;
+        text-align: center;
+        
+        .v-icon {
+          font-size: 1.4rem;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          margin: 0 !important;
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          padding: 4px;
+        }
+        
+        &:hover {
+          color: var(--text-primary);
+          background: var(--bg-hover);
+          transform: scale(1.05);
         }
       }
     }
@@ -1084,8 +1285,8 @@ const applyFilters = () => {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 56px); // 减去头部高度
-  background: #1a1a1a;
-  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-primary);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.sidebar-collapsed {
     margin-left: 80px;
@@ -1095,13 +1296,13 @@ const applyFilters = () => {
 
 // 顶部固定导航栏 - 完全固定
 .top-header {
-  background: #1a1a1a;
+  background: var(--bg-primary);
   position: fixed;
   top: 0;
   left: 240px; // 从左侧菜单右侧开始
   right: 0;
   z-index: 1001;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--shadow-primary);
   backdrop-filter: blur(10px);
   will-change: transform;
   transform: translateZ(0);
@@ -1111,7 +1312,7 @@ const applyFilters = () => {
   -webkit-perspective: 1000;
   perspective: 1000;
   contain: layout style paint;
-  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // 当侧边栏折叠时调整头部位置
@@ -1131,7 +1332,7 @@ const applyFilters = () => {
 .page-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
   flex-shrink: 0;
 }
@@ -1148,18 +1349,18 @@ const applyFilters = () => {
 
 // 头部筛选按钮
 .search-filter-container .filter-toggle-btn {
-  color: #cccccc;
+  color: var(--text-secondary);
   transition: all 0.3s ease;
   flex-shrink: 0;
   
   &.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    background: var(--bg-hover);
   }
   
   &:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    background: var(--bg-hover);
   }
 }
 
@@ -1173,7 +1374,7 @@ const applyFilters = () => {
 .search-box {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--input-bg);
   border: none;
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
@@ -1182,27 +1383,27 @@ const applyFilters = () => {
   height: 40px;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--input-bg-hover);
   }
   
   &:focus-within {
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    background: var(--input-bg-focus);
+    box-shadow: 0 0 0 2px var(--border-hover);
   }
 }
 
 .search-icon {
-  color: #999999;
+  color: var(--text-tertiary);
   margin-right: 0.625rem;
   font-size: 1rem;
   transition: all 0.3s ease;
   
   .search-box:hover & {
-    color: #cccccc;
+    color: var(--text-secondary);
   }
   
   .search-box:focus-within & {
-    color: #ffffff;
+    color: var(--text-primary);
   }
 }
 
@@ -1211,28 +1412,28 @@ const applyFilters = () => {
   background: transparent;
   border: none;
   outline: none;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 0.9rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   
   &::placeholder {
-    color: #888888;
+    color: var(--text-muted);
     font-weight: 400;
     transition: color 0.3s ease;
   }
   
   &:focus {
-    color: #ffffff;
+    color: var(--text-primary);
     
     &::placeholder {
-      color: #aaaaaa;
+      color: var(--text-tertiary);
     }
   }
 }
 
 .clear-btn {
-  color: #999999;
+  color: var(--text-tertiary);
   margin-left: 0.375rem;
   opacity: 0.7;
   transition: all 0.3s ease;
@@ -1242,9 +1443,9 @@ const applyFilters = () => {
   height: 24px;
   
   &:hover {
-    color: #ffffff;
+    color: var(--text-primary);
     opacity: 1;
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--bg-hover);
   }
 }
 
@@ -1254,13 +1455,13 @@ const applyFilters = () => {
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(42, 42, 42, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
   border-radius: 12px;
   margin-top: 0.5rem;
   backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  z-index: 1001; // 确保在固定头部之上
+  box-shadow: 0 8px 32px var(--shadow-primary);
+  z-index: 1003; // 确保在固定头部之上
   overflow: hidden;
 }
 
@@ -1270,25 +1471,25 @@ const applyFilters = () => {
   padding: 0.75rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border-secondary);
   
   &:last-child {
     border-bottom: none;
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--bg-hover);
   }
 }
 
 .suggestion-icon {
-  color: #888888;
+  color: var(--text-muted);
   margin-right: 0.75rem;
   font-size: 1rem;
 }
 
 .suggestion-text {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 400;
 }
@@ -1296,13 +1497,14 @@ const applyFilters = () => {
 
 // 过滤菜单样式
 .filter-section {
-  background: #1a1a1a;
+  background: var(--bg-primary);
   position: fixed;
   top: 56px; // 在头部下方
   left: 240px; // 从左侧菜单右侧开始
   right: 0;
   z-index: 1000;
   margin-top: -1px; // 与头部重叠1px，消除间隙
+  transition: all 0.3s ease;
   
   // 当侧边栏折叠时调整位置
   .sidebar-collapsed & {
@@ -1313,7 +1515,7 @@ const applyFilters = () => {
 
 .filter-content {
   padding: 0.75rem 0.75rem 1.5rem 0.75rem; // 增加底部内边距
-  background: #1a1a1a;
+  background: var(--bg-primary);
 }
 
 .filter-row-single {
@@ -1330,16 +1532,16 @@ const applyFilters = () => {
   }
   
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-secondary);
     border-radius: 2px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--border-hover);
     border-radius: 2px;
     
     &:hover {
-      background: rgba(255, 255, 255, 0.5);
+      background: var(--text-tertiary);
     }
   }
 }
@@ -1352,37 +1554,37 @@ const applyFilters = () => {
 .filter-label {
   display: block;
   font-size: 0.75rem;
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 0.25rem;
   font-weight: 500;
 }
 
 .filter-select {
   .v-field {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    background: var(--input-bg);
+    border: 1px solid var(--border-secondary);
+    color: var(--text-primary);
     
     &:hover {
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--border-hover);
     }
     
     &.v-field--focused {
-      border-color: #ffffff;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+      border-color: var(--text-primary);
+      box-shadow: 0 0 0 1px var(--border-hover);
     }
   }
   
   .v-field__input {
-    color: #ffffff;
+    color: var(--text-primary);
     
     &::placeholder {
-      color: #888888;
+      color: var(--text-muted);
     }
   }
   
   .v-field__append-inner {
-    color: #cccccc;
+    color: var(--text-secondary);
   }
 }
 
@@ -1403,12 +1605,12 @@ const applyFilters = () => {
 }
 
 .filter-chip {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #e0e0e0 !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: var(--bg-hover) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-secondary) !important;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: var(--bg-active) !important;
   }
 }
 
@@ -1429,7 +1631,7 @@ const applyFilters = () => {
 }
 
 .price-separator {
-  color: #e0e0e0;
+  color: var(--text-secondary);
   font-weight: 500;
   flex-shrink: 0;
 }
@@ -1450,20 +1652,20 @@ const applyFilters = () => {
 
 .style-chip {
   background: transparent !important;
-  color: #e0e0e0 !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-secondary) !important;
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.4) !important;
+    background: var(--bg-hover) !important;
+    border-color: var(--border-hover) !important;
   }
   
   &.chip-selected {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border-color: #ffffff !important;
-    color: #ffffff !important;
+    background: var(--bg-active) !important;
+    border-color: var(--text-primary) !important;
+    color: var(--text-primary) !important;
   }
 }
 
@@ -1492,12 +1694,12 @@ const applyFilters = () => {
   
   &:hover {
     transform: scale(1.1);
-    border-color: rgba(255, 255, 255, 0.5);
+    border-color: var(--border-hover);
   }
   
   &.color-selected {
-    border-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    border-color: var(--text-primary);
+    box-shadow: 0 0 0 2px var(--border-hover);
     
     &::after {
       content: '✓';
@@ -1505,35 +1707,35 @@ const applyFilters = () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #ffffff;
+      color: var(--text-primary);
       font-size: 12px;
       font-weight: bold;
-      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 0 2px var(--shadow-secondary);
     }
   }
 }
 
 .filter-clear-btn {
-  color: #cccccc;
-  border-color: #404040;
+  color: var(--text-secondary);
+  border-color: var(--border-primary);
   min-width: 36px;
   height: 36px;
   
   &:hover {
-    color: #ffffff;
-    border-color: #666666;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+    background: var(--bg-hover);
   }
 }
 
 .filter-apply-btn {
-  background: #3b82f6;
-  color: #ffffff;
+  background: var(--theme-primary);
+  color: var(--text-primary);
   min-width: 36px;
   height: 36px;
   
   &:hover {
-    background: #2563eb;
+    background: var(--theme-primary-hover);
   }
 }
 
@@ -1541,7 +1743,7 @@ const applyFilters = () => {
 .content-area {
   flex: 1;
   padding: 1.5rem 1.5rem 2rem 1.5rem; // 增加底部padding，为滚动条留出更多空间
-  background: #1a1a1a;
+  background: var(--bg-primary);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -1566,13 +1768,13 @@ const applyFilters = () => {
 .placeholder-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
     margin-bottom: 1rem;
   }
   
 .placeholder-description {
   font-size: 1.125rem;
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
     line-height: 1.6;
 }
@@ -1587,9 +1789,9 @@ const applyFilters = () => {
     .photo-wall-title {
       font-size: 2rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
     margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      background: var(--theme-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1597,7 +1799,7 @@ const applyFilters = () => {
     
     .photo-wall-subtitle {
       font-size: 1rem;
-      color: #cccccc;
+      color: var(--text-secondary);
   margin: 0;
     }
   }
@@ -1612,13 +1814,13 @@ const applyFilters = () => {
       position: relative;
       border-radius: 12px;
       overflow: hidden;
-      background: #2a2a2a;
+      background: var(--bg-tertiary);
       transition: all 0.3s ease;
       cursor: pointer;
       
       &:hover {
         transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 20px 40px var(--shadow-secondary);
         
         .photo-overlay {
           opacity: 1;
@@ -1656,7 +1858,7 @@ const applyFilters = () => {
             to bottom,
             transparent 0%,
             transparent 50%,
-            rgba(0, 0, 0, 0.8) 100%
+            var(--shadow-secondary) 100%
           );
           opacity: 0;
           transition: opacity 0.3s ease;
@@ -1665,18 +1867,18 @@ const applyFilters = () => {
           padding: 1.5rem;
           
           .photo-info {
-            color: #ffffff;
+            color: var(--text-primary);
             
             .photo-title {
       font-size: 1.25rem;
               font-weight: 600;
     margin-bottom: 0.5rem;
-              color: #ffffff;
+              color: var(--text-primary);
             }
     
             .photo-description {
       font-size: 0.875rem;
-              color: #cccccc;
+              color: var(--text-secondary);
               margin-bottom: 1rem;
               line-height: 1.4;
             }
@@ -1691,10 +1893,10 @@ const applyFilters = () => {
     align-items: center;
                 gap: 0.25rem;
     font-size: 0.875rem;
-                color: #cccccc;
+                color: var(--text-secondary);
     
     .v-icon {
-                  color: #3b82f6;
+                  color: var(--theme-primary);
                 }
               }
             }
@@ -1709,17 +1911,17 @@ const applyFilters = () => {
     margin-top: 2rem;
     
     .load-more-btn {
-      background: #2a2a2a;
-      border: 1px solid #404040;
-      color: #ffffff;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-primary);
+      color: var(--text-primary);
       padding: 0.75rem 2rem;
       font-weight: 500;
   transition: all 0.3s ease;
   
   &:hover {
-        background: #3b82f6;
-        border-color: #3b82f6;
-        color: #ffffff;
+        background: var(--theme-primary);
+        border-color: var(--theme-primary);
+        color: var(--text-primary);
   }
 }
   }
@@ -1733,19 +1935,19 @@ const applyFilters = () => {
   .results-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
   
   .results-count {
     font-size: 1rem;
     font-weight: 400;
-    color: #cccccc;
+    color: var(--text-secondary);
   }
   
   .results-query {
     font-size: 1rem;
-    color: #cccccc;
+    color: var(--text-secondary);
     margin: 0;
   }
 }
@@ -1760,7 +1962,7 @@ const applyFilters = () => {
 }
 
 .loading-text {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -1777,11 +1979,11 @@ const applyFilters = () => {
 .no-results-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .no-results-description {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -1797,18 +1999,18 @@ const applyFilters = () => {
 }
 
 .product-card {
-  background: #2a2a2a;
-  border: 1px solid #404040;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-primary);
   transition: all 0.3s ease;
   cursor: pointer;
   
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-    border-color: #3b82f6;
+    box-shadow: 0 12px 32px var(--shadow-secondary);
+    border-color: var(--theme-primary);
   }
 }
 
@@ -1817,7 +2019,7 @@ const applyFilters = () => {
   width: 100%;
   height: 220px;
   overflow: hidden;
-  background: #1a1a1a;
+  background: var(--bg-primary);
   
   .product-img {
     width: 100%;
@@ -1836,23 +2038,23 @@ const applyFilters = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #1a1a1a;
-    color: #666666;
+    background: var(--bg-primary);
+    color: var(--text-tertiary);
   }
   
   .product-tag {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: #3b82f6;
-    color: white;
+    background: var(--theme-primary);
+    color: var(--text-primary);
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 2px 8px var(--shadow-primary);
   }
 }
 
@@ -1863,7 +2065,7 @@ const applyFilters = () => {
 .product-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.4;
   display: -webkit-box;
@@ -1875,7 +2077,7 @@ const applyFilters = () => {
 
 .product-description {
   font-size: 0.875rem;
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   line-height: 1.5;
   display: -webkit-box;
@@ -1900,12 +2102,12 @@ const applyFilters = () => {
   .current-price {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #3b82f6;
+    color: var(--theme-primary);
   }
   
   .original-price {
     font-size: 0.875rem;
-    color: #999999;
+    color: var(--text-tertiary);
     text-decoration: line-through;
   }
 }
@@ -1919,11 +2121,11 @@ const applyFilters = () => {
     align-items: center;
     gap: 0.375rem;
     font-size: 0.75rem;
-    color: #cccccc;
+    color: var(--text-secondary);
     
     .v-icon {
       font-size: 0.875rem;
-      color: #3b82f6;
+      color: var(--theme-primary);
     }
   }
 }
@@ -1947,7 +2149,7 @@ const applyFilters = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--shadow-primary);
   z-index: 999;
   display: none;
 }
@@ -1992,8 +2194,8 @@ const applyFilters = () => {
         min-height: 40px;
         
         &:hover {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.08);
+          color: var(--text-primary);
+          background: var(--bg-hover);
           border-radius: 8px;
           transform: translateX(2px);
         }
@@ -2005,15 +2207,15 @@ const applyFilters = () => {
 @media (max-width: 768px) {
   .mobile-overlay {
     display: block;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--shadow-secondary);
   }
   
   .mobile-menu-btn {
     display: block;
-    color: #ffffff;
+    color: var(--text-primary);
     
     &:hover {
-      background: rgba(255, 107, 53, 0.1);
+      background: var(--bg-hover);
     }
   }
   
