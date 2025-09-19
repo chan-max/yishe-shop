@@ -78,8 +78,8 @@ const selectedCategory = ref('clothing') // 默认选中服装设计
 const photoWallData = ref<any[]>([])
 const loadingMore = ref(false)
 
-// 筛选选项
-const filterOptions = {
+// 服装设计筛选选项
+const clothingFilterOptions = {
   sort: [
     { value: 'latest', text: '最新上架' },
     { value: 'popular', text: '最受欢迎' },
@@ -166,6 +166,81 @@ const filterOptions = {
     { value: 'discount_50', label: '5折以下' }
   ]
 }
+
+// 素材图筛选选项
+const materialsFilterOptions = {
+  sort: [
+    { value: 'latest', text: '最新上传' },
+    { value: 'popular', text: '最受欢迎' },
+    { value: 'downloads', text: '下载最多' },
+    { value: 'rating', text: '评分最高' }
+  ],
+  type: [
+    { value: 'photo', label: '照片' },
+    { value: 'illustration', label: '插画' },
+    { value: 'icon', label: '图标' },
+    { value: 'pattern', label: '图案' },
+    { value: 'texture', label: '纹理' },
+    { value: 'background', label: '背景' },
+    { value: 'vector', label: '矢量图' }
+  ],
+  resolution: [
+    { value: 'hd', label: '高清 (1920x1080)' },
+    { value: '4k', label: '4K (3840x2160)' },
+    { value: '8k', label: '8K (7680x4320)' },
+    { value: 'custom', label: '自定义尺寸' }
+  ],
+  format: [
+    { value: 'jpg', label: 'JPG' },
+    { value: 'png', label: 'PNG' },
+    { value: 'svg', label: 'SVG' },
+    { value: 'ai', label: 'AI' },
+    { value: 'psd', label: 'PSD' },
+    { value: 'eps', label: 'EPS' }
+  ],
+  color: [
+    { value: 'black', label: '黑色' },
+    { value: 'white', label: '白色' },
+    { value: 'red', label: '红色' },
+    { value: 'blue', label: '蓝色' },
+    { value: 'green', label: '绿色' },
+    { value: 'yellow', label: '黄色' },
+    { value: 'pink', label: '粉色' },
+    { value: 'purple', label: '紫色' },
+    { value: 'gray', label: '灰色' },
+    { value: 'brown', label: '棕色' }
+  ],
+  license: [
+    { value: 'free', label: '免费商用' },
+    { value: 'premium', label: '付费商用' },
+    { value: 'attribution', label: '署名使用' },
+    { value: 'personal', label: '个人使用' }
+  ],
+  category: [
+    { value: 'business', label: '商务' },
+    { value: 'nature', label: '自然' },
+    { value: 'technology', label: '科技' },
+    { value: 'food', label: '美食' },
+    { value: 'travel', label: '旅行' },
+    { value: 'abstract', label: '抽象' },
+    { value: 'minimalist', label: '极简' }
+  ]
+}
+
+// 根据分类获取筛选选项
+const getFilterOptions = (category: string) => {
+  switch (category) {
+    case 'clothing':
+      return clothingFilterOptions
+    case 'materials':
+      return materialsFilterOptions
+    default:
+      return clothingFilterOptions
+  }
+}
+
+// 通用筛选选项（向后兼容）
+const filterOptions = clothingFilterOptions
 
 // 颜色选项
 const colorOptions = [
@@ -338,7 +413,7 @@ const headerConfigs = {
     searchPlaceholder: '搜索服装设计...',
     icon: 'mdi-tshirt-crew-outline',
     showFilter: true,
-    filterOptions: ['风格', '颜色', '价格', '品牌']
+    filterOptions: ['风格', '颜色', '价格', '性别', '季节', '材质', '尺码', '场合']
   },
   materials: {
     title: '素材图',
@@ -346,7 +421,7 @@ const headerConfigs = {
     searchPlaceholder: '搜索素材图片...',
     icon: 'mdi-image-multiple-outline',
     showFilter: true,
-    filterOptions: ['类型', '分辨率', '格式', '颜色']
+    filterOptions: ['类型', '分辨率', '格式', '颜色', '授权', '分类']
   },
 }
 
@@ -383,7 +458,7 @@ const getHeaderProps = () => {
     filteredSuggestions: filteredSuggestions.value,
     showMobileSidebar: showMobileSidebar.value,
     filters: filters.value,
-    filterOptions: filterOptions,
+    filterOptions: getFilterOptions(selectedCategory.value),
     activeFilters: activeFilters.value,
     activeFiltersCount: activeFiltersCount.value
   }
