@@ -75,10 +75,56 @@
 
     <!-- 服装设计内容主体 -->
     <div class="content-body">
-      <div class="design-grid">
+      <!-- 加载状态 -->
+      <div v-if="loading || !hasInitialized" class="loading-container">
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <p class="loading-text">正在加载服装设计作品...</p>
+        </div>
+      </div>
+      
+      <!-- 空状态 -->
+      <div v-else-if="designItems.length === 0" class="empty-state">
+        <v-icon size="64" color="grey-lighten-1">mdi-tshirt-crew-outline</v-icon>
+        <h3 class="empty-title">暂无服装设计作品</h3>
+        <p class="empty-description">请尝试调整筛选条件或稍后再试</p>
+      </div>
+      
+      <!-- 设计作品网格 -->
+      <div v-else class="design-grid">
         <div v-for="item in designItems" :key="item.id" class="design-card">
           <div class="design-image">
-            <img :src="item.image" :alt="item.title" />
+            <!-- 有图片时显示图片 -->
+            <img
+              v-if="hasValidImage(item)"
+              :src="item.image"
+              :alt="item.title"
+              @load="onImageLoad($event, item.id)"
+              @error="onImageError($event, item.id)"
+              :class="{ 'opacity-0': !getImageLoadStatus(item.id) }"
+            />
+            
+            <!-- 没有图片时显示空状态 -->
+            <div 
+              v-else
+              class="empty-image"
+            >
+              <v-icon size="48" color="grey-lighten-2">mdi-image-outline</v-icon>
+              <p class="empty-image-text">暂无图片</p>
+            </div>
+            
+            <!-- 图片加载中的波浪效果 -->
+            <div 
+              v-if="hasValidImage(item) && !getImageLoadStatus(item.id)"
+              class="image-loading"
+            >
+              <div class="loading-waves">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+              </div>
+            </div>
+            
             <div class="design-overlay">
               <v-btn icon="mdi-heart-outline" variant="text" class="favorite-btn" />
               <v-btn icon="mdi-download" variant="text" class="download-btn" />
@@ -108,12 +154,23 @@
           </div>
         </div>
       </div>
+      
+      <!-- 分页 -->
+      <div v-if="designItems.length > 0" class="pagination-container">
+        <v-pagination
+          v-model="currentPage"
+          :length="Math.ceil(total / pageSize)"
+          :total-visible="7"
+          rounded="circle"
+          color="primary"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 
 // 筛选选项
 const clothingTypes = [
@@ -148,63 +205,148 @@ const filters = reactive({
   priceMax: null
 })
 
+// 分页相关状态
+const currentPage = ref(1)
+const pageSize = ref(12)
+const total = ref(0)
+const loading = ref(false)
+const hasInitialized = ref(false)
+
 // 设计项目数据
-const designItems = ref([
-  {
-    id: 1,
-    title: '简约连衣裙设计',
-    description: '优雅简约的夏季连衣裙，适合日常穿着',
-    image: 'https://via.placeholder.com/300x400/ff6b6b/ffffff?text=Dress+1',
-    price: 299,
-    likes: 128,
-    tags: ['连衣裙', '简约', '夏季']
-  },
-  {
-    id: 2,
-    title: '商务西装套装',
-    description: '专业商务场合的经典西装设计',
-    image: 'https://via.placeholder.com/300x400/4ecdc4/ffffff?text=Suit+1',
-    price: 899,
-    likes: 89,
-    tags: ['西装', '商务', '正式']
-  },
-  {
-    id: 3,
-    title: '运动休闲T恤',
-    description: '舒适透气的运动休闲T恤设计',
-    image: 'https://via.placeholder.com/300x400/45b7d1/ffffff?text=T-Shirt+1',
-    price: 199,
-    likes: 156,
-    tags: ['T恤', '运动', '休闲']
-  },
-  {
-    id: 4,
-    title: '复古牛仔外套',
-    description: '经典复古风格的牛仔外套设计',
-    image: 'https://via.placeholder.com/300x400/96ceb4/ffffff?text=Jacket+1',
-    price: 599,
-    likes: 203,
-    tags: ['外套', '牛仔', '复古']
-  },
-  {
-    id: 5,
-    title: '优雅晚礼服',
-    description: '正式场合的优雅晚礼服设计',
-    image: 'https://via.placeholder.com/300x400/feca57/ffffff?text=Evening+1',
-    price: 1299,
-    likes: 67,
-    tags: ['晚礼服', '正式', '优雅']
-  },
-  {
-    id: 6,
-    title: '街头风格卫衣',
-    description: '时尚街头风格的连帽卫衣设计',
-    image: 'https://via.placeholder.com/300x400/ff9ff3/ffffff?text=Hoodie+1',
-    price: 399,
-    likes: 178,
-    tags: ['卫衣', '街头', '时尚']
+const designItems = ref([])
+
+// 图片加载状态
+const imageLoaded = ref({})
+
+// 获取设计项目列表
+const fetchDesignItems = async () => {
+  loading.value = true
+  try {
+    const { $customFetch } = useNuxtApp()
+    const requestBody = {
+      currentPage: currentPage.value,
+      pageSize: pageSize.value,
+      isPublish: true, // 只查询已上架的商品
+    }
+    
+    // 添加服装相关的过滤条件
+    const requestFilters = requestBody.filters || {}
+    
+    // 服装类型映射
+    if (filters.clothingType) {
+      const typeMapping = {
+        'dress': '连衣裙',
+        'top': '上衣',
+        'bottom': '下装',
+        'outerwear': '外套',
+        'accessories': '配饰'
+      }
+      requestFilters.keyword = typeMapping[filters.clothingType] || filters.clothingType
+    }
+    
+    // 季节筛选
+    if (filters.season) {
+      const seasonMapping = {
+        'spring': '春季',
+        'summer': '夏季',
+        'autumn': '秋季',
+        'winter': '冬季'
+      }
+      if (!requestFilters.keyword) requestFilters.keyword = ''
+      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (seasonMapping[filters.season] || filters.season)
+    }
+    
+    // 风格筛选
+    if (filters.style) {
+      const styleMapping = {
+        'casual': '休闲',
+        'formal': '正式',
+        'sport': '运动',
+        'vintage': '复古',
+        'modern': '现代'
+      }
+      if (!requestFilters.keyword) requestFilters.keyword = ''
+      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (styleMapping[filters.style] || filters.style)
+    }
+    
+    // 价格范围筛选
+    if (filters.priceMin !== null || filters.priceMax !== null) {
+      if (filters.priceMin !== null && filters.priceMax !== null) {
+        requestFilters.price = `${filters.priceMin}-${filters.priceMax}`
+      } else if (filters.priceMin !== null) {
+        requestFilters.price = `${filters.priceMin}+`
+      } else if (filters.priceMax !== null) {
+        requestFilters.price = `0-${filters.priceMax}`
+      }
+    }
+    
+    // 如果有过滤条件，添加到请求体中
+    if (Object.keys(requestFilters).length > 0) {
+      requestBody.filters = requestFilters
+    }
+    
+    const response = await $customFetch("/product/page", {
+      method: "POST",
+      body: requestBody,
+    })
+    
+    // 转换数据格式以适配设计项目显示
+    designItems.value = response.list.map(item => ({
+      id: item.id,
+      title: item.name,
+      description: item.description || '精美的服装设计作品',
+      image: item.customModel?.thumbnail || 'https://via.placeholder.com/300x400/ff6b6b/ffffff?text=Clothing',
+      price: item.price || 0,
+      likes: Math.floor(Math.random() * 200) + 50, // 模拟点赞数
+      tags: item.keywords ? item.keywords.split(',').map(k => k.trim()) : ['服装设计']
+    }))
+    
+    total.value = response.total
+    hasInitialized.value = true
+  } catch (error) {
+    console.error("获取服装设计列表失败:", error)
+    hasInitialized.value = true
+  } finally {
+    loading.value = false
   }
-])
+}
+
+// 图片加载成功处理
+const onImageLoad = (event, itemId) => {
+  imageLoaded.value[itemId] = true
+}
+
+// 图片加载失败处理
+const onImageError = (event, itemId) => {
+  console.error("图片加载失败:", event)
+  imageLoaded.value[itemId] = false
+}
+
+// 检查是否有有效图片
+const hasValidImage = (item) => {
+  return item.image && !item.image.includes('placeholder')
+}
+
+// 获取图片加载状态
+const getImageLoadStatus = (itemId) => {
+  return imageLoaded.value[itemId] || false
+}
+
+// 监听筛选条件变化
+watch(filters, () => {
+  currentPage.value = 1 // 重置到第一页
+  fetchDesignItems()
+}, { deep: true })
+
+// 监听分页变化
+watch(currentPage, () => {
+  fetchDesignItems()
+})
+
+// 初始化加载
+onMounted(() => {
+  fetchDesignItems()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -268,10 +410,63 @@ const designItems = ref([
   }
   
   .content-body {
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      
+      .loading-spinner {
+        text-align: center;
+        
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 4px solid #f3f3f3;
+          border-top: 4px solid #e55a2b;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 1rem;
+        }
+        
+        .loading-text {
+          color: #b0b0b0;
+          font-size: 0.9rem;
+        }
+      }
+    }
+    
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      text-align: center;
+      
+      .empty-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin: 1rem 0 0.5rem;
+      }
+      
+      .empty-description {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+      }
+    }
+    
     .design-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
+    }
+    
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
     }
     
     .design-card {
@@ -294,6 +489,52 @@ const designItems = ref([
           width: 100%;
           height: 100%;
           object-fit: cover;
+          transition: opacity 0.3s ease;
+        }
+        
+        .empty-image {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+          
+          .empty-image-text {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #999;
+          }
+        }
+        
+        .image-loading {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          .loading-waves {
+            display: flex;
+            gap: 4px;
+            
+            .wave {
+              width: 4px;
+              height: 20px;
+              background: #ccc;
+              border-radius: 2px;
+              animation: wave 1.5s ease-in-out infinite;
+              
+              &:nth-child(1) { animation-delay: 0s; }
+              &:nth-child(2) { animation-delay: 0.2s; }
+              &:nth-child(3) { animation-delay: 0.4s; }
+            }
+          }
         }
         
         .design-overlay {
@@ -366,5 +607,16 @@ const designItems = ref([
       }
     }
   }
+}
+
+// 动画关键帧
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.5); }
 }
 </style>

@@ -36,8 +36,8 @@
         "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "release": "release-it",
-        "build:prod": "NUXT_PUBLIC_API_BASE=http://49.232.186.238:7788 nuxt generate",
-        "build:dev": "NUXT_PUBLIC_API_BASE=http://localhost:7788 nuxt generate"
+        "build:prod": "NODE_ENV=production nuxt generate",
+        "build:dev": "NODE_ENV=development nuxt generate"
     },
     "dependencies": {
         "@mdi/font": "^7.4.47",
