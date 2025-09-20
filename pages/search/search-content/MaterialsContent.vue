@@ -37,11 +37,81 @@
         class="materials-masonry"
       >
         <template #default="{ item, index }">
-          <img
-            :src="item.image"
-            :alt="item.title"
-            @click="onCardClick(item)"
-          />
+          <div class="material-card" @click="onCardClick(item)">
+            <div class="image-container" :class="{ 'loading': !imageLoaded[item.id] }">
+              <img
+                :src="item.image"
+                :alt="item.title"
+                class="material-image"
+                @load="(event: Event) => onImageLoad(event, item.id)"
+                @error="(event: Event) => onImageError(event, item.id)"
+                :class="{ 'loaded': imageLoaded[item.id] }"
+              />
+              
+              <!-- 加载状态 -->
+              <div v-if="!imageLoaded[item.id]" class="image-loading">
+                <div class="loading-spinner"></div>
+                <div class="skeleton-content">
+                  <div class="skeleton-line skeleton-title"></div>
+                  <div class="skeleton-line skeleton-description"></div>
+                  <div class="skeleton-meta">
+                    <div class="skeleton-tag"></div>
+                    <div class="skeleton-tag"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 悬停遮罩层 -->
+              <div class="image-overlay">
+                <!-- 顶部信息 -->
+                <div class="overlay-top">
+                  <div class="format-badge">
+                    {{ item.format }}
+                  </div>
+                  <div class="action-buttons">
+                    <button 
+                      class="action-btn download-btn"
+                      @click.stop="onDownload(item)"
+                      title="下载"
+                    >
+                      <i class="mdi mdi-download"></i>
+                    </button>
+                    <button 
+                      class="action-btn preview-btn"
+                      @click.stop="onPreview(item)"
+                      title="预览"
+                    >
+                      <i class="mdi mdi-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <!-- 底部内容信息 -->
+                <div class="overlay-content">
+                  <h3 class="material-title" :title="item.title">
+                    {{ item.title }}
+                  </h3>
+                  <p class="material-description" v-if="item.description">
+                    {{ item.description }}
+                  </p>
+                  <div class="material-meta">
+                    <div class="meta-item">
+                      <i class="mdi mdi-tag-outline"></i>
+                      <span>{{ item.group || '未分组' }}</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="mdi mdi-download"></i>
+                      <span>{{ item.downloads }}</span>
+                    </div>
+                    <div class="meta-item" v-if="item.price > 0">
+                      <i class="mdi mdi-currency-cny"></i>
+                      <span>{{ item.price }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </masonry-wall>
       
@@ -428,17 +498,248 @@ onMounted(() => {
     .materials-masonry {
       // 瀑布流项目样式
       :deep(.masonry-item) {
-        // 图片样式
-        img {
+        .material-card {
           width: 100%;
-          height: auto;
-          display: block;
-          border-radius: 8px;
+          height: 100%;
+          border-radius: 12px;
+          overflow: hidden;
+          transition: all 0.3s ease;
           cursor: pointer;
-          transition: transform 0.2s ease;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border-color: #e55a2b;
+            
+            .image-overlay {
+              opacity: 1;
+            }
+          }
+        }
+        
+        .image-container {
+          position: relative;
+          width: 100%;
+          overflow: hidden;
+          background: #1a1a1a;
+          
+          &.loading {
+            min-height: 200px;
+          }
+          
+          .material-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.3s ease;
+            opacity: 0;
+            
+            &.loaded {
+              opacity: 1;
+            }
+          }
+          
+          .image-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            
+            .loading-spinner {
+              width: 32px;
+              height: 32px;
+              border: 3px solid rgba(255, 255, 255, 0.1);
+              border-top: 3px solid #e55a2b;
+              border-radius: 50%;
+              animation: spin 1s linear infinite;
+              margin-bottom: 12px;
+            }
+            
+            .skeleton-content {
+              position: absolute;
+              bottom: 12px;
+              left: 12px;
+              right: 12px;
+              
+              .skeleton-line {
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
+                background-size: 200% 100%;
+                animation: skeleton-loading 1.5s infinite;
+                border-radius: 4px;
+                margin-bottom: 8px;
+                
+                &.skeleton-title {
+                  height: 16px;
+                  width: 70%;
+                }
+                
+                &.skeleton-description {
+                  height: 12px;
+                  width: 85%;
+                }
+              }
+              
+              .skeleton-meta {
+                display: flex;
+                gap: 8px;
+                margin-top: 8px;
+                
+                .skeleton-tag {
+                  height: 20px;
+                  width: 60px;
+                  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
+                  background-size: 200% 100%;
+                  animation: skeleton-loading 1.5s infinite;
+                  border-radius: 10px;
+                }
+              }
+            }
+          }
+          
+          .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 0.1) 0%,
+              rgba(0, 0, 0, 0.3) 50%,
+              rgba(0, 0, 0, 0.85) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            
+            .overlay-top {
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              
+              .format-badge {
+                background: #e55a2b;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              }
+              
+              .action-buttons {
+                display: flex;
+                gap: 8px;
+                
+                .action-btn {
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  border: none;
+                  background: rgba(255, 255, 255, 0.9);
+                  color: #333;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                  backdrop-filter: blur(10px);
+                  
+                  &:hover {
+                    background: #e55a2b;
+                    color: white;
+                    transform: scale(1.1);
+                  }
+                  
+                  i {
+                    font-size: 16px;
+                  }
+                }
+              }
+            }
+            
+            .overlay-content {
+              .material-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #ffffff;
+                margin: 0 0 6px 0;
+                line-height: 1.3;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              
+              .material-description {
+                font-size: 11px;
+                color: #b0b0b0;
+                margin: 0 0 10px 0;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              
+              .material-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                
+                .meta-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  font-size: 10px;
+                  color: #888;
+                  background: rgba(255, 255, 255, 0.1);
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                  backdrop-filter: blur(5px);
+                  
+                  i {
+                    font-size: 12px;
+                  }
+                  
+                  span {
+                    white-space: nowrap;
+                  }
+                }
+              }
+            }
+          }
         }
       }
+    }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes skeleton-loading {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
     }
   }
 }
