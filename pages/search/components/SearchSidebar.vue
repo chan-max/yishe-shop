@@ -10,10 +10,12 @@
 interface Props {
   collapsed: boolean
   mobileVisible: boolean
+  activePage: string
 }
 
 interface Emits {
   (e: 'toggle'): void
+  (e: 'switch-page', page: string): void
 }
 
 const props = defineProps<Props>()
@@ -122,8 +124,14 @@ const handleCategoryClick = (item: any) => {
   try {
     selectedCategory.value = item.value
     selectedPersonal.value = '' // 清除个人中心选中状态
-    // 可以在这里添加搜索逻辑
-    console.log('选择分类:', item.text, item.value)
+    
+    // 只处理已实现的页面
+    if (item.value === 'clothing' || item.value === 'materials') {
+      emit('switch-page', item.value)
+    } else {
+      // 其他页面暂时显示提示
+      console.log('该页面正在开发中:', item.text, item.value)
+    }
   } catch (err) {
     console.error('处理分类点击失败:', err)
     error.value = '处理分类点击失败'
@@ -144,7 +152,7 @@ const handlePersonalClick = (item: any) => {
 }
 
 // 检查是否选中
-const isCategorySelected = (value: string) => selectedCategory.value === value
+const isCategorySelected = (value: string) => props.activePage === value
 const isPersonalSelected = (value: string) => selectedPersonal.value === value
 
 // 主题切换

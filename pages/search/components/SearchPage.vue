@@ -18,85 +18,25 @@
 import { ref, computed, onMounted, onErrorCaptured } from 'vue'
 
 // 导入子组件
-import SearchHeader from './SearchHeader.vue'
 import SearchSidebar from './SearchSidebar.vue'
-import SearchContent from './SearchContent.vue'
-import SearchFilter from './SearchFilter.vue'
+import ClothingPage from '../pages/ClothingPage.vue'
+import MaterialsPage from '../pages/MaterialsPage.vue'
 
-// 搜索相关状态
-const searchQuery = ref('')
-const searchResults = ref<any[]>([])
-const loading = ref(false)
-const hasSearched = ref(false)
-const totalResults = ref(0)
-const currentPage = ref(1)
-const pageSize = ref(20)
+// 当前激活的页面
+const activePage = ref('clothing') // 默认显示服装页面
 
 // 侧边栏状态
 const sidebarCollapsed = ref(false)
 const showMobileSidebar = ref(false)
 
-// 筛选菜单状态
-const showFilterMenu = ref(false)
-
-// 执行搜索
-const performSearch = async () => {
-  try {
-    // 这里可以添加搜索逻辑
-    console.log('执行搜索')
-  } catch (error) {
-    console.error('搜索执行失败:', error)
-  }
-}
-
-// 加载更多照片
-const loadMorePhotos = async () => {
-  try {
-    // 这里可以添加加载更多逻辑
-    console.log('加载更多照片')
-  } catch (error) {
-    console.error('加载更多照片失败:', error)
-  }
-}
-
 // 切换侧边栏
 const toggleSidebar = () => {
-  try {
-    // 这里可以添加侧边栏切换逻辑
-    console.log('切换侧边栏')
-  } catch (error) {
-    console.error('切换侧边栏失败:', error)
-  }
+  sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
-// 切换筛选菜单
-const toggleFilterMenu = () => {
-  try {
-    // 这里可以添加筛选菜单切换逻辑
-    console.log('切换筛选菜单')
-  } catch (error) {
-    console.error('切换筛选菜单失败:', error)
-  }
-}
-
-// 清空筛选条件
-const clearFilters = () => {
-  try {
-    // 这里可以添加清空筛选逻辑
-    console.log('清空筛选条件')
-  } catch (error) {
-    console.error('清空筛选条件失败:', error)
-  }
-}
-
-// 应用筛选条件
-const applyFilters = () => {
-  try {
-    // 这里可以添加应用筛选逻辑
-    console.log('应用筛选条件')
-  } catch (error) {
-    console.error('应用筛选条件失败:', error)
-  }
+// 切换页面
+const switchPage = (page: string) => {
+  activePage.value = page
 }
 
 // 错误处理
@@ -119,13 +59,16 @@ onErrorCaptured((err) => {
 useHead({
   titleTemplate: '',
   title: computed(() => {
-    const keyword = searchQuery.value
-    return keyword ? `搜索"${keyword}" - 衣设服装设计` : '搜索 - 衣设服装设计'
+    const pageTitles: Record<string, string> = {
+      'clothing': '服装设计 - 衣设',
+      'materials': '素材图库 - 衣设'
+    }
+    return pageTitles[activePage.value] || '搜索 - 衣设服装设计'
   }),
   meta: [
     {
       name: 'description',
-      content: '在衣设服装设计平台搜索您想要的服装设计，支持智能筛选和个性化推荐。'
+      content: '在衣设服装设计平台搜索您想要的服装设计和素材，支持智能筛选和个性化推荐。'
     }
   ]
 })
@@ -148,38 +91,18 @@ useHead({
     <SearchSidebar 
       :collapsed="sidebarCollapsed"
       :mobile-visible="showMobileSidebar"
+      :active-page="activePage"
       @toggle="toggleSidebar"
+      @switch-page="switchPage"
     />
     
     <!-- 主要内容区域 -->
-    <div class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed, 'filter-expanded': showFilterMenu }">
-      <!-- 顶部头部 -->
-      <SearchHeader 
-        :search-query="searchQuery"
-        :show-filter-menu="showFilterMenu"
-        @update:search-query="searchQuery = $event"
-        @toggle-filter="toggleFilterMenu"
-        @search="performSearch"
-      />
+    <div class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+      <!-- 服装页面 -->
+      <ClothingPage v-if="activePage === 'clothing'" />
       
-      <!-- 过滤菜单 -->
-      <SearchFilter 
-        :show="showFilterMenu"
-        @update:show="showFilterMenu = $event"
-        @clear="clearFilters"
-        @apply="applyFilters"
-      />
-      
-      <!-- 内容区域 -->
-      <SearchContent 
-        :search-results="searchResults"
-        :loading="loading"
-        :has-searched="hasSearched"
-        :total-results="totalResults"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        @load-more="loadMorePhotos"
-      />
+      <!-- 素材页面 -->
+      <MaterialsPage v-else-if="activePage === 'materials'" />
     </div>
   </div>
 </template>
