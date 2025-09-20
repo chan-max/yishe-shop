@@ -459,18 +459,9 @@ onMounted(() => {
     
     .design-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      
-      @media (min-width: 768px) {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      
-      @media (min-width: 1024px) {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      // 移除 max-width 限制，让网格自适应占满容器
     }
     
     .pagination-container {
