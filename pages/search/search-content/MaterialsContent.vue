@@ -28,28 +28,22 @@
         description="请尝试调整筛选条件或稍后再试"
       />
       
-      <!-- 素材图网格 -->
-      <div v-else class="materials-grid">
-        <ImageCard
-          v-for="item in materialItems"
-          :key="item.id"
-          :item="item"
-          :image="item.image"
-          :title="item.title"
-          :description="item.description"
-          :specs="[
-            { icon: 'mdi-file', label: item.format },
-            { icon: 'mdi-tag', label: item.group || '未分组' }
-          ]"
-          :price="item.price"
-          :downloads="item.downloads"
-          :badge="item.format"
-          badge-color="primary"
-          @action="onCardAction"
-          @image-load="(event) => onImageLoad(event, item.id)"
-          @image-error="(event) => onImageError(event, item.id)"
-        />
-      </div>
+      <!-- 瀑布流布局 -->
+      <masonry-wall 
+        v-else
+        :items="materialItems" 
+        :column-width="300"
+        :gap="12"
+        class="materials-masonry"
+      >
+        <template #default="{ item, index }">
+          <img
+            :src="item.image"
+            :alt="item.title"
+            @click="onCardClick(item)"
+          />
+        </template>
+      </masonry-wall>
       
       <!-- 分页 -->
       <ContentPagination
@@ -65,7 +59,6 @@
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import EmptyState from '../components/EmptyState.vue'
-import ImageCard from '../components/ImageCard.vue'
 import FilterRow from '../components/FilterRow.vue'
 import type { FilterItem } from '../components/FilterRow.vue'
 import ContentPagination from '../components/ContentPagination.vue'
@@ -202,6 +195,7 @@ const materialItems = ref<MaterialItem[]>([])
 const imageLoaded = ref<Record<string, boolean>>({})
 
 
+
 // 获取素材列表
 const fetchMaterialItems = async () => {
   loading.value = true
@@ -325,6 +319,25 @@ const onCardAction = (actionType: string, item: MaterialItem) => {
   // 这里可以添加具体的操作逻辑
 }
 
+// 卡片点击处理
+const onCardClick = (item: MaterialItem) => {
+  console.log('卡片点击:', item)
+  // 这里可以添加卡片点击的具体逻辑，比如跳转到详情页
+}
+
+// 下载处理
+const onDownload = (item: MaterialItem) => {
+  console.log('下载素材:', item)
+  // 这里可以添加下载逻辑
+  // 例如：window.open(item.image, '_blank')
+}
+
+// 预览处理
+const onPreview = (item: MaterialItem) => {
+  console.log('预览素材:', item)
+  // 这里可以添加预览逻辑，比如打开预览弹窗
+}
+
 // 监听筛选条件变化
 watch(filters, () => {
   currentPage.value = 1 // 重置到第一页
@@ -412,35 +425,24 @@ onMounted(() => {
   }
   
   .content-body {
-    .materials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      padding: 0.5rem 0;
-      
-      // 响应式调整
-      @media (min-width: 1600px) {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 2rem;
-      }
-      
-      @media (max-width: 1200px) {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.25rem;
-      }
-      
-      @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1rem;
-      }
-      
-      @media (max-width: 480px) {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
+    .materials-masonry {
+      // 瀑布流项目样式
+      :deep(.masonry-item) {
+        // 图片样式
+        img {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: transform 0.2s ease;
+          
+        }
       }
     }
   }
 }
+
 
 </style>
 
