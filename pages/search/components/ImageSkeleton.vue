@@ -52,6 +52,8 @@ withDefaults(defineProps<Props>(), {
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 200px; // 设置最小高度
+      border-radius: 8px; // 保持圆角一致
       
       .loading-waves {
         display: flex;

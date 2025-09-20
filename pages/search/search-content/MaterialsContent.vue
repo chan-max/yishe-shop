@@ -45,7 +45,6 @@
           :downloads="item.downloads"
           :badge="item.format"
           badge-color="primary"
-          aspect-ratio="4/3"
           @action="onCardAction"
           @image-load="(event) => onImageLoad(event, item.id)"
           @image-error="(event) => onImageError(event, item.id)"
@@ -413,14 +412,35 @@ onMounted(() => {
   }
   
   .content-body {
-    
     .materials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.5rem;
+      padding: 0.5rem 0;
+      
+      // 响应式调整
+      @media (min-width: 1600px) {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+      }
+      
+      @media (max-width: 1200px) {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.25rem;
+      }
+      
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      
+      @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
     }
-    
   }
 }
 
 </style>
+

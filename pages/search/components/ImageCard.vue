@@ -172,6 +172,7 @@ const onImageError = (event: Event) => {
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  width: 100%; // 占满容器宽度
   
   &.hover-effect:hover {
     transform: translateY(-2px);
@@ -186,12 +187,16 @@ const onImageError = (event: Event) => {
   .card-image {
     position: relative;
     overflow: hidden;
+    border-radius: 8px; // 添加圆角
     
     img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto; // 保持原始比例
+      display: block; // 移除底部间隙
       transition: opacity 0.3s ease;
+      border-radius: 8px; // 图片圆角
+      object-fit: cover; // 覆盖容器，保持比例
+      object-position: center; // 居中显示
     }
     
     .empty-image {
@@ -200,8 +205,9 @@ const onImageError = (event: Event) => {
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 100%;
+      min-height: 200px; // 设置最小高度
       background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+      border-radius: 8px; // 保持圆角一致
       
       .empty-image-text {
         margin-top: 0.5rem;
