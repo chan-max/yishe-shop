@@ -312,6 +312,14 @@ const currentHeaderConfig = computed(() => {
 
 // 获取header组件的props
 const getHeaderProps = () => {
+  // 为文字创作页面返回简化的props
+  if (selectedCategory.value === 'text-creation') {
+    return {
+      showMobileSidebar: showMobileSidebar.value
+    }
+  }
+  
+  // 其他页面返回完整的props
   return {
     searchQuery: searchQuery.value,
     showFilterMenu: showFilterMenu.value,
@@ -748,6 +756,15 @@ const applyFilters = () => {
         @apply-filters="applyFilters"
         @toggle-style="toggleStyle"
         @toggle-color="toggleColor"
+        v-if="selectedCategory !== 'text-creation'"
+      />
+      
+      <!-- 文字创作页面的简化Header -->
+      <component
+        :is="currentHeaderComponent"
+        v-bind="getHeaderProps()"
+        @toggle-mobile-sidebar="showMobileSidebar = !showMobileSidebar"
+        v-if="selectedCategory === 'text-creation'"
       />
 
     <!-- 主要内容区域 -->
