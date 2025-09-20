@@ -360,7 +360,7 @@ onMounted(() => {
         .clothing-card {
           width: 100%;
           height: 100%;
-          border-radius: 12px;
+          border-radius: 8px;
           overflow: hidden;
           transition: all 0.3s ease;
           cursor: pointer;
