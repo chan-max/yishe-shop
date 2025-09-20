@@ -11,171 +11,81 @@
 
     <!-- 素材图专用筛选 -->
     <div class="content-filters">
-      <div class="filter-row">
-        <div class="filter-group">
-          <label class="filter-label">素材类型</label>
-          <v-select
-            v-model="filters.materialType"
-            :items="materialTypes"
-            placeholder="选择类型"
-            variant="outlined"
-            density="compact"
-            class="filter-select"
-          />
-        </div>
-        
-        <div class="filter-group">
-          <label class="filter-label">文件格式</label>
-          <v-select
-            v-model="filters.format"
-            :items="formats"
-            placeholder="选择格式"
-            variant="outlined"
-            density="compact"
-            class="filter-select"
-          />
-        </div>
-        
-        <div class="filter-group">
-          <label class="filter-label">分组</label>
-          <v-select
-            v-model="filters.group"
-            :items="groups"
-            placeholder="选择分组"
-            variant="outlined"
-            density="compact"
-            class="filter-select"
-          />
-        </div>
-        
-        <div class="filter-group">
-          <label class="filter-label">颜色</label>
-          <div class="color-picker">
-            <div
-              v-for="color in colorOptions"
-              :key="color.value"
-              class="color-option"
-              :class="{ active: filters.colors.includes(color.value) }"
-              :style="{ backgroundColor: color.color }"
-              @click="toggleColor(color.value)"
-            />
-          </div>
-        </div>
-      </div>
+      <FilterRow 
+        :filters="materialFilters" 
+        v-model="filters"
+      />
     </div>
 
     <!-- 素材图内容主体 -->
     <div class="content-body">
       <!-- 加载状态 -->
-      <div v-if="loading || !hasInitialized" class="loading-container">
-        <div class="loading-spinner">
-          <div class="spinner"></div>
-          <p class="loading-text">正在加载素材图库...</p>
-        </div>
-      </div>
+      <LoadingSpinner 
+        v-if="loading || !hasInitialized" 
+        text="正在加载素材图库..."
+      />
       
       <!-- 错误状态 -->
-      <div v-else-if="error" class="error-state">
-        <v-icon size="64" color="error">mdi-alert-circle-outline</v-icon>
-        <h3 class="error-title">加载失败</h3>
-        <p class="error-description">{{ error }}</p>
-        <v-btn color="primary" @click="fetchMaterialItems" class="retry-btn">
-          <v-icon left>mdi-refresh</v-icon>
-          重试
-        </v-btn>
-      </div>
+      <EmptyState 
+        v-else-if="error"
+        icon="mdi-alert-circle-outline"
+        icon-color="error"
+        title="加载失败"
+        :description="error"
+        :show-retry="true"
+        @retry="fetchMaterialItems"
+      />
       
       <!-- 空状态 -->
-      <div v-else-if="materialItems.length === 0" class="empty-state">
-        <v-icon size="64" color="grey-lighten-1">mdi-image-multiple-outline</v-icon>
-        <h3 class="empty-title">暂无素材图片</h3>
-        <p class="empty-description">请尝试调整筛选条件或稍后再试</p>
-      </div>
+      <EmptyState 
+        v-else-if="materialItems.length === 0"
+        icon="mdi-image-multiple-outline"
+        title="暂无素材图片"
+        description="请尝试调整筛选条件或稍后再试"
+      />
       
       <!-- 素材图网格 -->
       <div v-else class="materials-grid">
-        <div v-for="item in materialItems" :key="item.id" class="material-card">
-          <div class="material-image">
-            <!-- 有图片时显示图片 -->
-            <img
-              v-if="hasValidImage(item)"
-              :src="item.image"
-              :alt="item.title"
-              @load="onImageLoad($event, item.id)"
-              @error="onImageError($event, item.id)"
-              :class="{ 'opacity-0': !getImageLoadStatus(item.id) }"
-            />
-            
-            <!-- 没有图片时显示空状态 -->
-            <div 
-              v-else
-              class="empty-image"
-            >
-              <v-icon size="48" color="grey-lighten-2">mdi-image-outline</v-icon>
-              <p class="empty-image-text">暂无图片</p>
-            </div>
-            
-            <!-- 图片加载中的波浪效果 -->
-            <div 
-              v-if="hasValidImage(item) && !getImageLoadStatus(item.id)"
-              class="image-loading"
-            >
-              <div class="loading-waves">
-                <div class="wave"></div>
-                <div class="wave"></div>
-                <div class="wave"></div>
-              </div>
-            </div>
-            
-            <div class="material-overlay">
-              <v-btn icon="mdi-eye" variant="text" class="preview-btn" />
-              <v-btn icon="mdi-download" variant="text" class="download-btn" />
-              <v-btn icon="mdi-heart-outline" variant="text" class="favorite-btn" />
-            </div>
-            <div class="material-badge">
-              <v-chip size="small" color="primary">{{ item.format }}</v-chip>
-            </div>
-          </div>
-          <div class="material-info">
-            <h3 class="material-title">{{ item.title }}</h3>
-            <p class="material-description">{{ item.description }}</p>
-            <div class="material-specs">
-              <span class="spec-item">
-                <v-icon size="small">mdi-file</v-icon>
-                {{ item.format }}
-              </span>
-              <span class="spec-item">
-                <v-icon size="small">mdi-tag</v-icon>
-                {{ item.group || '未分组' }}
-              </span>
-            </div>
-            <div class="material-meta">
-              <span class="material-price">{{ item.price === 0 ? '免费' : `¥${item.price}` }}</span>
-              <span class="material-downloads">
-                <v-icon size="small">mdi-download</v-icon>
-                {{ item.downloads || 0 }}
-              </span>
-            </div>
-          </div>
-        </div>
+        <ImageCard
+          v-for="item in materialItems"
+          :key="item.id"
+          :item="item"
+          :image="item.image"
+          :title="item.title"
+          :description="item.description"
+          :specs="[
+            { icon: 'mdi-file', label: item.format },
+            { icon: 'mdi-tag', label: item.group || '未分组' }
+          ]"
+          :price="item.price"
+          :downloads="item.downloads"
+          :badge="item.format"
+          badge-color="primary"
+          aspect-ratio="4/3"
+          @action="onCardAction"
+          @image-load="(event) => onImageLoad(event, item.id)"
+          @image-error="(event) => onImageError(event, item.id)"
+        />
       </div>
       
       <!-- 分页 -->
-      <div v-if="materialItems.length > 0" class="pagination-container">
-        <v-pagination
-          v-model="currentPage"
-          :length="Math.ceil(total / pageSize)"
-          :total-visible="7"
-          rounded="circle"
-          color="primary"
-        />
-      </div>
+      <ContentPagination
+        v-model="currentPage"
+        :total="total"
+        :page-size="pageSize"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+import EmptyState from '../components/EmptyState.vue'
+import ImageCard from '../components/ImageCard.vue'
+import FilterRow from '../components/FilterRow.vue'
+import type { FilterItem } from '../components/FilterRow.vue'
+import ContentPagination from '../components/ContentPagination.vue'
 
 // 类型定义
 interface MaterialItem {
@@ -213,55 +123,77 @@ interface RequestBody {
   sortingFields?: string
 }
 
-// 筛选选项 - 根据 sticker 接口的实际数据优化
-const materialTypes = [
-  { text: '背景图', value: 'background' },
-  { text: '纹理', value: 'texture' },
-  { text: '图标', value: 'icon' },
-  { text: '插画', value: 'illustration' },
-  { text: '照片', value: 'photo' },
-  { text: '贴纸', value: 'sticker' },
-  { text: '装饰', value: 'decoration' }
-]
-
-const formats = [
-  { text: 'PNG', value: 'png' },
-  { text: 'JPG', value: 'jpg' },
-  { text: 'JPEG', value: 'jpeg' },
-  { text: 'SVG', value: 'svg' },
-  { text: 'GIF', value: 'gif' },
-  { text: 'WEBP', value: 'webp' },
-  { text: 'BMP', value: 'bmp' }
-]
-
-const groups = [
-  { text: '商务', value: 'business' },
-  { text: '自然', value: 'nature' },
-  { text: '科技', value: 'technology' },
-  { text: '美食', value: 'food' },
-  { text: '旅行', value: 'travel' },
-  { text: '抽象', value: 'abstract' },
-  { text: '极简', value: 'minimalist' },
-  { text: '卡通', value: 'cartoon' },
-  { text: '复古', value: 'vintage' },
-  { text: '现代', value: 'modern' },
-  { text: '节日', value: 'holiday' },
-  { text: '教育', value: 'education' }
-]
-
-const colorOptions = [
-  { value: 'red', color: '#ff4757', text: '红色' },
-  { value: 'blue', color: '#3742fa', text: '蓝色' },
-  { value: 'green', color: '#2ed573', text: '绿色' },
-  { value: 'yellow', color: '#ffa502', text: '黄色' },
-  { value: 'purple', color: '#9c88ff', text: '紫色' },
-  { value: 'orange', color: '#ff6348', text: '橙色' },
-  { value: 'pink', color: '#ff6b9d', text: '粉色' },
-  { value: 'teal', color: '#17a2b8', text: '青色' },
-  { value: 'black', color: '#2c2c2c', text: '黑色' },
-  { value: 'white', color: '#ffffff', text: '白色' },
-  { value: 'gray', color: '#95a5a6', text: '灰色' },
-  { value: 'brown', color: '#8b4513', text: '棕色' }
+// 筛选配置
+const materialFilters: FilterItem[] = [
+  {
+    key: 'materialType',
+    label: '素材类型',
+    type: 'select',
+    placeholder: '选择类型',
+    items: [
+      { text: '背景图', value: 'background' },
+      { text: '纹理', value: 'texture' },
+      { text: '图标', value: 'icon' },
+      { text: '插画', value: 'illustration' },
+      { text: '照片', value: 'photo' },
+      { text: '贴纸', value: 'sticker' },
+      { text: '装饰', value: 'decoration' }
+    ]
+  },
+  {
+    key: 'format',
+    label: '文件格式',
+    type: 'select',
+    placeholder: '选择格式',
+    items: [
+      { text: 'PNG', value: 'png' },
+      { text: 'JPG', value: 'jpg' },
+      { text: 'JPEG', value: 'jpeg' },
+      { text: 'SVG', value: 'svg' },
+      { text: 'GIF', value: 'gif' },
+      { text: 'WEBP', value: 'webp' },
+      { text: 'BMP', value: 'bmp' }
+    ]
+  },
+  {
+    key: 'group',
+    label: '分组',
+    type: 'select',
+    placeholder: '选择分组',
+    items: [
+      { text: '商务', value: 'business' },
+      { text: '自然', value: 'nature' },
+      { text: '科技', value: 'technology' },
+      { text: '美食', value: 'food' },
+      { text: '旅行', value: 'travel' },
+      { text: '抽象', value: 'abstract' },
+      { text: '极简', value: 'minimalist' },
+      { text: '卡通', value: 'cartoon' },
+      { text: '复古', value: 'vintage' },
+      { text: '现代', value: 'modern' },
+      { text: '节日', value: 'holiday' },
+      { text: '教育', value: 'education' }
+    ]
+  },
+  {
+    key: 'colors',
+    label: '颜色',
+    type: 'color-picker',
+    colorOptions: [
+      { value: 'red', color: '#ff4757', text: '红色' },
+      { value: 'blue', color: '#3742fa', text: '蓝色' },
+      { value: 'green', color: '#2ed573', text: '绿色' },
+      { value: 'yellow', color: '#ffa502', text: '黄色' },
+      { value: 'purple', color: '#9c88ff', text: '紫色' },
+      { value: 'orange', color: '#ff6348', text: '橙色' },
+      { value: 'pink', color: '#ff6b9d', text: '粉色' },
+      { value: 'teal', color: '#17a2b8', text: '青色' },
+      { value: 'black', color: '#2c2c2c', text: '黑色' },
+      { value: 'white', color: '#ffffff', text: '白色' },
+      { value: 'gray', color: '#95a5a6', text: '灰色' },
+      { value: 'brown', color: '#8b4513', text: '棕色' }
+    ]
+  }
 ]
 
 // 筛选状态
@@ -286,15 +218,6 @@ const materialItems = ref<MaterialItem[]>([])
 // 图片加载状态
 const imageLoaded = ref<Record<string, boolean>>({})
 
-// 切换颜色选择
-const toggleColor = (color: string) => {
-  const index = filters.colors.indexOf(color)
-  if (index > -1) {
-    filters.colors.splice(index, 1)
-  } else {
-    filters.colors.push(color)
-  }
-}
 
 // 获取素材列表
 const fetchMaterialItems = async () => {
@@ -307,7 +230,7 @@ const fetchMaterialItems = async () => {
     const requestBody: RequestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      // 移除 isPublic 限制，允许查询所有数据
+      isPublic: true // 只查询公开数据
     }
     
     // 添加筛选条件 - 根据 sticker 接口支持的参数
@@ -335,9 +258,9 @@ const fetchMaterialItems = async () => {
     }
     
     // 颜色筛选 - 通过关键词搜索
-    if (filters.colors.length > 0) {
-      const colorKeywords = filters.colors.map(color => {
-        const colorOption = colorOptions.find(opt => opt.value === color)
+    if (filters.colors && filters.colors.length > 0) {
+      const colorKeywords = filters.colors.map((color: string) => {
+        const colorOption = materialFilters.find(f => f.key === 'colors')?.colorOptions?.find((opt: any) => opt.value === color)
         return colorOption ? colorOption.text : color
       })
       
@@ -411,6 +334,12 @@ const hasValidImage = (item: MaterialItem) => {
 // 获取图片加载状态
 const getImageLoadStatus = (itemId: string) => {
   return imageLoaded.value[itemId] || false
+}
+
+// 卡片操作处理
+const onCardAction = (actionType: string, item: MaterialItem) => {
+  console.log('卡片操作:', actionType, item)
+  // 这里可以添加具体的操作逻辑
 }
 
 // 监听筛选条件变化
@@ -500,78 +429,6 @@ onMounted(() => {
   }
   
   .content-body {
-    .loading-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 300px;
-      
-      .loading-spinner {
-        text-align: center;
-        
-        .spinner {
-          width: 40px;
-          height: 40px;
-          border: 4px solid #f3f3f3;
-          border-top: 4px solid #e55a2b;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin: 0 auto 1rem;
-        }
-        
-        .loading-text {
-          color: #b0b0b0;
-          font-size: 0.9rem;
-        }
-      }
-    }
-    
-    .error-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      text-align: center;
-      
-      .error-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #ff6b6b;
-        margin: 1rem 0 0.5rem;
-      }
-      
-      .error-description {
-        color: #b0b0b0;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-      }
-      
-      .retry-btn {
-        margin-top: 1rem;
-      }
-    }
-    
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      text-align: center;
-      
-      .empty-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #ffffff;
-        margin: 1rem 0 0.5rem;
-      }
-      
-      .empty-description {
-        color: #b0b0b0;
-        font-size: 0.9rem;
-      }
-    }
     
     .materials-grid {
       display: grid;
@@ -579,169 +436,7 @@ onMounted(() => {
       gap: 1.5rem;
     }
     
-    .pagination-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    
-    .material-card {
-      background: #2a2a2a;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      }
-      
-      .material-image {
-        position: relative;
-        aspect-ratio: 4/3;
-        overflow: hidden;
-        
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: opacity 0.3s ease;
-        }
-        
-        .empty-image {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-          
-          .empty-image-text {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            color: #999;
-          }
-        }
-        
-        .image-loading {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          .loading-waves {
-            display: flex;
-            gap: 4px;
-            
-            .wave {
-              width: 4px;
-              height: 20px;
-              background: #ccc;
-              border-radius: 2px;
-              animation: wave 1.5s ease-in-out infinite;
-              
-              &:nth-child(1) { animation-delay: 0s; }
-              &:nth-child(2) { animation-delay: 0.2s; }
-              &:nth-child(3) { animation-delay: 0.4s; }
-            }
-          }
-        }
-        
-        .material-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-        
-        &:hover .material-overlay {
-          opacity: 1;
-        }
-        
-        .material-badge {
-          position: absolute;
-          top: 0.5rem;
-          right: 0.5rem;
-        }
-      }
-      
-      .material-info {
-        padding: 1rem;
-        
-        .material-title {
-          font-size: 1rem;
-          font-weight: 600;
-          color: #ffffff;
-          margin-bottom: 0.5rem;
-        }
-        
-        .material-description {
-          color: #b0b0b0;
-          font-size: 0.85rem;
-          margin-bottom: 0.75rem;
-          line-height: 1.4;
-        }
-        
-        .material-specs {
-          display: flex;
-          gap: 1rem;
-          margin-bottom: 0.75rem;
-          
-          .spec-item {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: #b0b0b0;
-            font-size: 0.8rem;
-          }
-        }
-        
-        .material-meta {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          
-          .material-price {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #e55a2b;
-          }
-          
-          .material-downloads {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: #b0b0b0;
-            font-size: 0.85rem;
-          }
-        }
-      }
-    }
   }
 }
 
-// 动画关键帧
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes wave {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.5); }
-}
 </style>
