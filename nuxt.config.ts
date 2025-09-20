@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     },
   },
 
+
   // typescripts
   // todo: feat/strict-type-check
   // typescript: {
