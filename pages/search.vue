@@ -182,47 +182,21 @@ const materialsFilterOptions = {
     { value: 'rating', text: '评分最高' }
   ],
   type: [
-    { value: 'photo', label: '照片' },
-    { value: 'illustration', label: '插画' },
-    { value: 'icon', label: '图标' },
-    { value: 'pattern', label: '图案' },
+    { value: 'background', label: '背景图' },
     { value: 'texture', label: '纹理' },
-    { value: 'background', label: '背景' },
-    { value: 'vector', label: '矢量图' }
-  ],
-  resolution: [
-    { value: 'hd', label: '高清 (1920x1080)' },
-    { value: '4k', label: '4K (3840x2160)' },
-    { value: '8k', label: '8K (7680x4320)' },
-    { value: 'custom', label: '自定义尺寸' }
+    { value: 'icon', label: '图标' },
+    { value: 'illustration', label: '插画' },
+    { value: 'photo', label: '照片' }
   ],
   format: [
-    { value: 'jpg', label: 'JPG' },
     { value: 'png', label: 'PNG' },
+    { value: 'jpg', label: 'JPG' },
     { value: 'svg', label: 'SVG' },
     { value: 'ai', label: 'AI' },
     { value: 'psd', label: 'PSD' },
     { value: 'eps', label: 'EPS' }
   ],
-  color: [
-    { value: 'black', label: '黑色' },
-    { value: 'white', label: '白色' },
-    { value: 'red', label: '红色' },
-    { value: 'blue', label: '蓝色' },
-    { value: 'green', label: '绿色' },
-    { value: 'yellow', label: '黄色' },
-    { value: 'pink', label: '粉色' },
-    { value: 'purple', label: '紫色' },
-    { value: 'gray', label: '灰色' },
-    { value: 'brown', label: '棕色' }
-  ],
-  license: [
-    { value: 'free', label: '免费商用' },
-    { value: 'premium', label: '付费商用' },
-    { value: 'attribution', label: '署名使用' },
-    { value: 'personal', label: '个人使用' }
-  ],
-  category: [
+  group: [
     { value: 'business', label: '商务' },
     { value: 'nature', label: '自然' },
     { value: 'technology', label: '科技' },
@@ -230,6 +204,16 @@ const materialsFilterOptions = {
     { value: 'travel', label: '旅行' },
     { value: 'abstract', label: '抽象' },
     { value: 'minimalist', label: '极简' }
+  ],
+  color: [
+    { value: 'red', label: '红色' },
+    { value: 'blue', label: '蓝色' },
+    { value: 'green', label: '绿色' },
+    { value: 'yellow', label: '黄色' },
+    { value: 'purple', label: '紫色' },
+    { value: 'orange', label: '橙色' },
+    { value: 'pink', label: '粉色' },
+    { value: 'teal', label: '青色' }
   ]
 }
 
