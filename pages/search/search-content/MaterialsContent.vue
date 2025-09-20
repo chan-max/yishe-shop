@@ -32,7 +32,7 @@
       <masonry-wall 
         v-else
         :items="materialItems" 
-        :column-width="300"
+        :column-width="300" 
         :gap="12"
         class="materials-masonry"
       >
@@ -62,50 +62,26 @@
               </div>
               
               <!-- 悬停遮罩层 -->
-              <div class="image-overlay">
-                <!-- 顶部信息 -->
-                <div class="overlay-top">
-                  <div class="format-badge">
-                    {{ item.format }}
-                  </div>
-                  <div class="action-buttons">
-                    <button 
-                      class="action-btn download-btn"
-                      @click.stop="onDownload(item)"
-                      title="下载"
-                    >
-                      <i class="mdi mdi-download"></i>
-                    </button>
-                    <button 
-                      class="action-btn preview-btn"
-                      @click.stop="onPreview(item)"
-                      title="预览"
-                    >
-                      <i class="mdi mdi-eye"></i>
-                    </button>
-                  </div>
-                </div>
-                
-                <!-- 底部内容信息 -->
+              <div class="image-overlay" :class="{ 'small-image': isSmallImage(item.id) }">
+                <!-- 内容信息 -->
                 <div class="overlay-content">
                   <h3 class="material-title" :title="item.title">
                     {{ item.title }}
                   </h3>
-                  <p class="material-description" v-if="item.description">
+                  
+                  <!-- 描述信息 -->
+                  <p 
+                    class="material-description" 
+                    v-if="item.description"
+                  >
                     {{ item.description }}
                   </p>
-                  <div class="material-meta">
-                    <div class="meta-item">
-                      <i class="mdi mdi-tag-outline"></i>
-                      <span>{{ item.group || '未分组' }}</span>
-                    </div>
-                    <div class="meta-item">
-                      <i class="mdi mdi-download"></i>
-                      <span>{{ item.downloads }}</span>
-                    </div>
-                    <div class="meta-item" v-if="item.price > 0">
-                      <i class="mdi mdi-currency-cny"></i>
-                      <span>{{ item.price }}</span>
+                  
+                  <!-- 关键词信息 -->
+                  <div class="material-keywords" v-if="item.keywords">
+                    <div class="keywords-label">关键词：</div>
+                    <div class="keywords-list">
+                      {{ item.keywords }}
                     </div>
                   </div>
                 </div>
@@ -264,6 +240,15 @@ const materialItems = ref<MaterialItem[]>([])
 // 图片加载状态
 const imageLoaded = ref<Record<string, boolean>>({})
 
+// 图片高度状态
+const imageHeights = ref<Record<string, number>>({})
+
+// 检查是否为小图片
+const isSmallImage = (itemId: string) => {
+  const height = imageHeights.value[itemId]
+  return height && height < 150
+}
+
 
 
 // 获取素材列表
@@ -365,6 +350,10 @@ const fetchMaterialItems = async () => {
 // 图片加载成功处理
 const onImageLoad = (event: Event, itemId: string) => {
   imageLoaded.value[itemId] = true
+  const img = event.target as HTMLImageElement
+  if (img) {
+    imageHeights.value[itemId] = img.naturalHeight
+  }
 }
 
 // 图片加载失败处理
@@ -509,7 +498,7 @@ onMounted(() => {
           
           &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 0 2px #e55a2b;
             border-color: #e55a2b;
             
             .image-overlay {
@@ -603,73 +592,43 @@ onMounted(() => {
             }
           }
           
-          .image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-              to bottom,
-              rgba(0, 0, 0, 0.1) 0%,
-              rgba(0, 0, 0, 0.3) 50%,
-              rgba(0, 0, 0, 0.85) 100%
-            );
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            
-            .overlay-top {
+            .image-overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.05) 0%,
+                rgba(0, 0, 0, 0.2) 60%,
+                rgba(0, 0, 0, 0.9) 100%
+              );
               display: flex;
-              justify-content: space-between;
-              align-items: flex-start;
+              flex-direction: column;
+              justify-content: flex-end;
+              align-items: center;
+              padding: 12px;
+              opacity: 0;
+              transition: opacity 0.3s ease;
               
-              .format-badge {
-                background: #e55a2b;
-                color: white;
-                padding: 4px 8px;
-                border-radius: 6px;
-                font-size: 11px;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-              }
-              
-              .action-buttons {
-                display: flex;
-                gap: 8px;
+              &.small-image {
+                padding: 8px;
+                justify-content: flex-end;
                 
-                .action-btn {
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 50%;
-                  border: none;
-                  background: rgba(255, 255, 255, 0.9);
-                  color: #333;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  cursor: pointer;
-                  transition: all 0.2s ease;
-                  backdrop-filter: blur(10px);
-                  
-                  &:hover {
-                    background: #e55a2b;
-                    color: white;
-                    transform: scale(1.1);
-                  }
-                  
-                  i {
-                    font-size: 16px;
-                  }
+                .overlay-content {
+                  position: absolute;
+                  bottom: 8px;
+                  left: 8px;
+                  right: 8px;
                 }
               }
-            }
+            
             
             .overlay-content {
+              text-align: center;
+              max-width: 100%;
+              
               .material-title {
                 font-size: 14px;
                 font-weight: 600;
@@ -682,12 +641,19 @@ onMounted(() => {
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                
+                .small-image & {
+                  font-size: 12px;
+                  margin: 0 0 4px 0;
+                  -webkit-line-clamp: 1;
+                  line-clamp: 1;
+                }
               }
               
               .material-description {
                 font-size: 11px;
                 color: #b0b0b0;
-                margin: 0 0 10px 0;
+                margin: 0 0 8px 0;
                 line-height: 1.4;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
@@ -695,30 +661,36 @@ onMounted(() => {
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                
+                .small-image & {
+                  -webkit-line-clamp: 1;
+                  line-clamp: 1;
+                  margin: 0 0 6px 0;
+                }
               }
               
-              .material-meta {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                
-                .meta-item {
-                  display: flex;
-                  align-items: center;
-                  gap: 4px;
+              .material-keywords {
+                .keywords-label {
                   font-size: 10px;
                   color: #888;
-                  background: rgba(255, 255, 255, 0.1);
-                  padding: 2px 6px;
-                  border-radius: 4px;
-                  backdrop-filter: blur(5px);
+                  margin-bottom: 4px;
+                  font-weight: 500;
+                }
+                
+                .keywords-list {
+                  font-size: 10px;
+                  color: #aaa;
+                  line-height: 1.3;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
                   
-                  i {
-                    font-size: 12px;
-                  }
-                  
-                  span {
-                    white-space: nowrap;
+                  .small-image & {
+                    -webkit-line-clamp: 1;
+                    line-clamp: 1;
                   }
                 }
               }
