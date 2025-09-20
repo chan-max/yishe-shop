@@ -7,6 +7,8 @@
  * @Description: 搜索页面筛选组件
 -->
 <script lang="ts" setup>
+import { colorOptions } from '../config/filterOptions'
+
 interface Props {
   show: boolean
 }
@@ -53,21 +55,7 @@ const filterOptions = {
   ]
 }
 
-// 颜色选项
-const colorOptions = [
-  { value: '#000000', text: '黑色' },
-  { value: '#FFFFFF', text: '白色' },
-  { value: '#FF0000', text: '红色' },
-  { value: '#0000FF', text: '蓝色' },
-  { value: '#00FF00', text: '绿色' },
-  { value: '#FFFF00', text: '黄色' },
-  { value: '#FF69B4', text: '粉色' },
-  { value: '#800080', text: '紫色' },
-  { value: '#FFA500', text: '橙色' },
-  { value: '#8B4513', text: '棕色' },
-  { value: '#808080', text: '灰色' },
-  { value: '#000080', text: '海军蓝' }
-]
+// 颜色选项已从统一配置导入
 
 // 切换风格选择
 const toggleStyle = (styleValue: string) => {

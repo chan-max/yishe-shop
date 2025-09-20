@@ -21,7 +21,7 @@
         v-else-if="textItems.length === 0"
         icon="mdi-text-box-outline"
         title="暂无文字创作内容"
-        description="请尝试调整筛选条件或稍后再试"
+        description="请稍后再试"
       />
       
       <!-- 文字内容列表 -->
@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import EmptyState from '../components/EmptyState.vue'
 import ContentPagination from '../components/ContentPagination.vue'

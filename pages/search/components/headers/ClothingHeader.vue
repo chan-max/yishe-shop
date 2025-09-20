@@ -8,6 +8,7 @@
 -->
 <script lang="ts" setup>
 import BaseHeader from './BaseHeader.vue'
+import { colorOptions } from '../../config/filterOptions'
 
 interface Props {
   searchQuery: string
@@ -47,19 +48,7 @@ const clothingFilterOptions = [
   { value: 'material', label: '材质', options: ['棉质', '牛仔', '针织', '丝绸', '皮革', '合成纤维'] }
 ]
 
-// 颜色选项
-const colorOptions = [
-  { value: '#FF0000', text: '红色' },
-  { value: '#00FF00', text: '绿色' },
-  { value: '#0000FF', text: '蓝色' },
-  { value: '#FFFF00', text: '黄色' },
-  { value: '#FF00FF', text: '紫色' },
-  { value: '#00FFFF', text: '青色' },
-  { value: '#000000', text: '黑色' },
-  { value: '#FFFFFF', text: '白色' },
-  { value: '#808080', text: '灰色' },
-  { value: '#FFA500', text: '橙色' }
-]
+// 颜色选项已从统一配置导入
 
 const handleSearchInput = (value: string) => {
   emit('update:searchQuery', value)

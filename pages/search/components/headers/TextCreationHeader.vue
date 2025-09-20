@@ -8,6 +8,7 @@
 -->
 <script lang="ts" setup>
 import BaseHeader from './BaseHeader.vue'
+import { languageOptions } from '../../config/filterOptions'
 
 interface Props {
   searchQuery: string
@@ -45,17 +46,7 @@ const textCreationFilterOptions = [
   { value: 'purpose', label: '用途', options: ['营销', '教育', '娱乐', '信息', '说服', '描述'] }
 ]
 
-// 语言选项
-const languageOptions = [
-  { value: 'zh', text: '中文' },
-  { value: 'en', text: '英文' },
-  { value: 'ja', text: '日文' },
-  { value: 'ko', text: '韩文' },
-  { value: 'fr', text: '法文' },
-  { value: 'de', text: '德文' },
-  { value: 'es', text: '西班牙文' },
-  { value: 'it', text: '意大利文' }
-]
+// 语言选项已从统一配置导入
 
 const handleSearchInput = (value: string) => {
   emit('update:searchQuery', value)
