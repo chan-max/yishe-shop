@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-19 08:17:49
+ * @LastEditTime: 2025-09-20 19:55:55
  * @FilePath: /yishe-nuxt/pages/search.vue
  * @Description: 搜索页面 - 设计素材搜索和筛选
 -->
@@ -15,10 +15,12 @@ import { useRoute, useRouter } from 'vue-router'
 // 导入内容区域组件
 import ClothingContent from '~/pages/search/search-content/ClothingContent.vue'
 import MaterialsContent from '~/pages/search/search-content/MaterialsContent.vue'
+import TextCreationContent from '~/pages/search/search-content/TextCreationContent.vue'
 
 // 导入Header组件
 import ClothingHeader from './search/components/headers/ClothingHeader.vue'
 import MaterialsHeader from './search/components/headers/MaterialsHeader.vue'
+import TextCreationHeader from './search/components/headers/TextCreationHeader.vue'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
@@ -217,6 +219,68 @@ const materialsFilterOptions = {
   ]
 }
 
+// 文字创作筛选选项
+const textCreationFilterOptions = {
+  sort: [
+    { value: 'latest', text: '最新创作' },
+    { value: 'popular', text: '最受欢迎' },
+    { value: 'downloads', text: '下载最多' },
+    { value: 'rating', text: '评分最高' }
+  ],
+  category: [
+    { value: 'copywriting', text: '文案' },
+    { value: 'title', text: '标题' },
+    { value: 'description', text: '描述' },
+    { value: 'advertisement', text: '广告语' },
+    { value: 'story', text: '故事' },
+    { value: 'poetry', text: '诗歌' },
+    { value: 'news', text: '新闻' },
+    { value: 'comment', text: '评论' }
+  ],
+  style: [
+    { value: 'formal', text: '正式' },
+    { value: 'casual', text: '轻松' },
+    { value: 'humorous', text: '幽默' },
+    { value: 'serious', text: '严肃' },
+    { value: 'romantic', text: '浪漫' },
+    { value: 'inspiring', text: '励志' },
+    { value: 'professional', text: '专业' },
+    { value: 'creative', text: '创意' }
+  ],
+  length: [
+    { value: 'short', text: '短句' },
+    { value: 'medium', text: '中等' },
+    { value: 'long', text: '长文' },
+    { value: 'very_long', text: '超长' }
+  ],
+  tone: [
+    { value: 'positive', text: '积极' },
+    { value: 'neutral', text: '中性' },
+    { value: 'negative', text: '消极' },
+    { value: 'question', text: '疑问' },
+    { value: 'exclamation', text: '感叹' },
+    { value: 'statement', text: '陈述' }
+  ],
+  purpose: [
+    { value: 'marketing', text: '营销' },
+    { value: 'education', text: '教育' },
+    { value: 'entertainment', text: '娱乐' },
+    { value: 'information', text: '信息' },
+    { value: 'persuasion', text: '说服' },
+    { value: 'description', text: '描述' }
+  ],
+  language: [
+    { value: 'zh', text: '中文' },
+    { value: 'en', text: '英文' },
+    { value: 'ja', text: '日文' },
+    { value: 'ko', text: '韩文' },
+    { value: 'fr', text: '法文' },
+    { value: 'de', text: '德文' },
+    { value: 'es', text: '西班牙文' },
+    { value: 'it', text: '意大利文' }
+  ]
+}
+
 // 根据分类获取筛选选项
 const getFilterOptions = (category: string) => {
   switch (category) {
@@ -224,6 +288,8 @@ const getFilterOptions = (category: string) => {
       return clothingFilterOptions
     case 'materials':
       return materialsFilterOptions
+    case 'text-creation':
+      return textCreationFilterOptions
     default:
       return clothingFilterOptions
   }
@@ -394,13 +460,15 @@ const toggleTheme = () => {
 // 内容组件映射
 const contentComponents = {
   clothing: ClothingContent,
-  materials: MaterialsContent
+  materials: MaterialsContent,
+  'text-creation': TextCreationContent
 }
 
 // Header组件映射
 const headerComponents = {
   clothing: ClothingHeader,
-  materials: MaterialsHeader
+  materials: MaterialsHeader,
+  'text-creation': TextCreationHeader
 }
 
 // Header配置映射 - 每个导航项对应的header配置
@@ -421,14 +489,22 @@ const headerConfigs = {
     showFilter: true,
     filterOptions: ['类型', '分辨率', '格式', '颜色', '授权', '分类']
   },
+  'text-creation': {
+    title: '文字创作',
+    subtitle: '创意文字内容与文案创作',
+    searchPlaceholder: '搜索文字创作内容...',
+    icon: 'mdi-text-box-outline',
+    showFilter: true,
+    filterOptions: ['分类', '风格', '长度', '语调', '用途', '语言']
+  }
 }
 
 // 选择分类
 const selectCategory = (category: string) => {
-  // 只允许clothing和materials分类
-  if (category === 'clothing' || category === 'materials') {
-  selectedCategory.value = category
-  console.log('选择分类:', category)
+  // 允许clothing、materials和text-creation分类
+  if (category === 'clothing' || category === 'materials' || category === 'text-creation') {
+    selectedCategory.value = category
+    console.log('选择分类:', category)
   }
 }
 
@@ -813,6 +889,19 @@ const applyFilters = () => {
               <template v-else>
                 <v-icon left>mdi-image-multiple-outline</v-icon>
                 <span>素材图</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'text-creation' }"
+              @click="selectCategory('text-creation')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-text-box-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-text-box-outline</v-icon>
+                <span>文字创作</span>
               </template>
             </v-btn>
             
