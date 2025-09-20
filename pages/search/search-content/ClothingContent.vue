@@ -1,21 +1,5 @@
 <template>
   <div class="clothing-content">
-    <!-- 服装设计专用头部 -->
-    <div class="content-header">
-      <h2 class="content-title">
-        <v-icon left>mdi-tshirt-crew-outline</v-icon>
-        服装设计
-      </h2>
-      <p class="content-subtitle">探索最新的服装设计趋势和创意灵感</p>
-    </div>
-
-    <!-- 服装设计专用筛选 -->
-    <div class="content-filters">
-      <FilterRow 
-        :filters="clothingFilters" 
-        v-model="filters"
-      />
-    </div>
 
     <!-- 服装设计内容主体 -->
     <div class="content-body">

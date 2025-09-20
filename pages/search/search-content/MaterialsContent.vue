@@ -1,21 +1,5 @@
 <template>
   <div class="materials-content">
-    <!-- 素材图专用头部 -->
-    <div class="content-header">
-      <h2 class="content-title">
-        <v-icon left>mdi-image-multiple-outline</v-icon>
-        素材图库
-      </h2>
-      <p class="content-subtitle">高质量设计素材，助力您的创意项目</p>
-    </div>
-
-    <!-- 素材图专用筛选 -->
-    <div class="content-filters">
-      <FilterRow 
-        :filters="materialFilters" 
-        v-model="filters"
-      />
-    </div>
 
     <!-- 素材图内容主体 -->
     <div class="content-body">
