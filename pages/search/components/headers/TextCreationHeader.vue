@@ -51,17 +51,18 @@ const toggleMobileSidebar = () => {
   z-index: 100;
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-primary);
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
 }
 
 .header-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
   padding: 0 2rem;
   max-width: 100%;
   position: relative;
+  min-height: 2.5rem;
 }
 
 .mobile-menu-btn {
@@ -93,7 +94,7 @@ const toggleMobileSidebar = () => {
 }
 
 .page-subtitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   margin: 0;
   font-weight: 400;
@@ -107,7 +108,8 @@ const toggleMobileSidebar = () => {
 
   .header-content {
     padding: 0 1rem;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    min-height: 2rem;
   }
 
   .title-container {
@@ -119,7 +121,7 @@ const toggleMobileSidebar = () => {
   }
 
   .page-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
 </style>
