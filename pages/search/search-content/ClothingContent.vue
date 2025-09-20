@@ -368,8 +368,8 @@ onMounted(() => {
           
           &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 0 2px #e55a2b;
-            border-color: #e55a2b;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 0 2px #3b82f6;
+            border-color: #3b82f6;
             
             .image-overlay {
               opacity: 1;
@@ -415,7 +415,7 @@ onMounted(() => {
               width: 32px;
               height: 32px;
               border: 3px solid rgba(255, 255, 255, 0.1);
-              border-top: 3px solid #e55a2b;
+              border-top: 3px solid #3b82f6;
               border-radius: 50%;
               animation: spin 1s linear infinite;
               margin-bottom: 12px;

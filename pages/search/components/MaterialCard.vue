@@ -146,7 +146,7 @@ const handlePreview = () => {
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border-color: #e55a2b;
+    border-color: #3b82f6;
     
     .image-overlay {
       opacity: 1;
@@ -188,7 +188,7 @@ const handlePreview = () => {
       width: 24px;
       height: 24px;
       border: 2px solid #444;
-      border-top: 2px solid #e55a2b;
+      border-top: 2px solid #3b82f6;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -215,7 +215,7 @@ const handlePreview = () => {
     
     .format-badge {
       align-self: flex-start;
-      background: #e55a2b;
+      background: #3b82f6;
       color: white;
       padding: 4px 8px;
       border-radius: 4px;
@@ -242,7 +242,7 @@ const handlePreview = () => {
         transition: all 0.2s ease;
         
         &:hover {
-          background: #e55a2b;
+          background: #3b82f6;
           color: white;
           transform: scale(1.1);
         }

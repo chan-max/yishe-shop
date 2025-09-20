@@ -197,7 +197,7 @@ const toggleColor = (colorValue: string) => {
         
         &.active {
           border-color: #ffffff;
-          box-shadow: 0 0 0 2px #e55a2b;
+          box-shadow: 0 0 0 2px #3b82f6;
         }
       }
     }

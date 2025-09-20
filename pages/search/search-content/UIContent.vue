@@ -383,7 +383,7 @@ const uiItems = ref([
           .ui-price {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #e55a2b;
+            color: #3b82f6;
           }
           
           .ui-likes {
