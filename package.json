@@ -37,7 +37,10 @@
         "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "release": "release-it",
         "build:prod": "NODE_ENV=production nuxt generate",
-        "build:dev": "NODE_ENV=development nuxt generate"
+        "build:dev": "NODE_ENV=development nuxt generate",
+        "build:locales": "node scripts/build-locales.js",
+        "build:en": "NUXT_PUBLIC_LOCALE=en nuxt generate",
+        "build:zh": "NUXT_PUBLIC_LOCALE=zh nuxt generate"
     },
     "dependencies": {
         "@mdi/font": "^7.4.47",
@@ -64,6 +67,7 @@
     "devDependencies": {
         "@nuxtjs/eslint-config-typescript": "^12.1.0",
         "@nuxtjs/eslint-module": "^4.1.0",
+        "@nuxtjs/i18n": "^10.1.0",
         "@nuxtjs/sitemap": "^7.2.10",
         "consola": "^3.2.3",
         "eslint": "^8.52.0",
