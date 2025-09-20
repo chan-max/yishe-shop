@@ -607,7 +607,7 @@ onMounted(() => {
               display: flex;
               flex-direction: column;
               justify-content: flex-end;
-              align-items: center;
+              align-items: flex-start;
               padding: 12px;
               opacity: 0;
               transition: opacity 0.3s ease;
@@ -626,7 +626,7 @@ onMounted(() => {
             
             
             .overlay-content {
-              text-align: center;
+              text-align: left;
               max-width: 100%;
               
               .material-title {
