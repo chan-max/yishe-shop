@@ -44,11 +44,13 @@
         "@nuxt/content": "^2.9.0",
         "@nuxt/devtools": "^1.0.0",
         "@nuxtjs/color-mode": "^3.3.0",
+        "@nuxtjs/sitemap": "^3.1.0",
         "@nuxtjs/tailwindcss": "^6.8.1",
         "@pinia/nuxt": "^0.5.1",
         "@primeuix/themes": "^1.1.1",
         "@vueuse/core": "^10.5.0",
         "@vueuse/nuxt": "^10.7.0",
+        "@yeger/vue-masonry-wall": "^5.1.0",
         "nuxt-headlessui": "^1.1.4",
         "nuxt-icon": "^0.6.1",
         "pinia": "^2.1.7",
@@ -57,8 +59,7 @@
         "tailwindcss": "^3.3.5",
         "ua-parser-js": "^2.0.3",
         "unplugin-vue-components": "^0.25.2",
-        "vuetify": "^3.8.9",
-        "@nuxtjs/sitemap": "^3.1.0"
+        "vuetify": "^3.8.9"
     },
     "devDependencies": {
         "@nuxtjs/eslint-config-typescript": "^12.1.0",
