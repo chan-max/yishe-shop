@@ -1,5 +1,7 @@
 <template>
   <div class="materials-content">
+    <!-- 导入 loading 组件 -->
+    <SearchLoading v-if="loading || !hasInitialized" text="正在加载素材图库..." class="grid-loading" />
     <!-- 素材图专用头部 -->
     <div class="content-header">
       <h2 class="content-title">
@@ -108,6 +110,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import SearchLoading from '../components/SearchLoading.vue'
 
 // 筛选选项
 const materialTypes = [

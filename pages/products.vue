@@ -53,7 +53,7 @@
         </div>
 
         <!-- 筛选条件 -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-[1440px] mx-auto mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3  mx-auto mb-8">
           <!-- 排序方式 -->
           <v-select
             v-model="selectedFilters.sort"
@@ -321,22 +321,22 @@
         </div>
 
         <div v-else>
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 max-w-[1440px] mx-auto">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-1.5 max-w-[1200px] mx-auto">
             <!-- 商品卡片 -->
             <div
               v-for="product in products"
               :key="product.id"
-              class="group relative bg-white rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              class="group relative bg-white rounded-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
               @click="goToProductDetail(product.id)"
             >
               <!-- 商品图片 -->
-              <div class="relative aspect-[4/5] overflow-hidden">
+              <div class="relative aspect-[3/4] overflow-hidden">
                 <!-- 有图片时显示图片 -->
                 <img
                   v-if="hasValidImage(product)"
                   :src="product?.customModel?.thumbnail"
                   :alt="product.name"
-                  class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                  class="w-full h-full object-contain transition-all duration-500 group-hover:scale-105"
                   @load="onImageLoad($event, product.id)"
                   @error="onImageError($event, product.id)"
                   :class="{ 'opacity-0': !getImageLoadStatus(product.id) }"
@@ -404,23 +404,23 @@
               </div>
 
               <!-- 商品信息 -->
-              <div class="p-4">
-                <h3 class="text-sm font-semibold mb-3 line-clamp-2 text-gray-900 group-hover:text-gray-700 transition-colors">
+              <div class="p-1">
+                <h3 class="text-xs font-medium mb-0.5 line-clamp-1 text-gray-900 group-hover:text-gray-700 transition-colors">
                   {{ product.name }}
                 </h3>
                 
-                <!-- 商品描述 -->
-                <div v-if="product.description" class="mb-4">
-                  <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">{{ product.description }}</p>
-                </div>
+                <!-- 商品描述 - 移除描述以节省空间 -->
+                <!-- <div v-if="product.description" class="mb-0.5">
+                  <p class="text-xs text-gray-600 line-clamp-1 leading-tight">{{ product.description }}</p>
+                </div> -->
                 
-                <!-- 关键词标签 - 显示所有标签 -->
-                <div v-if="getProductKeywords(product).length > 0" class="mb-2">
-                  <div class="flex flex-wrap gap-1.5">
+                <!-- 关键词标签 - 只显示一个标签 -->
+                <div v-if="getProductKeywords(product).length > 0" class="mb-0">
+                  <div class="flex flex-wrap gap-0.5">
                     <span 
-                      v-for="keyword in getProductKeywords(product)" 
+                      v-for="keyword in getProductKeywords(product).slice(0, 1)" 
                       :key="keyword"
-                      class="px-2.5 py-1 text-xs font-medium bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 rounded-full hover:from-gray-100 hover:to-gray-200 transition-all duration-200"
+                      class="px-1 py-0.5 text-xs font-medium bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 rounded-full hover:from-gray-100 hover:to-gray-200 transition-all duration-200"
                     >
                       {{ keyword }}
                     </span>

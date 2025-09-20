@@ -1,13 +1,13 @@
 <template>
   <!-- 商品展示区 -->
   <div class="w-full px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-1.5 max-w-[1200px] mx-auto">
       <!-- 商品卡片 -->
       <div v-for="product in products" :key="product.id" 
         class="rounded-lg overflow-hidden shadow-sm border">
         <!-- 商品图片 -->
         <div class="relative aspect-[3/4]">
-          <img :src="product.image" :alt="product.name" class="w-full h-full object-cover" />
+          <img :src="product.image" :alt="product.name" class="w-full h-full object-contain" />
           <!-- 商品标签 -->
           <div v-if="product.tag" class="absolute top-2 left-2 px-2 py-1 text-xs rounded border">
             {{ product.tag }}

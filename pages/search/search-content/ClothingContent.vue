@@ -459,8 +459,18 @@ onMounted(() => {
     
     .design-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      @media (min-width: 1024px) {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
     
     .pagination-container {
@@ -470,19 +480,25 @@ onMounted(() => {
     }
     
     .design-card {
-      background: #2a2a2a;
-      border-radius: 12px;
+      background: transparent;
+      border-radius: 8px;
       overflow: hidden;
       transition: all 0.3s ease;
+      position: relative;
       
       &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        
+        .design-info {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       
       .design-image {
         position: relative;
-        aspect-ratio: 3/4;
+        aspect-ratio: 4/5;
         overflow: hidden;
         
         img {
@@ -538,50 +554,46 @@ onMounted(() => {
         }
         
         .design-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-        
-        &:hover .design-overlay {
-          opacity: 1;
+          display: none;
         }
       }
       
       .design-info {
-        padding: 1rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 1rem 0.75rem 0.75rem;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: all 0.3s ease;
         
         .design-title {
-          font-size: 1rem;
+          font-size: 0.9rem;
           font-weight: 600;
           color: #ffffff;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.25rem;
+          line-height: 1.2;
         }
         
         .design-description {
-          color: #b0b0b0;
-          font-size: 0.85rem;
-          margin-bottom: 0.75rem;
-          line-height: 1.4;
+          color: #e0e0e0;
+          font-size: 0.8rem;
+          margin-bottom: 0.5rem;
+          line-height: 1.3;
         }
         
         .design-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-bottom: 0.75rem;
+          gap: 0.25rem;
+          margin-bottom: 0.5rem;
           
           .design-tag {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
           }
         }
         
@@ -591,16 +603,16 @@ onMounted(() => {
           align-items: center;
           
           .design-price {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #e55a2b;
+            color: #ff6b35;
           }
           
           .design-likes {
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            color: #b0b0b0;
+            color: #e0e0e0;
             font-size: 0.85rem;
           }
         }
