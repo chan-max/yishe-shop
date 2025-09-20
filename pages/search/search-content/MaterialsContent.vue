@@ -228,7 +228,7 @@ const filters = reactive({
 
 // 分页相关状态
 const currentPage = ref(1)
-const pageSize = ref(12)
+const pageSize = ref(36)
 const total = ref(0)
 const loading = ref(false)
 const hasInitialized = ref(false)
