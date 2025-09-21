@@ -140,4 +140,11 @@ export default defineNuxtConfig({
         : 'http://localhost:1520/api')
     }
   },
+  
+  // prerender configuration
+  nitro:{
+    prerender: {
+      failOnError: false
+    },
+  }
 })

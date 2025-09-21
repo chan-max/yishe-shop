@@ -2,13 +2,13 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
+ * @LastEditTime: 2025-09-22 03:03:27
  * @FilePath: /yishe-nuxt/pages/search/components/headers/MaterialsHeader.vue
  * @Description: 素材图Header组件
 -->
 <script lang="ts" setup>
 import BaseHeader from './BaseHeader.vue'
-import { colorOptions } from '../../config/filterOptions'
+import { colorOptions } from '../../customConfig/filterOptions'
 
 interface Props {
   searchQuery: string

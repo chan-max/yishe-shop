@@ -2,13 +2,13 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
+ * @LastEditTime: 2025-09-22 03:04:15
  * @FilePath: /yishe-nuxt/pages/search/components/headers/ClothingHeader.vue
  * @Description: 服装设计Header组件
 -->
 <script lang="ts" setup>
 import BaseHeader from './BaseHeader.vue'
-import { colorOptions } from '../../config/filterOptions'
+import { colorOptions } from '../../customConfig/filterOptions'
 
 interface Props {
   searchQuery: string

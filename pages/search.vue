@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-21 22:31:35
+ * @LastEditTime: 2025-09-22 03:01:38
  * @FilePath: /yishe-nuxt/pages/search.vue
  * @Description: Search Page - Design Material Search and Filtering
 -->
@@ -30,7 +30,7 @@ import {
   materialsFilterOptions, 
   textCreationFilterOptions, 
   getFilterOptions 
-} from './search/config/filterOptions'
+} from './search/customConfig/filterOptions'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
