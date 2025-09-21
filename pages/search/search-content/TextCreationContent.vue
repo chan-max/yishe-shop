@@ -4,132 +4,81 @@
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-01-27 11:00:00
  * @FilePath: /yishe-nuxt/pages/search/search-content/TextCreationContent.vue
- * @Description: 文字创作内容组件 - 使用列表式展示
+ * @Description: 文字创作内容组件 - 简洁卡片式展示
 -->
 <template>
   <div class="text-creation-content">
-    <!-- 文字创作内容主体 -->
-    <div class="content-body">
-      <!-- 加载状态 -->
-      <LoadingSpinner 
-        v-if="loading || !hasInitialized" 
-        text="正在加载文字创作内容..."
-      />
-      
-      <!-- 空状态 -->
-      <EmptyState 
-        v-else-if="textItems.length === 0"
-        icon="mdi-text-box-outline"
-      />
-      
-      <!-- 文字内容列表 -->
-      <div v-else class="text-list">
-        <div 
-          v-for="(item, index) in textItems" 
-          :key="item.id"
-          class="text-item"
-          @click="onItemClick(item)"
-        >
-          <!-- 文字卡片 -->
-          <div class="text-card">
-            <!-- 头部信息 -->
-            <div class="text-header">
-              <div class="text-title">
-                <h3>{{ item.title }}</h3>
-                <div class="text-meta">
-                  <span class="text-category">{{ item.category }}</span>
-                  <span class="text-language">{{ item.language }}</span>
-                  <span class="text-length">{{ item.length }}</span>
-                </div>
-              </div>
-              <div class="text-actions">
-                <v-btn
-                  variant="text"
-                  size="small"
-                  icon
-                  @click.stop="onCopyText(item)"
-                  class="action-btn"
-                >
-                  <v-icon>mdi-content-copy</v-icon>
-                </v-btn>
-                <v-btn
-                  variant="text"
-                  size="small"
-                  icon
-                  @click.stop="onLikeText(item)"
-                  class="action-btn"
-                  :class="{ 'liked': item.isLiked }"
-                >
-                  <v-icon>{{ item.isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-                </v-btn>
-                <v-btn
-                  variant="text"
-                  size="small"
-                  icon
-                  @click.stop="onShareText(item)"
-                  class="action-btn"
-                >
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-              </div>
-            </div>
-            
-            <!-- 文字内容 -->
-            <div class="text-content">
-              <div class="text-preview" :class="{ 'expanded': item.isExpanded }">
-                <p>{{ item.content }}</p>
-              </div>
-              <button 
-                v-if="item.content.length > 200"
-                @click.stop="toggleExpand(item)"
-                class="expand-btn"
-              >
-                {{ item.isExpanded ? '收起' : '展开' }}
-                <v-icon size="small">
-                  {{ item.isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
-                </v-icon>
-              </button>
-            </div>
-            
-            <!-- 标签和统计 -->
-            <div class="text-footer">
-              <div class="text-tags" v-if="item.tags && item.tags.length > 0">
-                <v-chip
-                  v-for="tag in item.tags"
-                  :key="tag"
-                  size="x-small"
-                  variant="outlined"
-                  class="text-tag"
-                >
-                  {{ tag }}
-                </v-chip>
-              </div>
-              <div class="text-stats">
-                <span class="stat-item">
-                  <v-icon size="small">mdi-eye</v-icon>
-                  {{ item.views || 0 }}
-                </span>
-                <span class="stat-item">
-                  <v-icon size="small">mdi-heart</v-icon>
-                  {{ item.likes || 0 }}
-                </span>
-                <span class="stat-item">
-                  <v-icon size="small">mdi-download</v-icon>
-                  {{ item.downloads || 0 }}
-                </span>
-              </div>
-            </div>
-          </div>
+    <!-- 加载状态 -->
+    <LoadingSpinner 
+      v-if="loading || !hasInitialized" 
+      text="正在加载文字创作内容..."
+    />
+    
+    <!-- 空状态 -->
+    <EmptyState 
+      v-else-if="textItems.length === 0"
+      icon="mdi-text-box-outline"
+    />
+    
+    <!-- 文字内容网格 -->
+    <div v-else class="text-grid">
+      <div 
+        v-for="(item, index) in textItems" 
+        :key="item.id"
+        class="text-card"
+        @click="onItemClick(item)"
+      >
+        <!-- 文字内容 -->
+        <div class="text-content">
+          <p class="text-preview">
+            {{ item.content }}
+          </p>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="text-actions">
+          <v-btn
+            variant="text"
+            size="small"
+            icon
+            @click.stop="onCopyText(item)"
+            class="action-btn"
+            title="复制"
+          >
+            <v-icon>mdi-content-copy</v-icon>
+          </v-btn>
+          <v-btn
+            variant="text"
+            size="small"
+            icon
+            @click.stop="onLikeText(item)"
+            class="action-btn"
+            :class="{ 'liked': item.isLiked }"
+            title="点赞"
+          >
+            <v-icon>{{ item.isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+          </v-btn>
+          <v-btn
+            variant="text"
+            size="small"
+            icon
+            @click.stop="onShareText(item)"
+            class="action-btn"
+            title="分享"
+          >
+            <v-icon>mdi-share-variant</v-icon>
+          </v-btn>
         </div>
       </div>
-      
-      <!-- 分页 -->
-      <ContentPagination
-        v-model="currentPage"
-        :total="total"
-        :page-size="pageSize"
-      />
     </div>
+    
+    <!-- 分页 -->
+    <ContentPagination
+      v-if="textItems.length > 0"
+      v-model="currentPage"
+      :total="total"
+      :page-size="pageSize"
+    />
   </div>
 </template>
 
@@ -179,7 +128,6 @@ const fetchTextItems = async () => {
       likes: Math.floor(Math.random() * 200) + 20, // 模拟点赞数
       downloads: Math.floor(Math.random() * 100) + 10, // 模拟下载数
       isLiked: false,
-      isExpanded: false,
       createdAt: item.createdAt || new Date().toISOString(),
       updatedAt: item.updatedAt || new Date().toISOString()
     }))
@@ -225,10 +173,6 @@ const getLengthCategory = (length: number) => {
   return '超长'
 }
 
-// 切换展开/收起
-const toggleExpand = (item: any) => {
-  item.isExpanded = !item.isExpanded
-}
 
 // 复制文字
 const onCopyText = async (item: any) => {
@@ -278,216 +222,103 @@ onMounted(() => {
 @use './content-areas.scss';
 
 .text-creation-content {
-  .content-body {
-    .text-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+  padding: 1rem 0;
+  
+  .text-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .text-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
     
-    .text-item {
-      cursor: pointer;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-        
-        .text-card {
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-          border-color: var(--theme-primary);
-        }
-      }
-    }
-    
-    .text-card {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-primary);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      border-color: var(--theme-primary);
       
       &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--theme-primary), #8b5cf6, #06b6d4);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-      
-      &:hover::before {
         opacity: 1;
       }
     }
     
-    .text-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+  
+  .text-content {
+    flex: 1;
+    margin-bottom: 1rem;
+    
+    .text-preview {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+  }
+  
+  .text-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-secondary);
+    
+    .action-btn {
+      color: var(--text-tertiary) !important;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
       
-      .text-title {
-        flex: 1;
-        
-        h3 {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: var(--text-primary);
-          margin: 0 0 0.5rem 0;
-          line-height: 1.4;
-        }
-        
-        .text-meta {
-          display: flex;
-          gap: 0.75rem;
-          flex-wrap: wrap;
-          
-          span {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-weight: 500;
-          }
-          
-          .text-category {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-          }
-          
-          .text-language {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-          }
-          
-          .text-length {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.2);
-          }
-        }
+      &:hover {
+        color: var(--text-primary) !important;
+        background: var(--bg-hover) !important;
+        transform: scale(1.05);
       }
       
-      .text-actions {
-        display: flex;
-        gap: 0.25rem;
-        flex-shrink: 0;
-        
-        .action-btn {
-          color: var(--text-tertiary) !important;
-          min-width: 32px;
-          height: 32px;
-          
-          &:hover {
-            color: var(--text-primary) !important;
-            background: var(--bg-hover) !important;
-          }
-          
-          &.liked {
-            color: #ef4444 !important;
-          }
-        }
+      &.liked {
+        color: #ef4444 !important;
+        background: rgba(239, 68, 68, 0.1) !important;
       }
     }
-    
-    .text-content {
-      margin-bottom: 1rem;
-      
-      .text-preview {
-        position: relative;
-        
-        p {
-          font-size: 0.95rem;
-          line-height: 1.6;
-          color: var(--text-secondary);
-          margin: 0;
-          white-space: pre-wrap;
-          word-break: break-word;
-        }
-        
-        &.expanded {
-          p {
-            max-height: none;
-          }
-        }
-        
-        &:not(.expanded) {
-          p {
-            max-height: 4.8rem; // 约3行文字的高度
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-          }
-        }
-      }
-      
-      .expand-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        margin-top: 0.5rem;
-        padding: 0.25rem 0.5rem;
-        background: transparent;
-        border: none;
-        color: var(--theme-primary);
-        font-size: 0.85rem;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: all 0.2s ease;
-        
-        &:hover {
-          background: var(--bg-hover);
-        }
-      }
-    }
-    
-    .text-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      
-      .text-tags {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        
-        .text-tag {
-          font-size: 0.75rem;
-          color: var(--text-tertiary) !important;
-          border-color: var(--border-secondary) !important;
-          
-          &:hover {
-            color: var(--text-primary) !important;
-            border-color: var(--theme-primary) !important;
-          }
-        }
-      }
-      
-      .text-stats {
-        display: flex;
-        gap: 1rem;
-        
-        .stat-item {
-          display: flex;
-          align-items: center;
-          gap: 0.25rem;
-          font-size: 0.8rem;
-          color: var(--text-tertiary);
-          
-          .v-icon {
-            font-size: 0.9rem;
-          }
-        }
-      }
+  }
+}
+
+/* 平板适配 */
+@media (max-width: 1024px) {
+  .text-creation-content {
+    .text-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
     }
   }
 }
@@ -495,25 +326,30 @@ onMounted(() => {
 /* 移动端适配 */
 @media (max-width: 768px) {
   .text-creation-content {
-    .text-card {
-      padding: 1rem;
+    padding: 0.5rem 0;
+    
+    .text-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
     }
     
-    .text-header {
-      flex-direction: column;
-      gap: 0.75rem;
-      
-      .text-actions {
-        align-self: flex-end;
+    .text-card {
+      padding: 1.25rem;
+    }
+    
+    .text-content {
+      .text-preview {
+        font-size: 0.95rem;
+        line-height: 1.6;
       }
     }
     
-    .text-footer {
-      flex-direction: column;
-      align-items: flex-start;
+    .text-actions {
+      padding-top: 0.75rem;
       
-      .text-stats {
-        gap: 0.75rem;
+      .action-btn {
+        min-width: 32px;
+        height: 32px;
       }
     }
   }
@@ -523,24 +359,14 @@ onMounted(() => {
 @media (max-width: 480px) {
   .text-creation-content {
     .text-card {
-      padding: 0.75rem;
+      padding: 1rem;
     }
     
-    .text-title h3 {
-      font-size: 1rem;
-    }
-    
-    .text-meta {
-      gap: 0.5rem;
-      
-      span {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.4rem;
+    .text-content {
+      .text-preview {
+        font-size: 0.9rem;
+        line-height: 1.5;
       }
-    }
-    
-    .text-content .text-preview p {
-      font-size: 0.9rem;
     }
   }
 }

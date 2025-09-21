@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-20 19:55:55
+ * @LastEditTime: 2025-09-21 22:31:35
  * @FilePath: /yishe-nuxt/pages/search.vue
  * @Description: Search Page - Design Material Search and Filtering
 -->
@@ -674,7 +674,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew</v-icon>
               <template v-else>
                 <v-icon left>mdi-tshirt-crew</v-icon>
-                <span>Fashion Design</span>
+                <span>Fashion</span>
               </template>
             </v-btn>
             
@@ -687,7 +687,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-image-multiple</v-icon>
               <template v-else>
                 <v-icon left>mdi-image-multiple</v-icon>
-                <span>Design Materials</span>
+                <span> Materials</span>
               </template>
             </v-btn>
             
@@ -700,7 +700,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-text-box</v-icon>
               <template v-else>
                 <v-icon left>mdi-text-box</v-icon>
-                <span>Text Creation</span>
+                <span>Text</span>
               </template>
             </v-btn>
             

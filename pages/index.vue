@@ -410,6 +410,10 @@ const goToExplore = () => {
   text-transform: none;
   box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
   
   &:hover {
     transform: translateY(-2px);
@@ -616,6 +620,10 @@ const goToExplore = () => {
   text-transform: none;
   box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
   
   &:hover {
     transform: translateY(-2px);
