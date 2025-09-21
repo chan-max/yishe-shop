@@ -350,7 +350,7 @@ const fetchProducts = async (params: any, type: string) => {
     const requestBody = {
       currentPage: 1,
       pageSize: 8, // 首页展示8个商品
-      isPublish: true,
+      isPublish: true, // 传入true，代表是公开的内容
       ...params
     };
     

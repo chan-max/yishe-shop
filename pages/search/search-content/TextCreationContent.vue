@@ -159,7 +159,7 @@ const fetchTextItems = async () => {
     const requestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      isPublish: true,
+      isPublish: true, // 传入true，代表是公开的内容
     }
     
     const response = await $customFetch("/sentences/page", {

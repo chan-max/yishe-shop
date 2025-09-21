@@ -138,7 +138,7 @@ interface StickerResponse {
 interface RequestBody {
   currentPage: number
   pageSize: number
-  isPublic: boolean
+  isPublish: boolean
   keyword?: string
   suffix?: string
   group?: string
@@ -262,7 +262,7 @@ const fetchMaterialItems = async () => {
     const requestBody: RequestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      isPublic: true // 只查询公开数据
+      isPublish: true // 传入true，代表是公开的内容
     }
     
     // 添加筛选条件 - 根据 sticker 接口支持的参数

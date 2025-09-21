@@ -380,7 +380,7 @@ const performSearch = async () => {
     const requestBody: any = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      isPublish: true,
+      isPublish: true, // 传入true，代表是公开的内容
       keyword: searchQuery.value.trim()
     }
     

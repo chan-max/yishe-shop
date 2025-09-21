@@ -561,7 +561,7 @@ const fetchProducts = async () => {
     const requestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      isPublish: true, // 固定传递，只查询已上架的商品
+      isPublish: true, // 传入true，代表是公开的内容
     };
     
     // 如果有搜索关键词，添加到请求体中

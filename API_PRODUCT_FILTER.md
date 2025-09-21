@@ -12,7 +12,7 @@
 {
   "currentPage": 1,        // 当前页码，从1开始
   "pageSize": 10,          // 每页数量
-  "isPublish": true,       // 固定为true，只查询已上架的商品
+  "isPublish": true,       // 传入true，代表是公开的内容
   "keyword": "搜索关键词",  // 可选，搜索关键词
   "sort": "latest",        // 可选，排序方式
   "filters": {             // 可选，过滤条件对象

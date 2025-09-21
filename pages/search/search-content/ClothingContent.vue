@@ -188,7 +188,7 @@ const fetchDesignItems = async () => {
     const requestBody = {
       currentPage: currentPage.value,
       pageSize: pageSize.value,
-      isPublish: true, // 只查询已上架的商品
+      isPublish: true, // 传入true，代表是公开的内容
     }
     
     // 添加服装相关的过滤条件
