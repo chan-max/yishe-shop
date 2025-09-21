@@ -671,9 +671,9 @@ const applyFilters = () => {
               :class="{ 'active': selectedCategory === 'clothing' }"
               @click="selectCategory('clothing')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew</v-icon>
               <template v-else>
-                <v-icon left>mdi-tshirt-crew-outline</v-icon>
+                <v-icon left>mdi-tshirt-crew</v-icon>
                 <span>Fashion Design</span>
               </template>
             </v-btn>
@@ -684,9 +684,9 @@ const applyFilters = () => {
               :class="{ 'active': selectedCategory === 'materials' }"
               @click="selectCategory('materials')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-image-multiple-outline</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-image-multiple</v-icon>
               <template v-else>
-                <v-icon left>mdi-image-multiple-outline</v-icon>
+                <v-icon left>mdi-image-multiple</v-icon>
                 <span>Design Materials</span>
               </template>
             </v-btn>
@@ -697,9 +697,9 @@ const applyFilters = () => {
               :class="{ 'active': selectedCategory === 'text-creation' }"
               @click="selectCategory('text-creation')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-text-box-outline</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-text-box</v-icon>
               <template v-else>
-                <v-icon left>mdi-text-box-outline</v-icon>
+                <v-icon left>mdi-text-box</v-icon>
                 <span>Text Creation</span>
               </template>
             </v-btn>
@@ -719,7 +719,7 @@ const applyFilters = () => {
               :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
             >
               <v-icon>
-                {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+                {{ isDarkMode ? 'mdi-brightness-6' : 'mdi-weather-night' }}
               </v-icon>
           </div>
             <!-- Expanded state: use v-btn -->
@@ -731,7 +731,7 @@ const applyFilters = () => {
               :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
             >
               <v-icon left>
-                {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+                {{ isDarkMode ? 'mdi-brightness-6' : 'mdi-weather-night' }}
               </v-icon>
               <span>{{ isDarkMode ? 'Switch to light mode' : 'Switch to dark mode' }}</span>
             </v-btn>
