@@ -1,99 +1,99 @@
 /**
- * 搜索页面筛选选项统一配置
- * 避免重复定义，便于维护
+ * Search page filter options unified configuration
+ * Avoid duplicate definitions, easy to maintain
  */
 
-// 通用颜色选项
+// Common color options
 export const colorOptions = [
-  { value: '#000000', text: '黑色' },
-  { value: '#FFFFFF', text: '白色' },
-  { value: '#FF0000', text: '红色' },
-  { value: '#0000FF', text: '蓝色' },
-  { value: '#00FF00', text: '绿色' },
-  { value: '#FFFF00', text: '黄色' },
-  { value: '#FF69B4', text: '粉色' },
-  { value: '#800080', text: '紫色' },
-  { value: '#FFA500', text: '橙色' },
-  { value: '#8B4513', text: '棕色' },
-  { value: '#808080', text: '灰色' },
-  { value: '#000080', text: '海军蓝' }
+  { value: '#000000', text: 'Black' },
+  { value: '#FFFFFF', text: 'White' },
+  { value: '#FF0000', text: 'Red' },
+  { value: '#0000FF', text: 'Blue' },
+  { value: '#00FF00', text: 'Green' },
+  { value: '#FFFF00', text: 'Yellow' },
+  { value: '#FF69B4', text: 'Pink' },
+  { value: '#800080', text: 'Purple' },
+  { value: '#FFA500', text: 'Orange' },
+  { value: '#8B4513', text: 'Brown' },
+  { value: '#808080', text: 'Gray' },
+  { value: '#000080', text: 'Navy Blue' }
 ]
 
-// 通用语言选项
+// Common language options
 export const languageOptions = [
-  { value: 'zh', text: '中文' },
-  { value: 'en', text: '英文' },
-  { value: 'ja', text: '日文' },
-  { value: 'ko', text: '韩文' },
-  { value: 'fr', text: '法文' },
-  { value: 'de', text: '德文' },
-  { value: 'es', text: '西班牙文' },
-  { value: 'it', text: '意大利文' }
+  { value: 'zh', text: 'Chinese' },
+  { value: 'en', text: 'English' },
+  { value: 'ja', text: 'Japanese' },
+  { value: 'ko', text: 'Korean' },
+  { value: 'fr', text: 'French' },
+  { value: 'de', text: 'German' },
+  { value: 'es', text: 'Spanish' },
+  { value: 'it', text: 'Italian' }
 ]
 
-// 服装设计筛选选项
+// Fashion design filter options
 export const clothingFilterOptions = {
   sort: [
-    { value: 'latest', text: '最新上架' },
-    { value: 'popular', text: '最受欢迎' },
-    { value: 'rating', text: '好评如潮' },
-    { value: 'price_asc', text: '价格从低到高' },
-    { value: 'price_desc', text: '价格从高到低' }
+    { value: 'latest', text: 'Latest' },
+    { value: 'popular', text: 'Most Popular' },
+    { value: 'rating', text: 'Highest Rated' },
+    { value: 'price_asc', text: 'Price: Low to High' },
+    { value: 'price_desc', text: 'Price: High to Low' }
   ],
   price: [
-    { value: '0-100', label: '0-100元' },
-    { value: '100-300', label: '100-300元' },
-    { value: '300-500', label: '300-500元' },
-    { value: '500-1000', label: '500-1000元' },
-    { value: '1000+', label: '1000元以上' }
+    { value: '0-100', label: '$0-100' },
+    { value: '100-300', label: '$100-300' },
+    { value: '300-500', label: '$300-500' },
+    { value: '500-1000', label: '$500-1000' },
+    { value: '1000+', label: '$1000+' }
   ],
   gender: [
-    { value: 'male', label: '男装' },
-    { value: 'female', label: '女装' },
-    { value: 'unisex', label: '中性' }
+    { value: 'male', label: 'Men\'s' },
+    { value: 'female', label: 'Women\'s' },
+    { value: 'unisex', label: 'Unisex' }
   ],
   ageGroup: [
-    { value: 'youth', label: '青年(18-25)' },
-    { value: 'adult', label: '成人(25-40)' },
-    { value: 'senior', label: '老年(40+)' }
+    { value: 'youth', label: 'Youth (18-25)' },
+    { value: 'adult', label: 'Adult (25-40)' },
+    { value: 'senior', label: 'Senior (40+)' }
   ],
   style: [
-    { value: 'casual', text: '休闲' },
-    { value: 'formal', text: '正装' },
-    { value: 'sports', text: '运动' },
-    { value: 'vintage', text: '复古' },
-    { value: 'street', text: '街头' },
-    { value: 'business', text: '商务' },
-    { value: 'sweet', text: '甜美' },
-    { value: 'cool', text: '酷炫' }
+    { value: 'casual', text: 'Casual' },
+    { value: 'formal', text: 'Formal' },
+    { value: 'sports', text: 'Sports' },
+    { value: 'vintage', text: 'Vintage' },
+    { value: 'street', text: 'Street' },
+    { value: 'business', text: 'Business' },
+    { value: 'sweet', text: 'Sweet' },
+    { value: 'cool', text: 'Cool' }
   ],
   season: [
-    { value: 'spring', label: '春季' },
-    { value: 'summer', label: '夏季' },
-    { value: 'autumn', label: '秋季' },
-    { value: 'winter', label: '冬季' },
-    { value: 'all_season', label: '四季' }
+    { value: 'spring', label: 'Spring' },
+    { value: 'summer', label: 'Summer' },
+    { value: 'autumn', label: 'Autumn' },
+    { value: 'winter', label: 'Winter' },
+    { value: 'all_season', label: 'All Season' }
   ],
   material: [
-    { value: 'cotton', label: '棉质' },
-    { value: 'wool', label: '羊毛' },
-    { value: 'silk', label: '丝绸' },
-    { value: 'linen', label: '亚麻' },
-    { value: 'denim', label: '牛仔' },
-    { value: 'knit', label: '针织' },
-    { value: 'leather', label: '皮革' }
+    { value: 'cotton', label: 'Cotton' },
+    { value: 'wool', label: 'Wool' },
+    { value: 'silk', label: 'Silk' },
+    { value: 'linen', label: 'Linen' },
+    { value: 'denim', label: 'Denim' },
+    { value: 'knit', label: 'Knit' },
+    { value: 'leather', label: 'Leather' }
   ],
   color: [
-    { value: 'black', label: '黑色' },
-    { value: 'white', label: '白色' },
-    { value: 'red', label: '红色' },
-    { value: 'blue', label: '蓝色' },
-    { value: 'green', label: '绿色' },
-    { value: 'yellow', label: '黄色' },
-    { value: 'pink', label: '粉色' },
-    { value: 'purple', label: '紫色' },
-    { value: 'gray', label: '灰色' },
-    { value: 'brown', label: '棕色' }
+    { value: 'black', label: 'Black' },
+    { value: 'white', label: 'White' },
+    { value: 'red', label: 'Red' },
+    { value: 'blue', label: 'Blue' },
+    { value: 'green', label: 'Green' },
+    { value: 'yellow', label: 'Yellow' },
+    { value: 'pink', label: 'Pink' },
+    { value: 'purple', label: 'Purple' },
+    { value: 'gray', label: 'Gray' },
+    { value: 'brown', label: 'Brown' }
   ],
   size: [
     { value: 'xs', label: 'XS' },
@@ -104,29 +104,29 @@ export const clothingFilterOptions = {
     { value: 'xxl', label: 'XXL' }
   ],
   occasion: [
-    { value: 'daily', label: '日常' },
-    { value: 'work', label: '工作' },
-    { value: 'party', label: '聚会' },
-    { value: 'sport', label: '运动' },
-    { value: 'formal', label: '正式场合' },
-    { value: 'date', label: '约会' }
+    { value: 'daily', label: 'Daily' },
+    { value: 'work', label: 'Work' },
+    { value: 'party', label: 'Party' },
+    { value: 'sport', label: 'Sports' },
+    { value: 'formal', label: 'Formal' },
+    { value: 'date', label: 'Date' }
   ],
   discount: [
-    { value: 'no_discount', label: '无折扣' },
-    { value: 'discount_90', label: '9折以上' },
-    { value: 'discount_70_90', label: '7-9折' },
-    { value: 'discount_50_70', label: '5-7折' },
-    { value: 'discount_50', label: '5折以下' }
+    { value: 'no_discount', label: 'No Discount' },
+    { value: 'discount_90', label: '10%+ Off' },
+    { value: 'discount_70_90', label: '10-30% Off' },
+    { value: 'discount_50_70', label: '30-50% Off' },
+    { value: 'discount_50', label: '50%+ Off' }
   ]
 }
 
-// 素材图筛选选项
+// Design materials filter options
 export const materialsFilterOptions = {
   sort: [
-    { value: 'latest', text: '最新上传' },
-    { value: 'popular', text: '最受欢迎' },
-    { value: 'downloads', text: '下载最多' },
-    { value: 'rating', text: '评分最高' }
+    { value: 'latest', text: 'Latest Upload' },
+    { value: 'popular', text: 'Most Popular' },
+    { value: 'downloads', text: 'Most Downloaded' },
+    { value: 'rating', text: 'Highest Rated' }
   ],
   type: [
     { value: 'background', label: '背景图' },

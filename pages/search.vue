@@ -4,7 +4,7 @@
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-09-20 19:55:55
  * @FilePath: /yishe-nuxt/pages/search.vue
- * @Description: 搜索页面 - 设计素材搜索和筛选
+ * @Description: Search Page - Design Material Search and Filtering
 -->
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch } from 'vue'
@@ -12,17 +12,17 @@ import { useRoute, useRouter } from 'vue-router'
 
 // import { useSearchStore } from '~/stores/use-search'
 
-// 导入内容区域组件
+// Import content area components
 import ClothingContent from '~/pages/search/search-content/ClothingContent.vue'
 import MaterialsContent from '~/pages/search/search-content/MaterialsContent.vue'
 import TextCreationContent from '~/pages/search/search-content/TextCreationContent.vue'
 
-// 导入Header组件
+// Import Header components
 import ClothingHeader from './search/components/headers/ClothingHeader.vue'
 import MaterialsHeader from './search/components/headers/MaterialsHeader.vue'
 import TextCreationHeader from './search/components/headers/TextCreationHeader.vue'
 
-// 导入统一配置
+// Import unified configuration
 import { 
   colorOptions, 
   languageOptions, 
@@ -35,27 +35,31 @@ import {
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })
 
-// 获取路由
+// Get route
 const route = useRoute()
 const router = useRouter()
 // const searchStore = useSearchStore()
 
-// 设置页面标题
+// Set page title
 useHead({
   titleTemplate: '',
   title: computed(() => {
   
-    return '搜索 - 衣设服装设计'
+    return 'Search - Fashion Design Platform'
   }),
   meta: [
     {
       name: 'description',
-      content: '在衣设服装设计平台搜索您想要的服装设计，支持智能筛选和个性化推荐。'
+      content: 'Search for fashion designs on our platform with intelligent filtering and personalized recommendations.'
+    },
+    {
+      name: 'keywords',
+      content: 'fashion design, clothing design, fashion search, design materials, fashion inspiration, clothing styles, fashion trends'
     }
   ]
 })
 
-// 搜索相关状态
+// Search related state
 const searchQuery = ref('')
 const searchResults = ref<any[]>([])
 const loading = ref(false)
@@ -64,14 +68,14 @@ const totalResults = ref(0)
 const currentPage = ref(1)
 const pageSize = ref(20)
 
-// 搜索建议
+// Search suggestions
 const searchSuggestions = ref([
-  '连衣裙', '牛仔裤', 'T恤', '运动鞋', '休闲裤', '衬衫', '外套', '裙子', '短裤', '长裤'
+  'dress', 'jeans', 't-shirt', 'sneakers', 'casual pants', 'shirt', 'jacket', 'skirt', 'shorts', 'trousers'
 ])
 
 const showSuggestions = ref(false)
 
-// 筛选条件
+// Filter conditions
 const filters = ref({
   sort: 'latest',
   priceMin: null,
@@ -83,120 +87,120 @@ const filters = ref({
 const showMobileSidebar = ref(false)
 const sidebarCollapsed = ref(false)
 
-// 过滤菜单状态
+// Filter menu state
 const showFilterMenu = ref(false)
 
-// 侧边栏分类选中状态
-const selectedCategory = ref('clothing') // 默认选中服装设计
+// Sidebar category selection state
+const selectedCategory = ref('clothing') // Default to clothing design
 
-// 主题模式状态
-const isDarkMode = ref(true) // 默认夜间模式
+// Theme mode state
+const isDarkMode = ref(true) // Default to dark mode
 
-// 照片墙数据
+// Photo wall data
 const photoWallData = ref<any[]>([])
 const loadingMore = ref(false)
 
-// 筛选选项配置已移至 ./search/config/filterOptions.ts
+// Filter options configuration moved to ./search/config/filterOptions.ts
 
-// 通用筛选选项（向后兼容）
+// General filter options (backward compatibility)
 const filterOptions = clothingFilterOptions
 
 
-// 初始化照片墙数据
+// Initialize photo wall data
 const initPhotoWall = () => {
   const mockPhotos = [
     {
       id: 1,
-      title: '时尚连衣裙设计',
-      description: '优雅的春季连衣裙，展现女性魅力',
+      title: 'Fashion Dress Design',
+      description: 'Elegant spring dress showcasing feminine charm',
       image: 'https://picsum.photos/400/600?random=1',
       likes: 1234,
       views: 5678
     },
     {
       id: 2,
-      title: '休闲T恤系列',
-      description: '舒适百搭的日常穿搭选择',
+      title: 'Casual T-Shirt Collection',
+      description: 'Comfortable and versatile daily wear choice',
       image: 'https://picsum.photos/300/400?random=2',
       likes: 856,
       views: 2345
     },
     {
       id: 3,
-      title: '商务正装套装',
-      description: '专业职场形象的最佳选择',
+      title: 'Business Formal Suit',
+      description: 'Perfect choice for professional workplace image',
       image: 'https://picsum.photos/350/500?random=3',
       likes: 2341,
       views: 4567
     },
     {
       id: 4,
-      title: '运动休闲装',
-      description: '活力四射的运动风格设计',
+      title: 'Sporty Casual Wear',
+      description: 'Energetic sporty style design',
       image: 'https://picsum.photos/400/500?random=4',
       likes: 1890,
       views: 3456
     },
     {
       id: 5,
-      title: '复古牛仔系列',
-      description: '经典永不过时的牛仔风格',
+      title: 'Vintage Denim Series',
+      description: 'Classic timeless denim style',
       image: 'https://picsum.photos/300/450?random=5',
       likes: 1456,
       views: 2789
     },
     {
       id: 6,
-      title: '优雅晚礼服',
-      description: '华丽晚宴的完美选择',
+      title: 'Elegant Evening Gown',
+      description: 'Perfect choice for glamorous evening events',
       image: 'https://picsum.photos/350/600?random=6',
       likes: 2789,
       views: 4567
     },
     {
       id: 7,
-      title: '街头潮流风',
-      description: '年轻时尚的街头文化',
+      title: 'Street Fashion Style',
+      description: 'Young and trendy street culture',
       image: 'https://picsum.photos/400/450?random=7',
       likes: 1678,
       views: 3123
     },
     {
       id: 8,
-      title: '简约基础款',
-      description: '百搭实用的基础单品',
+      title: 'Minimalist Basics',
+      description: 'Versatile and practical basic pieces',
       image: 'https://picsum.photos/300/400?random=8',
       likes: 987,
       views: 1987
     },
     {
       id: 9,
-      title: '民族风情设计',
-      description: '独特的民族元素融合',
+      title: 'Ethnic Style Design',
+      description: 'Unique fusion of ethnic elements',
       image: 'https://picsum.photos/350/500?random=9',
       likes: 1234,
       views: 2345
     },
     {
       id: 10,
-      title: '未来科技感',
-      description: '前卫的科技时尚风格',
+      title: 'Futuristic Tech Style',
+      description: 'Avant-garde tech fashion style',
       image: 'https://picsum.photos/400/500?random=10',
       likes: 2100,
       views: 3789
     },
     {
       id: 11,
-      title: '自然田园风',
-      description: '清新自然的田园风格',
+      title: 'Natural Country Style',
+      description: 'Fresh and natural countryside style',
       image: 'https://picsum.photos/300/450?random=11',
       likes: 1456,
       views: 2567
     },
     {
       id: 12,
-      title: '奢华皮草系列',
-      description: '高端奢华的皮草设计',
+      title: 'Luxury Fur Collection',
+      description: 'High-end luxurious fur design',
       image: 'https://picsum.photos/350/600?random=12',
       likes: 3456,
       views: 5678
@@ -206,21 +210,21 @@ const initPhotoWall = () => {
   photoWallData.value = mockPhotos
 }
 
-// 加载更多照片
+// Load more photos
 const loadMorePhotos = async () => {
   loadingMore.value = true
   
-  // 模拟加载延迟
+  // Simulate loading delay
   await new Promise(resolve => setTimeout(resolve, 1000))
   
-  // 生成更多模拟数据
+  // Generate more mock data
   const newPhotos = []
   for (let i = 0; i < 8; i++) {
     const id = photoWallData.value.length + i + 1
     newPhotos.push({
       id,
-      title: `设计作品 ${id}`,
-      description: `创意设计作品，展现独特风格`,
+      title: `Design Work ${id}`,
+      description: `Creative design work showcasing unique style`,
       image: `https://picsum.photos/${300 + Math.random() * 100}/${400 + Math.random() * 200}?random=${id}`,
       likes: Math.floor(Math.random() * 3000) + 500,
       views: Math.floor(Math.random() * 5000) + 1000
@@ -231,95 +235,95 @@ const loadMorePhotos = async () => {
   loadingMore.value = false
 }
 
-// 切换侧边栏折叠状态
+// Toggle sidebar collapse state
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
-// 切换主题模式
+// Toggle theme mode
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value
-  // 保存主题偏好到localStorage
+  // Save theme preference to localStorage
   localStorage.setItem('search-page-theme', isDarkMode.value ? 'dark' : 'light')
-  console.log('主题切换:', isDarkMode.value ? '夜间模式' : '白天模式')
+  console.log('Theme switched:', isDarkMode.value ? 'Dark mode' : 'Light mode')
 }
 
-// 内容组件映射
+// Content component mapping
 const contentComponents = {
   clothing: ClothingContent,
   materials: MaterialsContent,
   'text-creation': TextCreationContent
 }
 
-// Header组件映射
+// Header component mapping
 const headerComponents = {
   clothing: ClothingHeader,
   materials: MaterialsHeader,
   'text-creation': TextCreationHeader
 }
 
-// Header配置映射 - 每个导航项对应的header配置
+// Header configuration mapping - header config for each navigation item
 const headerConfigs = {
   clothing: {
-    title: '服装设计',
-    subtitle: '探索时尚服装设计灵感',
-    searchPlaceholder: '搜索服装设计...',
+    title: 'Fashion Design',
+    subtitle: 'Explore fashion design inspiration',
+    searchPlaceholder: 'Search fashion designs...',
     icon: 'mdi-tshirt-crew-outline',
     showFilter: true,
-    filterOptions: ['风格', '颜色', '价格', '性别', '季节', '材质', '尺码', '场合']
+    filterOptions: ['Style', 'Color', 'Price', 'Gender', 'Season', 'Material', 'Size', 'Occasion']
   },
   materials: {
-    title: '素材图',
-    subtitle: '高质量设计素材资源',
-    searchPlaceholder: '搜索素材图片...',
+    title: 'Design Materials',
+    subtitle: 'High-quality design material resources',
+    searchPlaceholder: 'Search material images...',
     icon: 'mdi-image-multiple-outline',
     showFilter: true,
-    filterOptions: ['类型', '分辨率', '格式', '颜色', '授权', '分类']
+    filterOptions: ['Type', 'Resolution', 'Format', 'Color', 'License', 'Category']
   },
   'text-creation': {
-    title: '文字创作',
-    subtitle: '创意文字内容与文案创作',
-    searchPlaceholder: '搜索文字创作内容...',
+    title: 'Text Creation',
+    subtitle: 'Creative text content and copywriting',
+    searchPlaceholder: 'Search text creation content...',
     icon: 'mdi-text-box-outline',
     showFilter: true,
-    filterOptions: ['分类', '风格', '长度', '语调', '用途', '语言']
+    filterOptions: ['Category', 'Style', 'Length', 'Tone', 'Purpose', 'Language']
   }
 }
 
-// 选择分类
+// Select category
 const selectCategory = (category: string) => {
-  // 允许clothing、materials和text-creation分类
+  // Allow clothing, materials and text-creation categories
   if (category === 'clothing' || category === 'materials' || category === 'text-creation') {
     selectedCategory.value = category
-    console.log('选择分类:', category)
+    console.log('Selected category:', category)
   }
 }
 
-// 获取当前内容组件
+// Get current content component
 const currentContentComponent = computed(() => {
   return contentComponents[selectedCategory.value as keyof typeof contentComponents] || ClothingContent
 })
 
-// 获取当前header组件
+// Get current header component
 const currentHeaderComponent = computed(() => {
   return headerComponents[selectedCategory.value as keyof typeof headerComponents] || ClothingHeader
 })
 
-// 获取当前header配置
+// Get current header configuration
 const currentHeaderConfig = computed(() => {
   return headerConfigs[selectedCategory.value as keyof typeof headerConfigs] || headerConfigs.clothing
 })
 
-// 获取header组件的props
+// Get header component props
 const getHeaderProps = () => {
-  // 为文字创作页面返回简化的props
+  // Return simplified props for text creation page
   if (selectedCategory.value === 'text-creation') {
     return {
       showMobileSidebar: showMobileSidebar.value
     }
   }
   
-  // 其他页面返回完整的props
+  // Return complete props for other pages
   return {
     searchQuery: searchQuery.value,
     showFilterMenu: showFilterMenu.value,
@@ -333,12 +337,12 @@ const getHeaderProps = () => {
   }
 }
 
-// 初始化搜索查询
+// Initialize search query
 onMounted(() => {
-  // 初始化照片墙
+  // Initialize photo wall
   initPhotoWall()
   
-  // 初始化主题设置
+  // Initialize theme settings
   const savedTheme = localStorage.getItem('search-page-theme')
   if (savedTheme) {
     isDarkMode.value = savedTheme === 'dark'
@@ -620,19 +624,19 @@ const applyFilters = () => {
 
 <template>
   <div class="search-page" :class="{ 'light-theme': !isDarkMode }">
-    <!-- 移动端遮罩层 -->
+    <!-- Mobile overlay -->
     <div 
       v-if="showMobileSidebar" 
       class="mobile-overlay"
       @click="closeMobileSidebar"
     ></div>
 
-    <!-- 左侧固定侧边栏 -->
+    <!-- Left fixed sidebar -->
     <aside class="sidebar" :class="{ 'mobile-open': showMobileSidebar, 'collapsed': sidebarCollapsed }">
       <div class="sidebar-content">
-        <!-- Logo和折叠按钮区域 -->
+        <!-- Logo and collapse button area -->
         <div class="sidebar-header">
-          <!-- Logo区域 - 折叠时隐藏 -->
+          <!-- Logo area - hidden when collapsed -->
           <div class="sidebar-logo" v-if="!sidebarCollapsed">
             <div class="logo-container">
               <img 
@@ -643,7 +647,7 @@ const applyFilters = () => {
             </div>
           </div>
 
-          <!-- 折叠按钮 - 右上角 -->
+          <!-- Collapse button - top right corner -->
           <div class="sidebar-toggle">
             <v-btn
               variant="text"
@@ -657,7 +661,7 @@ const applyFilters = () => {
           </div>
         </div>
 
-        <!-- 导航菜单 -->
+        <!-- Navigation menu -->
         <nav class="sidebar-nav">
 
           <div class="nav-section">
@@ -670,7 +674,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-tshirt-crew-outline</v-icon>
-                <span>服装设计</span>
+                <span>Fashion Design</span>
               </template>
             </v-btn>
             
@@ -683,7 +687,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-image-multiple-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-image-multiple-outline</v-icon>
-                <span>素材图</span>
+                <span>Design Materials</span>
               </template>
             </v-btn>
             
@@ -696,7 +700,7 @@ const applyFilters = () => {
               <v-icon v-if="sidebarCollapsed">mdi-text-box-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-text-box-outline</v-icon>
-                <span>文字创作</span>
+                <span>Text Creation</span>
               </template>
             </v-btn>
             
@@ -704,41 +708,41 @@ const applyFilters = () => {
 
         </nav>
 
-        <!-- 主题切换开关 -->
+        <!-- Theme toggle switch -->
         <div class="theme-toggle-section">
           <div class="theme-toggle-container">
-            <!-- 折叠状态：使用div -->
+            <!-- Collapsed state: use div -->
             <div 
               v-if="sidebarCollapsed"
               class="theme-toggle-btn theme-toggle-btn-collapsed"
               @click="toggleTheme"
-              :title="isDarkMode ? '切换到白天模式' : '切换到夜间模式'"
+              :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
             >
               <v-icon>
                 {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
               </v-icon>
           </div>
-            <!-- 展开状态：使用v-btn -->
+            <!-- Expanded state: use v-btn -->
             <v-btn
               v-else
               variant="text"
               class="theme-toggle-btn"
               @click="toggleTheme"
-              :title="isDarkMode ? '切换到白天模式' : '切换到夜间模式'"
+              :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
             >
               <v-icon left>
                 {{ isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
               </v-icon>
-              <span>{{ isDarkMode ? '切换到白天模式' : '切换到夜间模式' }}</span>
+              <span>{{ isDarkMode ? 'Switch to light mode' : 'Switch to dark mode' }}</span>
             </v-btn>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- 主内容区域 -->
+    <!-- Main content area -->
     <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
-      <!-- 动态Header组件 -->
+      <!-- Dynamic Header component -->
       <component
         :is="currentHeaderComponent"
         v-bind="getHeaderProps()"
@@ -759,7 +763,7 @@ const applyFilters = () => {
         v-if="selectedCategory !== 'text-creation'"
       />
       
-      <!-- 文字创作页面的简化Header -->
+      <!-- Simplified Header for text creation page -->
       <component
         :is="currentHeaderComponent"
         v-bind="getHeaderProps()"
@@ -767,9 +771,9 @@ const applyFilters = () => {
         v-if="selectedCategory === 'text-creation'"
       />
 
-    <!-- 主要内容区域 -->
+    <!-- Main content area -->
     <div class="content-area">
-      <!-- 动态内容组件 -->
+      <!-- Dynamic content component -->
       <component :is="currentContentComponent" />
     </div>
     </main>
@@ -777,9 +781,9 @@ const applyFilters = () => {
 </template>
 
 <style lang="scss">
-// CSS变量定义 - 夜间模式（默认）
+// CSS variable definitions - dark mode (default)
 .search-page {
-  // 背景色
+  // Background colors
   --bg-primary: #1a1a1a;
   --bg-secondary: #1C1C1C;
   --bg-tertiary: #2a2a2a;

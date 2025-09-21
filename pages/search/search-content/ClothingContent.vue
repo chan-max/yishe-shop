@@ -1,23 +1,23 @@
 <template>
   <div class="clothing-content">
 
-    <!-- 服装设计内容主体 -->
+    <!-- Fashion design content main body -->
     <div class="content-body">
-      <!-- 加载状态 -->
+      <!-- Loading state -->
       <LoadingSpinner 
         v-if="loading || !hasInitialized" 
-        text="正在加载服装设计作品..."
+        text="Loading fashion design works..."
       />
       
-      <!-- 空状态 -->
+      <!-- Empty state -->
       <EmptyState 
         v-else-if="designItems.length === 0"
         icon="mdi-tshirt-crew-outline"
-        title="暂无服装设计作品"
-        description="请尝试调整筛选条件或稍后再试"
+        title="No fashion design works found"
+        description="Please try adjusting the filter conditions or try again later"
       />
       
-      <!-- 瀑布流布局 -->
+      <!-- Masonry layout -->
       <masonry-wall 
         v-else
         :items="designItems" 
@@ -37,7 +37,7 @@
                 :class="{ 'loaded': imageLoaded[item.id] }"
               />
               
-              <!-- 加载状态 -->
+              <!-- Loading state -->
               <div v-if="!imageLoaded[item.id]" class="image-loading">
                 <div class="loading-spinner"></div>
                 <div class="skeleton-content">
@@ -50,15 +50,15 @@
                 </div>
               </div>
               
-              <!-- 悬停遮罩层 -->
+              <!-- Hover overlay -->
               <div class="image-overlay" :class="{ 'small-image': isSmallImage(item.id) }">
-                <!-- 内容信息 -->
+                <!-- Content information -->
                 <div class="overlay-content">
                   <h3 class="clothing-title" :title="item.title">
                     {{ item.title }}
                   </h3>
                   
-                  <!-- 描述信息 -->
+                  <!-- Description information -->
                   <p 
                     class="clothing-description" 
                     v-if="item.description"
@@ -66,9 +66,9 @@
                     {{ item.description }}
                   </p>
                   
-                  <!-- 标签信息 -->
+                  <!-- Tags information -->
                   <div class="clothing-tags" v-if="item.tags && item.tags.length > 0">
-                    <div class="tags-label">标签：</div>
+                    <div class="tags-label">Tags:</div>
                     <div class="tags-list">
                       {{ item.tags.join(', ') }}
                     </div>
@@ -80,7 +80,7 @@
         </template>
       </masonry-wall>
       
-      <!-- 分页 -->
+      <!-- Pagination -->
       <ContentPagination
         v-model="currentPage"
         :total="total"
