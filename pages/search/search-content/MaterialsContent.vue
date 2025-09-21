@@ -14,8 +14,6 @@
         v-else-if="error"
         icon="mdi-alert-circle-outline"
         icon-color="error"
-        title="加载失败"
-        :description="error"
         :show-retry="true"
         @retry="fetchMaterialItems"
       />
@@ -24,8 +22,6 @@
       <EmptyState 
         v-else-if="materialItems.length === 0"
         icon="mdi-image-multiple-outline"
-        title="暂无素材图片"
-        description="请尝试调整筛选条件或稍后再试"
       />
       
       <!-- 瀑布流布局 -->

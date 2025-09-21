@@ -1,8 +1,9 @@
 <template>
   <div class="empty-state">
-    <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
-    <h3 class="empty-title">{{ title }}</h3>
-    <p class="empty-description">{{ description }}</p>
+    <div class="empty-logo">
+      <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
+    </div>
+    <div class="empty-text">empty</div>
     <v-btn 
       v-if="showRetry" 
       :color="retryButtonColor" 
@@ -20,8 +21,6 @@ interface Props {
   icon?: string
   iconSize?: number | string
   iconColor?: string
-  title?: string
-  description?: string
   showRetry?: boolean
   retryText?: string
   retryIcon?: string
@@ -33,13 +32,11 @@ interface Emits {
 }
 
 withDefaults(defineProps<Props>(), {
-  icon: 'mdi-information-outline',
+  icon: 'mdi-package-variant-empty',
   iconSize: 64,
   iconColor: 'grey-lighten-1',
-  title: '暂无数据',
-  description: '请尝试调整筛选条件或稍后再试',
   showRetry: false,
-  retryText: '重试',
+  retryText: 'Retry',
   retryIcon: 'mdi-refresh',
   retryButtonColor: 'primary'
 })
@@ -55,22 +52,27 @@ defineEmits<Emits>()
   justify-content: center;
   min-height: 300px;
   text-align: center;
+  padding: 2rem;
   
-  .empty-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 1rem 0 0.5rem;
+  .empty-logo {
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
   }
   
-  .empty-description {
-    color: #b0b0b0;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+  .empty-text {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    margin-bottom: 1rem;
+    opacity: 0.8;
   }
   
   .retry-btn {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    text-transform: none;
   }
 }
 </style>

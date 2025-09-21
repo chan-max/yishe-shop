@@ -13,8 +13,6 @@
       <EmptyState 
         v-else-if="designItems.length === 0"
         icon="mdi-tshirt-crew-outline"
-        title="No fashion design works found"
-        description="Please try adjusting the filter conditions or try again later"
       />
       
       <!-- Masonry layout -->

@@ -20,8 +20,6 @@
       <EmptyState 
         v-else-if="textItems.length === 0"
         icon="mdi-text-box-outline"
-        title="暂无文字创作内容"
-        description="请稍后再试"
       />
       
       <!-- 文字内容列表 -->
