@@ -236,6 +236,7 @@
 
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import EmptyState from '../components/EmptyState.vue'
 import ContentPagination from '../components/ContentPagination.vue'
@@ -243,7 +244,6 @@ import ContentPagination from '../components/ContentPagination.vue'
 // Props for header functionality
 const props = defineProps<{
   searchQuery: string
-  showFilterMenu: boolean
   showMobileSidebar: boolean
   filters: any
   filterOptions: any
@@ -251,10 +251,12 @@ const props = defineProps<{
   activeFiltersCount: number
 }>()
 
+// Local state for filter menu with localStorage persistence
+const showFilterMenu = useLocalStorage('text-creation-filter-menu', false)
+
 // Emits for header functionality
 const emit = defineEmits<{
   'update:searchQuery': [value: string]
-  'toggle-filter-menu': []
   'perform-search': []
   'clear-search': []
   'toggle-mobile-sidebar': []
@@ -272,8 +274,7 @@ const handleSearchInput = (value: string) => {
 }
 
 const toggleFilter = () => {
-  console.log('TextCreationContent: toggleFilter called, current showFilterMenu:', props.showFilterMenu)
-  emit('toggle-filter-menu')
+  showFilterMenu.value = !showFilterMenu.value
 }
 
 const performSearch = () => {

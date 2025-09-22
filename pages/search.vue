@@ -85,8 +85,7 @@ const filters = ref({
 const showMobileSidebar = ref(false)
 const sidebarCollapsed = ref(false)
 
-// Filter menu state
-const showFilterMenu = ref(false)
+// Filter menu state - 现在由各个页面组件自己管理
 
 // Sidebar category selection state
 const selectedCategory = ref('home') // Default to home
@@ -320,7 +319,6 @@ const getContentProps = () => {
   // Return complete props for other pages (clothing, materials, text-creation)
   return {
     searchQuery: searchQuery.value,
-    showFilterMenu: showFilterMenu.value,
     showSuggestions: showSuggestions.value,
     filteredSuggestions: filteredSuggestions.value,
     showMobileSidebar: showMobileSidebar.value,
@@ -504,12 +502,7 @@ const handleBlur = () => {
   }, 200)
 }
 
-// 切换过滤菜单
-const toggleFilterMenu = () => {
-  console.log('Search: toggleFilterMenu called, current showFilterMenu:', showFilterMenu.value)
-  showFilterMenu.value = !showFilterMenu.value
-  console.log('Search: showFilterMenu after toggle:', showFilterMenu.value)
-}
+// 切换过滤菜单 - 现在由各个页面组件自己处理
 
 // 清空所有筛选条件
 const clearFilters = () => {
@@ -756,11 +749,10 @@ const applyFilters = () => {
     <!-- Main content area -->
     <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <!-- Dynamic content component with integrated header -->
-      <component 
+      <component
         :is="currentContentComponent" 
         v-bind="getContentProps()"
         @update:searchQuery="searchQuery = $event"
-        @toggle-filter-menu="toggleFilterMenu"
         @perform-search="performSearch"
         @clear-search="clearSearch"
         @select-suggestion="selectSuggestion"
