@@ -37,21 +37,12 @@ export default defineNuxtConfig({
   // },
 
   // modules
-  modules: [
-    // chore
-    // '@nuxtjs/eslint-module',
-    // styling & ui
-    '@nuxtjs/tailwindcss',
-    'nuxt-headlessui',
-    'nuxt-icon',
-    '@nuxtjs/color-mode',
-    // management
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    // contents
-    '@nuxt/content',
-    '@nuxtjs/sitemap',
-  ],
+  modules: [// chore
+  // '@nuxtjs/eslint-module',
+  // styling & ui
+  '@nuxtjs/tailwindcss', 'nuxt-headlessui', 'nuxt-icon', '@nuxtjs/color-mode', // management
+  '@pinia/nuxt', '@vueuse/nuxt', // contents
+  '@nuxt/content', '@nuxtjs/sitemap', '@nuxtjs/seo'],
 
   build: {
     transpile: ['vuetify']
