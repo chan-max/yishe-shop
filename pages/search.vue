@@ -13,11 +13,13 @@ import { useRoute, useRouter } from 'vue-router'
 // import { useSearchStore } from '~/stores/use-search'
 
 // Import content area components
-import ClothingContent from '~/components/_search/search-content/ClothingContent.vue'
-import MaterialsContent from '~/components/_search/search-content/MaterialsContent.vue'
-import TextCreationContent from '~/components/_search/search-content/TextCreationContent.vue'
+import HomeContent from '../components/_search/search-content/HomeContent.vue'
+import ClothingContent from '../components/_search/search-content/ClothingContent.vue'
+import MaterialsContent from '../components/_search/search-content/MaterialsContent.vue'
+import TextCreationContent from '../components/_search/search-content/TextCreationContent.vue'
 
 // Import Header components
+import HomeHeader from '../components/_search/components/headers/HomeHeader.vue'
 import ClothingHeader from '../components/_search/components/headers/ClothingHeader.vue'
 import MaterialsHeader from '../components/_search/components/headers/MaterialsHeader.vue'
 import TextCreationHeader from '../components/_search/components/headers/TextCreationHeader.vue'
@@ -91,7 +93,7 @@ const sidebarCollapsed = ref(false)
 const showFilterMenu = ref(false)
 
 // Sidebar category selection state
-const selectedCategory = ref('clothing') // Default to clothing design
+const selectedCategory = ref('home') // Default to home
 
 // Theme mode state
 const isDarkMode = ref(true) // Default to dark mode
@@ -250,6 +252,7 @@ const toggleTheme = () => {
 
 // Content component mapping
 const contentComponents = {
+  home: HomeContent,
   clothing: ClothingContent,
   materials: MaterialsContent,
   'text-creation': TextCreationContent
@@ -257,6 +260,7 @@ const contentComponents = {
 
 // Header component mapping
 const headerComponents = {
+  home: HomeHeader,
   clothing: ClothingHeader,
   materials: MaterialsHeader,
   'text-creation': TextCreationHeader
@@ -264,6 +268,14 @@ const headerComponents = {
 
 // Header configuration mapping - header config for each navigation item
 const headerConfigs = {
+  home: {
+    title: 'Home Dashboard',
+    subtitle: 'Welcome to your design workspace',
+    searchPlaceholder: 'Search anything...',
+    icon: 'mdi-home-outline',
+    showFilter: false,
+    filterOptions: []
+  },
   clothing: {
     title: 'Fashion Design',
     subtitle: 'Explore fashion design inspiration',
@@ -292,8 +304,8 @@ const headerConfigs = {
 
 // Select category
 const selectCategory = (category: string) => {
-  // Allow clothing, materials and text-creation categories
-  if (category === 'clothing' || category === 'materials' || category === 'text-creation') {
+  // Allow home, clothing, materials and text-creation categories
+  if (category === 'home' || category === 'clothing' || category === 'materials' || category === 'text-creation') {
     selectedCategory.value = category
     console.log('Selected category:', category)
   }
@@ -301,24 +313,26 @@ const selectCategory = (category: string) => {
 
 // Get current content component
 const currentContentComponent = computed(() => {
-  return contentComponents[selectedCategory.value as keyof typeof contentComponents] || ClothingContent
+  return contentComponents[selectedCategory.value as keyof typeof contentComponents] || HomeContent
 })
 
 // Get current header component
 const currentHeaderComponent = computed(() => {
-  return headerComponents[selectedCategory.value as keyof typeof headerComponents] || ClothingHeader
+  return headerComponents[selectedCategory.value as keyof typeof headerComponents] || HomeHeader
 })
 
 // Get current header configuration
 const currentHeaderConfig = computed(() => {
-  return headerConfigs[selectedCategory.value as keyof typeof headerConfigs] || headerConfigs.clothing
+  return headerConfigs[selectedCategory.value as keyof typeof headerConfigs] || headerConfigs.home
 })
 
 // Get header component props
 const getHeaderProps = () => {
-  // Return simplified props for text creation page
-  if (selectedCategory.value === 'text-creation') {
+  // Return simplified props for home and text creation pages
+  if (selectedCategory.value === 'home' || selectedCategory.value === 'text-creation') {
     return {
+      searchQuery: searchQuery.value,
+      showSuggestions: showSuggestions.value,
       showMobileSidebar: showMobileSidebar.value
     }
   }
@@ -668,6 +682,19 @@ const applyFilters = () => {
             <v-btn
               variant="text"
               class="nav-btn"
+              :class="{ 'active': selectedCategory === 'home' }"
+              @click="selectCategory('home')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-home</v-icon>
+              <template v-else>
+                <v-icon left>mdi-home</v-icon>
+                <span>Home</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
               :class="{ 'active': selectedCategory === 'clothing' }"
               @click="selectCategory('clothing')"
             >
@@ -702,10 +729,8 @@ const applyFilters = () => {
                 <v-icon left>mdi-text-box</v-icon>
                 <span>Text</span>
               </template>
-            </v-btn>
-            
+            </v-btn>   
           </div>
-
         </nav>
 
         <!-- Theme toggle switch -->
@@ -760,15 +785,21 @@ const applyFilters = () => {
         @apply-filters="applyFilters"
         @toggle-style="toggleStyle"
         @toggle-color="toggleColor"
-        v-if="selectedCategory !== 'text-creation'"
+        v-if="selectedCategory !== 'home' && selectedCategory !== 'text-creation'"
       />
       
-      <!-- Simplified Header for text creation page -->
+      <!-- Simplified Header for home and text creation pages -->
       <component
         :is="currentHeaderComponent"
         v-bind="getHeaderProps()"
+        @update:searchQuery="searchQuery = $event"
+        @perform-search="performSearch"
+        @clear-search="clearSearch"
+        @select-suggestion="selectSuggestion"
         @toggle-mobile-sidebar="showMobileSidebar = !showMobileSidebar"
-        v-if="selectedCategory === 'text-creation'"
+        @handle-blur="handleBlur"
+        @update:showSuggestions="showSuggestions = $event"
+        v-if="selectedCategory === 'home' || selectedCategory === 'text-creation'"
       />
 
     <!-- Main content area -->
