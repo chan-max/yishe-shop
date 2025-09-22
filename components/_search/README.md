@@ -1,7 +1,7 @@
 # 搜索页面
 
 ## 概述
-搜索页面使用 `search.vue` 作为主文件，提供完整的搜索和筛选功能。
+搜索页面使用 `search.vue` 作为主文件，提供完整的搜索和筛选功能。每个内容组件都集成了对应的头部功能，实现了更好的组件内通信。
 
 ## 文件结构
 
@@ -9,15 +9,14 @@
 components/_search/
 ├── search.vue                    # 主搜索页面文件
 ├── components/                   # 组件目录
-│   ├── headers/                 # 头部组件
-│   │   ├── ClothingHeader.vue   # 服装设计头部
-│   │   └── MaterialsHeader.vue  # 素材图头部
 │   ├── SearchContent.vue        # 内容展示组件
 │   ├── SearchFilter.vue         # 筛选组件
 │   └── ...                      # 其他组件
-├── search-content/              # 内容区域组件
-│   ├── ClothingContent.vue      # 服装设计内容
-│   └── MaterialsContent.vue     # 素材图内容
+├── search-content/              # 内容区域组件（集成头部功能）
+│   ├── HomeContent.vue          # 首页内容（集成头部）
+│   ├── ClothingContent.vue      # 服装设计内容（集成头部）
+│   ├── MaterialsContent.vue     # 素材图内容（集成头部）
+│   └── TextCreationContent.vue  # 文字创作内容（集成头部）
 ├── styles/                      # 样式文件
 └── utils/                       # 工具函数
 ```

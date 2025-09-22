@@ -8,11 +8,33 @@
 -->
 <template>
   <div class="text-creation-content">
-    <!-- 加载状态 -->
-    <LoadingSpinner 
-      v-if="loading || !hasInitialized" 
-      text="正在加载文字创作内容..."
-    />
+    <!-- Header Section -->
+    <div class="text-creation-header">
+      <div class="header-content">
+        <!-- 移动端菜单按钮 -->
+        <v-btn
+          variant="text"
+          @click="toggleMobileSidebar"
+          class="mobile-menu-btn"
+          icon
+        >
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+        
+        <!-- 标题区域 -->
+        <div class="title-container">
+          <p class="page-subtitle">AI 智能文字生成工具</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="text-creation-body">
+      <!-- 加载状态 -->
+      <LoadingSpinner 
+        v-if="loading || !hasInitialized" 
+        text="正在加载文字创作内容..."
+      />
     
     <!-- 空状态 -->
     <EmptyState 
@@ -72,13 +94,14 @@
       </div>
     </div>
     
-    <!-- 分页 -->
-    <ContentPagination
-      v-if="textItems.length > 0"
-      v-model="currentPage"
-      :total="total"
-      :page-size="pageSize"
-    />
+      <!-- 分页 -->
+      <ContentPagination
+        v-if="textItems.length > 0"
+        v-model="currentPage"
+        :total="total"
+        :page-size="pageSize"
+      />
+    </div>
   </div>
 </template>
 
@@ -87,6 +110,21 @@ import { ref, watch, onMounted } from 'vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import EmptyState from '../components/EmptyState.vue'
 import ContentPagination from '../components/ContentPagination.vue'
+
+// Props for header functionality
+const props = defineProps<{
+  showMobileSidebar: boolean
+}>()
+
+// Emits for header functionality
+const emit = defineEmits<{
+  'toggle-mobile-sidebar': []
+}>()
+
+// Header methods
+const toggleMobileSidebar = () => {
+  emit('toggle-mobile-sidebar')
+}
 
 // 分页相关状态
 const currentPage = ref(1)
@@ -222,7 +260,57 @@ onMounted(() => {
 @use './content-areas.scss';
 
 .text-creation-content {
-  padding: 1rem 0;
+  /* Header Styles */
+  .text-creation-header {
+    background: var(--bg-primary);
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    z-index: 1001;
+    box-shadow: 0 2px 8px var(--shadow-primary);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .header-content {
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 56px;
+    position: relative;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    color: var(--text-secondary) !important;
+    position: absolute;
+    left: 1rem;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .title-container {
+    text-align: center;
+    flex: 1;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Content body styles */
+  .text-creation-body {
+    margin-top: 56px; /* 为固定头部留出空间 */
+    padding: 1rem 0;
+  }
   
   .text-grid {
     display: grid;
@@ -368,6 +456,55 @@ onMounted(() => {
         line-height: 1.5;
       }
     }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .text-creation-header {
+    left: 200px;
+  }
+}
+
+@media (max-width: 900px) {
+  .text-creation-header {
+    left: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-creation-header {
+    left: 0;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .header-content {
+    padding: 0.75rem 1rem;
+    min-height: 60px;
+    gap: 0.75rem;
+  }
+  
+  .title-container {
+    margin-left: 3rem; /* 为移动端菜单按钮留出空间 */
+  }
+  
+  .page-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.625rem 0.75rem;
+    min-height: 56px;
+    gap: 0.5rem;
+  }
+  
+  .page-subtitle {
+    font-size: 0.75rem;
   }
 }
 </style>

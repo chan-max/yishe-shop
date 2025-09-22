@@ -18,11 +18,7 @@ import ClothingContent from '../components/_search/search-content/ClothingConten
 import MaterialsContent from '../components/_search/search-content/MaterialsContent.vue'
 import TextCreationContent from '../components/_search/search-content/TextCreationContent.vue'
 
-// Import Header components
-import HomeHeader from '../components/_search/components/headers/HomeHeader.vue'
-import ClothingHeader from '../components/_search/components/headers/ClothingHeader.vue'
-import MaterialsHeader from '../components/_search/components/headers/MaterialsHeader.vue'
-import TextCreationHeader from '../components/_search/components/headers/TextCreationHeader.vue'
+// Header components are now integrated into content components
 
 // Import unified configuration
 import { 
@@ -258,13 +254,7 @@ const contentComponents = {
   'text-creation': TextCreationContent
 }
 
-// Header component mapping
-const headerComponents = {
-  home: HomeHeader,
-  clothing: ClothingHeader,
-  materials: MaterialsHeader,
-  'text-creation': TextCreationHeader
-}
+// Header components are now integrated into content components
 
 // Header configuration mapping - header config for each navigation item
 const headerConfigs = {
@@ -316,18 +306,8 @@ const currentContentComponent = computed(() => {
   return contentComponents[selectedCategory.value as keyof typeof contentComponents] || HomeContent
 })
 
-// Get current header component
-const currentHeaderComponent = computed(() => {
-  return headerComponents[selectedCategory.value as keyof typeof headerComponents] || HomeHeader
-})
-
-// Get current header configuration
-const currentHeaderConfig = computed(() => {
-  return headerConfigs[selectedCategory.value as keyof typeof headerConfigs] || headerConfigs.home
-})
-
-// Get header component props
-const getHeaderProps = () => {
+// Get content component props
+const getContentProps = () => {
   // Return simplified props for home and text creation pages
   if (selectedCategory.value === 'home' || selectedCategory.value === 'text-creation') {
     return {
@@ -773,10 +753,10 @@ const applyFilters = () => {
 
     <!-- Main content area -->
     <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
-      <!-- Dynamic Header component -->
-      <component
-        :is="currentHeaderComponent"
-        v-bind="getHeaderProps()"
+      <!-- Dynamic content component with integrated header -->
+      <component 
+        :is="currentContentComponent" 
+        v-bind="getContentProps()"
         @update:searchQuery="searchQuery = $event"
         @toggle-filter-menu="toggleFilterMenu"
         @perform-search="performSearch"
@@ -791,28 +771,7 @@ const applyFilters = () => {
         @apply-filters="applyFilters"
         @toggle-style="toggleStyle"
         @toggle-color="toggleColor"
-        v-if="selectedCategory !== 'home' && selectedCategory !== 'text-creation'"
       />
-      
-      <!-- Simplified Header for home and text creation pages -->
-      <component
-        :is="currentHeaderComponent"
-        v-bind="getHeaderProps()"
-        @update:searchQuery="searchQuery = $event"
-        @perform-search="performSearch"
-        @clear-search="clearSearch"
-        @select-suggestion="selectSuggestion"
-        @toggle-mobile-sidebar="showMobileSidebar = !showMobileSidebar"
-        @handle-blur="handleBlur"
-        @update:showSuggestions="showSuggestions = $event"
-        v-if="selectedCategory === 'home' || selectedCategory === 'text-creation'"
-      />
-
-    <!-- Main content area -->
-    <div class="content-area">
-      <!-- Dynamic content component -->
-      <component :is="currentContentComponent" />
-    </div>
     </main>
   </div>
 </template>
@@ -1329,456 +1288,9 @@ const applyFilters = () => {
   
 }
 
-// 顶部固定导航栏 - 完全固定
-.top-header {
-  background: var(--bg-primary);
-  position: fixed;
-  top: 0;
-  left: 240px; // 从左侧菜单右侧开始
-  right: 0;
-  z-index: 1001;
-  box-shadow: 0 2px 8px var(--shadow-primary);
-  backdrop-filter: blur(10px);
-  will-change: transform;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
-  contain: layout style paint;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+// Header styles are now integrated into content components
 
-// 当侧边栏折叠时调整头部位置
-.sidebar-collapsed .top-header {
-  left: 80px;
-}
-
-.header-content {
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  height: 56px;
-  position: relative;
-}
-
-.page-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  flex-shrink: 0;
-}
-
-// 搜索和筛选容器
-.search-filter-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-// 头部筛选按钮
-.search-filter-container .filter-toggle-btn {
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  
-  &.active {
-    color: var(--text-primary);
-    background: var(--bg-hover);
-  }
-  
-  &:hover {
-    color: var(--text-primary);
-    background: var(--bg-hover);
-  }
-}
-
-// 搜索容器
-.search-container {
-  flex: 1;
-  position: relative;
-}
-
-// 搜索框 - 背景色风格
-.search-box {
-  display: flex;
-  align-items: center;
-  background: var(--input-bg);
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-  height: 40px;
-  
-  &:hover {
-    background: var(--input-bg-hover);
-  }
-  
-  &:focus-within {
-    background: var(--input-bg-focus);
-    box-shadow: 0 0 0 2px var(--border-hover);
-  }
-}
-
-.search-icon {
-  color: var(--text-tertiary);
-  margin-right: 0.625rem;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  
-  .search-box:hover & {
-    color: var(--text-secondary);
-  }
-  
-  .search-box:focus-within & {
-    color: var(--text-primary);
-  }
-}
-
-.search-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-weight: 400;
-  
-  &::placeholder {
-    color: var(--text-muted);
-    font-weight: 400;
-    transition: color 0.3s ease;
-  }
-  
-  &:focus {
-    color: var(--text-primary);
-    
-    &::placeholder {
-      color: var(--text-tertiary);
-    }
-  }
-}
-
-.clear-btn {
-  color: var(--text-tertiary);
-  margin-left: 0.375rem;
-  opacity: 0.7;
-  transition: all 0.3s ease;
-  padding: 0.125rem;
-  border-radius: 50%;
-  min-width: 24px;
-  height: 24px;
-  
-  &:hover {
-    color: var(--text-primary);
-    opacity: 1;
-    background: var(--bg-hover);
-  }
-}
-
-// 搜索建议
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
-  border-radius: 12px;
-  margin-top: 0.5rem;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px var(--shadow-primary);
-  z-index: 1003; // 确保在固定头部之上
-  overflow: hidden;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid var(--border-secondary);
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  &:hover {
-    background: var(--bg-hover);
-  }
-}
-
-.suggestion-icon {
-  color: var(--text-muted);
-  margin-right: 0.75rem;
-  font-size: 1rem;
-}
-
-.suggestion-text {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-
-
-// 过滤菜单样式
-.filter-section {
-  background: var(--bg-primary);
-  position: fixed;
-  top: 56px; // 在头部下方
-  left: 240px; // 从左侧菜单右侧开始
-  right: 0;
-  z-index: 1000;
-  margin-top: -1px; // 与头部重叠1px，消除间隙
-  transition: all 0.3s ease;
-  
-  // 当侧边栏折叠时调整位置
-  .sidebar-collapsed & {
-    left: 80px;
-  }
-}
-
-
-.filter-content {
-  padding: 0.75rem 0.75rem 1.5rem 0.75rem; // 增加底部内边距
-  background: var(--bg-primary);
-}
-
-.filter-row-single {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 0.5rem 0.5rem 1rem 0.5rem; // 增加上下左右padding，为滚动条留出空间
-  
-  // 自定义滚动条
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: var(--border-secondary);
-    border-radius: 2px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: var(--border-hover);
-    border-radius: 2px;
-    
-    &:hover {
-      background: var(--text-tertiary);
-    }
-  }
-}
-
-.filter-group {
-  flex-shrink: 0;
-  min-width: 140px;
-}
-
-.filter-label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-}
-
-.filter-select {
-  .v-field {
-    background: var(--input-bg);
-    border: 1px solid var(--border-secondary);
-    color: var(--text-primary);
-    
-    &:hover {
-      border-color: var(--border-hover);
-    }
-    
-    &.v-field--focused {
-      border-color: var(--text-primary);
-      box-shadow: 0 0 0 1px var(--border-hover);
-    }
-  }
-  
-  .v-field__input {
-    color: var(--text-primary);
-    
-    &::placeholder {
-      color: var(--text-muted);
-    }
-  }
-  
-  .v-field__append-inner {
-    color: var(--text-secondary);
-  }
-}
-
-.filter-actions-inline {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  margin-left: 0.5rem;
-}
-
-// 筛选标签显示
-.filter-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem; // 增加下边距
-  padding: 0.75rem 0 1rem 0; // 增加上下内边距
-}
-
-.filter-chip {
-  background: var(--bg-hover) !important;
-  color: var(--text-secondary) !important;
-  border: 1px solid var(--border-secondary) !important;
-  
-  &:hover {
-    background: var(--bg-active) !important;
-  }
-}
-
-// 价格范围容器
-.filter-group-range {
-  min-width: 200px;
-}
-
-.price-range-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.price-input {
-  flex: 1;
-  min-width: 80px;
-}
-
-.price-separator {
-  color: var(--text-secondary);
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-// 风格标签选择
-.filter-group-chips {
-  min-width: 300px;
-}
-
-.style-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  max-height: 60px;
-  overflow-y: auto;
-  padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
-}
-
-.style-chip {
-  background: transparent !important;
-  color: var(--text-secondary) !important;
-  border: 1px solid var(--border-secondary) !important;
-  cursor: pointer;
-  
-  &:hover {
-    background: var(--bg-hover) !important;
-    border-color: var(--border-hover) !important;
-  }
-  
-  &.chip-selected {
-    background: var(--bg-active) !important;
-    border-color: var(--text-primary) !important;
-    color: var(--text-primary) !important;
-  }
-}
-
-// 颜色选择器
-.filter-group-colors {
-  min-width: 200px;
-}
-
-.color-picker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  max-height: 60px;
-  overflow-y: auto;
-  padding: 0.5rem 0.5rem 0.75rem 0.5rem; // 增加padding，为滚动条留出空间
-}
-
-.color-option {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-  position: relative;
-  
-  &:hover {
-    transform: scale(1.1);
-    border-color: var(--border-hover);
-  }
-  
-  &.color-selected {
-    border-color: var(--text-primary);
-    box-shadow: 0 0 0 2px var(--border-hover);
-    
-    &::after {
-      content: '✓';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: var(--text-primary);
-      font-size: 12px;
-      font-weight: bold;
-      text-shadow: 0 0 2px var(--shadow-secondary);
-    }
-  }
-}
-
-.filter-clear-btn {
-  color: var(--text-secondary);
-  border-color: var(--border-primary);
-  min-width: 36px;
-  height: 36px;
-  
-  &:hover {
-    color: var(--text-primary);
-    border-color: var(--text-tertiary);
-    background: var(--bg-hover);
-  }
-}
-
-.filter-apply-btn {
-  background: var(--theme-primary);
-  color: var(--text-primary);
-  min-width: 36px;
-  height: 36px;
-  
-  &:hover {
-    background: var(--theme-primary-hover);
-  }
-}
-
-// 内容区域
-.content-area {
-  flex: 1;
-  padding: 1.5rem 1.5rem 2rem 1.5rem; // 增加底部padding，为滚动条留出更多空间
-  background: var(--bg-primary);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+// Content area styles are now handled by individual content components
 
 .search-placeholder {
   display: flex;
@@ -2248,22 +1760,7 @@ const applyFilters = () => {
     }
   }
   
-  // 平板端头部优化
-  .top-header {
-    left: 200px;
-    
-    &.sidebar-collapsed {
-      left: 70px;
-    }
-  }
-  
-  .filter-section {
-    left: 200px;
-    
-    &.sidebar-collapsed {
-      left: 70px;
-    }
-  }
+  // Header styles are now integrated into content components
 }
 
 // 中等屏幕优化 - 平板横屏和小笔记本
@@ -2284,21 +1781,7 @@ const applyFilters = () => {
     }
   }
   
-  .top-header {
-    left: 180px;
-    
-    &.sidebar-collapsed {
-      left: 60px;
-    }
-  }
-  
-  .filter-section {
-    left: 180px;
-    
-    &.sidebar-collapsed {
-      left: 60px;
-    }
-  }
+  // Header styles are now integrated into content components
   
   .sidebar-nav {
     padding: 1rem 0.25rem 1rem 0.25rem; // 调整中等屏幕顶部padding
@@ -2418,99 +1901,7 @@ const applyFilters = () => {
     }
   }
   
-  // 移动端头部优化 - 自适应高度
-  .top-header {
-    left: 0;
-    min-height: 60px; // 设置最小高度
-    box-shadow: 0 2px 12px var(--shadow-primary);
-  }
-  
-  .header-content {
-    padding: 0.75rem 1rem; // 增加上下padding
-    min-height: 60px; // 设置最小高度
-    gap: 0.75rem;
-    align-items: center; // 确保垂直居中
-    display: flex;
-    flex-wrap: nowrap; // 防止换行
-    overflow: visible; // 允许内容显示
-  }
-  
-  .page-title {
-    font-size: 1.1rem;
-    flex-shrink: 0; // 防止标题被压缩
-  }
-  
-  // 移动端搜索和筛选容器优化
-  .search-filter-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 0; // 允许flex子元素收缩
-  }
-  
-  // 移动端搜索框优化
-  .search-container {
-    flex: 1;
-    min-width: 0; // 允许搜索框收缩
-  }
-  
-  .search-box {
-    padding: 0.625rem 0.875rem; // 调整padding适应新高度
-    height: 40px; // 稍微减少搜索框高度
-    min-width: 120px; // 设置最小宽度
-  }
-  
-  .search-input {
-    font-size: 0.9rem;
-  }
-  
-  // 移动端筛选按钮优化
-  .filter-toggle-btn {
-    flex-shrink: 0; // 防止筛选按钮被压缩
-    min-width: 40px;
-    height: 40px;
-  }
-  
-  .search-suggestions {
-    border-radius: 12px;
-    margin-top: 0.5rem;
-    box-shadow: 0 8px 32px var(--shadow-primary);
-  }
-  
-  .suggestion-item {
-    padding: 1rem 1.25rem; // 增加触摸区域
-    min-height: 48px;
-  }
-  
-  .suggestion-text {
-    font-size: 0.9rem;
-  }
-  
-  // 移动端过滤菜单优化
-  .filter-section {
-    left: 0;
-    top: auto; // 让过滤菜单自动定位在头部下方
-    margin-top: -1px; // 与头部重叠1px，消除间隙
-    box-shadow: 0 4px 16px var(--shadow-primary);
-    
-    .filter-content {
-      padding: 1rem 1.25rem 1.5rem 1.25rem;
-    }
-    
-    .filter-row-single {
-      gap: 0.75rem;
-      padding: 0.75rem 0.5rem 1rem 0.5rem;
-      
-      .filter-group {
-        min-width: 140px;
-      }
-    }
-    
-    .filter-actions-inline {
-      margin-top: 0.75rem;
-    }
-  }
+  // Header styles are now integrated into content components
   
   // 移动端主内容区域
   .main-content {
@@ -2659,73 +2050,7 @@ const applyFilters = () => {
     }
   }
   
-  // 小屏幕头部优化 - 自适应高度
-  .top-header {
-    min-height: 56px; // 设置最小高度
-  }
-  
-  .header-content {
-    min-height: 56px;
-    padding: 0.625rem 0.75rem; // 增加上下padding
-    gap: 0.5rem;
-    align-items: center;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: visible; // 允许内容显示
-  }
-  
-  .page-title {
-    font-size: 1rem;
-  }
-  
-  .search-box {
-    padding: 0.5rem 0.75rem;
-    height: 36px; // 稍微减少高度
-    min-width: 100px;
-  }
-  
-  .search-input {
-    font-size: 0.85rem;
-  }
-  
-  // 小屏幕搜索和筛选容器
-  .search-filter-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    min-width: 0;
-  }
-  
-  .search-container {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .filter-toggle-btn {
-    flex-shrink: 0;
-    min-width: 36px;
-    height: 36px;
-  }
-  
-  // 小屏幕过滤菜单优化
-  .filter-section {
-    top: auto; // 让过滤菜单自动定位在头部下方
-    margin-top: -1px; // 与头部重叠1px，消除间隙
-    
-    .filter-content {
-      padding: 0.75rem 1rem 1.25rem 1rem;
-    }
-    
-    .filter-row-single {
-      gap: 0.5rem;
-      padding: 0.5rem 0.25rem 0.75rem 0.25rem;
-      
-      .filter-group {
-        min-width: 120px;
-      }
-    }
-  }
+  // Header styles are now integrated into content components
   
   // 小屏幕主内容区域
   .main-content {

@@ -1,5 +1,178 @@
 <template>
   <div class="clothing-content">
+    <!-- Header Section -->
+    <div class="clothing-header">
+      <div class="header-content">
+        <!-- 移动端菜单按钮 -->
+        <v-btn
+          variant="text"
+          @click="toggleMobileSidebar"
+          class="mobile-menu-btn"
+          icon
+        >
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="search-filter-container">
+          <!-- Filter button -->
+          <v-btn
+            variant="text"
+            @click="toggleFilter"
+            class="filter-toggle-btn"
+            :class="{ 'active': showFilterMenu }"
+            icon
+            size="small"
+          >
+            <v-icon>{{ showFilterMenu ? 'mdi-tune' : 'mdi-tune-variant' }}</v-icon>
+          </v-btn>
+          
+          <!-- Search box -->
+          <div class="search-container">
+            <div class="search-box">
+              <v-icon class="search-icon">mdi-magnify</v-icon>
+              <input
+                :value="searchQuery"
+                @input="handleSearchInput(($event.target as HTMLInputElement).value)"
+                type="text"
+                placeholder="Search fashion designs..."
+                class="search-input"
+                @keyup.enter="performSearch"
+              />
+              <v-btn
+                v-if="searchQuery"
+                variant="text"
+                @click="clearSearch"
+                class="clear-btn"
+                icon
+                size="small"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filter content -->
+      <div v-if="showFilterMenu" class="filter-content">
+        <!-- Filter chips display -->
+        <div class="filter-chips" v-if="activeFiltersCount > 0">
+          <v-chip
+            v-for="(filter, key) in activeFilters"
+            :key="key"
+            size="small"
+            closable
+            @click:close="removeFilter(key)"
+            class="filter-chip"
+          >
+            {{ filter.label }}: {{ filter.value }}
+          </v-chip>
+        </div>
+        
+        <div class="filter-row-single">
+          <!-- Sort options -->
+          <div class="filter-group">
+            <label class="filter-label">Sort</label>
+            <v-select
+              v-model="filters.sort"
+              :items="filterOptions.sort"
+              variant="outlined"
+              density="compact"
+              hide-details
+              placeholder="Select sort option"
+              class="filter-select"
+              @update:model-value="updateFilters(filters)"
+            />
+          </div>
+          
+          <!-- Price range input -->
+          <div class="filter-group filter-group-range">
+            <label class="filter-label">Price Range</label>
+            <div class="price-range-container">
+              <v-text-field
+                v-model.number="filters.priceMin"
+                type="number"
+                placeholder="Min Price"
+                class="price-input"
+                variant="outlined"
+                density="compact"
+                hide-details
+                @update:model-value="updateFilters(filters)"
+              />
+              <span class="price-separator">-</span>
+              <v-text-field
+                v-model.number="filters.priceMax"
+                type="number"
+                placeholder="Max Price"
+                class="price-input"
+                variant="outlined"
+                density="compact"
+                hide-details
+                @update:model-value="updateFilters(filters)"
+              />
+            </div>
+          </div>
+          
+          <!-- Style chip selection -->
+          <div class="filter-group filter-group-chips">
+            <label class="filter-label">Style</label>
+            <div class="style-chips">
+              <v-chip
+                v-for="style in filterOptions.style"
+                :key="style.value"
+                :class="{ 'chip-selected': filters.styles.includes(style.value) }"
+                @click="toggleStyle(style.value)"
+                class="style-chip"
+                size="small"
+                variant="outlined"
+              >
+                {{ style.text }}
+              </v-chip>
+            </div>
+          </div>
+          
+          <!-- Color picker -->
+          <div class="filter-group filter-group-colors">
+            <label class="filter-label">Color</label>
+            <div class="color-picker">
+              <div
+                v-for="color in colorOptions"
+                :key="color.value"
+                :class="{ 'color-selected': filters.colors.includes(color.value) }"
+                @click="toggleColor(color.value)"
+                class="color-option"
+                :style="{ backgroundColor: color.value }"
+                :title="color.text"
+              />
+            </div>
+          </div>
+          
+          <!-- Action buttons -->
+          <div class="filter-actions-inline">
+            <v-btn
+              variant="outlined"
+              @click="clearFilters"
+              class="filter-clear-btn"
+              size="small"
+              icon
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+            <v-btn
+              variant="flat"
+              @click="applyFilters"
+              class="filter-apply-btn"
+              size="small"
+              color="primary"
+              icon
+            >
+              <v-icon>mdi-check</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Fashion design content main body -->
     <div class="content-body">
@@ -96,6 +269,78 @@ import ImageCard from '../components/ImageCard.vue'
 import FilterRow from '../components/FilterRow.vue'
 import type { FilterItem } from '../components/FilterRow.vue'
 import ContentPagination from '../components/ContentPagination.vue'
+import { colorOptions } from '../customConfig/filterOptions'
+
+// Props for header functionality
+const props = defineProps<{
+  searchQuery: string
+  showFilterMenu: boolean
+  showMobileSidebar: boolean
+  filters: any
+  filterOptions: any
+  activeFilters: any
+  activeFiltersCount: number
+}>()
+
+// Emits for header functionality
+const emit = defineEmits<{
+  'update:searchQuery': [value: string]
+  'toggle-filter-menu': []
+  'perform-search': []
+  'clear-search': []
+  'toggle-mobile-sidebar': []
+  'update:filters': [filters: any]
+  'remove-filter': [key: string]
+  'clear-filters': []
+  'apply-filters': []
+  'toggle-style': [style: string]
+  'toggle-color': [color: string]
+}>()
+
+// Header methods
+const handleSearchInput = (value: string) => {
+  emit('update:searchQuery', value)
+}
+
+const toggleFilter = () => {
+  emit('toggle-filter-menu')
+}
+
+const performSearch = () => {
+  emit('perform-search')
+}
+
+const clearSearch = () => {
+  emit('clear-search')
+}
+
+const toggleMobileSidebar = () => {
+  emit('toggle-mobile-sidebar')
+}
+
+const updateFilters = (filters: any) => {
+  emit('update:filters', filters)
+}
+
+const removeFilter = (key: string) => {
+  emit('remove-filter', key)
+}
+
+const clearFilters = () => {
+  emit('clear-filters')
+}
+
+const applyFilters = () => {
+  emit('apply-filters')
+}
+
+const toggleStyle = (style: string) => {
+  emit('toggle-style', style)
+}
+
+const toggleColor = (color: string) => {
+  emit('toggle-color', color)
+}
 
 // 筛选配置
 const clothingFilters: FilterItem[] = [
@@ -329,22 +574,262 @@ onMounted(() => {
 @use './content-areas.scss';
 
 .clothing-content {
-  .content-header {
-    margin-bottom: 2rem;
+  /* Header Styles */
+  .clothing-header {
+    background: var(--bg-primary);
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    z-index: 1001;
+    box-shadow: 0 2px 8px var(--shadow-primary);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .header-content {
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 56px;
+    position: relative;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    color: var(--text-secondary) !important;
+    position: absolute;
+    left: 1rem;
     
-    .content-title {
-      display: flex;
-      align-items: center;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .search-filter-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .filter-toggle-btn {
+    color: var(--text-secondary) !important;
+    flex-shrink: 0;
+    
+    &.active {
+      color: var(--theme-primary) !important;
+      background: var(--bg-hover) !important;
     }
     
-    .content-subtitle {
-      color: #b0b0b0;
-      font-size: 0.9rem;
+    &:hover {
+      color: var(--theme-primary) !important;
+      background: var(--bg-hover) !important;
     }
+  }
+
+  .search-container {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    min-width: 300px;
+
+    &:hover {
+      background: var(--input-bg-hover);
+    }
+
+    &:focus-within {
+      background: var(--input-bg-focus);
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 2px var(--border-hover);
+    }
+  }
+
+  .search-icon {
+    color: var(--text-tertiary);
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    
+    .search-box:hover & {
+      color: var(--text-secondary);
+    }
+    
+    .search-box:focus-within & {
+      color: var(--theme-primary);
+    }
+  }
+
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    
+    &::placeholder {
+      color: var(--text-muted);
+    }
+    
+    &:focus {
+      color: var(--text-primary);
+      
+      &::placeholder {
+        color: var(--text-tertiary);
+      }
+    }
+  }
+
+  .clear-btn {
+    color: var(--text-tertiary) !important;
+    margin-left: 0.5rem;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  /* Filter content styles */
+  .filter-content {
+    padding: 0.75rem 0.75rem 1.5rem 0.75rem;
+    background: var(--bg-primary);
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .filter-chip {
+    background: var(--theme-primary) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background: var(--theme-primary-hover) !important;
+    }
+  }
+
+  .filter-row-single {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: end;
+    padding-bottom: 1.5rem;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 150px;
+  }
+
+  .filter-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .filter-select {
+    min-width: 150px;
+  }
+
+  .price-range-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .price-input {
+    min-width: 80px;
+  }
+
+  .price-separator {
+    color: #999;
+    font-weight: 500;
+  }
+
+  .style-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .style-chip {
+    cursor: pointer;
+    
+    &.chip-selected {
+      background: var(--theme-primary) !important;
+      color: var(--text-primary) !important;
+    }
+  }
+
+  .color-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    &.color-selected {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 2px var(--border-hover);
+    }
+  }
+
+  .filter-actions-inline {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .filter-clear-btn {
+    color: var(--text-tertiary) !important;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .filter-apply-btn {
+    background: var(--theme-primary) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background: var(--theme-primary-hover) !important;
+    }
+  }
+
+  /* Content body styles */
+  .content-body {
+    margin-top: 56px; /* 为固定头部留出空间 */
   }
   
   .content-filters {
@@ -579,6 +1064,66 @@ onMounted(() => {
     }
     100% {
       background-position: 200% 0;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .clothing-header {
+      left: 200px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .clothing-header {
+      left: 180px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .clothing-header {
+      left: 0;
+    }
+    
+    .mobile-menu-btn {
+      display: block;
+    }
+    
+    .header-content {
+      padding: 0.75rem 1rem;
+      min-height: 60px;
+      gap: 0.75rem;
+    }
+    
+    .search-filter-container {
+      gap: 0.5rem;
+      max-width: none;
+      margin-left: 3rem; /* 为移动端菜单按钮留出空间 */
+    }
+    
+    .search-box {
+      min-width: 200px;
+    }
+    
+    .filter-row-single {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .filter-group {
+      min-width: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-content {
+      padding: 0.625rem 0.75rem;
+      min-height: 56px;
+      gap: 0.5rem;
+    }
+    
+    .search-box {
+      min-width: 150px;
     }
   }
 }
