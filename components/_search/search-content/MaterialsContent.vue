@@ -136,7 +136,7 @@
               <v-chip
                 v-for="type in filterOptions.type"
                 :key="type.value"
-                :class="{ 'chip-selected': materialsFilters.type.includes(type.value) }"
+                :class="{ 'chip-selected': materialsFilters.type?.includes(type.value) }"
                 @click="toggleStyle(type.value)"
                 class="style-chip"
                 size="small"
@@ -154,7 +154,7 @@
               <v-chip
                 v-for="format in filterOptions.format"
                 :key="format.value"
-                :class="{ 'chip-selected': materialsFilters.format.includes(format.value) }"
+                :class="{ 'chip-selected': materialsFilters.format?.includes(format.value) }"
                 @click="toggleFormat(format.value)"
                 class="style-chip"
                 size="small"
@@ -172,7 +172,7 @@
               <div
                 v-for="color in filterOptions.color"
                 :key="color.value"
-                :class="{ 'color-selected': materialsFilters.colors.includes(color.value) }"
+                :class="{ 'color-selected': materialsFilters.colors?.includes(color.value) }"
                 @click="toggleColor(color.value)"
                 class="color-option"
                 :style="{ backgroundColor: getColorValue(color.value) }"
@@ -492,10 +492,10 @@ const buildSearchKeywords = () => {
   }
   
   // 添加各种过滤条件的关键词
-  addKeywordsFromFilter(materialsFilters.value.type, filterOptions.type)
-  addKeywordsFromFilter(materialsFilters.value.format, filterOptions.format)
-  addKeywordsFromFilter(materialsFilters.value.group, filterOptions.group)
-  addKeywordsFromFilter(materialsFilters.value.color, filterOptions.color)
+  addKeywordsFromFilter(materialsFilters.value.type || [], filterOptions.type)
+  addKeywordsFromFilter(materialsFilters.value.format || [], filterOptions.format)
+  addKeywordsFromFilter(materialsFilters.value.group || [], filterOptions.group)
+  addKeywordsFromFilter(materialsFilters.value.colors || [], filterOptions.color)
   
   return keywords.join(' ')
 }
@@ -618,10 +618,10 @@ const fetchMaterialItemsWithoutSearch = async () => {
     }
     
     // 添加各种过滤条件的关键词
-    addKeywordsFromFilter(materialsFilters.value.type, filterOptions.type)
-    addKeywordsFromFilter(materialsFilters.value.format, filterOptions.format)
-    addKeywordsFromFilter(materialsFilters.value.group, filterOptions.group)
-    addKeywordsFromFilter(materialsFilters.value.color, filterOptions.color)
+    addKeywordsFromFilter(materialsFilters.value.type || [], filterOptions.type)
+    addKeywordsFromFilter(materialsFilters.value.format || [], filterOptions.format)
+    addKeywordsFromFilter(materialsFilters.value.group || [], filterOptions.group)
+    addKeywordsFromFilter(materialsFilters.value.colors || [], filterOptions.color)
     
     if (keywords.length > 0) {
       requestBody.search = keywords.join(' ')
@@ -721,6 +721,9 @@ const applyFilters = () => {
 }
 
 const toggleStyle = (style: string) => {
+  if (!materialsFilters.value.type) {
+    materialsFilters.value.type = []
+  }
   const index = materialsFilters.value.type.indexOf(style)
   if (index > -1) {
     materialsFilters.value.type.splice(index, 1)
@@ -734,6 +737,9 @@ const toggleStyle = (style: string) => {
 }
 
 const toggleColor = (color: string) => {
+  if (!materialsFilters.value.colors) {
+    materialsFilters.value.colors = []
+  }
   const index = materialsFilters.value.colors.indexOf(color)
   if (index > -1) {
     materialsFilters.value.colors.splice(index, 1)
@@ -747,6 +753,9 @@ const toggleColor = (color: string) => {
 }
 
 const toggleFormat = (format: string) => {
+  if (!materialsFilters.value.format) {
+    materialsFilters.value.format = []
+  }
   const index = materialsFilters.value.format.indexOf(format)
   if (index > -1) {
     materialsFilters.value.format.splice(index, 1)
