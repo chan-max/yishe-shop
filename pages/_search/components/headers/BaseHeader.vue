@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-01-27 11:00:00
- * @FilePath: /yishe-nuxt/pages/search/components/headers/BaseHeader.vue
+ * @FilePath: /yishe-nuxt/pages/_search/components/headers/BaseHeader.vue
  * @Description: 基础Header组件
 -->
 <script lang="ts" setup>

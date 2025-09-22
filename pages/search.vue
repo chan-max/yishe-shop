@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-09-22 03:01:38
- * @FilePath: /yishe-nuxt/pages/search.vue
+ * @FilePath: /yishe-nuxt/pages/_search.vue
  * @Description: Search Page - Design Material Search and Filtering
 -->
 <script lang="ts" setup>
@@ -13,14 +13,14 @@ import { useRoute, useRouter } from 'vue-router'
 // import { useSearchStore } from '~/stores/use-search'
 
 // Import content area components
-import ClothingContent from '~/pages/search/search-content/ClothingContent.vue'
-import MaterialsContent from '~/pages/search/search-content/MaterialsContent.vue'
-import TextCreationContent from '~/pages/search/search-content/TextCreationContent.vue'
+import ClothingContent from '~/pages/_search/search-content/ClothingContent.vue'
+import MaterialsContent from '~/pages/_search/search-content/MaterialsContent.vue'
+import TextCreationContent from '~/pages/_search/search-content/TextCreationContent.vue'
 
 // Import Header components
-import ClothingHeader from './search/components/headers/ClothingHeader.vue'
-import MaterialsHeader from './search/components/headers/MaterialsHeader.vue'
-import TextCreationHeader from './search/components/headers/TextCreationHeader.vue'
+import ClothingHeader from './_search/components/headers/ClothingHeader.vue'
+import MaterialsHeader from './_search/components/headers/MaterialsHeader.vue'
+import TextCreationHeader from './_search/components/headers/TextCreationHeader.vue'
 
 // Import unified configuration
 import { 
@@ -30,7 +30,7 @@ import {
   materialsFilterOptions, 
   textCreationFilterOptions, 
   getFilterOptions 
-} from './search/customConfig/filterOptions'
+} from './_search/customConfig/filterOptions'
 
 const { awesome } = useAppConfig()
 // definePageMeta({ layout: false })

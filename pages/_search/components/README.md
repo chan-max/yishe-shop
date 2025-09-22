@@ -119,7 +119,7 @@
 ## 文件结构
 
 ```
-pages/search/components/
+pages/_search/components/
 ├── LoadingSpinner.vue      # 加载状态组件
 ├── ImageSkeleton.vue       # 骨架屏组件
 ├── ContentPagination.vue   # 分页组件

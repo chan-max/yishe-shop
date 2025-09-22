@@ -6,7 +6,7 @@
 ## 文件结构
 
 ```
-pages/search/
+pages/_search/
 ├── search.vue                    # 主搜索页面文件
 ├── components/                   # 组件目录
 │   ├── headers/                 # 头部组件
