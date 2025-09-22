@@ -677,8 +677,8 @@ const applyFilters = () => {
 
         <!-- Navigation menu -->
         <nav class="sidebar-nav">
-
-          <div class="nav-section">
+          <!-- Home section -->
+          <div class="nav-section nav-section-home">
             <v-btn
               variant="text"
               class="nav-btn"
@@ -691,7 +691,13 @@ const applyFilters = () => {
                 <span>Home</span>
               </template>
             </v-btn>
-            
+          </div>
+
+          <!-- Divider -->
+          <div class="nav-divider"></div>
+
+          <!-- Main navigation section -->
+          <div class="nav-section">
             <v-btn
               variant="text"
               class="nav-btn"
@@ -1046,6 +1052,10 @@ const applyFilters = () => {
   .nav-section {
     margin-bottom: 1.5rem;
     
+    &.nav-section-home {
+      margin-bottom: 1rem;
+    }
+    
     .nav-btn {
       width: 100%;
       justify-content: flex-start;
@@ -1107,6 +1117,15 @@ const applyFilters = () => {
       }
     }
   }
+  
+  // 导航分隔线样式
+  .nav-divider {
+    height: 1px;
+    background: var(--border-secondary);
+    margin: 1rem 0.75rem;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
 }
 
 // 折叠状态下的导航样式
@@ -1165,6 +1184,14 @@ const applyFilters = () => {
           }
         }
       }
+    }
+    
+    // 折叠状态下的分隔线样式
+    .nav-divider {
+      height: 1px;
+      background: var(--border-secondary);
+      margin: 0.75rem 0.5rem;
+      opacity: 0.4;
     }
   }
 }

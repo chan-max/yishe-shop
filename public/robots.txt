@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_nuxt/
+Disallow: /.well-known/
+Disallow: /temp/
+Disallow: /private/
+
+Sitemap: https://1s.design/sitemap.xml

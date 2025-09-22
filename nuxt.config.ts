@@ -97,27 +97,35 @@ export default defineNuxtConfig({
   },
   site: {
     url: 'https://1s.design',
-    name: '1s',
+    name: '1s design',
     defaults: {
       lastmod: '2025-05-16',
       changefreq: 'monthly',
       priority: 0.8,
     },
   },
+  
+  // robots.txt 配置
+  robots: {
+    UserAgent: '*',
+    Allow: '/',
+    Disallow: [
+    ],
+    Sitemap: 'https://1s.design/sitemap.xml'
+  },
   sitemap: {
+
     autoLastmod: true,
     cacheMaxAgeSeconds: 1000 * 60 * 60 * 3, // 三个小时的更新频率
     exclude: [
-      '/api/captcha/get',
-      '/system/tenant/get-by-website'
     ], // 排除路径
     sources: [
       // '/api/__sitemap__/urls',
-      '/api/sitemap',
     ],
     sitemaps: true, // sitemap多文件开关
     defaultSitemapsChunkSize: 1000,
   },
+ 
   hooks: {
   },
   devServer: {
