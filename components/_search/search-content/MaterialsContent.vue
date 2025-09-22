@@ -35,6 +35,8 @@
                 :value="searchQuery"
                 @input="handleSearchInput(($event.target as HTMLInputElement).value)"
                 @keydown.enter="performSearch"
+                @focus="showSuggestions = true"
+                @blur="handleBlur"
                 type="text"
                 placeholder="搜索素材图片..."
                 class="search-input"
@@ -49,6 +51,19 @@
               >
                 <v-icon>mdi-close</v-icon>
               </v-btn>
+            </div>
+            
+            <!-- 搜索建议 -->
+            <div v-if="showSuggestions && filteredSuggestions.length > 0" class="search-suggestions">
+              <div
+                v-for="suggestion in filteredSuggestions.slice(0, 8)"
+                :key="suggestion"
+                @click="selectSuggestion(suggestion)"
+                class="suggestion-item"
+              >
+                <v-icon class="suggestion-icon">mdi-magnify</v-icon>
+                <span class="suggestion-text">{{ suggestion }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +81,7 @@
             @click:close="removeFilter(key)"
             class="filter-chip"
           >
-            {{ filter.label }}: {{ filter.value }}
+            {{ key }}: {{ Array.isArray(filter) ? filter.join(', ') : filter }}
           </v-chip>
         </div>
         
@@ -75,14 +90,14 @@
           <div class="filter-group">
             <label class="filter-label">排序</label>
             <v-select
-              v-model="filters.sort"
+              v-model="materialsFilters.sort"
               :items="filterOptions.sort"
               variant="outlined"
               density="compact"
               hide-details
               placeholder="选择排序方式"
               class="filter-select"
-              @update:model-value="updateFilters(filters)"
+              @update:model-value="applyFilters"
             />
           </div>
           
@@ -114,20 +129,38 @@
             </div>
           </div>
           
-          <!-- 风格标签选择 -->
+          <!-- 素材类型选择 -->
           <div class="filter-group filter-group-chips">
-            <label class="filter-label">风格</label>
+            <label class="filter-label">素材类型</label>
             <div class="style-chips">
               <v-chip
-                v-for="style in filterOptions.style"
-                :key="style.value"
-                :class="{ 'chip-selected': filters.styles.includes(style.value) }"
-                @click="toggleStyle(style.value)"
+                v-for="type in filterOptions.type"
+                :key="type.value"
+                :class="{ 'chip-selected': materialsFilters.type.includes(type.value) }"
+                @click="toggleStyle(type.value)"
                 class="style-chip"
                 size="small"
                 variant="outlined"
               >
-                {{ style.text }}
+                {{ type.text }}
+              </v-chip>
+            </div>
+          </div>
+          
+          <!-- 文件格式选择 -->
+          <div class="filter-group filter-group-chips">
+            <label class="filter-label">文件格式</label>
+            <div class="style-chips">
+              <v-chip
+                v-for="format in filterOptions.format"
+                :key="format.value"
+                :class="{ 'chip-selected': materialsFilters.format.includes(format.value) }"
+                @click="toggleFormat(format.value)"
+                class="style-chip"
+                size="small"
+                variant="outlined"
+              >
+                {{ format.text }}
               </v-chip>
             </div>
           </div>
@@ -137,12 +170,12 @@
             <label class="filter-label">颜色</label>
             <div class="color-picker">
               <div
-                v-for="color in colorOptions"
+                v-for="color in filterOptions.color"
                 :key="color.value"
-                :class="{ 'color-selected': filters.colors.includes(color.value) }"
+                :class="{ 'color-selected': materialsFilters.colors.includes(color.value) }"
                 @click="toggleColor(color.value)"
                 class="color-option"
-                :style="{ backgroundColor: color.value }"
+                :style="{ backgroundColor: getColorValue(color.value) }"
                 :title="color.text"
               />
             </div>
@@ -292,6 +325,114 @@ const props = defineProps<{
   activeFiltersCount: number
 }>()
 
+// 本地状态管理
+const materialsFilters = useLocalStorage('materials-filters', {
+  sort: 'latest',
+  type: [],
+  format: [],
+  group: [],
+  colors: [],
+  priceRange: { min: 0, max: 1000 }
+})
+
+// 搜索建议
+const searchSuggestions = ref([
+  // 素材类型
+  '背景图', '纹理', '图标', '插画', '照片', '贴纸', '装饰', 'logo', 'banner',
+  // 风格
+  '商务', '自然', '科技', '美食', '旅行', '抽象', '极简', '卡通', '复古', '现代',
+  // 颜色
+  '红色', '蓝色', '绿色', '黄色', '紫色', '橙色', '粉色', '黑色', '白色', '灰色',
+  // 用途
+  '网页设计', '移动应用', '印刷品', '社交媒体', '电商', '品牌设计'
+])
+
+const showSuggestions = ref(false)
+
+// 过滤选项配置
+const filterOptions = {
+  sort: [
+    { value: 'latest', text: '最新发布', apiValue: 'createTime' },
+    { value: 'popular', text: '最受欢迎', apiValue: 'downloads' },
+    { value: 'rating', text: '评分最高', apiValue: 'rating' },
+    { value: 'name_asc', text: '名称：A-Z', apiValue: 'name_asc' },
+    { value: 'name_desc', text: '名称：Z-A', apiValue: 'name_desc' }
+  ],
+  type: [
+    { value: 'background', text: '背景图', searchKeyword: '背景 背景图' },
+    { value: 'texture', text: '纹理', searchKeyword: '纹理 材质' },
+    { value: 'icon', text: '图标', searchKeyword: '图标 icon' },
+    { value: 'illustration', text: '插画', searchKeyword: '插画 插图' },
+    { value: 'photo', text: '照片', searchKeyword: '照片 摄影' },
+    { value: 'sticker', text: '贴纸', searchKeyword: '贴纸 sticker' },
+    { value: 'decoration', text: '装饰', searchKeyword: '装饰 装饰品' },
+    { value: 'logo', text: 'Logo', searchKeyword: 'logo 标志' },
+    { value: 'banner', text: '横幅', searchKeyword: '横幅 banner' }
+  ],
+  format: [
+    { value: 'png', text: 'PNG', searchKeyword: 'PNG' },
+    { value: 'jpg', text: 'JPG', searchKeyword: 'JPG JPEG' },
+    { value: 'svg', text: 'SVG', searchKeyword: 'SVG 矢量' },
+    { value: 'gif', text: 'GIF', searchKeyword: 'GIF 动图' },
+    { value: 'webp', text: 'WEBP', searchKeyword: 'WEBP' },
+    { value: 'bmp', text: 'BMP', searchKeyword: 'BMP' }
+  ],
+  group: [
+    { value: 'business', text: '商务', searchKeyword: '商务 商业' },
+    { value: 'nature', text: '自然', searchKeyword: '自然 风景' },
+    { value: 'technology', text: '科技', searchKeyword: '科技 技术' },
+    { value: 'food', text: '美食', searchKeyword: '美食 食物' },
+    { value: 'travel', text: '旅行', searchKeyword: '旅行 旅游' },
+    { value: 'abstract', text: '抽象', searchKeyword: '抽象 艺术' },
+    { value: 'minimalist', text: '极简', searchKeyword: '极简 简约' },
+    { value: 'cartoon', text: '卡通', searchKeyword: '卡通 动漫' },
+    { value: 'vintage', text: '复古', searchKeyword: '复古 怀旧' },
+    { value: 'modern', text: '现代', searchKeyword: '现代 时尚' },
+    { value: 'holiday', text: '节日', searchKeyword: '节日 庆典' },
+    { value: 'education', text: '教育', searchKeyword: '教育 学习' }
+  ],
+  color: [
+    { value: 'red', text: '红色', searchKeyword: '红色 红' },
+    { value: 'blue', text: '蓝色', searchKeyword: '蓝色 蓝' },
+    { value: 'green', text: '绿色', searchKeyword: '绿色 绿' },
+    { value: 'yellow', text: '黄色', searchKeyword: '黄色 黄' },
+    { value: 'purple', text: '紫色', searchKeyword: '紫色 紫' },
+    { value: 'orange', text: '橙色', searchKeyword: '橙色 橙' },
+    { value: 'pink', text: '粉色', searchKeyword: '粉色 粉' },
+    { value: 'black', text: '黑色', searchKeyword: '黑色 黑' },
+    { value: 'white', text: '白色', searchKeyword: '白色 白' },
+    { value: 'gray', text: '灰色', searchKeyword: '灰色 灰' },
+    { value: 'brown', text: '棕色', searchKeyword: '棕色 棕' },
+    { value: 'teal', text: '青色', searchKeyword: '青色 青' }
+  ]
+}
+
+// 计算属性
+const filteredSuggestions = computed(() => {
+  if (!props.searchQuery.trim()) return []
+  return searchSuggestions.value.filter(suggestion =>
+    suggestion.toLowerCase().includes(props.searchQuery.toLowerCase())
+  )
+})
+
+const activeFilters = computed(() => {
+  const active: any = {}
+  Object.keys(materialsFilters.value).forEach(key => {
+    if (key === 'priceRange') return
+    const value = materialsFilters.value[key]
+    if (Array.isArray(value) && value.length > 0) {
+      active[key] = value
+    } else if (!Array.isArray(value) && value) {
+      active[key] = value
+    }
+  })
+  return active
+})
+
+const activeFiltersCount = computed(() => {
+  return Object.keys(activeFilters.value).length
+})
+
 // Local state for filter menu with localStorage persistence
 const showFilterMenu = useLocalStorage('materials-filter-menu', false)
 
@@ -312,6 +453,51 @@ const emit = defineEmits<{
 // Header methods
 const handleSearchInput = (value: string) => {
   emit('update:searchQuery', value)
+  showSuggestions.value = true
+}
+
+// 选择搜索建议
+const selectSuggestion = (suggestion: string) => {
+  emit('update:searchQuery', suggestion)
+  showSuggestions.value = false
+  performSearch()
+}
+
+// 处理搜索框失焦
+const handleBlur = () => {
+  setTimeout(() => {
+    showSuggestions.value = false
+  }, 200)
+}
+
+// 构建搜索关键词
+const buildSearchKeywords = () => {
+  const keywords: string[] = []
+  
+  // 添加搜索查询
+  if (props.searchQuery.trim()) {
+    keywords.push(props.searchQuery.trim())
+  }
+  
+  // 添加过滤条件对应的搜索关键词
+  const addKeywordsFromFilter = (filterValues: string[], filterOptions: any[]) => {
+    if (filterValues && filterValues.length > 0) {
+      filterValues.forEach(value => {
+        const option = filterOptions.find(opt => opt.value === value)
+        if (option && option.searchKeyword) {
+          keywords.push(option.searchKeyword)
+        }
+      })
+    }
+  }
+  
+  // 添加各种过滤条件的关键词
+  addKeywordsFromFilter(materialsFilters.value.type, filterOptions.type)
+  addKeywordsFromFilter(materialsFilters.value.format, filterOptions.format)
+  addKeywordsFromFilter(materialsFilters.value.group, filterOptions.group)
+  addKeywordsFromFilter(materialsFilters.value.color, filterOptions.color)
+  
+  return keywords.join(' ')
 }
 
 const toggleFilter = () => {
@@ -330,29 +516,65 @@ const performSearch = async () => {
   
   try {
     const { $customFetch } = useNuxtApp()
-    const requestBody = {
+    
+    // 构建请求参数
+    const requestBody: any = {
       currentPage: 1,
       pageSize: pageSize.value,
-      search: props.searchQuery.trim()
+      isPublish: true
     }
+    
+    // 添加搜索关键词
+    const searchKeywords = buildSearchKeywords()
+    if (searchKeywords.trim()) {
+      requestBody.search = searchKeywords.trim()
+    }
+    
+    // 添加排序
+    if (materialsFilters.value.sort) {
+      const sortOption = filterOptions.sort.find(s => s.value === materialsFilters.value.sort)
+      if (sortOption && sortOption.apiValue) {
+        requestBody.sortingFields = `${sortOption.apiValue} DESC`
+      }
+    }
+    
+    console.log('搜索请求参数:', requestBody)
 
-    const response = await $customFetch('/api/materials/getPage', {
+    const response = await $customFetch('/sticker/page', {
       method: 'POST',
       body: requestBody
-    })
+    }) as any
 
-    if (response && response.data) {
-      materialItems.value = response.data
-      total.value = response.total || 0
-      currentPage.value = 1
-    } else {
-      materialItems.value = []
-      total.value = 0
-    }
+    // 转换数据格式以适配素材显示
+    materialItems.value = (response.list || []).map((item: any): MaterialItem => ({
+      id: item.id,
+      title: item.name || '未命名素材',
+      description: item.description || '高质量设计素材',
+      image: item.url || 'https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Material',
+      format: item.suffix?.toUpperCase() || 'UNKNOWN',
+      group: item.group || '未分组',
+      price: 0, // 素材图暂时免费
+      downloads: Math.floor(Math.random() * 1000) + 100, // 模拟下载数
+      keywords: item.keywords || '',
+      isTexture: item.isTexture || false,
+      isCustom: item.isCustom || false,
+      isInfringement: item.isInfringement || false,
+      createTime: item.createTime,
+      uploader: item.uploader,
+      phash: item.phash,
+      meta: item.meta,
+      isPublic: item.isPublic
+    }))
+
+    total.value = response.total || 0
+    currentPage.value = 1
+    hasInitialized.value = true
+    
   } catch (error) {
     console.error('搜索素材失败:', error)
     materialItems.value = []
     total.value = 0
+    hasInitialized.value = true
   } finally {
     loading.value = false
   }
@@ -372,28 +594,83 @@ const fetchMaterialItemsWithoutSearch = async () => {
   loading.value = true
   try {
     const { $customFetch } = useNuxtApp()
-    const requestBody = {
+    
+    // 构建请求参数
+    const requestBody: any = {
       currentPage: currentPage.value,
-      pageSize: pageSize.value
-      // 不添加search参数
+      pageSize: pageSize.value,
+      isPublish: true
     }
+    
+    // 不添加搜索关键词，只添加过滤条件
+    const keywords: string[] = []
+    
+    // 添加过滤条件对应的搜索关键词
+    const addKeywordsFromFilter = (filterValues: string[], filterOptions: any[]) => {
+      if (filterValues && filterValues.length > 0) {
+        filterValues.forEach(value => {
+          const option = filterOptions.find(opt => opt.value === value)
+          if (option && option.searchKeyword) {
+            keywords.push(option.searchKeyword)
+          }
+        })
+      }
+    }
+    
+    // 添加各种过滤条件的关键词
+    addKeywordsFromFilter(materialsFilters.value.type, filterOptions.type)
+    addKeywordsFromFilter(materialsFilters.value.format, filterOptions.format)
+    addKeywordsFromFilter(materialsFilters.value.group, filterOptions.group)
+    addKeywordsFromFilter(materialsFilters.value.color, filterOptions.color)
+    
+    if (keywords.length > 0) {
+      requestBody.search = keywords.join(' ')
+    }
+    
+    // 添加排序
+    if (materialsFilters.value.sort) {
+      const sortOption = filterOptions.sort.find(s => s.value === materialsFilters.value.sort)
+      if (sortOption && sortOption.apiValue) {
+        requestBody.sortingFields = `${sortOption.apiValue} DESC`
+      }
+    }
+    
+    console.log('清除搜索后的请求参数:', requestBody)
 
-    const response = await $customFetch('/api/materials/getPage', {
+    const response = await $customFetch('/sticker/page', {
       method: 'POST',
       body: requestBody
-    })
+    }) as any
 
-    if (response && response.data) {
-      materialItems.value = response.data
-      total.value = response.total || 0
-    } else {
-      materialItems.value = []
-      total.value = 0
-    }
+    // 转换数据格式以适配素材显示
+    materialItems.value = (response.list || []).map((item: any): MaterialItem => ({
+      id: item.id,
+      title: item.name || '未命名素材',
+      description: item.description || '高质量设计素材',
+      image: item.url || 'https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Material',
+      format: item.suffix?.toUpperCase() || 'UNKNOWN',
+      group: item.group || '未分组',
+      price: 0, // 素材图暂时免费
+      downloads: Math.floor(Math.random() * 1000) + 100, // 模拟下载数
+      keywords: item.keywords || '',
+      isTexture: item.isTexture || false,
+      isCustom: item.isCustom || false,
+      isInfringement: item.isInfringement || false,
+      createTime: item.createTime,
+      uploader: item.uploader,
+      phash: item.phash,
+      meta: item.meta,
+      isPublic: item.isPublic
+    }))
+
+    total.value = response.total || 0
+    hasInitialized.value = true
+    
   } catch (error) {
     console.error('获取素材列表失败:', error)
     materialItems.value = []
     total.value = 0
+    hasInitialized.value = true
   } finally {
     loading.value = false
   }
@@ -408,23 +685,97 @@ const updateFilters = (filters: any) => {
 }
 
 const removeFilter = (key: string) => {
-  emit('remove-filter', key)
+  if (Array.isArray(materialsFilters.value[key])) {
+    materialsFilters.value[key] = []
+  } else {
+    materialsFilters.value[key] = ''
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
 }
 
 const clearFilters = () => {
-  emit('clear-filters')
+  materialsFilters.value = {
+    sort: 'latest',
+    type: [],
+    format: [],
+    group: [],
+    colors: [],
+    priceRange: { min: 0, max: 1000 }
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
 }
 
 const applyFilters = () => {
-  emit('apply-filters')
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
+  // 关闭过滤菜单
+  showFilterMenu.value = false
 }
 
 const toggleStyle = (style: string) => {
-  emit('toggle-style', style)
+  const index = materialsFilters.value.type.indexOf(style)
+  if (index > -1) {
+    materialsFilters.value.type.splice(index, 1)
+  } else {
+    materialsFilters.value.type.push(style)
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
 }
 
 const toggleColor = (color: string) => {
-  emit('toggle-color', color)
+  const index = materialsFilters.value.colors.indexOf(color)
+  if (index > -1) {
+    materialsFilters.value.colors.splice(index, 1)
+  } else {
+    materialsFilters.value.colors.push(color)
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
+}
+
+const toggleFormat = (format: string) => {
+  const index = materialsFilters.value.format.indexOf(format)
+  if (index > -1) {
+    materialsFilters.value.format.splice(index, 1)
+  } else {
+    materialsFilters.value.format.push(format)
+  }
+  // 如果有搜索结果，重新搜索
+  if (hasSearched.value) {
+    performSearch()
+  }
+}
+
+// 获取颜色值
+const getColorValue = (colorKey: string) => {
+  const colorMap: Record<string, string> = {
+    'red': '#ff4757',
+    'blue': '#3742fa',
+    'green': '#2ed573',
+    'yellow': '#ffa502',
+    'purple': '#9c88ff',
+    'orange': '#ff6348',
+    'pink': '#ff6b9d',
+    'black': '#2c2c2c',
+    'white': '#ffffff',
+    'gray': '#95a5a6',
+    'brown': '#8b4513',
+    'teal': '#17a2b8'
+  }
+  return colorMap[colorKey] || colorKey
 }
 
 // 类型定义
@@ -717,19 +1068,23 @@ const onPreview = (item: MaterialItem) => {
 }
 
 // 监听筛选条件变化
-watch(filters, () => {
+watch(() => materialsFilters.value, () => {
   currentPage.value = 1 // 重置到第一页
-  fetchMaterialItems()
+  fetchMaterialItemsWithoutSearch()
 }, { deep: true })
 
 // 监听分页变化
 watch(currentPage, () => {
-  fetchMaterialItems()
+  if (hasSearched.value) {
+    performSearch()
+  } else {
+    fetchMaterialItemsWithoutSearch()
+  }
 })
 
 // 初始化加载
 onMounted(() => {
-  fetchMaterialItems()
+  fetchMaterialItemsWithoutSearch()
 })
 </script>
 
@@ -796,6 +1151,54 @@ onMounted(() => {
   .search-container {
     flex: 1;
     position: relative;
+  }
+
+  // 搜索建议样式
+  .search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-primary);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 4px;
+  }
+
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-secondary);
+
+    &:hover {
+      background: var(--bg-hover);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .suggestion-icon {
+    color: var(--text-tertiary);
+    margin-right: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .suggestion-text {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .search-box {
