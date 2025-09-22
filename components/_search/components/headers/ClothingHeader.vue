@@ -2,9 +2,9 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-22 03:03:27
- * @FilePath: /yishe-nuxt/pages/_search/components/headers/MaterialsHeader.vue
- * @Description: 素材图Header组件
+ * @LastEditTime: 2025-09-22 03:04:15
+ * @FilePath: /yishe-nuxt/components/_search/components/headers/ClothingHeader.vue
+ * @Description: 服装设计Header组件
 -->
 <script lang="ts" setup>
 import BaseHeader from './BaseHeader.vue'
@@ -37,18 +37,18 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-// 搜索建议已移除
+// Search suggestions removed
 
-// 素材图相关的筛选选项
-const materialsFilterOptions = [
-  { value: 'type', label: '类型', options: ['背景图', '纹理', '图案', '图标', '插画', '照片', '矢量图'] },
-  { value: 'format', label: '格式', options: ['PNG', 'JPG', 'SVG', 'AI', 'PSD', 'EPS'] },
-  { value: 'resolution', label: '分辨率', options: ['高清', '超高清', '4K', '8K', '矢量'] },
-  { value: 'color', label: '颜色', options: ['彩色', '黑白', '单色', '渐变', '透明'] },
-  { value: 'style', label: '风格', options: ['简约', '复古', '现代', '卡通', '写实', '抽象'] }
+// Clothing design related filter options
+const clothingFilterOptions = [
+  { value: 'style', label: 'Style', options: ['Casual', 'Formal', 'Sport', 'Fashion', 'Vintage', 'Minimalist'] },
+  { value: 'gender', label: 'Gender', options: ['Men', 'Women', 'Unisex', 'Kids'] },
+  { value: 'season', label: 'Season', options: ['Spring', 'Summer', 'Autumn', 'Winter', 'All Season'] },
+  { value: 'occasion', label: 'Occasion', options: ['Daily', 'Work', 'Sport', 'Party', 'Formal'] },
+  { value: 'material', label: 'Material', options: ['Cotton', 'Denim', 'Knit', 'Silk', 'Leather', 'Synthetic'] }
 ]
 
-// 颜色选项已从统一配置导入
+// Color options imported from unified config
 
 const handleSearchInput = (value: string) => {
   emit('update:searchQuery', value)
@@ -70,7 +70,7 @@ const toggleMobileSidebar = () => {
   emit('toggle-mobile-sidebar')
 }
 
-// 筛选相关方法
+// Filter related methods
 const updateFilters = (filters: any) => {
   emit('update:filters', filters)
 }
@@ -104,7 +104,7 @@ const toggleColor = (color: string) => {
     @toggle-filter-menu="toggleFilter"
   >
     <template #search-filter>
-      <!-- 筛选按钮 -->
+      <!-- Filter button -->
       <v-btn
         variant="text"
         @click="toggleFilter"
@@ -116,7 +116,7 @@ const toggleColor = (color: string) => {
         <v-icon>{{ showFilterMenu ? 'mdi-tune' : 'mdi-tune-variant' }}</v-icon>
       </v-btn>
       
-      <!-- 搜索框 -->
+      <!-- Search box -->
       <div class="search-container">
         <div class="search-box">
           <v-icon class="search-icon">mdi-magnify</v-icon>
@@ -124,7 +124,7 @@ const toggleColor = (color: string) => {
             :value="searchQuery"
             @input="handleSearchInput(($event.target as HTMLInputElement).value)"
             type="text"
-            placeholder="搜索素材图片..."
+            placeholder="Search fashion designs..."
             class="search-input"
             @keyup.enter="performSearch"
           />
@@ -142,9 +142,9 @@ const toggleColor = (color: string) => {
       </div>
     </template>
     
-    <!-- 筛选内容 -->
+    <!-- Filter content -->
     <template #filter-content>
-      <!-- 筛选标签显示 -->
+      <!-- Filter chips display -->
       <div class="filter-chips" v-if="activeFiltersCount > 0">
         <v-chip
           v-for="(filter, key) in activeFilters"
@@ -159,29 +159,29 @@ const toggleColor = (color: string) => {
       </div>
       
       <div class="filter-row-single">
-        <!-- 排序方式 -->
+        <!-- Sort options -->
         <div class="filter-group">
-          <label class="filter-label">排序</label>
+          <label class="filter-label">Sort</label>
           <v-select
             v-model="filters.sort"
             :items="filterOptions.sort"
             variant="outlined"
             density="compact"
             hide-details
-            placeholder="选择排序方式"
+            placeholder="Select sort option"
             class="filter-select"
             @update:model-value="updateFilters(filters)"
           />
         </div>
         
-        <!-- 价格范围输入框 -->
+        <!-- Price range input -->
         <div class="filter-group filter-group-range">
-          <label class="filter-label">价格范围</label>
+          <label class="filter-label">Price Range</label>
           <div class="price-range-container">
             <v-text-field
               v-model.number="filters.priceMin"
               type="number"
-              placeholder="最低价"
+              placeholder="Min Price"
               class="price-input"
               variant="outlined"
               density="compact"
@@ -192,7 +192,7 @@ const toggleColor = (color: string) => {
             <v-text-field
               v-model.number="filters.priceMax"
               type="number"
-              placeholder="最高价"
+              placeholder="Max Price"
               class="price-input"
               variant="outlined"
               density="compact"
@@ -202,9 +202,9 @@ const toggleColor = (color: string) => {
           </div>
         </div>
         
-        <!-- 风格标签选择 -->
+        <!-- Style chip selection -->
         <div class="filter-group filter-group-chips">
-          <label class="filter-label">风格</label>
+          <label class="filter-label">Style</label>
           <div class="style-chips">
             <v-chip
               v-for="style in filterOptions.style"
@@ -220,9 +220,9 @@ const toggleColor = (color: string) => {
           </div>
         </div>
         
-        <!-- 颜色选择器 -->
+        <!-- Color picker -->
         <div class="filter-group filter-group-colors">
-          <label class="filter-label">颜色</label>
+          <label class="filter-label">Color</label>
           <div class="color-picker">
             <div
               v-for="color in colorOptions"
@@ -236,7 +236,7 @@ const toggleColor = (color: string) => {
           </div>
         </div>
         
-        <!-- 操作按钮 -->
+        <!-- Action buttons -->
         <div class="filter-actions-inline">
           <v-btn
             variant="outlined"
@@ -347,9 +347,9 @@ const toggleColor = (color: string) => {
   }
 }
 
-/* 搜索建议相关样式已移除 */
+/* Search suggestion related styles removed */
 
-/* 筛选相关样式 */
+/* Filter related styles */
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
@@ -469,7 +469,7 @@ const toggleColor = (color: string) => {
   }
 }
 
-/* 移动端适配 */
+/* Mobile adaptation */
 @media (max-width: 768px) {
   .search-box {
     min-width: 200px;

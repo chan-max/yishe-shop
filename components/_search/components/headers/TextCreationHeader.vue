@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-09-20 20:44:50
- * @FilePath: /yishe-nuxt/pages/_search/components/headers/TextCreationHeader.vue
+ * @FilePath: /yishe-nuxt/components/_search/components/headers/TextCreationHeader.vue
  * @Description: 文字创作Header组件 - 简化版
 -->
 <script lang="ts" setup>

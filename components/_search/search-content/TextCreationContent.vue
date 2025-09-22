@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-01-27 11:00:00
- * @FilePath: /yishe-nuxt/pages/_search/search-content/TextCreationContent.vue
+ * @FilePath: /yishe-nuxt/components/_search/search-content/TextCreationContent.vue
  * @Description: 文字创作内容组件 - 简洁卡片式展示
 -->
 <template>

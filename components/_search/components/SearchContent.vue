@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-09-18 21:32:42
- * @FilePath: /yishe-nuxt/pages/_search/components/SearchContent.vue
+ * @FilePath: /yishe-nuxt/components/_search/components/SearchContent.vue
  * @Description: 搜索页面内容组件
 -->
 <script lang="ts" setup>
