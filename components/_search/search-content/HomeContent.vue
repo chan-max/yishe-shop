@@ -14,7 +14,8 @@
                 class="search-input"
                 type="text"
                 placeholder="Search anything..."
-                @input="handleSearchInput"
+                @input="handleSearchInput(($event.target as HTMLInputElement).value)"
+                @keydown.enter="performSearch"
                 @focus="showSuggestions = true"
                 @blur="handleBlur"
               />
@@ -108,9 +109,10 @@ const filteredSuggestions = computed(() => {
 })
 
 // Methods
-const handleSearchInput = () => {
-  emit('update:searchQuery', searchQuery.value)
+const handleSearchInput = (value: string) => {
+  emit('update:searchQuery', value)
   showSuggestions.value = true
+  // 移除实时搜索，只在点击搜索按钮或回车时搜索
 }
 
 const clearSearch = () => {
@@ -192,11 +194,11 @@ const handleBlur = () => {
   align-items: center;
   background: var(--input-bg);
   border: none;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
-  height: 40px;
+  height: 32px;
   
   &:hover {
     background: var(--input-bg-hover);
@@ -232,6 +234,11 @@ const handleBlur = () => {
   font-size: 0.9rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
+  height: 32px; /* 固定高度 */
+  min-height: 32px; /* 最小高度 */
+  max-height: 32px; /* 最大高度 */
+  resize: none; /* 禁止调整大小 */
+  overflow: hidden; /* 隐藏溢出内容 */
   
   &::placeholder {
     color: var(--text-muted);
@@ -373,8 +380,8 @@ const handleBlur = () => {
   }
   
   .search-box {
-    padding: 0.625rem 0.875rem;
-    height: 40px;
+    padding: 0.5rem 0.75rem;
+    height: 32px;
   }
 }
 
@@ -390,8 +397,8 @@ const handleBlur = () => {
   }
   
   .search-box {
-    padding: 0.5rem 0.75rem;
-    height: 36px;
+    padding: 0.375rem 0.5rem;
+    height: 28px;
   }
 }
 </style>

@@ -57,35 +57,78 @@ useHead({
   ]
 })
 
-// Search related state
+// Search related state - 每个页面独立的状态
 const searchQuery = ref('')
-const searchResults = ref<any[]>([])
-const loading = ref(false)
-const hasSearched = ref(false)
-const totalResults = ref(0)
-const currentPage = ref(1)
-const pageSize = ref(20)
-
-// Search suggestions
-const searchSuggestions = ref([
-  'dress', 'jeans', 't-shirt', 'sneakers', 'casual pants', 'shirt', 'jacket', 'skirt', 'shorts', 'trousers'
-])
-
 const showSuggestions = ref(false)
 
-// Filter conditions
-const filters = ref({
-  sort: 'latest',
-  priceMin: null,
-  priceMax: null,
-  styles: [] as string[],
-  colors: [] as string[]
-})
+// 每个页面的独立搜索状态
+const clothingSearchQuery = useLocalStorage('clothing-search-query', '')
+const materialsSearchQuery = useLocalStorage('materials-search-query', '')
+const textCreationSearchQuery = useLocalStorage('text-creation-search-query', '')
+const homeSearchQuery = useLocalStorage('home-search-query', '')
 
 const showMobileSidebar = ref(false)
 const sidebarCollapsed = ref(false)
 
-// Filter menu state - 现在由各个页面组件自己管理
+// Filter state for different content types
+const clothingFilters = useLocalStorage('clothing-filters', {
+  sort: 'latest',
+  type: [],
+  price: [],
+  gender: [],
+  ageGroup: [],
+  style: [],
+  season: [],
+  material: [],
+  color: [],
+  size: [],
+  occasion: [],
+  special: [],
+  priceRange: { min: 0, max: 1000 }
+})
+
+const materialsFilters = useLocalStorage('materials-filters', {
+  sort: 'latest',
+  type: [],
+  resolution: [],
+  format: [],
+  color: [],
+  license: [],
+  category: []
+})
+
+const textCreationFilters = useLocalStorage('text-creation-filters', {
+  sort: 'latest',
+  category: [],
+  style: [],
+  length: [],
+  tone: [],
+  purpose: [],
+  language: []
+})
+
+// Active filters for display
+const activeFilters = computed(() => {
+  const currentFilters = selectedCategory.value === 'clothing' ? clothingFilters.value :
+                        selectedCategory.value === 'materials' ? materialsFilters.value :
+                        selectedCategory.value === 'text-creation' ? textCreationFilters.value : {}
+  
+  const active: any = {}
+  Object.keys(currentFilters).forEach(key => {
+    if (key === 'priceRange') return
+    const value = currentFilters[key]
+    if (Array.isArray(value) && value.length > 0) {
+      active[key] = value
+    } else if (!Array.isArray(value) && value) {
+      active[key] = value
+    }
+  })
+  return active
+})
+
+const activeFiltersCount = computed(() => {
+  return Object.keys(activeFilters.value).length
+})
 
 // Sidebar category selection state
 const selectedCategory = ref('home') // Default to home
@@ -98,9 +141,6 @@ const photoWallData = ref<any[]>([])
 const loadingMore = ref(false)
 
 // Filter options configuration moved to ./search/config/filterOptions.ts
-
-// General filter options (backward compatibility)
-const filterOptions = clothingFilterOptions
 
 
 // Initialize photo wall data
@@ -307,26 +347,52 @@ const currentContentComponent = computed(() => {
 
 // Get content component props
 const getContentProps = () => {
-  // Return simplified props for home page only
-  if (selectedCategory.value === 'home') {
+  // 根据页面类型返回对应的独立搜索状态
+  let pageSearchQuery = searchQuery.value
+  if (selectedCategory.value === 'clothing') {
+    pageSearchQuery = clothingSearchQuery.value
+  } else if (selectedCategory.value === 'materials') {
+    pageSearchQuery = materialsSearchQuery.value
+  } else if (selectedCategory.value === 'text-creation') {
+    pageSearchQuery = textCreationSearchQuery.value
+  } else if (selectedCategory.value === 'home') {
+    pageSearchQuery = homeSearchQuery.value
+  }
+
+  const baseProps = {
+    searchQuery: pageSearchQuery,
+    showSuggestions: showSuggestions.value,
+    showMobileSidebar: showMobileSidebar.value
+  }
+
+  // Add specific props for different content types
+  if (selectedCategory.value === 'clothing') {
     return {
-      searchQuery: searchQuery.value,
-      showSuggestions: showSuggestions.value,
-      showMobileSidebar: showMobileSidebar.value
+      ...baseProps,
+      filters: clothingFilters.value,
+      filterOptions: clothingFilterOptions,
+      activeFilters: activeFilters.value,
+      activeFiltersCount: activeFiltersCount.value
+    }
+  } else if (selectedCategory.value === 'materials') {
+    return {
+      ...baseProps,
+      filters: materialsFilters.value,
+      filterOptions: materialsFilterOptions,
+      activeFilters: activeFilters.value,
+      activeFiltersCount: activeFiltersCount.value
+    }
+  } else if (selectedCategory.value === 'text-creation') {
+    return {
+      ...baseProps,
+      filters: textCreationFilters.value,
+      filterOptions: textCreationFilterOptions,
+      activeFilters: activeFilters.value,
+      activeFiltersCount: activeFiltersCount.value
     }
   }
-  
-  // Return complete props for other pages (clothing, materials, text-creation)
-  return {
-    searchQuery: searchQuery.value,
-    showSuggestions: showSuggestions.value,
-    filteredSuggestions: filteredSuggestions.value,
-    showMobileSidebar: showMobileSidebar.value,
-    filters: filters.value,
-    filterOptions: getFilterOptions(selectedCategory.value),
-    activeFilters: activeFilters.value,
-    activeFiltersCount: activeFiltersCount.value
-  }
+
+  return baseProps
 }
 
 // Initialize search query
@@ -343,146 +409,104 @@ onMounted(() => {
   // 从URL参数获取搜索关键词
   if (route.query.q) {
     searchQuery.value = route.query.q as string
-    // searchStore.setSearchKeyword(searchQuery.value)
-    performSearch()
   }
-  // else if (searchStore.searchKeyword) {
-  //   searchQuery.value = searchStore.searchKeyword
-  //   performSearch()
-  // }
-  
 })
 
 
-// 执行搜索
-const performSearch = async () => {
-  if (!searchQuery.value.trim()) {
-    searchResults.value = []
-    hasSearched.value = false
-    return
+// 处理搜索查询更新 - 更新对应页面的独立状态
+const handleSearchQueryUpdate = (query: string) => {
+  if (selectedCategory.value === 'clothing') {
+    clothingSearchQuery.value = query
+  } else if (selectedCategory.value === 'materials') {
+    materialsSearchQuery.value = query
+  } else if (selectedCategory.value === 'text-creation') {
+    textCreationSearchQuery.value = query
+  } else if (selectedCategory.value === 'home') {
+    homeSearchQuery.value = query
   }
-  
-  loading.value = true
-  hasSearched.value = true
-  
-  try {
-    const { $customFetch } = useNuxtApp()
-    
-    // 构建请求参数
-    const requestBody: any = {
-      currentPage: currentPage.value,
-      pageSize: pageSize.value,
-      isPublish: true, // 传入true，代表是公开的内容
-      keyword: searchQuery.value.trim()
-    }
-    
-    // 添加排序
-    if (filters.value.sort) {
-      requestBody.sort = filters.value.sort
-    }
-    
-    // 添加筛选条件
-    const activeFilters = Object.entries(filters.value)
-      .filter(([key, value]) => value && key !== 'sort')
-      .reduce((acc: any, [key, value]) => {
-        acc[key] = value
-        return acc
-      }, {})
-    
-    if (Object.keys(activeFilters).length > 0) {
-      requestBody.filters = activeFilters
-    }
-    
-    const response = await $customFetch('/product/page', {
-      method: 'POST',
-      body: requestBody
-    }) as any
-    
-    searchResults.value = response.list || []
-    totalResults.value = response.total || 0
-    
-    
-    // 更新URL
-    updateURL()
-    
-  } catch (error) {
-    console.error('搜索失败:', error)
-    searchResults.value = []
-    totalResults.value = 0
-  } finally {
-    loading.value = false
-  }
-}
-
-// 更新URL
-const updateURL = () => {
-  const query: any = {}
-  if (searchQuery.value.trim()) {
-    query.q = searchQuery.value.trim()
-  }
-  
-  // 添加筛选参数
-  Object.entries(filters.value).forEach(([key, value]) => {
-    if (value) {
-      query[key] = value
-    }
-  })
-  
-  router.replace({ path: '/search', query })
-}
-
-// 搜索建议过滤
-const filteredSuggestions = computed(() => {
-  if (!searchQuery.value.trim()) {
-    return searchSuggestions.value.slice(0, 8)
-  }
-  
-  return searchSuggestions.value
-    .filter(suggestion => 
-      suggestion.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-    .slice(0, 8)
-})
-
-// 选择搜索建议
-const selectSuggestion = (suggestion: string) => {
-  searchQuery.value = suggestion
-  showSuggestions.value = false
-  performSearch()
+  // 同时更新全局状态（用于URL同步等）
+  searchQuery.value = query
 }
 
 // 清空搜索
 const clearSearch = () => {
+  // 清空当前页面的搜索状态
+  if (selectedCategory.value === 'clothing') {
+    clothingSearchQuery.value = ''
+  } else if (selectedCategory.value === 'materials') {
+    materialsSearchQuery.value = ''
+  } else if (selectedCategory.value === 'text-creation') {
+    textCreationSearchQuery.value = ''
+  } else if (selectedCategory.value === 'home') {
+    homeSearchQuery.value = ''
+  }
+  // 清空全局状态
   searchQuery.value = ''
-  searchResults.value = []
-  hasSearched.value = false
-  totalResults.value = 0
   showSuggestions.value = false
   router.replace({ path: '/search' })
 }
 
-
-// 监听分页变化
-watch(currentPage, () => {
-  if (hasSearched.value) {
-    performSearch()
+// Handle filter updates
+const handleFilterUpdate = (filters: any) => {
+  if (selectedCategory.value === 'clothing') {
+    clothingFilters.value = filters
+  } else if (selectedCategory.value === 'materials') {
+    materialsFilters.value = filters
+  } else if (selectedCategory.value === 'text-creation') {
+    textCreationFilters.value = filters
   }
-})
-
-// 图片加载状态
-const imageLoaded = ref<Record<string, boolean>>({})
-
-const onImageLoad = (productId: string) => {
-  imageLoaded.value[productId] = true
 }
 
-const onImageError = (productId: string) => {
-  imageLoaded.value[productId] = false
+// Handle filter removal
+const handleFilterRemoval = (key: string) => {
+  if (selectedCategory.value === 'clothing') {
+    clothingFilters.value = { ...clothingFilters.value, [key]: Array.isArray(clothingFilters.value[key]) ? [] : '' }
+  } else if (selectedCategory.value === 'materials') {
+    materialsFilters.value = { ...materialsFilters.value, [key]: Array.isArray(materialsFilters.value[key]) ? [] : '' }
+  } else if (selectedCategory.value === 'text-creation') {
+    textCreationFilters.value = { ...textCreationFilters.value, [key]: Array.isArray(textCreationFilters.value[key]) ? [] : '' }
+  }
 }
 
-// 跳转到商品详情
-const goToProduct = (productId: string) => {
-  navigateTo(`/product/${productId}`)
+// Handle clear all filters
+const handleClearFilters = () => {
+  if (selectedCategory.value === 'clothing') {
+    clothingFilters.value = {
+      sort: 'latest',
+      type: [],
+      price: [],
+      gender: [],
+      ageGroup: [],
+      style: [],
+      season: [],
+      material: [],
+      color: [],
+      size: [],
+      occasion: [],
+      special: [],
+      priceRange: { min: 0, max: 1000 }
+    }
+  } else if (selectedCategory.value === 'materials') {
+    materialsFilters.value = {
+      sort: 'latest',
+      type: [],
+      resolution: [],
+      format: [],
+      color: [],
+      license: [],
+      category: []
+    }
+  } else if (selectedCategory.value === 'text-creation') {
+    textCreationFilters.value = {
+      sort: 'latest',
+      category: [],
+      style: [],
+      length: [],
+      tone: [],
+      purpose: [],
+      language: []
+    }
+  }
 }
 
 // 移动端侧边栏控制
@@ -500,113 +524,6 @@ const handleBlur = () => {
   setTimeout(() => {
     showSuggestions.value = false
   }, 200)
-}
-
-// 切换过滤菜单 - 现在由各个页面组件自己处理
-
-// 清空所有筛选条件
-const clearFilters = () => {
-  filters.value = {
-    sort: 'latest',
-    priceMin: null,
-    priceMax: null,
-    styles: [],
-    colors: []
-  }
-  // 如果有搜索结果，重新搜索
-  if (hasSearched.value) {
-    performSearch()
-  }
-}
-
-// 切换风格选择
-const toggleStyle = (styleValue: string) => {
-  const index = filters.value.styles.indexOf(styleValue)
-  if (index > -1) {
-    filters.value.styles.splice(index, 1)
-  } else {
-    filters.value.styles.push(styleValue)
-  }
-}
-
-// 切换颜色选择
-const toggleColor = (colorValue: string) => {
-  const index = filters.value.colors.indexOf(colorValue)
-  if (index > -1) {
-    filters.value.colors.splice(index, 1)
-  } else {
-    filters.value.colors.push(colorValue)
-  }
-}
-
-// 移除单个筛选条件
-const removeFilter = (filterKey: string) => {
-  if (filterKey === 'sort') {
-    filters.value.sort = 'latest'
-  } else if (filterKey === 'priceMin') {
-    filters.value.priceMin = null
-  } else if (filterKey === 'priceMax') {
-    filters.value.priceMax = null
-  } else if (filterKey === 'styles') {
-    filters.value.styles = []
-  } else if (filterKey === 'colors') {
-    filters.value.colors = []
-  }
-  
-  if (hasSearched.value) {
-    performSearch()
-  }
-}
-
-// 计算活跃的筛选条件
-const activeFilters = computed(() => {
-  const active: any = {}
-  
-  if (filters.value.sort && filters.value.sort !== 'latest') {
-    const sortOption = filterOptions.sort.find(s => s.value === filters.value.sort)
-    if (sortOption) {
-      active.sort = { label: '排序', value: sortOption.text }
-    }
-  }
-  
-  if (filters.value.priceMin || filters.value.priceMax) {
-    const min = filters.value.priceMin || 0
-    const max = filters.value.priceMax || '∞'
-    active.price = { label: '价格', value: `${min}-${max}` }
-  }
-  
-  if (filters.value.styles.length > 0) {
-    const styleTexts = filters.value.styles.map(styleValue => {
-      const styleOption = filterOptions.style.find(s => s.value === styleValue)
-      return styleOption ? styleOption.text : styleValue
-    })
-    active.styles = { label: '风格', value: styleTexts.join(', ') }
-  }
-  
-  if (filters.value.colors.length > 0) {
-    const colorTexts = filters.value.colors.map(colorValue => {
-      const colorOption = colorOptions.find(c => c.value === colorValue)
-      return colorOption ? colorOption.text : colorValue
-    })
-    active.colors = { label: '颜色', value: colorTexts.join(', ') }
-  }
-  
-  return active
-})
-
-// 计算活跃筛选条件数量
-const activeFiltersCount = computed(() => {
-  return Object.keys(activeFilters.value).length
-})
-
-// 应用筛选条件
-const applyFilters = () => {
-  // 如果有搜索结果，重新搜索
-  if (hasSearched.value) {
-    performSearch()
-  }
-  // 关闭过滤菜单
-  showFilterMenu.value = false
 }
 
 </script>
@@ -752,19 +669,14 @@ const applyFilters = () => {
       <component
         :is="currentContentComponent" 
         v-bind="getContentProps()"
-        @update:searchQuery="searchQuery = $event"
-        @perform-search="performSearch"
+        @update:searchQuery="handleSearchQueryUpdate"
         @clear-search="clearSearch"
-        @select-suggestion="selectSuggestion"
         @toggle-mobile-sidebar="showMobileSidebar = !showMobileSidebar"
         @handle-blur="handleBlur"
         @update:showSuggestions="showSuggestions = $event"
-        @update:filters="filters = $event"
-        @remove-filter="removeFilter"
-        @clear-filters="clearFilters"
-        @apply-filters="applyFilters"
-        @toggle-style="toggleStyle"
-        @toggle-color="toggleColor"
+        @update:filters="handleFilterUpdate"
+        @remove-filter="handleFilterRemoval"
+        @clear-filters="handleClearFilters"
       />
     </main>
   </div>

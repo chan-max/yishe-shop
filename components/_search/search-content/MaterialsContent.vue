@@ -34,10 +34,10 @@
               <input
                 :value="searchQuery"
                 @input="handleSearchInput(($event.target as HTMLInputElement).value)"
+                @keydown.enter="performSearch"
                 type="text"
                 placeholder="搜索素材图片..."
                 class="search-input"
-                @keyup.enter="performSearch"
               />
               <v-btn
                 v-if="searchQuery"
@@ -318,12 +318,85 @@ const toggleFilter = () => {
   showFilterMenu.value = !showFilterMenu.value
 }
 
-const performSearch = () => {
-  emit('perform-search')
+const performSearch = async () => {
+  if (!props.searchQuery.trim()) {
+    materialItems.value = []
+    hasSearched.value = false
+    return
+  }
+
+  loading.value = true
+  hasSearched.value = true
+  
+  try {
+    const { $customFetch } = useNuxtApp()
+    const requestBody = {
+      currentPage: 1,
+      pageSize: pageSize.value,
+      search: props.searchQuery.trim()
+    }
+
+    const response = await $customFetch('/api/materials/getPage', {
+      method: 'POST',
+      body: requestBody
+    })
+
+    if (response && response.data) {
+      materialItems.value = response.data
+      total.value = response.total || 0
+      currentPage.value = 1
+    } else {
+      materialItems.value = []
+      total.value = 0
+    }
+  } catch (error) {
+    console.error('搜索素材失败:', error)
+    materialItems.value = []
+    total.value = 0
+  } finally {
+    loading.value = false
+  }
 }
 
 const clearSearch = () => {
-  emit('clear-search')
+  // 清空搜索查询
+  emit('update:searchQuery', '')
+  // 重置搜索状态
+  hasSearched.value = false
+  // 重新获取默认的素材列表（不包含搜索关键词）
+  fetchMaterialItemsWithoutSearch()
+}
+
+// 获取素材列表（不包含搜索关键词）
+const fetchMaterialItemsWithoutSearch = async () => {
+  loading.value = true
+  try {
+    const { $customFetch } = useNuxtApp()
+    const requestBody = {
+      currentPage: currentPage.value,
+      pageSize: pageSize.value
+      // 不添加search参数
+    }
+
+    const response = await $customFetch('/api/materials/getPage', {
+      method: 'POST',
+      body: requestBody
+    })
+
+    if (response && response.data) {
+      materialItems.value = response.data
+      total.value = response.total || 0
+    } else {
+      materialItems.value = []
+      total.value = 0
+    }
+  } catch (error) {
+    console.error('获取素材列表失败:', error)
+    materialItems.value = []
+    total.value = 0
+  } finally {
+    loading.value = false
+  }
 }
 
 const toggleMobileSidebar = () => {
@@ -477,6 +550,7 @@ const pageSize = ref(36)
 const total = ref(0)
 const loading = ref(false)
 const hasInitialized = ref(false)
+const hasSearched = ref(false)
 const error = ref('')
 
 // 素材项目数据
@@ -729,9 +803,9 @@ onMounted(() => {
     align-items: center;
     background: var(--input-bg);
     border: 1px solid var(--border-secondary);
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    min-width: 300px;
+    border-radius: 6px;
+    padding: 0.375rem 0.5rem;
+    min-width: 280px;
 
     &:hover {
       background: var(--input-bg-hover);
@@ -765,6 +839,11 @@ onMounted(() => {
     outline: none;
     color: var(--text-primary);
     font-size: 0.9rem;
+    height: 32px; /* 固定高度 */
+    min-height: 32px; /* 最小高度 */
+    max-height: 32px; /* 最大高度 */
+    resize: none; /* 禁止调整大小 */
+    overflow: hidden; /* 隐藏溢出内容 */
     
     &::placeholder {
       color: var(--text-muted);
@@ -970,7 +1049,7 @@ onMounted(() => {
   .content-body {
     .materials-masonry {
       padding: 24px 1.5rem 0 1.5rem; /* 增加瀑布流内容的上下左右边距 */
-      // 瀑布流项目样式
+      /* 瀑布流项目样式 */
       :deep(.masonry-item) {
         .material-card {
           width: 100%;

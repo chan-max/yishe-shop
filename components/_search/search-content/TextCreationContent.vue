@@ -42,10 +42,10 @@
               <input
                 :value="searchQuery"
                 @input="handleSearchInput(($event.target as HTMLInputElement).value)"
+                @keydown.enter="performSearch"
                 type="text"
                 placeholder="搜索文字创作内容..."
                 class="search-input"
-                @keyup.enter="performSearch"
               />
               <v-btn
                 v-if="searchQuery"
@@ -277,12 +277,85 @@ const toggleFilter = () => {
   showFilterMenu.value = !showFilterMenu.value
 }
 
-const performSearch = () => {
-  emit('perform-search')
+const performSearch = async () => {
+  if (!props.searchQuery.trim()) {
+    textItems.value = []
+    hasSearched.value = false
+    return
+  }
+
+  loading.value = true
+  hasSearched.value = true
+  
+  try {
+    const { $customFetch } = useNuxtApp()
+    const requestBody = {
+      currentPage: 1,
+      pageSize: pageSize.value,
+      search: props.searchQuery.trim()
+    }
+
+    const response = await $customFetch('/api/sticker/getPage', {
+      method: 'POST',
+      body: requestBody
+    })
+
+    if (response && response.data) {
+      textItems.value = response.data
+      total.value = response.total || 0
+      currentPage.value = 1
+    } else {
+      textItems.value = []
+      total.value = 0
+    }
+  } catch (error) {
+    console.error('搜索文字创作内容失败:', error)
+    textItems.value = []
+    total.value = 0
+  } finally {
+    loading.value = false
+  }
 }
 
 const clearSearch = () => {
-  emit('clear-search')
+  // 清空搜索查询
+  emit('update:searchQuery', '')
+  // 重置搜索状态
+  hasSearched.value = false
+  // 重新获取默认的文字创作列表（不包含搜索关键词）
+  fetchTextItemsWithoutSearch()
+}
+
+// 获取文字创作列表（不包含搜索关键词）
+const fetchTextItemsWithoutSearch = async () => {
+  loading.value = true
+  try {
+    const { $customFetch } = useNuxtApp()
+    const requestBody = {
+      currentPage: currentPage.value,
+      pageSize: pageSize.value
+      // 不添加search参数
+    }
+
+    const response = await $customFetch('/api/sticker/getPage', {
+      method: 'POST',
+      body: requestBody
+    })
+
+    if (response && response.data) {
+      textItems.value = response.data
+      total.value = response.total || 0
+    } else {
+      textItems.value = []
+      total.value = 0
+    }
+  } catch (error) {
+    console.error('获取文字创作列表失败:', error)
+    textItems.value = []
+    total.value = 0
+  } finally {
+    loading.value = false
+  }
 }
 
 const toggleMobileSidebar = () => {
@@ -513,9 +586,9 @@ onMounted(() => {
     align-items: center;
     background: var(--input-bg);
     border: 1px solid var(--border-secondary);
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    min-width: 300px;
+    border-radius: 6px;
+    padding: 0.375rem 0.5rem;
+    min-width: 280px;
 
     &:hover {
       background: var(--input-bg-hover);
@@ -549,6 +622,11 @@ onMounted(() => {
     outline: none;
     color: var(--text-primary);
     font-size: 0.9rem;
+    height: 32px; /* 固定高度 */
+    min-height: 32px; /* 最小高度 */
+    max-height: 32px; /* 最大高度 */
+    resize: none; /* 禁止调整大小 */
+    overflow: hidden; /* 隐藏溢出内容 */
     
     &::placeholder {
       color: var(--text-muted);
