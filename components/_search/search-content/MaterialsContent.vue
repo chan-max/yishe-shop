@@ -261,11 +261,13 @@
       </masonry-wall>
       
       <!-- 分页 -->
-      <ContentPagination
-        v-model="currentPage"
-        :total="total"
-        :page-size="pageSize"
-      />
+      <div class="pagination-container">
+        <ContentPagination
+          v-model="currentPage"
+          :total="total"
+          :page-size="pageSize"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -662,10 +664,8 @@ onMounted(() => {
   /* Header Styles */
   .materials-header {
     background: var(--bg-primary);
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 240px;
-    right: 0;
     z-index: 1001;
     box-shadow: 0 2px 8px var(--shadow-primary);
     backdrop-filter: blur(10px);
@@ -677,7 +677,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 1rem;
-    height: 56px;
+    height: 64px; /* 增加头部高度，从 56px 到 64px */
     position: relative;
   }
 
@@ -789,7 +789,7 @@ onMounted(() => {
 
   /* Filter content styles */
   .filter-content {
-    padding: 0.75rem 0.75rem 1.5rem 0.75rem;
+    padding: 0.75rem 1.5rem 1rem 1.5rem; /* 增加左右边距，与瀑布流内容对齐 */
     background: var(--bg-primary);
   }
 
@@ -797,8 +797,8 @@ onMounted(() => {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .filter-chip {
@@ -815,7 +815,7 @@ onMounted(() => {
     flex-wrap: wrap;
     gap: 1.5rem;
     align-items: end;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
   }
 
   .filter-group {
@@ -912,53 +912,54 @@ onMounted(() => {
     }
   }
 
-  /* Content body styles */
-  .content-body {
-    margin-top: 56px; /* 为固定头部留出空间 */
-  }
+  /* Content body styles - 内容自然跟随头部 */
   
   .content-filters {
     margin-bottom: 2rem;
+  }
+  
+  .pagination-container {
+    padding: 2rem 0 3rem 0; /* 增加分页组件的上下间距，底部更多 */
+  }
+  
+  .filter-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+  }
+  
+  .filter-group {
+    min-width: 150px;
     
-    .filter-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: end;
+    .filter-label {
+      display: block;
+      color: #e0e0e0;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
     }
     
-    .filter-group {
-      min-width: 150px;
+    .color-picker {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
       
-      .filter-label {
-        display: block;
-        color: #e0e0e0;
-        font-size: 0.85rem;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-      }
-      
-      .color-picker {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
+      .color-option {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
         
-        .color-option {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          cursor: pointer;
-          border: 2px solid transparent;
-          transition: all 0.3s ease;
-          
-          &:hover {
-            transform: scale(1.1);
-          }
-          
-          &.active {
-            border-color: #ffffff;
-            box-shadow: 0 0 0 2px #3b82f6;
-          }
+        &:hover {
+          transform: scale(1.1);
+        }
+        
+        &.active {
+          border-color: #ffffff;
+          box-shadow: 0 0 0 2px #3b82f6;
         }
       }
     }
@@ -966,6 +967,7 @@ onMounted(() => {
   
   .content-body {
     .materials-masonry {
+      padding: 24px 1.5rem 0 1.5rem; /* 增加瀑布流内容的上下左右边距 */
       // 瀑布流项目样式
       :deep(.masonry-item) {
         .material-card {

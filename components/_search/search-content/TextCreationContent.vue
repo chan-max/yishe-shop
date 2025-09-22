@@ -21,9 +21,137 @@
           <v-icon>mdi-menu</v-icon>
         </v-btn>
         
-        <!-- 标题区域 -->
-        <div class="title-container">
-          <p class="page-subtitle">AI 智能文字生成工具</p>
+        <!-- 搜索和筛选区域 -->
+        <div class="search-filter-container">
+          <!-- Filter button -->
+          <v-btn
+            variant="text"
+            @click="toggleFilter"
+            class="filter-toggle-btn"
+            :class="{ 'active': showFilterMenu }"
+            icon
+            size="small"
+          >
+            <v-icon>{{ showFilterMenu ? 'mdi-tune' : 'mdi-tune-variant' }}</v-icon>
+          </v-btn>
+          
+          <!-- Search box -->
+          <div class="search-container">
+            <div class="search-box">
+              <v-icon class="search-icon">mdi-magnify</v-icon>
+              <input
+                :value="searchQuery"
+                @input="handleSearchInput(($event.target as HTMLInputElement).value)"
+                type="text"
+                placeholder="搜索文字创作内容..."
+                class="search-input"
+                @keyup.enter="performSearch"
+              />
+              <v-btn
+                v-if="searchQuery"
+                variant="text"
+                @click="clearSearch"
+                class="clear-btn"
+                icon
+                size="small"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filter content -->
+      <div v-if="showFilterMenu" class="filter-content">
+        <!-- Filter chips display -->
+        <div class="filter-chips" v-if="activeFiltersCount > 0">
+          <v-chip
+            v-for="(filter, key) in activeFilters"
+            :key="key"
+            size="small"
+            closable
+            @click:close="removeFilter(key)"
+            class="filter-chip"
+          >
+            {{ filter.label }}: {{ filter.value }}
+          </v-chip>
+        </div>
+        
+        <div class="filter-row-single">
+          <!-- Sort options -->
+          <div class="filter-group">
+            <label class="filter-label">Sort</label>
+            <v-select
+              :model-value="props.filters.sort"
+              :items="filterOptions.sort"
+              variant="outlined"
+              density="compact"
+              hide-details
+              placeholder="Select sort option"
+              class="filter-select"
+              @update:model-value="(value) => updateFilters({ ...props.filters, sort: value })"
+            />
+          </div>
+          
+          <!-- Style chip selection -->
+          <div class="filter-group filter-group-chips">
+            <label class="filter-label">Style</label>
+            <div class="style-chips">
+              <v-chip
+                v-for="style in filterOptions.style"
+                :key="style.value"
+                :class="{ 'chip-selected': props.filters.styles?.includes(style.value) }"
+                @click="toggleStyle(style.value)"
+                class="style-chip"
+                size="small"
+                variant="outlined"
+              >
+                {{ style.text }}
+              </v-chip>
+            </div>
+          </div>
+          
+          <!-- Language selection -->
+          <div class="filter-group filter-group-chips">
+            <label class="filter-label">Language</label>
+            <div class="style-chips">
+              <v-chip
+                v-for="lang in filterOptions.language"
+                :key="lang.value"
+                :class="{ 'chip-selected': props.filters.languages?.includes(lang.value) }"
+                @click="toggleLanguage(lang.value)"
+                class="style-chip"
+                size="small"
+                variant="outlined"
+              >
+                {{ lang.text }}
+              </v-chip>
+            </div>
+          </div>
+          
+          <!-- Action buttons -->
+          <div class="filter-actions-inline">
+            <v-btn
+              variant="outlined"
+              @click="clearFilters"
+              class="filter-clear-btn"
+              size="small"
+              icon
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+            <v-btn
+              variant="flat"
+              @click="applyFilters"
+              class="filter-apply-btn"
+              size="small"
+              color="primary"
+              icon
+            >
+              <v-icon>mdi-check</v-icon>
+            </v-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -95,12 +223,13 @@
     </div>
     
       <!-- 分页 -->
-      <ContentPagination
-        v-if="textItems.length > 0"
-        v-model="currentPage"
-        :total="total"
-        :page-size="pageSize"
-      />
+      <div class="pagination-container" v-if="textItems.length > 0">
+        <ContentPagination
+          v-model="currentPage"
+          :total="total"
+          :page-size="pageSize"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -113,17 +242,74 @@ import ContentPagination from '../components/ContentPagination.vue'
 
 // Props for header functionality
 const props = defineProps<{
+  searchQuery: string
+  showFilterMenu: boolean
   showMobileSidebar: boolean
+  filters: any
+  filterOptions: any
+  activeFilters: any
+  activeFiltersCount: number
 }>()
 
 // Emits for header functionality
 const emit = defineEmits<{
+  'update:searchQuery': [value: string]
+  'toggle-filter-menu': []
+  'perform-search': []
+  'clear-search': []
   'toggle-mobile-sidebar': []
+  'update:filters': [filters: any]
+  'remove-filter': [key: string]
+  'clear-filters': []
+  'apply-filters': []
+  'toggle-style': [style: string]
+  'toggle-language': [language: string]
 }>()
 
 // Header methods
+const handleSearchInput = (value: string) => {
+  emit('update:searchQuery', value)
+}
+
+const toggleFilter = () => {
+  console.log('TextCreationContent: toggleFilter called, current showFilterMenu:', props.showFilterMenu)
+  emit('toggle-filter-menu')
+}
+
+const performSearch = () => {
+  emit('perform-search')
+}
+
+const clearSearch = () => {
+  emit('clear-search')
+}
+
 const toggleMobileSidebar = () => {
   emit('toggle-mobile-sidebar')
+}
+
+const updateFilters = (filters: any) => {
+  emit('update:filters', filters)
+}
+
+const removeFilter = (key: string) => {
+  emit('remove-filter', key)
+}
+
+const clearFilters = () => {
+  emit('clear-filters')
+}
+
+const applyFilters = () => {
+  emit('apply-filters')
+}
+
+const toggleStyle = (style: string) => {
+  emit('toggle-style', style)
+}
+
+const toggleLanguage = (language: string) => {
+  emit('toggle-language', language)
 }
 
 // 分页相关状态
@@ -263,10 +449,8 @@ onMounted(() => {
   /* Header Styles */
   .text-creation-header {
     background: var(--bg-primary);
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 240px;
-    right: 0;
     z-index: 1001;
     box-shadow: 0 2px 8px var(--shadow-primary);
     backdrop-filter: blur(10px);
@@ -278,7 +462,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 1rem;
-    height: 56px;
+    height: 64px; /* 增加头部高度，从 56px 到 64px */
     position: relative;
   }
 
@@ -294,28 +478,202 @@ onMounted(() => {
     }
   }
 
-  .title-container {
-    text-align: center;
+  .search-filter-container {
     flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
-  .page-subtitle {
+  .filter-toggle-btn {
+    color: var(--text-secondary) !important;
+    flex-shrink: 0;
+    
+    &.active {
+      color: var(--theme-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+    
+    &:hover {
+      color: var(--theme-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .search-container {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    min-width: 300px;
+
+    &:hover {
+      background: var(--input-bg-hover);
+    }
+
+    &:focus-within {
+      background: var(--input-bg-focus);
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 2px var(--border-hover);
+    }
+  }
+
+  .search-icon {
+    color: var(--text-tertiary);
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    
+    .search-box:hover & {
+      color: var(--text-secondary);
+    }
+    
+    .search-box:focus-within & {
+      color: var(--theme-primary);
+    }
+  }
+
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    
+    &::placeholder {
+      color: var(--text-muted);
+    }
+    
+    &:focus {
+      color: var(--text-primary);
+      
+      &::placeholder {
+        color: var(--text-tertiary);
+      }
+    }
+  }
+
+  .clear-btn {
+    color: var(--text-tertiary) !important;
+    margin-left: 0.5rem;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  /* Filter content styles */
+  .filter-content {
+    padding: 0.75rem 1.5rem 1rem 1.5rem; /* 增加左右边距，与网格内容对齐 */
+    background: var(--bg-primary);
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .filter-chip {
+    background: var(--theme-primary) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background: var(--theme-primary-hover) !important;
+    }
+  }
+
+  .filter-row-single {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: end;
+    padding-bottom: 0.75rem;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 150px;
+  }
+
+  .filter-label {
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin: 0;
-    font-weight: 400;
+    font-weight: 500;
   }
 
-  /* Content body styles */
+  .filter-select {
+    min-width: 150px;
+  }
+
+  .style-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .style-chip {
+    cursor: pointer;
+    
+    &.chip-selected {
+      background: var(--theme-primary) !important;
+      color: var(--text-primary) !important;
+    }
+  }
+
+  .filter-actions-inline {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .filter-clear-btn {
+    color: var(--text-tertiary) !important;
+    
+    &:hover {
+      color: var(--text-primary) !important;
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .filter-apply-btn {
+    background: var(--theme-primary) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background: var(--theme-primary-hover) !important;
+    }
+  }
+
+
+  /* Content body styles - 内容自然跟随头部 */
   .text-creation-body {
-    margin-top: 56px; /* 为固定头部留出空间 */
-    padding: 1rem 0;
+    padding: 1.5rem 0; /* 增加上下边距，让内容更舒适 */
+  }
+  
+  .pagination-container {
+    padding: 2rem 0 3rem 0; /* 增加分页组件的上下间距，底部更多 */
   }
   
   .text-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
+    padding: 0 1.5rem; /* 增加左右边距 */
     margin-bottom: 2rem;
   }
   

@@ -308,8 +308,8 @@ const currentContentComponent = computed(() => {
 
 // Get content component props
 const getContentProps = () => {
-  // Return simplified props for home and text creation pages
-  if (selectedCategory.value === 'home' || selectedCategory.value === 'text-creation') {
+  // Return simplified props for home page only
+  if (selectedCategory.value === 'home') {
     return {
       searchQuery: searchQuery.value,
       showSuggestions: showSuggestions.value,
@@ -317,7 +317,7 @@ const getContentProps = () => {
     }
   }
   
-  // Return complete props for other pages
+  // Return complete props for other pages (clothing, materials, text-creation)
   return {
     searchQuery: searchQuery.value,
     showFilterMenu: showFilterMenu.value,
@@ -506,7 +506,9 @@ const handleBlur = () => {
 
 // 切换过滤菜单
 const toggleFilterMenu = () => {
+  console.log('Search: toggleFilterMenu called, current showFilterMenu:', showFilterMenu.value)
   showFilterMenu.value = !showFilterMenu.value
+  console.log('Search: showFilterMenu after toggle:', showFilterMenu.value)
 }
 
 // 清空所有筛选条件

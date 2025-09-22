@@ -75,14 +75,14 @@
           <div class="filter-group">
             <label class="filter-label">Sort</label>
             <v-select
-              v-model="filters.sort"
+              :model-value="props.filters.sort"
               :items="filterOptions.sort"
               variant="outlined"
               density="compact"
               hide-details
               placeholder="Select sort option"
               class="filter-select"
-              @update:model-value="updateFilters(filters)"
+              @update:model-value="(value) => updateFilters({ ...props.filters, sort: value })"
             />
           </div>
           
@@ -91,25 +91,25 @@
             <label class="filter-label">Price Range</label>
             <div class="price-range-container">
               <v-text-field
-                v-model.number="filters.priceMin"
+                :model-value="props.filters.priceMin"
                 type="number"
                 placeholder="Min Price"
                 class="price-input"
                 variant="outlined"
                 density="compact"
                 hide-details
-                @update:model-value="updateFilters(filters)"
+                @update:model-value="(value) => updateFilters({ ...props.filters, priceMin: value })"
               />
               <span class="price-separator">-</span>
               <v-text-field
-                v-model.number="filters.priceMax"
+                :model-value="props.filters.priceMax"
                 type="number"
                 placeholder="Max Price"
                 class="price-input"
                 variant="outlined"
                 density="compact"
                 hide-details
-                @update:model-value="updateFilters(filters)"
+                @update:model-value="(value) => updateFilters({ ...props.filters, priceMax: value })"
               />
             </div>
           </div>
@@ -121,7 +121,7 @@
               <v-chip
                 v-for="style in filterOptions.style"
                 :key="style.value"
-                :class="{ 'chip-selected': filters.styles.includes(style.value) }"
+                :class="{ 'chip-selected': props.filters.styles?.includes(style.value) }"
                 @click="toggleStyle(style.value)"
                 class="style-chip"
                 size="small"
@@ -139,7 +139,7 @@
               <div
                 v-for="color in colorOptions"
                 :key="color.value"
-                :class="{ 'color-selected': filters.colors.includes(color.value) }"
+                :class="{ 'color-selected': props.filters.colors?.includes(color.value) }"
                 @click="toggleColor(color.value)"
                 class="color-option"
                 :style="{ backgroundColor: color.value }"
@@ -252,11 +252,13 @@
       </masonry-wall>
       
       <!-- Pagination -->
-      <ContentPagination
-        v-model="currentPage"
-        :total="total"
-        :page-size="pageSize"
-      />
+      <div class="pagination-container">
+        <ContentPagination
+          v-model="currentPage"
+          :total="total"
+          :page-size="pageSize"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -391,15 +393,7 @@ const clothingFilters: FilterItem[] = [
   }
 ]
 
-// 筛选状态
-const filters = reactive({
-  clothingType: '',
-  season: '',
-  style: '',
-  price: '',
-  priceMin: null,
-  priceMax: null
-})
+// 筛选状态 - 现在使用从父组件传递的 props.filters
 
 // 分页相关状态
 const currentPage = ref(1)
@@ -423,6 +417,8 @@ const isSmallImage = (itemId: string) => {
   return height && height < 150
 }
 
+// 移除计算逻辑，使用纯 CSS 自适应
+
 // 获取设计项目列表
 const fetchDesignItems = async () => {
   loading.value = true
@@ -438,7 +434,7 @@ const fetchDesignItems = async () => {
     const requestFilters = requestBody.filters || {}
     
     // 服装类型映射
-    if (filters.clothingType) {
+    if (props.filters.clothingType) {
       const typeMapping = {
         'dress': '连衣裙',
         'top': '上衣',
@@ -446,11 +442,11 @@ const fetchDesignItems = async () => {
         'outerwear': '外套',
         'accessories': '配饰'
       }
-      requestFilters.keyword = typeMapping[filters.clothingType] || filters.clothingType
+      requestFilters.keyword = typeMapping[props.filters.clothingType] || props.filters.clothingType
     }
     
     // 季节筛选
-    if (filters.season) {
+    if (props.filters.season) {
       const seasonMapping = {
         'spring': '春季',
         'summer': '夏季',
@@ -458,11 +454,11 @@ const fetchDesignItems = async () => {
         'winter': '冬季'
       }
       if (!requestFilters.keyword) requestFilters.keyword = ''
-      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (seasonMapping[filters.season] || filters.season)
+      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (seasonMapping[props.filters.season] || props.filters.season)
     }
     
     // 风格筛选
-    if (filters.style) {
+    if (props.filters.style) {
       const styleMapping = {
         'casual': '休闲',
         'formal': '正式',
@@ -471,17 +467,17 @@ const fetchDesignItems = async () => {
         'modern': '现代'
       }
       if (!requestFilters.keyword) requestFilters.keyword = ''
-      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (styleMapping[filters.style] || filters.style)
+      requestFilters.keyword += (requestFilters.keyword ? ' ' : '') + (styleMapping[props.filters.style] || props.filters.style)
     }
     
     // 价格范围筛选
-    if (filters.priceMin !== null || filters.priceMax !== null) {
-      if (filters.priceMin !== null && filters.priceMax !== null) {
-        requestFilters.price = `${filters.priceMin}-${filters.priceMax}`
-      } else if (filters.priceMin !== null) {
-        requestFilters.price = `${filters.priceMin}+`
-      } else if (filters.priceMax !== null) {
-        requestFilters.price = `0-${filters.priceMax}`
+    if (props.filters.priceMin !== null || props.filters.priceMax !== null) {
+      if (props.filters.priceMin !== null && props.filters.priceMax !== null) {
+        requestFilters.price = `${props.filters.priceMin}-${props.filters.priceMax}`
+      } else if (props.filters.priceMin !== null) {
+        requestFilters.price = `${props.filters.priceMin}+`
+      } else if (props.filters.priceMax !== null) {
+        requestFilters.price = `0-${props.filters.priceMax}`
       }
     }
     
@@ -554,7 +550,7 @@ const onCardClick = (item: any) => {
 }
 
 // 监听筛选条件变化
-watch(filters, () => {
+watch(() => props.filters, () => {
   currentPage.value = 1 // 重置到第一页
   fetchDesignItems()
 }, { deep: true })
@@ -577,10 +573,8 @@ onMounted(() => {
   /* Header Styles */
   .clothing-header {
     background: var(--bg-primary);
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 240px;
-    right: 0;
     z-index: 1001;
     box-shadow: 0 2px 8px var(--shadow-primary);
     backdrop-filter: blur(10px);
@@ -592,7 +586,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 1rem;
-    height: 56px;
+    height: 64px; /* 增加头部高度，从 56px 到 64px */
     position: relative;
   }
 
@@ -704,7 +698,7 @@ onMounted(() => {
 
   /* Filter content styles */
   .filter-content {
-    padding: 0.75rem 0.75rem 1.5rem 0.75rem;
+    padding: 0.75rem 1.5rem 1rem 1.5rem; /* 增加左右边距，与瀑布流内容对齐 */
     background: var(--bg-primary);
   }
 
@@ -712,8 +706,8 @@ onMounted(() => {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .filter-chip {
@@ -730,7 +724,7 @@ onMounted(() => {
     flex-wrap: wrap;
     gap: 1.5rem;
     align-items: end;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
   }
 
   .filter-group {
@@ -827,17 +821,19 @@ onMounted(() => {
     }
   }
 
-  /* Content body styles */
-  .content-body {
-    margin-top: 56px; /* 为固定头部留出空间 */
-  }
+  /* Content body styles - 内容自然跟随头部 */
   
   .content-filters {
     margin-bottom: 2rem;
   }
   
+  .pagination-container {
+    padding: 2rem 0 3rem 0; /* 增加分页组件的上下间距，底部更多 */
+  }
+  
   .content-body {
     .clothing-masonry {
+      padding: 24px 1.5rem 0 1.5rem; /* 增加瀑布流内容的上下左右边距 */
       // 瀑布流项目样式
       :deep(.masonry-item) {
         .clothing-card {
@@ -1068,22 +1064,7 @@ onMounted(() => {
   }
 
   /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    .clothing-header {
-      left: 200px;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .clothing-header {
-      left: 180px;
-    }
-  }
-
   @media (max-width: 768px) {
-    .clothing-header {
-      left: 0;
-    }
     
     .mobile-menu-btn {
       display: block;
