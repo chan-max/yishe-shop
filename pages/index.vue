@@ -39,21 +39,21 @@ const heroSlides = ref([
     subtitle: 'Share Your Vision',
     description: 'Join thousands of designers sharing their creative work and inspiring others',
     image: 'https://picsum.photos/1200/800?random=1',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    gradient: 'linear-gradient(135deg, #000000 0%, #111111 100%)'
   },
   {
     title: 'Fashion Forward',
     subtitle: 'Trending Styles',
     description: 'Discover the latest fashion trends and innovative design concepts',
     image: 'https://picsum.photos/1200/800?random=2',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+    gradient: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)'
   },
   {
     title: 'Design Community',
     subtitle: 'Connect & Collaborate',
     description: 'Connect with fellow designers and collaborate on amazing projects',
     image: 'https://picsum.photos/1200/800?random=3',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+    gradient: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)'
   }
 ])
 
@@ -63,25 +63,25 @@ const features = ref([
     icon: 'mdi-palette',
     title: 'Design Showcase',
     description: 'Upload and showcase your creative designs to a global audience',
-    color: '#667eea'
+    color: '#ffffff'
   },
   {
     icon: 'mdi-heart',
     title: 'Inspiration Hub',
     description: 'Discover endless inspiration from talented designers worldwide',
-    color: '#f093fb'
+    color: '#f3f4f6'
   },
   {
     icon: 'mdi-account-group',
     title: 'Community',
     description: 'Connect with like-minded designers and build meaningful relationships',
-    color: '#4facfe'
+    color: '#e5e7eb'
   },
   {
     icon: 'mdi-trending-up',
     title: 'Trending',
     description: 'Stay updated with the latest design trends and popular styles',
-    color: '#43e97b'
+    color: '#d1d5db'
   }
 ])
 
@@ -251,31 +251,33 @@ const goToExplore = () => {
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables
+// CSS Variables - Pure Black Theme
 :root {
-  --primary-color: #667eea;
-  --secondary-color: #764ba2;
-  --accent-color: #f093fb;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7fafc;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --primary-color: #ffffff;
+  --secondary-color: #f3f4f6;
+  --accent-color: #e5e7eb;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --border-color: #333333;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
 }
 
-// Dark mode variables
+// Dark mode variables (same as root for consistent pure black theme)
 .dark {
-  --text-primary: #f7fafc;
-  --text-secondary: #e2e8f0;
-  --text-muted: #a0aec0;
-  --bg-primary: #1a202c;
-  --bg-secondary: #2d3748;
-  --border-color: #4a5568;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --border-color: #333333;
 }
 
 // Base styles
@@ -578,9 +580,10 @@ const goToExplore = () => {
 // CTA Section
 .cta-section {
   padding: 6rem 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   color: white;
   text-align: center;
+  border-top: 1px solid var(--border-color);
 }
 
 .cta-content {

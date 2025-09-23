@@ -108,32 +108,41 @@ const closeMobileMenu = () => {
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables
+// CSS Variables - Pure Black Theme
 :root {
-  --primary-color: #667eea;
-  --text-primary: #2d3748;
-  --text-secondary: #4a5568;
-  --bg-primary: #ffffff;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --primary-color: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --border-color: #333333;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 }
 
-// Dark mode variables
+// Dark mode variables (same as root for consistent pure black theme)
 .dark {
-  --text-primary: #f7fafc;
-  --text-secondary: #e2e8f0;
-  --bg-primary: #1a202c;
-  --border-color: #4a5568;
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --border-color: #333333;
 }
 
 .navbar {
-  background: var(--bg-primary);
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-lg);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .container {

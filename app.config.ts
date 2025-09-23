@@ -108,7 +108,7 @@ export default defineAppConfig({
       },
     },
     author: {
-      name: '衣设团队',
+      name: '1s design team',
       links: {
         website: 'https://1s.design',
       },
