@@ -32,59 +32,70 @@ useHead({
 const isLoaded = ref(false)
 const currentSlide = ref(0)
 
-// Hero section data
+// Abstract gradient SVG data (lightweight, OpenAI/Apple-like)
+const abstractImages = [
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g1" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="%23ff6b6b"/><stop offset="50%" stop-color="%234ecdc4" stop-opacity=".8"/><stop offset="100%" stop-color="%230a0a0a" stop-opacity="1"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g1)"/><circle cx="650" cy="120" r="180" fill="%23667eea" opacity=".35"/><circle cx="120" cy="520" r="160" fill="%23f093fb" opacity=".35"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g2" cx="70%" cy="40%" r="80%"><stop offset="0%" stop-color="%234facfe"/><stop offset="60%" stop-color="%2300f2fe" stop-opacity=".9"/><stop offset="100%" stop-color="%230a0a0a"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g2)"/><ellipse cx="180" cy="140" rx="220" ry="160" fill="%23f5576c" opacity=".35"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g3" cx="50%" cy="60%" r="85%"><stop offset="0%" stop-color="%23a78bfa"/><stop offset="55%" stop-color="%23f472b6" stop-opacity=".85"/><stop offset="100%" stop-color="%230a0a0a"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g3)"/><circle cx="120" cy="120" r="90" fill="%234ecdc4" opacity=".4"/><circle cx="700" cy="500" r="140" fill="%23ffdd57" opacity=".25"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><radialGradient id="g4" cx="35%" cy="35%" r="90%"><stop offset="0%" stop-color="%23ff9a9e"/><stop offset="60%" stop-color="%23fad0c4" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g4)"/><circle cx="520" cy="80" r="120" fill="%2348c6ef" opacity=".3"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g5" cx="65%" cy="30%" r="90%"><stop offset="0%" stop-color="%23ffd3a5"/><stop offset="60%" stop-color="%23fd6585" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g5)"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g6" cx="30%" cy="70%" r="85%"><stop offset="0%" stop-color="%2392fe9d"/><stop offset="60%" stop-color="%2300c9ff" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g6)"/></svg>',
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g7" cx="50%" cy="50%" r="90%"><stop offset="0%" stop-color="%23a18cd1"/><stop offset="60%" stop-color="%23fbc2eb" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g7)"/></svg>'
+]
+
+// Hero section with abstract backgrounds and new copy
 const heroSlides = ref([
   {
-    title: 'Creative Design',
-    subtitle: 'Share Your Vision',
-    description: 'Join thousands of designers sharing their creative work and inspiring others',
-    image: 'https://picsum.photos/1200/800?random=1',
-    gradient: 'linear-gradient(135deg, #000000 0%, #111111 100%)'
+    title: 'Share Your Designs',
+    subtitle: 'A community for creators',
+    description: 'A platform to publish, discover, and collaborate on design ideas across every discipline.',
+    image: abstractImages[0],
+    gradient: 'linear-gradient(135deg, #0a0a0a 0%, #111111 100%)'
   },
   {
-    title: 'Fashion Forward',
-    subtitle: 'Trending Styles',
-    description: 'Discover the latest fashion trends and innovative design concepts',
-    image: 'https://picsum.photos/1200/800?random=2',
-    gradient: 'linear-gradient(135deg, #111111 0%, #1a1a1a 100%)'
+    title: 'Free Design Help',
+    subtitle: 'Logos, branding, posters…',
+    description: 'We can help you for free: assets, logos, product and apparel images, brand and copywriting, signage, business cards, postcards, film/music posters, newspaper layout, and more 2D design.',
+    image: abstractImages[1],
+    gradient: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)'
   },
   {
-    title: 'Design Community',
-    subtitle: 'Connect & Collaborate',
-    description: 'Connect with fellow designers and collaborate on amazing projects',
-    image: 'https://picsum.photos/1200/800?random=3',
+    title: 'Create Together',
+    subtitle: 'Inspire and be inspired',
+    description: 'Connect with designers worldwide to co-create and push boundaries of visual design.',
+    image: abstractImages[2],
     gradient: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)'
   }
 ])
 
-// Features data with large left, small right layout
+// Features with copy highlighting free design help and categories
 const features = ref([
   {
     icon: 'mdi-palette',
-    title: 'Design Showcase',
-    description: 'Display your creative work in stunning detail to captivate a global audience.',
-    image: 'https://picsum.photos/600/400?random=4',
+    title: 'Free Design Help',
+    description: 'We help for free: assets, logos, product shots, apparel design, brand & copywriting, signage, business cards, postcards, posters, newspaper layout, and more.',
+    image: abstractImages[3],
     isLarge: true
   },
   {
-    icon: 'mdi-heart',
-    title: 'Inspiration Hub',
-    description: 'Explore a curated collection of innovative designs.',
-    image: 'https://picsum.photos/300/200?random=5',
+    icon: 'mdi-shape',
+    title: 'Logo & Brand',
+    description: 'Brand systems, naming, logo marks, identity kits and style guides.',
+    image: abstractImages[4],
     isLarge: false
   },
   {
-    icon: 'mdi-account-group',
-    title: 'Community',
-    description: 'Connect with like-minded creators and collaborate.',
-    image: 'https://picsum.photos/300/200?random=6',
+    icon: 'mdi-tshirt-crew',
+    title: 'Product & Apparel',
+    description: 'Product images, mockups, garment visuals and creative fashion design.',
+    image: abstractImages[5],
     isLarge: false
   },
   {
-    icon: 'mdi-trending-up',
-    title: 'Trend Pulse',
-    description: 'Stay updated with the latest design trends.',
-    image: 'https://picsum.photos/300/200?random=7',
+    icon: 'mdi-post',
+    title: 'Posters & Layout',
+    description: 'Film/music posters, editorial layouts, brochures and print-ready files.',
+    image: abstractImages[6],
     isLarge: false
   }
 ])
@@ -97,36 +108,36 @@ const stats = ref([
   { number: '3M+', label: 'Monthly Views' }
 ])
 
-// Trending Designs data with varied sizes
+// Trending Designs with abstract imagery
 const trendingDesigns = ref([
   {
     title: 'Bold Minimalism',
-    description: 'Sleek designs with clean lines and elegance',
-    image: 'https://picsum.photos/800/600?random=8',
+    description: 'Sleek compositions, generous whitespace and expressive color.',
+    image: abstractImages[0],
     author: 'Designer A',
     likes: 2450,
     isLarge: true
   },
   {
     title: 'Street Vibes',
-    description: 'Urban-inspired graphics and patterns',
-    image: 'https://picsum.photos/400/300?random=9',
+    description: 'Energetic shapes and kinetic typography inspired by the city.',
+    image: abstractImages[1],
     author: 'Designer B',
     likes: 1789,
     isLarge: false
   },
   {
     title: 'Eco Chic',
-    description: 'Sustainable fashion with a modern twist',
-    image: 'https://picsum.photos/400/300?random=10',
+    description: 'Organic gradients and calm palettes for sustainable brands.',
+    image: abstractImages[2],
     author: 'Designer C',
     likes: 1923,
     isLarge: false
   },
   {
     title: 'Tech Fusion',
-    description: 'Futuristic designs blending tech and style',
-    image: 'https://picsum.photos/400/300?random=11',
+    description: 'Neon textures and soft glows blending future and craft.',
+    image: abstractImages[4],
     author: 'Designer D',
     likes: 2678,
     isLarge: false
