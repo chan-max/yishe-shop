@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-21 19:59:41
+ * @LastEditTime: 2025-09-24 20:14:39
  * @FilePath: /yishe-nuxt/layouts/page.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -159,7 +159,7 @@ watch(() => route.path, () => {
 // Left Sidebar
 .sidebar {
   background: #000000;
-  padding: 1.5rem 0.75rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   min-width: 200px;
@@ -249,16 +249,12 @@ watch(() => route.path, () => {
 }
 
 .logo-image {
-  width: 56px !important;
-  height: 56px !important;
+  width: 36px !important;
+  height: 36px !important;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   transform: scale(1) rotate(0deg) !important;
   animation: none !important;
-  max-width: 56px;
-  max-height: 56px;
-  min-width: 56px;
-  min-height: 56px;
 }
 
 .logo-text {
