@@ -116,142 +116,60 @@ const goToExplore = () => {
 </script>
 
 <template>
-  <div class="homepage" :class="{ 'loaded': isLoaded }">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-slides">
-        <div 
-          v-for="(slide, index) in heroSlides" 
-          :key="index"
-          class="hero-slide"
-          :class="{ 'active': currentSlide === index }"
-          :style="{ backgroundImage: `url(${slide.image})` }"
-        >
-          <div class="hero-overlay" :style="{ background: slide.gradient }"></div>
-          <div class="hero-content">
-            <div class="hero-text">
-              <h1 class="hero-title">{{ slide.title }}</h1>
-              <h2 class="hero-subtitle">{{ slide.subtitle }}</h2>
-              <p class="hero-description">{{ slide.description }}</p>
-              <div class="hero-actions">
-                <v-btn
-                  size="large"
-                  color="white"
-                  variant="flat"
-                  @click="goToSearch"
-                  class="hero-btn primary"
-                >
-                  <v-icon left>mdi-magnify</v-icon>
-                  Explore Designs
-                </v-btn>
-                <v-btn
-                  size="large"
-                  color="white"
-                  variant="outlined"
-                  @click="goToExplore"
-                  class="hero-btn secondary"
-                >
-                  <v-icon left>mdi-tshirt-crew</v-icon>
-                  Fashion Design
-                </v-btn>
-              </div>
+  <div class="openai-style-homepage" :class="{ 'loaded': isLoaded }">
+    <!-- Central Banner -->
+    <section class="central-banner">
+      <div class="banner-background">
+        <div class="gradient-overlay"></div>
+      </div>
+      <div class="banner-content">
+        <h1 class="banner-title">1s Design</h1>
+        <h2 class="banner-subtitle">1s Design is here</h2>
+        <p class="banner-description">Our smartest, fastest, and most useful design platform yet.</p>
+        <div class="banner-actions">
+          <button class="primary-btn">Ask 1s Design</button>
+          <button class="secondary-btn">
+            <v-icon size="16">mdi-arrow-up</v-icon>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Sidebar Content -->
+    <aside class="right-sidebar">
+      <!-- Content Card 1 -->
+      <div class="content-card">
+        <div class="card-background card-bg-1"></div>
+        <div class="card-content">
+          <div class="card-icon">
+            <v-icon color="white" size="20">mdi-palette</v-icon>
+          </div>
+          <div class="card-text">
+            <h3 class="card-title">Introducing Design AI and Creative API updates</h3>
+            <div class="card-meta">
+              <span class="card-category">Product</span>
+              <span class="card-read-time">8 min read</span>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Hero Navigation Dots -->
-      <div class="hero-dots">
-        <button
-          v-for="(slide, index) in heroSlides"
-          :key="index"
-          class="hero-dot"
-          :class="{ 'active': currentSlide === index }"
-          @click="currentSlide = index"
-        ></button>
-      </div>
-    </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div 
-            v-for="(stat, index) in stats" 
-            :key="index"
-            class="stat-item"
-            :style="{ '--delay': `${index * 0.1}s` }"
-          >
-            <div class="stat-number">{{ stat.number }}</div>
-            <div class="stat-label">{{ stat.label }}</div>
+      <!-- Content Card 2 -->
+      <div class="content-card">
+        <div class="card-background card-bg-2"></div>
+        <div class="card-content">
+          <div class="card-text">
+            <h3 class="card-title">Open Models</h3>
+            <div class="card-timestamp">0:40</div>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Why Choose 1s Design?</h2>
-          <p class="section-subtitle">A platform built by designers, for designers</p>
-        </div>
-        
-        <div class="features-grid">
-          <div 
-            v-for="(feature, index) in features" 
-            :key="index"
-            class="feature-card"
-            :style="{ '--delay': `${index * 0.1}s` }"
-          >
-            <div class="feature-icon" :style="{ backgroundColor: feature.color }">
-              <v-icon>{{ feature.icon }}</v-icon>
-            </div>
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-content">
-          <h2 class="cta-title">Ready to Share Your Designs?</h2>
-          <p class="cta-description">
-            Join our community of creative designers and start sharing your amazing work today.
-          </p>
-          <div class="cta-actions">
-            <v-btn
-              size="x-large"
-              color="primary"
-              variant="flat"
-              @click="goToSearch"
-              class="cta-btn"
-            >
-              <v-icon left>mdi-upload</v-icon>
-              Start Sharing
-            </v-btn>
-            <v-btn
-              size="x-large"
-              color="white"
-              variant="outlined"
-              @click="goToExplore"
-              class="cta-btn"
-            >
-              <v-icon left>mdi-eye</v-icon>
-              Browse Designs
-            </v-btn>
-          </div>
-        </div>
-      </div>
-    </section>
+    </aside>
   </div>
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables - Pure Black Theme
+// CSS Variables - OpenAI Style Theme
 :root {
   --primary-color: #ffffff;
   --secondary-color: #f3f4f6;
@@ -263,121 +181,100 @@ const goToExplore = () => {
   --bg-secondary: #111111;
   --bg-tertiary: #1a1a1a;
   --border-color: #333333;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
-}
-
-// Dark mode variables (same as root for consistent pure black theme)
-.dark {
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #000000;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --border-color: #333333;
+  --gradient-1: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+  --gradient-2: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+  --gradient-3: linear-gradient(135deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
 }
 
 // Base styles
-.homepage {
+.openai-style-homepage {
   min-height: 100vh;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
   
   &.loaded {
-    .hero-slide,
-    .stat-item,
-    .feature-card {
+    .banner-content,
+    .content-card {
       opacity: 1;
       transform: translateY(0);
     }
   }
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+
+// Homepage specific styles
+.openai-style-homepage {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
 }
 
-// Hero Section
-.hero-section {
+// Central Banner
+.central-banner {
   position: relative;
-  height: 100vh;
+  flex: 1;
+  max-width: 600px;
+  aspect-ratio: 16/10;
+  border-radius: 16px;
   overflow: hidden;
-}
-
-.hero-slides {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.hero-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transform: scale(1.1);
-  transition: all 1s ease-in-out;
-  
-  &.active {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  height: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-1);
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+.gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(78, 205, 196, 0.3), rgba(69, 183, 209, 0.3));
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
   text-align: center;
-  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.hero-text {
-  max-width: 800px;
-  animation: fadeInUp 1s ease-out;
-}
-
-.hero-title {
+.banner-title {
   font-size: 4rem;
   font-weight: 800;
   color: white;
   margin-bottom: 1rem;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  line-height: 1.1;
+  line-height: 1;
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
   }
 }
 
-.hero-subtitle {
+.banner-subtitle {
   font-size: 2rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   
   @media (max-width: 768px) {
@@ -385,253 +282,168 @@ const goToExplore = () => {
   }
 }
 
-.hero-description {
-  font-size: 1.25rem;
+.banner-description {
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   line-height: 1.6;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.banner-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.primary-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
   
-  @media (max-width: 768px) {
-    font-size: 1rem;
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
   }
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.hero-btn {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  text-transform: none;
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s ease;
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
-  }
-  
-  &.primary {
-    background: white;
-    color: var(--primary-color);
-  }
-  
-  &.secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-  }
-}
-
-.hero-dots {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.5rem;
-  z-index: 3;
-}
-
-.hero-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid white;
-  background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
   
-  &.active {
-    background: white;
-    transform: scale(1.2);
-  }
-  
   &:hover {
-    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
   }
 }
 
-// Stats Section
-.stats-section {
-  padding: 4rem 0;
-  background: var(--bg-secondary);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-}
-
-.stat-item {
-  text-align: center;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: var(--delay);
-}
-
-.stat-number {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-// Features Section
-.features-section {
-  padding: 6rem 0;
-  background: var(--bg-primary);
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.section-title {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
+// Right Sidebar
+.right-sidebar {
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 250px;
+  max-width: 350px;
+  width: 25vw;
+  flex-shrink: 0;
   
-  @media (max-width: 768px) {
-    font-size: 2rem;
+  @media (max-width: 1024px) {
+    display: none;
   }
 }
 
-.section-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.feature-card {
-  background: var(--bg-primary);
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
+.content-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
   transition: all 0.3s ease;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(20px);
   animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: var(--delay);
   
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+  }
+  
+  &:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  
+  &:nth-child(2) {
+    animation-delay: 0.2s;
   }
 }
 
-.feature-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(15px);
+  opacity: 0.8;
+}
+
+.card-bg-1 {
+  background: var(--gradient-2);
+}
+
+.card-bg-2 {
+  background: var(--gradient-3);
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: white;
-  font-size: 2rem;
-  box-shadow: var(--shadow-md);
-}
-
-.feature-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
-.feature-description {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.card-text {
+  flex: 1;
 }
 
-// CTA Section
-.cta-section {
-  padding: 6rem 0;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+.card-title {
   color: white;
-  text-align: center;
-  border-top: 1px solid var(--border-color);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
 }
 
-.cta-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.cta-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-}
-
-.cta-description {
-  font-size: 1.25rem;
-  margin-bottom: 2.5rem;
-  opacity: 0.9;
-  line-height: 1.6;
-}
-
-.cta-actions {
+.card-meta {
   display: flex;
   gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.cta-btn {
-  padding: 1.25rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  text-transform: none;
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
-  }
+.card-category {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.card-timestamp {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 // Animations
@@ -647,43 +459,48 @@ const goToExplore = () => {
 }
 
 // Responsive Design
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
-  
-  .hero-actions,
-  .cta-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .hero-btn,
-  .cta-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1200px) {
+  .right-sidebar {
+    width: 20vw;
+    min-width: 200px;
   }
 }
 
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 1024px) {
+  .openai-style-homepage {
+    flex-direction: column;
   }
   
-  .hero-content {
+  .right-sidebar {
+    display: none;
+  }
+  
+  .central-banner {
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
     padding: 1rem;
   }
   
-  .feature-card {
-    padding: 2rem 1.5rem;
+  .banner-title {
+    font-size: 2.5rem;
+  }
+  
+  .banner-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .banner-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .primary-btn {
+    width: 100%;
   }
 }
 </style>
