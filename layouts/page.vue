@@ -21,19 +21,31 @@
         
         <nav class="index-sidebar-nav">
           <NuxtLink to="/" class="nav-link">
-            <v-icon left size="16">mdi-home</v-icon>
             Home
           </NuxtLink>
+          <NuxtLink to="/products" class="nav-link">
+            Products
+          </NuxtLink>
           <NuxtLink to="/search" class="nav-link">
-            <v-icon left size="16">mdi-magnify</v-icon>
             Search
+            <v-icon right size="16">mdi-arrow-top-right</v-icon>
+          </NuxtLink>
+          <NuxtLink to="/design" class="nav-link">
+            Design Services
+          </NuxtLink>
+          <NuxtLink to="/portfolio" class="nav-link">
+            Portfolio
+          </NuxtLink>
+          <NuxtLink to="/gallery" class="nav-link">
+            Gallery
+          </NuxtLink>
+          <NuxtLink to="/blog" class="nav-link">
+            Blog
           </NuxtLink>
           <NuxtLink to="/about" class="nav-link">
-            <v-icon left size="16">mdi-information</v-icon>
             About
           </NuxtLink>
           <NuxtLink to="/contact" class="nav-link">
-            <v-icon left size="16">mdi-email</v-icon>
             Contact
           </NuxtLink>
         </nav>
@@ -65,19 +77,31 @@
             <!-- Mobile Menu Links -->
             <nav class="mobile-nav-menu">
               <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
-                <v-icon left>mdi-home</v-icon>
                 Home
               </NuxtLink>
+              <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
+                Products
+              </NuxtLink>
               <NuxtLink to="/search" class="mobile-nav-link" @click="closeMobileMenu">
-                <v-icon left>mdi-magnify</v-icon>
                 Search
+                <v-icon right size="16">mdi-arrow-top-right</v-icon>
+              </NuxtLink>
+              <NuxtLink to="/design" class="mobile-nav-link" @click="closeMobileMenu">
+                Design Services
+              </NuxtLink>
+              <NuxtLink to="/portfolio" class="mobile-nav-link" @click="closeMobileMenu">
+                Portfolio
+              </NuxtLink>
+              <NuxtLink to="/gallery" class="mobile-nav-link" @click="closeMobileMenu">
+                Gallery
+              </NuxtLink>
+              <NuxtLink to="/blog" class="mobile-nav-link" @click="closeMobileMenu">
+                Blog
               </NuxtLink>
               <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
-                <v-icon left>mdi-information</v-icon>
                 About
               </NuxtLink>
               <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
-                <v-icon left>mdi-email</v-icon>
                 Contact
               </NuxtLink>
             </nav>
