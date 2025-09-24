@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-24 20:14:39
+ * @LastEditTime: 2025-09-24 21:09:38
  * @FilePath: /yishe-nuxt/layouts/page.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -98,10 +98,10 @@
     
     <!-- Search页面使用原来的布局 -->
     <div v-else>
-      <LayoutPageNavbar />
-      <LayoutPageContent>
-        <slot />
-      </LayoutPageContent>
+    <LayoutPageNavbar />
+    <LayoutPageContent>
+      <slot />
+    </LayoutPageContent>
       <LayoutPageFooter />
     </div>
   </div>
