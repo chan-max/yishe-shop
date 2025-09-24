@@ -39,6 +39,57 @@
         </div>
       </aside>
 
+      <!-- Mobile Menu Button -->
+      <button 
+        class="mobile-menu-btn"
+        @click="toggleMobileMenu"
+        :class="{ 'active': isMobileMenuOpen }"
+      >
+        <v-icon size="20">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+      </button>
+
+      <!-- Mobile Menu Overlay -->
+      <Transition name="mobile-menu">
+        <div v-if="isMobileMenuOpen" class="mobile-menu-overlay" @click="closeMobileMenu">
+          <div class="mobile-menu-content" @click.stop>
+            <!-- Mobile Menu Header -->
+            <div class="mobile-menu-header">
+              <div class="mobile-logo">
+                <v-icon size="24" color="primary">mdi-diamond</v-icon>
+                <span class="mobile-logo-text">1s Design</span>
+              </div>
+              <button @click="closeMobileMenu" class="close-btn">
+                <v-icon>mdi-close</v-icon>
+              </button>
+            </div>
+
+            <!-- Mobile Menu Links -->
+            <nav class="mobile-nav-menu">
+              <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
+                <v-icon left>mdi-home</v-icon>
+                Home
+              </NuxtLink>
+              <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
+                <v-icon left>mdi-tshirt-crew</v-icon>
+                Products
+              </NuxtLink>
+              <NuxtLink to="/search" class="mobile-nav-link" @click="closeMobileMenu">
+                <v-icon left>mdi-magnify</v-icon>
+                Search
+              </NuxtLink>
+              <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
+                <v-icon left>mdi-information</v-icon>
+                About
+              </NuxtLink>
+              <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
+                <v-icon left>mdi-email</v-icon>
+                Contact
+              </NuxtLink>
+            </nav>
+          </div>
+        </div>
+      </Transition>
+
       <!-- Main Content Area -->
       <main class="main-content">
         <slot />
@@ -64,6 +115,23 @@
 <script setup>
 const route = useRoute()
 
+// 移动端菜单状态
+const isMobileMenuOpen = ref(false)
+
+// 移动端菜单控制
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+// 关闭移动端菜单
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
+
+// 监听路由变化，关闭移动端菜单
+watch(() => route.path, () => {
+  isMobileMenuOpen.value = false
+})
 </script>
 
 <style lang="scss" scoped>
@@ -196,6 +264,152 @@ const route = useRoute()
   @media (max-width: 1024px) {
     margin-left: 0;
   }
+}
+
+// Mobile Menu Button
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.98);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+  
+  &.active {
+    background: var(--primary-color);
+    color: var(--bg-primary);
+  }
+  
+  @media (max-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Mobile Menu Overlay
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1rem;
+  
+  @media (max-width: 1024px) {
+    display: flex;
+  }
+}
+
+.mobile-menu-content {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+}
+
+.mobile-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.mobile-nav-menu {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  gap: 0.75rem;
+  
+  &:hover {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &.router-link-active {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+  }
+}
+
+// Mobile Menu Animation
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-enter-from {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 </style>
 
