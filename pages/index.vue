@@ -125,6 +125,7 @@ const goToExplore = () => {
       <div class="banner-content">
         <h1 class="banner-title">1s Design</h1>
         <h2 class="banner-subtitle">1s Design is here</h2>
+        <p class="banner-slogan">Art comes from life and returns to life.</p>
         <p class="banner-description">Our smartest, fastest, and most useful design platform yet.</p>
         <div class="banner-actions">
           <button class="primary-btn">Ask 1s Design</button>
@@ -279,6 +280,21 @@ const goToExplore = () => {
   
   @media (max-width: 768px) {
     font-size: 1.5rem;
+  }
+}
+
+.banner-slogan {
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.5;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
 }
 

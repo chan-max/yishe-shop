@@ -31,13 +31,6 @@
         <span>联系我们</span>
       </NuxtLink>
 
-      <NuxtLink
-        to="/products"
-        class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
-      >
-      
-        <span>精选商品</span>
-      </NuxtLink>
 
       <NuxtLink
         to="/quick-design"

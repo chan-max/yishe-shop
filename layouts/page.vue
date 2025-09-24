@@ -17,10 +17,6 @@
             <v-icon left size="16">mdi-home</v-icon>
             Home
           </NuxtLink>
-          <NuxtLink to="/products" class="nav-link">
-            <v-icon left size="16">mdi-tshirt-crew</v-icon>
-            Products
-          </NuxtLink>
           <NuxtLink to="/search" class="nav-link">
             <v-icon left size="16">mdi-magnify</v-icon>
             Search
@@ -68,10 +64,6 @@
               <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
                 <v-icon left>mdi-home</v-icon>
                 Home
-              </NuxtLink>
-              <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
-                <v-icon left>mdi-tshirt-crew</v-icon>
-                Products
               </NuxtLink>
               <NuxtLink to="/search" class="mobile-nav-link" @click="closeMobileMenu">
                 <v-icon left>mdi-magnify</v-icon>
