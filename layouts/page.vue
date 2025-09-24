@@ -159,13 +159,12 @@ watch(() => route.path, () => {
 // Left Sidebar
 .sidebar {
   background: #000000;
-  border-right: 1px solid #333333;
   padding: 1.5rem 0.75rem;
   display: flex;
   flex-direction: column;
-  min-width: 180px;
-  max-width: 220px;
-  width: 14vw;
+  min-width: 200px;
+  max-width: 240px;
+  width: 16vw;
   flex-shrink: 0;
   position: fixed;
   top: 0;
@@ -201,7 +200,6 @@ watch(() => route.path, () => {
 // Logo Section
 .sidebar-logo {
   padding: 1rem 0.75rem 1.5rem;
-  border-bottom: 1px solid #333333;
   margin-bottom: 1rem;
   position: relative;
   z-index: 1;
@@ -397,7 +395,7 @@ watch(() => route.path, () => {
 // Main Content
 .main-content {
   flex: 1;
-  margin-left: 14vw;
+  margin-left: 16vw;
   min-width: 0;
   padding: 2rem;
   
@@ -410,12 +408,12 @@ watch(() => route.path, () => {
 // Responsive Design
 @media (max-width: 1200px) {
   .sidebar {
-    width: 12vw;
-    min-width: 160px;
+    width: 14vw;
+    min-width: 180px;
   }
   
   .main-content {
-    margin-left: 12vw;
+    margin-left: 14vw;
   }
 }
 
@@ -436,10 +434,10 @@ watch(() => route.path, () => {
 
 // Footer wrapper to avoid overlap with sidebar
 .footer-wrapper {
-  margin-left: 14vw;
+  margin-left: 16vw;
   
   @media (max-width: 1200px) {
-    margin-left: 12vw;
+    margin-left: 14vw;
   }
   
   @media (max-width: 1024px) {
