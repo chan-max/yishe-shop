@@ -12,6 +12,13 @@
     <div v-if="route.path !== '/search'" class="main-layout">
       <!-- Left Sidebar Navigation -->
       <aside class="sidebar">
+        <!-- Logo Section -->
+        <div class="sidebar-logo">
+          <NuxtLink to="/" class="logo-link">
+            <img src="/logo.svg" alt="1s Design" class="logo-image" />
+          </NuxtLink>
+        </div>
+        
         <nav class="sidebar-nav">
           <NuxtLink to="/" class="nav-link">
             <v-icon left size="16">mdi-home</v-icon>
@@ -30,9 +37,6 @@
             Contact
           </NuxtLink>
         </nav>
-        <div class="sidebar-footer">
-          <v-icon color="white" size="16">mdi-diamond</v-icon>
-        </div>
       </aside>
 
       <!-- Mobile Menu Button -->
@@ -51,8 +55,7 @@
             <!-- Mobile Menu Header -->
             <div class="mobile-menu-header">
               <div class="mobile-logo">
-                <v-icon size="24" color="primary">mdi-diamond</v-icon>
-                <span class="mobile-logo-text">1s Design</span>
+                <img src="/logo.svg" alt="1s Design" class="mobile-logo-image" />
               </div>
               <button @click="closeMobileMenu" class="close-btn">
                 <v-icon>mdi-close</v-icon>
@@ -154,61 +157,238 @@ watch(() => route.path, () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 160px;
-  max-width: 200px;
-  width: 12vw;
+  min-width: 180px;
+  max-width: 220px;
+  width: 14vw;
   flex-shrink: 0;
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   z-index: 100;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 添加微妙的渐变背景 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.02) 0%, 
+      transparent 20%, 
+      transparent 80%, 
+      rgba(255, 255, 255, 0.01) 100%
+    );
+    pointer-events: none;
+  }
   
   @media (max-width: 1024px) {
     display: none;
   }
 }
 
+// Logo Section
+.sidebar-logo {
+  padding: 1rem 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  
+  /* 添加hover效果 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(2px);
+    
+    &::before {
+      left: 100%;
+    }
+    
+    .logo-image {
+      transform: scale(1.05) rotate(2deg);
+    }
+    
+    .logo-text {
+      color: white;
+    }
+  }
+}
+
+.logo-image {
+  width: 56px;
+  height: 56px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.logo-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.5px;
+}
+
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-top: 2rem;
+  margin-top: 0;
+  
+  /* 为导航链接添加进入动画 */
+  .nav-link {
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+    
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(4) { animation-delay: 0.4s; }
+    &:nth-child(5) { animation-delay: 0.5s; }
+  }
+}
+
+/* 定义进入动画 */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
   padding: 0.75rem 1rem;
-  border-radius: 6px;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transform: translateX(0);
   
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+  /* 添加渐变背景和阴影 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
   }
   
-  &.router-link-active {
-    background: rgba(255, 255, 255, 0.15);
+  /* 添加左侧指示条 */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 0;
+    background: var(--primary-color);
+    border-radius: 0 2px 2px 0;
+    transform: translateY(-50%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* 图标动画 */
+  .v-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1);
+  }
+  
+  /* Hover 状态 */
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.12));
     color: white;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    &::before {
+      left: 100%;
+    }
+    
+    &::after {
+      height: 60%;
+    }
+    
+    .v-icon {
+      transform: scale(1.1) rotate(5deg);
+      color: var(--primary-color);
+    }
+  }
+  
+  /* Active 状态 */
+  &.router-link-active {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.2));
+    color: white;
+    transform: translateX(6px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    
+    &::before {
+      left: 100%;
+    }
+    
+    &::after {
+      height: 80%;
+      background: var(--primary-color);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+    
+    .v-icon {
+      transform: scale(1.15) rotate(0deg);
+      color: var(--primary-color);
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+    }
+  }
+  
+  /* 点击时的脉冲效果 */
+  &:active {
+    transform: translateX(2px) scale(0.98);
+    transition: all 0.1s ease;
   }
 }
 
-.sidebar-footer {
-  display: flex;
-  justify-content: center;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
-}
 
 // Main Content
 .main-content {
   flex: 1;
-  margin-left: 12vw;
+  margin-left: 14vw;
   min-width: 0;
   padding: 2rem;
   
@@ -221,12 +401,12 @@ watch(() => route.path, () => {
 // Responsive Design
 @media (max-width: 1200px) {
   .sidebar {
-    width: 10vw;
-    min-width: 140px;
+    width: 12vw;
+    min-width: 160px;
   }
   
   .main-content {
-    margin-left: 10vw;
+    margin-left: 12vw;
   }
 }
 
@@ -247,10 +427,10 @@ watch(() => route.path, () => {
 
 // Footer wrapper to avoid overlap with sidebar
 .footer-wrapper {
-  margin-left: 12vw;
+  margin-left: 14vw;
   
   @media (max-width: 1200px) {
-    margin-left: 10vw;
+    margin-left: 12vw;
   }
   
   @media (max-width: 1024px) {
@@ -338,6 +518,13 @@ watch(() => route.path, () => {
   gap: 0.75rem;
 }
 
+.mobile-logo-image {
+  width: 52px;
+  height: 52px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
 .mobile-logo-text {
   font-size: 1.25rem;
   font-weight: 700;
@@ -364,6 +551,29 @@ watch(() => route.path, () => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  
+  /* 为移动端导航链接添加进入动画 */
+  .mobile-nav-link {
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+    
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.15s; }
+    &:nth-child(3) { animation-delay: 0.2s; }
+    &:nth-child(4) { animation-delay: 0.25s; }
+    &:nth-child(5) { animation-delay: 0.3s; }
+  }
+}
+
+/* 定义移动端进入动画 */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobile-nav-link {
@@ -372,19 +582,95 @@ watch(() => route.path, () => {
   padding: 1rem;
   color: var(--text-secondary);
   text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transform: translateX(0);
   
-  &:hover {
-    color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.1);
+  /* 添加滑动背景效果 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
   }
   
+  /* 添加左侧指示条 */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 4px;
+    height: 0;
+    background: var(--primary-color);
+    border-radius: 0 3px 3px 0;
+    transform: translateY(-50%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* 图标动画 */
+  .v-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1);
+  }
+  
+  /* Hover 状态 */
+  &:hover {
+    color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.12));
+    transform: translateX(6px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    
+    &::before {
+      left: 100%;
+    }
+    
+    &::after {
+      height: 70%;
+    }
+    
+    .v-icon {
+      transform: scale(1.1) rotate(5deg);
+      color: var(--primary-color);
+    }
+  }
+  
+  /* Active 状态 */
   &.router-link-active {
     color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.2));
     font-weight: 600;
+    transform: translateX(8px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    
+    &::before {
+      left: 100%;
+    }
+    
+    &::after {
+      height: 90%;
+      background: var(--primary-color);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+    
+    .v-icon {
+      transform: scale(1.2) rotate(0deg);
+      color: var(--primary-color);
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+    }
+  }
+  
+  /* 点击时的脉冲效果 */
+  &:active {
+    transform: translateX(4px) scale(0.98);
+    transition: all 0.1s ease;
   }
 }
 
