@@ -19,7 +19,7 @@
           </NuxtLink>
         </div>
         
-        <nav class="sidebar-nav">
+        <nav class="index-sidebar-nav">
           <NuxtLink to="/" class="nav-link">
             <v-icon left size="16">mdi-home</v-icon>
             Home
@@ -142,6 +142,13 @@ watch(() => route.path, () => {
   --border-color: #333333;
 }
 
+// 确保侧边栏立即稳定
+.sidebar {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 // Main Layout
 .main-layout {
   display: flex;
@@ -151,12 +158,11 @@ watch(() => route.path, () => {
 
 // Left Sidebar
 .sidebar {
-  background: var(--bg-primary);
-  border-right: 1px solid var(--border-color);
+  background: #000000;
+  border-right: 1px solid #333333;
   padding: 1.5rem 0.75rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-width: 180px;
   max-width: 220px;
   width: 14vw;
@@ -167,7 +173,8 @@ watch(() => route.path, () => {
   height: 100vh;
   z-index: 100;
   backdrop-filter: blur(10px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: none;
+  will-change: auto;
   
   /* 添加微妙的渐变背景 */
   &::before {
@@ -194,8 +201,11 @@ watch(() => route.path, () => {
 // Logo Section
 .sidebar-logo {
   padding: 1rem 0.75rem 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #333333;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  contain: layout;
 }
 
 .logo-link {
@@ -204,7 +214,7 @@ watch(() => route.path, () => {
   justify-content: flex-start;
   text-decoration: none;
   color: var(--primary-color);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
   padding: 0.5rem;
   border-radius: 8px;
   position: relative;
@@ -231,7 +241,7 @@ watch(() => route.path, () => {
     }
     
     .logo-image {
-      transform: scale(1.05) rotate(2deg);
+      transform: rotate(2deg);
     }
     
     .logo-text {
@@ -241,10 +251,16 @@ watch(() => route.path, () => {
 }
 
 .logo-image {
-  width: 56px;
-  height: 56px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 56px !important;
+  height: 56px !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transform: scale(1) rotate(0deg) !important;
+  animation: none !important;
+  max-width: 56px;
+  max-height: 56px;
+  min-width: 56px;
+  min-height: 56px;
 }
 
 .logo-text {
@@ -255,42 +271,33 @@ watch(() => route.path, () => {
   letter-spacing: 0.5px;
 }
 
-.sidebar-nav {
+.index-sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 0;
+  position: relative;
+  z-index: 1;
   
-  /* 为导航链接添加进入动画 */
-  .nav-link {
-    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
-    
-    &:nth-child(1) { animation-delay: 0.1s; }
-    &:nth-child(2) { animation-delay: 0.2s; }
-    &:nth-child(3) { animation-delay: 0.3s; }
-    &:nth-child(4) { animation-delay: 0.4s; }
-    &:nth-child(5) { animation-delay: 0.5s; }
-  }
+  /* 导航链接样式 - 移除动画确保位置稳定 */
 }
 
 /* 定义进入动画 */
-@keyframes slideInLeft {
-  from {
+@keyframes fadeIn {
+  0% {
     opacity: 0;
-    transform: translateX(-30px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateX(0);
   }
 }
 
 .nav-link {
-  color: var(--text-secondary);
+  color: #d1d5db;
   text-decoration: none;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -298,6 +305,8 @@ watch(() => route.path, () => {
   position: relative;
   overflow: hidden;
   transform: translateX(0);
+  will-change: auto;
+  contain: layout;
   
   /* 添加渐变背景和阴影 */
   &::before {
