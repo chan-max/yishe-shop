@@ -82,21 +82,40 @@ const features = ref([
     title: 'Logo & Brand',
     description: 'Brand systems, naming, logo marks, identity kits and style guides.',
     image: abstractImages[4],
-    isLarge: false
+    isLarge: false,
+    orientation: 'portrait'
   },
   {
     icon: 'mdi-tshirt-crew',
     title: 'Product & Apparel',
     description: 'Product images, mockups, garment visuals and creative fashion design.',
     image: abstractImages[5],
-    isLarge: false
+    isLarge: false,
+    orientation: 'portraitTall'
   },
   {
     icon: 'mdi-post',
     title: 'Posters & Layout',
     description: 'Film/music posters, editorial layouts, brochures and print-ready files.',
     image: abstractImages[6],
-    isLarge: false
+    isLarge: false,
+    orientation: 'portrait'
+  },
+  {
+    icon: 'mdi-package-variant',
+    title: 'Packaging & Labels',
+    description: 'Bottle wraps, box dielines and shelf-ready label systems.',
+    image: abstractImages[2],
+    isLarge: false,
+    orientation: 'portraitTall'
+  },
+  {
+    icon: 'mdi-instagram',
+    title: 'Social Media Graphics',
+    description: 'Reels covers, story series and vertical campaign templates.',
+    image: abstractImages[5],
+    isLarge: false,
+    orientation: 'portrait'
   }
 ])
 
@@ -124,7 +143,8 @@ const trendingDesigns = ref([
     image: abstractImages[1],
     author: 'Designer B',
     likes: 1789,
-    isLarge: false
+    isLarge: false,
+    orientation: 'portrait'
   },
   {
     title: 'Eco Chic',
@@ -132,7 +152,8 @@ const trendingDesigns = ref([
     image: abstractImages[2],
     author: 'Designer C',
     likes: 1923,
-    isLarge: false
+    isLarge: false,
+    orientation: 'portraitTall'
   },
   {
     title: 'Tech Fusion',
@@ -168,17 +189,21 @@ const testimonials = ref([
 
 // Design services catalog (each with abstract image and title/description)
 const designServices = ref([
-  { key: 'assets', title: 'Asset Graphics', description: 'High‑quality visual assets and reusable component packs.', image: abstractImages[0] },
-  { key: 'logo', title: 'Logo Design', description: 'Wordmarks, symbols, marks and multi‑size exports.', image: abstractImages[1] },
+  { key: 'assets', title: 'Asset Graphics', description: 'High‑quality visual assets and reusable component packs.', image: abstractImages[0], orientation: 'portrait' },
+  { key: 'logo', title: 'Logo Design', description: 'Wordmarks, symbols, marks and multi‑size exports.', image: abstractImages[1], orientation: 'portrait' },
   { key: 'product', title: 'Product Imagery', description: 'Creative visuals for lifestyle goods and e‑commerce.', image: abstractImages[2] },
-  { key: 'apparel', title: 'Apparel & Garment', description: 'Garment sketches, fabric matching and fashion visuals.', image: abstractImages[3] },
+  { key: 'apparel', title: 'Apparel & Garment', description: 'Garment sketches, fabric matching and fashion visuals.', image: abstractImages[3], orientation: 'portrait' },
   { key: 'brand', title: 'Brand & Copywriting', description: 'Naming, slogans, tone, guidelines and brand decks.', image: abstractImages[4] },
-  { key: 'signage', title: 'Signage & Wayfinding', description: 'Storefront signage, wayfinding and outdoor specs.', image: abstractImages[5] },
-  { key: 'card', title: 'Business Cards', description: 'Multiple layouts plus print craft recommendations.', image: abstractImages[6] },
+  { key: 'signage', title: 'Signage & Wayfinding', description: 'Storefront signage, wayfinding and outdoor specs.', image: abstractImages[5], orientation: 'portrait' },
+  { key: 'card', title: 'Business Cards', description: 'Multiple layouts plus print craft recommendations.', image: abstractImages[6], orientation: 'portrait' },
   { key: 'postcard', title: 'Postcards & Greeting', description: 'Illustrated themes for holidays and keepsakes.', image: abstractImages[1] },
-  { key: 'poster', title: 'Film/Music Posters', description: 'From cinematic grain to modern art poster styles.', image: abstractImages[2] },
-  { key: 'newspaper', title: 'Editorial Typography', description: 'Grids, headline systems and long‑form layouts.', image: abstractImages[3] },
+  { key: 'poster', title: 'Film/Music Posters', description: 'From cinematic grain to modern art poster styles.', image: abstractImages[2], orientation: 'portraitTall' },
+  { key: 'newspaper', title: 'Editorial Typography', description: 'Grids, headline systems and long‑form layouts.', image: abstractImages[3], orientation: 'portrait' },
   { key: 'graphic', title: '2D Graphic Design', description: 'Icons, illustrations, brochures, roll‑ups and more.', image: abstractImages[4] },
+  { key: 'cover', title: 'Book Covers', description: 'Expressive single‑image layouts and spine systems.', image: abstractImages[5], orientation: 'portrait' },
+  { key: 'magazine', title: 'Magazine Features', description: 'Vertical art direction with editorial typography.', image: abstractImages[6], orientation: 'portraitTall' },
+  { key: 'poster-vertical', title: 'Vertical Posters', description: 'Tall poster series for film, music and events.', image: abstractImages[0], orientation: 'portraitTall' },
+  { key: 'billboard', title: 'Billboard Mockups', description: 'Street verticals and OOH compositions.', image: abstractImages[2], orientation: 'portrait' },
 ])
 
 // Initialize animations
@@ -253,11 +278,46 @@ const goToExplore = () => {
               <v-icon :color="features[0].color" size="48" class="feature-icon">{{ features[0].icon }}</v-icon>
               <h3 class="feature-title">{{ features[0].title }}</h3>
               <p class="feature-description">{{ features[0].description }}</p>
+              <div class="feature-meta">
+                <div class="feature-tags">
+                  <span class="tag">Logos</span>
+                  <span class="tag">Branding</span>
+                  <span class="tag">Posters</span>
+                  <span class="tag">Editorial</span>
+                </div>
+                <div class="feature-actions">
+                  <button class="chip-btn" @click="goToSearch">
+                    <v-icon size="16">mdi-lightning-bolt</v-icon>
+                    Get Free Help
+                  </button>
+                  <NuxtLink to="/search?category=graphic" class="text-link">Explore categories</NuxtLink>
+                </div>
+              </div>
         </div>
+            <div class="feature-gallery">
+              <img :src="abstractImages[1]" alt="Gallery 1" class="gallery-thumb tall2">
+              <img :src="abstractImages[2]" alt="Gallery 2" class="gallery-thumb">
+              <img :src="abstractImages[4]" alt="Gallery 3" class="gallery-thumb">
+              <img :src="abstractImages[3]" alt="Gallery 4" class="gallery-thumb tall">
+              <img :src="abstractImages[6]" alt="Gallery 5" class="gallery-thumb">
+              <img :src="abstractImages[5]" alt="Gallery 6" class="gallery-thumb">
+              <img :src="abstractImages[0]" alt="Gallery 7" class="gallery-thumb tall">
+              <img :src="abstractImages[2]" alt="Gallery 8" class="gallery-thumb">
+              <img :src="abstractImages[4]" alt="Gallery 9" class="gallery-thumb">
+              <img :src="abstractImages[3]" alt="Gallery 10" class="gallery-thumb tall2">
+              <img :src="abstractImages[6]" alt="Gallery 11" class="gallery-thumb">
+              <img :src="abstractImages[5]" alt="Gallery 12" class="gallery-thumb">
+              <img :src="abstractImages[1]" alt="Gallery 13" class="gallery-thumb tall">
+              <img :src="abstractImages[0]" alt="Gallery 14" class="gallery-thumb">
+              <img :src="abstractImages[2]" alt="Gallery 15" class="gallery-thumb tall2">
+              <img :src="abstractImages[4]" alt="Gallery 16" class="gallery-thumb">
+              <img :src="abstractImages[6]" alt="Gallery 17" class="gallery-thumb tall2">
+              <img :src="abstractImages[5]" alt="Gallery 18" class="gallery-thumb">
+            </div>
       </div>
         </div>
         <div class="features-small">
-          <div v-for="(feature, index) in features.slice(1)" :key="index" class="feature-item small">
+          <div v-for="(feature, index) in features.slice(1)" :key="`${feature.title}-${index}`" class="feature-item small" :class="{ 'portrait': feature.orientation === 'portrait', 'portraitTall': feature.orientation === 'portraitTall' }">
             <img :src="feature.image" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon :color="feature.color" size="32" class="feature-icon">{{ feature.icon }}</v-icon>
@@ -297,7 +357,7 @@ const goToExplore = () => {
           </div>
         </div>
         <div class="trending-small">
-          <div v-for="(design, index) in trendingDesigns.slice(1)" :key="index" class="trending-item small">
+          <div v-for="(design, index) in trendingDesigns.slice(1)" :key="index" class="trending-item small" :class="{ 'portrait': design.orientation === 'portrait', 'portraitTall': design.orientation === 'portraitTall' }">
             <img :src="design.image" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
               <h3 class="trending-title">{{ design.title }}</h3>
@@ -337,6 +397,7 @@ const goToExplore = () => {
           v-for="(service, index) in designServices" 
           :key="service.key" 
           class="service-card"
+          :class="{ 'portrait': service.orientation === 'portrait', 'portraitTall': service.orientation === 'portraitTall' }"
           :style="{ '--delay': `${index * 0.05}s` }"
         >
           <div class="service-media">
@@ -584,14 +645,97 @@ const goToExplore = () => {
     
     .feature-image {
       width: 100%;
-      height: 400px;
+      height: 560px;
       object-fit: cover;
     }
     
     .feature-content {
-      padding: 2rem;
+      padding: 1.25rem 1.5rem 1rem;
     }
+    .feature-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 140px;
+      gap: 0.75rem;
+      padding: 0 1.5rem 1.25rem;
+    }
+
+    .gallery-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      transition: transform 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    .gallery-thumb.tall { grid-row: span 2; }
+    .gallery-thumb.tall2 { grid-row: span 3; }
     
+    .feature-meta {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      background: var(--bg-primary);
+    }
+
+    .feature-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-1px);
+      }
+    }
+
+    .text-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
     .feature-title {
       font-size: 2rem;
       font-weight: 700;
@@ -618,11 +762,11 @@ const goToExplore = () => {
       transform: translateY(-3px);
     }
     
-    .feature-image {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
+      .feature-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
     
     .feature-content {
       padding: 1rem;
@@ -636,6 +780,13 @@ const goToExplore = () => {
     .feature-description {
       font-size: 0.9rem;
     }
+
+      &.portrait .feature-image {
+        height: 320px;
+      }
+      &.portraitTall .feature-image {
+        height: 420px;
+      }
   }
 }
 
@@ -731,19 +882,26 @@ const goToExplore = () => {
       transform: scale(1.02);
     }
     
-    .trending-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
+      .trending-image {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+      }
     
     .trending-title {
       font-size: 1.1rem;
     }
     
     .trending-description {
-      font-size: 0.85rem;
+        font-size: 0.85rem;
     }
+
+      &.portrait .trending-image {
+        height: 360px;
+      }
+      &.portraitTall .trending-image {
+        height: 460px;
+      }
   }
 }
 
@@ -830,12 +988,38 @@ const goToExplore = () => {
 .service-media {
   height: 160px;
   background: var(--bg-primary);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
 }
 
 .service-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+// Portrait variant for richer vertical compositions
+.service-card.portrait {
+  grid-row: span 2;
+}
+
+.service-card.portrait .service-media {
+  height: 420px;
+}
+
+.service-card.portrait .service-content {
+  padding-top: 1.25rem;
+}
+
+// Extra-tall portrait variant
+.service-card.portraitTall {
+  grid-row: span 3;
+}
+
+.service-card.portraitTall .service-media {
+  height: 560px;
 }
 
 .service-content {
