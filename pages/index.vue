@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-25 22:36:14
+ * @LastEditTime: 2025-09-26 07:03:52
  * @FilePath: /yishe-nuxt/pages/index.vue
  * @Description: 1s Design - Creative Design Sharing Platform Homepage with Asymmetric Large-Small Layout
 -->

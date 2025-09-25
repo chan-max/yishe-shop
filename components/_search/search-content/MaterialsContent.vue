@@ -533,9 +533,6 @@ const performSearch = async () => {
     // 添加排序
     if (materialsFilters.value.sort) {
       const sortOption = filterOptions.sort.find(s => s.value === materialsFilters.value.sort)
-      if (sortOption && sortOption.apiValue) {
-        requestBody.sortingFields = `${sortOption.apiValue} DESC`
-      }
     }
     
     console.log('搜索请求参数:', requestBody)
@@ -630,9 +627,6 @@ const fetchMaterialItemsWithoutSearch = async () => {
     // 添加排序
     if (materialsFilters.value.sort) {
       const sortOption = filterOptions.sort.find(s => s.value === materialsFilters.value.sort)
-      if (sortOption && sortOption.apiValue) {
-        requestBody.sortingFields = `${sortOption.apiValue} DESC`
-      }
     }
     
     console.log('清除搜索后的请求参数:', requestBody)
@@ -820,7 +814,6 @@ interface RequestBody {
   keyword?: string
   suffix?: string
   group?: string
-  sortingFields?: string
 }
 
 // 筛选配置
@@ -981,9 +974,6 @@ const fetchMaterialItems = async () => {
         requestBody.keyword = colorKeywords.join(' ')
       }
     }
-    
-    // 添加排序 - 默认按创建时间降序
-    requestBody.sortingFields = 'createTime DESC'
     
     const response = await $customFetch("/sticker/page", {
       method: "POST",
