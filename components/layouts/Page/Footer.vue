@@ -166,6 +166,11 @@ const socialLinks = [
   grid-template-columns: 1fr 2fr;
   gap: 4rem;
   
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -175,6 +180,10 @@ const socialLinks = [
 
 .footer-brand {
   max-width: 400px;
+  
+  @media (max-width: 1024px) {
+    max-width: 100%;
+  }
 }
 
 .footer-logo {
@@ -236,18 +245,32 @@ const socialLinks = [
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
   
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+  
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
   }
 }
 
 .footer-nav-section {
   min-width: 0;
+  
+  @media (max-width: 768px) {
+    min-width: 0;
+  }
+  
+  @media (max-width: 480px) {
+    min-width: 0;
+  }
 }
 
 .footer-nav-title {
@@ -255,6 +278,16 @@ const socialLinks = [
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 1rem;
+  
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .footer-nav-list {
@@ -270,6 +303,16 @@ const socialLinks = [
   font-size: 0.9rem;
   padding: 0.5rem 0;
   transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    padding: 0.35rem 0;
+  }
   
   &:hover {
     color: var(--primary-color);
