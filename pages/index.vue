@@ -419,7 +419,6 @@ const goToExplore = () => {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
-  max-width: 1200px;
   margin: 0 auto;
   align-items: center;
 }
