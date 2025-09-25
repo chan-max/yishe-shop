@@ -58,9 +58,9 @@ const goToExplore = () => {
         </div>
         <div class="banner-content">
           <h1 class="banner-title">1s Design</h1>
-          <h2 class="banner-subtitle">1s Design is here</h2>
-          <p class="banner-slogan">Art comes from life and returns to life.</p>
-          <p class="banner-description">Our smartest, fastest, and most useful design platform yet.</p>
+          <h2 class="banner-subtitle">World Famous Art Collection</h2>
+          <p class="banner-slogan">Art comes from life and returns to life</p>
+          <p class="banner-description">Curated collection of world-famous artworks, providing free high-quality design resources for your creative projects</p>
           <div class="banner-actions">
             <button class="primary-btn" @click="goToSearch">Ask 1s Design</button>
             <button class="secondary-btn">
@@ -77,9 +77,9 @@ const goToExplore = () => {
       <div class="hero-slide" :class="{ active: currentSlide === 0 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g1%22 cx=%2230%25%22 cy=%2230%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%23ff6b6b%22/><stop offset=%2250%25%22 stop-color=%22%234ecdc4%22 stop-opacity=%22.8%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22 stop-opacity=%221%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g1)%22/></svg>');"></div>
           <div class="hero-content">
-          <h1 class="hero-title">Share Your Designs</h1>
-          <h2 class="hero-subtitle">A community for creators</h2>
-          <p class="hero-description">A platform to publish, discover, and collaborate on design ideas across every discipline.</p>
+          <h1 class="hero-title">World Famous Art Assets</h1>
+          <h2 class="hero-subtitle">Free HD Art Resources</h2>
+          <p class="hero-description">Curated selection of world-famous masterpieces, providing free downloadable HD assets for your creative design projects</p>
               <div class="hero-actions">
             <button class="primary-btn" @click="goToExplore">Explore Designs</button>
             <button class="secondary-btn" @click="goToSearch">Search Now</button>
@@ -90,9 +90,9 @@ const goToExplore = () => {
       <div class="hero-slide" :class="{ active: currentSlide === 1 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g2%22 cx=%2270%25%22 cy=%2240%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%234facfe%22/><stop offset=%2260%25%22 stop-color=%22%2300f2fe%22 stop-opacity=%22.9%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g2)%22/></svg>');"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Free Design Help</h1>
-          <h2 class="hero-subtitle">Logos, branding, posters…</h2>
-          <p class="hero-description">We can help you for free: assets, logos, product and apparel images, brand and copywriting, signage, business cards, postcards, film/music posters, newspaper layout, and more 2D design.</p>
+          <h1 class="hero-title">Free Design Services</h1>
+          <h2 class="hero-subtitle">Art Assets & Creative Design</h2>
+          <p class="hero-description">We provide free services: world-famous art assets, logo design, brand identity, poster creation, product packaging, business cards, postcards, film posters, newspaper layout and more 2D design services</p>
           <div class="hero-actions">
             <button class="primary-btn" @click="goToExplore">Explore Designs</button>
             <button class="secondary-btn" @click="goToSearch">Search Now</button>
@@ -103,9 +103,9 @@ const goToExplore = () => {
       <div class="hero-slide" :class="{ active: currentSlide === 2 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g3%22 cx=%2250%25%22 cy=%2260%25%22 r=%2285%25%22><stop offset=%220%25%22 stop-color=%22%23a78bfa%22/><stop offset=%2255%25%22 stop-color=%22%23f472b6%22 stop-opacity=%22.85%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g3)%22/></svg>');"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Create Together</h1>
-          <h2 class="hero-subtitle">Inspire and be inspired</h2>
-          <p class="hero-description">Connect with designers worldwide to co-create and push boundaries of visual design.</p>
+          <h1 class="hero-title">Create Art Together</h1>
+          <h2 class="hero-subtitle">Inspire & Be Inspired</h2>
+          <p class="hero-description">Connect with designers worldwide to co-create and push boundaries of visual design, bringing world-famous art assets to new life</p>
           <div class="hero-actions">
             <button class="primary-btn" @click="goToExplore">Explore Designs</button>
             <button class="secondary-btn" @click="goToSearch">Search Now</button>
@@ -123,21 +123,21 @@ const goToExplore = () => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="48" class="feature-icon">mdi-palette</v-icon>
-              <h3 class="feature-title">Free Design Help</h3>
-              <p class="feature-description">We help for free: assets, logos, product shots, apparel design, brand & copywriting, signage, business cards, postcards, posters, newspaper layout, and more.</p>
+              <h3 class="feature-title">Free Design Services</h3>
+              <p class="feature-description">We provide free services: world-famous art assets, logo design, product imagery, apparel design, brand copywriting, signage, business cards, postcards, posters, newspaper layout and more</p>
               <div class="feature-meta">
                 <div class="feature-tags">
-                  <span class="tag">Logos</span>
-                  <span class="tag">Branding</span>
+                  <span class="tag">Art Assets</span>
+                  <span class="tag">Logo Design</span>
                   <span class="tag">Posters</span>
-                  <span class="tag">Editorial</span>
+                  <span class="tag">Branding</span>
                 </div>
                 <div class="feature-actions">
                   <button class="chip-btn" @click="goToSearch">
                     <v-icon size="16">mdi-lightning-bolt</v-icon>
-                    Get Free Help
+                    Get Free Assets
                   </button>
-                  <NuxtLink to="/search?category=graphic" class="text-link">Explore categories</NuxtLink>
+                  <NuxtLink to="/search?category=graphic" class="text-link">Explore Categories</NuxtLink>
                 </div>
               </div>
         </div>
@@ -169,7 +169,7 @@ const goToExplore = () => {
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-shape</v-icon>
               <h3 class="feature-title">Logo & Brand</h3>
-              <p class="feature-description">Brand systems, naming, logo marks, identity kits and style guides.</p>
+              <p class="feature-description">Brand systems, naming, logo marks, identity kits and style guides</p>
             </div>
           </div>
           <div class="feature-item small portraitTall">
@@ -177,7 +177,7 @@ const goToExplore = () => {
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-tshirt-crew</v-icon>
               <h3 class="feature-title">Product & Apparel</h3>
-              <p class="feature-description">Product images, mockups, garment visuals and creative fashion design.</p>
+              <p class="feature-description">Product imagery, mockups, garment visuals and creative fashion design</p>
             </div>
           </div>
           <div class="feature-item small portrait">
@@ -185,7 +185,7 @@ const goToExplore = () => {
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-post</v-icon>
               <h3 class="feature-title">Posters & Layout</h3>
-              <p class="feature-description">Film/music posters, editorial layouts, brochures and print-ready files.</p>
+              <p class="feature-description">Film/music posters, editorial layouts, brochures and print-ready files</p>
             </div>
           </div>
           <div class="feature-item small portraitTall">
@@ -193,7 +193,7 @@ const goToExplore = () => {
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-package-variant</v-icon>
               <h3 class="feature-title">Packaging & Labels</h3>
-              <p class="feature-description">Bottle wraps, box dielines and shelf-ready label systems.</p>
+              <p class="feature-description">Bottle wraps, box dielines and shelf-ready label systems</p>
             </div>
           </div>
           <div class="feature-item small portrait">
@@ -201,7 +201,7 @@ const goToExplore = () => {
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-instagram</v-icon>
               <h3 class="feature-title">Social Media Graphics</h3>
-              <p class="feature-description">Reels covers, story series and vertical campaign templates.</p>
+              <p class="feature-description">Reels covers, story series and vertical campaign templates</p>
             </div>
           </div>
         </div>
@@ -239,7 +239,7 @@ const goToExplore = () => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='tg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%2360a5fa'/><stop offset='50%' stop-color='%233b82f6' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tg1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
               <h3 class="trending-title">Bold Minimalism</h3>
-              <p class="trending-description">Sleek compositions, generous whitespace and expressive color.</p>
+              <p class="trending-description">Sleek compositions, generous whitespace and expressive color</p>
               <div class="trending-meta">
                 <span>By Designer A</span>
       </div>
@@ -253,7 +253,7 @@ const goToExplore = () => {
             </div>
             <div class="tc-content">
               <h4 class="tc-title">Fresh Directions</h4>
-              <p class="tc-desc">Vertical compositions with bold typography and soft gradients for brand moments.</p>
+              <p class="tc-desc">Vertical compositions with bold typography and soft gradients for brand moments</p>
               <div class="tc-tags">
                 <span class="tc-tag">Poster</span>
                 <span class="tc-tag">Editorial</span>
@@ -267,7 +267,7 @@ const goToExplore = () => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts1' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
               <h3 class="trending-title">Street Vibes</h3>
-              <p class="trending-description">Energetic shapes and kinetic typography inspired by the city.</p>
+              <p class="trending-description">Energetic shapes and kinetic typography inspired by the city</p>
               <div class="trending-meta">
                 <span>By Designer B</span>
               </div>
@@ -276,10 +276,10 @@ const goToExplore = () => {
           <div class="trending-item small portraitTall">
             <img src="/pages/index/monalisa.jpg" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">Eco Chic</h3>
-              <p class="trending-description">Organic gradients and calm palettes for sustainable brands.</p>
+              <h3 class="trending-title">Classic Art Revival</h3>
+              <p class="trending-description">Inspired by world-famous masterpieces, reimagined for modern sustainable brands</p>
               <div class="trending-meta">
-                <span>By Designer C</span>
+                <span>Free Art Assets Available</span>
               </div>
             </div>
           </div>
@@ -287,7 +287,7 @@ const goToExplore = () => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts3' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts3)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
               <h3 class="trending-title">Tech Fusion</h3>
-              <p class="trending-description">Neon textures and soft glows blending future and craft.</p>
+              <p class="trending-description">Neon textures and soft glows blending future and craft</p>
               <div class="trending-meta">
                 <span>By Designer D</span>
               </div>
@@ -332,15 +332,15 @@ const goToExplore = () => {
     <!-- Design Services Section -->
     <section class="services-section">
       <h2 class="section-title">What We Can Design For Free</h2>
-      <p class="services-subtitle">A design‑sharing community that can also help you create a full spectrum of 2D graphic design.</p>
+      <p class="services-subtitle">A design-sharing community that can also help you create a full spectrum of 2D graphic design</p>
       <div class="services-grid">
         <div class="service-card portrait" style="--delay:0s">
           <div class="service-media">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv1)'/></svg>" alt="Asset Graphics" class="service-image" />
           </div>
           <div class="service-content">
-            <h3 class="service-title">Asset Graphics</h3>
-            <p class="service-description">High‑quality visual assets and reusable component packs.</p>
+            <h3 class="service-title">Art Assets</h3>
+            <p class="service-description">High-quality world-famous art assets and reusable component packs</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.05s">
@@ -349,7 +349,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Logo Design</h3>
-            <p class="service-description">Wordmarks, symbols, marks and multi‑size exports.</p>
+            <p class="service-description">Wordmarks, symbols, marks and multi-size exports</p>
           </div>
         </div>
         <div class="service-card" style="--delay:0.1s">
@@ -358,7 +358,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Product Imagery</h3>
-            <p class="service-description">Creative visuals for lifestyle goods and e‑commerce.</p>
+            <p class="service-description">Creative visuals for lifestyle goods and e-commerce</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.15s">
@@ -367,7 +367,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Apparel & Garment</h3>
-            <p class="service-description">Garment sketches, fabric matching and fashion visuals.</p>
+            <p class="service-description">Garment sketches, fabric matching and fashion visuals</p>
           </div>
         </div>
         <div class="service-card" style="--delay:0.2s">
@@ -376,7 +376,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Brand & Copywriting</h3>
-            <p class="service-description">Naming, slogans, tone, guidelines and brand decks.</p>
+            <p class="service-description">Naming, slogans, tone, guidelines and brand decks</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.25s">
@@ -385,7 +385,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Signage & Wayfinding</h3>
-            <p class="service-description">Storefront signage, wayfinding and outdoor specs.</p>
+            <p class="service-description">Storefront signage, wayfinding and outdoor specs</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.3s">
@@ -394,7 +394,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Business Cards</h3>
-            <p class="service-description">Multiple layouts plus print craft recommendations.</p>
+            <p class="service-description">Multiple layouts plus print craft recommendations</p>
           </div>
         </div>
         <div class="service-card" style="--delay:0.35s">
@@ -403,7 +403,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Postcards & Greeting</h3>
-            <p class="service-description">Illustrated themes for holidays and keepsakes.</p>
+            <p class="service-description">Illustrated themes for holidays and keepsakes</p>
           </div>
         </div>
         <div class="service-card portraitTall" style="--delay:0.4s">
@@ -412,7 +412,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Film/Music Posters</h3>
-            <p class="service-description">From cinematic grain to modern art poster styles.</p>
+            <p class="service-description">From cinematic grain to modern art poster styles</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.45s">
@@ -421,7 +421,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">Editorial Typography</h3>
-            <p class="service-description">Grids, headline systems and long‑form layouts.</p>
+            <p class="service-description">Grids, headline systems and long-form layouts</p>
           </div>
         </div>
         <div class="service-card" style="--delay:0.5s">
@@ -430,7 +430,7 @@ const goToExplore = () => {
           </div>
           <div class="service-content">
             <h3 class="service-title">2D Graphic Design</h3>
-            <p class="service-description">Icons, illustrations, brochures, roll‑ups and more.</p>
+            <p class="service-description">Icons, illustrations, brochures, roll-ups and more</p>
           </div>
         </div>
       </div>
