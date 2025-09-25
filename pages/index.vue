@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-24 22:04:36
+ * @LastEditTime: 2025-09-25 22:36:14
  * @FilePath: /yishe-nuxt/pages/index.vue
  * @Description: 1s Design - Creative Design Sharing Platform Homepage with Asymmetric Large-Small Layout
 -->
@@ -274,7 +274,7 @@ const goToExplore = () => {
             </div>
           </div>
           <div class="trending-item small portraitTall">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts2' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts2)'/></svg>" alt="Trending Design" class="trending-image">
+            <img src="/pages/index/monalisa.jpg" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
               <h3 class="trending-title">Eco Chic</h3>
               <p class="trending-description">Organic gradients and calm palettes for sustainable brands.</p>
