@@ -32,190 +32,10 @@ useHead({
 const isLoaded = ref(false)
 const currentSlide = ref(0)
 
-// Abstract gradient SVG data (lightweight, OpenAI/Apple-like)
-const abstractImages = [
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g1" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="%23ff6b6b"/><stop offset="50%" stop-color="%234ecdc4" stop-opacity=".8"/><stop offset="100%" stop-color="%230a0a0a" stop-opacity="1"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g1)"/><circle cx="650" cy="120" r="180" fill="%23667eea" opacity=".35"/><circle cx="120" cy="520" r="160" fill="%23f093fb" opacity=".35"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g2" cx="70%" cy="40%" r="80%"><stop offset="0%" stop-color="%234facfe"/><stop offset="60%" stop-color="%2300f2fe" stop-opacity=".9"/><stop offset="100%" stop-color="%230a0a0a"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g2)"/><ellipse cx="180" cy="140" rx="220" ry="160" fill="%23f5576c" opacity=".35"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><radialGradient id="g3" cx="50%" cy="60%" r="85%"><stop offset="0%" stop-color="%23a78bfa"/><stop offset="55%" stop-color="%23f472b6" stop-opacity=".85"/><stop offset="100%" stop-color="%230a0a0a"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g3)"/><circle cx="120" cy="120" r="90" fill="%234ecdc4" opacity=".4"/><circle cx="700" cy="500" r="140" fill="%23ffdd57" opacity=".25"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><radialGradient id="g4" cx="35%" cy="35%" r="90%"><stop offset="0%" stop-color="%23ff9a9e"/><stop offset="60%" stop-color="%23fad0c4" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g4)"/><circle cx="520" cy="80" r="120" fill="%2348c6ef" opacity=".3"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g5" cx="65%" cy="30%" r="90%"><stop offset="0%" stop-color="%23ffd3a5"/><stop offset="60%" stop-color="%23fd6585" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g5)"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g6" cx="30%" cy="70%" r="85%"><stop offset="0%" stop-color="%2392fe9d"/><stop offset="60%" stop-color="%2300c9ff" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g6)"/></svg>',
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g7" cx="50%" cy="50%" r="90%"><stop offset="0%" stop-color="%23a18cd1"/><stop offset="60%" stop-color="%23fbc2eb" stop-opacity=".9"/><stop offset="100%" stop-color="%231c2526"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g7)"/></svg>'
-]
-
-// Hero section with abstract backgrounds and new copy
-const heroSlides = ref([
-  {
-    title: 'Share Your Designs',
-    subtitle: 'A community for creators',
-    description: 'A platform to publish, discover, and collaborate on design ideas across every discipline.',
-    image: abstractImages[0],
-    gradient: 'linear-gradient(135deg, #0a0a0a 0%, #111111 100%)'
-  },
-  {
-    title: 'Free Design Help',
-    subtitle: 'Logos, branding, posters…',
-    description: 'We can help you for free: assets, logos, product and apparel images, brand and copywriting, signage, business cards, postcards, film/music posters, newspaper layout, and more 2D design.',
-    image: abstractImages[1],
-    gradient: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)'
-  },
-  {
-    title: 'Create Together',
-    subtitle: 'Inspire and be inspired',
-    description: 'Connect with designers worldwide to co-create and push boundaries of visual design.',
-    image: abstractImages[2],
-    gradient: 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)'
-  }
-])
-
-// Features with copy highlighting free design help and categories
-const features = ref([
-  {
-    icon: 'mdi-palette',
-    title: 'Free Design Help',
-    description: 'We help for free: assets, logos, product shots, apparel design, brand & copywriting, signage, business cards, postcards, posters, newspaper layout, and more.',
-    image: abstractImages[3],
-    isLarge: true
-  },
-  {
-    icon: 'mdi-shape',
-    title: 'Logo & Brand',
-    description: 'Brand systems, naming, logo marks, identity kits and style guides.',
-    image: abstractImages[4],
-    isLarge: false,
-    orientation: 'portrait'
-  },
-  {
-    icon: 'mdi-tshirt-crew',
-    title: 'Product & Apparel',
-    description: 'Product images, mockups, garment visuals and creative fashion design.',
-    image: abstractImages[5],
-    isLarge: false,
-    orientation: 'portraitTall'
-  },
-  {
-    icon: 'mdi-post',
-    title: 'Posters & Layout',
-    description: 'Film/music posters, editorial layouts, brochures and print-ready files.',
-    image: abstractImages[6],
-    isLarge: false,
-    orientation: 'portrait'
-  },
-  {
-    icon: 'mdi-package-variant',
-    title: 'Packaging & Labels',
-    description: 'Bottle wraps, box dielines and shelf-ready label systems.',
-    image: abstractImages[2],
-    isLarge: false,
-    orientation: 'portraitTall'
-  },
-  {
-    icon: 'mdi-instagram',
-    title: 'Social Media Graphics',
-    description: 'Reels covers, story series and vertical campaign templates.',
-    image: abstractImages[5],
-    isLarge: false,
-    orientation: 'portrait'
-  }
-])
-
-// Stats data
-const stats = ref([
-  { number: '15K+', label: 'Designs Shared' },
-  { number: '8K+', label: 'Active Designers' },
-  { number: '70+', label: 'Countries' },
-  { number: '3M+', label: 'Monthly Views' }
-])
-
-// Trending Designs with abstract imagery
-const trendingDesigns = ref([
-  {
-    title: 'Bold Minimalism',
-    description: 'Sleek compositions, generous whitespace and expressive color.',
-    image: abstractImages[0],
-    author: 'Designer A',
-    likes: 2450,
-    isLarge: true
-  },
-  {
-    title: 'Street Vibes',
-    description: 'Energetic shapes and kinetic typography inspired by the city.',
-    image: abstractImages[1],
-    author: 'Designer B',
-    likes: 1789,
-    isLarge: false,
-    orientation: 'portrait'
-  },
-  {
-    title: 'Eco Chic',
-    description: 'Organic gradients and calm palettes for sustainable brands.',
-    image: abstractImages[2],
-    author: 'Designer C',
-    likes: 1923,
-    isLarge: false,
-    orientation: 'portraitTall'
-  },
-  {
-    title: 'Tech Fusion',
-    description: 'Neon textures and soft glows blending future and craft.',
-    image: abstractImages[4],
-    author: 'Designer D',
-    likes: 2678,
-    isLarge: false
-  }
-])
-
-// Testimonials data
-const testimonials = ref([
-  {
-    quote: '1s Design has transformed how I share my creative vision!',
-    author: 'Sophie Lin',
-    role: 'Fashion Designer',
-    image: 'https://picsum.photos/120/120?random=12'
-  },
-  {
-    quote: 'This platform connects me with inspiring designers daily.',
-    author: 'Carlos Mendes',
-    role: 'Graphic Artist',
-    image: 'https://picsum.photos/120/120?random=13'
-  },
-  {
-    quote: 'The trend insights here keep my work cutting-edge.',
-    author: 'Aisha Khan',
-    role: 'Product Designer',
-    image: 'https://picsum.photos/120/120?random=14'
-  }
-])
-
-// Design services catalog (each with abstract image and title/description)
-const designServices = ref([
-  { key: 'assets', title: 'Asset Graphics', description: 'High‑quality visual assets and reusable component packs.', image: abstractImages[0], orientation: 'portrait' },
-  { key: 'logo', title: 'Logo Design', description: 'Wordmarks, symbols, marks and multi‑size exports.', image: abstractImages[1], orientation: 'portrait' },
-  { key: 'product', title: 'Product Imagery', description: 'Creative visuals for lifestyle goods and e‑commerce.', image: abstractImages[2] },
-  { key: 'apparel', title: 'Apparel & Garment', description: 'Garment sketches, fabric matching and fashion visuals.', image: abstractImages[3], orientation: 'portrait' },
-  { key: 'brand', title: 'Brand & Copywriting', description: 'Naming, slogans, tone, guidelines and brand decks.', image: abstractImages[4] },
-  { key: 'signage', title: 'Signage & Wayfinding', description: 'Storefront signage, wayfinding and outdoor specs.', image: abstractImages[5], orientation: 'portrait' },
-  { key: 'card', title: 'Business Cards', description: 'Multiple layouts plus print craft recommendations.', image: abstractImages[6], orientation: 'portrait' },
-  { key: 'postcard', title: 'Postcards & Greeting', description: 'Illustrated themes for holidays and keepsakes.', image: abstractImages[1] },
-  { key: 'poster', title: 'Film/Music Posters', description: 'From cinematic grain to modern art poster styles.', image: abstractImages[2], orientation: 'portraitTall' },
-  { key: 'newspaper', title: 'Editorial Typography', description: 'Grids, headline systems and long‑form layouts.', image: abstractImages[3], orientation: 'portrait' },
-  { key: 'graphic', title: '2D Graphic Design', description: 'Icons, illustrations, brochures, roll‑ups and more.', image: abstractImages[4] },
-  { key: 'cover', title: 'Book Covers', description: 'Expressive single‑image layouts and spine systems.', image: abstractImages[5], orientation: 'portrait' },
-  { key: 'magazine', title: 'Magazine Features', description: 'Vertical art direction with editorial typography.', image: abstractImages[6], orientation: 'portraitTall' },
-  { key: 'poster-vertical', title: 'Vertical Posters', description: 'Tall poster series for film, music and events.', image: abstractImages[0], orientation: 'portraitTall' },
-  { key: 'billboard', title: 'Billboard Mockups', description: 'Street verticals and OOH compositions.', image: abstractImages[2], orientation: 'portrait' },
-])
-
-// Initialize animations
+// Initialize animations (keep simple rotation over 3 fixed slides)
 onMounted(() => {
-  setTimeout(() => {
-    isLoaded.value = true
-  }, 100)
-  
-  // Auto-rotate hero slides
-  setInterval(() => {
-    currentSlide.value = (currentSlide.value + 1) % heroSlides.value.length
-  }, 5000)
+  setTimeout(() => { isLoaded.value = true }, 100)
+  setInterval(() => { currentSlide.value = (currentSlide.value + 1) % 3 }, 5000)
 })
 
 // Navigation functions
@@ -234,7 +54,7 @@ const goToExplore = () => {
     <section class="banner-section">
       <div class="banner-container">
         <div class="banner-image">
-          <img :src="abstractImages[0]" alt="Banner Image" class="banner-img">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='bg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23bg1)'/></svg>" alt="Banner Image" class="banner-img">
         </div>
         <div class="banner-content">
           <h1 class="banner-title">1s Design</h1>
@@ -253,18 +73,45 @@ const goToExplore = () => {
 
     <!-- Hero Slider Section -->
     <section class="hero-section">
-      <div v-for="(slide, index) in heroSlides" :key="index" class="hero-slide" :class="{ active: currentSlide === index }">
-        <div class="hero-background" :style="{ backgroundImage: `url(${slide.image})`, backgroundGradient: slide.gradient }"></div>
+      <!-- Slide 1 -->
+      <div class="hero-slide" :class="{ active: currentSlide === 0 }">
+        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g1%22 cx=%2230%25%22 cy=%2230%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%23ff6b6b%22/><stop offset=%2250%25%22 stop-color=%22%234ecdc4%22 stop-opacity=%22.8%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22 stop-opacity=%221%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g1)%22/></svg>');"></div>
           <div class="hero-content">
-              <h1 class="hero-title">{{ slide.title }}</h1>
-              <h2 class="hero-subtitle">{{ slide.subtitle }}</h2>
-              <p class="hero-description">{{ slide.description }}</p>
+          <h1 class="hero-title">Share Your Designs</h1>
+          <h2 class="hero-subtitle">A community for creators</h2>
+          <p class="hero-description">A platform to publish, discover, and collaborate on design ideas across every discipline.</p>
               <div class="hero-actions">
             <button class="primary-btn" @click="goToExplore">Explore Designs</button>
             <button class="secondary-btn" @click="goToSearch">Search Now</button>
               </div>
             </div>
           </div>
+      <!-- Slide 2 -->
+      <div class="hero-slide" :class="{ active: currentSlide === 1 }">
+        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g2%22 cx=%2270%25%22 cy=%2240%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%234facfe%22/><stop offset=%2260%25%22 stop-color=%22%2300f2fe%22 stop-opacity=%22.9%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g2)%22/></svg>');"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Free Design Help</h1>
+          <h2 class="hero-subtitle">Logos, branding, posters…</h2>
+          <p class="hero-description">We can help you for free: assets, logos, product and apparel images, brand and copywriting, signage, business cards, postcards, film/music posters, newspaper layout, and more 2D design.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" @click="goToExplore">Explore Designs</button>
+            <button class="secondary-btn" @click="goToSearch">Search Now</button>
+        </div>
+      </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="hero-slide" :class="{ active: currentSlide === 2 }">
+        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g3%22 cx=%2250%25%22 cy=%2260%25%22 r=%2285%25%22><stop offset=%220%25%22 stop-color=%22%23a78bfa%22/><stop offset=%2255%25%22 stop-color=%22%23f472b6%22 stop-opacity=%22.85%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g3)%22/></svg>');"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Create Together</h1>
+          <h2 class="hero-subtitle">Inspire and be inspired</h2>
+          <p class="hero-description">Connect with designers worldwide to co-create and push boundaries of visual design.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" @click="goToExplore">Explore Designs</button>
+            <button class="secondary-btn" @click="goToSearch">Search Now</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Features Section with Large Left, Small Right Layout -->
@@ -272,12 +119,12 @@ const goToExplore = () => {
       <h2 class="section-title">Discover 1s Design</h2>
       <div class="features-container">
         <div class="features-large">
-          <div class="feature-item large" v-if="features[0]">
-            <img :src="features[0].image" alt="Feature Image" class="feature-image">
+          <div class="feature-item large">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
-              <v-icon :color="features[0].color" size="48" class="feature-icon">{{ features[0].icon }}</v-icon>
-              <h3 class="feature-title">{{ features[0].title }}</h3>
-              <p class="feature-description">{{ features[0].description }}</p>
+              <v-icon size="48" class="feature-icon">mdi-palette</v-icon>
+              <h3 class="feature-title">Free Design Help</h3>
+              <p class="feature-description">We help for free: assets, logos, product shots, apparel design, brand & copywriting, signage, business cards, postcards, posters, newspaper layout, and more.</p>
               <div class="feature-meta">
                 <div class="feature-tags">
                   <span class="tag">Logos</span>
@@ -295,34 +142,66 @@ const goToExplore = () => {
               </div>
         </div>
             <div class="feature-gallery">
-              <img :src="abstractImages[1]" alt="Gallery 1" class="gallery-thumb tall2">
-              <img :src="abstractImages[2]" alt="Gallery 2" class="gallery-thumb">
-              <img :src="abstractImages[4]" alt="Gallery 3" class="gallery-thumb">
-              <img :src="abstractImages[3]" alt="Gallery 4" class="gallery-thumb tall">
-              <img :src="abstractImages[6]" alt="Gallery 5" class="gallery-thumb">
-              <img :src="abstractImages[5]" alt="Gallery 6" class="gallery-thumb">
-              <img :src="abstractImages[0]" alt="Gallery 7" class="gallery-thumb tall">
-              <img :src="abstractImages[2]" alt="Gallery 8" class="gallery-thumb">
-              <img :src="abstractImages[4]" alt="Gallery 9" class="gallery-thumb">
-              <img :src="abstractImages[3]" alt="Gallery 10" class="gallery-thumb tall2">
-              <img :src="abstractImages[6]" alt="Gallery 11" class="gallery-thumb">
-              <img :src="abstractImages[5]" alt="Gallery 12" class="gallery-thumb">
-              <img :src="abstractImages[1]" alt="Gallery 13" class="gallery-thumb tall">
-              <img :src="abstractImages[0]" alt="Gallery 14" class="gallery-thumb">
-              <img :src="abstractImages[2]" alt="Gallery 15" class="gallery-thumb tall2">
-              <img :src="abstractImages[4]" alt="Gallery 16" class="gallery-thumb">
-              <img :src="abstractImages[6]" alt="Gallery 17" class="gallery-thumb tall2">
-              <img :src="abstractImages[5]" alt="Gallery 18" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 1" class="gallery-thumb tall2">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 2" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Gallery 3" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 4" class="gallery-thumb tall">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 5" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g5' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g5)'/></svg>" alt="Gallery 6" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g1)'/></svg>" alt="Gallery 7" class="gallery-thumb tall">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 8" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 9" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 10" class="gallery-thumb tall2">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Gallery 11" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 12" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g1)'/></svg>" alt="Gallery 13" class="gallery-thumb tall">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 14" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 15" class="gallery-thumb tall2">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 16" class="gallery-thumb">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 17" class="gallery-thumb tall2">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 18" class="gallery-thumb">
             </div>
       </div>
         </div>
         <div class="features-small">
-          <div v-for="(feature, index) in features.slice(1)" :key="`${feature.title}-${index}`" class="feature-item small" :class="{ 'portrait': feature.orientation === 'portrait', 'portraitTall': feature.orientation === 'portraitTall' }">
-            <img :src="feature.image" alt="Feature Image" class="feature-image">
+          <div class="feature-item small portrait">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
-              <v-icon :color="feature.color" size="32" class="feature-icon">{{ feature.icon }}</v-icon>
-              <h3 class="feature-title">{{ feature.title }}</h3>
-              <p class="feature-description">{{ feature.description }}</p>
+              <v-icon size="32" class="feature-icon">mdi-shape</v-icon>
+              <h3 class="feature-title">Logo & Brand</h3>
+              <p class="feature-description">Brand systems, naming, logo marks, identity kits and style guides.</p>
+            </div>
+          </div>
+          <div class="feature-item small portraitTall">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Feature Image" class="feature-image">
+            <div class="feature-content">
+              <v-icon size="32" class="feature-icon">mdi-tshirt-crew</v-icon>
+              <h3 class="feature-title">Product & Apparel</h3>
+              <p class="feature-description">Product images, mockups, garment visuals and creative fashion design.</p>
+            </div>
+          </div>
+          <div class="feature-item small portrait">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Feature Image" class="feature-image">
+            <div class="feature-content">
+              <v-icon size="32" class="feature-icon">mdi-post</v-icon>
+              <h3 class="feature-title">Posters & Layout</h3>
+              <p class="feature-description">Film/music posters, editorial layouts, brochures and print-ready files.</p>
+            </div>
+          </div>
+          <div class="feature-item small portraitTall">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Feature Image" class="feature-image">
+            <div class="feature-content">
+              <v-icon size="32" class="feature-icon">mdi-package-variant</v-icon>
+              <h3 class="feature-title">Packaging & Labels</h3>
+              <p class="feature-description">Bottle wraps, box dielines and shelf-ready label systems.</p>
+            </div>
+          </div>
+          <div class="feature-item small portrait">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
+            <div class="feature-content">
+              <v-icon size="32" class="feature-icon">mdi-instagram</v-icon>
+              <h3 class="feature-title">Social Media Graphics</h3>
+              <p class="feature-description">Reels covers, story series and vertical campaign templates.</p>
             </div>
           </div>
         </div>
@@ -332,11 +211,23 @@ const goToExplore = () => {
     <!-- Stats Section -->
     <section class="stats-section">
       <div class="stats-container">
-        <div v-for="(stat, index) in stats" :key="index" class="stat-item">
-          <h3 class="stat-number">{{ stat.number }}</h3>
-          <p class="stat-label">{{ stat.label }}</p>
+        <div class="stat-item">
+          <h3 class="stat-number">15K+</h3>
+          <p class="stat-label">Designs Shared</p>
           </div>
+        <div class="stat-item">
+          <h3 class="stat-number">8K+</h3>
+          <p class="stat-label">Active Designers</p>
         </div>
+        <div class="stat-item">
+          <h3 class="stat-number">70+</h3>
+          <p class="stat-label">Countries</p>
+        </div>
+        <div class="stat-item">
+          <h3 class="stat-number">3M+</h3>
+          <p class="stat-label">Monthly Views</p>
+        </div>
+      </div>
     </section>
 
     <!-- Trending Designs Section with Large Left, Small Right -->
@@ -344,27 +235,61 @@ const goToExplore = () => {
       <h2 class="section-title">Trending Designs</h2>
       <div class="trending-container">
         <div class="trending-large">
-          <div class="trending-item large" v-if="trendingDesigns[0]">
-            <img :src="trendingDesigns[0].image" alt="Trending Design" class="trending-image">
+          <div class="trending-item large">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='tg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%2360a5fa'/><stop offset='50%' stop-color='%233b82f6' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tg1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">{{ trendingDesigns[0].title }}</h3>
-              <p class="trending-description">{{ trendingDesigns[0].description }}</p>
+              <h3 class="trending-title">Bold Minimalism</h3>
+              <p class="trending-description">Sleek compositions, generous whitespace and expressive color.</p>
               <div class="trending-meta">
-                <span>By {{ trendingDesigns[0].author }}</span>
-                <span><v-icon size="18">mdi-heart</v-icon> {{ trendingDesigns[0].likes }}</span>
+                <span>By Designer A</span>
       </div>
             </div>
+        </div>
+        
+          <!-- Complement block to balance left column height -->
+          <div class="trending-complement">
+            <div class="tc-media">
+              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='tc1' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tc1)'/></svg>" alt="Complement Visual" class="tc-image" />
+            </div>
+            <div class="tc-content">
+              <h4 class="tc-title">Fresh Directions</h4>
+              <p class="tc-desc">Vertical compositions with bold typography and soft gradients for brand moments.</p>
+              <div class="tc-tags">
+                <span class="tc-tag">Poster</span>
+                <span class="tc-tag">Editorial</span>
+                <span class="tc-tag">Brand</span>
           </div>
         </div>
+      </div>
+        </div>
         <div class="trending-small">
-          <div v-for="(design, index) in trendingDesigns.slice(1)" :key="index" class="trending-item small" :class="{ 'portrait': design.orientation === 'portrait', 'portraitTall': design.orientation === 'portraitTall' }">
-            <img :src="design.image" alt="Trending Design" class="trending-image">
+          <div class="trending-item small portrait">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts1' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">{{ design.title }}</h3>
-              <p class="trending-description">{{ design.description }}</p>
+              <h3 class="trending-title">Street Vibes</h3>
+              <p class="trending-description">Energetic shapes and kinetic typography inspired by the city.</p>
               <div class="trending-meta">
-                <span>By {{ design.author }}</span>
-                <span><v-icon size="16">mdi-heart</v-icon> {{ design.likes }}</span>
+                <span>By Designer B</span>
+              </div>
+            </div>
+          </div>
+          <div class="trending-item small portraitTall">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts2' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts2)'/></svg>" alt="Trending Design" class="trending-image">
+            <div class="trending-overlay">
+              <h3 class="trending-title">Eco Chic</h3>
+              <p class="trending-description">Organic gradients and calm palettes for sustainable brands.</p>
+              <div class="trending-meta">
+                <span>By Designer C</span>
+              </div>
+            </div>
+          </div>
+          <div class="trending-item small">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts3' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts3)'/></svg>" alt="Trending Design" class="trending-image">
+            <div class="trending-overlay">
+              <h3 class="trending-title">Tech Fusion</h3>
+              <p class="trending-description">Neon textures and soft glows blending future and craft.</p>
+              <div class="trending-meta">
+                <span>By Designer D</span>
               </div>
             </div>
           </div>
@@ -377,13 +302,29 @@ const goToExplore = () => {
     <section class="testimonials-section">
       <h2 class="section-title">What Our Community Says</h2>
       <div class="testimonials-container">
-        <div v-for="(testimonial, index) in testimonials" :key="index" class="testimonial-item">
-          <img :src="testimonial.image" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">{{ testimonial.quote }}</blockquote>
+        <div class="testimonial-item">
+          <img src="https://picsum.photos/120/120?random=12" alt="Author" class="testimonial-image">
+          <blockquote class="testimonial-quote">1s Design has transformed how I share my creative vision!</blockquote>
           <div class="testimonial-author">
-            <strong>{{ testimonial.author }}</strong>
-            <span>{{ testimonial.role }}</span>
+            <strong>Sophie Lin</strong>
+            <span>Fashion Designer</span>
+          </div>
         </div>
+        <div class="testimonial-item">
+          <img src="https://picsum.photos/120/120?random=13" alt="Author" class="testimonial-image">
+          <blockquote class="testimonial-quote">This platform connects me with inspiring designers daily.</blockquote>
+          <div class="testimonial-author">
+            <strong>Carlos Mendes</strong>
+            <span>Graphic Artist</span>
+          </div>
+        </div>
+        <div class="testimonial-item">
+          <img src="https://picsum.photos/120/120?random=14" alt="Author" class="testimonial-image">
+          <blockquote class="testimonial-quote">The trend insights here keep my work cutting-edge.</blockquote>
+          <div class="testimonial-author">
+            <strong>Aisha Khan</strong>
+            <span>Product Designer</span>
+          </div>
         </div>
       </div>
     </section>
@@ -393,19 +334,103 @@ const goToExplore = () => {
       <h2 class="section-title">What We Can Design For Free</h2>
       <p class="services-subtitle">A design‑sharing community that can also help you create a full spectrum of 2D graphic design.</p>
       <div class="services-grid">
-        <div 
-          v-for="(service, index) in designServices" 
-          :key="service.key" 
-          class="service-card"
-          :class="{ 'portrait': service.orientation === 'portrait', 'portraitTall': service.orientation === 'portraitTall' }"
-          :style="{ '--delay': `${index * 0.05}s` }"
-        >
+        <div class="service-card portrait" style="--delay:0s">
           <div class="service-media">
-            <img :src="service.image" :alt="service.title" class="service-image" />
-            </div>
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv1)'/></svg>" alt="Asset Graphics" class="service-image" />
+          </div>
           <div class="service-content">
-            <h3 class="service-title">{{ service.title }}</h3>
-            <p class="service-description">{{ service.description }}</p>
+            <h3 class="service-title">Asset Graphics</h3>
+            <p class="service-description">High‑quality visual assets and reusable component packs.</p>
+          </div>
+        </div>
+        <div class="service-card portrait" style="--delay:0.05s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv2)'/></svg>" alt="Logo Design" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Logo Design</h3>
+            <p class="service-description">Wordmarks, symbols, marks and multi‑size exports.</p>
+          </div>
+        </div>
+        <div class="service-card" style="--delay:0.1s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv3)'/></svg>" alt="Product Imagery" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Product Imagery</h3>
+            <p class="service-description">Creative visuals for lifestyle goods and e‑commerce.</p>
+          </div>
+        </div>
+        <div class="service-card portrait" style="--delay:0.15s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='sv4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv4)'/></svg>" alt="Apparel & Garment" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Apparel & Garment</h3>
+            <p class="service-description">Garment sketches, fabric matching and fashion visuals.</p>
+          </div>
+        </div>
+        <div class="service-card" style="--delay:0.2s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv5' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv5)'/></svg>" alt="Brand & Copywriting" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Brand & Copywriting</h3>
+            <p class="service-description">Naming, slogans, tone, guidelines and brand decks.</p>
+          </div>
+        </div>
+        <div class="service-card portrait" style="--delay:0.25s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv6)'/></svg>" alt="Signage & Wayfinding" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Signage & Wayfinding</h3>
+            <p class="service-description">Storefront signage, wayfinding and outdoor specs.</p>
+          </div>
+        </div>
+        <div class="service-card portrait" style="--delay:0.3s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv7)'/></svg>" alt="Business Cards" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Business Cards</h3>
+            <p class="service-description">Multiple layouts plus print craft recommendations.</p>
+          </div>
+        </div>
+        <div class="service-card" style="--delay:0.35s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv8' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv8)'/></svg>" alt="Postcards & Greeting" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Postcards & Greeting</h3>
+            <p class="service-description">Illustrated themes for holidays and keepsakes.</p>
+          </div>
+        </div>
+        <div class="service-card portraitTall" style="--delay:0.4s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv9' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv9)'/></svg>" alt="Film/Music Posters" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Film/Music Posters</h3>
+            <p class="service-description">From cinematic grain to modern art poster styles.</p>
+          </div>
+        </div>
+        <div class="service-card portrait" style="--delay:0.45s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='sv10' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv10)'/></svg>" alt="Editorial Typography" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">Editorial Typography</h3>
+            <p class="service-description">Grids, headline systems and long‑form layouts.</p>
+          </div>
+        </div>
+        <div class="service-card" style="--delay:0.5s">
+          <div class="service-media">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv11' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%234facfe'/><stop offset='55%' stop-color='%2300f2fe' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv11)'/></svg>" alt="2D Graphic Design" class="service-image" />
+          </div>
+          <div class="service-content">
+            <h3 class="service-title">2D Graphic Design</h3>
+            <p class="service-description">Icons, illustrations, brochures, roll‑ups and more.</p>
           </div>
         </div>
       </div>
@@ -646,6 +671,7 @@ const goToExplore = () => {
       width: 100%;
       height: 560px;
       object-fit: cover;
+      border-radius: inherit;
     }
     
     .feature-content {
@@ -678,7 +704,7 @@ const goToExplore = () => {
     
     .feature-meta {
       margin-top: 0.75rem;
-      display: flex;
+  display: flex;
       flex-direction: column;
       gap: 0.75rem;
     }
@@ -686,7 +712,7 @@ const goToExplore = () => {
     .feature-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+  gap: 0.5rem;
     }
 
     .tag {
@@ -716,7 +742,7 @@ const goToExplore = () => {
       padding: 0.4rem 0.8rem;
       border-radius: 999px;
       font-size: 0.8rem;
-      cursor: pointer;
+  cursor: pointer;
       transition: all 0.2s ease;
       
       &:hover {
@@ -730,8 +756,8 @@ const goToExplore = () => {
       text-decoration: none;
       font-size: 0.85rem;
       transition: color 0.2s ease;
-      
-      &:hover {
+  
+  &:hover {
         color: var(--primary-color);
       }
     }
@@ -765,6 +791,7 @@ const goToExplore = () => {
         width: 100%;
         height: 200px;
         object-fit: cover;
+        border-radius: inherit;
       }
     
     .feature-content {
@@ -854,6 +881,7 @@ const goToExplore = () => {
       width: 100%;
       height: 500px;
       object-fit: cover;
+      border-radius: inherit;
     }
     
     .trending-title {
@@ -862,6 +890,51 @@ const goToExplore = () => {
     
     .trending-description {
       font-size: 1rem;
+    }
+
+    .trending-complement {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1rem;
+      margin-top: 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      
+      .tc-media {
+        background: var(--bg-primary);
+        min-height: 140px;
+      }
+    .tc-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      border-radius: inherit;
+      }
+      .tc-content {
+        padding: 1rem 1rem 1.1rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .tc-title {
+  font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .tc-desc {
+        font-size: 0.95rem;
+  color: var(--text-secondary);
+      }
+      .tc-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .tc-tag {
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
     }
   }
 }
@@ -885,6 +958,7 @@ const goToExplore = () => {
         width: 100%;
         height: 240px;
         object-fit: cover;
+        border-radius: inherit;
       }
     
     .trending-title {
@@ -987,16 +1061,14 @@ const goToExplore = () => {
 .service-media {
   height: 160px;
   background: var(--bg-primary);
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+  border-radius: inherit;
 }
 
 .service-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+  border-radius: inherit;
 }
 
 // Portrait variant for richer vertical compositions
