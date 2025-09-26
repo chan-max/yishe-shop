@@ -245,20 +245,6 @@
                   >
                     {{ item.description }}
                   </p>
-                  
-                  <!-- Font info -->
-                  <div class="font-meta">
-                    <span class="font-category">{{ item.category }}</span>
-                    <span class="font-style">{{ item.style }}</span>
-                  </div>
-                  
-                  <!-- Language support -->
-                  <div class="font-languages" v-if="item.languageSupport && item.languageSupport.length > 0">
-                    <div class="languages-label">支持语言:</div>
-                    <div class="languages-list">
-                      {{ item.languageSupport.join(', ') }}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
