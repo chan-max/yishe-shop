@@ -209,7 +209,7 @@
           <div class="font-card" @click="onCardClick(item)">
             <div class="image-container" :class="{ 'loading': !imageLoaded[item.id] }">
               <img
-                :src="item.thumbnailUrl"
+                :src="item.thumbnail"
                 :alt="item.name"
                 class="font-image"
                 @load="(event: Event) => onImageLoad(event, item.id)"
@@ -455,13 +455,10 @@ const performSearch = async () => {
     // 转换数据格式
     fontItems.value = (response.list || []).map(item => ({
       id: item.id,
-      name: item.name || '未命名字体',
-      description: item.description || '精美的字体模板',
-      thumbnailUrl: item.thumbnailUrl || 'https://via.placeholder.com/300x400/8b5cf6/ffffff?text=Font',
-      category: item.category || '其他',
-      style: item.style || '常规',
-      languageSupport: item.languageSupport ? item.languageSupport.split(',').map(l => l.trim()) : ['中文', '英文'],
-      fontUrl: item.fontUrl || '',
+      name: item.name || 'no name',
+      description: item.description || 'no description',
+      thumbnail: item.thumbnail || '',
+      category: item.category || '',
       keywords: item.keywords || '',
       createTime: item.createTime,
       updateTime: item.updateTime
@@ -516,13 +513,10 @@ const fetchFontItemsWithoutSearch = async () => {
     // 转换数据格式
     fontItems.value = (response.list || []).map(item => ({
       id: item.id,
-      name: item.name || '未命名字体',
-      description: item.description || '精美的字体模板',
-      thumbnailUrl: item.thumbnailUrl || 'https://via.placeholder.com/300x400/8b5cf6/ffffff?text=Font',
-      category: item.category || '其他',
-      style: item.style || '常规',
-      languageSupport: item.languageSupport ? item.languageSupport.split(',').map(l => l.trim()) : ['中文', '英文'],
-      fontUrl: item.fontUrl || '',
+      name: item.name || 'no name',
+      description: item.description || 'no description',
+      thumbnail: item.thumbnail || '',
+      category: item.category || 'unknown',
       keywords: item.keywords || '',
       createTime: item.createTime,
       updateTime: item.updateTime
