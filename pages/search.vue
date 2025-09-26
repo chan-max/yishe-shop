@@ -17,6 +17,8 @@ import HomeContent from '../components/_search/search-content/HomeContent.vue'
 import ClothingContent from '../components/_search/search-content/ClothingContent.vue'
 import MaterialsContent from '../components/_search/search-content/MaterialsContent.vue'
 import TextCreationContent from '../components/_search/search-content/TextCreationContent.vue'
+import MediaContent from '../components/_search/search-content/MediaContent.vue'
+import FontContent from '../components/_search/search-content/FontContent.vue'
 
 // Header components are now integrated into content components
 
@@ -26,7 +28,9 @@ import {
   languageOptions, 
   clothingFilterOptions, 
   materialsFilterOptions, 
-  textCreationFilterOptions, 
+  textCreationFilterOptions,
+  mediaFilterOptions,
+  fontFilterOptions,
   getFilterOptions 
 } from '../components/_search/customConfig/filterOptions'
 
@@ -65,6 +69,8 @@ const showSuggestions = ref(false)
 const clothingSearchQuery = useLocalStorage('clothing-search-query', '')
 const materialsSearchQuery = useLocalStorage('materials-search-query', '')
 const textCreationSearchQuery = useLocalStorage('text-creation-search-query', '')
+const mediaSearchQuery = useLocalStorage('media-search-query', '')
+const fontSearchQuery = useLocalStorage('font-search-query', '')
 const homeSearchQuery = useLocalStorage('home-search-query', '')
 
 const showMobileSidebar = ref(false)
@@ -107,11 +113,27 @@ const textCreationFilters = useLocalStorage('text-creation-filters', {
   language: []
 })
 
+const mediaFilters = useLocalStorage('media-filters', {
+  sort: 'latest',
+  category: null,
+  formats: [],
+  tags: []
+})
+
+const fontFilters = useLocalStorage('font-filters', {
+  sort: 'latest',
+  category: null,
+  styles: [],
+  languages: []
+})
+
 // Active filters for display
 const activeFilters = computed(() => {
   const currentFilters = selectedCategory.value === 'clothing' ? clothingFilters.value :
                         selectedCategory.value === 'materials' ? materialsFilters.value :
-                        selectedCategory.value === 'text-creation' ? textCreationFilters.value : {}
+                        selectedCategory.value === 'text-creation' ? textCreationFilters.value :
+                        selectedCategory.value === 'media' ? mediaFilters.value :
+                        selectedCategory.value === 'font' ? fontFilters.value : {}
   
   const active: any = {}
   Object.keys(currentFilters).forEach(key => {
@@ -290,7 +312,9 @@ const contentComponents = {
   home: HomeContent,
   clothing: ClothingContent,
   materials: MaterialsContent,
-  'text-creation': TextCreationContent
+  'text-creation': TextCreationContent,
+  media: MediaContent,
+  font: FontContent
 }
 
 // Header components are now integrated into content components
@@ -328,13 +352,29 @@ const headerConfigs = {
     icon: 'mdi-text-box-outline',
     showFilter: true,
     filterOptions: ['Category', 'Style', 'Length', 'Tone', 'Purpose', 'Language']
+  },
+  media: {
+    title: 'Media Materials',
+    subtitle: 'High-quality media resources and assets',
+    searchPlaceholder: 'Search media materials...',
+    icon: 'mdi-video-outline',
+    showFilter: true,
+    filterOptions: ['Category', 'Format', 'Tags']
+  },
+  font: {
+    title: 'Font Templates',
+    subtitle: 'Beautiful typography and font designs',
+    searchPlaceholder: 'Search font templates...',
+    icon: 'mdi-format-font',
+    showFilter: true,
+    filterOptions: ['Category', 'Style', 'Language']
   }
 }
 
 // Select category
 const selectCategory = (category: string) => {
-  // Allow home, clothing, materials and text-creation categories
-  if (category === 'home' || category === 'clothing' || category === 'materials' || category === 'text-creation') {
+  // Allow home, clothing, materials, text-creation, media and font categories
+  if (category === 'home' || category === 'clothing' || category === 'materials' || category === 'text-creation' || category === 'media' || category === 'font') {
     selectedCategory.value = category
     console.log('Selected category:', category)
   }
@@ -355,6 +395,10 @@ const getContentProps = () => {
     pageSearchQuery = materialsSearchQuery.value
   } else if (selectedCategory.value === 'text-creation') {
     pageSearchQuery = textCreationSearchQuery.value
+  } else if (selectedCategory.value === 'media') {
+    pageSearchQuery = mediaSearchQuery.value
+  } else if (selectedCategory.value === 'font') {
+    pageSearchQuery = fontSearchQuery.value
   } else if (selectedCategory.value === 'home') {
     pageSearchQuery = homeSearchQuery.value
   }
@@ -390,6 +434,22 @@ const getContentProps = () => {
       activeFilters: activeFilters.value,
       activeFiltersCount: activeFiltersCount.value
     }
+  } else if (selectedCategory.value === 'media') {
+    return {
+      ...baseProps,
+      filters: mediaFilters.value,
+      filterOptions: mediaFilterOptions,
+      activeFilters: activeFilters.value,
+      activeFiltersCount: activeFiltersCount.value
+    }
+  } else if (selectedCategory.value === 'font') {
+    return {
+      ...baseProps,
+      filters: fontFilters.value,
+      filterOptions: fontFilterOptions,
+      activeFilters: activeFilters.value,
+      activeFiltersCount: activeFiltersCount.value
+    }
   }
 
   return baseProps
@@ -421,6 +481,10 @@ const handleSearchQueryUpdate = (query: string) => {
     materialsSearchQuery.value = query
   } else if (selectedCategory.value === 'text-creation') {
     textCreationSearchQuery.value = query
+  } else if (selectedCategory.value === 'media') {
+    mediaSearchQuery.value = query
+  } else if (selectedCategory.value === 'font') {
+    fontSearchQuery.value = query
   } else if (selectedCategory.value === 'home') {
     homeSearchQuery.value = query
   }
@@ -437,6 +501,10 @@ const clearSearch = () => {
     materialsSearchQuery.value = ''
   } else if (selectedCategory.value === 'text-creation') {
     textCreationSearchQuery.value = ''
+  } else if (selectedCategory.value === 'media') {
+    mediaSearchQuery.value = ''
+  } else if (selectedCategory.value === 'font') {
+    fontSearchQuery.value = ''
   } else if (selectedCategory.value === 'home') {
     homeSearchQuery.value = ''
   }
@@ -454,6 +522,10 @@ const handleFilterUpdate = (filters: any) => {
     materialsFilters.value = filters
   } else if (selectedCategory.value === 'text-creation') {
     textCreationFilters.value = filters
+  } else if (selectedCategory.value === 'media') {
+    mediaFilters.value = filters
+  } else if (selectedCategory.value === 'font') {
+    fontFilters.value = filters
   }
 }
 
@@ -465,6 +537,10 @@ const handleFilterRemoval = (key: string) => {
     materialsFilters.value = { ...materialsFilters.value, [key]: Array.isArray(materialsFilters.value[key]) ? [] : '' }
   } else if (selectedCategory.value === 'text-creation') {
     textCreationFilters.value = { ...textCreationFilters.value, [key]: Array.isArray(textCreationFilters.value[key]) ? [] : '' }
+  } else if (selectedCategory.value === 'media') {
+    mediaFilters.value = { ...mediaFilters.value, [key]: Array.isArray(mediaFilters.value[key]) ? [] : '' }
+  } else if (selectedCategory.value === 'font') {
+    fontFilters.value = { ...fontFilters.value, [key]: Array.isArray(fontFilters.value[key]) ? [] : '' }
   }
 }
 
@@ -505,6 +581,20 @@ const handleClearFilters = () => {
       tone: [],
       purpose: [],
       language: []
+    }
+  } else if (selectedCategory.value === 'media') {
+    mediaFilters.value = {
+      sort: 'latest',
+      category: null,
+      formats: [],
+      tags: []
+    }
+  } else if (selectedCategory.value === 'font') {
+    fontFilters.value = {
+      sort: 'latest',
+      category: null,
+      styles: [],
+      languages: []
     }
   }
 }
@@ -562,7 +652,7 @@ const handleBlur = () => {
               icon
                 size="small"
               >
-              <v-icon>{{ sidebarCollapsed ? 'mdi-dock-right' : 'mdi-dock-left' }}</v-icon>
+              <v-icon>{{ sidebarCollapsed ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
             </v-btn>
           </div>
         </div>
@@ -577,9 +667,9 @@ const handleBlur = () => {
               :class="{ 'active': selectedCategory === 'home' }"
               @click="selectCategory('home')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-home</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-home-outline</v-icon>
               <template v-else>
-                <v-icon left>mdi-home</v-icon>
+                <v-icon left>mdi-home-outline</v-icon>
                 <span>Home</span>
               </template>
             </v-btn>
@@ -596,9 +686,9 @@ const handleBlur = () => {
               :class="{ 'active': selectedCategory === 'clothing' }"
               @click="selectCategory('clothing')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
               <template v-else>
-                <v-icon left>mdi-tshirt-crew</v-icon>
+                <v-icon left>mdi-tshirt-crew-outline</v-icon>
                 <span>Fashion</span>
               </template>
             </v-btn>
@@ -609,9 +699,9 @@ const handleBlur = () => {
               :class="{ 'active': selectedCategory === 'materials' }"
               @click="selectCategory('materials')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-image-multiple</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-image-multiple-outline</v-icon>
               <template v-else>
-                <v-icon left>mdi-image-multiple</v-icon>
+                <v-icon left>mdi-image-multiple-outline</v-icon>
                 <span> Materials</span>
               </template>
             </v-btn>
@@ -622,10 +712,36 @@ const handleBlur = () => {
               :class="{ 'active': selectedCategory === 'text-creation' }"
               @click="selectCategory('text-creation')"
             >
-              <v-icon v-if="sidebarCollapsed">mdi-text-box</v-icon>
+              <v-icon v-if="sidebarCollapsed">mdi-text-box-outline</v-icon>
               <template v-else>
-                <v-icon left>mdi-text-box</v-icon>
+                <v-icon left>mdi-text-box-outline</v-icon>
                 <span>Text</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'media' }"
+              @click="selectCategory('media')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-video-outline</v-icon>
+              <template v-else>
+                <v-icon left>mdi-video-outline</v-icon>
+                <span>Media</span>
+              </template>
+            </v-btn>
+            
+            <v-btn
+              variant="text"
+              class="nav-btn"
+              :class="{ 'active': selectedCategory === 'font' }"
+              @click="selectCategory('font')"
+            >
+              <v-icon v-if="sidebarCollapsed">mdi-format-font</v-icon>
+              <template v-else>
+                <v-icon left>mdi-format-font</v-icon>
+                <span>Font</span>
               </template>
             </v-btn>   
           </div>
@@ -967,10 +1083,12 @@ const handleBlur = () => {
       
       .v-icon {
         margin-right: 0.625rem;
-        font-size: 1.2rem;
+        font-size: 1.25rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border-radius: 4px;
         padding: 2px;
+        width: 1.25rem;
+        height: 1.25rem;
       }
       
       span {
@@ -1015,7 +1133,7 @@ const handleBlur = () => {
         text-align: center;
         
         .v-icon {
-          font-size: 1.4rem;
+          font-size: 1.25rem;
           margin: 0 !important;
           flex-shrink: 0;
           display: inline-flex;
@@ -1023,6 +1141,8 @@ const handleBlur = () => {
           justify-content: center;
           border-radius: 6px;
           padding: 4px;
+          width: 1.25rem;
+          height: 1.25rem;
         }
         
         &:hover {
@@ -1094,10 +1214,12 @@ const handleBlur = () => {
       
       .v-icon {
         margin-right: 0.625rem;
-        font-size: 1.2rem;
+        font-size: 1.25rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border-radius: 4px;
         padding: 2px;
+        width: 1.25rem;
+        height: 1.25rem;
       }
       
       span {
@@ -1136,8 +1258,10 @@ const handleBlur = () => {
         }
         
         .v-icon {
-          font-size: 16px;
+          font-size: 1.25rem;
           margin: 0;
+          width: 1.25rem;
+          height: 1.25rem;
         }
       }
       
@@ -1155,7 +1279,7 @@ const handleBlur = () => {
         text-align: center;
         
         .v-icon {
-          font-size: 1.4rem;
+          font-size: 1.25rem;
           margin: 0 !important;
           flex-shrink: 0;
           display: inline-flex;
@@ -1163,6 +1287,8 @@ const handleBlur = () => {
           justify-content: center;
           border-radius: 6px;
           padding: 4px;
+          width: 1.25rem;
+          height: 1.25rem;
         }
         
         &:hover {

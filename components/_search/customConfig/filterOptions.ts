@@ -253,6 +253,96 @@ export const textCreationFilterOptions = {
   language: languageOptions
 }
 
+// Media materials filter options
+export const mediaFilterOptions = {
+  sort: [
+    { value: 'latest', text: '最新上传' },
+    { value: 'popular', text: '最受欢迎' },
+    { value: 'downloads', text: '下载最多' },
+    { value: 'rating', text: '评分最高' }
+  ],
+  category: [
+    { value: 'video', text: '视频' },
+    { value: 'audio', text: '音频' },
+    { value: 'image', text: '图片' },
+    { value: 'animation', text: '动画' },
+    { value: 'effect', text: '特效' },
+    { value: 'transition', text: '转场' },
+    { value: 'background', text: '背景' },
+    { value: 'other', text: '其他' }
+  ],
+  format: [
+    { value: 'mp4', text: 'MP4' },
+    { value: 'avi', text: 'AVI' },
+    { value: 'mov', text: 'MOV' },
+    { value: 'mp3', text: 'MP3' },
+    { value: 'wav', text: 'WAV' },
+    { value: 'png', text: 'PNG' },
+    { value: 'jpg', text: 'JPG' },
+    { value: 'gif', text: 'GIF' },
+    { value: 'svg', text: 'SVG' },
+    { value: 'ai', text: 'AI' }
+  ],
+  tags: [
+    { value: 'advertisement', text: '广告' },
+    { value: 'education', text: '教育' },
+    { value: 'entertainment', text: '娱乐' },
+    { value: 'news', text: '新闻' },
+    { value: 'documentary', text: '纪录片' },
+    { value: 'animation', text: '动画片' },
+    { value: 'movie', text: '电影' },
+    { value: 'tv', text: '电视剧' },
+    { value: 'short', text: '短视频' },
+    { value: 'commercial', text: '商业' }
+  ]
+}
+
+// Font template filter options
+export const fontFilterOptions = {
+  sort: [
+    { value: 'latest', text: '最新上传' },
+    { value: 'popular', text: '最受欢迎' },
+    { value: 'downloads', text: '下载最多' },
+    { value: 'rating', text: '评分最高' }
+  ],
+  category: [
+    { value: 'chinese', text: '中文字体' },
+    { value: 'english', text: '英文字体' },
+    { value: 'japanese', text: '日文字体' },
+    { value: 'korean', text: '韩文字体' },
+    { value: 'number', text: '数字字体' },
+    { value: 'symbol', text: '符号字体' },
+    { value: 'mixed', text: '混合字体' },
+    { value: 'other', text: '其他' }
+  ],
+  style: [
+    { value: 'modern', text: '现代' },
+    { value: 'classic', text: '古典' },
+    { value: 'minimalist', text: '简约' },
+    { value: 'luxury', text: '华丽' },
+    { value: 'tech', text: '科技' },
+    { value: 'nature', text: '自然' },
+    { value: 'business', text: '商务' },
+    { value: 'creative', text: '创意' },
+    { value: 'artistic', text: '艺术' },
+    { value: 'fashion', text: '时尚' },
+    { value: 'vintage', text: '复古' },
+    { value: 'futuristic', text: '未来' }
+  ],
+  language: [
+    { value: 'zh', text: '中文' },
+    { value: 'en', text: '英文' },
+    { value: 'ja', text: '日文' },
+    { value: 'ko', text: '韩文' },
+    { value: 'fr', text: '法文' },
+    { value: 'de', text: '德文' },
+    { value: 'es', text: '西班牙文' },
+    { value: 'it', text: '意大利文' },
+    { value: 'ru', text: '俄文' },
+    { value: 'ar', text: '阿拉伯文' }
+  ]
+}
+
 // 根据分类获取筛选选项
 export const getFilterOptions = (category: string) => {
   switch (category) {
@@ -262,6 +352,10 @@ export const getFilterOptions = (category: string) => {
       return materialsFilterOptions
     case 'text-creation':
       return textCreationFilterOptions
+    case 'media':
+      return mediaFilterOptions
+    case 'font':
+      return fontFilterOptions
     default:
       return clothingFilterOptions
   }
