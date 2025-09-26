@@ -207,31 +207,21 @@
       >
         <template #default="{ item, index }">
           <div class="media-card" @click="onCardClick(item)">
-            <div class="image-container" :class="{ 'loading': !imageLoaded[item.id] }">
-              <img
-                :src="item.url"
-                :alt="item.name"
-                class="media-image"
-                @load="(event: Event) => onImageLoad(event, item.id)"
-                @error="(event: Event) => onImageError(event, item.id)"
-                :class="{ 'loaded': imageLoaded[item.id] }"
+            <div class="media-container" :class="{ 'loading': !mediaLoaded[item.id] }">
+              <!-- 使用新的媒体预览组件 -->
+              <MediaPreview
+                :url="item.url"
+                :name="item.name"
+                :format="item.suffix"
+                :type="getMediaType(item.suffix)"
+                @load="(event: Event) => onMediaLoad(event, item.id)"
+                @error="(event: Event) => onMediaError(event, item.id)"
+                @play="() => onMediaPlay(item.id)"
+                @pause="() => onMediaPause(item.id)"
               />
               
-              <!-- Loading state -->
-              <div v-if="!imageLoaded[item.id]" class="image-loading">
-                <div class="loading-spinner"></div>
-                <div class="skeleton-content">
-                  <div class="skeleton-line skeleton-title"></div>
-                  <div class="skeleton-line skeleton-description"></div>
-                  <div class="skeleton-meta">
-                    <div class="skeleton-tag"></div>
-                    <div class="skeleton-tag"></div>
-                  </div>
-                </div>
-              </div>
-              
               <!-- Hover overlay -->
-              <div class="image-overlay" :class="{ 'small-image': isSmallImage(item.id) }">
+              <div class="media-overlay" :class="{ 'small-media': isSmallMedia(item.id) }" @click.stop>
                 <!-- Content information -->
                 <div class="overlay-content">
                   <h3 class="media-title" :title="item.name">
@@ -253,11 +243,10 @@
                       {{ item.tags.join(', ') }}
                     </div>
                   </div>
-                  
-                  <!-- File info -->
-                  <div class="media-meta">
-                    <span class="file-format">{{ item.suffix?.toUpperCase() }}</span>
-                    <span class="file-category">{{ item.category }}</span>
+
+                  <!-- Media format badge -->
+                  <div class="media-format-badge">
+                    {{ item.suffix?.toUpperCase() || 'UNKNOWN' }}
                   </div>
                 </div>
               </div>
@@ -284,6 +273,7 @@ import { useLocalStorage } from '@vueuse/core'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import EmptyState from '../components/EmptyState.vue'
 import ContentPagination from '../components/ContentPagination.vue'
+import MediaPreview from '../components/MediaPreview.vue'
 import { mediaFilterOptions } from '../customConfig/filterOptions'
 
 // Props for header functionality
@@ -614,31 +604,88 @@ const toggleMobileSidebar = () => {
   emit('toggle-mobile-sidebar')
 }
 
-// 图片加载状态
-const imageLoaded = ref({})
+// 媒体加载状态
+const mediaLoaded = ref<Record<string, boolean>>({})
 
-// 图片高度状态
-const imageHeights = ref<Record<string, number>>({})
+// 媒体高度状态
+const mediaHeights = ref<Record<string, number>>({})
 
-// 检查是否为小图片
-const isSmallImage = (itemId: string) => {
-  const height = imageHeights.value[itemId]
+// 媒体播放状态
+const mediaPlaying = ref<Record<string, boolean>>({})
+
+// 获取媒体类型
+const getMediaType = (suffix: string) => {
+  if (!suffix) return 'unknown'
+  
+  const format = suffix.toLowerCase()
+  
+  // 图片格式
+  if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(format)) {
+    return 'image'
+  }
+  
+  // 视频格式
+  if (['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v'].includes(format)) {
+    return 'video'
+  }
+  
+  // 音频格式
+  if (['mp3', 'wav', 'flac', 'aac', 'ogg', 'wma', 'm4a'].includes(format)) {
+    return 'audio'
+  }
+  
+  // 文档格式
+  if (['pdf', 'doc', 'docx', 'txt', 'rtf', 'ppt', 'pptx', 'xls', 'xlsx'].includes(format)) {
+    return 'document'
+  }
+  
+  return 'unknown'
+}
+
+// 检查是否为小媒体
+const isSmallMedia = (itemId: string) => {
+  const height = mediaHeights.value[itemId]
   return height && height < 150
 }
 
-// 图片加载成功处理
-const onImageLoad = (event: Event, itemId: string) => {
-  imageLoaded.value[itemId] = true
-  const img = event.target as HTMLImageElement
-  if (img) {
-    imageHeights.value[itemId] = img.naturalHeight
+// 媒体加载成功处理
+const onMediaLoad = (event: Event, itemId: string) => {
+  mediaLoaded.value[itemId] = true
+  
+  // 尝试获取媒体高度
+  const target = event.target as HTMLMediaElement | HTMLImageElement
+  if (target) {
+    if ('naturalHeight' in target) {
+      mediaHeights.value[itemId] = target.naturalHeight
+    } else if ('videoHeight' in target) {
+      mediaHeights.value[itemId] = target.videoHeight
+    }
   }
 }
 
-// 图片加载失败处理
-const onImageError = (event, itemId) => {
-  console.error("图片加载失败:", event)
-  imageLoaded.value[itemId] = false
+// 媒体加载失败处理
+const onMediaError = (event: Event, itemId: string) => {
+  console.error("媒体加载失败:", event)
+  mediaLoaded.value[itemId] = false
+}
+
+// 媒体播放处理
+const onMediaPlay = (itemId: string) => {
+  console.log('媒体开始播放:', itemId)
+  mediaPlaying.value[itemId] = true
+  // 暂停其他正在播放的媒体
+  Object.keys(mediaPlaying.value).forEach(id => {
+    if (id !== itemId && mediaPlaying.value[id]) {
+      mediaPlaying.value[id] = false
+      console.log('暂停其他媒体:', id)
+    }
+  })
+}
+
+// 媒体暂停处理
+const onMediaPause = (itemId: string) => {
+  console.log('媒体暂停播放:', itemId)
+  mediaPlaying.value[itemId] = false
 }
 
 // 卡片点击处理
@@ -976,7 +1023,7 @@ onMounted(() => {
           }
         }
         
-        .image-container {
+        .media-container {
           position: relative;
           width: 100%;
           overflow: hidden;
@@ -990,83 +1037,7 @@ onMounted(() => {
             min-height: 120px;
           }
           
-          .media-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: all 0.3s ease;
-            opacity: 0;
-            object-fit: cover;
-            
-            &.loaded {
-              opacity: 1;
-            }
-          }
-          
-          .image-loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            
-            .loading-spinner {
-              width: 32px;
-              height: 32px;
-              border: 3px solid rgba(255, 255, 255, 0.1);
-              border-top: 3px solid #4f46e5;
-              border-radius: 50%;
-              animation: spin 1s linear infinite;
-              margin-bottom: 12px;
-            }
-            
-            .skeleton-content {
-              position: absolute;
-              bottom: 12px;
-              left: 12px;
-              right: 12px;
-              
-              .skeleton-line {
-                background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
-                background-size: 200% 100%;
-                animation: skeleton-loading 1.5s infinite;
-                border-radius: 4px;
-                margin-bottom: 8px;
-                
-                &.skeleton-title {
-                  height: 16px;
-                  width: 70%;
-                }
-                
-                &.skeleton-description {
-                  height: 12px;
-                  width: 85%;
-                }
-              }
-              
-              .skeleton-meta {
-                display: flex;
-                gap: 8px;
-                margin-top: 8px;
-                
-                .skeleton-tag {
-                  height: 20px;
-                  width: 60px;
-                  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
-                  background-size: 200% 100%;
-                  animation: skeleton-loading 1.5s infinite;
-                  border-radius: 10px;
-                }
-              }
-            }
-          }
-          
-          .image-overlay {
+          .media-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -1085,8 +1056,10 @@ onMounted(() => {
             padding: 12px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 5;
+            pointer-events: none;
             
-            &.small-image {
+            &.small-media {
               padding: 8px;
               justify-content: flex-end;
               
@@ -1101,6 +1074,7 @@ onMounted(() => {
             .overlay-content {
               text-align: left;
               max-width: 100%;
+              pointer-events: none;
               
               .media-title {
                 font-size: 14px;
@@ -1115,7 +1089,7 @@ onMounted(() => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 
-                .small-image & {
+                .small-media & {
                   font-size: 12px;
                   margin: 0 0 4px 0;
                   -webkit-line-clamp: 1;
@@ -1135,7 +1109,7 @@ onMounted(() => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 
-                .small-image & {
+                .small-media & {
                   -webkit-line-clamp: 1;
                   line-clamp: 1;
                   margin: 0 0 6px 0;
@@ -1161,35 +1135,25 @@ onMounted(() => {
                   overflow: hidden;
                   text-overflow: ellipsis;
                   
-                  .small-image & {
+                  .small-media & {
                     -webkit-line-clamp: 1;
                     line-clamp: 1;
                   }
                 }
               }
               
-              .media-meta {
-                display: flex;
-                gap: 8px;
-                margin-top: 8px;
-                
-                .file-format {
-                  font-size: 10px;
-                  color: #4f46e5;
-                  background: rgba(79, 70, 229, 0.2);
-                  padding: 2px 6px;
-                  border-radius: 4px;
-                  font-weight: 600;
-                }
-                
-                .file-category {
-                  font-size: 10px;
-                  color: #10b981;
-                  background: rgba(16, 185, 129, 0.2);
-                  padding: 2px 6px;
-                  border-radius: 4px;
-                  font-weight: 600;
-                }
+              .media-format-badge {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                font-size: 10px;
+                color: #4f46e5;
+                background: rgba(79, 70, 229, 0.2);
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(79, 70, 229, 0.3);
               }
             }
           }
