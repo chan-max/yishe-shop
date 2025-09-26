@@ -768,7 +768,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     height: auto;
-    min-height: auto;
+    min-height: 120px;
     
     &:hover {
       transform: translateY(-4px);

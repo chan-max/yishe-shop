@@ -981,9 +981,13 @@ onMounted(() => {
           width: 100%;
           overflow: hidden;
           background: #1a1a1a;
+          min-height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           
           &.loading {
-            min-height: 200px;
+            min-height: 120px;
           }
           
           .media-image {
@@ -992,6 +996,7 @@ onMounted(() => {
             display: block;
             transition: all 0.3s ease;
             opacity: 0;
+            object-fit: cover;
             
             &.loaded {
               opacity: 1;
