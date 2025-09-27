@@ -585,25 +585,28 @@ onMounted(() => {
     display: flex;
     align-items: center;
     background: var(--input-bg);
-    border: 1px solid var(--border-secondary);
-    border-radius: 6px;
-    padding: 0.375rem 0.5rem;
+    border: none;
+    border-radius: 50px;
+    padding: 0.25rem 1rem;
     min-width: 280px;
+    height: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     &:hover {
       background: var(--input-bg-hover);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     &:focus-within {
       background: var(--input-bg-focus);
-      border-color: var(--theme-primary);
-      box-shadow: 0 0 0 2px var(--border-hover);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
     }
   }
 
   .search-icon {
     color: var(--text-tertiary);
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
+    margin-left: 0.5rem;
     font-size: 1rem;
     
     .search-box:hover & {
@@ -622,11 +625,11 @@ onMounted(() => {
     outline: none;
     color: var(--text-primary);
     font-size: 0.9rem;
-    height: 32px; /* 固定高度 */
-    min-height: 32px; /* 最小高度 */
-    max-height: 32px; /* 最大高度 */
-    resize: none; /* 禁止调整大小 */
-    overflow: hidden; /* 隐藏溢出内容 */
+    height: 100%;
+    min-height: auto;
+    max-height: none;
+    resize: none;
+    overflow: hidden;
     
     &::placeholder {
       color: var(--text-muted);

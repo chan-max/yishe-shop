@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-22 03:01:38
+ * @LastEditTime: 2025-09-27 10:00:36
  * @FilePath: /yishe-nuxt/components/_search.vue
  * @Description: Search Page - Design Material Search and Filtering
 -->
@@ -670,7 +670,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-home-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-home-outline</v-icon>
-                <span>Home</span>
+                <span class="nav-text">Home</span>
               </template>
             </v-btn>
           </div>
@@ -689,7 +689,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-tshirt-crew-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-tshirt-crew-outline</v-icon>
-                <span>Fashion</span>
+                <span class="nav-text">Fashion</span>
               </template>
             </v-btn>
             
@@ -702,7 +702,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-image-multiple-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-image-multiple-outline</v-icon>
-                <span> Materials</span>
+                <span class="nav-text"> Materials</span>
               </template>
             </v-btn>
             
@@ -715,7 +715,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-text-box-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-text-box-outline</v-icon>
-                <span>Text</span>
+                <span class="nav-text">Text</span>
               </template>
             </v-btn>
             
@@ -728,7 +728,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-video-outline</v-icon>
               <template v-else>
                 <v-icon left>mdi-video-outline</v-icon>
-                <span>Media</span>
+                <span class="nav-text">Media</span>
               </template>
             </v-btn>
             
@@ -741,7 +741,7 @@ const handleBlur = () => {
               <v-icon v-if="sidebarCollapsed">mdi-format-font</v-icon>
               <template v-else>
                 <v-icon left>mdi-format-font</v-icon>
-                <span>Font</span>
+                <span class="nav-text">Font</span>
               </template>
             </v-btn>   
           </div>
@@ -772,7 +772,7 @@ const handleBlur = () => {
               <v-icon left>
                 {{ isDarkMode ? 'mdi-brightness-6' : 'mdi-weather-night' }}
               </v-icon>
-              <span>{{ isDarkMode ? 'Switch to light mode' : 'Switch to dark mode' }}</span>
+              <span class="theme-text">{{ isDarkMode ? 'Switch to light mode' : 'Switch to dark mode' }}</span>
             </v-btn>
           </div>
         </div>
@@ -1055,6 +1055,12 @@ const handleBlur = () => {
       text-decoration: none;
       letter-spacing: 0.01em;
       
+      // 导航文字样式
+      .nav-text {
+        font-size: 0.7rem !important;
+        font-weight: 800 !important;
+      }
+      
       &:hover {
         color: var(--text-primary);
         background: var(--bg-hover);
@@ -1199,6 +1205,12 @@ const handleBlur = () => {
       text-transform: none;
       border-radius: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      // 主题文字样式
+      .theme-text {
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+      }
       position: relative;
       min-height: 36px;
       background: transparent;

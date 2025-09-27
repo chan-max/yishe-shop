@@ -73,6 +73,7 @@
                 background: rgba(255, 255, 255, 0.1);
                 color: #ffffff;
                 font-weight: 600;
+
                 .nav-icon {
                     color: #ffffff;
                     transform: scale(1.1);
@@ -94,12 +95,6 @@
             flex-shrink: 0;
         }
 
-        .nav-text {
-            font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
     }
 
     .nav-section-title {
@@ -183,7 +178,8 @@
 }
 
 .theme-text {
-    font-size: 0.9rem;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -310,6 +306,7 @@
                 background: rgba(255, 255, 255, 0.1);
                 color: #ffffff;
                 font-weight: 600;
+
                 .nav-icon {
                     color: #ffffff;
                     transform: scale(1.1);
@@ -329,10 +326,6 @@
             margin-right: 0.75rem;
             font-size: 1.25rem;
             flex-shrink: 0;
-        }
-
-        .nav-text {
-            font-size: 0.9rem;
         }
     }
 }

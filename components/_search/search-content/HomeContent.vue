@@ -194,25 +194,28 @@ const handleBlur = () => {
   align-items: center;
   background: var(--input-bg);
   border: none;
-  border-radius: 6px;
-  padding: 0.375rem 0.5rem;
+  border-radius: 50px;
+  padding: 0.25rem 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
-  height: 32px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   
   &:hover {
     background: var(--input-bg-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   &:focus-within {
     background: var(--input-bg-focus);
-    box-shadow: 0 0 0 2px var(--border-hover);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
   }
 }
 
 .search-icon {
   color: var(--text-tertiary);
-  margin-right: 0.625rem;
+  margin-right: 0.75rem;
+  margin-left: 0.5rem;
   font-size: 1rem;
   transition: all 0.3s ease;
   
@@ -234,9 +237,9 @@ const handleBlur = () => {
   font-size: 0.9rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
-  height: 32px; /* 固定高度 */
-  min-height: 32px; /* 最小高度 */
-  max-height: 32px; /* 最大高度 */
+  height: 100%;
+  min-height: auto;
+  max-height: none;
   resize: none; /* 禁止调整大小 */
   overflow: hidden; /* 隐藏溢出内容 */
   
