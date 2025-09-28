@@ -442,7 +442,7 @@ const performSearch = async () => {
     fontItems.value = (response.list || []).map(item => ({
       id: item.id,
       name: item.name || 'no name',
-      description: item.description || 'no description',
+      description: item.description || 'No description',
       thumbnail: item.thumbnail || '',
       category: item.category || '',
       keywords: item.keywords || '',
@@ -500,7 +500,7 @@ const fetchFontItemsWithoutSearch = async () => {
     fontItems.value = (response.list || []).map(item => ({
       id: item.id,
       name: item.name || 'no name',
-      description: item.description || 'no description',
+      description: item.description || 'No description',
       thumbnail: item.thumbnail || '',
       category: item.category || 'unknown',
       keywords: item.keywords || '',

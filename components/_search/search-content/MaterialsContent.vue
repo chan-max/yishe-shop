@@ -546,7 +546,7 @@ const performSearch = async () => {
     materialItems.value = (response.list || []).map((item: any): MaterialItem => ({
       id: item.id,
       title: item.name || '未命名素材',
-      description: item.description || '高质量设计素材',
+      description: item.description || 'No description',
       image: item.url || 'https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Material',
       format: item.suffix?.toUpperCase() || 'UNKNOWN',
       group: item.group || '未分组',
@@ -640,7 +640,7 @@ const fetchMaterialItemsWithoutSearch = async () => {
     materialItems.value = (response.list || []).map((item: any): MaterialItem => ({
       id: item.id,
       title: item.name || '未命名素材',
-      description: item.description || '高质量设计素材',
+      description: item.description || 'No description',
       image: item.url || 'https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Material',
       format: item.suffix?.toUpperCase() || 'UNKNOWN',
       group: item.group || '未分组',
@@ -984,7 +984,7 @@ const fetchMaterialItems = async () => {
     materialItems.value = (response.list || []).map((item: any): MaterialItem => ({
       id: item.id,
       title: item.name || '未命名素材',
-      description: item.description || '高质量设计素材',
+      description: item.description || 'No description',
       image: item.url || 'https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Material',
       format: item.suffix?.toUpperCase() || 'UNKNOWN',
       group: item.group || '未分组',
