@@ -190,18 +190,18 @@ watch(() => route.path, () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
+  min-height: 60px;
   width: 100%;
   box-sizing: border-box;
-  
+
   @media (max-width: 768px) {
     padding: 0 1rem;
-    min-height: 56px;
+    min-height: 54px;
   }
-  
+
   @media (max-width: 480px) {
     padding: 0 0.75rem;
-    min-height: 52px;
+    min-height: 50px;
   }
 }
 
@@ -215,19 +215,19 @@ watch(() => route.path, () => {
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   text-decoration: none;
   color: var(--text-primary);
   transition: all 0.3s ease;
-  padding: 0.5rem;
-  border-radius: 8px;
+  padding: 0.4rem;
+  border-radius: 6px;
   
   &:hover {
     background: var(--bg-secondary);
-    transform: scale(1.02);
+    transform: scale(1.01);
     
     .logo-image {
-      transform: rotate(5deg);
+      transform: rotate(3deg);
     }
     
     .logo-text {
@@ -237,31 +237,32 @@ watch(() => route.path, () => {
 }
 
 .logo-image {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   transition: transform 0.3s ease;
 }
 
 .logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: var(--text-primary);
   transition: color 0.3s ease;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.5px;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
   }
   
   @media (max-width: 480px) {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
 }
 
 // Desktop Navigation
 .desktop-nav {
   display: flex;
-  gap: 2rem;
+  gap: 1.2rem;
   align-items: center;
   
   @media (max-width: 1024px) {
@@ -273,18 +274,21 @@ watch(() => route.path, () => {
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
   position: relative;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.2px;
   
   &:hover {
     color: var(--primary-color);
     background: var(--bg-secondary);
+    transform: translateY(-1px);
   }
   
   &.router-link-active {
@@ -299,15 +303,16 @@ watch(() => route.path, () => {
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 2px;
+    height: 1.5px;
     background: var(--primary-color);
     transition: all 0.3s ease;
     transform: translateX(-50%);
+    border-radius: 1px;
   }
   
   &:hover::after,
   &.router-link-active::after {
-    width: 80%;
+    width: 70%;
   }
 }
 
@@ -326,9 +331,9 @@ watch(() => route.path, () => {
   display: none;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  width: 48px;
-  height: 48px;
+  border-radius: 6px;
+  width: 44px;
+  height: 44px;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -336,7 +341,7 @@ watch(() => route.path, () => {
   
   &:hover {
     background: var(--bg-secondary);
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   
   &.active {
@@ -351,13 +356,13 @@ watch(() => route.path, () => {
   }
   
   @media (max-width: 768px) {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
   }
   
   @media (max-width: 480px) {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -383,17 +388,17 @@ watch(() => route.path, () => {
 .mobile-menu-content {
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   max-height: 80vh;
   overflow-y: auto;
   backdrop-filter: blur(10px);
   
   @media (max-width: 480px) {
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 6px;
     margin: 0.5rem;
   }
 }
@@ -413,15 +418,17 @@ watch(() => route.path, () => {
 }
 
 .mobile-logo-image {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   transition: all 0.3s ease;
 }
 
 .mobile-logo-text {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.3px;
 }
 
 .close-btn {
@@ -429,13 +436,14 @@ watch(() => route.path, () => {
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 4px;
   transition: all 0.3s ease;
   
   &:hover {
     color: var(--text-primary);
     background: var(--bg-secondary);
+    transform: scale(1.05);
   }
 }
 
@@ -449,16 +457,21 @@ watch(() => route.path, () => {
 .mobile-nav-link {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   color: var(--text-secondary);
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.3s ease;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.1px;
   
   &:hover {
     color: var(--primary-color);
     background: var(--bg-secondary);
+    transform: translateX(2px);
   }
   
   &.router-link-active {
