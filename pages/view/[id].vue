@@ -143,10 +143,10 @@ useHead({
 
 <template>
   <div class="product-view-page">
-    <!-- 路径ID常显区域 -->
-    <div class="route-id">路径ID: {{ id }}</div>
-    <!-- 调试信息 -->
-    <div class="debug-info" style="background: #f0f0f0; padding: 1rem; margin: 1rem 0; border-radius: 4px; font-family: monospace;">
+    <!-- 路径ID常显区域（默认隐藏） -->
+    <div class="route-id" v-if="false">路径ID: {{ id }}</div>
+    <!-- 调试信息（默认隐藏） -->
+    <div class="debug-info" v-if="false">
       <h4>调试信息:</h4>
       <p>当前ID: {{ id }}</p>
       <p>ID类型: {{ typeof id }}</p>
@@ -192,11 +192,11 @@ useHead({
     <!-- 商品详情内容 -->
     <div v-else-if="product" class="product-content">
       <!-- 商品头部信息 -->
-      <div class="product-header">
+      <div class="product-header refined">
         <div class="product-info">
           <h1 class="product-title">{{ product.name || '未命名商品' }}</h1>
-          <div class="product-meta">
-            <span class="product-code" v-if="product.code">商品代码: {{ product.code }}</span>
+          <div class="product-meta refined">
+            <span class="product-code" v-if="product.code">{{ product.code }}</span>
             <span class="product-status" :class="`status-${product.publishStatus}`">
               {{ 
                 product.publishStatus === 'draft' ? '草稿' :
@@ -211,10 +211,7 @@ useHead({
           </div>
         </div>
         <div class="product-actions">
-          <NuxtLink to="/search" class="action-btn secondary">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
+          <NuxtLink to="/search" class="action-btn minimal">
             返回搜索
           </NuxtLink>
         </div>
@@ -241,26 +238,22 @@ useHead({
       </div>
 
       <!-- 商品图片展示 -->
-      <div v-if="productImages.length > 0" class="product-images">
+      <div v-if="productImages.length > 0" class="product-images refined">
         <h3 class="section-title">商品图片</h3>
-        <div class="images-grid">
+        <div class="images-grid refined">
            <div 
              v-for="(imageUrl, index) in productImages" 
              :key="index"
-             class="image-item"
+            class="image-item refined"
              @click="openImageModal(imageUrl, index)"
            >
             <img 
               :src="imageUrl" 
               :alt="`${product.name} - 图片 ${index + 1}`"
-              class="product-image"
+              class="product-image refined"
               loading="lazy"
             />
-            <div class="image-overlay">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15 12c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-3-10c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-              </svg>
-            </div>
+            <div class="image-overlay refined">放大预览</div>
           </div>
         </div>
       </div>
@@ -445,6 +438,13 @@ useHead({
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+.product-header.refined {
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+}
+
 .product-title {
   font-size: 2rem;
   font-weight: 700;
@@ -457,6 +457,11 @@ useHead({
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.product-meta.refined {
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .product-code {
@@ -513,6 +518,17 @@ useHead({
 
 .action-btn.secondary:hover {
   background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.action-btn.minimal {
+  background: transparent;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.action-btn.minimal:hover {
+  background: #f9fafb;
   transform: translateY(-1px);
 }
 
@@ -574,10 +590,20 @@ useHead({
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+.product-images.refined {
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.15);
+}
+
 .images-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
+}
+
+.images-grid.refined {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
 }
 
 .image-item {
@@ -594,10 +620,23 @@ useHead({
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+.image-item.refined {
+  border-radius: 16px;
+  overflow: clip;
+}
+
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.product-image.refined {
+  transition: transform 0.5s ease;
+}
+
+.image-item.refined:hover .product-image.refined {
+  transform: scale(1.03);
 }
 
 .image-overlay {
@@ -606,13 +645,15 @@ useHead({
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
   color: white;
+  padding-bottom: 12px;
+  font-size: 0.95rem;
 }
 
 .image-item:hover .image-overlay {
