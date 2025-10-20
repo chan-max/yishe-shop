@@ -13,9 +13,10 @@ import { api } from '@/utils/api'
 // 获取运行时配置
 const runtimeConfig = useRuntimeConfig()
 
-// 获取路由参数
+// 获取路由参数并标准化为字符串（避免为数组或无效值导致请求异常）
 const route = useRoute()
-const id = route.params.id as string
+const rawId = route.params.id
+const id = Array.isArray(rawId) ? String(rawId[0] ?? '') : String(rawId ?? '')
 
 // 响应式数据
 const product = ref<any>(null)
@@ -95,7 +96,7 @@ const fetchProduct = async () => {
     
     console.log('API响应:', response)
     
-    if (response.code === 200) {
+    if (response.code === 0 || response.status === true || response.code === 200) {
       product.value = response.data
     } else {
       error.value = response.message || '获取商品信息失败'
@@ -142,6 +143,8 @@ useHead({
 
 <template>
   <div class="product-view-page">
+    <!-- 路径ID常显区域 -->
+    <div class="route-id">路径ID: {{ id }}</div>
     <!-- 调试信息 -->
     <div class="debug-info" style="background: #f0f0f0; padding: 1rem; margin: 1rem 0; border-radius: 4px; font-family: monospace;">
       <h4>调试信息:</h4>
@@ -328,6 +331,18 @@ useHead({
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
   padding: 2rem;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 路径ID常显样式 */
+.route-id {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #eef2ff;
+  color: #1e3a8a;
+  border: 1px solid #c7d2fe;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.9rem;
 }
 
 /* 加载状态 */

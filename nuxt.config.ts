@@ -105,14 +105,6 @@ export default defineNuxtConfig({
     },
   },
   
-  // robots.txt 配置
-  robots: {
-    UserAgent: '*',
-    Allow: '/',
-    Disallow: [
-    ],
-    Sitemap: 'https://1s.design/sitemap.xml'
-  },
   sitemap: {
 
     autoLastmod: true,
@@ -136,7 +128,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production' 
         ? 'https://1s.design:1520/api'
-        : 'http://localhost:3000/api')
+        : 'http://localhost:1520/api')
     }
   },
   

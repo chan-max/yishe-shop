@@ -9,9 +9,6 @@
 import { ofetch } from 'ofetch'
 import { useLocalStorage } from '@vueuse/core'
 
-// 使用 Nuxt 环境变量
-const BASE_URL = useRuntimeConfig().public.apiBase
-
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   params?: Record<string, any>
@@ -23,6 +20,7 @@ interface Response<T = any> {
   code: number
   data: T
   message: string
+  status?: boolean
 }
 
 export const request = async <T = any>(
@@ -31,8 +29,12 @@ export const request = async <T = any>(
 ): Promise<Response<T>> => {
   const { method = 'GET', params, body, headers = {} } = options
 
-  // 使用 useLocalStorage 获取 token
-  const token = useLocalStorage('token', null).value
+  // 在调用时读取运行时配置，避免在模块顶层使用 useRuntimeConfig 导致 SSR 上下文缺失
+  const { public: publicRuntime } = useRuntimeConfig()
+  const BASE_URL = publicRuntime.apiBase
+
+  // 仅在客户端读取本地存储，避免 SSR 时访问导致报错
+  const token = process.client ? useLocalStorage('token', null).value : null
 
   try {
     const response = await ofetch<Response<T>>(`${BASE_URL}${url}`, {

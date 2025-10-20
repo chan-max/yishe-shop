@@ -13,6 +13,7 @@ interface ApiResponse<T = any> {
   code: number
   data: T
   message: string
+  status?: boolean
 }
 
 // 定义测试接口的返回数据类型
