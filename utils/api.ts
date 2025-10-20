@@ -46,6 +46,31 @@ interface DesignRequestResponse {
   description: string
 }
 
+// 商品详情接口的返回数据类型
+interface ProductImage2DResponse {
+  id: string
+  materialId: string
+  templateGroup2DId: string
+  name: string
+  description: string
+  keywords: string
+  code?: string
+  publishStatus: string
+  isPublic: boolean
+  image1?: string
+  image2?: string
+  image3?: string
+  image4?: string
+  image5?: string
+  image6?: string
+  image7?: string
+  image8?: string
+  image9?: string
+  image10?: string
+  createTime: string
+  updateTime: string
+}
+
 // API 方法封装
 export const api = {
   // 测试接口
@@ -64,6 +89,20 @@ export const api = {
   design: {
     submit: (params: DesignRequestParams) =>
       request<ApiResponse<DesignRequestResponse>>('/design-request', {
+        method: 'POST',
+        body: params,
+      }),
+  },
+  // 商品相关接口
+  product: {
+    // 根据ID获取商品详情
+    getById: (id: string) =>
+      request<ApiResponse<ProductImage2DResponse>>(`/product-image-2d/${id}`, {
+        method: 'GET',
+      }),
+    // 分页获取商品列表
+    getPage: (params: { page?: number; pageSize?: number; publishStatus?: string; isPublic?: boolean }) =>
+      request<ApiResponse<{ list: ProductImage2DResponse[]; total: number; page: number; pageSize: number }>>('/product-image-2d/page', {
         method: 'POST',
         body: params,
       }),

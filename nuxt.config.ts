@@ -136,7 +136,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production' 
         ? 'https://1s.design:1520/api'
-        : 'http://localhost:1520/api')
+        : 'http://localhost:3000/api')
     }
   },
   
