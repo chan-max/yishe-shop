@@ -7,58 +7,62 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="overflow-x-hidden min-h-screen bg-black">
-    <!-- 检查是否为search页面，如果是则不显示左侧菜单 -->
-    <div v-if="route.path !== '/search'" class="main-layout">
-      <!-- Left Sidebar Navigation -->
-      <aside class="sidebar">
-        <!-- Logo Section -->
-        <div class="sidebar-logo">
-          <NuxtLink to="/" class="logo-link">
-            <img src="/logo.svg" alt="1s Design" class="logo-image" />
-          </NuxtLink>
-        </div>
-        
-        <nav class="index-sidebar-nav">
-          <NuxtLink to="/" class="nav-link">
-            Home
-          </NuxtLink>
-          <NuxtLink to="/products" class="nav-link">
-            Products
-          </NuxtLink>
-          <NuxtLink to="/search" class="nav-link">
-            Search
-            <v-icon right size="16">mdi-arrow-top-right</v-icon>
-          </NuxtLink>
-          <NuxtLink to="/design" class="nav-link">
-            Design Services
-          </NuxtLink>
-          <NuxtLink to="/portfolio" class="nav-link">
-            Portfolio
-          </NuxtLink>
-          <NuxtLink to="/gallery" class="nav-link">
-            Gallery
-          </NuxtLink>
-          <NuxtLink to="/blog" class="nav-link">
-            Blog
-          </NuxtLink>
-          <NuxtLink to="/about" class="nav-link">
-            About
-          </NuxtLink>
-          <NuxtLink to="/contact" class="nav-link">
-            Contact
-          </NuxtLink>
-        </nav>
-      </aside>
+  <div class="overflow-x-hidden min-h-screen bg-white">
+    <!-- 经典上方Header布局 -->
+    <div class="main-layout">
+      <!-- Top Header Navigation -->
+      <header class="top-header">
+        <div class="header-container">
+          <!-- Logo Section -->
+          <div class="header-logo">
+            <NuxtLink to="/" class="logo-link">
+              <img src="/logo.svg" alt="衣设服装设计" class="logo-image" />
+              <span class="logo-text">衣设服装设计</span>
+            </NuxtLink>
+          </div>
+          
+          <!-- Desktop Navigation Menu -->
+          <nav class="header-nav desktop-nav">
+            <NuxtLink to="/" class="nav-link">
+              首页
+            </NuxtLink>
+            <NuxtLink to="/products" class="nav-link">
+              产品
+            </NuxtLink>
+            <NuxtLink to="/search" class="nav-link">
+              搜索
+              <v-icon right size="16">mdi-arrow-top-right</v-icon>
+            </NuxtLink>
+            <NuxtLink to="/design" class="nav-link">
+              设计服务
+            </NuxtLink>
+            <NuxtLink to="/portfolio" class="nav-link">
+              作品集
+            </NuxtLink>
+            <NuxtLink to="/gallery" class="nav-link">
+              画廊
+            </NuxtLink>
+            <NuxtLink to="/blog" class="nav-link">
+              博客
+            </NuxtLink>
+            <NuxtLink to="/about" class="nav-link">
+              关于我们
+            </NuxtLink>
+            <NuxtLink to="/contact" class="nav-link">
+              联系我们
+            </NuxtLink>
+          </nav>
 
-      <!-- Mobile Menu Button -->
-      <button 
-        class="mobile-menu-btn"
-        @click="toggleMobileMenu"
-        :class="{ 'active': isMobileMenuOpen }"
-      >
-        <v-icon size="20">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
-      </button>
+          <!-- Mobile Menu Button -->
+          <button 
+            class="mobile-menu-btn"
+            @click="toggleMobileMenu"
+            :class="{ 'active': isMobileMenuOpen }"
+          >
+            <v-icon size="20">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+          </button>
+        </div>
+      </header>
 
       <!-- Mobile Menu Overlay -->
       <Transition name="mobile-menu">
@@ -67,7 +71,8 @@
             <!-- Mobile Menu Header -->
             <div class="mobile-menu-header">
               <div class="mobile-logo">
-                <img src="/logo.svg" alt="1s Design" class="mobile-logo-image" />
+                <img src="/logo.svg" alt="衣设服装设计" class="mobile-logo-image" />
+                <span class="mobile-logo-text">衣设服装设计</span>
               </div>
               <button @click="closeMobileMenu" class="close-btn">
                 <v-icon>mdi-close</v-icon>
@@ -77,32 +82,32 @@
             <!-- Mobile Menu Links -->
             <nav class="mobile-nav-menu">
               <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
-                Home
+                首页
               </NuxtLink>
               <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
-                Products
+                产品
               </NuxtLink>
               <NuxtLink to="/search" class="mobile-nav-link" @click="closeMobileMenu">
-                Search
+                搜索
                 <v-icon right size="16">mdi-arrow-top-right</v-icon>
               </NuxtLink>
               <NuxtLink to="/design" class="mobile-nav-link" @click="closeMobileMenu">
-                Design Services
+                设计服务
               </NuxtLink>
               <NuxtLink to="/portfolio" class="mobile-nav-link" @click="closeMobileMenu">
-                Portfolio
+                作品集
               </NuxtLink>
               <NuxtLink to="/gallery" class="mobile-nav-link" @click="closeMobileMenu">
-                Gallery
+                画廊
               </NuxtLink>
               <NuxtLink to="/blog" class="mobile-nav-link" @click="closeMobileMenu">
-                Blog
+                博客
               </NuxtLink>
               <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
-                About
+                关于我们
               </NuxtLink>
               <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
-                Contact
+                联系我们
               </NuxtLink>
             </nav>
           </div>
@@ -115,19 +120,8 @@
       </main>
     </div>
     
-    <!-- Footer for non-search pages -->
-    <div v-if="route.path !== '/search'" class="footer-wrapper">
-      <LayoutPageFooter />
-    </div>
-    
-    <!-- Search页面使用原来的布局 -->
-    <div v-else>
-    <LayoutPageNavbar />
-    <LayoutPageContent>
-      <slot />
-    </LayoutPageContent>
-      <LayoutPageFooter />
-    </div>
+    <!-- Footer -->
+    <LayoutPageFooter />
   </div>
 </template>
 
@@ -154,349 +148,216 @@ watch(() => route.path, () => {
 </script>
 
 <style lang="scss" scoped>
-// CSS Variables - Pure Black Theme
+// CSS Variables - White Theme
 :root {
-  --primary-color: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #000000;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --border-color: #333333;
-}
-
-// 确保侧边栏立即稳定
-.sidebar {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
+  --primary-color: #2563eb;
+  --secondary-color: #f8fafc;
+  --accent-color: #64748b;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 // Main Layout
 .main-layout {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  padding-top: 0;
 }
 
-// Left Sidebar
-.sidebar {
-  background: #000000;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  min-width: 200px;
-  max-width: 240px;
-  width: 16vw;
-  flex-shrink: 0;
-  position: fixed;
+// Top Header
+.top-header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
   top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-  transition: none;
-  will-change: auto;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  width: 100%;
+  box-sizing: border-box;
   
-  /* 添加微妙的渐变背景 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, 
-      rgba(255, 255, 255, 0.02) 0%, 
-      transparent 20%, 
-      transparent 80%, 
-      rgba(255, 255, 255, 0.01) 100%
-    );
-    pointer-events: none;
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    min-height: 56px;
   }
   
-  @media (max-width: 1024px) {
-    display: none;
+  @media (max-width: 480px) {
+    padding: 0 0.75rem;
+    min-height: 52px;
   }
 }
 
 // Logo Section
-.sidebar-logo {
-  padding: 1rem 0.75rem 1.5rem;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
-  contain: layout;
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: 0.75rem;
   text-decoration: none;
-  color: var(--primary-color);
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
   padding: 0.5rem;
   border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-  
-  /* 添加hover效果 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.6s ease;
-  }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(2px);
-    
-    &::before {
-      left: 100%;
-    }
+    background: var(--bg-secondary);
+    transform: scale(1.02);
     
     .logo-image {
-      transform: rotate(2deg);
+      transform: rotate(5deg);
     }
     
     .logo-text {
-      color: white;
+      color: var(--primary-color);
     }
   }
 }
 
 .logo-image {
-  width: 36px !important;
-  height: 36px !important;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  transform: scale(1) rotate(0deg) !important;
-  animation: none !important;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
 }
 
 .logo-text {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  letter-spacing: 0.5px;
-}
-
-.index-sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0;
-  position: relative;
-  z-index: 1;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  letter-spacing: -0.5px;
   
-  /* 导航链接样式 - 移除动画确保位置稳定 */
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 }
 
-/* 定义进入动画 */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+// Desktop Navigation
+.desktop-nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  
+  @media (max-width: 1024px) {
+    display: none;
   }
 }
 
 .nav-link {
-  color: #d1d5db;
+  color: var(--text-secondary);
   text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
-  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
-  transform: translateX(0);
-  will-change: auto;
-  contain: layout;
   
-  /* 添加渐变背景和阴影 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.6s ease;
+  &:hover {
+    color: var(--primary-color);
+    background: var(--bg-secondary);
   }
   
-  /* 添加左侧指示条 */
+  &.router-link-active {
+    color: var(--primary-color);
+    background: var(--bg-tertiary);
+    font-weight: 600;
+  }
+  
   &::after {
     content: '';
     position: absolute;
-    left: 0;
-    top: 50%;
-    width: 3px;
-    height: 0;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
     background: var(--primary-color);
-    border-radius: 0 2px 2px 0;
-    transform: translateY(-50%);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
   }
   
-  /* 图标动画 */
-  .v-icon {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: scale(1);
-  }
-  
-  /* Hover 状态 */
-  &:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.12));
-    color: white;
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    
-    &::before {
-      left: 100%;
-    }
-    
-    &::after {
-      height: 60%;
-    }
-    
-    .v-icon {
-      transform: scale(1.1) rotate(5deg);
-      color: var(--primary-color);
-    }
-  }
-  
-  /* Active 状态 */
-  &.router-link-active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.2));
-    color: white;
-    transform: translateX(6px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
-    
-    &::before {
-      left: 100%;
-    }
-    
-    &::after {
-      height: 80%;
-      background: var(--primary-color);
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    }
-    
-    .v-icon {
-      transform: scale(1.15) rotate(0deg);
-      color: var(--primary-color);
-      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
-    }
-  }
-  
-  /* 点击时的脉冲效果 */
-  &:active {
-    transform: translateX(2px) scale(0.98);
-    transition: all 0.1s ease;
+  &:hover::after,
+  &.router-link-active::after {
+    width: 80%;
   }
 }
-
 
 // Main Content
 .main-content {
   flex: 1;
-  margin-left: 16vw;
-  min-width: 0;
   padding: 2rem;
   
-  @media (max-width: 1024px) {
-    margin-left: 0;
+  @media (max-width: 768px) {
     padding: 1rem;
-  }
-}
-
-// Responsive Design
-@media (max-width: 1200px) {
-  .sidebar {
-    width: 14vw;
-    min-width: 180px;
-  }
-  
-  .main-content {
-    margin-left: 14vw;
-  }
-}
-
-@media (max-width: 1024px) {
-  .main-layout {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    display: none;
-  }
-  
-  .main-content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-}
-
-// Footer wrapper to avoid overlap with sidebar
-.footer-wrapper {
-  margin-left: 16vw;
-  
-  @media (max-width: 1200px) {
-    margin-left: 14vw;
-  }
-  
-  @media (max-width: 1024px) {
-    margin-left: 0;
   }
 }
 
 // Mobile Menu Button
 .mobile-menu-btn {
   display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.98);
-  backdrop-filter: blur(10px);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 50%;
+  border-radius: 8px;
   width: 48px;
   height: 48px;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--shadow-sm);
   
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--bg-secondary);
     transform: scale(1.05);
   }
   
   &.active {
     background: var(--primary-color);
-    color: var(--bg-primary);
+    color: white;
   }
   
   @media (max-width: 1024px) {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    width: 44px;
+    height: 44px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -523,12 +384,18 @@ watch(() => route.path, () => {
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 320px;
   max-height: 80vh;
   overflow-y: auto;
   backdrop-filter: blur(10px);
+  
+  @media (max-width: 480px) {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 0.5rem;
+  }
 }
 
 .mobile-menu-header {
@@ -546,16 +413,15 @@ watch(() => route.path, () => {
 }
 
 .mobile-logo-image {
-  width: 52px;
-  height: 52px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s ease;
 }
 
 .mobile-logo-text {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-primary);
 }
 
 .close-btn {
@@ -568,8 +434,8 @@ watch(() => route.path, () => {
   transition: all 0.3s ease;
   
   &:hover {
-    color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    background: var(--bg-secondary);
   }
 }
 
@@ -578,29 +444,6 @@ watch(() => route.path, () => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  
-  /* 为移动端导航链接添加进入动画 */
-  .mobile-nav-link {
-    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-    
-    &:nth-child(1) { animation-delay: 0.1s; }
-    &:nth-child(2) { animation-delay: 0.15s; }
-    &:nth-child(3) { animation-delay: 0.2s; }
-    &:nth-child(4) { animation-delay: 0.25s; }
-    &:nth-child(5) { animation-delay: 0.3s; }
-  }
-}
-
-/* 定义移动端进入动画 */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .mobile-nav-link {
@@ -609,95 +452,19 @@ watch(() => route.path, () => {
   padding: 1rem;
   color: var(--text-secondary);
   text-decoration: none;
-  border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
   gap: 0.75rem;
-  position: relative;
-  overflow: hidden;
-  transform: translateX(0);
   
-  /* 添加滑动背景效果 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.6s ease;
-  }
-  
-  /* 添加左侧指示条 */
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 4px;
-    height: 0;
-    background: var(--primary-color);
-    border-radius: 0 3px 3px 0;
-    transform: translateY(-50%);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* 图标动画 */
-  .v-icon {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: scale(1);
-  }
-  
-  /* Hover 状态 */
   &:hover {
     color: var(--primary-color);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.12));
-    transform: translateX(6px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    
-    &::before {
-      left: 100%;
-    }
-    
-    &::after {
-      height: 70%;
-    }
-    
-    .v-icon {
-      transform: scale(1.1) rotate(5deg);
-      color: var(--primary-color);
-    }
+    background: var(--bg-secondary);
   }
   
-  /* Active 状态 */
   &.router-link-active {
     color: var(--primary-color);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.2));
+    background: var(--bg-tertiary);
     font-weight: 600;
-    transform: translateX(8px);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-    
-    &::before {
-      left: 100%;
-    }
-    
-    &::after {
-      height: 90%;
-      background: var(--primary-color);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
-    }
-    
-    .v-icon {
-      transform: scale(1.2) rotate(0deg);
-      color: var(--primary-color);
-      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
-    }
-  }
-  
-  /* 点击时的脉冲效果 */
-  &:active {
-    transform: translateX(4px) scale(0.98);
-    transition: all 0.1s ease;
   }
 }
 

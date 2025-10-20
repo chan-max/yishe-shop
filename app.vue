@@ -11,24 +11,24 @@ const { awesome } = useAppConfig();
 
 // 在 app.vue 或 layout 文件中添加
 useHead({
-  title: "1s.design - 专业服装设计在线平台",
+  title: "衣设服装设计 - 创意印花图案与服装设计平台",
   meta: [
     {
       name: "description",
       content:
-        "1s.design是专业的服装设计在线平台，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+        "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
     },
     
     {
       name: "keywords",
       content:
-        "1s.design,服装设计,在线服装设计,服装设计师平台,服装设计作品集,服装设计灵感",
+        "衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计",
     },
-    { property: "og:title", content: "1s.design - 专业服装设计在线平台" },
+    { property: "og:title", content: "衣设服装设计 - 创意印花图案与服装设计平台" },
     {
       property: "og:description",
       content:
-        "1s.design是专业的服装设计在线平台，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+        "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
     },
     { property: "og:type", content: "website" },
     { property: "og:url", content: "https://1s.design" },
@@ -39,7 +39,7 @@ useHead({
 
 <template>
   <Body
-    class="antialiased duration-300 transition-colors text-white bg-black"
+    class="antialiased duration-300 transition-colors text-gray-900 bg-white"
   >
     <NuxtLayout>
       <NuxtLoadingIndicator />

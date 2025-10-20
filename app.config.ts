@@ -73,7 +73,7 @@ declare module '@nuxt/schema' {
 export default defineAppConfig({
   awesome: {
     name: '衣设服装设计',
-    description: '专业的服装设计交流平台，汇聚创意灵感，连接设计师与品牌',
+    description: '专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感',
     project: {
       links: {
         github: '',
@@ -108,7 +108,7 @@ export default defineAppConfig({
       },
     },
     author: {
-      name: '1s design team',
+      name: '衣设设计团队',
       links: {
         website: 'https://1s.design',
       },

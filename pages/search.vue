@@ -780,7 +780,7 @@ const handleBlur = () => {
     </aside>
 
     <!-- Main content area -->
-    <main class="main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+    <main class="search-main-content" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <!-- Dynamic content component with integrated header -->
       <component
         :is="currentContentComponent" 
@@ -1317,7 +1317,7 @@ const handleBlur = () => {
 
 
 // 主内容区域
-.main-content {
+.search-main-content {
   flex: 1;
   margin-left: 240px;
   display: flex;
@@ -1757,7 +1757,7 @@ const handleBlur = () => {
     }
   }
   
-  .main-content {
+  .search-main-content {
     margin-left: 200px;
     
     &.sidebar-collapsed {
@@ -1817,7 +1817,7 @@ const handleBlur = () => {
     }
   }
   
-  .main-content {
+  .search-main-content {
     margin-left: 180px;
     
     &.sidebar-collapsed {
@@ -1948,7 +1948,7 @@ const handleBlur = () => {
   // Header styles are now integrated into content components
   
   // 移动端主内容区域
-  .main-content {
+  .search-main-content {
     margin-left: 0;
     min-height: calc(100vh - 60px); // 使用最小头部高度
     padding-top: 0; // 移除顶部padding，让内容紧贴头部
@@ -2097,7 +2097,7 @@ const handleBlur = () => {
   // Header styles are now integrated into content components
   
   // 小屏幕主内容区域
-  .main-content {
+  .search-main-content {
     min-height: calc(100vh - 68px); // 更新为新的头部高度
   }
   

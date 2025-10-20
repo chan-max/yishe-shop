@@ -4,28 +4,28 @@ const { awesome } = useAppConfig()
 // Footer navigation links
 const footerLinks = {
   design: [
-    { name: 'Fashion Design', href: '/search?category=fashion' },
-    { name: 'Graphic Design', href: '/search?category=graphic' },
-    { name: 'UI/UX Design', href: '/search?category=ui-ux' },
-    { name: 'Product Design', href: '/search?category=product' }
+    { name: '服装设计', href: '/search?category=fashion' },
+    { name: '图案设计', href: '/search?category=graphic' },
+    { name: '印花设计', href: '/search?category=print' },
+    { name: '面料设计', href: '/search?category=fabric' }
   ],
   community: [
-    { name: 'Designers', href: '/designers' },
-    { name: 'Inspiration', href: '/inspiration' },
-    { name: 'Trends', href: '/trends' },
-    { name: 'Challenges', href: '/challenges' }
+    { name: '设计师', href: '/designers' },
+    { name: '灵感库', href: '/inspiration' },
+    { name: '流行趋势', href: '/trends' },
+    { name: '设计挑战', href: '/challenges' }
   ],
   support: [
-    { name: 'Help Center', href: '/help' },
-    { name: 'Contact Us', href: '/contact' },
-    { name: 'Feedback', href: '/feedback' },
-    { name: 'Bug Report', href: '/bug-report' }
+    { name: '帮助中心', href: '/help' },
+    { name: '联系我们', href: '/contact' },
+    { name: '意见反馈', href: '/feedback' },
+    { name: '问题报告', href: '/bug-report' }
   ],
   company: [
-    { name: 'About Us', href: '/about' },
-    { name: 'Careers', href: '/careers' },
-    { name: 'Press', href: '/press' },
-    { name: 'Partners', href: '/partners' }
+    { name: '关于我们', href: '/about' },
+    { name: '招聘信息', href: '/careers' },
+    { name: '新闻动态', href: '/press' },
+    { name: '合作伙伴', href: '/partners' }
   ]
 }
 
@@ -47,11 +47,11 @@ const socialLinks = [
         <!-- Brand Section -->
         <div class="footer-brand">
           <div class="footer-logo">
-            <img src="/logo.svg" alt="1s Design" class="footer-logo-image" />
-            <span class="footer-logo-text">1s Design</span>
+            <img src="/logo.svg" alt="衣设服装设计" class="footer-logo-image" />
+            <span class="footer-logo-text">衣设服装设计</span>
           </div>
           <p class="footer-description">
-            The ultimate platform for creative designers to showcase their work, discover inspiration, and connect with the global design community.
+            专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。
           </p>
           <div class="footer-social">
             <a 
@@ -69,7 +69,7 @@ const socialLinks = [
         <!-- Navigation Links -->
         <div class="footer-nav">
           <div class="footer-nav-section">
-            <h3 class="footer-nav-title">Design</h3>
+            <h3 class="footer-nav-title">设计分类</h3>
             <ul class="footer-nav-list">
               <li v-for="link in footerLinks.design" :key="link.name">
                 <NuxtLink :to="link.href" class="footer-nav-link">
@@ -80,7 +80,7 @@ const socialLinks = [
           </div>
 
           <div class="footer-nav-section">
-            <h3 class="footer-nav-title">Community</h3>
+            <h3 class="footer-nav-title">社区</h3>
             <ul class="footer-nav-list">
               <li v-for="link in footerLinks.community" :key="link.name">
                 <NuxtLink :to="link.href" class="footer-nav-link">
@@ -91,7 +91,7 @@ const socialLinks = [
           </div>
 
           <div class="footer-nav-section">
-            <h3 class="footer-nav-title">Support</h3>
+            <h3 class="footer-nav-title">支持</h3>
             <ul class="footer-nav-list">
               <li v-for="link in footerLinks.support" :key="link.name">
                 <NuxtLink :to="link.href" class="footer-nav-link">
@@ -102,7 +102,7 @@ const socialLinks = [
           </div>
 
           <div class="footer-nav-section">
-            <h3 class="footer-nav-title">Company</h3>
+            <h3 class="footer-nav-title">公司</h3>
             <ul class="footer-nav-list">
               <li v-for="link in footerLinks.company" :key="link.name">
                 <NuxtLink :to="link.href" class="footer-nav-link">
@@ -119,13 +119,13 @@ const socialLinks = [
         <div class="footer-copyright">
           <p>
             Copyright © {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
-            {{ awesome?.author?.name || '1s Design' }}. All rights reserved.
+            {{ awesome?.author?.name || '衣设服装设计' }}. 保留所有权利。
           </p>
         </div>
         <div class="footer-legal">
-          <NuxtLink to="/privacy" class="footer-legal-link">Privacy Policy</NuxtLink>
-          <NuxtLink to="/terms" class="footer-legal-link">Terms of Service</NuxtLink>
-          <NuxtLink to="/cookies" class="footer-legal-link">Cookie Policy</NuxtLink>
+          <NuxtLink to="/privacy" class="footer-legal-link">隐私政策</NuxtLink>
+          <NuxtLink to="/terms" class="footer-legal-link">服务条款</NuxtLink>
+          <NuxtLink to="/cookies" class="footer-legal-link">Cookie政策</NuxtLink>
         </div>
       </div>
     </div>

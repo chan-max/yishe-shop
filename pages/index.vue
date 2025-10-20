@@ -15,26 +15,24 @@ definePageMeta({ layout: 'page' })
 // Page title and meta
 useHead({
   titleTemplate: '',
-  title: '1s Design - Creative Design Sharing Platform',
+  title: '衣设服装设计 - 创意印花图案与服装设计平台',
   meta: [
     {
       name: 'description',
-      content: '1s Design is a creative design sharing platform where designers showcase their work, discover inspiration, and connect with the global design community.'
+      content: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。'
     },
     {
       name: 'keywords',
-      content: 'design sharing, creative platform, fashion design, design inspiration, design community, 1s design'
+      content: '服装设计,创意印花,图案设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计'
     }
   ]
 })
 
 // Animation state
-const isLoaded = ref(false)
 const currentSlide = ref(0)
 
 // Initialize animations (keep simple rotation over 3 fixed slides)
 onMounted(() => {
-  setTimeout(() => { isLoaded.value = true }, 100)
   setInterval(() => { currentSlide.value = (currentSlide.value + 1) % 3 }, 5000)
 })
 
@@ -49,7 +47,7 @@ const goToExplore = () => {
 </script>
 
 <template>
-  <div class="design-homepage" :class="{ 'loaded': isLoaded }">
+  <div class="design-homepage">
     <!-- Banner Section with Large Left Image, Small Right Text -->
     <section class="banner-section">
       <div class="banner-container">
@@ -57,12 +55,12 @@ const goToExplore = () => {
           <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='bg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23bg1)'/></svg>" alt="Banner Image" class="banner-img">
         </div>
         <div class="banner-content">
-          <h1 class="banner-title">1s Design</h1>
-          <h2 class="banner-subtitle">World Famous Art Collection</h2>
-          <p class="banner-slogan">Art comes from life and returns to life</p>
-          <p class="banner-description">Curated collection of world-famous artworks, providing free high-quality design resources for your creative projects</p>
+          <h1 class="banner-title">衣设服装设计</h1>
+          <h2 class="banner-subtitle">创意印花图案设计平台</h2>
+          <p class="banner-slogan">创意源于生活，设计改变时尚</p>
+          <p class="banner-description">专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，为您的时尚项目提供高质量的设计资源</p>
           <div class="banner-actions">
-            <button class="primary-btn" @click="goToSearch">Ask 1s Design</button>
+            <button class="primary-btn" @click="goToSearch">开始设计</button>
             <button class="secondary-btn">
               <v-icon size="16">mdi-arrow-up</v-icon>
             </button>
@@ -77,12 +75,12 @@ const goToExplore = () => {
       <div class="hero-slide" :class="{ active: currentSlide === 0 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g1%22 cx=%2230%25%22 cy=%2230%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%23ff6b6b%22/><stop offset=%2250%25%22 stop-color=%22%234ecdc4%22 stop-opacity=%22.8%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22 stop-opacity=%221%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g1)%22/></svg>');"></div>
           <div class="hero-content">
-          <h1 class="hero-title">World Famous Art Assets</h1>
-          <h2 class="hero-subtitle">Free HD Art Resources</h2>
-          <p class="hero-description">Curated selection of world-famous masterpieces, providing free downloadable HD assets for your creative design projects</p>
+          <h1 class="hero-title">创意印花图案库</h1>
+          <h2 class="hero-subtitle">免费高清设计资源</h2>
+          <p class="hero-description">精心挑选的创意印花图案和服装设计作品，为您的时尚设计项目提供免费可下载的高清设计资源</p>
               <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">Explore Designs</button>
-            <button class="secondary-btn" @click="goToSearch">Search Now</button>
+            <button class="primary-btn" @click="goToExplore">探索设计</button>
+            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
               </div>
             </div>
           </div>
@@ -90,25 +88,25 @@ const goToExplore = () => {
       <div class="hero-slide" :class="{ active: currentSlide === 1 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g2%22 cx=%2270%25%22 cy=%2240%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%234facfe%22/><stop offset=%2260%25%22 stop-color=%22%2300f2fe%22 stop-opacity=%22.9%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g2)%22/></svg>');"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Free Design Services</h1>
-          <h2 class="hero-subtitle">Art Assets & Creative Design</h2>
-          <p class="hero-description">We provide free services: world-famous art assets, logo design, brand identity, poster creation, product packaging, business cards, postcards, film posters, newspaper layout and more 2D design services</p>
+          <h1 class="hero-title">免费设计服务</h1>
+          <h2 class="hero-subtitle">印花图案与创意设计</h2>
+          <p class="hero-description">我们提供免费服务：创意印花图案、服装设计、品牌标识、海报设计、产品包装、名片设计、明信片、电影海报、报纸版面等更多2D设计服务</p>
           <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">Explore Designs</button>
-            <button class="secondary-btn" @click="goToSearch">Search Now</button>
+            <button class="primary-btn" @click="goToExplore">探索设计</button>
+            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
         </div>
       </div>
-      </div>
+    </div>
       <!-- Slide 3 -->
       <div class="hero-slide" :class="{ active: currentSlide === 2 }">
         <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g3%22 cx=%2250%25%22 cy=%2260%25%22 r=%2285%25%22><stop offset=%220%25%22 stop-color=%22%23a78bfa%22/><stop offset=%2255%25%22 stop-color=%22%23f472b6%22 stop-opacity=%22.85%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g3)%22/></svg>');"></div>
         <div class="hero-content">
-          <h1 class="hero-title">Create Art Together</h1>
-          <h2 class="hero-subtitle">Inspire & Be Inspired</h2>
-          <p class="hero-description">Connect with designers worldwide to co-create and push boundaries of visual design, bringing world-famous art assets to new life</p>
+          <h1 class="hero-title">共同创造时尚</h1>
+          <h2 class="hero-subtitle">灵感与启发</h2>
+          <p class="hero-description">与全球设计师连接，共同创作并推动视觉设计的边界，让创意印花图案和服装设计焕发新的生命力</p>
           <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">Explore Designs</button>
-            <button class="secondary-btn" @click="goToSearch">Search Now</button>
+            <button class="primary-btn" @click="goToExplore">探索设计</button>
+            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
           </div>
         </div>
       </div>
@@ -116,28 +114,28 @@ const goToExplore = () => {
 
     <!-- Features Section with Large Left, Small Right Layout -->
     <section class="features-section">
-      <h2 class="section-title">Discover 1s Design</h2>
+      <h2 class="section-title">探索衣设设计</h2>
       <div class="features-container">
         <div class="features-large">
           <div class="feature-item large">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="48" class="feature-icon">mdi-palette</v-icon>
-              <h3 class="feature-title">Free Design Services</h3>
-              <p class="feature-description">We provide free services: world-famous art assets, logo design, product imagery, apparel design, brand copywriting, signage, business cards, postcards, posters, newspaper layout and more</p>
+              <h3 class="feature-title">免费设计服务</h3>
+              <p class="feature-description">我们提供免费服务：创意印花图案、服装设计、品牌标识、产品形象、服装设计、品牌文案、标识设计、名片、明信片、海报、报纸版面等更多服务</p>
               <div class="feature-meta">
                 <div class="feature-tags">
-                  <span class="tag">Art Assets</span>
-                  <span class="tag">Logo Design</span>
-                  <span class="tag">Posters</span>
-                  <span class="tag">Branding</span>
+                  <span class="tag">印花图案</span>
+                  <span class="tag">服装设计</span>
+                  <span class="tag">海报设计</span>
+                  <span class="tag">品牌设计</span>
                 </div>
                 <div class="feature-actions">
                   <button class="chip-btn" @click="goToSearch">
                     <v-icon size="16">mdi-lightning-bolt</v-icon>
-                    Get Free Assets
+                    获取免费资源
                   </button>
-                  <NuxtLink to="/search?category=graphic" class="text-link">Explore Categories</NuxtLink>
+                  <NuxtLink to="/search?category=graphic" class="text-link">探索分类</NuxtLink>
                 </div>
               </div>
         </div>
@@ -168,40 +166,40 @@ const goToExplore = () => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-shape</v-icon>
-              <h3 class="feature-title">Logo & Brand</h3>
-              <p class="feature-description">Brand systems, naming, logo marks, identity kits and style guides</p>
+              <h3 class="feature-title">标识与品牌</h3>
+              <p class="feature-description">品牌系统、命名、标识设计、身份识别套件和风格指南</p>
             </div>
           </div>
           <div class="feature-item small portraitTall">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-tshirt-crew</v-icon>
-              <h3 class="feature-title">Product & Apparel</h3>
-              <p class="feature-description">Product imagery, mockups, garment visuals and creative fashion design</p>
+              <h3 class="feature-title">产品与服装</h3>
+              <p class="feature-description">产品形象、效果图、服装视觉效果和创意时尚设计</p>
             </div>
           </div>
           <div class="feature-item small portrait">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-post</v-icon>
-              <h3 class="feature-title">Posters & Layout</h3>
-              <p class="feature-description">Film/music posters, editorial layouts, brochures and print-ready files</p>
+              <h3 class="feature-title">海报与版面</h3>
+              <p class="feature-description">电影/音乐海报、编辑版面、宣传册和印刷就绪文件</p>
             </div>
           </div>
           <div class="feature-item small portraitTall">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-package-variant</v-icon>
-              <h3 class="feature-title">Packaging & Labels</h3>
-              <p class="feature-description">Bottle wraps, box dielines and shelf-ready label systems</p>
+              <h3 class="feature-title">包装与标签</h3>
+              <p class="feature-description">瓶身包装、盒子刀线和货架就绪标签系统</p>
             </div>
           </div>
           <div class="feature-item small portrait">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
             <div class="feature-content">
               <v-icon size="32" class="feature-icon">mdi-instagram</v-icon>
-              <h3 class="feature-title">Social Media Graphics</h3>
-              <p class="feature-description">Reels covers, story series and vertical campaign templates</p>
+              <h3 class="feature-title">社交媒体图形</h3>
+              <p class="feature-description">短视频封面、故事系列和垂直活动模板</p>
             </div>
           </div>
         </div>
@@ -213,35 +211,35 @@ const goToExplore = () => {
       <div class="stats-container">
         <div class="stat-item">
           <h3 class="stat-number">15K+</h3>
-          <p class="stat-label">Designs Shared</p>
+          <p class="stat-label">设计作品分享</p>
           </div>
         <div class="stat-item">
           <h3 class="stat-number">8K+</h3>
-          <p class="stat-label">Active Designers</p>
+          <p class="stat-label">活跃设计师</p>
         </div>
         <div class="stat-item">
           <h3 class="stat-number">70+</h3>
-          <p class="stat-label">Countries</p>
+          <p class="stat-label">国家地区</p>
         </div>
         <div class="stat-item">
           <h3 class="stat-number">3M+</h3>
-          <p class="stat-label">Monthly Views</p>
+          <p class="stat-label">月度浏览量</p>
         </div>
       </div>
     </section>
 
     <!-- Trending Designs Section with Large Left, Small Right -->
     <section class="trending-section">
-      <h2 class="section-title">Trending Designs</h2>
+      <h2 class="section-title">热门设计</h2>
       <div class="trending-container">
         <div class="trending-large">
           <div class="trending-item large">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='tg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%2360a5fa'/><stop offset='50%' stop-color='%233b82f6' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tg1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">Bold Minimalism</h3>
-              <p class="trending-description">Sleek compositions, generous whitespace and expressive color</p>
+              <h3 class="trending-title">大胆极简主义</h3>
+              <p class="trending-description">简洁的构图、丰富的留白和富有表现力的色彩</p>
               <div class="trending-meta">
-                <span>By Designer A</span>
+                <span>设计师 A</span>
       </div>
             </div>
         </div>
@@ -252,12 +250,12 @@ const goToExplore = () => {
               <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='tc1' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tc1)'/></svg>" alt="Complement Visual" class="tc-image" />
             </div>
             <div class="tc-content">
-              <h4 class="tc-title">Fresh Directions</h4>
-              <p class="tc-desc">Vertical compositions with bold typography and soft gradients for brand moments</p>
+              <h4 class="tc-title">新潮方向</h4>
+              <p class="tc-desc">垂直构图配合大胆的字体设计和柔和的渐变，打造品牌时刻</p>
               <div class="tc-tags">
-                <span class="tc-tag">Poster</span>
-                <span class="tc-tag">Editorial</span>
-                <span class="tc-tag">Brand</span>
+                <span class="tc-tag">海报</span>
+                <span class="tc-tag">编辑</span>
+                <span class="tc-tag">品牌</span>
           </div>
         </div>
       </div>
@@ -266,64 +264,64 @@ const goToExplore = () => {
           <div class="trending-item small portrait">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts1' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts1)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">Street Vibes</h3>
-              <p class="trending-description">Energetic shapes and kinetic typography inspired by the city</p>
+              <h3 class="trending-title">街头风格</h3>
+              <p class="trending-description">充满活力的形状和动感字体设计，灵感来自城市</p>
               <div class="trending-meta">
-                <span>By Designer B</span>
+                <span>设计师 B</span>
               </div>
             </div>
           </div>
           <div class="trending-item small portraitTall">
             <img src="/pages/index/monalisa.jpg" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">Classic Art Revival</h3>
-              <p class="trending-description">Inspired by world-famous masterpieces, reimagined for modern sustainable brands</p>
+              <h3 class="trending-title">经典艺术复兴</h3>
+              <p class="trending-description">灵感来自世界著名杰作，为现代可持续品牌重新构想</p>
               <div class="trending-meta">
-                <span>Free Art Assets Available</span>
+                <span>免费艺术资源可用</span>
               </div>
             </div>
           </div>
           <div class="trending-item small">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts3' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts3)'/></svg>" alt="Trending Design" class="trending-image">
             <div class="trending-overlay">
-              <h3 class="trending-title">Tech Fusion</h3>
-              <p class="trending-description">Neon textures and soft glows blending future and craft</p>
+              <h3 class="trending-title">科技融合</h3>
+              <p class="trending-description">霓虹纹理和柔和光晕融合未来与工艺</p>
               <div class="trending-meta">
-                <span>By Designer D</span>
+                <span>设计师 D</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button class="primary-btn" @click="goToExplore">See More Designs</button>
+      <button class="primary-btn" @click="goToExplore">查看更多设计</button>
     </section>
 
     <!-- Testimonials Section -->
     <section class="testimonials-section">
-      <h2 class="section-title">What Our Community Says</h2>
+      <h2 class="section-title">社区用户评价</h2>
       <div class="testimonials-container">
         <div class="testimonial-item">
           <img src="https://picsum.photos/120/120?random=12" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">1s Design has transformed how I share my creative vision!</blockquote>
+          <blockquote class="testimonial-quote">衣设服装设计彻底改变了我分享创意愿景的方式！</blockquote>
           <div class="testimonial-author">
-            <strong>Sophie Lin</strong>
-            <span>Fashion Designer</span>
+            <strong>苏菲·林</strong>
+            <span>服装设计师</span>
           </div>
         </div>
         <div class="testimonial-item">
           <img src="https://picsum.photos/120/120?random=13" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">This platform connects me with inspiring designers daily.</blockquote>
+          <blockquote class="testimonial-quote">这个平台让我每天都能与鼓舞人心的设计师们连接。</blockquote>
           <div class="testimonial-author">
-            <strong>Carlos Mendes</strong>
-            <span>Graphic Artist</span>
+            <strong>卡洛斯·门德斯</strong>
+            <span>平面艺术家</span>
           </div>
         </div>
         <div class="testimonial-item">
           <img src="https://picsum.photos/120/120?random=14" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">The trend insights here keep my work cutting-edge.</blockquote>
+          <blockquote class="testimonial-quote">这里的趋势洞察让我的作品始终保持前沿。</blockquote>
           <div class="testimonial-author">
-            <strong>Aisha Khan</strong>
-            <span>Product Designer</span>
+            <strong>艾莎·汗</strong>
+            <span>产品设计师</span>
           </div>
         </div>
       </div>
@@ -331,16 +329,16 @@ const goToExplore = () => {
 
     <!-- Design Services Section -->
     <section class="services-section">
-      <h2 class="section-title">What We Can Design For Free</h2>
-      <p class="services-subtitle">A design-sharing community that can also help you create a full spectrum of 2D graphic design</p>
+      <h2 class="section-title">我们免费提供的设计服务</h2>
+      <p class="services-subtitle">一个设计分享社区，同时也能帮助您创建全方位的2D平面设计</p>
       <div class="services-grid">
         <div class="service-card portrait" style="--delay:0s">
           <div class="service-media">
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv1)'/></svg>" alt="Asset Graphics" class="service-image" />
           </div>
           <div class="service-content">
-            <h3 class="service-title">Art Assets</h3>
-            <p class="service-description">High-quality world-famous art assets and reusable component packs</p>
+            <h3 class="service-title">印花图案</h3>
+            <p class="service-description">高质量的创意印花图案和可重复使用的组件包</p>
           </div>
         </div>
         <div class="service-card portrait" style="--delay:0.05s">
@@ -458,19 +456,19 @@ const goToExplore = () => {
 <style lang="scss" scoped>
 // CSS Variables
 :root {
-  --primary-color: #ffffff;
-  --secondary-color: #f3f4f6;
-  --accent-color: #e5e7eb;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #1c2526;
-  --bg-tertiary: #2e3b3e;
-  --border-color: #444;
-  --gradient-1: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
-  --gradient-2: linear-gradient(135deg, #667eea, #f093fb, #f5576c);
-  --gradient-3: linear-gradient(135deg, #4facfe, #00f2fe, #38f9d7);
+  --primary-color: #2563eb;
+  --secondary-color: #f8fafc;
+  --accent-color: #64748b;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --gradient-1: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
+  --gradient-2: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+  --gradient-3: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
 }
 
 // Base styles
@@ -480,19 +478,12 @@ const goToExplore = () => {
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
+  box-sizing: border-box;
   
-  &.loaded {
-    .banner-content,
-    .hero-content,
-    .feature-item,
-    .stat-item,
-    .trending-item,
-    .testimonial-item,
-    .cta-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  * {
+    box-sizing: border-box;
   }
+  
 }
 
 // Banner Section (New Large Left Image, Small Right Text)
@@ -507,6 +498,9 @@ const goToExplore = () => {
   gap: 2rem;
   margin: 0 auto;
   align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .banner-image {
@@ -526,9 +520,8 @@ const goToExplore = () => {
 
 .banner-content {
   padding: 1.25rem 1rem 1.25rem 0.75rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .banner-title {
@@ -602,9 +595,8 @@ const goToExplore = () => {
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-title {
@@ -652,6 +644,8 @@ const goToExplore = () => {
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .features-large {
@@ -833,12 +827,13 @@ const goToExplore = () => {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .stat-item {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .stat-number {
@@ -864,6 +859,8 @@ const goToExplore = () => {
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .trending-large {
@@ -1016,6 +1013,8 @@ const goToExplore = () => {
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // Services Section
@@ -1037,6 +1036,8 @@ const goToExplore = () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .service-card {
@@ -1046,10 +1047,8 @@ const goToExplore = () => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: var(--delay);
+  opacity: 1;
+  transform: translateY(0);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   
   &:hover {
@@ -1132,9 +1131,8 @@ const goToExplore = () => {
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .testimonial-image {
@@ -1187,9 +1185,10 @@ const goToExplore = () => {
   z-index: 2;
   max-width: 700px;
   margin: 0 auto;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
+  opacity: 1;
+  transform: translateY(0);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cta-title {
@@ -1211,48 +1210,79 @@ const goToExplore = () => {
 
 // Buttons
 .primary-btn {
-  background: rgba(255, 255, 255, 0.25);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  color: var(--text-primary);
+  background: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  color: white;
   padding: 1rem 2.5rem;
   border-radius: 10px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: #1d4ed8;
+    border-color: #1d4ed8;
     transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    min-height: 40px;
   }
 }
 
 .secondary-btn {
   background: transparent;
-  border: 2px solid var(--accent-color);
-  color: var(--accent-color);
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
   padding: 1rem 2rem;
   border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--primary-color);
+    color: white;
     transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
   }
-}
-
-// Animations
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
+  
+  &:active {
+    transform: translateY(-1px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  @media (max-width: 768px) {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    min-height: 40px;
   }
 }
 
@@ -1262,13 +1292,20 @@ const goToExplore = () => {
   .features-container,
   .trending-container {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
   
   .banner-image {
     .banner-img {
-      width: 95%;
-      height: 480px;
+      width: 100%;
+      height: 400px;
     }
+  }
+  
+  .banner-content {
+    padding: 1rem 0;
+    text-align: center;
   }
   
   .features-large,
@@ -1291,37 +1328,54 @@ const goToExplore = () => {
 }
 
 @media (max-width: 768px) {
+  .banner-section {
+    padding: 2rem 1rem;
+  }
+  
   .banner-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    line-height: 1.2;
   }
   
   .banner-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .banner-slogan {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   
   .banner-description {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
   
   .banner-actions {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  
+  .hero-section {
+    height: 60vh;
+  }
+  
+  .hero-content {
+    padding: 2rem 1rem;
   }
   
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    line-height: 1.1;
   }
   
   .hero-subtitle {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .hero-description {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
   
   .hero-actions {
@@ -1330,7 +1384,15 @@ const goToExplore = () => {
   }
   
   .section-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .features-section,
+  .trending-section,
+  .testimonials-section,
+  .services-section {
+    padding: 3rem 1rem;
   }
   
   .features-large,
@@ -1339,27 +1401,140 @@ const goToExplore = () => {
     .trending-item.large {
       .feature-image,
       .trending-image {
-        height: 300px;
+        height: 250px;
       }
       
       .feature-title,
       .trending-title {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
       }
       
       .feature-description,
       .trending-description {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
     }
   }
   
+  .features-small,
+  .trending-small {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .testimonials-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
   .cta-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
+  }
+  
+  .cta-description {
+    font-size: 1rem;
   }
   
   .cta-actions {
     flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-container,
+  .features-container,
+  .trending-container {
+    padding: 0 0.5rem;
+  }
+  
+  .banner-section {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .banner-title {
+    font-size: 1.8rem;
+  }
+  
+  .banner-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .banner-slogan {
+    font-size: 0.9rem;
+  }
+  
+  .banner-description {
+    font-size: 0.85rem;
+  }
+  
+  .hero-section {
+    height: 50vh;
+  }
+  
+  .hero-content {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .features-section,
+  .trending-section,
+  .testimonials-section,
+  .services-section {
+    padding: 2rem 0.75rem;
+  }
+  
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 2.2rem;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+  }
+  
+  .primary-btn,
+  .secondary-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .cta-title {
+    font-size: 1.8rem;
+  }
+  
+  .cta-description {
+    font-size: 0.95rem;
   }
 }
 </style>

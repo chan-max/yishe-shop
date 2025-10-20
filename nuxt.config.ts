@@ -13,11 +13,11 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      title: '衣设服装设计 - 开放式的创意服装社区',
+      title: '衣设服装设计 - 创意印花图案与服装设计平台',
       meta: [
         {
           name: 'description',
-          content: '衣设是一个开放式的创意服装设计平台，汇聚全球设计师的创意灵感，连接设计师与品牌，打造最具创意的服装设计社区。',
+          content: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
         },
       ],
       link: [
