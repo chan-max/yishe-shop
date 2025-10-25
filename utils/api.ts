@@ -96,7 +96,7 @@ export const api = {
   },
   // 商品相关接口
   product: {
-    // 根据ID获取商品详情
+    // 根据ID或code获取商品详情（后端会自动识别）
     getById: (id: string) =>
       request<ApiResponse<ProductImage2DResponse>>(`/product-image-2d/${id}`, {
         method: 'GET',

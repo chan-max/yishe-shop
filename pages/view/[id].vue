@@ -83,15 +83,16 @@ const formatTime = (timeStr: string) => {
   })
 }
 
-// 获取商品详情
+// 获取商品详情（支持通过ID或code查询，后端会自动识别）
 const fetchProduct = async () => {
   try {
     loading.value = true
     error.value = null
     
-    console.log('正在请求商品ID:', id)
+    console.log('正在请求商品标识:', id)
     console.log('API基础URL:', runtimeConfig.public.apiBase)
     
+    // 后端会自动识别是ID还是code
     const response = await api.product.getById(id)
     
     console.log('API响应:', response)
