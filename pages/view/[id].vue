@@ -143,47 +143,35 @@ useHead({
 </script>
 
 <template>
-  <div class="product-view-page">
-    <!-- 路径ID常显区域（默认隐藏） -->
-    <div class="route-id" v-if="false">路径ID: {{ id }}</div>
+  <div class="min-h-screen bg-gray-50">
     <!-- 调试信息（默认隐藏） -->
-    <div class="debug-info" v-if="false">
-      <h4>调试信息:</h4>
+    <div v-if="false" class="fixed top-4 left-4 z-50 bg-blue-100 p-4 rounded-lg text-sm">
       <p>当前ID: {{ id }}</p>
-      <p>ID类型: {{ typeof id }}</p>
-      <p>API基础URL: {{ runtimeConfig.public.apiBase }}</p>
+      <p>API URL: {{ runtimeConfig.public.apiBase }}</p>
     </div>
 
     <!-- 加载状态 -->
-    <div v-if="loading" class="loading-container">
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <p class="loading-text">正在加载商品信息...</p>
-        <p class="loading-text">商品ID: {{ id }}</p>
+    <div v-if="loading" class="flex items-center justify-center min-h-screen">
+      <div class="text-center">
+        <div class="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-gray-600 text-lg">正在加载商品信息...</p>
+        <p class="text-gray-400 text-sm mt-2">商品ID: {{ id }}</p>
       </div>
     </div>
 
     <!-- 错误状态 -->
-    <div v-else-if="error" class="error-container">
-      <div class="error-content">
-        <div class="error-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="40" cy="40" r="35" stroke="#e5e7eb" stroke-width="2" fill="#f9fafb"/>
-            <path d="M30 30L50 50M50 30L30 50" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+    <div v-else-if="error" class="flex items-center justify-center min-h-screen px-4">
+      <div class="text-center max-w-md">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
           </svg>
         </div>
-        <h2 class="error-title">加载失败</h2>
-        <p class="error-message">{{ error }}</p>
-        <div class="error-debug" style="background: #f9f9f9; padding: 1rem; margin: 1rem 0; border-radius: 4px; font-family: monospace; font-size: 0.875rem;">
-          <p><strong>调试信息:</strong></p>
-          <p>商品ID: {{ id }}</p>
-          <p>API URL: {{ runtimeConfig.public.apiBase }}/product-image-2d/{{ id }}</p>
-          <p>错误详情: {{ error }}</p>
-        </div>
-        <button @click="fetchProduct" class="retry-btn">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">加载失败</h2>
+        <p class="text-gray-600 mb-6">{{ error }}</p>
+        <button @click="fetchProduct" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
           重新加载
         </button>
@@ -191,126 +179,168 @@ useHead({
     </div>
 
     <!-- 商品详情内容 -->
-    <div v-else-if="product" class="product-content">
-      <!-- 商品头部信息 -->
-      <div class="product-header refined">
-        <div class="product-info">
-          <h1 class="product-title">{{ product.name || '未命名商品' }}</h1>
-          <div class="product-meta refined">
-            <span class="product-code" v-if="product.code">{{ product.code }}</span>
-            <span class="product-status" :class="`status-${product.publishStatus}`">
-              {{ 
-                product.publishStatus === 'draft' ? '草稿' :
-                product.publishStatus === 'pending_social_media' ? '待发布' :
-                product.publishStatus === 'published_social_media' ? '已发布' :
-                product.publishStatus === 'archived' ? '已归档' : '未知状态'
-              }}
+    <div v-else-if="product" class="max-w-7xl mx-auto">
+      <!-- 导航栏 -->
+      <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16">
+            <NuxtLink to="/search" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+              返回搜索
+            </NuxtLink>
+            <div class="flex items-center gap-3">
+              <span v-if="product.code" class="text-sm text-gray-500 font-mono">{{ product.code }}</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    :class="{
+                      'bg-yellow-100 text-yellow-800': product.publishStatus === 'draft',
+                      'bg-blue-100 text-blue-800': product.publishStatus === 'pending_social_media',
+                      'bg-green-100 text-green-800': product.publishStatus === 'published_social_media',
+                      'bg-gray-100 text-gray-800': product.publishStatus === 'archived'
+                    }">
+                {{ 
+                  product.publishStatus === 'draft' ? '草稿' :
+                  product.publishStatus === 'pending_social_media' ? '待发布' :
+                  product.publishStatus === 'published_social_media' ? '已发布' :
+                  product.publishStatus === 'archived' ? '已归档' : '未知状态'
+                }}
+              </span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    :class="product.isPublic ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                {{ product.isPublic ? '公开' : '私有' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 主要内容区域 -->
+      <main class="px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 商品标题 -->
+        <div class="text-center mb-12">
+          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            {{ product.name || '未命名商品' }}
+          </h1>
+          <p v-if="product.description" class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            {{ product.description }}
+          </p>
+        </div>
+
+        <!-- 商品图片展示 -->
+        <div v-if="productImages.length > 0" class="mb-16">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div 
+              v-for="(imageUrl, index) in productImages" 
+              :key="index"
+              class="group relative aspect-square bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+              @click="openImageModal(imageUrl, index)"
+            >
+              <img 
+                :src="imageUrl" 
+                :alt="`${product.name} - 图片 ${index + 1}`"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div class="bg-white/90 backdrop-blur-sm rounded-full p-3">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 关键词标签 -->
+        <div v-if="product.keywords" class="mb-16">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">关键词</h2>
+          <div class="flex flex-wrap justify-center gap-3">
+            <span 
+              v-for="keyword in product.keywords.split(',').filter((k: string) => k.trim())" 
+              :key="keyword.trim()"
+              class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              {{ keyword.trim() }}
             </span>
-            <span class="product-visibility" :class="{ 'public': product.isPublic, 'private': !product.isPublic }">
-              {{ product.isPublic ? '公开' : '私有' }}
-            </span>
           </div>
         </div>
-        <div class="product-actions">
-          <NuxtLink to="/search" class="action-btn minimal">
-            返回搜索
-          </NuxtLink>
-        </div>
-      </div>
 
-      <!-- 商品描述 -->
-      <div v-if="product.description" class="product-description">
-        <h3 class="section-title">商品描述</h3>
-        <p class="description-text">{{ product.description }}</p>
-      </div>
-
-      <!-- 商品关键词 -->
-      <div v-if="product.keywords" class="product-keywords">
-        <h3 class="section-title">关键词</h3>
-        <div class="keywords-list">
-           <span 
-             v-for="keyword in product.keywords.split(',').filter((k: string) => k.trim())" 
-             :key="keyword.trim()"
-             class="keyword-tag"
-           >
-            {{ keyword.trim() }}
-          </span>
-        </div>
-      </div>
-
-      <!-- 商品图片展示 -->
-      <div v-if="productImages.length > 0" class="product-images refined">
-        <h3 class="section-title">商品图片</h3>
-        <div class="images-grid refined">
-           <div 
-             v-for="(imageUrl, index) in productImages" 
-             :key="index"
-            class="image-item refined"
-             @click="openImageModal(imageUrl, index)"
-           >
-            <img 
-              :src="imageUrl" 
-              :alt="`${product.name} - 图片 ${index + 1}`"
-              class="product-image refined"
-              loading="lazy"
-            />
-            <div class="image-overlay refined">放大预览</div>
+        <!-- 详细信息 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-8 text-center">详细信息</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">商品ID</dt>
+              <dd class="text-sm text-gray-900 font-mono">{{ product.id }}</dd>
+            </div>
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">素材ID</dt>
+              <dd class="text-sm text-gray-900 font-mono">{{ product.materialId }}</dd>
+            </div>
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">模板组ID</dt>
+              <dd class="text-sm text-gray-900 font-mono">{{ product.templateGroup2DId }}</dd>
+            </div>
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">创建时间</dt>
+              <dd class="text-sm text-gray-900">{{ formatTime(product.createTime) }}</dd>
+            </div>
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">更新时间</dt>
+              <dd class="text-sm text-gray-900">{{ formatTime(product.updateTime) }}</dd>
+            </div>
+            <div class="space-y-2">
+              <dt class="text-sm font-medium text-gray-500">图片数量</dt>
+              <dd class="text-sm text-gray-900">{{ productImages.length }} 张</dd>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- 商品信息 -->
-      <div class="product-details">
-        <h3 class="section-title">详细信息</h3>
-        <div class="details-grid">
-          <div class="detail-item">
-            <span class="detail-label">商品ID</span>
-            <span class="detail-value">{{ product.id }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">素材ID</span>
-            <span class="detail-value">{{ product.materialId }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">模板组ID</span>
-            <span class="detail-value">{{ product.templateGroup2DId }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">创建时间</span>
-            <span class="detail-value">{{ formatTime(product.createTime) }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">更新时间</span>
-            <span class="detail-value">{{ formatTime(product.updateTime) }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">图片数量</span>
-            <span class="detail-value">{{ productImages.length }} 张</span>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
 
-     <!-- 图片预览模态框 -->
-     <div v-if="showImageModal" class="image-modal">
-       <div class="modal-overlay" @click="closeImageModal"></div>
-       <div class="modal-content">
-         <button class="close-btn" @click="closeImageModal">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    <!-- 图片预览模态框 -->
+    <div v-if="showImageModal" class="fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="closeImageModal"></div>
+      <div class="relative max-w-7xl max-h-[90vh] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl">
+        <button 
+          @click="closeImageModal"
+          class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
-        <img :src="currentImage" :alt="`${product?.name} - 预览`" class="modal-image" />
-        <div class="modal-nav">
-          <button @click="prevImage" class="nav-btn prev" :disabled="currentImageIndex === 0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        <img 
+          :src="currentImage" 
+          :alt="`${product?.name} - 预览`" 
+          class="max-w-full max-h-[70vh] object-contain mx-auto block"
+        />
+        <div class="flex items-center justify-between p-4 bg-gray-50">
+          <button 
+            @click="prevImage" 
+            :disabled="currentImageIndex === 0"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
+            上一张
           </button>
-          <span class="image-counter">{{ currentImageIndex + 1 }} / {{ productImages.length }}</span>
-          <button @click="nextImage" class="nav-btn next" :disabled="currentImageIndex === productImages.length - 1">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          <span class="text-sm font-medium text-gray-600">
+            {{ currentImageIndex + 1 }} / {{ productImages.length }}
+          </span>
+          <button 
+            @click="nextImage" 
+            :disabled="currentImageIndex === productImages.length - 1"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            下一张
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </button>
         </div>
@@ -319,537 +349,4 @@ useHead({
   </div>
 </template>
 
-<style scoped>
-.product-view-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  padding: 2rem;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* 路径ID常显样式 */
-.route-id {
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.75rem;
-  background: #eef2ff;
-  color: #1e3a8a;
-  border: 1px solid #c7d2fe;
-  border-radius: 6px;
-  font-family: 'Monaco', 'Menlo', monospace;
-  font-size: 0.9rem;
-}
-
-/* 加载状态 */
-.loading-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-}
-
-.loading-spinner {
-  text-align: center;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top: 4px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.loading-text {
-  color: #6b7280;
-  font-size: 1rem;
-}
-
-/* 错误状态 */
-.error-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-}
-
-.error-content {
-  text-align: center;
-  max-width: 400px;
-}
-
-.error-icon {
-  margin-bottom: 1.5rem;
-  opacity: 0.6;
-}
-
-.error-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-.error-message {
-  color: #6b7280;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.retry-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.retry-btn:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-}
-
-/* 商品内容 */
-.product-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* 商品头部 */
-.product-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.product-header.refined {
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-}
-
-.product-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-.product-meta {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.product-meta.refined {
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.product-code {
-  color: #6b7280;
-  font-size: 0.875rem;
-  background: #f3f4f6;
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-}
-
-.product-status {
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-}
-
-.status-draft { background: #fef3c7; color: #92400e; }
-.status-pending_social_media { background: #dbeafe; color: #1e40af; }
-.status-published_social_media { background: #d1fae5; color: #065f46; }
-.status-archived { background: #f3f4f6; color: #374151; }
-
-.product-visibility {
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-}
-
-.public { background: #d1fae5; color: #065f46; }
-.private { background: #fef2f2; color: #991b1b; }
-
-.product-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.action-btn.secondary {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
-}
-
-.action-btn.secondary:hover {
-  background: #e5e7eb;
-  transform: translateY(-1px);
-}
-
-.action-btn.minimal {
-  background: transparent;
-  color: #111827;
-  border: 1px solid #e5e7eb;
-}
-
-.action-btn.minimal:hover {
-  background: #f9fafb;
-  transform: translateY(-1px);
-}
-
-/* 章节标题 */
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-/* 商品描述 */
-.product-description {
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.description-text {
-  color: #374151;
-  line-height: 1.7;
-  font-size: 1rem;
-}
-
-/* 关键词 */
-.product-keywords {
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.keywords-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.keyword-tag {
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* 商品图片 */
-.product-images {
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.product-images.refined {
-  border-radius: 16px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.15);
-}
-
-.images-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.images-grid.refined {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.25rem;
-}
-
-.image-item {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.image-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.image-item.refined {
-  border-radius: 16px;
-  overflow: clip;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.product-image.refined {
-  transition: transform 0.5s ease;
-}
-
-.image-item.refined:hover .product-image.refined {
-  transform: scale(1.03);
-}
-
-.image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: white;
-  padding-bottom: 12px;
-  font-size: 0.95rem;
-}
-
-.image-item:hover .image-overlay {
-  opacity: 1;
-}
-
-/* 商品详情 */
-.product-details {
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.detail-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  background: #f9fafb;
-  border-radius: 6px;
-}
-
-.detail-label {
-  font-weight: 500;
-  color: #374151;
-}
-
-.detail-value {
-  color: #6b7280;
-  font-family: 'Monaco', 'Menlo', monospace;
-  font-size: 0.875rem;
-}
-
-/* 图片模态框 */
-.image-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: background 0.3s ease;
-}
-
-.close-btn:hover {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.modal-image {
-  max-width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
-  display: block;
-}
-
-.modal-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: #f9fafb;
-}
-
-.nav-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-btn:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.nav-btn:disabled {
-  background: #d1d5db;
-  cursor: not-allowed;
-}
-
-.image-counter {
-  font-weight: 500;
-  color: #374151;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .product-view-page {
-    padding: 1rem;
-  }
-  
-  .product-header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-  }
-  
-  .product-title {
-    font-size: 1.5rem;
-  }
-  
-  .product-meta {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .product-description,
-  .product-keywords,
-  .product-images,
-  .product-details {
-    padding: 1.5rem;
-  }
-  
-  .images-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.75rem;
-  }
-  
-  .details-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-header {
-    padding: 1rem;
-  }
-  
-  .product-title {
-    font-size: 1.25rem;
-  }
-  
-  .product-description,
-  .product-keywords,
-  .product-images,
-  .product-details {
-    padding: 1rem;
-  }
-  
-  .images-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-}
-</style>
 
