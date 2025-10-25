@@ -3,7 +3,7 @@
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-01-27 11:00:00
- * @FilePath: /yishe-nuxt/pages/view/[id].vue
+ * @FilePath: /yishe-nuxt/pages/view-2d-product/[id].vue
  * @Description: 商品详情查看页面
 -->
 <script setup lang="ts">
@@ -209,13 +209,29 @@ useHead({
       <p>API URL: {{ runtimeConfig.public.apiBase }}</p>
     </div>
 
-    <!-- 简约加载状态 -->
+    <!-- 优雅加载状态 -->
     <div v-if="loading" class="flex items-center justify-center min-h-screen">
       <div class="text-center">
-        <!-- 简约圆形进度条 -->
-        <div class="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-        <h3 class="text-lg font-medium text-gray-800 mb-2">正在加载商品信息</h3>
-        <p class="text-gray-500 text-sm">商品ID: {{ id }}</p>
+        <!-- 优雅的加载动画 -->
+        <div class="relative mb-8">
+          <!-- 外圈 -->
+          <div class="w-16 h-16 border-4 border-gray-100 rounded-full"></div>
+          <!-- 内圈旋转 -->
+          <div class="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full animate-spin"></div>
+          <!-- 中心点 -->
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+        </div>
+        
+        <!-- 加载文字 -->
+        <div class="space-y-2">
+          <h3 class="text-xl font-light text-gray-800">正在加载商品信息</h3>
+          <div class="flex items-center justify-center space-x-1">
+            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
+            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+          </div>
+          <p class="text-gray-500 text-sm mt-4">商品ID: {{ id }}</p>
+        </div>
       </div>
     </div>
 
@@ -266,7 +282,7 @@ useHead({
       <!-- 主要内容区域 -->
       <main class="px-4 sm:px-6 lg:px-8 py-20">
         <!-- 电商风格左右布局 -->
-        <div v-if="productImages.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+        <div v-if="productImages.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           <!-- 左侧：图片轮播 -->
           <div class="order-1">
             <div class="relative max-w-md mx-auto lg:mx-0">
