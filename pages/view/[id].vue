@@ -7,7 +7,7 @@
  * @Description: 商品详情查看页面
 -->
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { api } from '@/utils/api'
 
 // 获取运行时配置
@@ -27,6 +27,11 @@ const error = ref<string | null>(null)
 const showImageModal = ref(false)
 const currentImage = ref('')
 const currentImageIndex = ref(0)
+
+// 轮播相关
+const currentSlide = ref(0)
+const autoPlay = ref(true)
+const autoPlayInterval = ref<NodeJS.Timeout | null>(null)
 
 // 打开图片模态框
 const openImageModal = (imageUrl: string, index: number) => {
@@ -53,6 +58,46 @@ const nextImage = () => {
   if (currentImageIndex.value < productImages.value.length - 1) {
     currentImageIndex.value++
     currentImage.value = productImages.value[currentImageIndex.value]
+  }
+}
+
+// 轮播控制
+const nextSlide = () => {
+  if (currentSlide.value < productImages.value.length - 1) {
+    currentSlide.value++
+  } else {
+    currentSlide.value = 0
+  }
+}
+
+const prevSlide = () => {
+  if (currentSlide.value > 0) {
+    currentSlide.value--
+  } else {
+    currentSlide.value = productImages.value.length - 1
+  }
+}
+
+const goToSlide = (index: number) => {
+  currentSlide.value = index
+}
+
+// 自动播放
+const startAutoPlay = () => {
+  if (autoPlayInterval.value) {
+    clearInterval(autoPlayInterval.value)
+  }
+  if (autoPlay.value && productImages.value.length > 1) {
+    autoPlayInterval.value = setInterval(() => {
+      nextSlide()
+    }, 3000)
+  }
+}
+
+const stopAutoPlay = () => {
+  if (autoPlayInterval.value) {
+    clearInterval(autoPlayInterval.value)
+    autoPlayInterval.value = null
   }
 }
 
@@ -126,6 +171,20 @@ onMounted(() => {
   }
 })
 
+// 监听图片变化，启动自动播放
+watch(productImages, (newImages) => {
+  if (newImages.length > 0) {
+    nextTick(() => {
+      startAutoPlay()
+    })
+  }
+}, { immediate: true })
+
+// 组件卸载时清理定时器
+onUnmounted(() => {
+  stopAutoPlay()
+})
+
 // 设置页面标题和meta信息
 useHead({
   title: computed(() => product.value ? `${product.value.name || '商品详情'} - 衣设服装设计` : '商品详情 - 衣设服装设计'),
@@ -150,165 +209,183 @@ useHead({
       <p>API URL: {{ runtimeConfig.public.apiBase }}</p>
     </div>
 
-    <!-- 加载状态 -->
+    <!-- 简约加载状态 -->
     <div v-if="loading" class="flex items-center justify-center min-h-screen">
       <div class="text-center">
-        <div class="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-        <p class="text-gray-600 text-lg">正在加载商品信息...</p>
-        <p class="text-gray-400 text-sm mt-2">商品ID: {{ id }}</p>
+        <!-- 简约圆形进度条 -->
+        <div class="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+        <h3 class="text-lg font-medium text-gray-800 mb-2">正在加载商品信息</h3>
+        <p class="text-gray-500 text-sm">商品ID: {{ id }}</p>
       </div>
     </div>
 
-    <!-- 错误状态 -->
+    <!-- 简约错误状态 -->
     <div v-else-if="error" class="flex items-center justify-center min-h-screen px-4">
       <div class="text-center max-w-md">
-        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-          <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-          </svg>
+        <!-- 简约错误卡片 -->
+        <div class="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+          <!-- 简约错误图标 -->
+          <div class="w-16 h-16 mx-auto mb-6 bg-red-50 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-medium text-gray-900 mb-4">加载失败</h2>
+          <p class="text-gray-600 mb-6">{{ error }}</p>
+          <!-- 简约按钮 -->
+          <button @click="fetchProduct" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            重新加载
+          </button>
         </div>
-        <h2 class="text-2xl font-semibold text-gray-900 mb-2">加载失败</h2>
-        <p class="text-gray-600 mb-6">{{ error }}</p>
-        <button @click="fetchProduct" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-          </svg>
-          重新加载
-        </button>
       </div>
     </div>
 
     <!-- 商品详情内容 -->
     <div v-else-if="product" class="max-w-7xl mx-auto">
-      <!-- 导航栏 -->
-      <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <!-- 简约导航栏 -->
+      <nav class="sticky top-0 z-40 bg-white border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-16">
+            <!-- 简约返回按钮 -->
             <NuxtLink to="/search" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
-              返回搜索
+              <span class="font-medium">返回搜索</span>
             </NuxtLink>
             <div class="flex items-center gap-3">
-              <span v-if="product.code" class="text-sm text-gray-500 font-mono">{{ product.code }}</span>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    :class="{
-                      'bg-yellow-100 text-yellow-800': product.publishStatus === 'draft',
-                      'bg-blue-100 text-blue-800': product.publishStatus === 'pending_social_media',
-                      'bg-green-100 text-green-800': product.publishStatus === 'published_social_media',
-                      'bg-gray-100 text-gray-800': product.publishStatus === 'archived'
-                    }">
-                {{ 
-                  product.publishStatus === 'draft' ? '草稿' :
-                  product.publishStatus === 'pending_social_media' ? '待发布' :
-                  product.publishStatus === 'published_social_media' ? '已发布' :
-                  product.publishStatus === 'archived' ? '已归档' : '未知状态'
-                }}
-              </span>
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    :class="product.isPublic ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-                {{ product.isPublic ? '公开' : '私有' }}
-              </span>
+              <span v-if="product.code" class="text-sm font-mono px-3 py-1 bg-gray-100 text-gray-600 rounded">{{ product.code }}</span>
             </div>
           </div>
         </div>
       </nav>
 
       <!-- 主要内容区域 -->
-      <main class="px-4 sm:px-6 lg:px-8 py-8">
-        <!-- 商品标题 -->
-        <div class="text-center mb-12">
-          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            {{ product.name || '未命名商品' }}
-          </h1>
-          <p v-if="product.description" class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {{ product.description }}
-          </p>
-        </div>
-
-        <!-- 商品图片展示 -->
-        <div v-if="productImages.length > 0" class="mb-16">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <div 
-              v-for="(imageUrl, index) in productImages" 
-              :key="index"
-              class="group relative aspect-square bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-              @click="openImageModal(imageUrl, index)"
-            >
-              <img 
-                :src="imageUrl" 
-                :alt="`${product.name} - 图片 ${index + 1}`"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div class="bg-white/90 backdrop-blur-sm rounded-full p-3">
-                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
-                    </svg>
-                  </div>
+      <main class="px-4 sm:px-6 lg:px-8 py-20">
+        <!-- 电商风格左右布局 -->
+        <div v-if="productImages.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+          <!-- 左侧：图片轮播 -->
+          <div class="order-1">
+            <div class="relative max-w-md mx-auto lg:mx-0">
+              <!-- 主轮播图 -->
+              <div class="relative aspect-square bg-white rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  :src="productImages[currentSlide]" 
+                  :alt="`${product.name} - 图片 ${currentSlide + 1}`"
+                  class="w-full h-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+                  @click="openImageModal(productImages[currentSlide], currentSlide)"
+                  loading="lazy"
+                />
+                
+                <!-- 轮播控制按钮 -->
+                <button 
+                  v-if="productImages.length > 1"
+                  @click="prevSlide"
+                  @mouseenter="stopAutoPlay"
+                  @mouseleave="startAutoPlay"
+                  class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:shadow-xl"
+                >
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                
+                <button 
+                  v-if="productImages.length > 1"
+                  @click="nextSlide"
+                  @mouseenter="stopAutoPlay"
+                  @mouseleave="startAutoPlay"
+                  class="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:shadow-xl"
+                >
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <!-- 缩略图导航 -->
+              <div v-if="productImages.length > 1" class="flex gap-2 mt-4 overflow-x-auto pb-2">
+                <button
+                  v-for="(imageUrl, index) in productImages"
+                  :key="index"
+                  @click="goToSlide(index)"
+                  @mouseenter="stopAutoPlay"
+                  @mouseleave="startAutoPlay"
+                  class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200"
+                  :class="currentSlide === index ? 'border-blue-500 shadow-lg' : 'border-gray-200 hover:border-gray-300'"
+                >
+                  <img 
+                    :src="imageUrl" 
+                    :alt="`缩略图 ${index + 1}`"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </button>
+              </div>
+              
+              <!-- 轮播指示器 -->
+              <div v-if="productImages.length > 1" class="flex justify-center gap-2 mt-4">
+                <button
+                  v-for="(_, index) in productImages"
+                  :key="index"
+                  @click="goToSlide(index)"
+                  @mouseenter="stopAutoPlay"
+                  @mouseleave="startAutoPlay"
+                  class="w-2 h-2 rounded-full transition-all duration-200"
+                  :class="currentSlide === index ? 'bg-blue-500' : 'bg-gray-300 hover:bg-gray-400'"
+                ></button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 右侧：商品信息 -->
+          <div class="order-2">
+            <div class="sticky top-24 max-w-lg mx-auto lg:mx-0">
+              <h1 class="text-3xl lg:text-4xl font-light text-gray-900 mb-4">
+                {{ product.name || '未命名商品' }}
+              </h1>
+              
+              <p v-if="product.description" class="text-base text-gray-600 mb-8 leading-relaxed">
+                {{ product.description }}
+              </p>
+              
+              <!-- 关键词标签 -->
+              <div v-if="product.keywords" class="mb-8">
+                <p class="text-sm text-gray-500 mb-3">关键词</p>
+                <div class="flex flex-wrap gap-2">
+                  <span 
+                    v-for="keyword in product.keywords.split(',').filter((k: string) => k.trim())" 
+                    :key="keyword.trim()"
+                    class="inline-block px-3 py-1 bg-gray-50 text-gray-600 rounded text-sm border border-gray-200 hover:bg-gray-100 transition-colors"
+                  >
+                    {{ keyword.trim() }}
+                  </span>
                 </div>
+              </div>
+              
+              <!-- 创建时间 -->
+              <div class="mb-8">
+                <p class="text-sm text-gray-500 mb-1">创建时间</p>
+                <p class="text-sm text-gray-900">{{ formatTime(product.createTime) }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 关键词标签 -->
-        <div v-if="product.keywords" class="mb-16">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">关键词</h2>
-          <div class="flex flex-wrap justify-center gap-3">
-            <span 
-              v-for="keyword in product.keywords.split(',').filter((k: string) => k.trim())" 
-              :key="keyword.trim()"
-              class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors"
-            >
-              {{ keyword.trim() }}
-            </span>
-          </div>
-        </div>
-
-        <!-- 详细信息 -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-8 text-center">详细信息</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">商品ID</dt>
-              <dd class="text-sm text-gray-900 font-mono">{{ product.id }}</dd>
-            </div>
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">素材ID</dt>
-              <dd class="text-sm text-gray-900 font-mono">{{ product.materialId }}</dd>
-            </div>
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">模板组ID</dt>
-              <dd class="text-sm text-gray-900 font-mono">{{ product.templateGroup2DId }}</dd>
-            </div>
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">创建时间</dt>
-              <dd class="text-sm text-gray-900">{{ formatTime(product.createTime) }}</dd>
-            </div>
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">更新时间</dt>
-              <dd class="text-sm text-gray-900">{{ formatTime(product.updateTime) }}</dd>
-            </div>
-            <div class="space-y-2">
-              <dt class="text-sm font-medium text-gray-500">图片数量</dt>
-              <dd class="text-sm text-gray-900">{{ productImages.length }} 张</dd>
-            </div>
-          </div>
-        </div>
       </main>
     </div>
 
-    <!-- 图片预览模态框 -->
+    <!-- 简约图片预览模态框 -->
     <div v-if="showImageModal" class="fixed inset-0 z-50 flex items-center justify-center">
-      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="closeImageModal"></div>
-      <div class="relative max-w-7xl max-h-[90vh] mx-4 bg-white rounded-2xl overflow-hidden shadow-2xl">
+      <div class="absolute inset-0 bg-black/80" @click="closeImageModal"></div>
+      <div class="relative max-w-7xl max-h-[90vh] mx-4 bg-white rounded-lg overflow-hidden shadow-2xl">
+        <!-- 简约关闭按钮 -->
         <button 
           @click="closeImageModal"
-          class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+          class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -319,11 +396,12 @@ useHead({
           :alt="`${product?.name} - 预览`" 
           class="max-w-full max-h-[70vh] object-contain mx-auto block"
         />
+        <!-- 简约操作栏 -->
         <div class="flex items-center justify-between p-4 bg-gray-50">
           <button 
             @click="prevImage" 
             :disabled="currentImageIndex === 0"
-            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -336,7 +414,7 @@ useHead({
           <button 
             @click="nextImage" 
             :disabled="currentImageIndex === productImages.length - 1"
-            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             下一张
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
