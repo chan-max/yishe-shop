@@ -209,29 +209,17 @@ useHead({
       <p>API URL: {{ runtimeConfig.public.apiBase }}</p>
     </div>
 
-    <!-- 优雅加载状态 -->
+    <!-- 简洁加载状态 -->
     <div v-if="loading" class="flex items-center justify-center min-h-screen">
       <div class="text-center">
-        <!-- 优雅的加载动画 -->
-        <div class="relative mb-8">
-          <!-- 外圈 -->
-          <div class="w-16 h-16 border-4 border-gray-100 rounded-full"></div>
-          <!-- 内圈旋转 -->
-          <div class="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full animate-spin"></div>
-          <!-- 中心点 -->
-          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+        <!-- 简洁的加载圆圈 -->
+        <div class="relative mx-auto mb-6 w-12 h-12">
+          <div class="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+          <div class="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
         
         <!-- 加载文字 -->
-        <div class="space-y-2">
-          <h3 class="text-xl font-light text-gray-800">正在加载商品信息</h3>
-          <div class="flex items-center justify-center space-x-1">
-            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
-            <div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
-          </div>
-          <p class="text-gray-500 text-sm mt-4">商品ID: {{ id }}</p>
-        </div>
+        <p class="text-gray-600 font-medium">加载中...</p>
       </div>
     </div>
 
