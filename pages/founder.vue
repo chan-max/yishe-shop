@@ -29,7 +29,7 @@ useHead({
 const founderInfo = ref({
   name: '陈政',
   englishName: 'Jackie Chan',
-  role: 'UI/UX Designer & Full Stack Developer',
+  role: 'UI/UX 设计师 & 全栈开发工程师 & 素材收藏家 & 自动化工具专家 & 产品设计师',
   avatar: '/me.jpg',
   bio: '一位热爱创作的设计师和开发者，致力于将美学与技术完美结合。凭借对用户体验的深刻理解和对技术创新的敏锐嗅觉，专注于打造既美观又实用的数字产品。相信设计不仅仅是视觉呈现，更是解决问题的艺术。',
   location: '北京, 中国',
@@ -43,18 +43,18 @@ const founderInfo = ref({
 
 // 技能列表
 const skills = ref([
-  'UI/UX Design',
-  'Frontend Development',
-  'Product Design',
-  'Branding & Identity',
-  'Web Design',
-  'Mobile App Design',
-  'User Research',
-  'Prototyping',
-  'Design Systems',
-  'Motion Design',
-  'Illustration',
-  'Typography'
+  'UI/UX 设计',
+  '前端开发',
+  '产品设计',
+  '品牌形象',
+  '网页设计',
+  '移动端设计',
+  '用户研究',
+  '原型设计',
+  '设计系统',
+  '动效设计',
+  '插画设计',
+  '字体设计'
 ])
 
 // 工作经历
@@ -243,9 +243,10 @@ const experiences = ref([
 }
 
 .role {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #6b7280;
   margin: 0 0 1rem 0;
+  line-height: 1.6;
 }
 
 .bio {
