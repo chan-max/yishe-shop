@@ -11,13 +11,25 @@
     <!-- 经典上方Header布局 -->
     <div class="main-layout">
       <!-- Top Header Navigation -->
-      <header class="top-header">
+      <header 
+        class="top-header" 
+        :class="{ 'scrolled': isScrolled }" 
+        :style="{ 
+          position: isScrolled ? 'fixed' : 'sticky',
+          top: '0',
+          left: '0',
+          right: '0',
+          zIndex: isScrolled ? '9999' : '1000',
+          background: isScrolled ? 'rgba(255, 255, 255, 0.98)' : '#ffffff',
+          boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none',
+          backdropFilter: isScrolled ? 'blur(12px)' : 'none'
+        }">
         <div class="header-container">
           <!-- Logo Section -->
           <div class="header-logo">
             <NuxtLink to="/" class="logo-link">
               <img src="/logo.svg" alt="衣设服装设计" class="logo-image" />
-              <span class="logo-text">衣设服装设计</span>
+              <!-- <span class="logo-text">衣设服装设计</span> -->
             </NuxtLink>
           </div>
           
@@ -44,6 +56,9 @@
             </NuxtLink>
             <NuxtLink to="/blog" class="nav-link">
               博客
+            </NuxtLink>
+            <NuxtLink to="/pricing" class="nav-link">
+              定价
             </NuxtLink>
             <NuxtLink to="/about" class="nav-link">
               关于我们
@@ -103,6 +118,9 @@
               <NuxtLink to="/blog" class="mobile-nav-link" @click="closeMobileMenu">
                 博客
               </NuxtLink>
+              <NuxtLink to="/pricing" class="mobile-nav-link" @click="closeMobileMenu">
+                定价
+              </NuxtLink>
               <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
                 关于我们
               </NuxtLink>
@@ -131,6 +149,9 @@ const route = useRoute()
 // 移动端菜单状态
 const isMobileMenuOpen = ref(false)
 
+// 滚动状态
+const isScrolled = ref(false)
+
 // 移动端菜单控制
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
@@ -144,6 +165,26 @@ const closeMobileMenu = () => {
 // 监听路由变化，关闭移动端菜单
 watch(() => route.path, () => {
   isMobileMenuOpen.value = false
+})
+
+// 使用 Nuxt 3 的 useEventListener
+useEventListener('scroll', () => {
+  if (process.client) {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+    const shouldScroll = scrollTop > 100
+    
+    isScrolled.value = shouldScroll
+  }
+}, { passive: true })
+
+// 初始检查
+onMounted(() => {
+  if (process.client) {
+    nextTick(() => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+      isScrolled.value = scrollTop > 100
+    })
+  }
 })
 </script>
 
@@ -176,11 +217,15 @@ watch(() => route.path, () => {
 .top-header {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  width: 100%;
   transition: all 0.3s ease;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  
+  // 滚动后的样式变化
+  &.scrolled {
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
 }
 
 .header-container {
