@@ -28,61 +28,54 @@ useHead({
 // 创始人信息
 const founderInfo = ref({
   name: '陈设计师',
-  role: 'UI/UX 设计师 & 全栈开发者',
-  avatar: '/defaultAvatar/default-avatar-1.png',
-  bio: '一位热爱创作的设计师和开发者，致力于将美学与技术完美结合。专注于用户界面设计、交互体验优化，以及前沿技术的探索与应用。',
+  role: 'UI/UX Designer & Full Stack Developer',
+  avatar: '/me.jpg',
+  bio: '一位热爱创作的设计师和开发者，致力于将美学与技术完美结合。凭借对用户体验的深刻理解和对技术创新的敏锐嗅觉，专注于打造既美观又实用的数字产品。相信设计不仅仅是视觉呈现，更是解决问题的艺术。',
   location: '北京, 中国',
   email: 'jackieontheway666@gmail.com',
-  github: 'https://github.com/chan-max',
-  website: 'https://1s.design',
   social: {
+    github: 'https://github.com/chan-max',
+    website: 'https://1s.design',
     twitter: 'https://twitter.com/chanmax',
-    linkedin: 'https://linkedin.com/in/chanmax',
-    dribbble: 'https://dribbble.com/chanmax',
-    behance: 'https://behance.net/chanmax',
-    instagram: 'https://instagram.com/chanmax'
+    linkedin: 'https://linkedin.com/in/chanmax'
   }
 })
 
 // 技能列表
 const skills = ref([
-  { name: 'UI 设计', level: 95, icon: 'mdi-brush' },
-  { name: 'UX 设计', level: 90, icon: 'mdi-palette' },
-  { name: '前端开发', level: 85, icon: 'mdi-code-tags' },
-  { name: '产品设计', level: 88, icon: 'mdi-lightbulb' },
-  { name: '品牌设计', level: 85, icon: 'mdi-image' },
-  { name: '移动端设计', level: 90, icon: 'mdi-cellphone' }
+  'UI/UX Design',
+  'Frontend Development',
+  'Product Design',
+  'Branding & Identity',
+  'Web Design',
+  'Mobile App Design',
+  'User Research',
+  'Prototyping',
+  'Design Systems',
+  'Motion Design',
+  'Illustration',
+  'Typography'
 ])
 
 // 工作经历
 const experiences = ref([
   {
-    company: '知名设计公司',
-    position: '高级 UI/UX 设计师',
+    title: '创始人 & 产品设计师',
+    company: '1s Design',
     period: '2022 - 至今',
-    description: '负责核心产品的用户体验设计，带领设计团队完成多个重要项目的设计工作。'
+    description: '创立 1s Design，专注于打造创新的设计工具和平台。带领团队进行产品设计、用户体验优化和技术开发，致力于为创作者提供更好的设计体验。'
   },
   {
-    company: '互联网科技公司',
-    position: '产品设计师',
+    title: '高级 UI/UX 设计师',
+    company: '知名互联网公司',
     period: '2020 - 2022',
-    description: '参与产品从 0 到 1 的设计过程，负责用户研究和交互设计。'
+    description: '负责核心产品线的用户体验设计，参与多个百万用户级别产品的设计工作，积累了丰富的产品设计和技术实现经验。'
   },
   {
+    title: '全栈设计师 & 开发者',
     company: '初创公司',
-    position: '全栈设计师 & 开发者',
     period: '2018 - 2020',
-    description: '兼任设计和开发工作，构建了完整的在线设计平台。'
-  }
-])
-
-// 教育背景
-const education = ref([
-  {
-    school: '设计学院',
-    degree: '平面设计学士',
-    period: '2014 - 2018',
-    description: '专注于视觉传达和用户体验设计的学习与实践。'
+    description: '作为早期团队成员，从前端到后端全面参与产品开发，既负责界面设计也负责技术实现，培养了全栈思维。'
   }
 ])
 </script>
@@ -90,462 +83,400 @@ const education = ref([
 <template>
   <div class="founder-page">
     <div class="founder-container">
-      <!-- Hero Section with Avatar -->
-      <section class="founder-hero">
-        <div class="founder-avatar">
-          <img :src="founderInfo.avatar" :alt="founderInfo.name" class="avatar-image" />
+      <!-- 顶部信息区 -->
+      <header class="profile-header">
+        <div class="profile-avatar">
+          <img :src="founderInfo.avatar" :alt="founderInfo.name" class="avatar" />
         </div>
-        <h1 class="founder-name">{{ founderInfo.name }}</h1>
-        <p class="founder-role">{{ founderInfo.role }}</p>
-        <p class="founder-location">
-          <v-icon size="18" style="margin-right: 6px;">mdi-map-marker</v-icon>
-          {{ founderInfo.location }}
-        </p>
-        
-        <!-- Social Links -->
-        <div class="founder-social">
-          <a :href="founderInfo.github" target="_blank" rel="noopener" class="social-item" title="GitHub">
-            <v-icon size="24">mdi-github</v-icon>
-          </a>
-          <a :href="'mailto:' + founderInfo.email" class="social-item" title="邮箱">
-            <v-icon size="24">mdi-email</v-icon>
-          </a>
-          <a :href="founderInfo.social.linkedin" target="_blank" rel="noopener" class="social-item" title="LinkedIn">
-            <v-icon size="24">mdi-linkedin</v-icon>
-          </a>
-          <a :href="founderInfo.social.dribbble" target="_blank" rel="noopener" class="social-item" title="Dribbble">
-            <v-icon size="24">mdi-dribbble</v-icon>
-          </a>
-          <a :href="founderInfo.social.twitter" target="_blank" rel="noopener" class="social-item" title="Twitter">
-            <v-icon size="24">mdi-twitter</v-icon>
-          </a>
-          <a :href="founderInfo.website" target="_blank" rel="noopener" class="social-item" title="个人网站">
-            <v-icon size="24">mdi-link</v-icon>
-          </a>
+        <div class="profile-info">
+          <h1 class="name">{{ founderInfo.name }}</h1>
+          <p class="role">{{ founderInfo.role }}</p>
+          <p class="bio">{{ founderInfo.bio }}</p>
+          
+          <!-- 社交链接 -->
+          <div class="social">
+            <a :href="founderInfo.social.github" target="_blank" rel="noopener" class="social-link">
+              <v-icon size="18">mdi-github</v-icon>
+            </a>
+            <a :href="founderInfo.social.website" target="_blank" rel="noopener" class="social-link">
+              <v-icon size="18">mdi-web</v-icon>
+            </a>
+            <a :href="founderInfo.social.twitter" target="_blank" rel="noopener" class="social-link">
+              <v-icon size="18">mdi-twitter</v-icon>
+            </a>
+            <a :href="founderInfo.social.linkedin" target="_blank" rel="noopener" class="social-link">
+              <v-icon size="18">mdi-linkedin</v-icon>
+            </a>
+            <a :href="'mailto:' + founderInfo.email" class="social-link">
+              <v-icon size="18">mdi-email</v-icon>
+            </a>
+          </div>
         </div>
-      </section>
+      </header>
 
-      <!-- About Section -->
-      <section class="founder-section">
-        <h2 class="section-title">关于我</h2>
-        <p class="founder-bio">
-          {{ founderInfo.bio }}
-        </p>
-      </section>
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- 个人简介 -->
+        <section class="section">
+          <h2 class="section-title">关于我</h2>
+          <div class="about-me">
+            <p class="about-text">
+              我是一位对设计和开发充满热情的全栈设计师，深信优秀的用户体验来源于对用户需求的深度理解和技术能力的完美融合。
+            </p>
+            <p class="about-text">
+              在 1s Design，我致力于打造既美观又实用的数字产品，为创作者提供更好的设计工具和体验。我相信设计不仅仅是视觉呈现，更是解决问题的艺术。
+            </p>
+            <p class="about-text">
+              对于每一个产品，我都倾注了心血，从用户研究、原型设计到最终实现，确保每一个细节都能为用户带来价值。
+            </p>
+          </div>
+        </section>
 
-      <!-- Skills Section -->
-      <section class="founder-section">
-        <h2 class="section-title">技能专长</h2>
-        <div class="skills-grid">
-          <div v-for="skill in skills" :key="skill.name" class="skill-item">
-            <div class="skill-header">
-              <v-icon :icon="skill.icon" size="20" style="margin-right: 8px;" />
-              <span class="skill-name">{{ skill.name }}</span>
-              <span class="skill-percentage">{{ skill.level }}%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-progress" :style="{ width: skill.level + '%' }"></div>
-            </div>
+        <!-- 技能 -->
+        <section class="section">
+          <h2 class="section-title">核心技能</h2>
+          <div class="skills">
+            <span v-for="skill in skills" :key="skill" class="skill-tag">
+              {{ skill }}
+            </span>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Experience Section -->
-      <section class="founder-section">
-        <h2 class="section-title">工作经历</h2>
-        <div class="timeline">
-          <div v-for="(exp, index) in experiences" :key="index" class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">{{ exp.position }}</h3>
-              <p class="timeline-company">{{ exp.company }}</p>
-              <p class="timeline-period">{{ exp.period }}</p>
-              <p class="timeline-description">{{ exp.description }}</p>
+        <!-- 工作经历 -->
+        <section class="section">
+          <h2 class="section-title">工作经历</h2>
+          <div class="experiences">
+            <div v-for="(exp, index) in experiences" :key="index" class="experience-item">
+              <div class="experience-period">{{ exp.period }}</div>
+              <div class="experience-details">
+                <h3 class="experience-title">{{ exp.title }}</h3>
+                <p class="experience-company">{{ exp.company }}</p>
+                <p v-if="exp.description" class="experience-description">{{ exp.description }}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Education Section -->
-      <section class="founder-section">
-        <h2 class="section-title">教育背景</h2>
-        <div class="timeline">
-          <div v-for="(edu, index) in education" :key="index" class="timeline-item">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">{{ edu.degree }}</h3>
-              <p class="timeline-company">{{ edu.school }}</p>
-              <p class="timeline-period">{{ edu.period }}</p>
-              <p class="timeline-description">{{ edu.description }}</p>
+        <!-- 联系方式 -->
+        <section class="section">
+          <h2 class="section-title">联系方式</h2>
+          <div class="contact">
+            <a :href="'mailto:' + founderInfo.email" class="contact-link">
+              <v-icon size="20">mdi-email</v-icon>
+              <span>{{ founderInfo.email }}</span>
+            </a>
+            <a :href="founderInfo.social.website" target="_blank" rel="noopener" class="contact-link">
+              <v-icon size="20">mdi-web</v-icon>
+              <span>{{ founderInfo.social.website }}</span>
+            </a>
+            <div class="contact-link">
+              <v-icon size="20">mdi-map-marker</v-icon>
+              <span>{{ founderInfo.location }}</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Contact Section -->
-      <section class="founder-section">
-        <h2 class="section-title">联系方式</h2>
-        <div class="contact-methods">
-          <div class="contact-item">
-            <v-icon>mdi-email</v-icon>
-            <div class="contact-info">
-              <h3>邮箱</h3>
-              <a :href="'mailto:' + founderInfo.email">{{ founderInfo.email }}</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <v-icon>mdi-github</v-icon>
-            <div class="contact-info">
-              <h3>GitHub</h3>
-              <a :href="founderInfo.github" target="_blank" rel="noopener">{{ founderInfo.github }}</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <v-icon>mdi-web</v-icon>
-            <div class="contact-info">
-              <h3>个人网站</h3>
-              <a :href="founderInfo.website" target="_blank" rel="noopener">{{ founderInfo.website }}</a>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables
-:root {
-  --primary-color: #2563eb;
-  --secondary-color: #f8fafc;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --border-color: #e2e8f0;
-  --accent-color: #64748b;
-}
-
 .founder-page {
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: #fafafa;
   padding: 3rem 0;
   
   @media (max-width: 768px) {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
   }
 }
 
 .founder-container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
-}
-
-// Hero Section
-.founder-hero {
-  text-align: center;
-  margin-bottom: 4rem;
-  padding: 2rem 0;
-}
-
-.founder-avatar {
-  margin-bottom: 1.5rem;
-}
-
-.avatar-image {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--border-color);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   
   @media (max-width: 768px) {
-    width: 120px;
-    height: 120px;
+    padding: 0 1rem;
   }
 }
 
-.founder-name {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-}
-
-.founder-role {
-  font-size: 1.2rem;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.founder-location {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.founder-social {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.social-item {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-  }
-}
-
-// Sections
-.founder-section {
-  margin-bottom: 4rem;
-}
-
-.section-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-}
-
-.founder-bio {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-// Skills
-.skills-grid {
+// 顶部信息区
+.profile-header {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 120px 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 2rem 1.5rem;
   }
 }
 
-.skill-item {
-  background: var(--bg-secondary);
-  padding: 1.25rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-}
-
-.skill-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.skill-name {
-  flex: 1;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-}
-
-.skill-percentage {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.skill-bar {
-  height: 8px;
-  background: var(--border-color);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.skill-progress {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary-color), #60a5fa);
-  border-radius: 4px;
-  transition: width 1s ease;
-}
-
-// Timeline
-.timeline {
-  position: relative;
-  padding-left: 2rem;
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
   
-  &::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--border-color);
+  @media (max-width: 768px) {
+    margin: 0 auto;
   }
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 3rem;
-}
-
-.timeline-marker {
-  position: absolute;
-  left: -25px;
-  top: 0;
-  width: 16px;
-  height: 16px;
+.avatar {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: var(--primary-color);
-  border: 3px solid var(--bg-primary);
-  box-shadow: 0 0 0 2px var(--primary-color);
-}
-
-.timeline-content {
-  background: var(--bg-secondary);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  object-fit: cover;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
   
   &:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: scale(1.05);
   }
 }
 
-.timeline-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.timeline-company {
+.name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
+}
+
+.role {
   font-size: 1rem;
-  color: var(--primary-color);
+  color: #6b7280;
+  margin: 0 0 1.25rem 0;
   font-weight: 500;
-  margin-bottom: 0.5rem;
 }
 
-.timeline-period {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 0.75rem;
-}
-
-.timeline-description {
+.bio {
   font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0 0 1.75rem 0;
+  max-width: 100%;
 }
 
-// Contact Methods
-.contact-methods {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.contact-item {
+.social {
   display: flex;
   gap: 1rem;
-  padding: 1.5rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.social-link {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  text-decoration: none;
+  background: #f9fafb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   
   &:hover {
+    color: #111827;
+    background: #f3f4f6;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// 内容区
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+}
+
+.section-title {
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.01em;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+// 关于我
+.about-me {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.about-text {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.75;
+  margin: 0;
+}
+
+// 技能
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  padding: 0.5rem 1rem;
+  background: #f9fafb;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+  }
+}
+
+// 工作经历
+.experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.experience-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 2rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #ffffff;
+    border-color: #e5e7eb;
+    transform: translateX(2px);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.experience-period {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.experience-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.experience-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.experience-company {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.experience-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.65;
+  margin: 0;
+}
+
+// 联系方式
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #4b5563;
+  text-decoration: none;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #111827;
+    background: #ffffff;
+    border-color: #e5e7eb;
+    transform: translateX(4px);
   }
   
   svg {
     flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    color: var(--primary-color);
+    color: #6b7280;
   }
 }
 
-.contact-info {
-  flex: 1;
-  
-  h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-  }
-  
-  a {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
-}
-
-// Responsive
+// 响应式
 @media (max-width: 768px) {
-  .founder-container {
-    padding: 0 1rem;
-  }
-  
-  .founder-hero {
-    margin-bottom: 3rem;
-  }
-  
-  .founder-section {
-    margin-bottom: 3rem;
-  }
-  
-  .timeline {
-    padding-left: 1.5rem;
-  }
-  
-  .timeline-marker {
-    left: -20px;
-    width: 12px;
-    height: 12px;
-  }
-  
-  .contact-methods {
-    grid-template-columns: 1fr;
+  .experience-item {
+    padding: 1rem;
   }
 }
 </style>
-
