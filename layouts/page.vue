@@ -60,6 +60,9 @@
             <NuxtLink to="/pricing" class="nav-link">
               定价
             </NuxtLink>
+            <NuxtLink to="/founder" class="nav-link">
+              创始人
+            </NuxtLink>
             <NuxtLink to="/about" class="nav-link">
               关于我们
             </NuxtLink>
@@ -120,6 +123,9 @@
               </NuxtLink>
               <NuxtLink to="/pricing" class="mobile-nav-link" @click="closeMobileMenu">
                 定价
+              </NuxtLink>
+              <NuxtLink to="/founder" class="mobile-nav-link" @click="closeMobileMenu">
+                创始人
               </NuxtLink>
               <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
                 关于我们

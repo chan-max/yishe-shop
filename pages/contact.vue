@@ -46,10 +46,9 @@ const submitForm = () => {
     <div class="contact-container">
       <!-- Hero Section -->
       <section class="contact-hero">
-        <h1 class="contact-title">Contact Us</h1>
+        <h1 class="contact-title">联系我们</h1>
         <p class="contact-subtitle">
-          We'd love to hear from you. Get in touch with our team and let us know 
-          how we can help you with your design journey.
+          我们很想听到您的声音。与我们团队取得联系，告诉我们如何帮助您的设计之旅。
         </p>
       </section>
 
@@ -57,22 +56,22 @@ const submitForm = () => {
       <div class="contact-content">
         <!-- Contact Form -->
         <section class="contact-form-section">
-          <h2 class="section-title">Send us a Message</h2>
+          <h2 class="section-title">发送消息</h2>
           <form @submit.prevent="submitForm" class="contact-form">
             <div class="form-group">
-              <label for="name" class="form-label">Name</label>
+              <label for="name" class="form-label">姓名</label>
               <input
                 id="name"
                 v-model="contactForm.name"
                 type="text"
                 class="form-input"
-                placeholder="Your name"
+                placeholder="您的姓名"
                 required
               />
             </div>
             
             <div class="form-group">
-              <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label">邮箱</label>
               <input
                 id="email"
                 v-model="contactForm.email"
@@ -84,24 +83,24 @@ const submitForm = () => {
             </div>
             
             <div class="form-group">
-              <label for="subject" class="form-label">Subject</label>
+              <label for="subject" class="form-label">主题</label>
               <input
                 id="subject"
                 v-model="contactForm.subject"
                 type="text"
                 class="form-input"
-                placeholder="What's this about?"
+                placeholder="请简述事由"
                 required
               />
             </div>
             
             <div class="form-group">
-              <label for="message" class="form-label">Message</label>
+              <label for="message" class="form-label">消息内容</label>
               <textarea
                 id="message"
                 v-model="contactForm.message"
                 class="form-textarea"
-                placeholder="Tell us more..."
+                placeholder="请详细描述您的问题或反馈..."
                 rows="5"
                 required
               ></textarea>
@@ -109,14 +108,14 @@ const submitForm = () => {
             
             <button type="submit" class="submit-btn">
               <v-icon left>mdi-send</v-icon>
-              Send Message
+              发送消息
             </button>
           </form>
         </section>
 
         <!-- Contact Info -->
         <section class="contact-info-section">
-          <h2 class="section-title">Get in Touch</h2>
+          <h2 class="section-title">联系方式</h2>
           
           <div class="contact-info">
             <div class="contact-item">
@@ -124,7 +123,7 @@ const submitForm = () => {
                 <v-icon size="24" color="primary">mdi-email</v-icon>
               </div>
               <div class="contact-details">
-                <h3 class="contact-item-title">Email</h3>
+                <h3 class="contact-item-title">邮箱</h3>
                 <p class="contact-item-text">hello@1s.design</p>
                 <p class="contact-item-text">support@1s.design</p>
               </div>
@@ -135,9 +134,9 @@ const submitForm = () => {
                 <v-icon size="24" color="primary">mdi-phone</v-icon>
               </div>
               <div class="contact-details">
-                <h3 class="contact-item-title">Phone</h3>
-                <p class="contact-item-text">+1 (555) 123-4567</p>
-                <p class="contact-item-text">Mon-Fri 9AM-6PM EST</p>
+                <h3 class="contact-item-title">电话</h3>
+                <p class="contact-item-text">+86 400-XXX-XXXX</p>
+                <p class="contact-item-text">周一至周五 9:00-18:00</p>
               </div>
             </div>
             
@@ -146,16 +145,16 @@ const submitForm = () => {
                 <v-icon size="24" color="primary">mdi-map-marker</v-icon>
               </div>
               <div class="contact-details">
-                <h3 class="contact-item-title">Office</h3>
-                <p class="contact-item-text">123 Design Street</p>
-                <p class="contact-item-text">Creative City, CC 12345</p>
+                <h3 class="contact-item-title">办公地址</h3>
+                <p class="contact-item-text">北京市朝阳区创意园区</p>
+                <p class="contact-item-text">设计大厦 1234 号</p>
               </div>
             </div>
           </div>
           
           <!-- Social Links -->
           <div class="social-links">
-            <h3 class="social-title">Follow Us</h3>
+            <h3 class="social-title">关注我们</h3>
             <div class="social-icons">
               <a href="#" class="social-link">
                 <v-icon>mdi-twitter</v-icon>

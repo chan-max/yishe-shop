@@ -31,43 +31,41 @@ useHead({
     <div class="about-container">
       <!-- Hero Section -->
       <section class="about-hero">
-        <h1 class="about-title">About 1s Design</h1>
+        <h1 class="about-title">关于衣设</h1>
         <p class="about-subtitle">
-          The ultimate platform for creative designers to showcase their work, 
-          discover inspiration, and connect with the global design community.
+          为创意设计师打造的优质平台，展示作品，探索灵感，连接全球设计社区。
         </p>
       </section>
 
       <!-- Mission Section -->
       <section class="about-section">
-        <h2 class="section-title">Our Mission</h2>
+        <h2 class="section-title">我们的使命</h2>
         <p class="section-content">
-          We believe that great design has the power to inspire, connect, and transform the world. 
-          Our mission is to provide a platform where designers can showcase their creativity, 
-          learn from each other, and build meaningful connections within the design community.
+          我们相信优秀的设计具有启发、连接和改变世界的力量。我们的使命是为设计师提供一个展示创意、
+          相互学习并在设计社区内建立有意义联系的平台。
         </p>
       </section>
 
       <!-- Vision Section -->
       <section class="about-section">
-        <h2 class="section-title">Our Vision</h2>
+        <h2 class="section-title">我们的愿景</h2>
         <p class="section-content">
-          To become the world's leading design community platform, where every designer 
-          can find their voice, share their vision, and contribute to the global creative ecosystem.
+          成为世界领先的设计社区平台，让每一位设计师都能找到自己的声音，分享自己的愿景，
+          为全球创意生态系统做出贡献。
         </p>
       </section>
 
       <!-- Values Section -->
       <section class="about-section">
-        <h2 class="section-title">Our Values</h2>
+        <h2 class="section-title">我们的价值观</h2>
         <div class="values-grid">
           <div class="value-card">
             <div class="value-icon">
               <v-icon size="32" color="primary">mdi-lightbulb</v-icon>
             </div>
-            <h3 class="value-title">Creativity</h3>
+            <h3 class="value-title">创新</h3>
             <p class="value-description">
-              We celebrate and nurture creative expression in all its forms.
+              我们庆祝并培育各种形式的创意表达。
             </p>
           </div>
           
@@ -75,9 +73,9 @@ useHead({
             <div class="value-icon">
               <v-icon size="32" color="primary">mdi-account-group</v-icon>
             </div>
-            <h3 class="value-title">Community</h3>
+            <h3 class="value-title">社区</h3>
             <p class="value-description">
-              We believe in the power of community to inspire and support growth.
+              我们相信社区的力量能够启发和支持成长。
             </p>
           </div>
           
@@ -85,9 +83,9 @@ useHead({
             <div class="value-icon">
               <v-icon size="32" color="primary">mdi-star</v-icon>
             </div>
-            <h3 class="value-title">Excellence</h3>
+            <h3 class="value-title">卓越</h3>
             <p class="value-description">
-              We strive for excellence in everything we do and support.
+              我们力求在所做的每一件事和支持的每一件事上都追求卓越。
             </p>
           </div>
         </div>
@@ -95,11 +93,10 @@ useHead({
 
       <!-- Team Section -->
       <section class="about-section">
-        <h2 class="section-title">Our Team</h2>
+        <h2 class="section-title">我们的团队</h2>
         <p class="section-content">
-          We are a passionate team of designers, developers, and creatives who believe 
-          in the transformative power of design. Our diverse backgrounds and expertise 
-          come together to create a platform that serves the global design community.
+          我们是一支充满热情的设计师、开发者和创意工作者团队，相信设计的变革力量。
+          我们不同的背景和专业能力汇聚在一起，创造一个为全球设计社区服务的平台。
         </p>
       </section>
     </div>
