@@ -427,9 +427,9 @@ onMounted(() => {
   background: rgba(0, 0, 0, 0.5);
   z-index: 9999;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 1rem;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
   
   @media (max-width: 1024px) {
     display: flex;
@@ -438,18 +438,14 @@ onMounted(() => {
 
 .mobile-menu-content {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 300px;
-  max-height: 80vh;
+  border-left: 1px solid #e2e8f0;
+  width: 300px;
+  height: 100vh;
   overflow-y: auto;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   @media (max-width: 480px) {
-    max-width: 100%;
-    border-radius: 6px;
-    margin: 0.5rem;
+    width: 280px;
   }
 }
 
@@ -457,7 +453,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1rem;
   border-bottom: 1px solid #e2e8f0;
   background: #ffffff;
 }
@@ -469,13 +465,13 @@ onMounted(() => {
 }
 
 .mobile-logo-image {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   transition: all 0.3s ease;
 }
 
 .mobile-logo-text {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #1e293b;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -499,25 +495,25 @@ onMounted(() => {
 }
 
 .mobile-nav-menu {
-  padding: 1rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .mobile-nav-link {
   display: flex;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.6rem 0.8rem;
   color: #1e293b;
   text-decoration: none;
   border-radius: 6px;
-  transition: all 0.3s ease;
   gap: 0.6rem;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: 0.1px;
+  transition: all 0.3s ease;
   
   &:hover {
     color: #2563eb;
@@ -535,17 +531,23 @@ onMounted(() => {
 // Mobile Menu Animation
 .mobile-menu-enter-active,
 .mobile-menu-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mobile-menu-enter-from {
   opacity: 0;
-  transform: translateX(-100%);
+  
+  .mobile-menu-content {
+    transform: translateX(100%);
+  }
 }
 
 .mobile-menu-leave-to {
   opacity: 0;
-  transform: translateX(-100%);
+  
+  .mobile-menu-content {
+    transform: translateX(100%);
+  }
 }
 </style>
 
