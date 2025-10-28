@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
+ * @LastEditTime: 2025-10-29 07:17:18
  * @FilePath: /yishe-nuxt/pages/contact.vue
  * @Description: Contact Page - Get in touch with 1s Design
 -->
@@ -92,15 +92,7 @@ const closeQRDialog = () => {
       <div class="page-header">
         <div class="title-row">
           <h1 class="page-title">联系我们</h1>
-          <NuxtLink to="/founder" class="founder-link">
-            <v-icon size="16">mdi-account-circle</v-icon>
-            <span>了解作者</span>
-          </NuxtLink>
-        </div>
-        <div class="author-row">
-          <h2 class="author-name">{{ founderInfo.name }}</h2>
-          <span class="separator">·</span>
-          <p class="author-name-en">{{ founderInfo.englishName }}</p>
+          <NuxtLink to="/founder" class="founder-link-text">了解作者 →</NuxtLink>
         </div>
       </div>
 
@@ -222,8 +214,9 @@ const closeQRDialog = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
   margin-bottom: 1.5rem;
+  position: relative;
   
   @media (max-width: 640px) {
     flex-direction: column;
@@ -238,23 +231,20 @@ const closeQRDialog = () => {
   margin: 0;
 }
 
-.founder-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 1rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  text-decoration: none;
+.founder-link-text {
+  position: absolute;
+  right: 0;
   color: #6b7280;
+  text-decoration: none;
   font-size: 0.95rem;
   transition: all 0.2s ease;
   
   &:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
     color: #111827;
+  }
+  
+  @media (max-width: 640px) {
+    position: static;
   }
 }
 
