@@ -437,15 +437,14 @@ onMounted(() => {
 }
 
 .mobile-menu-content {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 300px;
   max-height: 80vh;
   overflow-y: auto;
-  backdrop-filter: blur(10px);
   
   @media (max-width: 480px) {
     max-width: 100%;
@@ -459,7 +458,8 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
 }
 
 .mobile-logo {
@@ -477,7 +477,7 @@ onMounted(() => {
 .mobile-logo-text {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1e293b;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: 0.3px;
 }
@@ -485,15 +485,15 @@ onMounted(() => {
 .close-btn {
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #475569;
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 4px;
   transition: all 0.3s ease;
   
   &:hover {
-    color: var(--text-primary);
-    background: var(--bg-secondary);
+    color: #1e293b;
+    background: #f8fafc;
     transform: scale(1.05);
   }
 }
@@ -509,7 +509,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 0.8rem 1rem;
-  color: var(--text-secondary);
+  color: #1e293b;
   text-decoration: none;
   border-radius: 6px;
   transition: all 0.3s ease;
@@ -520,14 +520,14 @@ onMounted(() => {
   letter-spacing: 0.1px;
   
   &:hover {
-    color: var(--primary-color);
-    background: var(--bg-secondary);
+    color: #2563eb;
+    background: #f8fafc;
     transform: translateX(2px);
   }
   
   &.router-link-active {
-    color: var(--primary-color);
-    background: var(--bg-tertiary);
+    color: #2563eb;
+    background: #f1f5f9;
     font-weight: 600;
   }
 }
