@@ -12,421 +12,499 @@ definePageMeta({ layout: 'page' })
 // Page title and meta
 useHead({
   titleTemplate: '',
-  title: 'Contact - 1s Design',
+  title: '联系我们 - 1s Design | 陈政 Jackie Chan',
   meta: [
     {
       name: 'description',
-      content: 'Get in touch with 1s Design team. We\'d love to hear from you and help with any questions or feedback.'
+      content: '联系 1s Design 创始人陈政（Jackie Chan）。邮箱：jackieontheway666@gmail.com，电话：18742539196 / 13224229196。通过微信、QQ、抖音、小红书等多种方式与我们取得联系。'
     },
     {
       name: 'keywords',
-      content: 'contact 1s design, get in touch, support, feedback, help'
+      content: '联系1s Design, 陈政联系方式, Jackie Chan, contact, 邮箱, 电话, 微信, QQ, 抖音, 小红书, 1s.design, 衣设网'
     }
   ]
 })
 
-// Contact form data
-const contactForm = ref({
-  name: '',
-  email: '',
-  subject: '',
-  message: ''
-})
+// 创始人信息
+const founderInfo = {
+  name: '陈政',
+  englishName: 'Jackie Chan',
+  email: 'jackieontheway666@gmail.com',
+  phones: ['18742539196', '13224229196'],
+  location: '中国',
+  github: 'https://github.com/chan-max',
+  website: 'https://1s.design'
+}
 
-// Form submission
-const submitForm = () => {
-  // Handle form submission here
-  console.log('Form submitted:', contactForm.value)
-  // You can add actual form submission logic here
+// 社交平台
+const socialPlatforms = ref([
+  {
+    name: '微信',
+    icon: 'mdi-wechat',
+    image: '/contact/weixin.jpg',
+    color: '#07c160'
+  },
+  {
+    name: '微博',
+    icon: 'mdi-sina-weibo',
+    image: '/contact/weibo.png',
+    color: '#e6162d'
+  },
+  {
+    name: '小红书',
+    icon: 'mdi-book-open-page-variant',
+    image: '/contact/xiaohongshu.jpg',
+    color: '#ff2442'
+  },
+  {
+    name: '抖音',
+    icon: 'mdi-music-note',
+    image: '/contact/douyin.webp',
+    color: '#000000'
+  },
+  {
+    name: '快手',
+    icon: 'mdi-video',
+    image: '/contact/kuaishou.webp',
+    color: '#ff6600'
+  }
+])
+
+// 二维码弹窗
+const showQRDialog = ref(false)
+const selectedPlatform = ref(null)
+
+const openQRCode = (platform) => {
+  selectedPlatform.value = platform
+  showQRDialog.value = true
+}
+
+const closeQRDialog = () => {
+  showQRDialog.value = false
+  selectedPlatform.value = null
 }
 </script>
 
 <template>
   <div class="contact-page">
     <div class="contact-container">
-      <!-- Hero Section -->
-      <section class="contact-hero">
-        <h1 class="contact-title">联系我们</h1>
-        <p class="contact-subtitle">
-          我们很想听到您的声音。与我们团队取得联系，告诉我们如何帮助您的设计之旅。
-        </p>
-      </section>
+      <!-- Header -->
+      <div class="page-header">
+        <div class="title-row">
+          <h1 class="page-title">联系我们</h1>
+          <NuxtLink to="/founder" class="founder-link">
+            <v-icon size="16">mdi-account-circle</v-icon>
+            <span>了解作者</span>
+          </NuxtLink>
+        </div>
+        <div class="author-row">
+          <h2 class="author-name">{{ founderInfo.name }}</h2>
+          <span class="separator">·</span>
+          <p class="author-name-en">{{ founderInfo.englishName }}</p>
+        </div>
+      </div>
 
-      <!-- Contact Content -->
-      <div class="contact-content">
-        <!-- Contact Form -->
-        <section class="contact-form-section">
-          <h2 class="section-title">发送消息</h2>
-          <form @submit.prevent="submitForm" class="contact-form">
-            <div class="form-group">
-              <label for="name" class="form-label">姓名</label>
-              <input
-                id="name"
-                v-model="contactForm.name"
-                type="text"
-                class="form-input"
-                placeholder="您的姓名"
-                required
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="email" class="form-label">邮箱</label>
-              <input
-                id="email"
-                v-model="contactForm.email"
-                type="email"
-                class="form-input"
-                placeholder="your.email@example.com"
-                required
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="subject" class="form-label">主题</label>
-              <input
-                id="subject"
-                v-model="contactForm.subject"
-                type="text"
-                class="form-input"
-                placeholder="请简述事由"
-                required
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="message" class="form-label">消息内容</label>
-              <textarea
-                id="message"
-                v-model="contactForm.message"
-                class="form-textarea"
-                placeholder="请详细描述您的问题或反馈..."
-                rows="5"
-                required
-              ></textarea>
-            </div>
-            
-            <button type="submit" class="submit-btn">
-              <v-icon left>mdi-send</v-icon>
-              发送消息
-            </button>
-          </form>
-        </section>
+      <!-- Main Content -->
+      <div class="main-content">
 
         <!-- Contact Info -->
-        <section class="contact-info-section">
-          <h2 class="section-title">联系方式</h2>
-          
-          <div class="contact-info">
+        <div class="contact-section">
+          <div class="contact-row">
             <div class="contact-item">
-              <div class="contact-icon">
-                <v-icon size="24" color="primary">mdi-email</v-icon>
-              </div>
-              <div class="contact-details">
-                <h3 class="contact-item-title">邮箱</h3>
-                <p class="contact-item-text">hello@1s.design</p>
-                <p class="contact-item-text">support@1s.design</p>
+              <v-icon size="18" class="item-icon">mdi-email</v-icon>
+              <span class="item-label">邮箱：</span>
+              <a :href="'mailto:' + founderInfo.email" class="item-value">{{ founderInfo.email }}</a>
+            </div>
+
+            <div class="contact-item">
+              <v-icon size="18" class="item-icon">mdi-phone</v-icon>
+              <span class="item-label">电话：</span>
+              <div class="item-values">
+                <a :href="'tel:' + founderInfo.phones[0]" class="item-value">{{ founderInfo.phones[0] }}</a>
+                <span class="separator">/</span>
+                <a :href="'tel:' + founderInfo.phones[1]" class="item-value">{{ founderInfo.phones[1] }}</a>
               </div>
             </div>
-            
+
             <div class="contact-item">
-              <div class="contact-icon">
-                <v-icon size="24" color="primary">mdi-phone</v-icon>
-              </div>
-              <div class="contact-details">
-                <h3 class="contact-item-title">电话</h3>
-                <p class="contact-item-text">+86 400-XXX-XXXX</p>
-                <p class="contact-item-text">周一至周五 9:00-18:00</p>
-              </div>
+              <v-icon size="18" class="item-icon">mdi-map-marker</v-icon>
+              <span class="item-label">所在地：</span>
+              <span class="item-value">{{ founderInfo.location }}</span>
             </div>
-            
+
             <div class="contact-item">
-              <div class="contact-icon">
-                <v-icon size="24" color="primary">mdi-map-marker</v-icon>
-              </div>
-              <div class="contact-details">
-                <h3 class="contact-item-title">办公地址</h3>
-                <p class="contact-item-text">北京市朝阳区创意园区</p>
-                <p class="contact-item-text">设计大厦 1234 号</p>
-              </div>
+              <v-icon size="18" class="item-icon">mdi-github</v-icon>
+              <span class="item-label">GitHub：</span>
+              <a :href="founderInfo.github" target="_blank" class="item-value">{{ founderInfo.github }}</a>
+            </div>
+
+            <div class="contact-item">
+              <v-icon size="18" class="item-icon">mdi-web</v-icon>
+              <span class="item-label">网站：</span>
+              <a :href="founderInfo.website" target="_blank" class="item-value">{{ founderInfo.website }}</a>
             </div>
           </div>
-          
-          <!-- Social Links -->
+        </div>
+
+        <!-- Social Platforms -->
+        <div class="social-section">
+          <h3 class="section-title">社交平台</h3>
           <div class="social-links">
-            <h3 class="social-title">关注我们</h3>
-            <div class="social-icons">
-              <a href="#" class="social-link">
-                <v-icon>mdi-twitter</v-icon>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-instagram</v-icon>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-facebook</v-icon>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-linkedin</v-icon>
-              </a>
-              <a href="#" class="social-link">
-                <v-icon>mdi-dribbble</v-icon>
-              </a>
-            </div>
+            <button
+              v-for="platform in socialPlatforms"
+              :key="platform.name"
+              @click="openQRCode(platform)"
+              class="social-link"
+            >
+              <v-icon :icon="platform.icon" size="18"></v-icon>
+              <span>{{ platform.name }}</span>
+            </button>
           </div>
-        </section>
+        </div>
       </div>
     </div>
+
+    <!-- QR Code Dialog -->
+    <Teleport to="body">
+      <Transition name="dialog">
+        <div v-if="showQRDialog" class="qr-dialog-overlay" @click="closeQRDialog">
+          <div class="qr-dialog" @click.stop>
+            <button class="qr-close" @click="closeQRDialog">
+              <v-icon>mdi-close</v-icon>
+            </button>
+            <div v-if="selectedPlatform" class="qr-content">
+              <div class="qr-header">
+                <v-icon :icon="selectedPlatform.icon" size="32" :style="{ color: selectedPlatform.color }"></v-icon>
+                <h3 class="qr-title">{{ selectedPlatform.name }}</h3>
+              </div>
+              <div class="qr-image-wrapper">
+                <img :src="selectedPlatform.image" :alt="selectedPlatform.name + ' 二维码'" class="qr-image" />
+              </div>
+              <p class="qr-tip">使用 {{ selectedPlatform.name }} 扫描二维码</p>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables - Pure Black Theme
-:root {
-  --primary-color: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #000000;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --border-color: #333333;
-}
-
 .contact-page {
   min-height: 100vh;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
   padding: 2rem 0;
 }
 
 .contact-container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 }
 
-.contact-hero {
+// Page Header
+.page-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
   text-align: center;
-  margin-bottom: 4rem;
-  padding: 2rem 0;
+  max-width: 100%;
 }
 
-.contact-title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-}
-
-.contact-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
-  
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
-}
-
-.contact-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
-}
-
-// Contact Form Styles
-.contact-form {
+.title-row {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.form-input,
-.form-textarea {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-  }
-  
-  &::placeholder {
-    color: var(--text-muted);
-  }
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.submit-btn {
-  background: var(--primary-color);
-  color: var(--bg-primary);
-  border: none;
-  border-radius: 8px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.founder-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   
   &:hover {
-    background: var(--text-secondary);
-    transform: translateY(-2px);
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #111827;
   }
 }
 
-// Contact Info Styles
-.contact-info {
+.author-row {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 1rem;
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.author-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.author-name-en {
+  font-size: 1.25rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.separator {
+  color: #d1d5db;
+  font-size: 1.2rem;
+  
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+// Main Content Layout
+.main-content {
+  max-width: 650px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 3rem;
+  gap: 2.5rem;
+}
+
+// Contact Section
+.contact-section {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .contact-item {
   display: flex;
-  gap: 1rem;
-  align-items: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+  }
 }
 
-.contact-icon {
+.item-icon {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  background: var(--bg-secondary);
-  border-radius: 8px;
+  color: #9ca3af;
+}
+
+.item-label {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.item-value {
+  color: #374151;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  word-break: break-all;
+  
+  &:hover {
+    color: #111827;
+  }
+}
+
+.item-values {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.contact-details {
-  flex: 1;
+.separator {
+  color: #d1d5db;
 }
 
-.contact-item-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+// Social Section
+.social-section {
+  text-align: center;
 }
 
-.contact-item-text {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 0.25rem;
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1.5rem 0;
 }
 
-// Social Links
 .social-links {
-  border-top: 1px solid var(--border-color);
-  padding-top: 2rem;
-}
-
-.social-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-}
-
-.social-icons {
   display: flex;
-  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
 .social-link {
-  width: 40px;
-  height: 40px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: all 0.3s ease;
+  gap: 0.5rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
   
   &:hover {
-    background: var(--primary-color);
-    color: var(--bg-primary);
-    transform: translateY(-2px);
+    color: #111827;
+    
+    .v-icon {
+      transform: translateX(2px);
+    }
+  }
+  
+  .v-icon {
+    transition: transform 0.2s ease;
   }
 }
 
-// Responsive Design
-@media (max-width: 768px) {
-  .contact-container {
-    padding: 0 1rem;
-  }
+// QR Dialog
+.qr-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.qr-dialog {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.qr-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s ease;
   
-  .contact-hero {
-    margin-bottom: 2rem;
-    padding: 1rem 0;
+  &:hover {
+    background: #e5e7eb;
+    color: #111827;
   }
+}
+
+.qr-content {
+  text-align: center;
+}
+
+.qr-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.qr-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.qr-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f9fafb;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.qr-tip {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+// Dialog Animation
+.dialog-enter-active,
+.dialog-leave-active {
+  transition: opacity 0.3s ease;
   
-  .contact-content {
-    gap: 2rem;
+  .qr-dialog {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
+
+.dialog-enter-from,
+.dialog-leave-to {
+  opacity: 0;
   
-  .contact-info {
-    gap: 1.5rem;
-  }
-  
-  .contact-item {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .contact-icon {
-    width: 40px;
-    height: 40px;
+  .qr-dialog {
+    transform: scale(0.9);
   }
 }
 </style>
