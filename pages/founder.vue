@@ -27,17 +27,17 @@ useHead({
 
 // 创始人信息
 const founderInfo = ref({
-  name: '陈设计师',
+  name: '陈政',
+  englishName: 'Jackie Chan',
   role: 'UI/UX Designer & Full Stack Developer',
   avatar: '/me.jpg',
   bio: '一位热爱创作的设计师和开发者，致力于将美学与技术完美结合。凭借对用户体验的深刻理解和对技术创新的敏锐嗅觉，专注于打造既美观又实用的数字产品。相信设计不仅仅是视觉呈现，更是解决问题的艺术。',
   location: '北京, 中国',
   email: 'jackieontheway666@gmail.com',
+  phones: ['18742539196', '13224229196'],
   social: {
     github: 'https://github.com/chan-max',
-    website: 'https://1s.design',
-    twitter: 'https://twitter.com/chanmax',
-    linkedin: 'https://linkedin.com/in/chanmax'
+    website: 'https://1s.design'
   }
 })
 
@@ -89,27 +89,30 @@ const experiences = ref([
           <img :src="founderInfo.avatar" :alt="founderInfo.name" class="avatar" />
         </div>
         <div class="profile-info">
-          <h1 class="name">{{ founderInfo.name }}</h1>
+          <h1 class="name">{{ founderInfo.name }} <span class="english-name">{{ founderInfo.englishName }}</span></h1>
           <p class="role">{{ founderInfo.role }}</p>
           <p class="bio">{{ founderInfo.bio }}</p>
           
-          <!-- 社交链接 -->
-          <div class="social">
-            <a :href="founderInfo.social.github" target="_blank" rel="noopener" class="social-link">
-              <v-icon size="18">mdi-github</v-icon>
-            </a>
-            <a :href="founderInfo.social.website" target="_blank" rel="noopener" class="social-link">
-              <v-icon size="18">mdi-web</v-icon>
-            </a>
-            <a :href="founderInfo.social.twitter" target="_blank" rel="noopener" class="social-link">
-              <v-icon size="18">mdi-twitter</v-icon>
-            </a>
-            <a :href="founderInfo.social.linkedin" target="_blank" rel="noopener" class="social-link">
-              <v-icon size="18">mdi-linkedin</v-icon>
-            </a>
-            <a :href="'mailto:' + founderInfo.email" class="social-link">
+          <!-- 联系方式 -->
+          <div class="profile-contact">
+            <a :href="'mailto:' + founderInfo.email" class="contact-item">
               <v-icon size="18">mdi-email</v-icon>
+              <span>{{ founderInfo.email }}</span>
             </a>
+            <a :href="founderInfo.social.github" target="_blank" rel="noopener" class="contact-item">
+              <v-icon size="18">mdi-github</v-icon>
+              <span>GitHub</span>
+            </a>
+            <div class="phones-group">
+              <a :href="'tel:' + founderInfo.phones[0]" class="contact-item">
+                <v-icon size="18">mdi-phone</v-icon>
+                <span>{{ founderInfo.phones[0] }}</span>
+              </a>
+              <a :href="'tel:' + founderInfo.phones[1]" class="contact-item">
+                <v-icon size="18">mdi-phone</v-icon>
+                <span>{{ founderInfo.phones[1] }}</span>
+              </a>
+            </div>
           </div>
         </div>
       </header>
@@ -157,24 +160,6 @@ const experiences = ref([
           </div>
         </section>
 
-        <!-- 联系方式 -->
-        <section class="section">
-          <h2 class="section-title">联系方式</h2>
-          <div class="contact">
-            <a :href="'mailto:' + founderInfo.email" class="contact-link">
-              <v-icon size="20">mdi-email</v-icon>
-              <span>{{ founderInfo.email }}</span>
-            </a>
-            <a :href="founderInfo.social.website" target="_blank" rel="noopener" class="contact-link">
-              <v-icon size="20">mdi-web</v-icon>
-              <span>{{ founderInfo.social.website }}</span>
-            </a>
-            <div class="contact-link">
-              <v-icon size="20">mdi-map-marker</v-icon>
-              <span>{{ founderInfo.location }}</span>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   </div>
@@ -247,6 +232,16 @@ const experiences = ref([
   }
 }
 
+.english-name {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #6b7280;
+  
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+}
+
 .role {
   font-size: 1.125rem;
   color: #6b7280;
@@ -261,27 +256,34 @@ const experiences = ref([
   max-width: 500px;
 }
 
-.social {
+// 联系方式
+.profile-contact {
   display: flex;
-  gap: 1rem;
-  
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
-.social-link {
-  width: 36px;
-  height: 36px;
+.phones-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.contact-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #6b7280;
+  gap: 0.5rem;
+  color: #4b5563;
   text-decoration: none;
+  font-size: 0.95rem;
   transition: color 0.2s;
   
   &:hover {
     color: #111827;
+  }
+  
+  svg {
+    flex-shrink: 0;
   }
 }
 
@@ -390,31 +392,6 @@ const experiences = ref([
   color: #4b5563;
   line-height: 1.6;
   margin: 0;
-}
-
-// 联系方式
-.contact {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.contact-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: #4b5563;
-  text-decoration: none;
-  padding: 0.75rem 0;
-  transition: color 0.2s;
-  
-  &:hover {
-    color: #111827;
-  }
-  
-  svg {
-    flex-shrink: 0;
-  }
 }
 
 // 响应式
