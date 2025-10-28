@@ -183,48 +183,39 @@ const experiences = ref([
 <style lang="scss" scoped>
 .founder-page {
   min-height: 100vh;
-  background: #fafafa;
-  padding: 3rem 0;
+  background: #ffffff;
+  padding: 4rem 0;
   
   @media (max-width: 768px) {
-    padding: 1.5rem 0;
+    padding: 2rem 0;
   }
 }
 
 .founder-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 0 1rem;
-  }
 }
 
 // 顶部信息区
 .profile-header {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 2.5rem;
-  margin-bottom: 3rem;
-  padding: 2.5rem;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  grid-template-columns: 60px 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid #e5e7eb;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
     text-align: center;
-    padding: 2rem 1.5rem;
   }
 }
 
 .profile-avatar {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto;
+  width: 60px;
+  height: 60px;
   
   @media (max-width: 768px) {
     margin: 0 auto;
@@ -236,13 +227,6 @@ const experiences = ref([
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
 }
 
 .profile-info {
@@ -252,31 +236,29 @@ const experiences = ref([
 }
 
 .name {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 600;
   color: #111827;
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
-  letter-spacing: -0.02em;
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 }
 
 .role {
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: #6b7280;
-  margin: 0 0 1.25rem 0;
-  font-weight: 500;
+  margin: 0 0 1rem 0;
 }
 
 .bio {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #4b5563;
-  line-height: 1.7;
-  margin: 0 0 1.75rem 0;
-  max-width: 100%;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  max-width: 500px;
 }
 
 .social {
@@ -296,14 +278,10 @@ const experiences = ref([
   justify-content: center;
   color: #6b7280;
   text-decoration: none;
-  background: #f9fafb;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: color 0.2s;
   
   &:hover {
     color: #111827;
-    background: #f3f4f6;
-    transform: translateY(-2px);
   }
 }
 
@@ -311,32 +289,20 @@ const experiences = ref([
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
+  gap: 1.5rem;
 }
 
 .section-title {
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #111827;
   margin: 0;
-  letter-spacing: -0.01em;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f3f4f6;
 }
 
 // 关于我
@@ -344,13 +310,12 @@ const experiences = ref([
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 0.5rem;
 }
 
 .about-text {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #4b5563;
-  line-height: 1.75;
+  line-height: 1.8;
   margin: 0;
 }
 
@@ -366,15 +331,13 @@ const experiences = ref([
   background: #f9fafb;
   color: #374151;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
   
   &:hover {
     background: #f3f4f6;
     border-color: #d1d5db;
-    transform: translateY(-1px);
   }
 }
 
@@ -387,19 +350,9 @@ const experiences = ref([
 
 .experience-item {
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 180px 1fr;
   gap: 2rem;
-  padding: 1.25rem;
-  border-radius: 8px;
-  border: 1px solid #f3f4f6;
-  background: #fafafa;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: #ffffff;
-    border-color: #e5e7eb;
-    transform: translateX(2px);
-  }
+  padding: 1.5rem 0;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -408,10 +361,9 @@ const experiences = ref([
 }
 
 .experience-period {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #6b7280;
   font-weight: 500;
-  white-space: nowrap;
 }
 
 .experience-details {
@@ -421,23 +373,22 @@ const experiences = ref([
 }
 
 .experience-title {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #111827;
-  margin: 0 0 0.25rem 0;
+  margin: 0;
 }
 
 .experience-company {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #6b7280;
   margin: 0 0 0.5rem 0;
-  font-weight: 500;
 }
 
 .experience-description {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #4b5563;
-  line-height: 1.65;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -454,29 +405,26 @@ const experiences = ref([
   gap: 0.75rem;
   color: #4b5563;
   text-decoration: none;
-  padding: 0.875rem 1rem;
-  border-radius: 8px;
-  background: #fafafa;
-  border: 1px solid #f3f4f6;
-  transition: all 0.2s ease;
+  padding: 0.75rem 0;
+  transition: color 0.2s;
   
   &:hover {
     color: #111827;
-    background: #ffffff;
-    border-color: #e5e7eb;
-    transform: translateX(4px);
   }
   
   svg {
     flex-shrink: 0;
-    color: #6b7280;
   }
 }
 
 // 响应式
 @media (max-width: 768px) {
+  .founder-container {
+    padding: 0 1rem;
+  }
+  
   .experience-item {
-    padding: 1rem;
+    padding: 1rem 0;
   }
 }
 </style>
