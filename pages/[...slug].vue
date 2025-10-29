@@ -1,29 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center px-4">
-    <div class="max-w-md w-full text-center">
-      <!-- 404 图标 -->
-      <div class="mb-8">
-        <div class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 select-none">
-          404
-        </div>
-      </div>
+  <div class="error-page">
+    <div class="error-container">
+      <!-- 404 数字 -->
+      <div class="error-number">404</div>
 
       <!-- 错误信息 -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-3">页面未找到</h1>
-        <p class="text-gray-600">
-          抱歉，您访问的页面不存在或已被移除。
-        </p>
-      </div>
+      <h1 class="error-title">页面未找到</h1>
+      <p class="error-description">
+        抱歉，您访问的页面不存在或已被移除
+      </p>
 
       <!-- 操作按钮 -->
-      <NuxtLink
-        to="/"
-        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg hover:scale-105 transform"
-      >
-        <Icon name="uil:home" class="w-4 h-4 mr-2" />
-        返回首页
-      </NuxtLink>
+      <div class="error-actions">
+        <NuxtLink to="/" class="back-btn">
+          <v-icon size="18">mdi-home</v-icon>
+          <span>返回首页</span>
+        </NuxtLink>
+        <button @click="$router.back()" class="back-btn secondary">
+          <v-icon size="18">mdi-arrow-left</v-icon>
+          <span>返回上一页</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -49,75 +46,120 @@ useHead({
 </script>
 
 <style scoped>
-/* 页面整体样式 */
-.min-h-screen {
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.error-page {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
-/* 404数字样式优化 */
-.text-7xl {
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.error-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.error-number {
+  font-size: 10rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+  margin-bottom: 2rem;
+  letter-spacing: -0.05em;
+  opacity: 0.1;
+  user-select: none;
+  
+  @media (max-width: 768px) {
+    font-size: 8rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 6rem;
+  }
+}
+
+.error-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1rem 0;
   letter-spacing: -0.02em;
-}
-
-/* 标题样式优化 */
-.text-3xl {
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-
-/* 描述文字样式 */
-.text-gray-600 {
-  line-height: 1.6;
-  font-size: 1.125rem;
-}
-
-/* 按钮悬停效果优化 */
-.inline-flex:hover {
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
-}
-
-/* 响应式设计 */
-@media (max-width: 640px) {
-  .text-7xl {
-    font-size: 4rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
   }
   
-  .text-3xl {
-    font-size: 2rem;
-  }
-  
-  .text-gray-600 {
-    font-size: 1rem;
-  }
-  
-  .max-w-md {
-    max-width: 100%;
-    padding: 0 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .text-7xl {
-    font-size: 3rem;
-  }
-  
-  .text-3xl {
+  @media (max-width: 480px) {
     font-size: 1.5rem;
   }
+}
+
+.error-description {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 3rem 0;
+  line-height: 1.6;
   
-  .text-gray-600 {
-    font-size: 0.875rem;
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #111827;
+  color: #ffffff;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #1f2937;
+    transform: translateY(-2px);
   }
   
-  .px-6 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  &.secondary {
+    background: #f3f4f6;
+    color: #111827;
+    
+    &:hover {
+      background: #e5e7eb;
+    }
   }
   
-  .py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+/* 优化移动端布局 */
+@media (max-width: 480px) {
+  .error-page {
+    padding: 1.5rem;
+  }
+  
+  .error-actions {
+    width: 100%;
+    flex-direction: column;
   }
 }
 </style>
