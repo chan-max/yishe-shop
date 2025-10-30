@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-10-29 07:17:18
+ * @LastEditTime: 2025-10-29 21:54:00
  * @FilePath: /yishe-nuxt/pages/contact.vue
  * @Description: Contact Page - Get in touch with 1s Design
 -->
@@ -186,7 +186,6 @@ const closeQRDialog = () => {
   min-height: 100vh;
   background: #ffffff;
   display: flex;
-  align-items: center;
   padding: 2rem 0;
 }
 
