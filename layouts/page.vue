@@ -52,7 +52,7 @@
           <!-- Center Logo -->
           <div class="header-center">
             <NuxtLink to="/" class="logo-link">
-              <img src="/logo.svg" alt="衣设服装设计" class="logo-image" />
+              <img src="/onestyle.png" alt="衣设服装设计" class="logo-image" />
             </NuxtLink>
           </div>
           
@@ -253,23 +253,23 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 85px;
+  height: 120px;
   width: 100%;
   box-sizing: border-box;
   position: relative;
 
   @media (max-width: 1024px) {
-    height: 80px;
+    height: 110px;
   }
 
   @media (max-width: 768px) {
     padding: 0 1rem;
-    height: 75px;
+    height: 100px;
   }
 
   @media (max-width: 480px) {
     padding: 0 0.75rem;
-    height: 70px;
+    height: 90px;
   }
 }
 
@@ -498,20 +498,20 @@ onMounted(() => {
 }
 
 .logo-image {
-  height: 42px;
+  height: 70px;
   width: auto;
   transition: opacity 0.3s ease;
   
   @media (max-width: 1024px) {
-    height: 38px;
+    height: 65px;
   }
   
   @media (max-width: 768px) {
-    height: 34px;
+    height: 60px;
   }
   
   @media (max-width: 480px) {
-    height: 30px;
+    height: 55px;
   }
 }
 
