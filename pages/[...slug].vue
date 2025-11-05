@@ -13,11 +13,11 @@
       <!-- 操作按钮 -->
       <div class="error-actions">
         <NuxtLink to="/" class="back-btn">
-          <v-icon size="18">mdi-home</v-icon>
+          <v-icon size="16">mdi-home</v-icon>
           <span>返回首页</span>
         </NuxtLink>
         <button @click="$router.back()" class="back-btn secondary">
-          <v-icon size="18">mdi-arrow-left</v-icon>
+          <v-icon size="16">mdi-arrow-left</v-icon>
           <span>返回上一页</span>
         </button>
       </div>
@@ -56,61 +56,61 @@ useHead({
 }
 
 .error-container {
-  max-width: 600px;
+  max-width: 500px;
   width: 100%;
   text-align: center;
 }
 
 .error-number {
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: 700;
   color: #111827;
   line-height: 1;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   letter-spacing: -0.05em;
   opacity: 0.1;
   user-select: none;
   
   @media (max-width: 768px) {
-    font-size: 8rem;
+    font-size: 6rem;
   }
   
   @media (max-width: 480px) {
-    font-size: 6rem;
+    font-size: 4.5rem;
   }
 }
 
 .error-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   letter-spacing: -0.02em;
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.35rem;
   }
   
   @media (max-width: 480px) {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 }
 
 .error-description {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #6b7280;
-  margin: 0 0 3rem 0;
+  margin: 0 0 2rem 0;
   line-height: 1.6;
   
   @media (max-width: 480px) {
-    font-size: 0.95rem;
-    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
   }
 }
 
 .error-actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -118,14 +118,14 @@ useHead({
 .back-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  gap: 0.4rem;
+  padding: 0.6rem 1.25rem;
   background: #111827;
   color: #ffffff;
   text-decoration: none;
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -147,7 +147,7 @@ useHead({
   @media (max-width: 480px) {
     width: 100%;
     justify-content: center;
-    padding: 0.875rem 1.5rem;
+    padding: 0.7rem 1.25rem;
   }
 }
 
