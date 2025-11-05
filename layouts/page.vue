@@ -41,10 +41,6 @@
                 @keyup.enter="handleSearch"
                 v-model="searchKeyword"
               />
-              <div class="search-dropdown">
-                <span class="dropdown-text">作品</span>
-                <v-icon size="16" class="dropdown-icon">mdi-chevron-down</v-icon>
-              </div>
               <button class="search-button" @click="handleSearch">
                 <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
               </button>
@@ -114,10 +110,6 @@
                   @keyup.enter="handleMobileSearch"
                   v-model="searchKeyword"
                 />
-                <div class="mobile-search-dropdown">
-                  <span class="dropdown-text">作品</span>
-                  <v-icon size="16" class="dropdown-icon">mdi-chevron-down</v-icon>
-                </div>
                 <button class="mobile-search-button" @click="handleMobileSearch">
                   <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
                 </button>
@@ -418,30 +410,6 @@ onMounted(() => {
   }
 }
 
-.search-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.75rem 1rem;
-  border-left: 1px solid #e2e8f0;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown-text {
-    font-size: 0.8rem;
-    color: #0d0c22;
-    font-weight: 600;
-    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-  
-  .dropdown-icon {
-    color: #9e9ea7;
-  }
-}
 
 .search-button {
   width: 44px;
@@ -714,34 +682,6 @@ onMounted(() => {
   }
 }
 
-.mobile-search-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.75rem 0.75rem;
-  border-left: 1px solid #e2e8f0;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  flex-shrink: 0;
-  white-space: nowrap;
-  
-  &:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown-text {
-    font-size: 0.8rem;
-    color: #0d0c22;
-    font-weight: 600;
-    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    white-space: nowrap;
-  }
-  
-  .dropdown-icon {
-    color: #9e9ea7;
-    flex-shrink: 0;
-  }
-}
 
 .mobile-search-button {
   width: 44px;
