@@ -4,10 +4,10 @@
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-09-26 07:03:52
  * @FilePath: /yishe-nuxt/pages/index.vue
- * @Description: 1s Design - Creative Design Sharing Platform Homepage with Asymmetric Large-Small Layout
+ * @Description: Luxury Brand Homepage - LV/Nike Style
 -->
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const { awesome } = useAppConfig()
 definePageMeta({ layout: 'page' })
@@ -28,12 +28,128 @@ useHead({
   ]
 })
 
-// Animation state
-const currentSlide = ref(0)
+// Navigation state
+const isMenuOpen = ref(false)
+const isScrolled = ref(false)
 
-// Initialize animations (keep simple rotation over 3 fixed slides)
+// Animation state
+const visibleElements = ref<Set<string>>(new Set())
+
+// Product categories
+const categories = [
+  { id: 'pattern', name: '印花图案', icon: 'mdi-palette', count: '15K+', color: '#FF6B6B' },
+  { id: 'clothing', name: '服装设计', icon: 'mdi-tshirt-crew', count: '8K+', color: '#4ECDC4' },
+  { id: 'brand', name: '品牌标识', icon: 'mdi-shape', count: '5K+', color: '#95E1D3' },
+  { id: 'poster', name: '海报设计', icon: 'mdi-post', count: '12K+', color: '#F38181' },
+  { id: 'packaging', name: '包装设计', icon: 'mdi-package-variant', count: '6K+', color: '#AA96DA' },
+  { id: 'social', name: '社交媒体', icon: 'mdi-instagram', count: '10K+', color: '#FCBAD3' },
+  { id: 'illustration', name: '插画设计', icon: 'mdi-brush', count: '9K+', color: '#FFD93D' },
+  { id: 'typography', name: '字体设计', icon: 'mdi-format-font', count: '7K+', color: '#6BCB77' },
+  { id: 'logo', name: 'Logo设计', icon: 'mdi-star', count: '11K+', color: '#FF9F43' },
+  { id: 'web', name: '网页设计', icon: 'mdi-monitor', count: '13K+', color: '#5F7A61' }
+]
+
+// Horizontal categories for scroll
+const horizontalCategories = [
+  { id: 'all', name: '全部', active: true },
+  { id: 'pattern', name: '印花图案' },
+  { id: 'clothing', name: '服装设计' },
+  { id: 'brand', name: '品牌标识' },
+  { id: 'poster', name: '海报设计' },
+  { id: 'packaging', name: '包装设计' },
+  { id: 'illustration', name: '插画设计' },
+  { id: 'typography', name: '字体设计' },
+  { id: 'logo', name: 'Logo设计' },
+  { id: 'web', name: '网页设计' },
+  { id: 'social', name: '社交媒体' },
+  { id: 'print', name: '印刷设计' }
+]
+
+// Featured designers
+const featuredDesigners = [
+  { id: 1, name: '张设计师', avatar: 'https://picsum.photos/80/80?random=1', works: 124, followers: '2.5K' },
+  { id: 2, name: '李创意', avatar: 'https://picsum.photos/80/80?random=2', works: 98, followers: '1.8K' },
+  { id: 3, name: '王艺术', avatar: 'https://picsum.photos/80/80?random=3', works: 156, followers: '3.2K' },
+  { id: 4, name: '陈设计', avatar: 'https://picsum.photos/80/80?random=4', works: 87, followers: '1.5K' },
+  { id: 5, name: '刘时尚', avatar: 'https://picsum.photos/80/80?random=5', works: 203, followers: '4.1K' },
+  { id: 6, name: '周视觉', avatar: 'https://picsum.photos/80/80?random=6', works: 145, followers: '2.8K' }
+]
+
+// Popular tags
+const popularTags = [
+  { name: '极简主义', count: 1250 },
+  { name: '复古风格', count: 980 },
+  { name: '现代设计', count: 2100 },
+  { name: '手绘风格', count: 750 },
+  { name: '几何图形', count: 890 },
+  { name: '渐变色彩', count: 1100 },
+  { name: '黑白设计', count: 680 },
+  { name: '3D效果', count: 540 }
+]
+
+// Featured products
+const featuredProducts = [
+  { id: 1, title: '春季印花系列', category: 'pattern', image: 'grad1' },
+  { id: 2, title: '现代服装设计', category: 'clothing', image: 'grad2' },
+  { id: 3, title: '品牌视觉识别', category: 'brand', image: 'grad3' },
+  { id: 4, title: '创意海报设计', category: 'poster', image: 'grad4' },
+  { id: 5, title: '产品包装设计', category: 'packaging', image: 'grad5' },
+  { id: 6, title: '社交媒体图形', category: 'social', image: 'grad6' }
+]
+
+// Stats
+const stats = [
+  { number: '15K+', label: '设计作品' },
+  { number: '8K+', label: '活跃设计师' },
+  { number: '70+', label: '国家地区' },
+  { number: '3M+', label: '月度浏览量' }
+]
+
+// Intersection Observer for animations
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
-  setInterval(() => { currentSlide.value = (currentSlide.value + 1) % 3 }, 5000)
+  // Handle scroll
+  const handleScroll = () => {
+    isScrolled.value = window.scrollY > 50
+  }
+  window.addEventListener('scroll', handleScroll)
+
+  // Setup Intersection Observer
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('data-animate-id')
+          if (id) {
+            visibleElements.value.add(id)
+          }
+        }
+      })
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    }
+  )
+
+  // Observe all elements with data-animate-id after DOM is ready
+  nextTick(() => {
+    document.querySelectorAll('[data-animate-id]').forEach((el) => {
+      observer?.observe(el)
+    })
+  })
+
+  return () => {
+    window.removeEventListener('scroll', handleScroll)
+    observer?.disconnect()
+  }
+})
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+  }
 })
 
 // Navigation functions
@@ -44,409 +160,361 @@ const goToSearch = () => {
 const goToExplore = () => {
   navigateTo('/search?category=clothing')
 }
+
+const goToCategory = (categoryId: string) => {
+  navigateTo(`/search?category=${categoryId}`)
+}
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+// Check if element is visible
+const isVisible = (id: string) => {
+  return visibleElements.value.has(id)
+}
 </script>
 
 <template>
-  <div class="design-homepage">
-    <!-- Banner Section with Large Left Image, Small Right Text -->
-    <section class="banner-section">
-      <div class="banner-container">
-        <div class="banner-image">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='bg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23bg1)'/></svg>" alt="Banner Image" class="banner-img">
-        </div>
-        <div class="banner-content">
-          <h1 class="banner-title">衣设服装设计</h1>
-          <h2 class="banner-subtitle">创意印花图案设计平台</h2>
-          <p class="banner-slogan">创意源于生活，设计改变时尚</p>
-          <p class="banner-description">专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，为您的时尚项目提供高质量的设计资源</p>
-          <div class="banner-actions">
-            <button class="primary-btn" @click="goToSearch">开始设计</button>
-            <button class="secondary-btn">
-              <v-icon size="16">mdi-arrow-up</v-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hero Slider Section -->
+  <div class="luxury-homepage">
+    <!-- Hero Section - Full Screen -->
     <section class="hero-section">
-      <!-- Slide 1 -->
-      <div class="hero-slide" :class="{ active: currentSlide === 0 }">
-        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g1%22 cx=%2230%25%22 cy=%2230%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%23ff6b6b%22/><stop offset=%2250%25%22 stop-color=%22%234ecdc4%22 stop-opacity=%22.8%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22 stop-opacity=%221%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g1)%22/></svg>');"></div>
-          <div class="hero-content">
-          <h1 class="hero-title">创意印花图案库</h1>
-          <h2 class="hero-subtitle">免费高清设计资源</h2>
-          <p class="hero-description">精心挑选的创意印花图案和服装设计作品，为您的时尚设计项目提供免费可下载的高清设计资源</p>
-              <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">探索设计</button>
-            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
-              </div>
-            </div>
-          </div>
-      <!-- Slide 2 -->
-      <div class="hero-slide" :class="{ active: currentSlide === 1 }">
-        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g2%22 cx=%2270%25%22 cy=%2240%25%22 r=%2280%25%22><stop offset=%220%25%22 stop-color=%22%234facfe%22/><stop offset=%2260%25%22 stop-color=%22%2300f2fe%22 stop-opacity=%22.9%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g2)%22/></svg>');"></div>
-        <div class="hero-content">
-          <h1 class="hero-title">免费设计服务</h1>
-          <h2 class="hero-subtitle">印花图案与创意设计</h2>
-          <p class="hero-description">我们提供免费服务：创意印花图案、服装设计、品牌标识、海报设计、产品包装、名片设计、明信片、电影海报、报纸版面等更多2D设计服务</p>
-          <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">探索设计</button>
-            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
+      <div class="hero-background">
+        <div class="hero-overlay"></div>
         </div>
-      </div>
-    </div>
-      <!-- Slide 3 -->
-      <div class="hero-slide" :class="{ active: currentSlide === 2 }">
-        <div class="hero-background" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><radialGradient id=%22g3%22 cx=%2250%25%22 cy=%2260%25%22 r=%2285%25%22><stop offset=%220%25%22 stop-color=%22%23a78bfa%22/><stop offset=%2255%25%22 stop-color=%22%23f472b6%22 stop-opacity=%22.85%22/><stop offset=%22100%25%22 stop-color=%22%230a0a0a%22/></radialGradient></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23g3)%22/></svg>');"></div>
         <div class="hero-content">
-          <h1 class="hero-title">共同创造时尚</h1>
-          <h2 class="hero-subtitle">灵感与启发</h2>
-          <p class="hero-description">与全球设计师连接，共同创作并推动视觉设计的边界，让创意印花图案和服装设计焕发新的生命力</p>
+        <div class="hero-text">
+          <h1 class="hero-title">衣设</h1>
+          <p class="hero-subtitle">创意印花图案设计平台</p>
+          <p class="hero-description">探索无限创意，定义时尚未来</p>
+          </div>
           <div class="hero-actions">
-            <button class="primary-btn" @click="goToExplore">探索设计</button>
-            <button class="secondary-btn" @click="goToSearch">立即搜索</button>
+          <button class="luxury-btn primary" @click="goToExplore">探索设计</button>
+          <button class="luxury-btn secondary" @click="goToSearch">开始创作</button>
+        </div>
+        </div>
+    </section>
+
+    <!-- Featured Collections Section -->
+    <section class="collections-section">
+      <div class="section-header">
+        <h2 class="section-title">精选系列</h2>
+        <p class="section-subtitle">发现全球设计师的创意杰作</p>
+              </div>
+      
+      <div class="collections-grid">
+        <!-- Large Featured Item -->
+        <div class="collection-item large">
+          <div class="collection-image">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><defs><linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad1)'/></svg>" alt="Collection" />
+            </div>
+          <div class="collection-content">
+            <h3 class="collection-title">2024春季系列</h3>
+            <p class="collection-description">融合现代艺术与传统文化，展现独特的视觉语言</p>
+            <NuxtLink to="/search?category=spring" class="collection-link">
+              查看系列
+              <v-icon size="16">mdi-arrow-right</v-icon>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Medium Items -->
+        <div class="collection-item medium">
+          <div class="collection-image">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad2)'/></svg>" alt="Collection" />
+      </div>
+          <div class="collection-content">
+            <h3 class="collection-title">印花图案库</h3>
+            <p class="collection-description">数千种高质量创意图案</p>
+            <NuxtLink to="/search?category=pattern" class="collection-link">
+              浏览图案
+              <v-icon size="16">mdi-arrow-right</v-icon>
+            </NuxtLink>
+    </div>
+          </div>
+
+        <div class="collection-item medium">
+          <div class="collection-image">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23fafafa'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad3)'/></svg>" alt="Collection" />
+                </div>
+          <div class="collection-content">
+            <h3 class="collection-title">设计师作品</h3>
+            <p class="collection-description">来自全球顶尖设计师</p>
+            <NuxtLink to="/search?category=designer" class="collection-link">
+              查看作品
+              <v-icon size="16">mdi-arrow-right</v-icon>
+            </NuxtLink>
+                </div>
+              </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase Section -->
+    <section class="py-32 bg-white w-full max-w-full box-border overflow-x-hidden">
+      <div class="max-w-[1920px] mx-auto px-8 w-full max-w-full box-border">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 w-full max-w-full">
+          <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-gray-100 max-w-full">
+            <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200'><defs><linearGradient id='show1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='50%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23show1)'/></svg>" alt="Product" />
+          </div>
+          <div class="p-8">
+            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">新品</span>
+            <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">创意印花设计</h2>
+            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">探索我们的最新系列，每一件作品都经过精心设计，融合了艺术与时尚的完美平衡。</p>
+            <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToExplore">立即探索</button>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full max-w-full lg:flex-row-reverse">
+          <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-gray-100 max-w-full lg:order-2">
+            <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200'><defs><linearGradient id='show2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f8f8f8'/><stop offset='50%' stop-color='%23f0f0f0'/><stop offset='100%' stop-color='%23e5e5e5'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23show2)'/></svg>" alt="Product" />
+          </div>
+          <div class="p-8 lg:order-1">
+            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">精选</span>
+            <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">服装设计服务</h2>
+            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">专业的服装设计服务，从概念到成品，为您打造独特的时尚风格。</p>
+            <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToSearch">了解更多</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Features Section with Large Left, Small Right Layout -->
-    <section class="features-section">
-      <h2 class="section-title">探索衣设设计</h2>
-      <div class="features-container">
-        <div class="features-large">
-          <div class="feature-item large">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="48" class="feature-icon">mdi-palette</v-icon>
-              <h3 class="feature-title">免费设计服务</h3>
-              <p class="feature-description">我们提供免费服务：创意印花图案、服装设计、品牌标识、产品形象、服装设计、品牌文案、标识设计、名片、明信片、海报、报纸版面等更多服务</p>
-              <div class="feature-meta">
-                <div class="feature-tags">
-                  <span class="tag">印花图案</span>
-                  <span class="tag">服装设计</span>
-                  <span class="tag">海报设计</span>
-                  <span class="tag">品牌设计</span>
-                </div>
-                <div class="feature-actions">
-                  <button class="chip-btn" @click="goToSearch">
-                    <v-icon size="16">mdi-lightning-bolt</v-icon>
-                    获取免费资源
-                  </button>
-                  <NuxtLink to="/search?category=graphic" class="text-link">探索分类</NuxtLink>
-                </div>
-              </div>
-        </div>
-            <div class="feature-gallery">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 1" class="gallery-thumb tall2">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 2" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Gallery 3" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 4" class="gallery-thumb tall">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 5" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g5' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g5)'/></svg>" alt="Gallery 6" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g1)'/></svg>" alt="Gallery 7" class="gallery-thumb tall">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 8" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 9" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 10" class="gallery-thumb tall2">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Gallery 11" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 12" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g1)'/></svg>" alt="Gallery 13" class="gallery-thumb tall">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Gallery 14" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 15" class="gallery-thumb tall2">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Gallery 16" class="gallery-thumb">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Gallery 17" class="gallery-thumb tall2">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Gallery 18" class="gallery-thumb">
-            </div>
-      </div>
-        </div>
-        <div class="features-small">
-          <div class="feature-item small portrait">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g3)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="32" class="feature-icon">mdi-shape</v-icon>
-              <h3 class="feature-title">标识与品牌</h3>
-              <p class="feature-description">品牌系统、命名、标识设计、身份识别套件和风格指南</p>
+    <!-- Horizontal Categories Filter -->
+    <section class="horizontal-categories-section">
+      <div class="horizontal-categories-container" data-animate-id="horizontal-categories">
+        <div class="categories-scroll" :class="{ 'animate-in': isVisible('horizontal-categories') }">
+          <button 
+            v-for="(category, index) in horizontalCategories" 
+            :key="category.id"
+            class="category-tab"
+            :class="{ 'active': category.active }"
+            :style="{ '--delay': `${index * 0.05}s` }"
+            @click="goToCategory(category.id)"
+          >
+            {{ category.name }}
+          </button>
             </div>
           </div>
-          <div class="feature-item small portraitTall">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g6)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="32" class="feature-icon">mdi-tshirt-crew</v-icon>
-              <h3 class="feature-title">产品与服装</h3>
-              <p class="feature-description">产品形象、效果图、服装视觉效果和创意时尚设计</p>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+      <div class="section-header" data-animate-id="categories-header">
+        <h2 class="section-title" :class="{ 'animate-in': isVisible('categories-header') }">商品分类</h2>
+        <p class="section-subtitle" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
+            </div>
+      
+      <div class="categories-grid">
+        <div 
+          v-for="(category, index) in categories" 
+          :key="category.id"
+          class="category-item"
+          :data-animate-id="`category-${category.id}`"
+          :class="{ 'animate-in': isVisible(`category-${category.id}`) }"
+          :style="{ '--delay': `${index * 0.1}s`, '--category-color': category.color }"
+          @click="goToCategory(category.id)"
+        >
+          <div class="category-icon" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
+            <v-icon :name="category.icon" />
+          </div>
+          <h3 class="category-name">{{ category.name }}</h3>
+          <p class="category-count">{{ category.count }} 作品</p>
             </div>
           </div>
-          <div class="feature-item small portrait">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g7)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="32" class="feature-icon">mdi-post</v-icon>
-              <h3 class="feature-title">海报与版面</h3>
-              <p class="feature-description">电影/音乐海报、编辑版面、宣传册和印刷就绪文件</p>
-            </div>
-          </div>
-          <div class="feature-item small portraitTall">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='g2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g2)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="32" class="feature-icon">mdi-package-variant</v-icon>
-              <h3 class="feature-title">包装与标签</h3>
-              <p class="feature-description">瓶身包装、盒子刀线和货架就绪标签系统</p>
-            </div>
-          </div>
-          <div class="feature-item small portrait">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='g4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23g4)'/></svg>" alt="Feature Image" class="feature-image">
-            <div class="feature-content">
-              <v-icon size="32" class="feature-icon">mdi-instagram</v-icon>
-              <h3 class="feature-title">社交媒体图形</h3>
-              <p class="feature-description">短视频封面、故事系列和垂直活动模板</p>
-            </div>
-          </div>
-        </div>
+      
+      <div class="section-footer" data-animate-id="categories-footer">
+        <NuxtLink to="/search" class="view-all-link" :class="{ 'animate-in': isVisible('categories-footer') }">
+          查看全部分类
+          <v-icon size="20">mdi-arrow-right</v-icon>
+        </NuxtLink>
       </div>
     </section>
 
     <!-- Stats Section -->
     <section class="stats-section">
       <div class="stats-container">
-        <div class="stat-item">
-          <h3 class="stat-number">15K+</h3>
-          <p class="stat-label">设计作品分享</p>
-          </div>
-        <div class="stat-item">
-          <h3 class="stat-number">8K+</h3>
-          <p class="stat-label">活跃设计师</p>
-        </div>
-        <div class="stat-item">
-          <h3 class="stat-number">70+</h3>
-          <p class="stat-label">国家地区</p>
-        </div>
-        <div class="stat-item">
-          <h3 class="stat-number">3M+</h3>
-          <p class="stat-label">月度浏览量</p>
+        <div 
+          v-for="(stat, index) in stats" 
+          :key="index"
+          class="stat-item"
+          :data-animate-id="`stat-${index}`"
+          :class="{ 'animate-in': isVisible(`stat-${index}`) }"
+          :style="{ '--delay': `${index * 0.15}s` }"
+        >
+          <h3 class="stat-number">{{ stat.number }}</h3>
+          <p class="stat-label">{{ stat.label }}</p>
         </div>
       </div>
     </section>
 
-    <!-- Trending Designs Section with Large Left, Small Right -->
-    <section class="trending-section">
-      <h2 class="section-title">热门设计</h2>
-      <div class="trending-container">
-        <div class="trending-large">
-          <div class="trending-item large">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='tg1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%2360a5fa'/><stop offset='50%' stop-color='%233b82f6' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tg1)'/></svg>" alt="Trending Design" class="trending-image">
-            <div class="trending-overlay">
-              <h3 class="trending-title">大胆极简主义</h3>
-              <p class="trending-description">简洁的构图、丰富的留白和富有表现力的色彩</p>
-              <div class="trending-meta">
-                <span>设计师 A</span>
-      </div>
-            </div>
+    <!-- Featured Products Section -->
+    <section class="products-section">
+      <div class="section-header" data-animate-id="products-header">
+        <h2 class="section-title" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
+        <p class="section-subtitle" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
         </div>
         
-          <!-- Complement block to balance left column height -->
-          <div class="trending-complement">
-            <div class="tc-media">
-              <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='tc1' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23tc1)'/></svg>" alt="Complement Visual" class="tc-image" />
+      <div class="products-grid">
+        <div 
+          v-for="(product, index) in featuredProducts" 
+          :key="product.id"
+          class="product-item"
+          :data-animate-id="`product-${product.id}`"
+          :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
+          :style="{ '--delay': `${index * 0.1}s` }"
+        >
+          <div class="product-image">
+            <img :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" :alt="product.title" />
+            <div class="product-overlay">
+              <button class="product-btn" @click="goToCategory(product.category)">
+                查看详情
+              </button>
             </div>
-            <div class="tc-content">
-              <h4 class="tc-title">新潮方向</h4>
-              <p class="tc-desc">垂直构图配合大胆的字体设计和柔和的渐变，打造品牌时刻</p>
-              <div class="tc-tags">
-                <span class="tc-tag">海报</span>
-                <span class="tc-tag">编辑</span>
-                <span class="tc-tag">品牌</span>
           </div>
+          <div class="product-info">
+            <span class="product-category">{{ categories.find(c => c.id === product.category)?.name }}</span>
+            <h3 class="product-title">{{ product.title }}</h3>
         </div>
       </div>
         </div>
-        <div class="trending-small">
-          <div class="trending-item small portrait">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts1' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts1)'/></svg>" alt="Trending Design" class="trending-image">
-            <div class="trending-overlay">
-              <h3 class="trending-title">街头风格</h3>
-              <p class="trending-description">充满活力的形状和动感字体设计，灵感来自城市</p>
-              <div class="trending-meta">
-                <span>设计师 B</span>
+      
+      <div class="section-footer" data-animate-id="products-footer">
+        <NuxtLink to="/search" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
+          查看更多商品
+          <v-icon size="20">mdi-arrow-right</v-icon>
+        </NuxtLink>
               </div>
-            </div>
-          </div>
-          <div class="trending-item small portraitTall">
-            <img src="/pages/index/monalisa.jpg" alt="Trending Design" class="trending-image">
-            <div class="trending-overlay">
-              <h3 class="trending-title">经典艺术复兴</h3>
-              <p class="trending-description">灵感来自世界著名杰作，为现代可持续品牌重新构想</p>
-              <div class="trending-meta">
-                <span>免费艺术资源可用</span>
-              </div>
-            </div>
-          </div>
-          <div class="trending-item small">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='ts3' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23ts3)'/></svg>" alt="Trending Design" class="trending-image">
-            <div class="trending-overlay">
-              <h3 class="trending-title">科技融合</h3>
-              <p class="trending-description">霓虹纹理和柔和光晕融合未来与工艺</p>
-              <div class="trending-meta">
-                <span>设计师 D</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="primary-btn" @click="goToExplore">查看更多设计</button>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-      <h2 class="section-title">社区用户评价</h2>
-      <div class="testimonials-container">
-        <div class="testimonial-item">
-          <img src="https://picsum.photos/120/120?random=12" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">衣设服装设计彻底改变了我分享创意愿景的方式！</blockquote>
-          <div class="testimonial-author">
-            <strong>苏菲·林</strong>
-            <span>服装设计师</span>
+    <!-- Gallery Grid Section -->
+    <section class="py-32 px-8 max-w-[1920px] mx-auto w-full max-w-full box-border">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">设计画廊</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现灵感，激发创意</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full box-border">
+        <div 
+          v-for="i in 6" 
+          :key="i"
+          class="relative overflow-hidden aspect-[3/4] bg-gray-100 cursor-pointer rounded-xl w-full max-w-full group"
+        >
+          <div class="w-full h-full max-w-full overflow-hidden">
+            <img class="w-full h-full object-cover max-w-full" :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800'><defs><linearGradient id='gal${i}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23gal${i})'/></svg>`" :alt="`Gallery ${i}`" />
           </div>
-        </div>
-        <div class="testimonial-item">
-          <img src="https://picsum.photos/120/120?random=13" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">这个平台让我每天都能与鼓舞人心的设计师们连接。</blockquote>
-          <div class="testimonial-author">
-            <strong>卡洛斯·门德斯</strong>
-            <span>平面艺术家</span>
-          </div>
-        </div>
-        <div class="testimonial-item">
-          <img src="https://picsum.photos/120/120?random=14" alt="Author" class="testimonial-image">
-          <blockquote class="testimonial-quote">这里的趋势洞察让我的作品始终保持前沿。</blockquote>
-          <div class="testimonial-author">
-            <strong>艾莎·汗</strong>
-            <span>产品设计师</span>
+          <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 md:opacity-100">
+            <h3 class="text-xl font-light tracking-wider mb-2 uppercase">设计作品 {{ i }}</h3>
+            <p class="text-sm font-light opacity-90">创意设计师作品</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Design Services Section -->
-    <section class="services-section">
-      <h2 class="section-title">我们免费提供的设计服务</h2>
-      <p class="services-subtitle">一个设计分享社区，同时也能帮助您创建全方位的2D平面设计</p>
-      <div class="services-grid">
-        <div class="service-card portrait" style="--delay:0s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv1' cx='30%' cy='30%' r='80%'><stop offset='0%' stop-color='%23ff6b6b'/><stop offset='50%' stop-color='%234ecdc4' stop-opacity='.8'/><stop offset='100%' stop-color='%230a0a0a' stop-opacity='1'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv1)'/></svg>" alt="Asset Graphics" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">印花图案</h3>
-            <p class="service-description">高质量的创意印花图案和可重复使用的组件包</p>
-          </div>
-        </div>
-        <div class="service-card portrait" style="--delay:0.05s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv2' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv2)'/></svg>" alt="Logo Design" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Logo Design</h3>
-            <p class="service-description">Wordmarks, symbols, marks and multi-size exports</p>
-          </div>
-        </div>
-        <div class="service-card" style="--delay:0.1s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv3' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv3)'/></svg>" alt="Product Imagery" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Product Imagery</h3>
-            <p class="service-description">Creative visuals for lifestyle goods and e-commerce</p>
-          </div>
-        </div>
-        <div class="service-card portrait" style="--delay:0.15s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='sv4' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv4)'/></svg>" alt="Apparel & Garment" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Apparel & Garment</h3>
-            <p class="service-description">Garment sketches, fabric matching and fashion visuals</p>
-          </div>
-        </div>
-        <div class="service-card" style="--delay:0.2s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv5' cx='65%' cy='30%' r='90%'><stop offset='0%' stop-color='%23ffd3a5'/><stop offset='60%' stop-color='%23fd6585' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv5)'/></svg>" alt="Brand & Copywriting" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Brand & Copywriting</h3>
-            <p class="service-description">Naming, slogans, tone, guidelines and brand decks</p>
-          </div>
-        </div>
-        <div class="service-card portrait" style="--delay:0.25s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv6' cx='30%' cy='70%' r='85%'><stop offset='0%' stop-color='%2392fe9d'/><stop offset='60%' stop-color='%2300c9ff' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv6)'/></svg>" alt="Signage & Wayfinding" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Signage & Wayfinding</h3>
-            <p class="service-description">Storefront signage, wayfinding and outdoor specs</p>
-          </div>
-        </div>
-        <div class="service-card portrait" style="--delay:0.3s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='sv7' cx='50%' cy='50%' r='90%'><stop offset='0%' stop-color='%23a18cd1'/><stop offset='60%' stop-color='%23fbc2eb' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv7)'/></svg>" alt="Business Cards" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Business Cards</h3>
-            <p class="service-description">Multiple layouts plus print craft recommendations</p>
-          </div>
-        </div>
-        <div class="service-card" style="--delay:0.35s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv8' cx='70%' cy='40%' r='80%'><stop offset='0%' stop-color='%234facfe'/><stop offset='60%' stop-color='%2300f2fe' stop-opacity='.9'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv8)'/></svg>" alt="Postcards & Greeting" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Postcards & Greeting</h3>
-            <p class="service-description">Illustrated themes for holidays and keepsakes</p>
-          </div>
-        </div>
-        <div class="service-card portraitTall" style="--delay:0.4s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv9' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='55%' stop-color='%23f472b6' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv9)'/></svg>" alt="Film/Music Posters" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Film/Music Posters</h3>
-            <p class="service-description">From cinematic grain to modern art poster styles</p>
-          </div>
-        </div>
-        <div class="service-card portrait" style="--delay:0.45s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><radialGradient id='sv10' cx='35%' cy='35%' r='90%'><stop offset='0%' stop-color='%23ff9a9e'/><stop offset='60%' stop-color='%23fad0c4' stop-opacity='.9'/><stop offset='100%' stop-color='%231c2526'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv10)'/></svg>" alt="Editorial Typography" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">Editorial Typography</h3>
-            <p class="service-description">Grids, headline systems and long-form layouts</p>
-          </div>
-        </div>
-        <div class="service-card" style="--delay:0.5s">
-          <div class="service-media">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><radialGradient id='sv11' cx='50%' cy='60%' r='85%'><stop offset='0%' stop-color='%234facfe'/><stop offset='55%' stop-color='%2300f2fe' stop-opacity='.85'/><stop offset='100%' stop-color='%230a0a0a'/></radialGradient></defs><rect width='100%' height='100%' fill='url(%23sv11)'/></svg>" alt="2D Graphic Design" class="service-image" />
-          </div>
-          <div class="service-content">
-            <h3 class="service-title">2D Graphic Design</h3>
-            <p class="service-description">Icons, illustrations, brochures, roll-ups and more</p>
-          </div>
-        </div>
+    <!-- Featured Designers Section -->
+    <section class="py-32 px-8 max-w-[1920px] mx-auto bg-white w-full max-w-full box-border">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">推荐设计师</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现顶尖创意人才</p>
       </div>
-      <div class="services-cta">
-        <button class="primary-btn" @click="goToSearch">Submit Your Request</button>
-        <button class="secondary-btn" @click="goToExplore">Browse More Works</button>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 w-full box-border">
+        <div 
+          v-for="designer in featuredDesigners" 
+          :key="designer.id"
+          class="bg-gray-100 rounded-xl p-8 text-center cursor-pointer border border-transparent w-full max-w-full hover:border-gray-300 hover:bg-white"
+        >
+          <div class="relative w-20 h-20 mx-auto mb-6">
+            <img class="w-full h-full rounded-full object-cover border-[3px] border-white" :src="designer.avatar" :alt="designer.name" />
+            <div class="absolute bottom-0 right-0 w-7 h-7 bg-black rounded-full flex items-center justify-center border-[3px] border-white">
+              <v-icon name="mdi-check-circle" class="w-4 h-4 text-white" />
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium tracking-wide mb-4 text-black">{{ designer.name }}</h3>
+            <div class="flex flex-col gap-2 mb-6 text-sm text-gray-500">
+              <span class="flex items-center justify-center gap-2">
+                <v-icon name="mdi-image-multiple" size="16" />
+                {{ designer.works }} 作品
+              </span>
+              <span class="flex items-center justify-center gap-2">
+                <v-icon name="mdi-account-group" size="16" />
+                {{ designer.followers }} 关注
+              </span>
+            </div>
+            <button class="w-full px-3 py-3 bg-transparent border border-black rounded-lg text-black text-sm font-normal tracking-wide cursor-pointer uppercase hover:bg-black hover:text-white">关注</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Call to Action Section -->
-    <section class="cta-section">
-      <div class="cta-background"></div>
-        <div class="cta-content">
-        <h2 class="cta-title">Join the Creative Revolution</h2>
-        <p class="cta-description">Share your designs and inspire the world with 1s Design!</p>
-          <div class="cta-actions">
-          <button class="primary-btn" @click="goToSearch">Get Started</button>
-          <button class="secondary-btn" @click="goToExplore">Explore Now</button>
+    <!-- Popular Tags Section -->
+    <section class="py-32 px-8 max-w-[1920px] mx-auto bg-gray-100 w-full max-w-full box-border">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">热门标签</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">探索流行设计趋势</p>
+      </div>
+      
+      <div class="flex flex-wrap gap-4 justify-center max-w-[1200px] mx-auto">
+        <button 
+          v-for="tag in popularTags" 
+          :key="tag.name"
+          class="px-6 py-4 bg-white border border-gray-200 rounded-full flex items-center gap-3 cursor-pointer hover:border-black"
+          @click="goToSearch"
+        >
+          <span class="text-sm font-normal tracking-wide text-black">{{ tag.name }}</span>
+          <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full min-w-[40px] text-center">{{ tag.count }}</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-32 px-8 bg-gray-100 w-full max-w-full box-border">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-[1920px] mx-auto items-center w-full box-border">
+        <div class="p-8">
+          <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">关于我们</span>
+          <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-8 uppercase leading-tight">衣设服装设计平台</h2>
+          <p class="text-base font-light text-gray-600 leading-relaxed mb-6">
+            衣设是一个专注于创意印花图案和服装设计的专业平台。我们汇聚了来自全球的设计师和创意人才，
+            为时尚行业提供高质量的设计资源和灵感。无论是寻找灵感、展示作品，还是寻找合作伙伴，
+            衣设都是您的理想之选。
+          </p>
+          <p class="text-base font-light text-gray-600 leading-relaxed mb-8">
+            我们的使命是连接全球的设计师和创意爱好者，让优秀的创意设计能够被更多人发现和欣赏。
+            我们提供免费的设计服务，包括印花图案、服装设计、品牌标识、海报设计等多种类型的设计服务。
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            <div class="flex items-center gap-3 text-base text-black">
+              <v-icon name="mdi-check-circle" size="24" />
+              <span>免费设计资源</span>
+            </div>
+            <div class="flex items-center gap-3 text-base text-black">
+              <v-icon name="mdi-check-circle" size="24" />
+              <span>全球设计师社区</span>
+            </div>
+            <div class="flex items-center gap-3 text-base text-black">
+              <v-icon name="mdi-check-circle" size="24" />
+              <span>高质量设计作品</span>
+            </div>
+            <div class="flex items-center gap-3 text-base text-black">
+              <v-icon name="mdi-check-circle" size="24" />
+              <span>专业设计服务</span>
+            </div>
+          </div>
+        </div>
+        <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-white max-w-full">
+          <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'><defs><linearGradient id='about1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23about1)'/></svg>" alt="About" />
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative py-32 px-8 text-center bg-gray-100 overflow-hidden w-full max-w-full box-border">
+      <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 opacity-50"></div>
+      <div class="relative z-10 max-w-[800px] mx-auto w-full box-border px-4">
+        <h2 class="text-5xl md:text-6xl lg:text-7xl font-light tracking-wider mb-6 uppercase">加入创意社区</h2>
+        <p class="text-lg md:text-xl font-light text-gray-600 leading-relaxed mb-10">与全球设计师一起，分享您的创意，发现无限可能</p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center flex-wrap">
+          <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToSearch">开始创作</button>
+          <button class="px-10 py-4 bg-transparent text-black uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToExplore">探索作品</button>
         </div>
       </div>
     </section>
@@ -454,127 +522,65 @@ const goToExplore = () => {
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables
+// Luxury Brand Color Palette
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #f8fafc;
-  --accent-color: #64748b;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --border-color: #e2e8f0;
-  --gradient-1: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
-  --gradient-2: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
-  --gradient-3: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
+  --luxury-black: #000000;
+  --luxury-white: #ffffff;
+  --luxury-gray: #f5f5f5;
+  --luxury-gray-dark: #666666;
+  --luxury-text: #1a1a1a;
+  --luxury-text-light: #888888;
+  --luxury-border: #e5e5e5;
 }
 
 // Base styles
-.design-homepage {
+.luxury-homepage {
   min-height: 100vh;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--luxury-white);
+  color: var(--luxury-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   overflow-x: hidden;
-  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
   
   * {
     box-sizing: border-box;
   }
   
-}
-
-// Banner Section (New Large Left Image, Small Right Text)
-.banner-section {
-  padding: 4rem 2rem;
-  background: var(--bg-primary);
-}
-
-.banner-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  margin: 0 auto;
-  align-items: center;
-  max-width: 1200px;
+  section {
   width: 100%;
-  box-sizing: border-box;
-}
-
-.banner-image {
-  justify-self: start;
-  .banner-img {
-    width: 100%;
-    height: 700px;
-    object-fit: cover;
-    border-radius: 16px;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.02);
-    }
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  // Prevent horizontal overflow
+  [class*="grid"],
+  [class*="container"] {
+    max-width: 100%;
+    overflow-x: hidden;
   }
 }
 
-.banner-content {
-  padding: 1.25rem 1rem 1.25rem 0.75rem;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.banner-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.banner-subtitle {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.banner-slogan {
-  font-size: 1.2rem;
-  font-style: italic;
-  margin-bottom: 1rem;
-  color: var(--text-secondary);
-}
-
-.banner-description {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  color: var(--text-secondary);
-}
-
-.banner-actions {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-// Hero Section
+// Hero Section - Full Screen
 .hero-section {
   position: relative;
-  height: 80vh;
-  overflow: hidden;
-}
-
-.hero-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  
-  &.active {
-    opacity: 1;
-  }
+  max-width: 100vw;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .hero-background {
@@ -583,958 +589,1380 @@ const goToExplore = () => {
   left: 0;
   width: 100%;
   height: 100%;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   background-size: cover;
   background-position: center;
-  filter: blur(6px) brightness(0.75);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 4rem 2rem;
-  max-width: 600px;
-  margin: 0 auto;
   text-align: center;
-  opacity: 1;
-  transform: translateY(0);
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+.hero-text {
+  margin-bottom: 3rem;
 }
 
 .hero-title {
-  font-size: 4rem;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: 6rem;
+  font-weight: 300;
+  letter-spacing: 8px;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+  color: var(--luxury-text);
+  text-transform: uppercase;
+  
+  @media (max-width: 768px) {
+    font-size: 3rem;
+    letter-spacing: 4px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
 }
 
 .hero-subtitle {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+  color: var(--luxury-text-light);
+  text-transform: uppercase;
+  
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
 }
 
 .hero-description {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 }
 
 .hero-actions {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap;
+  
+  @media (max-width: 480px) {
+      flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
 }
 
-// Features Section
-.features-section {
-  padding: 6rem 2rem;
-  background: var(--bg-secondary);
+// Luxury Buttons
+.luxury-btn {
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--luxury-black);
+  background: transparent;
+  color: var(--luxury-black);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+  
+  &.primary {
+    background: var(--luxury-black);
+    color: var(--luxury-white);
+      
+      &:hover {
+      background: var(--luxury-gray-dark);
+      border-color: var(--luxury-gray-dark);
+    }
+  }
+  
+  &.secondary {
+    background: transparent;
+    color: var(--luxury-black);
+  
+  &:hover {
+      background: var(--luxury-black);
+      color: var(--luxury-white);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0.875rem 2rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Collections Section
+.collections-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 3rem;
+  }
 }
 
 .section-title {
-  font-size: 2.8rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 4rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: var(--luxury-text);
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
 }
 
-.features-container {
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  letter-spacing: 2px;
+  
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
+}
+
+.collections-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
-.features-large {
-  .feature-item.large {
-  display: flex;
-    flex-direction: column;
-    background: var(--bg-tertiary);
-    border-radius: 12px;
+.collection-item {
+  position: relative;
     overflow: hidden;
-    transition: transform 0.3s ease;
+  background: var(--luxury-gray);
+  width: 100%;
+  max-width: 100%;
+    
+  &.large {
+    grid-row: span 2;
+    
+    .collection-image {
+      height: 100%;
+    }
+  }
   
-  &:hover {
-      transform: translateY(-5px);
+  &.medium {
+    .collection-image {
+      height: 400px;
+      
+      @media (max-width: 1024px) {
+        height: 350px;
+      }
+      
+      @media (max-width: 768px) {
+        height: 300px;
+      }
     }
-    
-    .feature-image {
-      width: 100%;
-      height: 560px;
-      object-fit: cover;
-      border-radius: inherit;
-    }
-    
-    .feature-content {
-      padding: 1.25rem 1.5rem 1rem;
-    }
-    .feature-gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 140px;
-      gap: 0.75rem;
-      padding: 0 1.5rem 1.25rem;
-    }
+  }
+}
 
-    .gallery-thumb {
+.collection-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  max-width: 100%;
+  
+  img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      transition: transform 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-      }
-    }
+    max-width: 100%;
+  }
+}
 
-    .gallery-thumb.tall { grid-row: span 2; }
-    .gallery-thumb.tall2 { grid-row: span 3; }
-    
-    .feature-meta {
-      margin-top: 0.75rem;
-  display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+.collection-content {
+  padding: 2rem;
+  background: var(--luxury-white);
+  
+  @media (max-width: 768px) {
+  padding: 1.5rem;
+}
+}
 
-    .feature-tags {
-      display: flex;
-      flex-wrap: wrap;
+.collection-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+}
+
+.collection-description {
+  font-size: 0.95rem;
+  color: var(--luxury-text-light);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+  font-size: 0.9rem;
+  }
+}
+
+.collection-link {
+      display: inline-flex;
+      align-items: center;
   gap: 0.5rem;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.25rem 0.6rem;
-      border: 1px solid var(--border-color);
-      border-radius: 999px;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      background: var(--bg-primary);
-    }
-
-    .feature-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .chip-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-primary);
-      padding: 0.4rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-  cursor: pointer;
-      transition: all 0.2s ease;
+  color: var(--luxury-black);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: gap 0.3s ease;
       
       &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-1px);
-      }
-    }
+      gap: 1rem;
+  }
+}
 
-    .text-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: color 0.2s ease;
+// Showcase Section
+.showcase-section {
+  padding: 8rem 0;
+  background: var(--luxury-white);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
   
-  &:hover {
-        color: var(--primary-color);
-      }
-    }
-    .feature-title {
-      font-size: 2rem;
-      font-weight: 700;
-    }
+  @media (max-width: 768px) {
+    padding: 4rem 0;
+  }
+}
+
+.showcase-container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 0 1.5rem;
+  }
+}
+
+.showcase-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 8rem;
+  width: 100%;
+  max-width: 100%;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  &.reverse {
+    direction: rtl;
     
-    .feature-description {
-      font-size: 1.1rem;
+    > * {
+      direction: ltr;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    gap: 3rem;
+    margin-bottom: 6rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    
+    &.reverse {
+      direction: ltr;
     }
   }
 }
 
-.features-small {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  
-  .feature-item.small {
-    background: var(--bg-tertiary);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: translateY(-3px);
-    }
-    
-      .feature-image {
+.showcase-image {
         width: 100%;
-        height: 200px;
+  height: 600px;
+  overflow: hidden;
+  background: var(--luxury-gray);
+  max-width: 100%;
+  
+  img {
+    width: 100%;
+    height: 100%;
         object-fit: cover;
-        border-radius: inherit;
-      }
-    
-    .feature-content {
-      padding: 1rem;
-    }
-    
-    .feature-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-    
-    .feature-description {
-      font-size: 0.9rem;
-    }
-
-      &.portrait .feature-image {
-        height: 320px;
-      }
-      &.portraitTall .feature-image {
-        height: 420px;
-      }
+    max-width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    height: 400px;
+  }
+  
+  @media (max-width: 480px) {
+    height: 300px;
   }
 }
 
-.feature-icon {
+.showcase-content {
+  padding: 2rem;
+}
+
+.showcase-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-text-light);
   margin-bottom: 1rem;
 }
 
-// Stats Section
-.stats-section {
-  padding: 4rem 2rem;
-  background: var(--bg-primary);
-}
-
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.stat-item {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.stat-number {
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: var(--accent-color);
-}
-
-.stat-label {
-  font-size: 1rem;
-  color: var(--text-muted);
-}
-
-// Trending Section
-.trending-section {
-  padding: 6rem 2rem;
-  background: var(--bg-secondary);
-}
-
-.trending-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.trending-large {
-  .trending-item.large {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.02);
-    }
-    
-    .trending-image {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-      border-radius: inherit;
-    }
-    
-    .trending-title {
-      font-size: 1.8rem;
-    }
-    
-    .trending-description {
-      font-size: 1rem;
-    }
-
-    .trending-complement {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 1rem;
-      margin-top: 1rem;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      
-      .tc-media {
-        background: var(--bg-primary);
-        min-height: 140px;
-      }
-    .tc-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      border-radius: inherit;
-      }
-      .tc-content {
-        padding: 1rem 1rem 1.1rem 0.75rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      .tc-title {
-  font-size: 1.1rem;
-        font-weight: 700;
-      }
-      .tc-desc {
-        font-size: 0.95rem;
-  color: var(--text-secondary);
-      }
-      .tc-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-      .tc-tag {
-        padding: 0.2rem 0.55rem;
-        border: 1px solid var(--border-color);
-        border-radius: 999px;
-        font-size: 0.75rem;
-        color: var(--text-muted);
-      }
-    }
-  }
-}
-
-.trending-small {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.showcase-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  line-height: 1.2;
   
-  .trending-item.small {
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.02);
-    }
-    
-      .trending-image {
-        width: 100%;
-        height: 240px;
-        object-fit: cover;
-        border-radius: inherit;
-      }
-    
-    .trending-title {
-      font-size: 1.1rem;
-    }
-    
-    .trending-description {
-        font-size: 0.85rem;
-    }
-
-      &.portrait .trending-image {
-        height: 360px;
-      }
-      &.portraitTall .trending-image {
-        height: 460px;
-      }
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
   }
 }
 
-.trending-overlay {
+.showcase-description {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+  font-size: 0.95rem;
+  }
+}
+
+// Gallery Section
+.gallery-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-bottom: 24px;
+  }
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--luxury-gray);
+  cursor: pointer;
+  border-radius: 12px;
+      width: 100%;
+  max-width: 100%;
+  
+  &:hover .gallery-overlay {
+    opacity: 1;
+  }
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
+  }
+}
+
+.gallery-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  padding: 1.5rem;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-  color: var(--text-primary);
-}
-
-.trending-title {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.trending-description {
-  margin-bottom: 0.75rem;
-}
-
-.trending-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  align-items: center;
-}
-
-// Testimonials Section
-.testimonials-section {
-  padding: 6rem 2rem;
-  background: var(--bg-primary);
-}
-
-.testimonials-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-// Services Section
-.services-section {
-  padding: 6rem 2rem;
-  background: var(--bg-secondary);
-}
-
-.services-subtitle {
-  text-align: center;
-  color: var(--text-muted);
-  margin: -2rem auto 3rem;
-  max-width: 900px;
-}
-
-.services-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.service-card {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  opacity: 1;
-  transform: translateY(0);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  }
-}
-
-.service-media {
-  height: 160px;
-  background: var(--bg-primary);
-  border-radius: inherit;
-}
-
-.service-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
-}
-
-// Portrait variant for richer vertical compositions
-.service-card.portrait {
-  grid-row: span 2;
-}
-
-.service-card.portrait .service-media {
-  height: 420px;
-}
-
-.service-card.portrait .service-content {
-  padding-top: 1.25rem;
-}
-
-// Extra-tall portrait variant
-.service-card.portraitTall {
-  grid-row: span 3;
-}
-
-.service-card.portraitTall .service-media {
-  height: 560px;
-}
-
-.service-content {
-  padding: 1rem 1.25rem 1.25rem;
-}
-
-.service-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.service-description {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-}
-
-.services-cta {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-@media (max-width: 1024px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.testimonial-item {
-  background: var(--bg-tertiary);
-  border-radius: 12px;
+  right: 0;
   padding: 2rem;
-  text-align: center;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.testimonial-image {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
-  border: 2px solid var(--accent-color);
-}
-
-.testimonial-quote {
-  font-size: 1.1rem;
-  font-style: italic;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.testimonial-author {
-  font-size: 1rem;
-  font-weight: 600;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--luxury-white);
+  opacity: 0;
+  transition: opacity 0.3s ease;
   
-  span {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+  @media (max-width: 768px) {
+    opacity: 1;
+    padding: 1.5rem;
   }
+}
+
+.gallery-title {
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.gallery-description {
+  font-size: 0.9rem;
+  font-weight: 300;
+  opacity: 0.9;
 }
 
 // CTA Section
 .cta-section {
-  position: relative;
-  padding: 6rem 2rem;
+    position: relative;
+  padding: 8rem 2rem;
   text-align: center;
-  background: var(--bg-secondary);
+  background: var(--luxury-gray);
+    overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 3rem 1rem;
+  }
 }
 
 .cta-background {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+        width: 100%;
   height: 100%;
-  background: var(--gradient-3);
-  filter: blur(15px);
-  opacity: 0.7;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  opacity: 0.5;
 }
 
 .cta-content {
   position: relative;
   z-index: 2;
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
-  opacity: 1;
-  transform: translateY(0);
   width: 100%;
   box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 .cta-title {
-  font-size: 2.8rem;
-  font-weight: 800;
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 4px;
   margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 }
 
 .cta-description {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  line-height: 1.8;
   margin-bottom: 2.5rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 }
 
 .cta-actions {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
-}
-
-// Buttons
-.primary-btn {
-  background: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  color: white;
-  padding: 1rem 2.5rem;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:hover {
-    background: #1d4ed8;
-    border-color: #1d4ed8;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
-  }
-  
-  &:active {
-    transform: translateY(-1px);
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
-    min-height: 44px;
-  }
+  flex-wrap: wrap;
   
   @media (max-width: 480px) {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
-    min-height: 40px;
-  }
-}
-
-.secondary-btn {
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
-  }
-  
-  &:active {
-    transform: translateY(-1px);
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0.875rem 1.75rem;
-    font-size: 0.95rem;
-    min-height: 44px;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
-    min-height: 40px;
-  }
-}
-
-// Responsive Design
-@media (max-width: 1024px) {
-  .banner-container,
-  .features-container,
-  .trending-container {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 0 1rem;
-  }
-  
-  .banner-image {
-    .banner-img {
-      width: 100%;
-      height: 400px;
-    }
-  }
-  
-  .banner-content {
-    padding: 1rem 0;
-    text-align: center;
-  }
-  
-  .features-large,
-  .trending-large {
-    .feature-item.large,
-    .trending-item.large {
-      .feature-image,
-      .trending-image {
-        height: 350px;
-      }
-    }
-  }
-  
-  .features-small,
-  .trending-small {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .banner-section {
-    padding: 2rem 1rem;
-  }
-  
-  .banner-title {
-    font-size: 2.2rem;
-    line-height: 1.2;
-  }
-  
-  .banner-subtitle {
-    font-size: 1.3rem;
-  }
-  
-  .banner-slogan {
-    font-size: 0.95rem;
-  }
-  
-  .banner-description {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  
-  .banner-actions {
     flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
-  }
-  
-  .hero-section {
-    height: 60vh;
-  }
-  
-  .hero-content {
-    padding: 2rem 1rem;
-  }
-  
-  .hero-title {
-    font-size: 2.5rem;
-    line-height: 1.1;
-  }
-  
-  .hero-subtitle {
-    font-size: 1.5rem;
-  }
-  
-  .hero-description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
+    width: 100%;
     gap: 1rem;
   }
+}
+
+// Categories Section
+.categories-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  background: var(--luxury-white);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
   }
   
-  .features-section,
-  .trending-section,
-  .testimonials-section,
-  .services-section {
+  @media (max-width: 480px) {
     padding: 3rem 1rem;
   }
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+  width: 100%;
+  box-sizing: border-box;
   
-  .features-large,
-  .trending-large {
-    .feature-item.large,
-    .trending-item.large {
-      .feature-image,
-      .trending-image {
-        height: 250px;
-      }
-      
-      .feature-title,
-      .trending-title {
-        font-size: 1.4rem;
-      }
-      
-      .feature-description,
-      .trending-description {
-        font-size: 0.9rem;
-      }
-    }
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .features-small,
-  .trending-small {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .stats-container {
+  @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
   
-  .testimonials-container {
+  @media (max-width: 480px) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .cta-title {
-    font-size: 2rem;
-  }
-  
-  .cta-description {
-    font-size: 1rem;
-  }
-  
-  .cta-actions {
-    flex-direction: column;
-    gap: 1rem;
   }
 }
 
-@media (max-width: 480px) {
-  .banner-container,
-  .features-container,
-  .trending-container {
-    padding: 0 0.5rem;
+.category-item {
+  padding: 3rem 2rem;
+  background: var(--luxury-gray);
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--category-color, transparent), transparent);
+    opacity: 0;
+    border-radius: 12px;
   }
   
-  .banner-section {
-    padding: 1.5rem 0.75rem;
+  &:hover {
+    border-color: var(--luxury-black);
+    background: var(--luxury-white);
+    
+    &::before {
+      opacity: 0.1;
+    }
   }
   
-  .banner-title {
-    font-size: 1.8rem;
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
   }
+}
+
+.category-icon {
+  margin-bottom: 1.5rem;
+  color: var(--luxury-text);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   
-  .banner-subtitle {
-    font-size: 1.1rem;
+  :deep(svg) {
+    width: 48px;
+    height: 48px;
+    
+    @media (max-width: 768px) {
+      width: 40px;
+      height: 40px;
+    }
   }
+}
+
+.category-name {
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  color: var(--luxury-text);
+
+@media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.category-count {
+  font-size: 0.9rem;
+  color: var(--luxury-text-light);
+  letter-spacing: 1px;
+}
+
+.section-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--luxury-black);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: gap 0.3s ease;
+  padding: 1rem 2rem;
+  border: 1px solid var(--luxury-black);
   
-  .banner-slogan {
+  &:hover {
+    gap: 1.5rem;
+    background: var(--luxury-black);
+    color: var(--luxury-white);
+  }
+}
+
+// Stats Section
+.stats-section {
+  padding: 6rem 2rem;
+  background: var(--luxury-gray);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+
+@media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 3.5rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  color: var(--luxury-text);
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+}
+
+.stat-label {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  
+  @media (max-width: 768px) {
     font-size: 0.9rem;
+      }
+    }
+
+// Products Section
+.products-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  background: var(--luxury-white);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
   }
   
-  .banner-description {
-    font-size: 0.85rem;
+  @media (max-width: 480px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
   }
   
-  .hero-section {
-    height: 50vh;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
   
-  .hero-content {
-    padding: 1.5rem 0.75rem;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-bottom: 24px;
+  }
+}
+
+.product-item {
+  background: var(--luxury-gray);
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  width: 100%;
+  max-width: 100%;
+  
+  &:hover {
+    border-color: var(--luxury-border);
+  }
+}
+
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: var(--luxury-gray);
+  max-width: 100%;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
   }
   
-  .hero-title {
+  @media (max-width: 768px) {
+    height: 300px;
+  }
+}
+
+.product-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  .product-item:hover & {
+    opacity: 1;
+  }
+}
+
+.product-btn {
+  padding: 1rem 2rem;
+  background: var(--luxury-white);
+  color: var(--luxury-black);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--luxury-black);
+    color: var(--luxury-white);
+  }
+}
+
+.product-info {
+  padding: 1.5rem;
+}
+
+.product-category {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.product-title {
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-text);
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+// About Section
+.about-section {
+  padding: 8rem 2rem;
+  background: var(--luxury-gray);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.about-container {
+    display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.about-content {
+  padding: 2rem;
+}
+
+.about-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-text-light);
+  margin-bottom: 1rem;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+    line-height: 1.2;
+  
+  @media (max-width: 768px) {
     font-size: 2rem;
   }
   
-  .hero-subtitle {
-    font-size: 1.3rem;
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
   }
-  
-  .hero-description {
-    font-size: 0.9rem;
-  }
-  
-  .section-title {
-    font-size: 1.8rem;
+}
+
+.about-description {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  line-height: 1.8;
     margin-bottom: 1.5rem;
-  }
   
-  .features-section,
-  .trending-section,
-  .testimonials-section,
-  .services-section {
-    padding: 2rem 0.75rem;
-  }
-  
-  .stats-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .stat-number {
-    font-size: 2.2rem;
-  }
-  
-  .stat-label {
-    font-size: 0.9rem;
-  }
-  
-  .primary-btn,
-  .secondary-btn {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-  }
-  
-  .cta-title {
-    font-size: 1.8rem;
-  }
-  
-  .cta-description {
+  @media (max-width: 768px) {
     font-size: 0.95rem;
   }
 }
+
+.about-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-features .feature-item {
+  display: flex;
+    align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--luxury-text);
+  
+  :deep(svg) {
+    width: 24px;
+    height: 24px;
+    color: var(--luxury-text);
+  }
+}
+
+.about-image {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  background: var(--luxury-white);
+  max-width: 100%;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    height: 400px;
+  }
+}
+
+// Horizontal Categories Section
+.horizontal-categories-section {
+  padding: 2rem 0;
+  background: var(--luxury-white);
+  border-bottom: 1px solid var(--luxury-border);
+  position: sticky;
+  top: 85px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.horizontal-categories-container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  width: 100%;
+  box-sizing: border-box;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  @media (min-width: 1400px) {
+    padding: 0 5rem;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 6rem;
+  }
+  
+  @media (min-width: 1800px) {
+    padding: 0 8rem;
+  }
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  width: max-content;
+  min-width: 0;
+}
+
+.category-tab {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--luxury-border);
+  border-radius: 999px;
+  color: var(--luxury-text);
+        font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  
+  &:hover {
+    border-color: var(--luxury-black);
+    background: var(--luxury-gray);
+    transform: translateY(-2px);
+  }
+  
+  &.active {
+    background: var(--luxury-black);
+    color: var(--luxury-white);
+    border-color: var(--luxury-black);
+  }
+}
+
+// Designers Section
+.designers-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  background: var(--luxury-white);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.designers-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.designer-card {
+  background: var(--luxury-gray);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  width: 100%;
+  max-width: 100%;
+  
+  &:hover {
+    border-color: var(--luxury-border);
+    background: var(--luxury-white);
+  }
+}
+
+.designer-avatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--luxury-white);
+    transition: transform 0.3s ease;
+  }
+  
+  .designer-card:hover & img {
+    transform: scale(1.1);
+  }
+}
+
+.designer-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--luxury-black);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--luxury-white);
+  
+  :deep(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--luxury-white);
+  }
+}
+
+.designer-name {
+    font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  color: var(--luxury-text);
+}
+
+.designer-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+  color: var(--luxury-text-light);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  :deep(svg) {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.designer-follow-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--luxury-black);
+  border-radius: 8px;
+  color: var(--luxury-black);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  
+  &:hover {
+    background: var(--luxury-black);
+    color: var(--luxury-white);
+    transform: scale(1.05);
+  }
+}
+
+// Tags Section
+.tags-section {
+  padding: 8rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  background: var(--luxury-gray);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tag-button {
+  padding: 1rem 1.5rem;
+  background: var(--luxury-white);
+  border: 1px solid var(--luxury-border);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: var(--luxury-black);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tag-name {
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--luxury-text);
+}
+
+.tag-count {
+  font-size: 0.8rem;
+  color: var(--luxury-text-light);
+  background: var(--luxury-gray);
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  min-width: 40px;
+  text-align: center;
+}
+
 </style>

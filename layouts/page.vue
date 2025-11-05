@@ -25,53 +25,69 @@
           backdropFilter: isScrolled ? 'blur(12px)' : 'none'
         }">
         <div class="header-container">
-          <!-- Left Section: Menu and Search -->
+          <!-- Left Section: Logo + Search -->
           <div class="header-left">
-            <button 
-              class="header-nav-item"
-              @click="toggleMobileMenu"
-              :class="{ 'active': isMobileMenuOpen }"
-            >
-              <v-icon size="18" class="menu-icon">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
-              <span class="nav-text">目录</span>
-            </button>
-            <div class="search-input-wrapper">
-              <v-icon size="16" class="search-icon">mdi-magnify</v-icon>
+            <NuxtLink to="/" class="logo-link">
+              <img src="/onestyle.png" alt="衣设服装设计" class="logo-image" />
+            </NuxtLink>
+            <div class="header-center">
+              <div class="search-bar-wrapper">
               <input 
                 type="text" 
-                placeholder="搜索" 
+                placeholder="搜索内容" 
                 class="search-input"
                 @focus="handleSearchFocus"
                 @blur="handleSearchBlur"
                 @keyup.enter="handleSearch"
                 v-model="searchKeyword"
               />
+              <div class="search-dropdown">
+                <span class="dropdown-text">作品</span>
+                <v-icon size="16" class="dropdown-icon">mdi-chevron-down</v-icon>
+              </div>
+              <button class="search-button" @click="handleSearch">
+                <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
+              </button>
+            </div>
             </div>
           </div>
           
-          <!-- Center Logo -->
-          <div class="header-center">
-            <NuxtLink to="/" class="logo-link">
-              <img src="/onestyle.png" alt="衣设服装设计" class="logo-image" />
-            </NuxtLink>
+          <!-- Right Section: Navigation and Actions -->
+          <div class="header-right">
+            <div class="nav-links">
+              <NuxtLink to="/" class="nav-link">
+                <span>首页</span>
+              </NuxtLink>
+              <NuxtLink to="/products" class="nav-link">
+                <span>产品</span>
+                <v-icon size="16" class="nav-chevron">mdi-chevron-down</v-icon>
+              </NuxtLink>
+              <NuxtLink to="/design" class="nav-link">
+                <span>设计服务</span>
+                <v-icon size="16" class="nav-chevron">mdi-chevron-down</v-icon>
+              </NuxtLink>
+              <NuxtLink to="/portfolio" class="nav-link">
+                <span>作品集</span>
+              </NuxtLink>
+              <NuxtLink to="/blog" class="nav-link">
+                <span>博客</span>
+              </NuxtLink>
+            </div>
+            <div class="action-buttons">
+              <NuxtLink to="/contact" class="contact-link">联系我们</NuxtLink>
+              <NuxtLink to="/customize" class="customize-button">个性定制</NuxtLink>
+            </div>
           </div>
           
-          <!-- Right Section: Contact and About -->
-          <div class="header-right">
-            <NuxtLink 
-              to="/contact" 
-              class="header-nav-item contact-link"
-            >
-              <span class="nav-text">联系我们</span>
-            </NuxtLink>
-            <NuxtLink 
-              to="/about" 
-              class="header-icon-btn"
-              title="了解我们"
-            >
-              <v-icon size="18">mdi-information-outline</v-icon>
-            </NuxtLink>
-          </div>
+          <!-- Mobile Menu Button -->
+          <button 
+            class="mobile-menu-btn"
+            @click="toggleMobileMenu"
+            :class="{ 'active': isMobileMenuOpen }"
+            :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
+          >
+            <v-icon size="24" class="menu-icon">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+          </button>
         </div>
       </header>
 
@@ -86,6 +102,28 @@
               </button>
             </div>
 
+            <!-- Mobile Search Bar -->
+            <div class="mobile-search-section">
+              <div class="mobile-search-bar-wrapper">
+                <input 
+                  type="text" 
+                  placeholder="搜索内容" 
+                  class="mobile-search-input"
+                  @focus="handleSearchFocus"
+                  @blur="handleSearchBlur"
+                  @keyup.enter="handleMobileSearch"
+                  v-model="searchKeyword"
+                />
+                <div class="mobile-search-dropdown">
+                  <span class="dropdown-text">作品</span>
+                  <v-icon size="16" class="dropdown-icon">mdi-chevron-down</v-icon>
+                </div>
+                <button class="mobile-search-button" @click="handleMobileSearch">
+                  <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
+                </button>
+              </div>
+            </div>
+
             <!-- Mobile Menu Links -->
             <nav class="mobile-nav-menu">
               <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
@@ -94,34 +132,26 @@
               <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
                 产品
               </NuxtLink>
-              <NuxtLink to="/search" class="mobile-nav-link" @click="closeMobileMenu">
-                搜索
-              </NuxtLink>
               <NuxtLink to="/design" class="mobile-nav-link" @click="closeMobileMenu">
                 设计服务
               </NuxtLink>
               <NuxtLink to="/portfolio" class="mobile-nav-link" @click="closeMobileMenu">
                 作品集
               </NuxtLink>
-              <NuxtLink to="/gallery" class="mobile-nav-link" @click="closeMobileMenu">
-                画廊
-              </NuxtLink>
               <NuxtLink to="/blog" class="mobile-nav-link" @click="closeMobileMenu">
                 博客
               </NuxtLink>
-              <NuxtLink to="/pricing" class="mobile-nav-link" @click="closeMobileMenu">
-                定价
-              </NuxtLink>
-              <NuxtLink to="/founder" class="mobile-nav-link" @click="closeMobileMenu">
-                创始人
-              </NuxtLink>
-              <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
-                关于我们
-              </NuxtLink>
-              <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
+            </nav>
+
+            <!-- Mobile Action Buttons -->
+            <div class="mobile-action-buttons">
+              <NuxtLink to="/contact" class="mobile-contact-link" @click="closeMobileMenu">
                 联系我们
               </NuxtLink>
-            </nav>
+              <NuxtLink to="/customize" class="mobile-customize-button" @click="closeMobileMenu">
+                个性定制
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </Transition>
@@ -170,6 +200,13 @@ const handleSearchBlur = () => {
 const handleSearch = () => {
   if (searchKeyword.value.trim()) {
     navigateTo(`/search?q=${encodeURIComponent(searchKeyword.value.trim())}`)
+  }
+}
+
+const handleMobileSearch = () => {
+  if (searchKeyword.value.trim()) {
+    navigateTo(`/search?q=${encodeURIComponent(searchKeyword.value.trim())}`)
+    closeMobileMenu()
   }
 }
 
@@ -247,40 +284,197 @@ onMounted(() => {
 }
 
 .header-container {
-  max-width: 1200px;
+  max-width: 1920px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 120px;
+  height: 85px;
   width: 100%;
   box-sizing: border-box;
   position: relative;
+  gap: 1rem;
+
+  @media (min-width: 1200px) {
+    padding: 0 2rem;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1400px) {
+    padding: 0 5rem;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 6rem;
+  }
+  
+  @media (min-width: 1800px) {
+    padding: 0 8rem;
+  }
 
   @media (max-width: 1024px) {
-    height: 110px;
+    height: 80px;
+    padding: 0 1rem;
   }
 
   @media (max-width: 768px) {
     padding: 0 1rem;
-    height: 100px;
+    height: 75px;
+    gap: 0.75rem;
   }
 
   @media (max-width: 480px) {
     padding: 0 0.75rem;
-    height: 90px;
+    height: 70px;
   }
 }
 
-// Header Layout: Left, Center, Right
-.header-left,
+// Left Section - Logo + Search
+.header-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1.5rem;
+  
+  @media (min-width: 1400px) {
+    gap: 2rem;
+  }
+}
+
+.logo-link {
+  text-decoration: none;
+  color: #0d0c22;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+  transition: opacity 0.2s ease;
+  transform: translateY(4px);
+  
+  @media (max-width: 1024px) {
+    height: 56px;
+    transform: translateY(3px);
+  }
+  
+  @media (max-width: 768px) {
+    height: 52px;
+    transform: translateY(3px);
+  }
+  
+  @media (max-width: 480px) {
+    height: 48px;
+    transform: translateY(2px);
+  }
+}
+
+// Center Section - Search Bar
+.header-center {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  background-color: #f8f8f8;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  
+  @media (min-width: 1400px) {
+    width: 600px;
+  }
+  
+  @media (max-width: 1024px) {
+    width: 450px;
+  }
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.75rem 1rem 0.75rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #0d0c22;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &::placeholder {
+    color: #9e9ea7;
+    font-weight: 500;
+  }
+}
+
+.search-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border-left: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .dropdown-text {
+    font-size: 0.8rem;
+    color: #0d0c22;
+    font-weight: 600;
+    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .dropdown-icon {
+    color: #9e9ea7;
+  }
+}
+
+.search-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0.25rem;
+  flex-shrink: 0;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .search-icon-btn {
+    color: #666666;
+  }
+}
+
+// Right Section - Navigation and Actions
 .header-right {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   
   @media (max-width: 768px) {
     gap: 1rem;
@@ -291,237 +485,142 @@ onMounted(() => {
   }
 }
 
-.header-center {
+.nav-links {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  flex-shrink: 0;
+  gap: 1.5rem;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
 }
 
-.header-left {
-  justify-content: flex-start;
-}
-
-.header-right {
-  justify-content: flex-end;
-}
-
-// Navigation Items with Icon and Text
-.header-nav-item {
+.nav-link {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  color: #333333;
-  cursor: pointer;
+  gap: 0.25rem;
   text-decoration: none;
-  transition: opacity 0.3s ease;
-  padding: 0.5rem 0;
+  color: #0d0c22;
+  font-size: 0.75rem;
   font-weight: 400;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: 0.2px;
-  
-  &:hover {
-    opacity: 0.7;
-  }
-  
-  &.active {
-    opacity: 1;
-  }
-  
-  &.router-link-active {
-    opacity: 1;
-  }
-  
-  // 菜单图标样式 - 与文字尺寸同步
-  .menu-icon {
-    color: #333333;
-  }
-  
-  .nav-text {
-    white-space: nowrap;
-    color: #333333;
-    font-size: 0.75rem;
-    
-    @media (max-width: 1024px) {
-      font-size: 0.7rem;
-    }
-    
-    @media (max-width: 768px) {
-      font-size: 0.65rem;
-    }
-    
-    @media (max-width: 480px) {
-      font-size: 0.6rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    gap: 0.3rem;
-  }
-  
-  @media (max-width: 480px) {
-    gap: 0.25rem;
-  }
-}
-
-// 右侧联系我们的文字样式
-.contact-link .nav-text {
-  font-size: 0.7rem;
-  color: #333333;
-  
-  @media (max-width: 1024px) {
-    font-size: 0.65rem;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 0.6rem;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.55rem;
-  }
-}
-
-// 搜索输入框
-.search-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-width: 120px;
-  
-  @media (max-width: 768px) {
-    min-width: 100px;
-  }
-  
-  @media (max-width: 480px) {
-    min-width: 80px;
-  }
-  
-  .search-icon {
-    position: absolute;
-    left: 0;
-    color: #333333;
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 0.4rem 0.5rem 0.4rem 1.5rem;
-    border: none;
-    background: transparent;
-    color: #333333;
-    font-size: 0.75rem;
-    font-weight: 400;
-    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    outline: none;
-    transition: all 0.3s ease;
-    
-    &::placeholder {
-      color: #666666;
-      opacity: 0.8;
-    }
-    
-    &:focus {
-      color: #333333;
-      
-      &::placeholder {
-        opacity: 0.5;
-      }
-    }
-    
-    @media (max-width: 1024px) {
-      font-size: 0.7rem;
-      padding: 0.35rem 0.45rem 0.35rem 1.4rem;
-    }
-    
-    @media (max-width: 768px) {
-      font-size: 0.65rem;
-      padding: 0.3rem 0.4rem 0.3rem 1.3rem;
-    }
-    
-    @media (max-width: 480px) {
-      font-size: 0.6rem;
-      padding: 0.25rem 0.35rem 0.25rem 1.2rem;
-    }
-  }
-}
-
-// Icon Buttons (for right side)
-.header-icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  color: #333333;
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity 0.3s ease;
-  padding: 0.25rem;
-  
-  &:hover {
-    opacity: 0.7;
-  }
-  
-  &.active {
-    opacity: 1;
-  }
-  
-  &.router-link-active {
-    opacity: 1;
-  }
-}
-
-// Logo Section
-.logo-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease;
   padding: 0.5rem 0;
   
   &:hover {
-    opacity: 0.8;
+    opacity: 0.7;
+  }
+  
+  .nav-chevron {
+    color: #9e9ea7;
   }
 }
 
-.logo-image {
-  height: 70px;
-  width: auto;
-  transition: opacity 0.3s ease;
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   
-  @media (max-width: 1024px) {
-    height: 65px;
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+  }
+}
+
+.contact-link {
+  text-decoration: none;
+  color: #0d0c22;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.7;
+  }
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.customize-button {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #0d0c22;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #1a1926;
+  }
+  
+  @media (max-width: 991px) {
+    display: none;
   }
   
   @media (max-width: 768px) {
-    height: 60px;
-  }
-  
-  @media (max-width: 480px) {
-    height: 55px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
   }
 }
+
+// Mobile Menu Button
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #0d0c22;
+  
+  @media (max-width: 991px) {
+    display: flex;
+  }
+  
+  .menu-icon {
+    color: #0d0c22;
+  }
+}
+
 
 // Main Content
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 0;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  
+  @media (min-width: 1200px) {
+    padding: 0 2rem;
+  }
+
+  @media (min-width: 1400px) {
+    padding: 0 3rem;
+  }
+  
+  @media (min-width: 1600px) {
+    padding: 0 4rem;
+  }
+  
+  @media (min-width: 1800px) {
+    padding: 0 5rem;
+  }
   
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 0 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0 0.75rem;
   }
 }
 
@@ -548,13 +647,16 @@ onMounted(() => {
 .mobile-menu-content {
   background: #ffffff;
   border-right: 1px solid #e2e8f0;
-  width: 300px;
+  width: 320px;
   height: 100vh;
   overflow-y: auto;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
   
   @media (max-width: 480px) {
-    width: 280px;
+    width: 100%;
+    max-width: 320px;
   }
 }
 
@@ -579,6 +681,95 @@ onMounted(() => {
   }
 }
 
+// Mobile Search Section
+.mobile-search-section {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mobile-search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #f8f8f8;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.mobile-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.75rem 1rem 0.75rem 1.5rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0c22;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &::placeholder {
+    color: #9e9ea7;
+    font-weight: 500;
+  }
+}
+
+.mobile-search-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.75rem;
+  border-left: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .dropdown-text {
+    font-size: 0.8rem;
+    color: #0d0c22;
+    font-weight: 600;
+    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    white-space: nowrap;
+  }
+  
+  .dropdown-icon {
+    color: #9e9ea7;
+    flex-shrink: 0;
+  }
+}
+
+.mobile-search-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0.25rem;
+  flex-shrink: 0;
+  z-index: 1;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .search-icon-btn {
+    color: #666666;
+  }
+}
+
 .mobile-nav-menu {
   padding: 0.25rem 1.25rem 1rem;
   display: flex;
@@ -589,11 +780,11 @@ onMounted(() => {
 .mobile-nav-link {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0;
-  color: #333333;
+  padding: 0.75rem 0;
+  color: #0d0c22;
   text-decoration: none;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 400;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: 0.1px;
@@ -605,13 +796,58 @@ onMounted(() => {
   }
   
   &:hover {
-    color: #333333;
-    opacity: 0.6;
+    color: #0d0c22;
+    opacity: 0.7;
   }
   
   &.router-link-active {
-    color: #333333;
+    color: #0d0c22;
     opacity: 1;
+    font-weight: 500;
+  }
+}
+
+// Mobile Action Buttons
+.mobile-action-buttons {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.mobile-contact-link {
+  text-decoration: none;
+  color: #0d0c22;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #f8f8f8;
+    border-color: #d0d0d0;
+  }
+}
+
+.mobile-customize-button {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #0d0c22;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #1a1926;
   }
 }
 
