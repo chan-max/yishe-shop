@@ -266,9 +266,6 @@ onMounted(() => {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   width: 100%;
-  transition: all 0.3s ease;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
   
   // 滚动后的样式变化
   &.scrolled {

@@ -178,21 +178,19 @@ const isVisible = (id: string) => {
 <template>
   <div class="luxury-homepage">
     <!-- Hero Section - Full Screen -->
-    <section class="hero-section">
-      <div class="hero-background">
-        <div class="hero-overlay"></div>
+    <section class="relative w-full max-w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden box-border mt-8 md:mt-8">
+      <div class="absolute inset-0 w-full h-full " style="background:#f6f6f6;"></div>
+      <div class="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full box-border">
+        <div class="mb-12">
+          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light tracking-wider mb-6 uppercase text-black">衣设</h1>
+          <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-widest mb-4 uppercase text-black">创意印花图案设计平台</p>
+          <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">探索无限创意，定义时尚未来</p>
         </div>
-        <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">衣设</h1>
-          <p class="hero-subtitle">创意印花图案设计平台</p>
-          <p class="hero-description">探索无限创意，定义时尚未来</p>
-          </div>
-          <div class="hero-actions">
-          <button class="luxury-btn primary" @click="goToExplore">探索设计</button>
-          <button class="luxury-btn secondary" @click="goToSearch">开始创作</button>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <button class="px-8 sm:px-10 py-4 bg-white text-black uppercase text-xs sm:text-sm tracking-wider border border-black min-w-[160px] sm:min-w-[180px] w-full sm:w-auto hover:bg-black hover:text-white transition-colors" @click="goToExplore">探索设计</button>
+          <button class="px-8 sm:px-10 py-4 bg-transparent text-black uppercase text-xs sm:text-sm tracking-wider border border-black min-w-[160px] sm:min-w-[180px] w-full sm:w-auto hover:bg-black hover:text-white transition-colors" @click="goToSearch">开始创作</button>
         </div>
-        </div>
+      </div>
     </section>
 
     <!-- Featured Collections Section -->
@@ -569,129 +567,7 @@ const isVisible = (id: string) => {
   }
 }
 
-// Hero Section - Full Screen
-.hero-section {
-  position: relative;
-  width: 100%;
-  max-width: 100vw;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  background-size: cover;
-  background-position: center;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.02);
-  }
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 900px;
-  padding: 0 2rem;
-}
-
-.hero-text {
-  margin-bottom: 3rem;
-}
-
-.hero-title {
-  font-size: 6rem;
-  font-weight: 300;
-  letter-spacing: 8px;
-  margin-bottom: 1rem;
-  color: var(--luxury-text);
-  text-transform: uppercase;
-  
-  @media (max-width: 768px) {
-    font-size: 3rem;
-    letter-spacing: 4px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-  }
-}
-
-.hero-subtitle {
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 4px;
-  margin-bottom: 1rem;
-  color: var(--luxury-text-light);
-  text-transform: uppercase;
-  
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-  }
-}
-
-.hero-description {
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  line-height: 1.8;
-  max-width: 600px;
-  margin: 0 auto;
-  
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.85rem;
-  }
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  
-  @media (max-width: 480px) {
-      flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-  }
-}
+// Hero Section - converted to Tailwind, minimal CSS needed
 
 // Luxury Buttons
 .luxury-btn {
