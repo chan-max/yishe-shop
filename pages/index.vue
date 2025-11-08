@@ -98,6 +98,9 @@ const featuredProducts = ref<Array<{
   imageUrl?: string
 }>>([])
 
+// Hover state for product cards
+const hoveredProductId = ref<string | null>(null)
+
 // Stats
 const stats = [
   { number: '15K+', label: '设计作品' },
@@ -259,49 +262,57 @@ const isVisible = (id: string) => {
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
       </div>
         
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16">
         <div 
           v-for="(product, index) in featuredProducts" 
           :key="product.id"
-          class="bg-gray-100 rounded-xl overflow-hidden border border-transparent hover:border-gray-200 transition-all"
+          class="bg-gray-100 overflow-hidden border border-transparent hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
           :data-animate-id="`product-${product.id}`"
           :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
           :style="{ '--delay': `${index * 0.1}s` }"
+          @mouseenter="hoveredProductId = product.id"
+          @mouseleave="hoveredProductId = null"
         >
-          <div class="relative w-full h-96 md:h-80 overflow-hidden bg-gray-100">
+          <div class="relative w-full h-64 sm:h-80 md:h-80 overflow-hidden bg-gray-100 group">
             <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
             <img 
               v-if="product.imageUrl" 
               :src="product.imageUrl" 
               :alt="product.title"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover transition-transform duration-300"
+              :class="{ 'scale-105': hoveredProductId === product.id }"
               @error="handleImageError($event, product)"
             />
             <img 
               v-else
               :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
               :alt="product.title"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover transition-transform duration-300"
+              :class="{ 'scale-105': hoveredProductId === product.id }"
             />
-            <div class="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <div class="px-8 text-center text-white max-w-[90%]">
-                <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-4 leading-snug">{{ product.title }}</h3>
-                <p v-if="product.description" class="text-sm md:text-xs font-light text-white/90 leading-relaxed mb-6 line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
-                <button class="px-6 py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white transition-all" @click="goToProductDetail(product.id)">
+            <!-- Hover 遮罩层 -->
+            <div 
+              class="absolute inset-0 bg-black/75 flex items-center justify-center transition-opacity duration-300 z-10"
+              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'"
+            >
+              <div class="px-4 sm:px-8 text-center text-white max-w-[90%]">
+                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug">{{ product.title }}</h3>
+                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
+                <button class="px-4 sm:px-6 py-2 sm:py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white border border-white/30 hover:border-white/60 transition-all" @click.stop="goToProductDetail(product.id)">
                   查看详情
                 </button>
               </div>
             </div>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 truncate" :title="product.title">{{ product.title }}</h3>
-            <p v-if="product.description" class="text-sm md:text-xs font-light text-gray-500 leading-relaxed line-clamp-2" :title="product.description">{{ product.description }}</p>
+          <div class="p-3 sm:p-6">
+            <h3 class="text-base sm:text-lg md:text-xl font-light tracking-wide uppercase text-gray-900 mb-1 sm:mb-2 truncate" :title="product.title">{{ product.title }}</h3>
+            <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-gray-500 leading-relaxed line-clamp-2" :title="product.description">{{ product.description }}</p>
           </div>
         </div>
       </div>
       
       <div class="text-center mt-12" data-animate-id="products-footer">
-        <NuxtLink to="/products" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('products-footer') }">
+        <NuxtLink to="/products" class="inline-flex items-center gap-3 px-8 py-4 border border-gray-400 text-sm font-normal tracking-wider uppercase text-gray-700 hover:border-gray-600 hover:text-gray-900 transition-all" :class="{ 'animate-in': isVisible('products-footer') }">
           查看更多商品
           <v-icon size="20">mdi-arrow-right</v-icon>
         </NuxtLink>
