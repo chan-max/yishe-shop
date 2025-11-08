@@ -46,8 +46,19 @@
         </button>
 
         <!-- 商品图片区域 -->
-        <div class="mb-8 flex justify-center">
-          <div class="relative max-w-2xl w-full" style="aspect-ratio: 4 / 3;">
+        <div class="mb-8 flex items-center justify-center relative">
+          <!-- 左侧切换按钮 -->
+          <button
+            v-if="productImages.length > 1"
+            @click="previousImage"
+            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            aria-label="上一张图片"
+          >
+            <Icon name="heroicons:chevron-left" class="w-6 h-6 text-black" />
+          </button>
+
+          <!-- 图片容器 -->
+          <div class="relative max-w-2xl w-full ml-12 mr-12 sm:ml-16 sm:mr-16 md:ml-20 md:mr-20" style="aspect-ratio: 4 / 3;">
             <!-- 主图 -->
             <img
               v-if="currentImage"
@@ -77,6 +88,16 @@
               />
             </div>
           </div>
+
+          <!-- 右侧切换按钮 -->
+          <button
+            v-if="productImages.length > 1"
+            @click="nextImage"
+            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            aria-label="下一张图片"
+          >
+            <Icon name="heroicons:chevron-right" class="w-6 h-6 text-black" />
+          </button>
         </div>
 
         <!-- 探索相关内容按钮 -->
@@ -284,6 +305,20 @@ const formatDate = (dateString) => {
 const handleImageError = (event) => {
   const img = event.target as HTMLImageElement
   img.style.display = 'none'
+}
+
+// 切换到上一张图片
+const previousImage = () => {
+  if (productImages.value.length > 0) {
+    currentImageIndex.value = (currentImageIndex.value - 1 + productImages.value.length) % productImages.value.length
+  }
+}
+
+// 切换到下一张图片
+const nextImage = () => {
+  if (productImages.value.length > 0) {
+    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length
+  }
 }
 
 // 探索相关内容
