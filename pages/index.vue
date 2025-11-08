@@ -235,7 +235,7 @@ const isVisible = (id: string) => {
 </script>
 
 <template>
-  <div class="luxury-homepage">
+  <div class="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden w-full max-w-full">
     <!-- Hero Section - Full Screen -->
     <section class="relative w-full max-w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden box-border mt-8 md:mt-8">
       <div class="absolute inset-0 w-full h-full " style="background:#f6f6f6;"></div>
@@ -253,76 +253,78 @@ const isVisible = (id: string) => {
     </section>
 
     <!-- Featured Products Section -->
-    <section class="products-section">
-      <div class="section-header" data-animate-id="products-header">
-        <h2 class="section-title" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
-        <p class="section-subtitle" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
-        </div>
+    <section class="py-32 px-4 sm:px-6 md:px-8 bg-white max-w-[1920px] mx-auto w-full">
+      <div class="text-center mb-16" data-animate-id="products-header">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
+      </div>
         
-      <div class="products-grid">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
         <div 
           v-for="(product, index) in featuredProducts" 
           :key="product.id"
-          class="product-item"
+          class="bg-gray-100 rounded-xl overflow-hidden border border-transparent hover:border-gray-200 transition-all"
           :data-animate-id="`product-${product.id}`"
           :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
           :style="{ '--delay': `${index * 0.1}s` }"
         >
-          <div class="product-image">
+          <div class="relative w-full h-96 md:h-80 overflow-hidden bg-gray-100">
             <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
             <img 
               v-if="product.imageUrl" 
               :src="product.imageUrl" 
               :alt="product.title"
+              class="w-full h-full object-cover"
               @error="handleImageError($event, product)"
             />
             <img 
               v-else
               :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
-              :alt="product.title" 
+              :alt="product.title"
+              class="w-full h-full object-cover"
             />
-            <div class="product-overlay">
-              <div class="product-overlay-content">
-                <h3 class="product-overlay-title">{{ product.title }}</h3>
-                <p v-if="product.description" class="product-overlay-description">{{ product.description }}</p>
-                <button class="product-btn" @click="goToProductDetail(product.id)">
+            <div class="absolute inset-0 bg-black/85 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <div class="px-8 text-center text-white max-w-[90%]">
+                <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-4 leading-snug">{{ product.title }}</h3>
+                <p v-if="product.description" class="text-sm md:text-xs font-light text-white/90 leading-relaxed mb-6 line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
+                <button class="px-6 py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white transition-all" @click="goToProductDetail(product.id)">
                   查看详情
                 </button>
               </div>
             </div>
           </div>
-          <div class="product-info">
-            <h3 class="product-title" :title="product.title">{{ product.title }}</h3>
-            <p v-if="product.description" class="product-description" :title="product.description">{{ product.description }}</p>
+          <div class="p-6">
+            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 truncate" :title="product.title">{{ product.title }}</h3>
+            <p v-if="product.description" class="text-sm md:text-xs font-light text-gray-500 leading-relaxed line-clamp-2" :title="product.description">{{ product.description }}</p>
+          </div>
         </div>
       </div>
-        </div>
       
-      <div class="section-footer" data-animate-id="products-footer">
-        <NuxtLink to="/products" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
+      <div class="text-center mt-12" data-animate-id="products-footer">
+        <NuxtLink to="/products" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('products-footer') }">
           查看更多商品
           <v-icon size="20">mdi-arrow-right</v-icon>
         </NuxtLink>
-              </div>
+      </div>
     </section>
 
     <!-- Featured Collections Section -->
-    <section class="collections-section">
-      <div class="section-header">
-        <h2 class="section-title">精选系列</h2>
-        <p class="section-subtitle">发现全球设计师的创意杰作</p>
-              </div>
+    <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900">精选系列</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现全球设计师的创意杰作</p>
+      </div>
       
-      <div class="collections-grid">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Large Featured Item -->
-        <div class="collection-item large">
-          <div class="collection-image">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><defs><linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad1)'/></svg>" alt="Collection" />
-            </div>
-          <div class="collection-content">
-            <h3 class="collection-title">2024春季系列</h3>
-            <p class="collection-description">融合现代艺术与传统文化，展现独特的视觉语言</p>
-            <NuxtLink to="/search?category=spring" class="collection-link">
+        <div class="lg:row-span-2 relative overflow-hidden bg-gray-100 w-full">
+          <div class="w-full h-full">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><defs><linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad1)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 bg-white">
+            <h3 class="text-2xl md:text-xl font-light tracking-wide uppercase mb-3">2024春季系列</h3>
+            <p class="text-base md:text-sm font-light text-gray-500 leading-relaxed mb-6">融合现代艺术与传统文化，展现独特的视觉语言</p>
+            <NuxtLink to="/search?category=spring" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
               查看系列
               <v-icon size="16">mdi-arrow-right</v-icon>
             </NuxtLink>
@@ -330,34 +332,34 @@ const isVisible = (id: string) => {
         </div>
 
         <!-- Medium Items -->
-        <div class="collection-item medium">
-          <div class="collection-image">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad2)'/></svg>" alt="Collection" />
-      </div>
-          <div class="collection-content">
-            <h3 class="collection-title">印花图案库</h3>
-            <p class="collection-description">数千种高质量创意图案</p>
-            <NuxtLink to="/search?category=pattern" class="collection-link">
+        <div class="relative overflow-hidden bg-gray-100 w-full">
+          <div class="w-full h-96 lg:h-[400px] xl:h-[350px]">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad2)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6 md:p-8 bg-white">
+            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">印花图案库</h3>
+            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">数千种高质量创意图案</p>
+            <NuxtLink to="/search?category=pattern" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
               浏览图案
               <v-icon size="16">mdi-arrow-right</v-icon>
             </NuxtLink>
-    </div>
           </div>
+        </div>
 
-        <div class="collection-item medium">
-          <div class="collection-image">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23fafafa'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad3)'/></svg>" alt="Collection" />
-                </div>
-          <div class="collection-content">
-            <h3 class="collection-title">设计师作品</h3>
-            <p class="collection-description">来自全球顶尖设计师</p>
-            <NuxtLink to="/search?category=designer" class="collection-link">
+        <div class="relative overflow-hidden bg-gray-100 w-full">
+          <div class="w-full h-96 lg:h-[400px] xl:h-[350px]">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23fafafa'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad3)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6 md:p-8 bg-white">
+            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">设计师作品</h3>
+            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">来自全球顶尖设计师</p>
+            <NuxtLink to="/search?category=designer" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
               查看作品
               <v-icon size="16">mdi-arrow-right</v-icon>
             </NuxtLink>
-                </div>
-              </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Product Showcase Section -->
@@ -390,50 +392,50 @@ const isVisible = (id: string) => {
     </section>
 
     <!-- Horizontal Categories Filter -->
-    <section class="horizontal-categories-section">
-      <div class="horizontal-categories-container" data-animate-id="horizontal-categories">
-        <div class="categories-scroll" :class="{ 'animate-in': isVisible('horizontal-categories') }">
+    <section class="py-16 bg-white overflow-x-auto">
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8" data-animate-id="horizontal-categories">
+        <div class="flex gap-4 overflow-x-auto scrollbar-hide" :class="{ 'animate-in': isVisible('horizontal-categories') }">
           <button 
             v-for="(category, index) in horizontalCategories" 
             :key="category.id"
-            class="category-tab"
-            :class="{ 'active': category.active }"
+            class="px-6 py-3 whitespace-nowrap text-sm font-normal tracking-wide uppercase border border-gray-300 bg-white text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all flex-shrink-0"
+            :class="{ 'bg-black text-white border-black': category.active }"
             :style="{ '--delay': `${index * 0.05}s` }"
             @click="goToCategory(category.id)"
           >
             {{ category.name }}
           </button>
-            </div>
-          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Categories Section -->
-    <section class="categories-section">
-      <div class="section-header" data-animate-id="categories-header">
-        <h2 class="section-title" :class="{ 'animate-in': isVisible('categories-header') }">商品分类</h2>
-        <p class="section-subtitle" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
-            </div>
+    <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full bg-white">
+      <div class="text-center mb-16" data-animate-id="categories-header">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('categories-header') }">商品分类</h2>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
+      </div>
       
-      <div class="categories-grid">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16">
         <div 
           v-for="(category, index) in categories" 
           :key="category.id"
-          class="category-item"
+          class="bg-white p-6 rounded-xl border border-gray-200 cursor-pointer hover:border-gray-300 hover:shadow-md transition-all text-center"
           :data-animate-id="`category-${category.id}`"
           :class="{ 'animate-in': isVisible(`category-${category.id}`) }"
-          :style="{ '--delay': `${index * 0.1}s`, '--category-color': category.color }"
+          :style="{ '--delay': `${index * 0.1}s` }"
           @click="goToCategory(category.id)"
         >
-          <div class="category-icon" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
-            <v-icon :name="category.icon" />
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
+            <v-icon :name="category.icon" class="text-2xl" :style="{ 'color': category.color }" />
           </div>
-          <h3 class="category-name">{{ category.name }}</h3>
-          <p class="category-count">{{ category.count }} 作品</p>
-            </div>
-          </div>
+          <h3 class="text-base font-light tracking-wide mb-2 text-gray-900">{{ category.name }}</h3>
+          <p class="text-sm text-gray-500">{{ category.count }} 作品</p>
+        </div>
+      </div>
       
-      <div class="section-footer" data-animate-id="categories-footer">
-        <NuxtLink to="/search" class="view-all-link" :class="{ 'animate-in': isVisible('categories-footer') }">
+      <div class="text-center mt-12" data-animate-id="categories-footer">
+        <NuxtLink to="/search" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('categories-footer') }">
           查看全部分类
           <v-icon size="20">mdi-arrow-right</v-icon>
         </NuxtLink>
@@ -441,18 +443,20 @@ const isVisible = (id: string) => {
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-section">
-      <div class="stats-container">
-        <div 
-          v-for="(stat, index) in stats" 
-          :key="index"
-          class="stat-item"
-          :data-animate-id="`stat-${index}`"
-          :class="{ 'animate-in': isVisible(`stat-${index}`) }"
-          :style="{ '--delay': `${index * 0.15}s` }"
-        >
-          <h3 class="stat-number">{{ stat.number }}</h3>
-          <p class="stat-label">{{ stat.label }}</p>
+    <section class="py-24 bg-gray-50">
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+          <div 
+            v-for="(stat, index) in stats" 
+            :key="index"
+            class="text-center"
+            :data-animate-id="`stat-${index}`"
+            :class="{ 'animate-in': isVisible(`stat-${index}`) }"
+            :style="{ '--delay': `${index * 0.15}s` }"
+          >
+            <h3 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 text-gray-900">{{ stat.number }}</h3>
+            <p class="text-sm md:text-base font-light text-gray-500 tracking-wide uppercase">{{ stat.label }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -594,1387 +598,30 @@ const isVisible = (id: string) => {
 </template>
 
 <style lang="scss" scoped>
-// Luxury Brand Color Palette
-:root {
-  --luxury-black: #000000;
-  --luxury-white: #ffffff;
-  --luxury-gray: #f5f5f5;
-  --luxury-gray-dark: #666666;
-  --luxury-text: #1a1a1a;
-  --luxury-text-light: #888888;
-  --luxury-border: #e5e5e5;
-}
-
-// Base styles
-.luxury-homepage {
-  min-height: 100vh;
-  background: var(--luxury-white);
-  color: var(--luxury-text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
-  position: relative;
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  section {
-  width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    position: relative;
-  }
-  
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  // Prevent horizontal overflow
-  [class*="grid"],
-  [class*="container"] {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-}
-
-// Hero Section - converted to Tailwind, minimal CSS needed
-
-// Luxury Buttons
-.luxury-btn {
-  padding: 1rem 2.5rem;
-  border: 1px solid var(--luxury-black);
-  background: transparent;
-  color: var(--luxury-black);
-  font-size: 0.9rem;
-  font-weight: 400;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 180px;
-  
-  &.primary {
-    background: var(--luxury-black);
-    color: var(--luxury-white);
-      
-      &:hover {
-      background: var(--luxury-gray-dark);
-      border-color: var(--luxury-gray-dark);
-    }
-  }
-  
-  &.secondary {
-    background: transparent;
-    color: var(--luxury-black);
-  
-  &:hover {
-      background: var(--luxury-black);
-      color: var(--luxury-white);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    width: 100%;
-    padding: 0.875rem 2rem;
-    font-size: 0.85rem;
-  }
-}
-
-// Collections Section
-.collections-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
-  
-  @media (max-width: 768px) {
-    margin-bottom: 3rem;
-  }
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 300;
-  letter-spacing: 4px;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  color: var(--luxury-text);
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    letter-spacing: 2px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-  }
-}
-
-.section-subtitle {
-  font-size: 1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  letter-spacing: 2px;
-  
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
-}
-
-.collections-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 2rem;
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.collection-item {
-  position: relative;
-    overflow: hidden;
-  background: var(--luxury-gray);
-  width: 100%;
-  max-width: 100%;
-    
-  &.large {
-    grid-row: span 2;
-    
-    .collection-image {
-      height: 100%;
-    }
-  }
-  
-  &.medium {
-    .collection-image {
-      height: 400px;
-      
-      @media (max-width: 1024px) {
-        height: 350px;
-      }
-      
-      @media (max-width: 768px) {
-        height: 300px;
-      }
-    }
-  }
-}
-
-.collection-image {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  max-width: 100%;
-  
-  img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    max-width: 100%;
-  }
-}
-
-.collection-content {
-  padding: 2rem;
-  background: var(--luxury-white);
-  
-  @media (max-width: 768px) {
-  padding: 1.5rem;
-}
-}
-
-.collection-title {
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 0.75rem;
-  text-transform: uppercase;
-  
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
-}
-
-.collection-description {
-  font-size: 0.95rem;
-  color: var(--luxury-text-light);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  
-  @media (max-width: 768px) {
-  font-size: 0.9rem;
-  }
-}
-
-.collection-link {
-      display: inline-flex;
-      align-items: center;
-  gap: 0.5rem;
-  color: var(--luxury-black);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 400;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: gap 0.3s ease;
-      
-      &:hover {
-      gap: 1rem;
-  }
-}
-
-// Showcase Section
-.showcase-section {
-  padding: 8rem 0;
-  background: var(--luxury-white);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 0;
-  }
-}
-
-.showcase-container {
-  max-width: 1920px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 0 1.5rem;
-  }
-}
-
-.showcase-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  margin-bottom: 8rem;
-  width: 100%;
-  max-width: 100%;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-  
-  &.reverse {
-    direction: rtl;
-    
-    > * {
-      direction: ltr;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    gap: 3rem;
-    margin-bottom: 6rem;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    margin-bottom: 4rem;
-    
-    &.reverse {
-      direction: ltr;
-    }
-  }
-}
-
-.showcase-image {
-        width: 100%;
-  height: 600px;
-  overflow: hidden;
-  background: var(--luxury-gray);
-  max-width: 100%;
-  
-  img {
-    width: 100%;
-    height: 100%;
-        object-fit: cover;
-    max-width: 100%;
-  }
-  
-  @media (max-width: 768px) {
-    height: 400px;
-  }
-  
-  @media (max-width: 480px) {
-    height: 300px;
-  }
-}
-
-.showcase-content {
-  padding: 2rem;
-}
-
-.showcase-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--luxury-text-light);
-  margin-bottom: 1rem;
-}
-
-.showcase-title {
-  font-size: 2.5rem;
-  font-weight: 300;
-  letter-spacing: 3px;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  line-height: 1.2;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    letter-spacing: 2px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-  }
-}
-
-.showcase-description {
-  font-size: 1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-  font-size: 0.95rem;
-  }
-}
-
-// Gallery Section
-.gallery-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-bottom: 24px;
-  }
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 3 / 4;
-  background: var(--luxury-gray);
-  cursor: pointer;
-  border-radius: 12px;
-      width: 100%;
-  max-width: 100%;
-  
-  &:hover .gallery-overlay {
-    opacity: 1;
-  }
-}
-
-.gallery-image {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    max-width: 100%;
-  }
-}
-
-.gallery-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: var(--luxury-white);
+// 只保留必要的动画样式
+.animate-in {
+  animation: fadeInUp 0.6s ease-out forwards;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  
-  @media (max-width: 768px) {
-    opacity: 1;
-    padding: 1.5rem;
-  }
 }
 
-.gallery-title {
-  font-size: 1.2rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-}
-
-.gallery-description {
-  font-size: 0.9rem;
-  font-weight: 300;
-  opacity: 0.9;
-}
-
-// CTA Section
-.cta-section {
-    position: relative;
-  padding: 8rem 2rem;
-  text-align: center;
-  background: var(--luxury-gray);
-    overflow: hidden;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.cta-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-        width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  opacity: 0.5;
-}
-
-.cta-content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 1rem;
-}
-
-.cta-title {
-  font-size: 3rem;
-  font-weight: 300;
-  letter-spacing: 4px;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    letter-spacing: 2px;
-}
-
-@media (max-width: 480px) {
-    font-size: 1.5rem;
-  }
-}
-
-.cta-description {
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  line-height: 1.8;
-  margin-bottom: 2.5rem;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
-}
-
-.cta-actions {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  
-  @media (max-width: 480px) {
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-  }
-}
-
-// Categories Section
-.categories-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  background: var(--luxury-white);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-bottom: 4rem;
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.category-item {
-  padding: 3rem 2rem;
-  background: var(--luxury-gray);
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, var(--category-color, transparent), transparent);
+@keyframes fadeInUp {
+  from {
     opacity: 0;
-    border-radius: 12px;
+    transform: translateY(20px);
   }
-  
-  &:hover {
-    border-color: var(--luxury-black);
-    background: var(--luxury-white);
-    
-    &::before {
-      opacity: 0.1;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
-  }
-}
-
-.category-icon {
-  margin-bottom: 1.5rem;
-  color: var(--luxury-text);
-  padding: 1.5rem;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  
-  :deep(svg) {
-    width: 48px;
-    height: 48px;
-    
-    @media (max-width: 768px) {
-      width: 40px;
-      height: 40px;
-    }
-  }
-}
-
-.category-name {
-  font-size: 1.2rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  color: var(--luxury-text);
-
-@media (max-width: 768px) {
-    font-size: 1rem;
-  }
-}
-
-.category-count {
-  font-size: 0.9rem;
-  color: var(--luxury-text-light);
-  letter-spacing: 1px;
-}
-
-.section-footer {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.view-all-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--luxury-black);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  transition: gap 0.3s ease;
-  padding: 1rem 2rem;
-  border: 1px solid var(--luxury-black);
-  
-  &:hover {
-    gap: 1.5rem;
-    background: var(--luxury-black);
-    color: var(--luxury-white);
-  }
-}
-
-// Stats Section
-.stats-section {
-  padding: 6rem 2rem;
-  background: var(--luxury-gray);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-}
-
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-
-@media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-}
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 3.5rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-  color: var(--luxury-text);
-  
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
-  }
-}
-
-.stat-label {
-  font-size: 1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-      }
-    }
-
-// Products Section
-.products-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  background: var(--luxury-white);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
-  }
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 4rem;
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 1400px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-bottom: 24px;
-  }
-}
-
-.product-item {
-  background: var(--luxury-gray);
-  overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  width: 100%;
-  max-width: 100%;
-  
-  &:hover {
-    border-color: var(--luxury-border);
-  }
-}
-
-.product-image {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-  background: var(--luxury-gray);
-  max-width: 100%;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    max-width: 100%;
-  }
-  
-  @media (max-width: 768px) {
-    height: 300px;
-  }
-}
-
-.product-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  
-  .product-item:hover & {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.product-overlay-content {
-  padding: 2rem;
-  text-align: center;
-  color: var(--luxury-white);
-  max-width: 90%;
-}
-
-.product-overlay-title {
-  font-size: 1.2rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--luxury-white);
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-}
-
-.product-overlay-description {
-  font-size: 0.9rem;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-}
-
-.product-btn {
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.9);
-  border: none;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    font-size: .8rem;
-  }
-}
-
-.product-info {
-  padding: 1.5rem;
-}
-
-.product-category {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--luxury-text-light);
-  margin-bottom: 0.5rem;
-}
-
-.product-title {
-  font-size: 1.2rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--luxury-text);
-  margin-bottom: 0.5rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-}
-
-.product-description {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  @media (max-width: 768px) {
-    font-size: 0.75rem;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-}
-
-// About Section
-.about-section {
-  padding: 8rem 2rem;
-  background: var(--luxury-gray);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-}
-
-.about-container {
-    display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-.about-content {
-  padding: 2rem;
-}
-
-.about-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--luxury-text-light);
-  margin-bottom: 1rem;
-}
-
-.about-title {
-  font-size: 2.5rem;
-  font-weight: 300;
-  letter-spacing: 3px;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-    line-height: 1.2;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-  }
-}
-
-.about-description {
-  font-size: 1rem;
-  font-weight: 300;
-  color: var(--luxury-text-light);
-  line-height: 1.8;
-    margin-bottom: 1.5rem;
-  
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-  }
-}
-
-.about-features {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  margin-top: 2rem;
-  
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.about-features .feature-item {
-  display: flex;
-    align-items: center;
-  gap: 0.75rem;
-  font-size: 0.95rem;
-  color: var(--luxury-text);
-  
-  :deep(svg) {
-    width: 24px;
-    height: 24px;
-    color: var(--luxury-text);
-  }
-}
-
-.about-image {
-  width: 100%;
-  height: 600px;
-  overflow: hidden;
-  background: var(--luxury-white);
-  max-width: 100%;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    max-width: 100%;
-  }
-  
-  @media (max-width: 768px) {
-    height: 400px;
-  }
-}
-
-// Horizontal Categories Section
-.horizontal-categories-section {
-  padding: 2rem 0;
-  background: var(--luxury-white);
-  border-bottom: 1px solid var(--luxury-border);
-  position: sticky;
-  top: 85px;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
-.horizontal-categories-container {
-  max-width: 1920px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
+// 隐藏滚动条的工具类
+.scrollbar-hide {
   -ms-overflow-style: none;
-  width: 100%;
-  box-sizing: border-box;
+  scrollbar-width: none;
   
   &::-webkit-scrollbar {
     display: none;
   }
-  
-  @media (min-width: 1400px) {
-    padding: 0 5rem;
-  }
-  
-  @media (min-width: 1600px) {
-    padding: 0 6rem;
-  }
-  
-  @media (min-width: 1800px) {
-    padding: 0 8rem;
-  }
 }
-
-.categories-scroll {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  padding: 0.5rem 0;
-  width: max-content;
-  min-width: 0;
-}
-
-.category-tab {
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  border: 1px solid var(--luxury-border);
-  border-radius: 999px;
-  color: var(--luxury-text);
-        font-size: 0.9rem;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  
-  &:hover {
-    border-color: var(--luxury-black);
-    background: var(--luxury-gray);
-    transform: translateY(-2px);
-  }
-  
-  &.active {
-    background: var(--luxury-black);
-    color: var(--luxury-white);
-    border-color: var(--luxury-black);
-  }
-}
-
-// Designers Section
-.designers-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  background: var(--luxury-white);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-}
-
-.designers-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 2rem;
-  width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 1400px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.designer-card {
-  background: var(--luxury-gray);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid transparent;
-  width: 100%;
-  max-width: 100%;
-  
-  &:hover {
-    border-color: var(--luxury-border);
-    background: var(--luxury-white);
-  }
-}
-
-.designer-avatar {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1.5rem;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--luxury-white);
-    transition: transform 0.3s ease;
-  }
-  
-  .designer-card:hover & img {
-    transform: scale(1.1);
-  }
-}
-
-.designer-badge {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 28px;
-  height: 28px;
-  background: var(--luxury-black);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid var(--luxury-white);
-  
-  :deep(svg) {
-    width: 16px;
-    height: 16px;
-    color: var(--luxury-white);
-  }
-}
-
-.designer-name {
-    font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-  color: var(--luxury-text);
-}
-
-.designer-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-    font-size: 0.85rem;
-  color: var(--luxury-text-light);
-}
-
-.stat-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  
-  :deep(svg) {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-.designer-follow-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: transparent;
-  border: 1px solid var(--luxury-black);
-  border-radius: 8px;
-  color: var(--luxury-black);
-  font-size: 0.85rem;
-  font-weight: 400;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  
-  &:hover {
-    background: var(--luxury-black);
-    color: var(--luxury-white);
-    transform: scale(1.05);
-  }
-}
-
-// Tags Section
-.tags-section {
-  padding: 8rem 2rem;
-  max-width: 1920px;
-  margin: 0 auto;
-  background: var(--luxury-gray);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-}
-
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.tag-button {
-  padding: 1rem 1.5rem;
-  background: var(--luxury-white);
-  border: 1px solid var(--luxury-border);
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    transform: translateY(-3px) scale(1.05);
-    border-color: var(--luxury-black);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.tag-name {
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: 1px;
-  color: var(--luxury-text);
-}
-
-.tag-count {
-  font-size: 0.8rem;
-  color: var(--luxury-text-light);
-  background: var(--luxury-gray);
-  padding: 0.25rem 0.5rem;
-  border-radius: 999px;
-  min-width: 40px;
-  text-align: center;
-}
-
 </style>
