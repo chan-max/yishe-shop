@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-26 07:03:52
+ * @LastEditTime: 2025-11-08 22:53:38
  * @FilePath: /yishe-nuxt/pages/index.vue
  * @Description: Luxury Brand Homepage - LV/Nike Style
 -->
@@ -92,6 +92,7 @@ const popularTags = [
 const featuredProducts = ref<Array<{
   id: string
   title: string
+  description?: string
   category: string
   image: string
   imageUrl?: string
@@ -129,6 +130,7 @@ const fetchFeaturedProducts = async () => {
         return {
           id: product.id,
           title: product.name || '商品',
+          description: product.description || '',
           category: product.type || 'pattern',
           image: 'grad1', // 保留原有的占位符逻辑
           imageUrl: firstImage, // 添加实际图片URL
@@ -248,6 +250,60 @@ const isVisible = (id: string) => {
           <button class="px-8 sm:px-10 py-4 bg-transparent text-black uppercase text-xs sm:text-sm tracking-wider border border-black min-w-[160px] sm:min-w-[180px] w-full sm:w-auto hover:bg-black hover:text-white transition-colors" @click="goToSearch">开始创作</button>
         </div>
       </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="products-section">
+      <div class="section-header" data-animate-id="products-header">
+        <h2 class="section-title" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
+        <p class="section-subtitle" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
+        </div>
+        
+      <div class="products-grid">
+        <div 
+          v-for="(product, index) in featuredProducts" 
+          :key="product.id"
+          class="product-item"
+          :data-animate-id="`product-${product.id}`"
+          :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
+          :style="{ '--delay': `${index * 0.1}s` }"
+        >
+          <div class="product-image">
+            <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
+            <img 
+              v-if="product.imageUrl" 
+              :src="product.imageUrl" 
+              :alt="product.title"
+              @error="handleImageError($event, product)"
+            />
+            <img 
+              v-else
+              :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
+              :alt="product.title" 
+            />
+            <div class="product-overlay">
+              <div class="product-overlay-content">
+                <h3 class="product-overlay-title">{{ product.title }}</h3>
+                <p v-if="product.description" class="product-overlay-description">{{ product.description }}</p>
+                <button class="product-btn" @click="goToProductDetail(product.id)">
+                  查看详情
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <h3 class="product-title" :title="product.title">{{ product.title }}</h3>
+            <p v-if="product.description" class="product-description" :title="product.description">{{ product.description }}</p>
+        </div>
+      </div>
+        </div>
+      
+      <div class="section-footer" data-animate-id="products-footer">
+        <NuxtLink to="/products" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
+          查看更多商品
+          <v-icon size="20">mdi-arrow-right</v-icon>
+        </NuxtLink>
+              </div>
     </section>
 
     <!-- Featured Collections Section -->
@@ -399,55 +455,6 @@ const isVisible = (id: string) => {
           <p class="stat-label">{{ stat.label }}</p>
         </div>
       </div>
-    </section>
-
-    <!-- Featured Products Section -->
-    <section class="products-section">
-      <div class="section-header" data-animate-id="products-header">
-        <h2 class="section-title" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
-        <p class="section-subtitle" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
-        </div>
-        
-      <div class="products-grid">
-        <div 
-          v-for="(product, index) in featuredProducts" 
-          :key="product.id"
-          class="product-item"
-          :data-animate-id="`product-${product.id}`"
-          :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
-          :style="{ '--delay': `${index * 0.1}s` }"
-        >
-          <div class="product-image">
-            <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
-            <img 
-              v-if="product.imageUrl" 
-              :src="product.imageUrl" 
-              :alt="product.title"
-              @error="handleImageError($event, product)"
-            />
-            <img 
-              v-else
-              :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
-              :alt="product.title" 
-            />
-            <div class="product-overlay">
-              <button class="product-btn" @click="goToProductDetail(product.id)">
-                查看详情
-              </button>
-            </div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">{{ product.title }}</h3>
-        </div>
-      </div>
-        </div>
-      
-      <div class="section-footer" data-animate-id="products-footer">
-        <NuxtLink to="/products" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
-          查看更多商品
-          <v-icon size="20">mdi-arrow-right</v-icon>
-        </NuxtLink>
-              </div>
     </section>
 
     <!-- Gallery Grid Section -->
@@ -1447,7 +1454,7 @@ const isVisible = (id: string) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1459,21 +1466,60 @@ const isVisible = (id: string) => {
   }
 }
 
-.product-btn {
-  padding: 1rem 2rem;
-  background: var(--luxury-white);
-  color: var(--luxury-black);
-  border: none;
+.product-overlay-content {
+  padding: 2rem;
+  text-align: center;
+  color: var(--luxury-white);
+  max-width: 90%;
+}
+
+.product-overlay-title {
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-white);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.product-overlay-description {
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
+.product-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    background: var(--luxury-black);
-    color: var(--luxury-white);
+    font-size: .8rem;
   }
 }
 
@@ -1497,9 +1543,32 @@ const isVisible = (id: string) => {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--luxury-text);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   
   @media (max-width: 768px) {
     font-size: 1rem;
+  }
+}
+
+.product-description {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--luxury-text-light);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 }
 
