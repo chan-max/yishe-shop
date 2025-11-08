@@ -72,6 +72,29 @@ interface ProductImage2DResponse {
   updateTime: string
 }
 
+// 商品（Product）接口的返回数据类型
+interface ProductResponse {
+  id: string
+  code?: string
+  name: string
+  description?: string
+  type?: string
+  images?: string[]
+  videos?: string[]
+  price: number
+  salePrice?: number
+  stock: number
+  specifications?: string
+  tags?: string
+  keywords?: string
+  searchKeywords?: string
+  isActive: boolean
+  isPublish: boolean
+  isLimitedEdition: number
+  createTime: string
+  updateTime: string
+}
+
 // API 方法封装
 export const api = {
   // 测试接口
@@ -106,6 +129,30 @@ export const api = {
       request<ApiResponse<{ list: ProductImage2DResponse[]; total: number; page: number; pageSize: number }>>('/product-image-2d/page', {
         method: 'POST',
         body: params,
+      }),
+  },
+  // 商品（Product）相关接口
+  productList: {
+    // 分页获取商品列表（不包含关联信息）
+    getPage: (params: { 
+      page?: number
+      pageSize?: number
+      isPublish?: boolean
+      type?: string
+      search?: string
+      includeRelations?: boolean
+    }) =>
+      request<ApiResponse<{ list: ProductResponse[]; total: number; page: number; pageSize: number }>>('/product/page', {
+        method: 'POST',
+        body: {
+          ...params,
+          includeRelations: params.includeRelations ?? false, // 默认不包含关联信息
+        },
+      }),
+    // 根据ID获取商品详情（不包含关联信息）
+    getById: (id: string, includeRelations: boolean = false) =>
+      request<ApiResponse<ProductResponse>>(`/product/${id}?includeRelations=${includeRelations}`, {
+        method: 'GET',
       }),
   },
 }

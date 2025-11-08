@@ -8,6 +8,7 @@
 -->
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { api } from '~/utils/api'
 
 const { awesome } = useAppConfig()
 definePageMeta({ layout: 'page' })
@@ -87,15 +88,14 @@ const popularTags = [
   { name: '3D效果', count: 540 }
 ]
 
-// Featured products
-const featuredProducts = [
-  { id: 1, title: '春季印花系列', category: 'pattern', image: 'grad1' },
-  { id: 2, title: '现代服装设计', category: 'clothing', image: 'grad2' },
-  { id: 3, title: '品牌视觉识别', category: 'brand', image: 'grad3' },
-  { id: 4, title: '创意海报设计', category: 'poster', image: 'grad4' },
-  { id: 5, title: '产品包装设计', category: 'packaging', image: 'grad5' },
-  { id: 6, title: '社交媒体图形', category: 'social', image: 'grad6' }
-]
+// Featured products - 从API获取
+const featuredProducts = ref<Array<{
+  id: string
+  title: string
+  category: string
+  image: string
+  imageUrl?: string
+}>>([])
 
 // Stats
 const stats = [
@@ -108,7 +108,51 @@ const stats = [
 // Intersection Observer for animations
 let observer: IntersectionObserver | null = null
 
+// 获取精选商品
+const fetchFeaturedProducts = async () => {
+  try {
+    const response = await api.productList.getPage({
+      page: 1,
+      pageSize: 6,
+      isPublish: true,
+      includeRelations: false, // 不包含关联信息
+    })
+    
+    if (response.code === 0 || response.status === true || response.code === 200) {
+      const products = response.data?.list || []
+      featuredProducts.value = products.map((product: any) => {
+        // 获取第一张图片作为展示图片
+        const firstImage = Array.isArray(product.images) && product.images.length > 0 
+          ? product.images[0] 
+          : null
+        
+        return {
+          id: product.id,
+          title: product.name || '商品',
+          category: product.type || 'pattern',
+          image: 'grad1', // 保留原有的占位符逻辑
+          imageUrl: firstImage, // 添加实际图片URL
+        }
+      })
+    }
+  } catch (error) {
+    console.error('获取精选商品失败:', error)
+    // 失败时使用默认数据
+    featuredProducts.value = [
+      { id: '1', title: '春季印花系列', category: 'pattern', image: 'grad1' },
+      { id: '2', title: '现代服装设计', category: 'clothing', image: 'grad2' },
+      { id: '3', title: '品牌视觉识别', category: 'brand', image: 'grad3' },
+      { id: '4', title: '创意海报设计', category: 'poster', image: 'grad4' },
+      { id: '5', title: '产品包装设计', category: 'packaging', image: 'grad5' },
+      { id: '6', title: '社交媒体图形', category: 'social', image: 'grad6' }
+    ]
+  }
+}
+
 onMounted(() => {
+  // 获取精选商品
+  fetchFeaturedProducts()
+  
   // Handle scroll
   const handleScroll = () => {
     isScrolled.value = window.scrollY > 50
@@ -165,8 +209,21 @@ const goToCategory = (categoryId: string) => {
   navigateTo(`/search?category=${categoryId}`)
 }
 
+const goToProductDetail = (productId: string) => {
+  navigateTo(`/product/${productId}`)
+}
+
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
+}
+
+// 处理图片加载错误
+const handleImageError = (event: Event, product: any) => {
+  const img = event.target as HTMLImageElement
+  // 如果实际图片加载失败，回退到占位符
+  if (product.imageUrl) {
+    img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`
+  }
 }
 
 // Check if element is visible
@@ -361,22 +418,32 @@ const isVisible = (id: string) => {
           :style="{ '--delay': `${index * 0.1}s` }"
         >
           <div class="product-image">
-            <img :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" :alt="product.title" />
+            <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
+            <img 
+              v-if="product.imageUrl" 
+              :src="product.imageUrl" 
+              :alt="product.title"
+              @error="handleImageError($event, product)"
+            />
+            <img 
+              v-else
+              :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
+              :alt="product.title" 
+            />
             <div class="product-overlay">
-              <button class="product-btn" @click="goToCategory(product.category)">
+              <button class="product-btn" @click="goToProductDetail(product.id)">
                 查看详情
               </button>
             </div>
           </div>
           <div class="product-info">
-            <span class="product-category">{{ categories.find(c => c.id === product.category)?.name }}</span>
             <h3 class="product-title">{{ product.title }}</h3>
         </div>
       </div>
         </div>
       
       <div class="section-footer" data-animate-id="products-footer">
-        <NuxtLink to="/search" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
+        <NuxtLink to="/products" class="view-all-link" :class="{ 'animate-in': isVisible('products-footer') }">
           查看更多商品
           <v-icon size="20">mdi-arrow-right</v-icon>
         </NuxtLink>
