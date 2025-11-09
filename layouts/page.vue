@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-09-24 21:09:38
+ * @LastEditTime: 2025-11-10 06:51:14
  * @FilePath: /yishe-nuxt/layouts/page.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -284,6 +284,7 @@ onMounted(() => {
   box-sizing: border-box;
   position: relative;
   gap: 1rem;
+  // border-bottom: 1px solid #eee;
 
   @media (min-width: 1200px) {
     padding: 0 2rem;
