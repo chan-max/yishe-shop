@@ -296,7 +296,7 @@ const isVisible = (id: string) => {
               :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'"
             >
               <div class="px-4 sm:px-8 text-center text-white max-w-[90%]">
-                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug">{{ product.title }}</h3>
+                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug max-w-[220px] sm:max-w-[240px] md:max-w-[260px] truncate whitespace-nowrap overflow-hidden text-ellipsis" :title="product.title">{{ product.title }}</h3>
                 <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
                 <button class="px-4 sm:px-6 py-2 sm:py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white border border-white/30 hover:border-white/60 transition-all" @click.stop="goToProductDetail(product.id)">
                   查看详情

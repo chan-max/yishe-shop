@@ -51,14 +51,14 @@
           <button
             v-if="productImages.length > 1"
             @click="previousImage"
-            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
             aria-label="上一张图片"
           >
-            <Icon name="heroicons:chevron-left" class="w-6 h-6 text-black" />
+            <Icon name="heroicons:chevron-left" class="w-5 h-5 sm:w-6 sm:h-6 text-black" />
           </button>
 
           <!-- 图片容器 -->
-          <div class="relative max-w-2xl w-full ml-12 mr-12 sm:ml-16 sm:mr-16 md:ml-20 md:mr-20" style="aspect-ratio: 4 / 3;">
+          <div class="relative w-full max-w-full md:max-w-2xl mx-auto px-2 sm:px-4 product-image-container">
             <!-- 主图 -->
             <img
               v-if="currentImage"
@@ -93,10 +93,10 @@
           <button
             v-if="productImages.length > 1"
             @click="nextImage"
-            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
             aria-label="下一张图片"
           >
-            <Icon name="heroicons:chevron-right" class="w-6 h-6 text-black" />
+            <Icon name="heroicons:chevron-right" class="w-5 h-5 sm:w-6 sm:h-6 text-black" />
           </button>
         </div>
 
@@ -216,7 +216,13 @@ import { api } from '~/utils/api'
 definePageMeta({ layout: 'page' })
 useHead({ 
   titleTemplate: '', 
-  title: '商品详情 - 衣设服装设计' 
+  title: '商品详情 - 衣设服装设计',
+  meta: [
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+    }
+  ]
 })
 
 const route = useRoute()
@@ -378,3 +384,43 @@ watch(() => route.params.id, () => {
 }, { immediate: true })
 
 </script>
+
+<style scoped>
+/* 默认移动端使用 1:1，提升可视面积；md 及以上使用 4:3 */
+.product-image-container {
+  aspect-ratio: 1 / 1;
+}
+
+@media (min-width: 768px) {
+  .product-image-container {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* 减少双击缩放触发几率 */
+.product-image-container, .product-image-container img {
+  touch-action: manipulation;
+}
+</style>
+
+<!-- global styles to mitigate fast-scroll header gap -->
+<style>
+html, body {
+  background-color: #ffffff;
+  overscroll-behavior-y: contain; /* reduce rubber-band over-scroll revealing gaps */
+  overscroll-behavior-x: none;
+}
+
+/* Ensure the app header stays on its own compositing layer */
+header, .site-header, .app-header {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+  background-color: #ffffff; /* avoid transparent flash */
+}
+
+/* Respect safe area and avoid a visual seam on iOS */
+header, .site-header, .app-header {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+</style>
