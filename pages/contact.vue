@@ -2,8 +2,8 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-10-29 21:54:00
- * @FilePath: /yishe-nuxt/pages/contact.vue
+ * @LastEditTime: 2025-11-10 07:52:45
+ * @FilePath: /yishe-nuxt/pages/contact-img.vue
  * @Description: Contact Page - Get in touch with 1s Design
 -->
 <script lang="ts" setup>
@@ -41,31 +41,31 @@ const socialPlatforms = ref([
   {
     name: '微信',
     icon: 'mdi-wechat',
-    image: '/contact/weixin.jpg',
+    image: '/contact-img/weixin.jpg',
     color: '#07c160'
   },
   {
     name: '微博',
     icon: 'mdi-sina-weibo',
-    image: '/contact/weibo.png',
+    image: '/contact-img/weibo.png',
     color: '#e6162d'
   },
   {
     name: '小红书',
     icon: 'mdi-book-open-page-variant',
-    image: '/contact/xiaohongshu.jpg',
+    image: '/contact-img/xiaohongshu.jpg',
     color: '#ff2442'
   },
   {
     name: '抖音',
     icon: 'mdi-music-note',
-    image: '/contact/douyin.webp',
+    image: '/contact-img/douyin.webp',
     color: '#000000'
   },
   {
     name: '快手',
     icon: 'mdi-video',
-    image: '/contact/kuaishou.webp',
+    image: '/contact-img/kuaishou.webp',
     color: '#ff6600'
   }
 ])
@@ -408,11 +408,16 @@ const closeQRDialog = () => {
 .qr-dialog {
   background: #ffffff;
   border-radius: 16px;
-  max-width: 400px;
+  max-width: 550px;
   width: 100%;
   padding: 2rem;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  
+  @media (max-width: 640px) {
+    max-width: 90vw;
+    padding: 1.5rem;
+  }
 }
 
 .qr-close {
@@ -446,7 +451,7 @@ const closeQRDialog = () => {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .qr-title {
@@ -462,8 +467,11 @@ const closeQRDialog = () => {
   border-radius: 12px;
   overflow: hidden;
   background: #f9fafb;
-  padding: 1rem;
+  padding: 0.75rem;
   margin-bottom: 1rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .qr-image {
