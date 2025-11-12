@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-01-27 11:00:00
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-11-08 22:53:38
+ * @LastEditTime: 2025-11-12 07:07:41
  * @FilePath: /yishe-nuxt/pages/index.vue
  * @Description: Luxury Brand Homepage - LV/Nike Style
 -->
@@ -446,7 +446,7 @@ const isVisible = (id: string) => {
       </div>
       
       <div class="text-center mt-12" data-animate-id="categories-footer">
-        <NuxtLink to="/search" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase text-black hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('categories-footer') }">
+        <NuxtLink to="/search" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase  hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('categories-footer') }">
           查看全部分类
           <v-icon size="20">mdi-arrow-right</v-icon>
         </NuxtLink>
