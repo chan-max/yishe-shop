@@ -69,7 +69,6 @@
         "@nuxtjs/eslint-module": "^4.1.0",
         "@nuxtjs/i18n": "^10.1.0",
         "@nuxtjs/seo": "^3.2.2",
-        "@nuxtjs/sitemap": "^7.2.10",
         "consola": "^3.2.3",
         "eslint": "^8.52.0",
         "eslint-config-prettier": "^9.0.0",
