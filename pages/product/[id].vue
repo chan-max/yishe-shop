@@ -4,7 +4,9 @@
     <div v-if="loading" class="min-h-screen flex items-center justify-center">
       <div class="text-center">
         <div class="relative inline-block mb-6">
-          <div class="w-16 h-16 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
+          <div
+            class="w-16 h-16 border-2 border-gray-200 border-t-black rounded-full animate-spin"
+          ></div>
         </div>
         <p class="text-sm text-gray-500 uppercase tracking-wider">加载中...</p>
       </div>
@@ -54,18 +56,24 @@
             class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
             aria-label="上一张图片"
           >
-            <Icon name="heroicons:chevron-left" class="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+            <Icon
+              name="heroicons:chevron-left"
+              class="w-5 h-5 sm:w-6 sm:h-6 text-black"
+            />
           </button>
 
           <!-- 图片容器 -->
-          <div class="relative w-full max-w-full md:max-w-2xl mx-auto px-2 sm:px-4 product-image-container">
+          <div
+            class="relative w-full max-w-full md:max-w-2xl mx-auto px-2 sm:px-4 product-image-container"
+          >
             <!-- 主图 -->
             <img
               v-if="currentImage"
               :src="currentImage"
               :alt="product.name"
-              class="w-full h-full object-contain"
+              class="w-full h-full object-contain cursor-pointer"
               @error="handleImageError"
+              @click="openImagePreview"
             />
             <div v-else class="w-full h-full flex items-center justify-center">
               <span class="text-gray-400 text-sm">暂无图片</span>
@@ -82,7 +90,9 @@
                 @click="currentImageIndex = index"
                 :class="[
                   'w-2 h-2 rounded-full transition-all',
-                  currentImageIndex === index ? 'bg-black w-8' : 'bg-gray-300 hover:bg-gray-400'
+                  currentImageIndex === index
+                    ? 'bg-black w-8'
+                    : 'bg-gray-300 hover:bg-gray-400',
                 ]"
                 :aria-label="`查看图片 ${index + 1}`"
               />
@@ -96,7 +106,10 @@
             class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
             aria-label="下一张图片"
           >
-            <Icon name="heroicons:chevron-right" class="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+            <Icon
+              name="heroicons:chevron-right"
+              class="w-5 h-5 sm:w-6 sm:h-6 text-black"
+            />
           </button>
         </div>
 
@@ -124,12 +137,17 @@
           </div>
 
           <!-- 创建时间信息 -->
-          <div v-if="product.createTime && product.type !== '二维产品图'" class="text-sm text-gray-500">
+          <div
+            v-if="product.createTime && product.type !== '二维产品图'"
+            class="text-sm text-gray-500"
+          >
             <span>{{ formatDate(product.createTime) }}</span>
           </div>
 
           <!-- 详细信息 -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-gray-200">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-gray-200"
+          >
             <!-- 价格信息（非二维产品图显示） -->
             <div v-if="product.type !== '二维产品图' && product.price != null">
               <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">价格</h3>
@@ -137,7 +155,10 @@
                 <span class="text-xl font-light text-black">
                   ¥{{ Number(product.price).toFixed(2) }}
                 </span>
-                <span v-if="product.salePrice && product.salePrice !== product.price" class="text-sm text-gray-400 line-through">
+                <span
+                  v-if="product.salePrice && product.salePrice !== product.price"
+                  class="text-sm text-gray-400 line-through"
+                >
                   ¥{{ Number(product.salePrice).toFixed(2) }}
                 </span>
               </div>
@@ -145,8 +166,12 @@
 
             <!-- 商品代码 -->
             <div v-if="product.code">
-              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">产品代码</h3>
-              <p class="text-sm text-black uppercase tracking-wider">{{ product.code }}</p>
+              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">
+                产品代码
+              </h3>
+              <p class="text-sm text-black uppercase tracking-wider">
+                {{ product.code }}
+              </p>
             </div>
 
             <!-- 库存信息 -->
@@ -194,7 +219,10 @@
     <!-- 未找到商品 -->
     <div v-else class="min-h-screen flex items-center justify-center">
       <div class="text-center">
-        <Icon name="heroicons:exclamation-triangle" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+        <Icon
+          name="heroicons:exclamation-triangle"
+          class="w-16 h-16 text-gray-400 mx-auto mb-4"
+        />
         <h3 class="text-lg font-light text-gray-900 mb-2">商品不存在</h3>
         <p class="text-sm text-gray-500 mb-6">抱歉，您查找的商品不存在或已被删除</p>
         <button
@@ -206,183 +234,210 @@
       </div>
     </div>
 
+    <!-- 图片预览组件 -->
+    <ImagePreview
+      v-model="isPreviewOpen"
+      :images="productImages"
+      :initial-index="currentImageIndex"
+      :alt="product?.name || '商品图片'"
+      :z-index="9999"
+      @image-change="handlePreviewImageChange"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { api } from '~/utils/api'
+import { ref, computed, watch } from "vue";
+import { api } from "~/utils/api";
+import ImagePreview from "../components/ImagePreview.vue";
 
-definePageMeta({ layout: 'page' })
-useHead({ 
-  titleTemplate: '', 
-  title: '商品详情 - 衣设服装设计',
+definePageMeta({ layout: "page" });
+useHead({
+  titleTemplate: "",
+  title: "商品详情 - 衣设服装设计",
   meta: [
     {
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
-    }
-  ]
-})
+      name: "viewport",
+      content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+    },
+  ],
+});
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
 // 状态
-const loading = ref(true)
-const product = ref(null)
-const currentImageIndex = ref(0)
+const loading = ref(true);
+const product = ref(null);
+const currentImageIndex = ref(0);
+const isPreviewOpen = ref(false);
 
 // 计算属性
 const productImages = computed(() => {
-  if (!product.value) return []
-  
-  const images = []
-  
+  if (!product.value) return [];
+
+  const images = [];
+
   // 添加商品图片
   if (product.value.images && Array.isArray(product.value.images)) {
     product.value.images.forEach((url) => {
-      if (url && typeof url === 'string' && url.trim() && url.startsWith('http')) {
-        images.push(url)
+      if (url && typeof url === "string" && url.trim() && url.startsWith("http")) {
+        images.push(url);
       }
-    })
+    });
   }
-  
-  return images
-})
+
+  return images;
+});
 
 const currentImage = computed(() => {
-  if (productImages.value.length === 0) return null
-  return productImages.value[currentImageIndex.value] || productImages.value[0]
-})
+  if (productImages.value.length === 0) return null;
+  return productImages.value[currentImageIndex.value] || productImages.value[0];
+});
 
 const productKeywords = computed(() => {
-  if (!product.value?.keywords) return []
+  if (!product.value?.keywords) return [];
   return product.value.keywords
-    .split(',')
-    .map(k => k.trim())
-    .filter(k => k.length > 0)
-})
+    .split(",")
+    .map((k) => k.trim())
+    .filter((k) => k.length > 0);
+});
 
 const hasPreviousProduct = computed(() => {
   // TODO: 实现上一个商品的逻辑
-  return false
-})
+  return false;
+});
 
 const hasNextProduct = computed(() => {
   // TODO: 实现下一个商品的逻辑
-  return false
-})
+  return false;
+});
 
 // 获取商品详情
 const fetchProductDetail = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    const response = await api.productList.getById(route.params.id, false)
-    
+    const response = await api.productList.getById(route.params.id, false);
+
     if (response.code === 0 || response.status === true || response.code === 200) {
-      product.value = response.data
+      product.value = response.data;
       // 重置图片索引
-      currentImageIndex.value = 0
+      currentImageIndex.value = 0;
     } else {
-      console.error('获取商品详情失败:', response.message)
-      product.value = null
+      console.error("获取商品详情失败:", response.message);
+      product.value = null;
     }
   } catch (error) {
-    console.error('获取商品详情失败:', error)
-    product.value = null
+    console.error("获取商品详情失败:", error);
+    product.value = null;
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 // 格式化日期
 const formatDate = (dateString) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
 // 处理图片加载错误
 const handleImageError = (event) => {
-  const img = event.target as HTMLImageElement
-  img.style.display = 'none'
-}
+  const img = event.target as HTMLImageElement;
+  img.style.display = "none";
+};
 
 // 切换到上一张图片
 const previousImage = () => {
   if (productImages.value.length > 0) {
-    currentImageIndex.value = (currentImageIndex.value - 1 + productImages.value.length) % productImages.value.length
+    currentImageIndex.value =
+      (currentImageIndex.value - 1 + productImages.value.length) %
+      productImages.value.length;
   }
-}
+};
 
 // 切换到下一张图片
 const nextImage = () => {
   if (productImages.value.length > 0) {
-    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length
+    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length;
   }
-}
+};
 
 // 探索相关内容
 const exploreRelated = () => {
   if (product.value?.type) {
-    router.push(`/products?type=${encodeURIComponent(product.value.type)}`)
+    router.push(`/products?type=${encodeURIComponent(product.value.type)}`);
   } else {
-    router.push('/products')
+    router.push("/products");
   }
-}
+};
 
 // 复制链接
 const copyLink = async () => {
   try {
-    const url = window.location.href
-    await navigator.clipboard.writeText(url)
+    const url = window.location.href;
+    await navigator.clipboard.writeText(url);
     // TODO: 显示成功提示
-    alert('链接已复制到剪贴板')
+    alert("链接已复制到剪贴板");
   } catch (error) {
-    console.error('复制链接失败:', error)
+    console.error("复制链接失败:", error);
   }
-}
+};
 
 // 分享商品
 const shareProduct = async () => {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: product.value?.name || '商品详情',
-        text: product.value?.description || '',
-        url: window.location.href
-      })
+        title: product.value?.name || "商品详情",
+        text: product.value?.description || "",
+        url: window.location.href,
+      });
     } catch (error) {
-      console.error('分享失败:', error)
+      console.error("分享失败:", error);
     }
   } else {
     // 降级到复制链接
-    copyLink()
+    copyLink();
   }
-}
+};
 
 // 导航到上一个商品
 const navigateToPrevious = () => {
   // TODO: 实现上一个商品的导航逻辑
-}
+};
 
 // 导航到下一个商品
 const navigateToNext = () => {
   // TODO: 实现下一个商品的导航逻辑
-}
+};
+
+// 打开图片预览
+const openImagePreview = () => {
+  if (productImages.value.length === 0) return;
+  isPreviewOpen.value = true;
+};
+
+// 处理预览图片变化
+const handlePreviewImageChange = (index: number) => {
+  currentImageIndex.value = index;
+};
 
 // 监听路由参数变化
-watch(() => route.params.id, () => {
-  if (route.params.id) {
-    fetchProductDetail()
-  }
-}, { immediate: true })
-
+watch(
+  () => route.params.id,
+  () => {
+    if (route.params.id) {
+      fetchProductDetail();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
@@ -398,21 +453,25 @@ watch(() => route.params.id, () => {
 }
 
 /* 减少双击缩放触发几率 */
-.product-image-container, .product-image-container img {
+.product-image-container,
+.product-image-container img {
   touch-action: manipulation;
 }
 </style>
 
 <!-- global styles to mitigate fast-scroll header gap -->
 <style>
-html, body {
+html,
+body {
   background-color: #ffffff;
   overscroll-behavior-y: contain; /* reduce rubber-band over-scroll revealing gaps */
   overscroll-behavior-x: none;
 }
 
 /* Ensure the app header stays on its own compositing layer */
-header, .site-header, .app-header {
+header,
+.site-header,
+.app-header {
   backface-visibility: hidden;
   transform: translateZ(0);
   will-change: transform;
@@ -420,7 +479,9 @@ header, .site-header, .app-header {
 }
 
 /* Respect safe area and avoid a visual seam on iOS */
-header, .site-header, .app-header {
+header,
+.site-header,
+.app-header {
   padding-top: max(env(safe-area-inset-top), 0px);
 }
 </style>
