@@ -7,8 +7,20 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script lang="ts" setup>
-const { awesome } = useAppConfig();
+import { useToast } from '~/composables/use-toast'
 
+const { awesome } = useAppConfig();
+const toast = useToast()
+
+// 使用 computed 解包 ref，确保传递的是值而不是 ref 对象
+const toastType = computed(() => toast.toastType.value)
+const toastTitle = computed(() => toast.toastTitle.value)
+const toastText = computed(() => toast.toastText.value)
+const toastDuration = computed(() => toast.toastDuration.value)
+const showToast = computed({
+  get: () => toast.showToast.value,
+  set: (val) => { toast.showToast.value = val }
+})
 
 // 在 app.vue 或 layout 文件中添加
 useHead({
@@ -50,6 +62,15 @@ useHead({
       <NuxtLoadingIndicator />
       <NuxtPage />
     </NuxtLayout>
+    
+    <!-- 全局 Toast 消息提示 -->
+    <AwesomeToast
+      :type="toastType"
+      :title="toastTitle"
+      :text="toastText"
+      :duration="toastDuration"
+      v-model:show="showToast"
+    />
   </Body>
 </template>
 

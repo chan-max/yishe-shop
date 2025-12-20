@@ -33,6 +33,59 @@ interface LoginResponse {
   token: string
 }
 
+// 开放用户注册接口的请求参数类型
+interface PublicUserRegisterParams {
+  account: string
+  password: string
+  name?: string
+  phone?: string
+  email?: string
+}
+
+// 开放用户登录接口的请求参数类型
+interface PublicUserLoginParams {
+  username: string
+  password: string
+}
+
+// 开放用户登录接口的返回数据类型
+interface PublicUserLoginResponse {
+  token: string
+}
+
+// 开放用户信息类型
+interface PublicUserInfo {
+  id: number
+  account: string
+  name?: string
+  phone?: string
+  email?: string
+  avatar?: string
+  sex?: number
+  birthday?: string
+  status?: string
+  createTime: string
+  updateTime: string
+}
+
+// 更新开放用户信息参数类型
+interface UpdatePublicUserParams {
+  id?: number
+  name?: string
+  avatar?: string
+  email?: string
+  sex?: number
+  birthday?: string
+  phone?: string
+  status?: string
+}
+
+// 修改密码参数类型
+interface UpdatePublicUserPasswordParams {
+  password: string
+  newPassword: string
+}
+
 // 设计请求的请求参数类型
 interface DesignRequestParams {
   name: string
@@ -105,6 +158,44 @@ export const api = {
   auth: {
     login: (params: LoginParams) => 
       request<ApiResponse<LoginResponse>>('/auth/login', {
+        method: 'POST',
+        body: params,
+      }),
+  },
+  // 开放用户相关接口
+  publicUser: {
+    // 注册
+    register: (params: PublicUserRegisterParams) =>
+      request<ApiResponse<PublicUserInfo>>('/public-user/register', {
+        method: 'POST',
+        body: params,
+      }),
+    // 登录
+    login: (params: PublicUserLoginParams) =>
+      request<ApiResponse<PublicUserLoginResponse>>('/public-user-auth/login', {
+        method: 'POST',
+        body: params,
+      }),
+    // 登出
+    logout: () =>
+      request<ApiResponse<{ message: string }>>('/public-user-auth/logout', {
+        method: 'POST',
+      }),
+    // 获取用户信息
+    getUserInfo: (id?: string) =>
+      request<ApiResponse<PublicUserInfo>>('/public-user/getUserInfo', {
+        method: 'POST',
+        body: id ? { id } : {},
+      }),
+    // 更新用户信息
+    update: (params: UpdatePublicUserParams) =>
+      request<ApiResponse<PublicUserInfo>>('/public-user/update', {
+        method: 'POST',
+        body: params,
+      }),
+    // 修改密码
+    updatePassword: (params: UpdatePublicUserPasswordParams) =>
+      request<ApiResponse<{}>>('/public-user/updatePass', {
         method: 'POST',
         body: params,
       }),

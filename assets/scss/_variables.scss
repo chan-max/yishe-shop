@@ -2,4 +2,9 @@
 :root {
   // layouts > page > content
   --layout-page-content-min-height: calc(100vh - 42px);
+  
+  // theme colors
+  --theme-primary: #6900ff;
+  --theme-primary-hover: #5a00e6;
+  --theme-primary-active: #4b00cc;
 }

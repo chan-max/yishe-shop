@@ -34,7 +34,18 @@ export const request = async <T = any>(
   const BASE_URL = publicRuntime.apiBase
 
   // 仅在客户端读取本地存储，避免 SSR 时访问导致报错
-  const token = process.client ? useLocalStorage('token', null).value : null
+  // 优先使用 public-user-token（开放用户），如果没有则使用普通 token（管理员）
+  let publicUserToken: string | null = null
+  let token: string | null = null
+  
+  if (process.client) {
+    const publicUserTokenStorage = useLocalStorage('public-user-token', null)
+    const tokenStorage = useLocalStorage('token', null)
+    publicUserToken = publicUserTokenStorage.value
+    token = tokenStorage.value
+  }
+  
+  const finalToken = publicUserToken || token
 
   try {
     const response = await ofetch<Response<T>>(`${BASE_URL}${url}`, {
@@ -43,7 +54,7 @@ export const request = async <T = any>(
       body,
       headers: {
         'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(finalToken ? { Authorization: `Bearer ${finalToken}` } : {}),
         ...headers,
       },
     })
@@ -51,10 +62,35 @@ export const request = async <T = any>(
     return response
   } catch (error: any) {
     // 统一错误处理
+    let errorMessage = error.message || '请求失败'
+    
+    // 对于登录相关的错误，提供更友好的提示
+    if (url.includes('login') || url.includes('auth')) {
+      if (error.statusCode === 401 || error.statusCode === 400) {
+        errorMessage = '用户名或密码不正确'
+      } else if (error.message?.includes('token') || error.message?.includes('null')) {
+        errorMessage = '用户名或密码不正确'
+      }
+    }
+    
+    // 对于注册相关的错误，优化账号重复的提示
+    if (url.includes('register')) {
+      const responseMessage = error.data?.message || error.message || ''
+      if (
+        error.statusCode === 400 ||
+        responseMessage.includes('已存在') ||
+        responseMessage.includes('已注册') ||
+        responseMessage.includes('duplicate') ||
+        responseMessage.includes('exists')
+      ) {
+        errorMessage = '该账号已被注册，请使用其他账号或直接登录'
+      }
+    }
+    
     const errorResponse: Response = {
       code: error.statusCode || 500,
       data: null as any,
-      message: error.message || '请求失败',
+      message: errorMessage,
     }
     return errorResponse
   }
