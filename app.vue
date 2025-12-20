@@ -59,7 +59,6 @@ useHead({
     class="antialiased duration-300 transition-colors text-gray-900 bg-white"
   >
     <NuxtLayout>
-      <NuxtLoadingIndicator :height="3" />
       <NuxtPage />
     </NuxtLayout>
     
