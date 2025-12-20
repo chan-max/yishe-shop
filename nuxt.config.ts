@@ -2,6 +2,9 @@ import { createResolver } from '@nuxt/kit'
 const { resolve } = createResolver(import.meta.url)
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // 兼容日期
+  compatibilityDate: '2025-12-21',
+  
   // exp
   experimental: {
     localLayerAliases: true,
@@ -26,6 +29,12 @@ export default defineNuxtConfig({
         { rel: 'preload', as: 'font', href: '/logo.ttf', type: 'font/ttf', crossorigin: 'anonymous' }
       ],
     },
+    // 配置加载指示器
+    loadingIndicator: {
+      color: '#3b82f6',
+      background: 'white',
+      throttle: 200,
+    },
   },
 
 
@@ -42,7 +51,9 @@ export default defineNuxtConfig({
   // styling & ui
   '@nuxtjs/tailwindcss', 'nuxt-headlessui', 'nuxt-icon', '@nuxtjs/color-mode', // management
   '@pinia/nuxt', '@vueuse/nuxt', // contents
-  '@nuxt/content', '@nuxtjs/sitemap', '@nuxtjs/seo'],
+  '@nuxt/content', '@nuxtjs/sitemap', 
+  // '@nuxtjs/seo' // 需要先安装 nuxt-og-image: pnpm add nuxt-og-image
+  ],
 
   build: {
     transpile: ['vuetify']

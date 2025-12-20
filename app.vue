@@ -1,8 +1,8 @@
 <!--
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
- * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-11-08 12:57:53
+ * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @LastEditTime: 2025-12-21 01:39:43
  * @FilePath: /yishe-nuxt/app.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -59,7 +59,7 @@ useHead({
     class="antialiased duration-300 transition-colors text-gray-900 bg-white"
   >
     <NuxtLayout>
-      <NuxtLoadingIndicator />
+      <NuxtLoadingIndicator :height="3" />
       <NuxtPage />
     </NuxtLayout>
     
@@ -106,5 +106,11 @@ useHead({
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
-} 
+}
+
+/* 自定义 NuxtLoadingIndicator 进度条样式 */
+#nuxt-loading-indicator {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899) !important;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 5px rgba(59, 130, 246, 0.3) !important;
+}
 </style>
