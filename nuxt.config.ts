@@ -29,12 +29,6 @@ export default defineNuxtConfig({
         { rel: 'preload', as: 'font', href: '/logo.ttf', type: 'font/ttf', crossorigin: 'anonymous' }
       ],
     },
-    // 配置加载指示器
-    loadingIndicator: {
-      color: '#3b82f6',
-      background: 'white',
-      throttle: 200,
-    },
   },
 
 

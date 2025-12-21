@@ -58,6 +58,13 @@ useHead({
   <Body
     class="antialiased duration-300 transition-colors text-gray-900 bg-white"
   >
+    <!-- 页面加载进度条 -->
+    <NuxtLoadingIndicator 
+      color="#3b82f6" 
+      height="3" 
+      :throttle="200"
+    />
+    
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
