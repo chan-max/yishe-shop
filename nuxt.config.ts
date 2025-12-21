@@ -97,6 +97,12 @@ export default defineNuxtConfig({
     fallback: 'light',
   },
 
+  // module::icon - 配置图标在构建时本地化
+  icon: {
+    // 使用本地图标集合，避免运行时请求远程图标
+    serverBundle: 'local',
+  },
+
   // module::content
   content: {
     markdown: {
