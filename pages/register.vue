@@ -1,65 +1,87 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+  <div class="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <!-- 返回首页导航 -->
+    <div class="fixed top-8 left-4 sm:left-8 z-50">
+      <NuxtLink
+        to="/"
+        class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black tracking-[0.15em] uppercase transition-all duration-300 group font-light"
+      >
+        <Icon name="heroicons:arrow-left" class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+        <span class="relative">
+          返回首页
+          <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+        </span>
+      </NuxtLink>
+    </div>
+
+    <div class="max-w-md w-full space-y-10">
       <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="text-center text-4xl md:text-5xl font-light tracking-[0.05em] mb-3 uppercase text-gray-900">
           注册账号
         </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
+        <p class="text-center text-sm text-gray-400 tracking-[0.1em] uppercase">
           创建您的开放用户账号
         </p>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
-        <div class="rounded-md shadow-sm -space-y-px">
+      <form class="mt-12 space-y-8" @submit.prevent="handleSubmit">
+        <div class="space-y-6">
           <div>
-            <label for="account" class="sr-only">账号</label>
+            <label for="account" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
+              账号 <span class="text-red-500">*</span>
+            </label>
             <input
               id="account"
               v-model="form.account"
               name="account"
               type="text"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-              placeholder="账号"
+              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
+              placeholder="请输入账号"
             />
           </div>
           <div>
-            <label for="password" class="sr-only">密码</label>
+            <label for="password" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
+              密码 <span class="text-red-500">*</span>
+            </label>
             <input
               id="password"
               v-model="form.password"
               name="password"
               type="password"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-              placeholder="密码（至少6位）"
+              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
+              placeholder="至少6位密码"
             />
           </div>
           <div>
-            <label for="name" class="sr-only">昵称</label>
+            <label for="name" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
+              昵称 <span class="text-gray-400 text-xs">(可选)</span>
+            </label>
             <input
               id="name"
               v-model="form.name"
               name="name"
               type="text"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-              placeholder="昵称（可选）"
+              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
+              placeholder="请输入昵称"
             />
           </div>
           <div>
-            <label for="email" class="sr-only">邮箱</label>
+            <label for="email" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
+              邮箱 <span class="text-gray-400 text-xs">(可选)</span>
+            </label>
             <input
               id="email"
               v-model="form.email"
               name="email"
               type="email"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-              placeholder="邮箱（可选）"
+              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
+              placeholder="请输入邮箱地址"
             />
           </div>
         </div>
 
-        <div v-if="errorMessage" class="text-red-600 text-sm text-center">
+        <div v-if="errorMessage" class="text-red-500 text-sm text-center tracking-wide uppercase">
           {{ errorMessage }}
         </div>
 
@@ -67,7 +89,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+            class="w-full py-4 px-6 bg-black text-white text-sm uppercase tracking-[0.2em] font-light hover:bg-gray-800 focus:outline-none transition-all duration-300 transform hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {{ loading ? '注册中...' : '注册' }}
           </button>
@@ -76,9 +98,13 @@
         <div class="text-center">
           <NuxtLink
             to="/login"
-            class="text-sm text-primary-600 hover:text-primary-500"
+            class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black tracking-[0.15em] uppercase transition-all duration-300 group font-light"
           >
-            已有账号？去登录
+            <span class="relative">
+              已有账号？去登录
+              <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+            </span>
+            <v-icon size="14" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
           </NuxtLink>
         </div>
       </form>

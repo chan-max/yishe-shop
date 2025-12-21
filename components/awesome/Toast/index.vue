@@ -33,15 +33,15 @@ watch(() => props.show, (newVal) => {
 
 const toastStyles = {
   success: {
-    bg: 'bg-green-600',
-    darkBg: 'dark:bg-green-700',
-    border: 'border-green-500',
-    darkBorder: 'dark:border-green-400',
+    bg: 'bg-green-500',
+    darkBg: 'dark:bg-green-600',
+    border: 'border-green-400',
+    darkBorder: 'dark:border-green-300',
     text: 'text-white',
     darkText: 'text-white',
     icon: 'text-white',
-    hover: 'hover:bg-green-500',
-    darkHover: 'dark:hover:bg-green-600'
+    hover: 'hover:bg-green-400',
+    darkHover: 'dark:hover:bg-green-500'
   },
   danger: {
     bg: 'bg-red-600',

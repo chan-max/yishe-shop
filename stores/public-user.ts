@@ -30,12 +30,20 @@ interface PublicUserState {
 
 export const usePublicUserStore = defineStore('publicUser', {
   state: (): PublicUserState => ({
-    token: useLocalStorage('public-user-token', null).value,
+    token: null,
     userInfo: null,
   }),
 
   getters: {
-    isLoggedIn: (state) => !!state.token,
+    isLoggedIn(state) {
+      // 在客户端时，每次都从 localStorage 读取最新的 token
+      if (process.client) {
+        const tokenStorage = useLocalStorage('public-user-token', null)
+        return !!tokenStorage.value
+      }
+      // SSR 时使用 state 中的 token
+      return !!state.token
+    },
     currentUser: (state) => state.userInfo,
   },
 
@@ -63,9 +71,12 @@ export const usePublicUserStore = defineStore('publicUser', {
 
     // 初始化时从 localStorage 恢复 token
     initToken() {
-      const token = localStorage.getItem('public-user-token')
-      if (token) {
-        this.token = token
+      if (process.client) {
+        const tokenStorage = useLocalStorage('public-user-token', null)
+        const token = tokenStorage.value
+        if (token) {
+          this.token = token
+        }
       }
     },
   },

@@ -9,7 +9,15 @@
 import { usePublicUserStore } from '~/stores/public-user'
 
 export default defineNuxtRouteMiddleware((to, from) => {
+  // SSR 时不进行跳转，等待客户端初始化
+  if (!process.client) {
+    return
+  }
+  
   const publicUserStore = usePublicUserStore()
+  
+  // 在客户端时，先初始化 token（从 localStorage 恢复）
+  publicUserStore.initToken()
   
   // 检查是否已登录
   if (!publicUserStore.isLoggedIn) {
