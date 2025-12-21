@@ -246,4 +246,55 @@ export const api = {
         method: 'GET',
       }),
   },
+  // 收藏相关接口（开放用户商品收藏）
+  favorite: {
+    // 添加收藏
+    create: (params: { productId: string; remark?: string; tags?: string }) =>
+      request<ApiResponse<any>>('/favorite', {
+        method: 'POST',
+        body: params,
+      }),
+    // 取消收藏（根据商品ID）
+    remove: (productId: string) =>
+      request<ApiResponse<{ message: string }>>(`/favorite/product/${productId}`, {
+        method: 'DELETE',
+      }),
+    // 检查是否收藏了某个商品
+    check: (productId: string) =>
+      request<ApiResponse<boolean>>(`/favorite/product/${productId}/check`, {
+        method: 'GET',
+      }),
+    // 批量检查商品是否被收藏
+    checkBatch: (productIds: string[]) =>
+      request<ApiResponse<Record<string, boolean>>>('/favorite/check', {
+        method: 'POST',
+        body: { productIds },
+      }),
+    // 获取商品的收藏数量
+    getProductCount: (productId: string) =>
+      request<ApiResponse<number>>(`/favorite/product/${productId}/count`, {
+        method: 'GET',
+      }),
+    // 批量获取商品的收藏数量
+    getProductCounts: (productIds: string[]) =>
+      request<ApiResponse<Record<string, number>>>('/favorite/product/counts', {
+        method: 'POST',
+        body: { productIds },
+      }),
+    // 获取我的收藏列表
+    getMyFavorites: (params: { currentPage: number; pageSize: number; includeProduct?: boolean }) =>
+      request<ApiResponse<{ list: any[]; total: number; page: number; pageSize: number }>>('/favorite/my', {
+        method: 'GET',
+        params: {
+          currentPage: params.currentPage,
+          pageSize: params.pageSize,
+          includeProduct: params.includeProduct ?? true,
+        },
+      }),
+    // 获取我的收藏商品ID列表
+    getMyFavoriteProductIds: () =>
+      request<ApiResponse<string[]>>('/favorite/my/product-ids', {
+        method: 'GET',
+      }),
+  },
 }

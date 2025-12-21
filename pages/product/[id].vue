@@ -82,7 +82,7 @@
             <!-- 图片缩略图导航 -->
             <div
               v-if="productImages.length > 1"
-              class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2"
+              class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"
             >
               <button
                 v-for="(img, index) in productImages"
@@ -126,11 +126,22 @@
 
         <!-- 商品信息区域 -->
         <div class="max-w-4xl mx-auto space-y-6">
-          <!-- 商品名称 -->
+          <!-- 商品名称和收藏按钮 -->
           <div>
-            <h1 class="text-2xl sm:text-3xl font-light tracking-wide text-black mb-2">
-              {{ product.name }}
-            </h1>
+            <div class="flex items-start justify-between mb-2">
+              <h1 class="text-2xl sm:text-3xl font-light tracking-wide text-black flex-1">
+                {{ product.name }}
+              </h1>
+              <!-- 收藏按钮 -->
+              <div class="ml-4 flex-shrink-0">
+                <FavoriteButton
+                  :is-favorite="isFavorite"
+                  :count="favoriteCount"
+                  :show-count="false"
+                  @click="toggleFavorite"
+                />
+              </div>
+            </div>
             <p v-if="product.description" class="text-base text-gray-600 leading-relaxed">
               {{ product.description }}
             </p>
@@ -212,6 +223,11 @@
               <span class="uppercase tracking-wider">分享</span>
             </button>
           </div>
+          
+          <!-- 收藏数量显示 -->
+          <div v-if="favoriteCount !== null" class="pt-4 text-sm text-gray-500">
+            <span>{{ favoriteCount }} 人收藏了此商品</span>
+          </div>
         </div>
       </div>
     </div>
@@ -250,6 +266,11 @@
 import { ref, computed, watch } from "vue";
 import { api } from "~/utils/api";
 import ImagePreview from "../components/ImagePreview.vue";
+import FavoriteButton from "~/components/FavoriteButton.vue";
+import { usePublicUserStore } from "~/stores/public-user";
+import { useToast } from "~/composables/use-toast";
+
+const toast = useToast();
 
 definePageMeta({ layout: "page" });
 useHead({
@@ -265,12 +286,15 @@ useHead({
 
 const route = useRoute();
 const router = useRouter();
+const publicUserStore = usePublicUserStore();
 
 // 状态
 const loading = ref(true);
 const product = ref(null);
 const currentImageIndex = ref(0);
 const isPreviewOpen = ref(false);
+const isFavorite = ref(false);
+const favoriteCount = ref<number | null>(null);
 
 // 计算属性
 const productImages = computed(() => {
@@ -313,6 +337,11 @@ const hasNextProduct = computed(() => {
   return false;
 });
 
+// 是否已登录
+const isLoggedIn = computed(() => {
+  return publicUserStore.isLoggedIn;
+});
+
 // 获取商品详情
 const fetchProductDetail = async () => {
   loading.value = true;
@@ -323,6 +352,11 @@ const fetchProductDetail = async () => {
       product.value = response.data;
       // 重置图片索引
       currentImageIndex.value = 0;
+      // 获取收藏状态和收藏数
+      await Promise.all([
+        checkFavoriteStatus(),
+        fetchFavoriteCount(),
+      ]);
     } else {
       console.error("获取商品详情失败:", response.message);
       product.value = null;
@@ -332,6 +366,115 @@ const fetchProductDetail = async () => {
     product.value = null;
   } finally {
     loading.value = false;
+  }
+};
+
+// 检查收藏状态
+const checkFavoriteStatus = async () => {
+  if (!isLoggedIn.value || !product.value?.id) return;
+  
+  try {
+    const response = await api.favorite.check(product.value.id);
+    if (response.code === 0 || response.status === true || response.code === 200) {
+      isFavorite.value = response.data === true;
+    }
+  } catch (error) {
+    console.error("检查收藏状态失败:", error);
+  }
+};
+
+// 获取收藏数量
+const fetchFavoriteCount = async () => {
+  if (!product.value?.id) return;
+  
+  try {
+    const response = await api.favorite.getProductCount(product.value.id);
+    if (response.code === 0 || response.status === true || response.code === 200) {
+      favoriteCount.value = response.data;
+    }
+  } catch (error) {
+    console.error("获取收藏数量失败:", error);
+  }
+};
+
+// 切换收藏状态 - 立即切换，后台处理接口
+const toggleFavorite = async () => {
+  if (!product.value?.id) return;
+
+  // 未登录，跳转到登录页
+  if (!isLoggedIn.value) {
+    router.push('/login');
+    return;
+  }
+
+  // 保存当前状态，用于失败时回滚
+  const previousFavoriteState = isFavorite.value;
+  const previousCount = favoriteCount.value;
+
+  // 立即切换状态
+  isFavorite.value = !isFavorite.value;
+  
+  // 立即更新收藏数量（乐观更新）
+  if (isFavorite.value) {
+    // 添加收藏
+    if (favoriteCount.value !== null) {
+      favoriteCount.value += 1;
+    } else {
+      favoriteCount.value = 1;
+    }
+  } else {
+    // 取消收藏
+    if (favoriteCount.value !== null && favoriteCount.value > 0) {
+      favoriteCount.value -= 1;
+    }
+  }
+
+  // 后台异步处理接口
+  try {
+    if (previousFavoriteState) {
+      // 取消收藏
+      const response = await api.favorite.remove(product.value.id);
+      if (response.code !== 0 && response.status !== true && response.code !== 200) {
+        // 失败，回滚状态
+        isFavorite.value = previousFavoriteState;
+        favoriteCount.value = previousCount;
+        toast.error(response.message || '取消收藏失败');
+      }
+    } else {
+      // 添加收藏
+      const response = await api.favorite.create({
+        productId: product.value.id,
+      });
+      if (response.code !== 0 && response.status !== true && response.code !== 200) {
+        // 失败，回滚状态
+        isFavorite.value = previousFavoriteState;
+        favoriteCount.value = previousCount;
+        if (response.code === 409) {
+          toast.warning('该商品已收藏');
+        } else {
+          toast.error(response.message || '收藏失败');
+        }
+      }
+    }
+  } catch (error: any) {
+    console.error("切换收藏状态失败:", error);
+    // 失败，回滚状态
+    isFavorite.value = previousFavoriteState;
+    favoriteCount.value = previousCount;
+    
+    // 处理错误响应
+    if (error.code === 401 || error.statusCode === 401) {
+      // 未授权，清除登录状态并跳转登录页
+      publicUserStore.clearToken();
+      toast.error('登录已过期，请重新登录');
+      router.push('/login');
+    } else if (error.code === 500 || error.statusCode === 500) {
+      // 服务器错误
+      toast.error(error.message || '服务器错误，请稍后重试');
+    } else {
+      // 其他错误
+      toast.error(error.message || '操作失败，请稍后重试');
+    }
   }
 };
 

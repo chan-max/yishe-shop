@@ -98,6 +98,14 @@
                         <v-icon size="18">mdi-account</v-icon>
                         <span>个人信息</span>
                       </NuxtLink>
+                      <NuxtLink 
+                        to="/favorites" 
+                        class="user-menu-item"
+                        @click="isUserMenuOpen = false"
+                      >
+                        <v-icon size="18">mdi-heart</v-icon>
+                        <span>我的收藏</span>
+                      </NuxtLink>
                       <button 
                         class="user-menu-item logout-item"
                         @click="handleLogout"
@@ -194,6 +202,13 @@
                 @click="closeMobileMenu"
               >
                 个人信息
+              </NuxtLink>
+              <NuxtLink 
+                to="/favorites" 
+                class="mobile-nav-link" 
+                @click="closeMobileMenu"
+              >
+                我的收藏
               </NuxtLink>
               <button 
                 class="mobile-nav-link logout-link"
@@ -399,6 +414,8 @@ onMounted(() => {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   width: 100%;
+  box-sizing: border-box;
+  position: relative;
   
   // 滚动后的样式变化
   &.scrolled {
@@ -425,6 +442,7 @@ onMounted(() => {
   box-sizing: border-box;
   position: relative;
   gap: 1rem;
+  min-width: 0;
   // border-bottom: 1px solid #eee;
 
   @media (min-width: 1200px) {
@@ -459,6 +477,7 @@ onMounted(() => {
   @media (max-width: 480px) {
     padding: 0 0.75rem;
     height: 70px;
+    gap: 0.5rem;
   }
 }
 
@@ -466,11 +485,22 @@ onMounted(() => {
 .header-left {
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
   gap: 1.5rem;
+  overflow-x: hidden;
   
   @media (min-width: 1400px) {
     gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  @media (max-width: 480px) {
+    gap: 0.5rem;
   }
 }
 
@@ -479,6 +509,8 @@ onMounted(() => {
   color: #0d0c22;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
+  flex-shrink: 0;
+  min-width: 0;
   
   &:hover {
     opacity: 0.8;
@@ -527,17 +559,28 @@ onMounted(() => {
   display: flex;
   align-items: center;
   width: 500px;
+  max-width: 100%;
   background-color: #f8f8f8;
   border-radius: 999px;
   overflow: hidden;
   position: relative;
+  flex-shrink: 1;
+  min-width: 0;
   
   @media (min-width: 1400px) {
     width: 600px;
   }
   
+  @media (max-width: 1200px) {
+    width: 400px;
+  }
+  
   @media (max-width: 1024px) {
-    width: 450px;
+    width: 350px;
+  }
+  
+  @media (max-width: 991px) {
+    display: none;
   }
 }
 
@@ -600,13 +643,14 @@ onMounted(() => {
   align-items: center;
   gap: 1.5rem;
   flex-shrink: 0;
+  min-width: 0;
   
   @media (max-width: 768px) {
-    gap: 1rem;
+    gap: 0.75rem;
   }
   
   @media (max-width: 480px) {
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 }
 
@@ -674,6 +718,7 @@ onMounted(() => {
 // 用户菜单
 .user-menu-wrapper {
   position: relative;
+  z-index: 100;
   
   @media (max-width: 991px) {
     display: none;
@@ -694,6 +739,16 @@ onMounted(() => {
   font-weight: 500;
   color: #0d0c22;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  flex-shrink: 0;
+  min-width: 0;
+  
+  @media (max-width: 1100px) {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  @media (max-width: 1024px) {
+    padding: 0.5rem;
+  }
   
   &:hover {
     background-color: #f8f8f8;
@@ -723,11 +778,28 @@ onMounted(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
+    @media (max-width: 1200px) {
+      max-width: 100px;
+    }
+    
+    @media (max-width: 1100px) {
+      max-width: 80px;
+    }
+    
+    @media (max-width: 1024px) {
+      display: none;
+    }
   }
   
   .user-menu-icon {
     color: #9e9ea7;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    
+    @media (max-width: 1024px) {
+      display: none;
+    }
   }
   
   &:hover .user-menu-icon {
@@ -744,8 +816,9 @@ onMounted(() => {
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   min-width: 180px;
-  z-index: 1000;
-  overflow: hidden;
+  z-index: 10001;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .user-menu-item {

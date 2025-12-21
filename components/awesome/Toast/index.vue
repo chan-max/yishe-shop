@@ -90,7 +90,7 @@ const iconPaths = {
 </script>
 
 <template>
-  <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+  <div class="fixed top-6 left-1/2 transform -translate-x-1/2" style="z-index: 10000;">
     <Transition
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="transform -translate-y-6 opacity-0 scale-95"

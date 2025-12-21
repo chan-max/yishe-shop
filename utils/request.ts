@@ -59,6 +59,31 @@ export const request = async <T = any>(
       },
     })
 
+    // 检查响应状态码，即使请求成功但返回了错误码，也应该视为失败
+    // 注意：code === 0 或 code === 200 或 status === true 表示成功
+    if (response.code !== 0 && response.code !== 200 && response.status !== true) {
+      // 统一错误处理：显示错误消息
+      const errorMessage = response.message || '请求失败'
+      
+      // 在客户端记录错误（不在这里显示 alert，让调用方决定如何处理）
+      if (process.client) {
+        console.error('API Error:', {
+          url,
+          code: response.code,
+          message: errorMessage,
+          data: response.data,
+        })
+      }
+      
+      // 返回错误响应，让调用方可以处理
+      return Promise.reject({
+        code: response.code,
+        message: errorMessage,
+        data: response.data,
+        statusCode: response.code, // 兼容 statusCode
+      })
+    }
+
     return response
   } catch (error: any) {
     // 统一错误处理
