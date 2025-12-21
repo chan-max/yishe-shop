@@ -85,7 +85,7 @@
                       </v-avatar>
                     </div>
                     <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
-                    <v-icon size="16" class="user-menu-icon">mdi-chevron-down</v-icon>
+                    <v-icon size="16" class="user-menu-icon">mdi-menu-down</v-icon>
                   </button>
                   <!-- 用户下拉菜单 -->
                   <Transition name="user-menu">
