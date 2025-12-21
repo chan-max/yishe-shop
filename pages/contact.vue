@@ -236,10 +236,20 @@ const closeQRDialog = () => {
   color: #6b7280;
   text-decoration: none;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
   
   &:hover {
     color: #111827;
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateX(-4px) scale(1.02);
+  }
+  
+  &:active {
+    transform: translateX(-2px) scale(1);
+    background-color: rgba(0, 0, 0, 0.06);
   }
   
   @media (max-width: 640px) {
@@ -327,11 +337,21 @@ const closeQRDialog = () => {
 .item-value {
   color: #374151;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   word-break: break-all;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
   
   &:hover {
     color: #111827;
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: rgba(0, 0, 0, 0.06);
   }
 }
 
@@ -369,24 +389,35 @@ const closeQRDialog = () => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0;
-  background: none;
-  border: none;
+  padding: 0.75rem 1.25rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   color: #6b7280;
   font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     color: #111827;
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     
     .v-icon {
-      transform: translateX(2px);
+      transform: translateX(4px) scale(1.1);
     }
   }
   
+  &:active {
+    transform: translateY(0) scale(1.02);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
   .v-icon {
-    transition: transform 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -424,8 +455,8 @@ const closeQRDialog = () => {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: none;
   background: #f3f4f6;
   border-radius: 50%;
@@ -434,11 +465,18 @@ const closeQRDialog = () => {
   align-items: center;
   justify-content: center;
   color: #6b7280;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     background: #e5e7eb;
     color: #111827;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: rotate(90deg) scale(1.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
 }
 

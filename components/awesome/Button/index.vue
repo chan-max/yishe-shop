@@ -24,20 +24,22 @@ const props = defineProps({
 // state:styles
 const defaultStyle = `
   cursor-pointer
-  border transition-color duration-300
-  focus:outline-none focus:ring-1 focus:ring-offset-1 focus:dark:ring-offset-gray-50 focus:dark:ring-gray-400 focus:ring-gray-600/[0.6] focus:ring-offset-gray-800/[0.6]
+  border transition-all duration-300 ease-out
+  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:dark:ring-offset-gray-50 focus:dark:ring-gray-400 focus:ring-gray-600/[0.6] focus:ring-offset-gray-800/[0.6]
   flex items-center justify-center font-semibold
+  transform-gpu
+  active:scale-95
 `
 const styles = reactive<{
   [key: string]: string
 }>({
   none: '',
-  primary: 'text-white bg-primary-500 hover:bg-primary-400 border-primary-500',
+  primary: 'text-white bg-primary-500 hover:bg-primary-400 border-primary-500 hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30 active:scale-100',
   secondary:
-    'text-gray-800 bg-gray-200 border-gray-200 hover:bg-gray-300 dark:text-white dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700',
+    'text-gray-800 bg-gray-200 border-gray-200 hover:bg-gray-300 hover:scale-105 hover:shadow-md dark:text-white dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:scale-105',
   opposite:
-    'text-white bg-gray-800 hover:bg-white hover:text-gray-800 hover:border-gray-900 dark:text-gray-800 dark:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-100 dark:border-white',
-  danger: 'text-white bg-red-500 hover:bg-red-400 border-red-500',
+    'text-white bg-gray-800 hover:bg-white hover:text-gray-800 hover:border-gray-900 hover:scale-105 hover:shadow-lg dark:text-gray-800 dark:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-100 dark:border-white dark:hover:scale-105',
+  danger: 'text-white bg-red-500 hover:bg-red-400 border-red-500 hover:scale-105 hover:shadow-lg hover:shadow-red-500/30 active:scale-100',
 })
 const sizes = reactive<{
   [key: string]: string

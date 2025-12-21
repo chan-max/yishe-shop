@@ -262,59 +262,73 @@ const isVisible = (id: string) => {
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
       </div>
         
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16">
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-16">
         <div 
           v-for="(product, index) in featuredProducts" 
           :key="product.id"
-          class="bg-gray-100 overflow-hidden border border-transparent hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
+          class="group overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-500 cursor-pointer bg-white"
           :data-animate-id="`product-${product.id}`"
           :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
           :style="{ '--delay': `${index * 0.1}s` }"
           @mouseenter="hoveredProductId = product.id"
           @mouseleave="hoveredProductId = null"
         >
-          <div class="relative w-full h-64 sm:h-80 md:h-80 overflow-hidden bg-gray-100 group">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
             <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
             <img 
               v-if="product.imageUrl" 
               :src="product.imageUrl" 
               :alt="product.title"
-              class="w-full h-full object-cover transition-transform duration-300"
-              :class="{ 'scale-105': hoveredProductId === product.id }"
+              class="w-full h-full object-cover transition-all duration-700 ease-out"
+              :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
               @error="handleImageError($event, product)"
             />
             <img 
               v-else
               :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
               :alt="product.title"
-              class="w-full h-full object-cover transition-transform duration-300"
-              :class="{ 'scale-105': hoveredProductId === product.id }"
+              class="w-full h-full object-cover transition-all duration-700 ease-out"
+              :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
             />
             <!-- Hover 遮罩层 -->
             <div 
-              class="absolute inset-0 bg-black/75 flex items-center justify-center transition-opacity duration-300 z-10"
-              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'"
+              class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black/95 flex items-center justify-center transition-all duration-500 z-10 backdrop-blur-[1px]"
+              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0 pointer-events-none'"
             >
-              <div class="px-4 sm:px-8 text-center text-white max-w-[90%]">
-                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug  truncate whitespace-nowrap overflow-hidden text-ellipsis text-center" :title="product.title">{{ product.title }}</h3>
-                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
-                <button class="px-4 sm:px-6 py-2 sm:py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white border border-white/30 hover:border-white/60 transition-all" @click.stop="goToProductDetail(product.id)">
+              <div class="px-4 sm:px-8 text-center text-white max-w-[90%] transform transition-all duration-300"
+                   :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'">
+                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug truncate whitespace-nowrap overflow-hidden text-ellipsis text-center transform transition-transform duration-300"
+                    :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'"
+                    :title="product.title">{{ product.title }}</h3>
+                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 transform transition-transform duration-300 delay-75"
+                   :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'">{{ product.description }}</p>
+                <button 
+                  class="px-4 sm:px-6 py-2 sm:py-3 bg-white/10 backdrop-blur-sm text-white text-xs font-semibold tracking-wide uppercase border border-white/40 rounded-sm transition-all duration-300 transform hover:bg-white/20 hover:border-white/80 hover:scale-105 active:scale-100"
+                  :class="hoveredProductId === product.id ? 'opacity-100 delay-150' : 'opacity-0'"
+                  @click.stop="goToProductDetail(product.id)">
                   查看详情
                 </button>
               </div>
             </div>
           </div>
-          <div class="p-3 sm:p-6">
-            <h3 class="text-base sm:text-lg md:text-xl font-light tracking-wide uppercase text-gray-900 mb-1 sm:mb-2 truncate text-center" :title="product.title">{{ product.title }}</h3>
-            <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-gray-500 leading-relaxed line-clamp-2" :title="product.description">{{ product.description }}</p>
+          <div class="pt-4 sm:pt-5 px-1">
+            <h3 class="text-sm sm:text-base md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 sm:mb-3 truncate text-center leading-tight transition-colors duration-300 group-hover:text-black" :title="product.title">{{ product.title }}</h3>
+            <p v-if="product.description" class="text-xs sm:text-sm font-light text-gray-500 leading-relaxed line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-gray-600" :title="product.description">{{ product.description }}</p>
           </div>
         </div>
       </div>
       
-      <div class="text-center mt-12" data-animate-id="products-footer">
-        <NuxtLink to="/products" class="inline-flex items-center gap-3 px-8 py-4 border border-gray-400 text-sm font-normal tracking-wider uppercase text-gray-700 hover:border-gray-600 hover:text-gray-900 transition-all" :class="{ 'animate-in': isVisible('products-footer') }">
-          查看更多商品
-          <v-icon size="20">mdi-arrow-right</v-icon>
+      <div class="text-center mt-16" data-animate-id="products-footer">
+        <NuxtLink 
+          to="/products" 
+          class="inline-flex items-center gap-4 px-0 py-3 text-sm font-light tracking-[0.2em] uppercase text-gray-600 hover:text-black transition-all duration-300 group relative"
+          :class="{ 'animate-in': isVisible('products-footer') }"
+        >
+          <span class="relative">
+            查看更多商品
+            <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+          </span>
+          <v-icon size="18" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
         </NuxtLink>
       </div>
     </section>
@@ -335,9 +349,12 @@ const isVisible = (id: string) => {
           <div class="absolute bottom-0 left-0 right-0 p-8 bg-white">
             <h3 class="text-2xl md:text-xl font-light tracking-wide uppercase mb-3">2024春季系列</h3>
             <p class="text-base md:text-sm font-light text-gray-500 leading-relaxed mb-6">融合现代艺术与传统文化，展现独特的视觉语言</p>
-            <NuxtLink to="/search?category=spring" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
-              查看系列
-              <v-icon size="16">mdi-arrow-right</v-icon>
+            <NuxtLink to="/search?category=spring" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
+              <span class="relative">
+                查看系列
+                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+              </span>
+              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
             </NuxtLink>
           </div>
         </div>
@@ -350,9 +367,12 @@ const isVisible = (id: string) => {
           <div class="p-6 md:p-8 bg-white">
             <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">印花图案库</h3>
             <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">数千种高质量创意图案</p>
-            <NuxtLink to="/search?category=pattern" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
-              浏览图案
-              <v-icon size="16">mdi-arrow-right</v-icon>
+            <NuxtLink to="/search?category=pattern" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
+              <span class="relative">
+                浏览图案
+                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+              </span>
+              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
             </NuxtLink>
           </div>
         </div>
@@ -364,9 +384,12 @@ const isVisible = (id: string) => {
           <div class="p-6 md:p-8 bg-white">
             <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">设计师作品</h3>
             <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">来自全球顶尖设计师</p>
-            <NuxtLink to="/search?category=designer" class="inline-flex items-center gap-2 text-sm font-normal tracking-wide uppercase text-black hover:gap-4 transition-all">
-              查看作品
-              <v-icon size="16">mdi-arrow-right</v-icon>
+            <NuxtLink to="/search?category=designer" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
+              <span class="relative">
+                查看作品
+                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+              </span>
+              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
             </NuxtLink>
           </div>
         </div>
@@ -427,28 +450,35 @@ const isVisible = (id: string) => {
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
       </div>
       
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-16">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
         <div 
           v-for="(category, index) in categories" 
           :key="category.id"
-          class="bg-white p-6 rounded-xl border border-gray-200 cursor-pointer hover:border-gray-300 hover:shadow-md transition-all text-center"
+          class="group cursor-pointer transition-all duration-300 text-center"
           :data-animate-id="`category-${category.id}`"
           :class="{ 'animate-in': isVisible(`category-${category.id}`) }"
           :style="{ '--delay': `${index * 0.1}s` }"
           @click="goToCategory(category.id)"
         >
-          <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
-            <v-icon :name="category.icon" class="text-2xl" :style="{ 'color': category.color }" />
+          <div class="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
+            <v-icon :name="category.icon" class="text-2xl transition-transform duration-300 group-hover:scale-110" :style="{ 'color': category.color }" />
           </div>
-          <h3 class="text-base font-light tracking-wide mb-2 text-gray-900">{{ category.name }}</h3>
-          <p class="text-sm text-gray-500">{{ category.count }} 作品</p>
+          <h3 class="text-base font-light tracking-wide mb-2 text-gray-900 transition-colors duration-300 group-hover:text-black">{{ category.name }}</h3>
+          <p class="text-xs text-gray-400 tracking-wider uppercase">{{ category.count }} 作品</p>
         </div>
       </div>
       
       <div class="text-center mt-12" data-animate-id="categories-footer">
-        <NuxtLink to="/search" class="inline-flex items-center gap-3 px-8 py-4 border border-black text-sm font-normal tracking-wider uppercase  hover:bg-black hover:text-white transition-all" :class="{ 'animate-in': isVisible('categories-footer') }">
-          查看全部分类
-          <v-icon size="20">mdi-arrow-right</v-icon>
+        <NuxtLink 
+          to="/search" 
+          class="inline-flex items-center gap-4 px-0 py-3 text-sm font-light tracking-[0.2em] uppercase text-gray-600 hover:text-black transition-all duration-300 group" 
+          :class="{ 'animate-in': isVisible('categories-footer') }"
+        >
+          <span class="relative">
+            查看全部分类
+            <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+          </span>
+          <v-icon size="18" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
         </NuxtLink>
       </div>
     </section>

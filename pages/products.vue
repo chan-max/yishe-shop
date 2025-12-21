@@ -257,17 +257,17 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-white">
     <!-- 页面头部 -->
-    <div class="bg-white border-b border-gray-200">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-12">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900">商品列表</h1>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现所有精选设计作品</p>
+    <div class="bg-white">
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] mb-3 uppercase text-gray-900">商品列表</h1>
+        <p class="text-sm md:text-base font-light text-gray-400 tracking-[0.1em] uppercase">发现所有精选设计作品</p>
       </div>
     </div>
 
     <!-- 搜索和筛选区域 -->
-    <div class="bg-white border-b border-gray-200 sticky top-0 z-10 backdrop-blur-sm bg-white/95">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-6">
-        <div class="flex flex-col md:flex-row gap-4">
+    <div class="bg-white sticky top-0 z-10 backdrop-blur-sm bg-white/95 border-b border-gray-100">
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
           <!-- 搜索框 -->
           <div class="flex-1">
             <div class="relative">
@@ -275,12 +275,12 @@ onMounted(() => {
                 v-model="searchKeyword"
                 type="text"
                 placeholder="搜索商品名称、描述、关键词..."
-                class="w-full px-4 py-3 border border-gray-300 focus:border-gray-600 focus:outline-none text-sm tracking-wide bg-white"
+                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-sm tracking-wide bg-transparent transition-colors duration-300 placeholder:text-gray-400"
                 @keyup.enter="handleSearch"
               />
               <button
                 @click="handleSearch"
-                class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-gray-900 text-white text-xs uppercase tracking-wider hover:bg-gray-700 transition-colors"
+                class="absolute right-0 top-1/2 -translate-y-1/2 px-6 py-2 bg-black text-white text-xs uppercase tracking-[0.15em] hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
               >
                 搜索
               </button>
@@ -288,11 +288,11 @@ onMounted(() => {
           </div>
           
           <!-- 类型筛选 -->
-          <div class="md:w-48">
+          <div class="md:w-56">
             <select
               v-model="selectedType"
               @change="handleTypeChange"
-              class="w-full px-4 py-3 border border-gray-300 focus:border-gray-600 focus:outline-none text-sm tracking-wide bg-white"
+              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-sm tracking-wide bg-transparent transition-colors duration-300 appearance-none cursor-pointer"
             >
               <option v-for="type in productTypes" :key="type.value" :value="type.value">
                 {{ type.label }}
@@ -304,32 +304,32 @@ onMounted(() => {
     </div>
 
     <!-- 商品列表 -->
-    <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-12">
+    <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20">
       <!-- 加载状态 -->
-      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        <div v-for="i in 8" :key="i" class="bg-gray-100 animate-pulse" style="aspect-ratio: 1 / 1.3;">
+      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+        <div v-for="i in 8" :key="i" class="bg-gradient-to-br from-gray-50 to-gray-100 animate-pulse" style="aspect-ratio: 3 / 4;">
           <div class="w-full h-full bg-gray-200"></div>
         </div>
       </div>
 
       <!-- 商品网格 -->
-      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
         <div
           v-for="product in productList"
           :key="product.id"
-          class="bg-gray-100 overflow-hidden border border-transparent hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
+          class="group overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-500 cursor-pointer bg-white"
           @mouseenter="hoveredProductId = product.id"
           @mouseleave="hoveredProductId = null"
           @click="goToProductDetail(product.id)"
         >
           <!-- 商品图片 -->
-          <div class="relative w-full h-64 sm:h-80 md:h-80 overflow-hidden bg-gray-100">
+          <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
             <template v-if="getProductImage(product)">
               <img
                 :src="getProductImage(product)"
                 :alt="product.name || '商品图片'"
-                class="w-full h-full object-cover transition-transform duration-300"
-                :class="{ 'scale-105': hoveredProductId === product.id }"
+                class="w-full h-full object-cover transition-all duration-700 ease-out"
+                :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
                 @error="handleImageError($event, product)"
                 @load="handleImageLoad"
               />
@@ -348,13 +348,19 @@ onMounted(() => {
             </div>
             <!-- Hover 遮罩层 -->
             <div 
-              class="absolute inset-0 bg-black/75 flex items-center justify-center transition-opacity duration-300 z-10"
-              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'"
+              class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black/95 flex items-center justify-center transition-all duration-500 z-10 backdrop-blur-[1px]"
+              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0 pointer-events-none'"
             >
-              <div class="px-4 sm:px-8 text-center text-white max-w-[90%]">
-                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug">{{ product.name }}</h3>
-                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2">{{ product.description }}</p>
-                <button class="px-4 sm:px-6 py-2 sm:py-3 bg-transparent text-white/90 text-xs font-semibold tracking-wide uppercase hover:text-white border border-white/30 hover:border-white/60 transition-all" @click.stop="goToProductDetail(product.id)">
+              <div class="px-4 sm:px-8 text-center text-white max-w-[90%] transform transition-all duration-300"
+                   :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'">
+                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug transform transition-transform duration-300"
+                    :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'">{{ product.name }}</h3>
+                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 transform transition-transform duration-300 delay-75"
+                   :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'">{{ product.description }}</p>
+                <button 
+                  class="px-4 sm:px-6 py-2 sm:py-3 bg-white/10 backdrop-blur-sm text-white text-xs font-semibold tracking-wide uppercase border border-white/40 rounded-sm transition-all duration-300 transform hover:bg-white/20 hover:border-white/80 hover:scale-105 active:scale-100"
+                  :class="hoveredProductId === product.id ? 'opacity-100 delay-150' : 'opacity-0'"
+                  @click.stop="goToProductDetail(product.id)">
                   查看详情
                 </button>
               </div>
@@ -362,22 +368,22 @@ onMounted(() => {
           </div>
           
           <!-- 商品信息 -->
-          <div class="p-3 sm:p-6">
+          <div class="pt-4 sm:pt-5 px-1">
             <!-- 类型标签：二维产品图不显示 -->
             <div v-if="product.type && product.type !== '二维产品图'" class="mb-2">
-              <span class="text-xs text-gray-500 uppercase tracking-wider">
+              <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-[0.15em] font-light">
                 {{ productTypes.find(t => t.value === product.type)?.label || product.type }}
               </span>
             </div>
-            <h3 class="text-base sm:text-lg md:text-xl font-light tracking-wide uppercase text-gray-900 mb-1 sm:mb-2 truncate" :title="product.name">
+            <h3 class="text-sm sm:text-base md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 sm:mb-3 truncate leading-tight transition-colors duration-300 group-hover:text-black" :title="product.name">
               {{ product.name }}
             </h3>
-            <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-gray-500 leading-relaxed line-clamp-2" :title="product.description">
+            <p v-if="product.description" class="text-xs sm:text-sm font-light text-gray-500 leading-relaxed line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-gray-600" :title="product.description">
               {{ product.description }}
             </p>
             <!-- 产品代码 -->
-            <div v-if="product.code" class="flex items-center justify-end mt-2">
-              <span class="text-xs text-gray-400 uppercase tracking-wider">
+            <div v-if="product.code" class="flex items-center justify-end mt-3">
+              <span class="text-[10px] text-gray-300 uppercase tracking-widest font-light">
                 {{ product.code }}
               </span>
             </div>
@@ -386,23 +392,26 @@ onMounted(() => {
       </div>
 
       <!-- 空状态 -->
-      <div v-else class="text-center py-20">
-        <p class="text-lg text-gray-500 mb-4">暂无商品</p>
+      <div v-else class="text-center py-24">
+        <p class="text-sm text-gray-400 mb-8 tracking-[0.1em] uppercase">暂无商品</p>
         <button
           @click="() => { searchKeyword = ''; selectedType = ''; handleSearch() }"
-          class="px-6 py-3 border border-gray-400 text-gray-700 text-sm uppercase tracking-wider hover:border-gray-600 hover:text-gray-900 transition-all"
+          class="px-0 py-2 text-gray-500 text-xs uppercase tracking-[0.2em] hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 relative group font-light"
         >
-          清除筛选
+          <span class="relative">
+            清除筛选
+            <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
+          </span>
         </button>
       </div>
 
       <!-- 分页 -->
-      <div v-if="!loading && totalPages > 1" class="mt-16 flex flex-col items-center gap-6">
-        <div class="flex items-center justify-center gap-2 flex-wrap">
+      <div v-if="!loading && totalPages > 1" class="mt-20 flex flex-col items-center gap-8">
+        <div class="flex items-center justify-center gap-3 flex-wrap">
           <button
             @click="handlePageChange(currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border border-gray-300 text-sm uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-600 transition-colors bg-white"
+            class="px-6 py-2 text-xs uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed text-gray-500 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 font-light disabled:hover:scale-100"
           >
             上一页
           </button>
@@ -411,11 +420,11 @@ onMounted(() => {
           <button
             v-if="pageNumbers[0] > 1"
             @click="handlePageChange(1)"
-            class="px-4 py-2 border border-gray-300 text-sm uppercase tracking-wider hover:border-gray-600 transition-colors bg-white"
+            class="px-4 py-2 text-xs uppercase tracking-[0.15em] text-gray-500 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
           >
             1
           </button>
-          <span v-if="pageNumbers[0] > 2" class="px-2 text-gray-400">...</span>
+          <span v-if="pageNumbers[0] > 2" class="px-2 text-gray-300">...</span>
           
           <!-- 页码按钮 -->
           <button
@@ -423,21 +432,21 @@ onMounted(() => {
             :key="page"
             @click="handlePageChange(page)"
             :class="[
-              'px-4 py-2 border text-sm uppercase tracking-wider transition-colors bg-white',
+              'px-4 py-2 text-xs uppercase tracking-[0.15em] transition-all duration-300 transform font-light',
               currentPage === page
-                ? 'border-gray-900 bg-gray-900 text-white'
-                : 'border-gray-300 hover:border-gray-600'
+                ? 'bg-black text-white scale-105'
+                : 'text-gray-500 hover:text-black hover:scale-105 active:scale-100'
             ]"
           >
             {{ page }}
           </button>
           
           <!-- 最后一页 -->
-          <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="px-2 text-gray-400">...</span>
+          <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="px-2 text-gray-300">...</span>
           <button
             v-if="pageNumbers[pageNumbers.length - 1] < totalPages"
             @click="handlePageChange(totalPages)"
-            class="px-4 py-2 border border-gray-300 text-sm uppercase tracking-wider hover:border-gray-600 transition-colors bg-white"
+            class="px-4 py-2 text-xs uppercase tracking-[0.15em] text-gray-500 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
           >
             {{ totalPages }}
           </button>
@@ -445,13 +454,13 @@ onMounted(() => {
           <button
             @click="handlePageChange(currentPage + 1)"
             :disabled="currentPage === totalPages"
-            class="px-4 py-2 border border-gray-300 text-sm uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-600 transition-colors bg-white"
+            class="px-6 py-2 text-xs uppercase tracking-[0.15em] disabled:opacity-30 disabled:cursor-not-allowed text-gray-500 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 font-light disabled:hover:scale-100"
           >
             下一页
           </button>
         </div>
         
-        <span class="text-sm text-gray-500 font-light tracking-wide">
+        <span class="text-xs text-gray-400 font-light tracking-[0.1em] uppercase">
           第 {{ currentPage }} / {{ totalPages }} 页，共 {{ total }} 件商品
         </span>
       </div>

@@ -18,7 +18,7 @@
       <div class="mb-6">
         <button
           @click="router.back()"
-          class="inline-flex items-center space-x-2 text-sm text-black hover:text-gray-600 transition-colors uppercase tracking-wider"
+          class="inline-flex items-center space-x-2 text-sm text-black hover:text-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-100 uppercase tracking-wider px-3 py-2 rounded-md hover:bg-gray-50"
         >
           <Icon name="heroicons:arrow-left" class="w-4 h-4" />
           <span>返回</span>
@@ -31,7 +31,7 @@
         <button
           v-if="hasPreviousProduct"
           @click="navigateToPrevious"
-          class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-colors shadow-sm"
+          class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-all duration-300 transform hover:scale-110 active:scale-105"
           aria-label="上一个商品"
         >
           <Icon name="heroicons:chevron-left" class="w-6 h-6 text-black" />
@@ -41,7 +41,7 @@
         <button
           v-if="hasNextProduct"
           @click="navigateToNext"
-          class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-colors shadow-sm"
+          class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-all duration-300 transform hover:scale-110 active:scale-105"
           aria-label="下一个商品"
         >
           <Icon name="heroicons:chevron-right" class="w-6 h-6 text-black" />
@@ -53,7 +53,7 @@
           <button
             v-if="productImages.length > 1"
             @click="previousImage"
-            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-105 z-10 backdrop-blur-sm"
             aria-label="上一张图片"
           >
             <Icon
@@ -103,7 +103,7 @@
           <button
             v-if="productImages.length > 1"
             @click="nextImage"
-            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-colors shadow-sm z-10"
+            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-105 z-10 backdrop-blur-sm"
             aria-label="下一张图片"
           >
             <Icon
@@ -117,9 +117,9 @@
         <div class="mb-8 text-center">
           <button
             @click="exploreRelated"
-            class="inline-flex items-center space-x-2 px-6 py-3 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+            class="inline-flex items-center space-x-2 px-6 py-3 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100"
           >
-            <Icon name="heroicons:sparkles" class="w-4 h-4" />
+            <Icon name="heroicons:sparkles" class="w-4 h-4 transition-transform duration-300 hover:rotate-12" />
             <span>探索相关内容</span>
           </button>
         </div>
@@ -199,14 +199,14 @@
           <div class="flex items-center space-x-6 pt-6 border-t border-gray-200">
             <button
               @click="copyLink"
-              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-colors"
+              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 px-3 py-2 rounded-md hover:bg-gray-50"
             >
               <Icon name="heroicons:link" class="w-5 h-5" />
               <span class="uppercase tracking-wider">复制链接</span>
             </button>
             <button
               @click="shareProduct"
-              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-colors"
+              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 px-3 py-2 rounded-md hover:bg-gray-50"
             >
               <Icon name="heroicons:share" class="w-5 h-5" />
               <span class="uppercase tracking-wider">分享</span>
@@ -227,7 +227,7 @@
         <p class="text-sm text-gray-500 mb-6">抱歉，您查找的商品不存在或已被删除</p>
         <button
           @click="router.push('/products')"
-          class="px-6 py-2 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+          class="px-6 py-2 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100"
         >
           返回商品列表
         </button>

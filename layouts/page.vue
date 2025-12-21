@@ -2,7 +2,7 @@
  * @Author: chan-max jackieontheway666@gmail.com
  * @Date: 2025-04-03 05:45:40
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-11-10 06:51:14
+ * @LastEditTime: 2025-12-21 19:27:51
  * @FilePath: /yishe-nuxt/layouts/page.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -68,6 +68,7 @@
               <NuxtLink to="/blog" class="nav-link">
                 <span>博客</span>
               </NuxtLink>
+              <NuxtLink to="/contact" class="contact-link">联系我们</NuxtLink>
             </div>
             <div class="action-buttons">
               <!-- 用户登录状态 -->
@@ -78,6 +79,11 @@
                     @click.stop="isUserMenuOpen = !isUserMenuOpen"
                     ref="userButtonRef"
                   >
+                    <div class="user-avatar">
+                      <v-avatar size="28" color="grey-lighten-2">
+                        <v-icon size="20" color="grey-darken-1">mdi-account</v-icon>
+                      </v-avatar>
+                    </div>
                     <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
                     <v-icon size="16" class="user-menu-icon">mdi-chevron-down</v-icon>
                   </button>
@@ -102,15 +108,13 @@
                     </div>
                   </Transition>
                 </div>
-              <NuxtLink to="/contact" class="contact-link">联系我们</NuxtLink>
+     
               </template>
               <!-- 未登录状态 -->
               <template v-else>
-                <NuxtLink to="/contact" class="contact-link">联系我们</NuxtLink>
-                <!-- 登录和注册按钮挨着，放在最右侧 -->
+                <!-- 登录按钮 -->
                 <div class="auth-buttons-group">
                   <NuxtLink to="/login" class="login-button">登录</NuxtLink>
-                  <NuxtLink to="/register" class="register-button">注册</NuxtLink>
                 </div>
               </template>
             </div>
@@ -179,7 +183,9 @@
             <!-- Mobile User Section -->
             <div v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser" class="mobile-user-section">
               <div class="mobile-user-info">
-                <v-icon size="20">mdi-account-circle</v-icon>
+                <v-avatar size="32" color="grey-lighten-2">
+                  <v-icon size="20" color="grey-darken-1">mdi-account</v-icon>
+                </v-avatar>
                 <span class="mobile-user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
               </div>
               <NuxtLink 
@@ -196,7 +202,7 @@
                 退出登录
               </button>
             </div>
-            <!-- Mobile Login/Register Buttons -->
+            <!-- Mobile Login Button -->
             <div v-else class="mobile-login-section">
               <NuxtLink 
                 to="/login" 
@@ -204,13 +210,6 @@
                 @click="closeMobileMenu"
               >
                 登录
-              </NuxtLink>
-              <NuxtLink 
-                to="/register" 
-                class="mobile-nav-link" 
-                @click="closeMobileMenu"
-              >
-                注册
               </NuxtLink>
             </div>
 
@@ -478,10 +477,16 @@ onMounted(() => {
 .logo-link {
   text-decoration: none;
   color: #0d0c22;
-  transition: opacity 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
   
   &:hover {
     opacity: 0.8;
+    transform: scale(1.02);
+  }
+  
+  &:active {
+    transform: scale(0.98);
   }
 }
 
@@ -564,16 +569,28 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin: 0.25rem;
   flex-shrink: 0;
   
   &:hover {
-    background-color: #e0e0e0;
+    background-color: #d0d0d0;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: scale(1.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
   
   .search-icon-btn {
     color: #666666;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .search-icon-btn {
+    transform: scale(1.1);
   }
 }
 
@@ -612,15 +629,35 @@ onMounted(() => {
   font-size: 0.75rem;
   font-weight: 400;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: opacity 0.2s ease;
-  padding: 0.5rem 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  position: relative;
   
   &:hover {
-    opacity: 0.7;
+    color: #000000;
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+  
+  &.router-link-active {
+    color: #000000;
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.06);
   }
   
   .nav-chevron {
     color: #9e9ea7;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .nav-chevron {
+    transform: translateX(2px);
   }
 }
 
@@ -652,7 +689,7 @@ onMounted(() => {
   border-radius: 8px;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.8rem;
   font-weight: 500;
   color: #0d0c22;
@@ -661,6 +698,24 @@ onMounted(() => {
   &:hover {
     background-color: #f8f8f8;
     border-color: #d0d0d0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .user-avatar {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .user-avatar {
+    transform: scale(1.05);
   }
   
   .user-name {
@@ -672,7 +727,7 @@ onMounted(() => {
   
   .user-menu-icon {
     color: #9e9ea7;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   &:hover .user-menu-icon {
@@ -704,14 +759,22 @@ onMounted(() => {
   font-size: 0.85rem;
   font-weight: 400;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   background: transparent;
   cursor: pointer;
   text-align: left;
+  position: relative;
   
   &:hover {
     background-color: #f8f8f8;
+    transform: translateX(4px);
+    padding-left: 1.25rem;
+  }
+  
+  &:active {
+    transform: translateX(2px);
+    background-color: #f0f0f0;
   }
   
   &.logout-item {
@@ -720,11 +783,21 @@ onMounted(() => {
     
     &:hover {
       background-color: #fef2f2;
+      color: #b91c1c;
+    }
+    
+    &:active {
+      background-color: #fee2e2;
     }
   }
   
   v-icon {
     color: inherit;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover v-icon {
+    transform: scale(1.1);
   }
 }
 
@@ -741,56 +814,36 @@ onMounted(() => {
 
 .login-button {
   text-decoration: none;
-  color: var(--theme-primary, #6900ff);
-  background-color: transparent;
-  border: 1.5px solid var(--theme-primary, #6900ff);
+  color: #ffffff;
+  background-color: #000000;
+  border: 1.5px solid #000000;
   font-size: 0.8rem;
   font-weight: 600;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
-    background-color: rgba(105, 0, 255, 0.05);
-    border-color: var(--theme-primary-hover, #5a00e6);
-    color: var(--theme-primary-hover, #5a00e6);
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
   
   &:active {
-    background-color: rgba(105, 0, 255, 0.1);
-    border-color: var(--theme-primary-active, #4b00cc);
-    color: var(--theme-primary-active, #4b00cc);
+    background-color: #0d0d0d;
+    border-color: #0d0d0d;
+    color: #ffffff;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 }
 
-.register-button {
-  text-decoration: none;
-  color: #ffffff;
-  background-color: var(--theme-primary, #6900ff);
-  border: 1.5px solid var(--theme-primary, #6900ff);
-  font-size: 0.8rem;
-  font-weight: 600;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(105, 0, 255, 0.2);
-  
-  &:hover {
-    background-color: var(--theme-primary-hover, #5a00e6);
-    border-color: var(--theme-primary-hover, #5a00e6);
-    box-shadow: 0 4px 6px rgba(105, 0, 255, 0.3);
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    background-color: var(--theme-primary-active, #4b00cc);
-    border-color: var(--theme-primary-active, #4b00cc);
-    transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(105, 0, 255, 0.2);
-  }
-}
 
 // 用户菜单动画
 .user-menu-enter-active,
@@ -853,12 +906,21 @@ onMounted(() => {
   text-decoration: none;
   color: #0d0c22;
   font-size: 0.8rem;
-  font-weight: 600;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: opacity 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
   
   &:hover {
-    opacity: 0.7;
+    color: #000000;
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: rgba(0, 0, 0, 0.06);
   }
   
   @media (max-width: 991px) {
@@ -875,10 +937,20 @@ onMounted(() => {
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  position: relative;
   
   &:hover {
     background-color: #1a1926;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 12, 34, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(13, 12, 34, 0.2);
+    background-color: #0a0918;
   }
   
   @media (max-width: 991px) {
@@ -901,13 +973,30 @@ onMounted(() => {
   cursor: pointer;
   padding: 0.5rem;
   color: #0d0c22;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   @media (max-width: 991px) {
     display: flex;
   }
   
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+  
   .menu-icon {
     color: #0d0c22;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .menu-icon {
+    transform: rotate(90deg);
   }
 }
 
@@ -996,11 +1085,22 @@ onMounted(() => {
   border: none;
   color: #333333;
   cursor: pointer;
-  padding: 0.25rem;
-  transition: opacity 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &:hover {
-    opacity: 0.6;
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: rotate(90deg) scale(1.1);
+    color: #000000;
+  }
+  
+  &:active {
+    transform: rotate(90deg) scale(1.05);
+    background-color: rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -1051,17 +1151,29 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin: 0.25rem;
   flex-shrink: 0;
   z-index: 1;
   
   &:hover {
-    background-color: #e0e0e0;
+    background-color: #d0d0d0;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: scale(1.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
   
   .search-icon-btn {
     color: #666666;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .search-icon-btn {
+    transform: scale(1.1);
   }
 }
 
@@ -1075,7 +1187,7 @@ onMounted(() => {
 .mobile-nav-link {
   display: flex;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1rem;
   color: #0d0c22;
   text-decoration: none;
   gap: 0.5rem;
@@ -1083,22 +1195,32 @@ onMounted(() => {
   font-weight: 400;
   font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: 0.1px;
-  transition: color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-bottom: 1px solid #f5f5f5;
+  border-radius: 8px;
+  margin: 0.25rem 0;
   
   &:last-child {
     border-bottom: none;
   }
   
   &:hover {
-    color: #0d0c22;
-    opacity: 0.7;
+    color: #000000;
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateX(4px);
+    padding-left: 1.25rem;
+  }
+  
+  &:active {
+    transform: translateX(2px);
+    background-color: rgba(0, 0, 0, 0.06);
   }
   
   &.router-link-active {
-    color: #0d0c22;
+    color: #000000;
     opacity: 1;
     font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.06);
   }
 }
 
@@ -1121,11 +1243,19 @@ onMounted(() => {
   text-align: center;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
   
   &:hover {
     background-color: #f8f8f8;
     border-color: #d0d0d0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -1139,10 +1269,19 @@ onMounted(() => {
   padding: 0.75rem 1rem;
   text-align: center;
   border-radius: 8px;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
   
   &:hover {
     background-color: #1a1926;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 12, 34, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(13, 12, 34, 0.2);
+    background-color: #0a0918;
   }
 }
 
