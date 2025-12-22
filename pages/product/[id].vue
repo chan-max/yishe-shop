@@ -113,17 +113,6 @@
           </button>
         </div>
 
-        <!-- 探索相关内容按钮 -->
-        <div class="mb-8 text-center">
-          <button
-            @click="exploreRelated"
-            class="inline-flex items-center space-x-2 px-6 py-3 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100"
-          >
-            <Icon name="heroicons:sparkles" class="w-4 h-4 transition-transform duration-300 hover:rotate-12" />
-            <span>探索相关内容</span>
-          </button>
-        </div>
-
         <!-- 商品信息区域 -->
         <div class="max-w-4xl mx-auto space-y-6">
           <!-- 商品名称和收藏按钮 -->
@@ -511,15 +500,6 @@ const nextImage = () => {
   }
 };
 
-// 探索相关内容
-const exploreRelated = () => {
-  if (product.value?.type) {
-    router.push(`/products?type=${encodeURIComponent(product.value.type)}`);
-  } else {
-    router.push("/products");
-  }
-};
-
 // 复制链接
 const copyLink = async () => {
   try {
@@ -584,14 +564,17 @@ watch(
 </script>
 
 <style scoped>
-/* 默认移动端使用 1:1，提升可视面积；md 及以上使用 4:3 */
+/* 商品主图尺寸优化：移动端和桌面端都尽量更大一些 */
 .product-image-container {
-  aspect-ratio: 1 / 1;
+  /* 提高纵向占比，让图片更高一些 */
+  aspect-ratio: 4 / 5;
 }
 
 @media (min-width: 768px) {
   .product-image-container {
-    aspect-ratio: 4 / 3;
+    /* 桌面端略宽一点，但仍保持较大的高度 */
+    aspect-ratio: 3 / 2;
+    max-width: 960px;
   }
 }
 
@@ -599,6 +582,12 @@ watch(
 .product-image-container,
 .product-image-container img {
   touch-action: manipulation;
+}
+
+/* 限制主图最大高度，尽量占据视口但不超出 */
+.product-image-container img {
+  max-height: 80vh;
+  object-fit: contain;
 }
 </style>
 

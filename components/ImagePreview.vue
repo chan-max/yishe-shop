@@ -506,12 +506,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 1rem;
+  padding: 2rem 0.5rem;
 }
 
 .image-preview-wrapper {
   position: relative;
-  max-width: 100%;
+  max-width: 100vw;
   max-height: 100%;
   cursor: grab;
   user-select: none;
@@ -530,8 +530,8 @@ onUnmounted(() => {
 }
 
 .image-preview-img {
-  max-width: 100%;
-  max-height: 90vh;
+  max-width: 96vw;
+  max-height: 96vh;
   object-fit: contain;
   display: block;
   pointer-events: none;
@@ -661,7 +661,7 @@ onUnmounted(() => {
   }
 
   .image-preview-container {
-    padding: 3rem 0.5rem;
+    padding: 1.5rem 0.25rem;
   }
 }
 </style>

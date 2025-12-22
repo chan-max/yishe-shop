@@ -47,7 +47,6 @@ const socialLinks = [
         <!-- Brand Section -->
         <div class="footer-brand">
           <div class="footer-logo">
-            <img src="/logo.svg" alt="衣设服装设计" class="footer-logo-image" />
             <span class="footer-logo-text">衣设服装设计</span>
           </div>
           <p class="footer-description">
@@ -161,7 +160,7 @@ const socialLinks = [
 }
 
 .footer-main {
-  padding: 4rem 0 2rem;
+  padding: 3.5rem 0 2rem;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 4rem;
@@ -173,8 +172,8 @@ const socialLinks = [
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 0 1rem;
+    gap: 2.5rem;
+    padding: 2.5rem 0 1.5rem;
   }
 }
 
@@ -191,13 +190,7 @@ const socialLinks = [
   align-items: flex-end;
   gap: 0.75rem;
   margin-bottom: 1rem;
-}
-
-.footer-logo-image {
-  width: 40px;
-  height: 40px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  padding-bottom: 0.25rem;
 }
 
 .footer-logo-text {
@@ -246,18 +239,18 @@ const socialLinks = [
   gap: 2rem;
   
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
   }
   
   @media (max-width: 768px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem 1.5rem;
   }
   
   @media (max-width: 480px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 
