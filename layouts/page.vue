@@ -488,7 +488,7 @@ onMounted(() => {
   flex-shrink: 1;
   min-width: 0;
   gap: 1.5rem;
-  overflow-x: hidden;
+  overflow: hidden;
   
   @media (min-width: 1400px) {
     gap: 2rem;
@@ -657,7 +657,7 @@ onMounted(() => {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   
   @media (max-width: 991px) {
     display: none;
