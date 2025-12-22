@@ -328,7 +328,7 @@ onMounted(() => {
               
               <!-- 商品名称 -->
               <h3 
-                class="text-base sm:text-lg md:text-xl font-light tracking-wide uppercase text-gray-900 mb-2 sm:mb-3 leading-tight transition-colors duration-300 group-hover:text-black cursor-pointer"
+                class="text-sm sm:text-base md:text-lg font-semibold tracking-wide text-gray-900 mb-2 sm:mb-3 leading-snug text-left transition-colors duration-300 group-hover:text-black cursor-pointer"
                 :title="favorite.product?.name"
                 @click="goToProductDetail(favorite.productId)"
               >
@@ -338,7 +338,7 @@ onMounted(() => {
               <!-- 商品描述 -->
               <p 
                 v-if="favorite.product?.description" 
-                class="text-sm sm:text-base font-light text-gray-500 leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3 transition-colors duration-300 group-hover:text-gray-600 cursor-pointer"
+                class="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3 text-left transition-colors duration-300 group-hover:text-gray-700 cursor-pointer"
                 :title="favorite.product.description"
                 @click="goToProductDetail(favorite.productId)"
               >

@@ -262,11 +262,11 @@ const isVisible = (id: string) => {
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
       </div>
         
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-16">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 mb-16">
         <div 
           v-for="(product, index) in featuredProducts" 
           :key="product.id"
-          class="group overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-500 cursor-pointer bg-white"
+          class="group overflow-hidden transition-all duration-500 cursor-pointer bg-white"
           :data-animate-id="`product-${product.id}`"
           :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
           :style="{ '--delay': `${index * 0.1}s` }"
@@ -311,9 +311,9 @@ const isVisible = (id: string) => {
               </div>
             </div>
           </div>
-          <div class="pt-4 sm:pt-5 px-1">
-            <h3 class="text-sm sm:text-base md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 sm:mb-3 truncate text-center leading-tight transition-colors duration-300 group-hover:text-black" :title="product.title">{{ product.title }}</h3>
-            <p v-if="product.description" class="text-xs sm:text-sm font-light text-gray-500 leading-relaxed line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-gray-600" :title="product.description">{{ product.description }}</p>
+          <div class="pt-4 sm:pt-5 px-4 sm:px-5 pb-3 sm:pb-4">
+            <h3 class="text-xs sm:text-sm md:text-base font-semibold tracking-wide text-gray-900 mb-2 sm:mb-3 line-clamp-2 text-left leading-snug transition-colors duration-300 group-hover:text-black" :title="product.title">{{ product.title }}</h3>
+            <p v-if="product.description" class="text-[10px] sm:text-xs font-medium text-gray-600 leading-relaxed line-clamp-2 mb-3 text-left transition-colors duration-300 group-hover:text-gray-700" :title="product.description">{{ product.description }}</p>
           </div>
         </div>
       </div>

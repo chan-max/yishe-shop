@@ -306,18 +306,18 @@ onMounted(() => {
     <!-- 商品列表 -->
     <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20">
       <!-- 加载状态 -->
-      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
         <div v-for="i in 8" :key="i" class="bg-gradient-to-br from-gray-50 to-gray-100 animate-pulse" style="aspect-ratio: 3 / 4;">
           <div class="w-full h-full bg-gray-200"></div>
         </div>
       </div>
 
       <!-- 商品网格 -->
-      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
         <div
           v-for="product in productList"
           :key="product.id"
-          class="group overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-500 cursor-pointer bg-white"
+          class="group overflow-hidden transition-all duration-500 cursor-pointer bg-white"
           @mouseenter="hoveredProductId = product.id"
           @mouseleave="hoveredProductId = null"
           @click="goToProductDetail(product.id)"
@@ -368,17 +368,17 @@ onMounted(() => {
           </div>
           
           <!-- 商品信息 -->
-          <div class="pt-4 sm:pt-5 px-1">
+          <div class="pt-4 sm:pt-5 px-4 sm:px-5 pb-3 sm:pb-4">
             <!-- 类型标签：二维产品图不显示 -->
             <div v-if="product.type && product.type !== '二维产品图'" class="mb-2">
               <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-[0.15em] font-light">
                 {{ productTypes.find(t => t.value === product.type)?.label || product.type }}
               </span>
             </div>
-            <h3 class="text-sm sm:text-base md:text-lg font-light tracking-wide uppercase text-gray-900 mb-2 sm:mb-3 truncate leading-tight transition-colors duration-300 group-hover:text-black" :title="product.name">
+            <h3 class="text-xs sm:text-sm md:text-base font-semibold tracking-wide text-gray-900 mb-2 sm:mb-3 line-clamp-2 text-left leading-snug transition-colors duration-300 group-hover:text-black" :title="product.name">
               {{ product.name }}
             </h3>
-            <p v-if="product.description" class="text-xs sm:text-sm font-light text-gray-500 leading-relaxed line-clamp-2 mb-3 transition-colors duration-300 group-hover:text-gray-600" :title="product.description">
+            <p v-if="product.description" class="text-[10px] sm:text-xs font-medium text-gray-600 leading-relaxed line-clamp-2 mb-3 text-left transition-colors duration-300 group-hover:text-gray-700" :title="product.description">
               {{ product.description }}
             </p>
             <!-- 产品代码 -->
