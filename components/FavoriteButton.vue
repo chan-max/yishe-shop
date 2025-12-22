@@ -43,7 +43,7 @@
     
     <!-- 文字提示 -->
     <span class="favorite-text" :class="{ 'is-favorite': isFavorite }">
-      {{ isFavorite ? '取消收藏' : '收藏' }}
+      {{ isFavorite ? '取消收藏' : '点击收藏' }}
     </span>
     
     <!-- 收藏数量显示（可选） -->
