@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { api } from '../utils/api'
-import { getImageUrl } from '../utils/image'
+import { getPreviewImageUrl } from '../utils/image'
 
 const { awesome } = useAppConfig()
 definePageMeta({ layout: 'page' })
@@ -137,7 +137,7 @@ const fetchFeaturedProducts = async () => {
           description: product.description || '',
           category: product.type || 'pattern',
           image: 'grad1', // 保留原有的占位符逻辑
-          imageUrl: firstImage, // 保存原始图片URL，在模板中调用 getImageUrl 处理
+          imageUrl: firstImage, // 保存原始图片URL，在模板中调用 getPreviewImageUrl 处理
         }
       })
     }
@@ -278,7 +278,7 @@ const isVisible = (id: string) => {
             <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
             <img 
               v-if="product.imageUrl" 
-              :src="getImageUrl(product.imageUrl, { width: 500, quality: 80, format: 'webp' }) || undefined" 
+              :src="getPreviewImageUrl(product.imageUrl, { width: 500, quality: 80, format: 'webp' }) || undefined" 
               :alt="product.title"
               class="w-full h-full object-cover transition-all duration-700 ease-out"
               :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"

@@ -25,10 +25,10 @@ export interface ImageUrlOptions {
  * @returns 处理后的图片URL
  * 
  * @example
- * getImageUrl('https://example.com/image.jpg', { width: 800, quality: 80, format: 'webp' })
+ * getPreviewImageUrl('https://example.com/image.jpg', { width: 800, quality: 80, format: 'webp' })
  * // 返回: 'https://example.com/image.jpg?imageMogr2/thumbnail/x800/quality/80/format/webp'
  */
-export function getImageUrl(url: string | null | undefined, options: ImageUrlOptions = {}): string | null {
+export function getPreviewImageUrl(url: string | null | undefined, options: ImageUrlOptions = {}): string | null {
   // 如果URL为空，直接返回null
   if (!url || typeof url !== 'string' || url.trim() === '') {
     return null

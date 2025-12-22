@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { api } from '../utils/api'
-import { getImageUrl } from '../utils/image'
+import { getPreviewImageUrl } from '../utils/image'
 
 definePageMeta({ layout: 'page' })
 
@@ -327,7 +327,7 @@ onMounted(() => {
           <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
             <template v-if="getProductImage(product)">
               <img
-                :src="getImageUrl(getProductImage(product), { width: 500, quality: 80, format: 'webp' }) || undefined"
+                :src="getPreviewImageUrl(getProductImage(product), { width: 500, quality: 80, format: 'webp' }) || undefined"
                 :alt="product.name || '商品图片'"
                 class="w-full h-full object-cover transition-all duration-700 ease-out"
                 :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
