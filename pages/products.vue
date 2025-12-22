@@ -29,11 +29,12 @@ useHead({
 const route = useRoute()
 const router = useRouter()
 
-// 搜索和筛选状态
-const searchKeyword = ref<string>('')
-const selectedType = ref<string>('')
+// 搜索和筛选状态（简化版）
+const searchKeyword = ref<string>('')          // 关键字（后端 searchText）
+const startDate = ref<string>('')              // 发布时间起
+const endDate = ref<string>('')                // 发布时间止
 const currentPage = ref<number>(1)
-const pageSize = ref<number>(20)
+const pageSize = ref<number>(24)
 const loading = ref<boolean>(false)
 
 // 商品列表数据
@@ -58,14 +59,47 @@ const productTypes = [
   { value: 'web', label: '网页设计' }
 ]
 
+// 推荐搜索词
+const recommendedKeywords = [
+  'dashboard',
+  'landing page',
+  'e-commerce',
+  'logo',
+  'card',
+  'icons'
+]
+
+// 筛选面板开关
+const showFilters = ref<boolean>(false)
+
+// 价格区间选项（前端过滤）
+const priceRanges = [
+  { value: 'all', label: '不限' },
+  { value: '0-199', label: '¥0 - ¥199' },
+  { value: '200-499', label: '¥200 - ¥499' },
+  { value: '500-999', label: '¥500 - ¥999' },
+  { value: '1000+', label: '¥1000 以上' }
+]
+
+// 排序选项（前端排序）
+const sortOptions = [
+  { value: 'newest', label: '最新优先' },
+  { value: 'priceAsc', label: '价格从低到高' },
+  { value: 'priceDesc', label: '价格从高到低' },
+  { value: 'random', label: '随机看看' }
+]
+
 // 从URL参数初始化
 const initFromQuery = () => {
   const query = route.query
   if (query.search) {
     searchKeyword.value = String(query.search)
   }
-  if (query.type) {
-    selectedType.value = String(query.type)
+  if (query.start) {
+    startDate.value = String(query.start)
+  }
+  if (query.end) {
+    endDate.value = String(query.end)
   }
   if (query.page) {
     currentPage.value = Number(query.page) || 1
@@ -81,13 +115,15 @@ const fetchProducts = async () => {
       pageSize: pageSize.value,
       isPublish: true,
       includeRelations: false,
-      type: selectedType.value || undefined,
-      search: searchKeyword.value || undefined,
+      searchText: searchKeyword.value || undefined,
+      startTime: startDate.value || undefined,
+      endTime: endDate.value || undefined,
     })
     
     if (response.code === 0 || response.status === true || response.code === 200) {
-      productList.value = response.data?.list || []
-      total.value = response.data?.total || 0
+      const data = response.data as { list?: any[]; total?: number }
+      productList.value = data?.list || []
+      total.value = data?.total || 0
       
       // 调试：打印第一个商品的数据
       if (productList.value.length > 0) {
@@ -114,8 +150,11 @@ const updateQuery = () => {
   if (searchKeyword.value) {
     query.search = searchKeyword.value
   }
-  if (selectedType.value) {
-    query.type = selectedType.value
+  if (startDate.value) {
+    query.start = startDate.value
+  }
+  if (endDate.value) {
+    query.end = endDate.value
   }
   if (currentPage.value > 1) {
     query.page = currentPage.value
@@ -134,8 +173,11 @@ const handleSearch = () => {
   fetchProducts()
 }
 
-// 类型筛选处理
-const handleTypeChange = () => {
+// 重置筛选
+const resetFilters = () => {
+  searchKeyword.value = ''
+  startDate.value = ''
+  endDate.value = ''
   currentPage.value = 1
   updateQuery()
   fetchProducts()
@@ -148,6 +190,17 @@ const handlePageChange = (page: number) => {
   fetchProducts()
   // 滚动到顶部
   window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// 点击推荐关键词
+const handleKeywordClick = (keyword: string) => {
+  searchKeyword.value = keyword
+  handleSearch()
+}
+
+// 切换筛选面板
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value
 }
 
 // 跳转到商品详情
@@ -212,6 +265,7 @@ const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize.value)
 })
 
+
 // 计算显示的页码数组
 const pageNumbers = computed(() => {
   const pages: number[] = []
@@ -259,46 +313,129 @@ onMounted(() => {
   <div class="min-h-screen bg-white">
     <!-- 页面头部 -->
     <div class="bg-white">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] mb-3 uppercase text-gray-900">商品列表</h1>
-        <p class="text-sm md:text-base font-light text-gray-400 tracking-[0.1em] uppercase">发现所有精选设计作品</p>
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 pt-12 pb-4 sm:py-14">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] mb-2 uppercase text-gray-900">商品列表</h1>
+        <p class="text-[13px] md:text-sm font-light text-gray-500 tracking-[0.08em] uppercase">发现所有精选设计作品</p>
       </div>
     </div>
 
-    <!-- 搜索和筛选区域 -->
-    <div class="bg-white sticky top-0 z-10 backdrop-blur-sm bg-white/95 border-b border-gray-100">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-8">
-        <div class="flex flex-col md:flex-row gap-6">
-          <!-- 搜索框 -->
-          <div class="flex-1">
-            <div class="relative">
-              <input
-                v-model="searchKeyword"
-                type="text"
-                placeholder="搜索商品名称、描述、关键词..."
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-sm tracking-wide bg-transparent transition-colors duration-300 placeholder:text-gray-400"
-                @keyup.enter="handleSearch"
-              />
+    <!-- 搜索和时间范围（简洁版） -->
+    <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-4">
+        <div class="flex flex-col gap-3">
+          <!-- 搜索行：圆角胶囊风格 -->
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-3 bg-transparent">
+              <div class="relative flex-1">
+                <!-- 扁平化搜索图标 -->
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-gray-400">
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" />
+                    <line x1="15" y1="15" x2="20" y2="20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <input
+                  v-model="searchKeyword"
+                  type="text"
+                  placeholder="搜索商品名称、描述、关键词..."
+                  class="w-full h-12 rounded-lg border-2 border-transparent bg-[#f3f3f4] pl-11 pr-28 text-base text-gray-900 placeholder:text-gray-400 transition ease-out duration-200 outline-none focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 hover:border-pink-200 hover:bg-white hover:ring-2 hover:ring-pink-50"
+                  @keyup.enter="handleSearch"
+                />
+                <button
+                  @click="handleSearch"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center gap-2 px-7 md:px-9 h-10 rounded-lg bg-black text-white text-[13px] uppercase tracking-[0.08em] whitespace-nowrap transition-all duration-200 hover:bg-gray-800 hover:shadow-md active:scale-95 active:shadow-sm"
+                >
+                  <span class="leading-none">搜索</span>
+                </button>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  @click="toggleFilters"
+                  :class="[
+                    'flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs uppercase tracking-[0.08em] whitespace-nowrap transition-all duration-200',
+                    showFilters
+                      ? 'border-pink-400 text-pink-500 bg-white shadow-sm'
+                      : 'border-gray-200 text-gray-600 bg-white hover:border-gray-300 hover:text-black'
+                  ]"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M4 7h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M7 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M10 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                  <span class="leading-none">筛选</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 推荐关键词 -->
+            <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+              <span class="font-medium text-gray-700">推荐：</span>
               <button
-                @click="handleSearch"
-                class="absolute right-0 top-1/2 -translate-y-1/2 px-6 py-2 bg-black text-white text-xs uppercase tracking-[0.15em] hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
+                v-for="keyword in recommendedKeywords"
+                :key="keyword"
+                @click="handleKeywordClick(keyword)"
+                class="px-3 py-1 rounded-full border border-gray-200 bg-white text-gray-700 hover:border-pink-400 hover:text-pink-500 transition-colors"
               >
-                搜索
+                {{ keyword }}
+              </button>
+              <button
+                @click="resetFilters"
+                class="ml-auto text-xs uppercase tracking-[0.14em] text-gray-400 hover:text-black transition-colors"
+              >
+                清空
               </button>
             </div>
           </div>
-          
-          <!-- 类型筛选 -->
-          <div class="md:w-56">
-            <select
-              v-model="selectedType"
-              @change="handleTypeChange"
-              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-sm tracking-wide bg-transparent transition-colors duration-300 appearance-none cursor-pointer"
-            >
-              <option v-for="type in productTypes" :key="type.value" :value="type.value">
-                {{ type.label }}
-              </option>
-            </select>
+
+          <!-- 筛选面板：可折叠 -->
+          <div
+            v-if="showFilters"
+            class="mt-1 rounded-xl border border-gray-200 bg-white px-4 sm:px-6 py-4 shadow-[0_1px_6px_rgba(0,0,0,0.04)] flex flex-col gap-4"
+          >
+            <!-- 发布时间范围 -->
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-center text-xs text-gray-700">
+              <span class="uppercase tracking-[0.15em] text-gray-600 whitespace-nowrap">按发布时间</span>
+              <div class="flex items-center gap-2.5 flex-1 flex-wrap">
+                <input
+                  v-model="startDate"
+                  type="date"
+                  class="px-3 py-2 rounded-md border border-gray-200 bg-white text-xs focus:border-pink-400 focus:ring-1 focus:ring-pink-100 transition-colors"
+                  @change="handleSearch"
+                />
+                <span class="text-gray-400">—</span>
+                <input
+                  v-model="endDate"
+                  type="date"
+                  class="px-3 py-2 rounded-md border border-gray-200 bg-white text-xs focus:border-pink-400 focus:ring-1 focus:ring-pink-100 transition-colors"
+                  @change="handleSearch"
+                />
+                <span class="text-[11px] text-gray-500">
+                  默认按最新发布时间排序
+                </span>
+              </div>
+            </div>
+
+            <!-- 重置按钮 -->
+            <div class="flex justify-end">
+              <button
+                @click="resetFilters"
+                class="px-4 py-2 text-xs uppercase tracking-[0.14em] text-gray-500 border border-gray-200 rounded-md hover:border-black hover:text-black transition-colors"
+              >
+                重置筛选
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -396,7 +533,7 @@ onMounted(() => {
       <div v-else class="text-center py-24">
         <p class="text-sm text-gray-400 mb-8 tracking-[0.1em] uppercase">暂无商品</p>
         <button
-          @click="() => { searchKeyword = ''; selectedType = ''; handleSearch() }"
+          @click="resetFilters"
           class="px-0 py-2 text-gray-500 text-xs uppercase tracking-[0.2em] hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 relative group font-light"
         >
           <span class="relative">
@@ -407,7 +544,7 @@ onMounted(() => {
       </div>
 
       <!-- 分页 -->
-      <div v-if="!loading && totalPages > 1" class="mt-20 flex flex-col items-center gap-8">
+      <div v-if="!loading && totalPages > 1 && productList.length > 0" class="mt-20 flex flex-col items-center gap-8">
         <div class="flex items-center justify-center gap-3 flex-wrap">
           <button
             @click="handlePageChange(currentPage - 1)"

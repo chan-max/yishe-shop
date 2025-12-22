@@ -231,6 +231,11 @@ export const api = {
       isPublish?: boolean
       type?: string
       search?: string
+      searchText?: string
+      codeLike?: string
+      random?: boolean
+      startTime?: string
+      endTime?: string
       includeRelations?: boolean
     }) =>
       request<ApiResponse<{ list: ProductResponse[]; total: number; page: number; pageSize: number }>>('/product/page', {
