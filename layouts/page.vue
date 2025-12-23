@@ -485,6 +485,7 @@ onMounted(() => {
 .header-left {
   display: flex;
   align-items: center;
+  flex: 1;
   flex-shrink: 1;
   min-width: 0;
   gap: 1.5rem;
@@ -497,6 +498,7 @@ onMounted(() => {
   @media (max-width: 768px) {
     gap: 0.75rem;
     flex-shrink: 0;
+    flex: 0 0 auto;
   }
   
   @media (max-width: 480px) {
@@ -510,6 +512,7 @@ onMounted(() => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
   flex-shrink: 0;
+  flex: 0 0 auto;
   min-width: 0;
   
   &:hover {
@@ -548,7 +551,10 @@ onMounted(() => {
 .header-center {
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  flex: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
   
   @media (max-width: 991px) {
     display: none;
@@ -558,25 +564,26 @@ onMounted(() => {
 .search-bar-wrapper {
   display: flex;
   align-items: center;
-  width: 500px;
-  max-width: 100%;
+  flex: 1;
+  min-width: 200px;
+  max-width: 600px;
+  width: 100%;
   background-color: #f8f8f8;
   border-radius: 999px;
   overflow: hidden;
   position: relative;
-  flex-shrink: 1;
-  min-width: 0;
   
   @media (min-width: 1400px) {
-    width: 600px;
+    max-width: 600px;
   }
   
   @media (max-width: 1200px) {
-    width: 400px;
+    max-width: 500px;
   }
   
   @media (max-width: 1024px) {
-    width: 350px;
+    max-width: 400px;
+    min-width: 180px;
   }
   
   @media (max-width: 991px) {
