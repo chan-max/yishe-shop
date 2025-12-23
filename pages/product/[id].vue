@@ -148,22 +148,6 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-gray-200"
           >
-            <!-- 价格信息（非二维产品图显示） -->
-            <div v-if="product.type !== '二维产品图' && product.price != null">
-              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">价格</h3>
-              <div class="flex items-baseline space-x-2">
-                <span class="text-xl font-light text-black">
-                  ¥{{ Number(product.price).toFixed(2) }}
-                </span>
-                <span
-                  v-if="product.salePrice && product.salePrice !== product.price"
-                  class="text-sm text-gray-400 line-through"
-                >
-                  ¥{{ Number(product.salePrice).toFixed(2) }}
-                </span>
-              </div>
-            </div>
-
             <!-- 商品代码 -->
             <div v-if="product.code">
               <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">
@@ -174,11 +158,6 @@
               </p>
             </div>
 
-            <!-- 库存信息 -->
-            <div v-if="product.type !== '二维产品图' && product.stock !== undefined">
-              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">库存</h3>
-              <p class="text-sm text-black">{{ product.stock }} 件</p>
-            </div>
 
             <!-- 关键词 -->
             <div v-if="productKeywords.length > 0">

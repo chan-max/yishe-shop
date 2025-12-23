@@ -507,12 +507,7 @@ onMounted(() => {
           
           <!-- 商品信息 -->
           <div class="pt-4 sm:pt-5 px-4 sm:px-5 pb-3 sm:pb-4">
-            <!-- 类型标签：二维产品图不显示 -->
-            <div v-if="product.type && product.type !== '二维产品图'" class="mb-2">
-              <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-[0.15em] font-light">
-                {{ productTypes.find(t => t.value === product.type)?.label || product.type }}
-              </span>
-            </div>
+
             <h3 class="text-xs sm:text-sm md:text-base font-semibold tracking-wide text-gray-900 mb-2 sm:mb-3 line-clamp-2 text-left leading-snug transition-colors duration-300 group-hover:text-black" :title="product.name">
               {{ product.name }}
             </h3>
