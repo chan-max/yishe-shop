@@ -451,16 +451,16 @@ onMounted(() => {
   }
 
   @media (min-width: 1400px) {
-    padding: 0 5rem;
+    padding: 0 3.2rem;
     gap: 1rem;
   }
   
   @media (min-width: 1600px) {
-    padding: 0 6rem;
+    padding: 0 3.6rem;
   }
   
   @media (min-width: 1800px) {
-    padding: 0 8rem;
+    padding: 0 4.8rem;
   }
 
   @media (max-width: 1024px) {
