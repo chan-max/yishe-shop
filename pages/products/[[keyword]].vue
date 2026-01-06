@@ -1,35 +1,36 @@
 <!--
  * @Author: chan-max jackieontheway666@gmail.com
- * @Date: 2025-01-27 11:00:00
+ * @Date: 2025-01-XX XX:XX:XX
  * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
- * @FilePath: /yishe-nuxt/pages/products.vue
- * @Description: 商品列表页面 - 简洁风格
+ * @LastEditTime: 2025-01-XX XX:XX:XX
+ * @FilePath: /yishe-nuxt/pages/products/[[keyword]].vue
+ * @Description: 产品列表页面 - 支持路径参数搜索（可选参数，同时支持 /products 和 /products/:keyword）
 -->
 <script lang="ts" setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { api } from '../utils/api'
-import { getPreviewImageUrl } from '../utils/image'
+import { api } from '../../utils/api'
+import { getPreviewImageUrl } from '../../utils/image'
 
 definePageMeta({ layout: 'page' })
 
-// Page title and meta
-useHead({
-  titleTemplate: '',
-  title: '商品列表 - 衣设服装设计',
-  meta: [
-    {
-      name: 'description',
-      content: '浏览所有商品，发现创意设计作品'
-    }
-  ]
-})
-
-// 查询参数
+// 获取路径参数
 const route = useRoute()
 const router = useRouter()
 
-// 搜索和筛选状态（简化版）
+// 解码搜索关键词（处理 URL 编码）
+const getDecodedKeyword = () => {
+  const keyword = route.params.keyword
+  // 如果 keyword 是数组，取第一个元素
+  const keywordValue = Array.isArray(keyword) ? keyword[0] : keyword
+  if (!keywordValue || typeof keywordValue !== 'string') return ''
+  try {
+    return decodeURIComponent(keywordValue)
+  } catch (e) {
+    return keywordValue
+  }
+}
+
+// 查询参数
 const searchKeyword = ref<string>('')          // 关键字（后端 searchText）
 const startDate = ref<string>('')              // 发布时间起
 const endDate = ref<string>('')                // 发布时间止
@@ -91,10 +92,14 @@ const sortOptions = [
 
 // 从URL参数初始化
 const initFromQuery = () => {
-  const query = route.query
-  if (query.search) {
-    searchKeyword.value = String(query.search)
+  // 从路径参数获取搜索词
+  const decodedKeyword = getDecodedKeyword()
+  if (decodedKeyword) {
+    searchKeyword.value = decodedKeyword
   }
+  
+  // 从查询参数获取其他筛选条件
+  const query = route.query
   if (query.start) {
     startDate.value = String(query.start)
   }
@@ -124,12 +129,6 @@ const fetchProducts = async () => {
       const data = response.data as { list?: any[]; total?: number }
       productList.value = data?.list || []
       total.value = data?.total || 0
-      
-      // 调试：打印第一个商品的数据
-      if (productList.value.length > 0) {
-        console.log('第一个商品数据:', productList.value[0])
-        console.log('第一个商品的图片:', productList.value[0].images)
-      }
     } else {
       console.error('获取商品列表失败:', response.message)
       productList.value = []
@@ -144,12 +143,9 @@ const fetchProducts = async () => {
   }
 }
 
-// 更新URL参数
+// 更新URL参数（保持路径格式）
 const updateQuery = () => {
   const query: any = {}
-  if (searchKeyword.value) {
-    query.search = searchKeyword.value
-  }
   if (startDate.value) {
     query.start = startDate.value
   }
@@ -160,10 +156,19 @@ const updateQuery = () => {
     query.page = currentPage.value
   }
   
-  router.push({
-    path: '/products',
-    query
-  })
+  // 如果有搜索词，使用路径参数格式；否则使用查询参数格式
+  if (searchKeyword.value && searchKeyword.value.trim()) {
+    const encodedKeyword = encodeURIComponent(searchKeyword.value.trim())
+    router.push({
+      path: `/products/${encodedKeyword}`,
+      query
+    })
+  } else {
+    router.push({
+      path: '/products',
+      query
+    })
+  }
 }
 
 // 搜索处理
@@ -179,8 +184,7 @@ const resetFilters = () => {
   startDate.value = ''
   endDate.value = ''
   currentPage.value = 1
-  updateQuery()
-  fetchProducts()
+  router.push('/products')
 }
 
 // 分页处理
@@ -265,7 +269,6 @@ const totalPages = computed(() => {
   return Math.ceil(total.value / pageSize.value)
 })
 
-
 // 计算显示的页码数组
 const pageNumbers = computed(() => {
   const pages: number[] = []
@@ -296,15 +299,74 @@ const pageNumbers = computed(() => {
   return pages
 })
 
+// Page title and meta - 使用 computed 动态更新
+const pageTitle = computed(() => {
+  const keyword = searchKeyword.value || getDecodedKeyword()
+  return keyword ? `${keyword} - 商品列表 - 衣设服装设计` : '商品列表 - 衣设服装设计'
+})
+
+const pageDescription = computed(() => {
+  const keyword = searchKeyword.value || getDecodedKeyword()
+  return keyword ? `搜索"${keyword}"相关的商品，发现创意设计作品` : '浏览所有商品，发现创意设计作品'
+})
+
+useHead({
+  titleTemplate: '',
+  title: pageTitle,
+  meta: [
+    {
+      name: 'description',
+      content: pageDescription
+    }
+  ]
+})
+
 // 监听路由变化
+watch(() => route.params.keyword, (newKeyword) => {
+  const keywordValue = Array.isArray(newKeyword) ? newKeyword[0] : newKeyword
+  if (keywordValue) {
+    try {
+      const decoded = typeof keywordValue === 'string' ? decodeURIComponent(keywordValue) : String(keywordValue)
+      if (decoded !== searchKeyword.value) {
+        searchKeyword.value = decoded
+        currentPage.value = 1
+        fetchProducts()
+      }
+    } catch (e) {
+      searchKeyword.value = String(keywordValue)
+      currentPage.value = 1
+      fetchProducts()
+    }
+  } else {
+    // 如果没有 keyword，清空搜索词
+    if (searchKeyword.value) {
+      searchKeyword.value = ''
+      currentPage.value = 1
+      fetchProducts()
+    }
+  }
+}, { immediate: true })
+
 watch(() => route.query, () => {
   initFromQuery()
   fetchProducts()
 }, { deep: true })
 
+// 在 setup 阶段就初始化搜索词（确保在模板渲染前就有值）
+const initialKeyword = getDecodedKeyword()
+if (initialKeyword) {
+  searchKeyword.value = initialKeyword
+}
+
 // 初始化
 onMounted(() => {
+  // 确保从路径参数初始化搜索词
+  const keyword = getDecodedKeyword()
+  if (keyword && keyword !== searchKeyword.value) {
+    searchKeyword.value = keyword
+  }
   initFromQuery()
+  // 立即执行搜索
   fetchProducts()
 })
 </script>
@@ -344,7 +406,8 @@ onMounted(() => {
                   v-model="searchKeyword"
                   type="text"
                   placeholder="搜索商品名称、描述、关键词..."
-                  class="w-full h-12 rounded-lg border-2 border-transparent bg-[#f3f3f4] pl-11 pr-28 text-base text-gray-900 placeholder:text-gray-400 transition ease-out duration-200 outline-none focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 hover:border-pink-200 hover:bg-white hover:ring-2 hover:ring-pink-50"
+                  class="w-full rounded-lg border-2 border-transparent bg-[#f3f3f4] pl-11 pr-28 py-3 text-base text-gray-900 placeholder:text-gray-400 transition ease-out duration-200 outline-none focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 hover:border-pink-200 hover:bg-white hover:ring-2 hover:ring-pink-50"
+                  style="line-height: 1.5; min-height: 48px;"
                   @keyup.enter="handleSearch"
                 />
                 <button
