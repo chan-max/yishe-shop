@@ -237,10 +237,16 @@ import ImagePreview from "../components/ImagePreview.vue";
 import FavoriteButton from "~/components/FavoriteButton.vue";
 import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
+import { usePageSEO, useProductStructuredData } from "~/composables/use-seo";
 
 const toast = useToast();
 
 definePageMeta({ layout: "page" });
+
+// 先初始化 route 和 router
+const route = useRoute();
+const router = useRouter();
+const publicUserStore = usePublicUserStore();
 
 // 默认 SEO（在商品加载前）
 usePageSEO({
@@ -249,10 +255,6 @@ usePageSEO({
   url: `https://1s.design/product/${route.params.id}`,
   type: "product",
 });
-
-const route = useRoute();
-const router = useRouter();
-const publicUserStore = usePublicUserStore();
 
 // 状态
 const loading = ref(true);

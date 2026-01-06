@@ -444,14 +444,14 @@ onMounted(() => {
     <!-- 商品列表 -->
     <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20">
       <!-- 加载状态 -->
-      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
-        <div v-for="i in 8" :key="i" class="bg-gradient-to-br from-gray-50 to-gray-100 animate-pulse" style="aspect-ratio: 3 / 4;">
+      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 sm:gap-2 md:gap-2 lg:gap-3">
+        <div v-for="i in 12" :key="i" class="bg-gradient-to-br from-gray-50 to-gray-100 animate-pulse" style="aspect-ratio: 3 / 4;">
           <div class="w-full h-full bg-gray-200"></div>
         </div>
       </div>
 
       <!-- 商品网格 -->
-      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
+      <div v-else-if="productList.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 sm:gap-2 md:gap-2 lg:gap-3">
         <div
           v-for="product in productList"
           :key="product.id"

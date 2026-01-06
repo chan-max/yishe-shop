@@ -25,27 +25,11 @@
           backdropFilter: isScrolled ? 'blur(12px)' : 'none'
         }">
         <div class="header-container">
-          <!-- Left Section: Logo + Search -->
+          <!-- Left Section: Logo -->
           <div class="header-left">
             <NuxtLink to="/" class="logo-link">
               <img src="/onestyle.png" alt="衣设服装设计" class="logo-image" />
             </NuxtLink>
-            <div class="header-center">
-              <div class="search-bar-wrapper">
-              <input 
-                type="text" 
-                placeholder="搜索内容" 
-                class="search-input"
-                @focus="handleSearchFocus"
-                @blur="handleSearchBlur"
-                @keyup.enter="handleSearch"
-                v-model="searchKeyword"
-              />
-              <button class="search-button" @click="handleSearch">
-                <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
-              </button>
-            </div>
-            </div>
           </div>
           
           <!-- Right Section: Navigation and Actions -->
@@ -80,8 +64,11 @@
                     ref="userButtonRef"
                   >
                     <div class="user-avatar">
-                      <v-avatar size="28" color="grey-lighten-2">
-                        <v-icon size="20" color="grey-darken-1">mdi-account</v-icon>
+                      <v-avatar 
+                        size="28" 
+                        :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)"
+                      >
+                        {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
                       </v-avatar>
                     </div>
                     <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
@@ -95,7 +82,6 @@
                         class="user-menu-item"
                         @click="isUserMenuOpen = false"
                       >
-                        <v-icon size="18">mdi-account</v-icon>
                         <span>个人信息</span>
                       </NuxtLink>
                       <NuxtLink 
@@ -103,14 +89,12 @@
                         class="user-menu-item"
                         @click="isUserMenuOpen = false"
                       >
-                        <v-icon size="18">mdi-heart</v-icon>
                         <span>我的收藏</span>
                       </NuxtLink>
                       <button 
                         class="user-menu-item logout-item"
                         @click="handleLogout"
                       >
-                        <v-icon size="18">mdi-logout</v-icon>
                         <span>退出登录</span>
                       </button>
                     </div>
@@ -151,24 +135,6 @@
               </button>
             </div>
 
-            <!-- Mobile Search Bar -->
-            <div class="mobile-search-section">
-              <div class="mobile-search-bar-wrapper">
-                <input 
-                  type="text" 
-                  placeholder="搜索内容" 
-                  class="mobile-search-input"
-                  @focus="handleSearchFocus"
-                  @blur="handleSearchBlur"
-                  @keyup.enter="handleMobileSearch"
-                  v-model="searchKeyword"
-                />
-                <button class="mobile-search-button" @click="handleMobileSearch">
-                  <v-icon size="20" class="search-icon-btn">mdi-magnify</v-icon>
-                </button>
-              </div>
-            </div>
-
             <!-- Mobile Menu Links -->
             <nav class="mobile-nav-menu">
               <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
@@ -191,8 +157,11 @@
             <!-- Mobile User Section -->
             <div v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser" class="mobile-user-section">
               <div class="mobile-user-info">
-                <v-avatar size="32" color="grey-lighten-2">
-                  <v-icon size="20" color="grey-darken-1">mdi-account</v-icon>
+                <v-avatar 
+                  size="32" 
+                  :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)"
+                >
+                  {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
                 </v-avatar>
                 <span class="mobile-user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
               </div>
@@ -253,17 +222,16 @@
 import { usePublicUserStore } from '~/stores/public-user'
 import { api } from '~/utils/api'
 
+// 确保 composables 在顶层调用，按正确顺序初始化
+const router = useRouter()
 const route = useRoute()
 const publicUserStore = usePublicUserStore()
-const router = useRouter()
 
 // 移动端菜单状态
 const isMobileMenuOpen = ref(false)
 
 // 滚动状态
 const isScrolled = ref(false)
-const searchKeyword = ref('')
-const isSearchFocused = ref(false)
 
 // 用户下拉菜单状态
 const isUserMenuOpen = ref(false)
@@ -336,30 +304,59 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
-// 搜索相关方法
-const handleSearchFocus = () => {
-  isSearchFocused.value = true
-}
-
-const handleSearchBlur = () => {
-  isSearchFocused.value = false
-}
-
-const handleSearch = () => {
-  if (searchKeyword.value.trim()) {
-    navigateTo(`/search?q=${encodeURIComponent(searchKeyword.value.trim())}`)
+// 获取用户名的首字母
+const getAvatarInitial = (name) => {
+  if (!name) return 'U'
+  const trimmed = name.trim()
+  if (trimmed.length === 0) return 'U'
+  // 获取第一个字符，如果是中文则直接返回，如果是英文则返回大写字母
+  const firstChar = trimmed[0]
+  if (/[a-zA-Z]/.test(firstChar)) {
+    return firstChar.toUpperCase()
   }
+  return firstChar
 }
 
-const handleMobileSearch = () => {
-  if (searchKeyword.value.trim()) {
-    navigateTo(`/search?q=${encodeURIComponent(searchKeyword.value.trim())}`)
-    closeMobileMenu()
+// 根据用户名生成随机背景色（基于字符串哈希）
+const getAvatarColor = (name) => {
+  if (!name) return 'grey-lighten-2'
+  
+  // 预定义的颜色列表（Vuetify 颜色）
+  const colors = [
+    'red-lighten-2',
+    'pink-lighten-2',
+    'purple-lighten-2',
+    'deep-purple-lighten-2',
+    'indigo-lighten-2',
+    'blue-lighten-2',
+    'light-blue-lighten-2',
+    'cyan-lighten-2',
+    'teal-lighten-2',
+    'green-lighten-2',
+    'light-green-lighten-2',
+    'lime-lighten-2',
+    'yellow-lighten-2',
+    'amber-lighten-2',
+    'orange-lighten-2',
+    'deep-orange-lighten-2',
+    'brown-lighten-2',
+    'blue-grey-lighten-2',
+  ]
+  
+  // 简单的字符串哈希算法
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
   }
+  
+  // 确保索引为正数
+  const index = Math.abs(hash) % colors.length
+  return colors[index]
 }
 
 // 监听路由变化，关闭移动端菜单
-watch(() => route.path, () => {
+// 使用 router 的导航守卫，避免 route 初始化问题
+router.afterEach(() => {
   isMobileMenuOpen.value = false
 })
 
@@ -412,14 +409,14 @@ onMounted(() => {
 // Top Header
 .top-header {
   background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   width: 100%;
   box-sizing: border-box;
   position: relative;
   
   // 滚动后的样式变化
   &.scrolled {
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
   }
 }
 
@@ -547,102 +544,6 @@ onMounted(() => {
   }
 }
 
-// Center Section - Search Bar
-.header-center {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  flex-shrink: 1;
-  min-width: 0;
-  max-width: 100%;
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
-.search-bar-wrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  min-width: 200px;
-  max-width: 600px;
-  width: 100%;
-  background-color: #f8f8f8;
-  border-radius: 999px;
-  overflow: hidden;
-  position: relative;
-  
-  @media (min-width: 1400px) {
-    max-width: 600px;
-  }
-  
-  @media (max-width: 1200px) {
-    max-width: 500px;
-  }
-  
-  @media (max-width: 1024px) {
-    max-width: 400px;
-    min-width: 180px;
-  }
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
-.search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 0.75rem 1rem 0.75rem 1.5rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #0d0c22;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  &::placeholder {
-    color: #9e9ea7;
-    font-weight: 500;
-  }
-}
-
-
-.search-button {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background-color: #e8e8e8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 0.25rem;
-  flex-shrink: 0;
-  
-  &:hover {
-    background-color: #d0d0d0;
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  &:active {
-    transform: scale(1.05);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .search-icon-btn {
-    color: #666666;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover .search-icon-btn {
-    transform: scale(1.1);
-  }
-}
 
 // Right Section - Navigation and Actions
 .header-right {
@@ -737,7 +638,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  border: 1px solid #e2e8f0;
+  border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
   cursor: pointer;
@@ -759,14 +660,11 @@ onMounted(() => {
   
   &:hover {
     background-color: #f8f8f8;
-    border-color: #d0d0d0;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
   
   &:active {
     transform: translateY(0);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
   
   .user-avatar {
@@ -831,7 +729,6 @@ onMounted(() => {
 .user-menu-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   width: 100%;
   padding: 0.75rem 1rem;
   text-decoration: none;
@@ -869,15 +766,6 @@ onMounted(() => {
     &:active {
       background-color: #fee2e2;
     }
-  }
-  
-  v-icon {
-    color: inherit;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover v-icon {
-    transform: scale(1.1);
   }
 }
 
@@ -1184,78 +1072,6 @@ onMounted(() => {
   }
 }
 
-// Mobile Search Section
-.mobile-search-section {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.mobile-search-bar-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background-color: #f8f8f8;
-  border-radius: 999px;
-  overflow: hidden;
-  position: relative;
-  min-width: 0;
-  flex-wrap: nowrap;
-}
-
-.mobile-search-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 0.75rem 1rem 0.75rem 1.5rem;
-  font-size: 16px;
-  font-weight: 500;
-  color: #0d0c22;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  &::placeholder {
-    color: #9e9ea7;
-    font-weight: 500;
-  }
-}
-
-
-.mobile-search-button {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background-color: #e8e8e8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 0.25rem;
-  flex-shrink: 0;
-  z-index: 1;
-  
-  &:hover {
-    background-color: #d0d0d0;
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  &:active {
-    transform: scale(1.05);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .search-icon-btn {
-    color: #666666;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover .search-icon-btn {
-    transform: scale(1.1);
-  }
-}
 
 .mobile-nav-menu {
   padding: 0.25rem 1.25rem 1rem;

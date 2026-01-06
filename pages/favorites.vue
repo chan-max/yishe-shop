@@ -10,7 +10,6 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { api } from '~/utils/api'
 import { usePublicUserStore } from '~/stores/public-user'
-import FavoriteButton from '~/components/FavoriteButton.vue'
 import { useToast } from '~/composables/use-toast'
 
 definePageMeta({ layout: 'page' })
@@ -311,18 +310,12 @@ onMounted(() => {
           <!-- 商品信息 -->
           <div class="flex-1 flex flex-col justify-between min-w-0">
             <div>
-              <!-- 类型标签和收藏按钮 -->
-              <div class="flex items-start justify-between mb-2">
+              <!-- 类型标签 -->
+              <div class="mb-2">
                 <div v-if="favorite.product?.type && favorite.product.type !== '二维产品图'">
                   <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-[0.15em] font-light">
                     {{ productTypes.find(t => t.value === favorite.product.type)?.label || favorite.product.type }}
                   </span>
-                </div>
-                <div class="flex-shrink-0 ml-4" @click.stop>
-                  <FavoriteButton
-                    :is-favorite="true"
-                    @click="removeFavorite(favorite.productId, favorite.id)"
-                  />
                 </div>
               </div>
               
@@ -351,12 +344,20 @@ onMounted(() => {
               <span class="text-xs text-gray-400 uppercase tracking-widest font-light">
                 收藏于 {{ new Date(favorite.createTime).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) }}
               </span>
-              <button 
-                class="px-4 py-2 text-xs uppercase tracking-[0.15em] text-gray-600 hover:text-black border border-gray-200 hover:border-gray-900 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
-                @click.stop="goToProductDetail(favorite.productId)"
-              >
-                查看详情
-              </button>
+              <div class="flex items-center gap-2" @click.stop>
+                <button 
+                  class="px-4 py-2 text-xs uppercase tracking-[0.15em] text-gray-600 hover:text-black border border-gray-200 hover:border-gray-900 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
+                  @click="removeFavorite(favorite.productId, favorite.id)"
+                >
+                  取消收藏
+                </button>
+                <button 
+                  class="px-4 py-2 text-xs uppercase tracking-[0.15em] text-gray-600 hover:text-black border border-gray-200 hover:border-gray-900 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light"
+                  @click="goToProductDetail(favorite.productId)"
+                >
+                  查看详情
+                </button>
+              </div>
             </div>
           </div>
         </div>
