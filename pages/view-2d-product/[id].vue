@@ -4,8 +4,34 @@
  * @LastEditors: chan-max jackieontheway666@gmail.com
  * @LastEditTime: 2025-01-27 11:00:00
  * @FilePath: /yishe-nuxt/pages/view-2d-product/[id].vue
- * @Description: 商品详情查看页面
+ * @Description: 商品详情查看页面 - 已暂时注释，不再使用 2d 商品相关逻辑
 -->
+<script setup lang="ts">
+// 2d 商品相关逻辑已暂时注释，不再使用
+definePageMeta({
+  layout: false
+})
+
+useHead({
+  title: '页面已停用 - 衣设服装设计',
+})
+</script>
+
+<template>
+  <div class="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-2xl font-medium text-gray-900 mb-4">页面已停用</h1>
+      <p class="text-gray-600 mb-6">2d 商品相关功能已暂时停用</p>
+      <NuxtLink to="/search" class="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        返回搜索
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<!--
+以下为原始代码，已暂时注释，不再使用 2d 商品相关逻辑
+
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { api } from '@/utils/api'
@@ -430,5 +456,4 @@ useHead({
     </div>
   </div>
 </template>
-
-
+-->

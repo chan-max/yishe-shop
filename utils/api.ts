@@ -100,7 +100,8 @@ interface DesignRequestResponse {
   description: string
 }
 
-// 商品详情接口的返回数据类型
+// 商品详情接口的返回数据类型 - 已暂时注释，不再使用 2d 商品相关逻辑
+/*
 interface ProductImage2DResponse {
   id: string
   materialId: string
@@ -124,6 +125,7 @@ interface ProductImage2DResponse {
   createTime: string
   updateTime: string
 }
+*/
 
 // 商品（Product）接口的返回数据类型
 interface ProductResponse {
@@ -208,7 +210,8 @@ export const api = {
         body: params,
       }),
   },
-  // 商品相关接口
+  // 商品相关接口 - 已暂时注释，不再使用 2d 商品相关逻辑
+  /*
   product: {
     // 根据ID或code获取商品详情（后端会自动识别）
     getById: (id: string) =>
@@ -222,6 +225,7 @@ export const api = {
         body: params,
       }),
   },
+  */
   // 商品（Product）相关接口
   productList: {
     // 分页获取商品列表（不包含关联信息）

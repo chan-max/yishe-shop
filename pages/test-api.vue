@@ -39,7 +39,8 @@ const testApiConnection = async () => {
   }
 }
 
-// 测试商品API
+// 测试商品API - 已暂时注释，不再使用 2d 商品相关逻辑
+/*
 const testProductApi = async () => {
   try {
     loading.value = true
@@ -60,6 +61,7 @@ const testProductApi = async () => {
     loading.value = false
   }
 }
+*/
 
 // 页面加载时获取API基础URL
 onMounted(() => {
@@ -93,9 +95,10 @@ useHead({
           {{ loading ? '测试中...' : '测试Hello API' }}
         </button>
         
-        <button @click="testProductApi" class="test-btn" :disabled="loading">
+        <!-- 暂时注释掉 2d 商品 API 测试 -->
+        <!-- <button @click="testProductApi" class="test-btn" :disabled="loading">
           {{ loading ? '测试中...' : '测试商品API' }}
-        </button>
+        </button> -->
       </div>
       
       <!-- 加载状态 -->

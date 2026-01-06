@@ -92,7 +92,8 @@ const closeQRDialog = () => {
       <div class="page-header">
         <div class="title-row">
           <h1 class="page-title">联系我们</h1>
-          <NuxtLink to="/founder" class="founder-link-text">了解作者 →</NuxtLink>
+          <!-- 暂时注释掉作者信息页面链接 -->
+          <!-- <NuxtLink to="/founder" class="founder-link-text">了解作者 →</NuxtLink> -->
         </div>
       </div>
 
