@@ -22,34 +22,43 @@ const showToast = computed({
   set: (val) => { toast.showToast.value = val }
 })
 
-// 在 app.vue 或 layout 文件中添加
-useHead({
+// 全局 SEO 配置 - 使用 @nuxtjs/seo 提供的 composables
+useSeoMeta({
   title: "衣设服装设计 - 创意印花图案与服装设计平台",
-  meta: [
-    {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes",
-    },
-    {
-      name: "description",
-      content:
-        "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
-    },
-    
-    {
-      name: "keywords",
-      content:
-        "衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计",
-    },
-    { property: "og:title", content: "衣设服装设计 - 创意印花图案与服装设计平台" },
-    {
-      property: "og:description",
-      content:
-        "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
-    },
-    { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://1s.design" },
-    { name: "robots", content: "index,follow" },
+  description: "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+  keywords: "衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,服装设计服务,设计师社区",
+  author: "衣设设计团队",
+  language: "zh-CN",
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  
+  // Open Graph
+  ogTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
+  ogDescription: "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+  ogType: "website",
+  ogUrl: "https://1s.design",
+  ogImage: "https://1s.design/logo/logo.svg",
+  ogSiteName: "衣设服装设计",
+  ogLocale: "zh_CN",
+  
+  // Twitter Card
+  twitterCard: "summary_large_image",
+  twitterTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
+  twitterDescription: "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感。",
+  twitterImage: "https://1s.design/logo/logo.svg",
+  
+  // 其他 SEO 标签
+  "theme-color": "#000000",
+  "apple-mobile-web-app-capable": "yes",
+  "apple-mobile-web-app-status-bar-style": "black-translucent",
+})
+
+// 额外的 head 配置
+useHead({
+  htmlAttrs: {
+    lang: 'zh-CN',
+  },
+  link: [
+    { rel: 'canonical', href: 'https://1s.design' },
   ],
 })
 </script>

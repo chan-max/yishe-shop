@@ -14,20 +14,17 @@ import { getPreviewImageUrl } from '../utils/image'
 const { awesome } = useAppConfig()
 definePageMeta({ layout: 'page' })
 
-// Page title and meta
-useHead({
-  titleTemplate: '',
+// SEO 配置
+usePageSEO({
   title: '衣设服装设计 - 创意印花图案与服装设计平台',
-  meta: [
-    {
-      name: 'description',
-      content: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。'
-    },
-    {
-      name: 'keywords',
-      content: '服装设计,创意印花,图案设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计'
-    }
-  ]
+  description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
+  keywords: '服装设计,创意印花,图案设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,设计师社区,创意设计平台',
+  url: 'https://1s.design',
+  type: 'website',
+  structuredData: [
+    useWebsiteStructuredData(),
+    useOrganizationStructuredData(),
+  ],
 })
 
 // Navigation state

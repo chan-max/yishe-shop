@@ -241,15 +241,13 @@ import { useToast } from "~/composables/use-toast";
 const toast = useToast();
 
 definePageMeta({ layout: "page" });
-useHead({
-  titleTemplate: "",
+
+// 默认 SEO（在商品加载前）
+usePageSEO({
   title: "商品详情 - 衣设服装设计",
-  meta: [
-    {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-    },
-  ],
+  description: "查看商品详情，发现更多创意设计作品",
+  url: `https://1s.design/product/${route.params.id}`,
+  type: "product",
 });
 
 const route = useRoute();
@@ -529,6 +527,35 @@ const openImagePreview = () => {
 const handlePreviewImageChange = (index: number) => {
   currentImageIndex.value = index;
 };
+
+// 监听产品数据变化，更新 SEO
+watch(
+  () => product.value,
+  (newProduct) => {
+    if (newProduct) {
+      const productImage = productImages.value[0] || 'https://1s.design/logo/logo.svg'
+      const productUrl = `https://1s.design/product/${newProduct.id}`
+      const productDescription = newProduct.description || newProduct.name || '查看商品详情'
+      
+      usePageSEO({
+        title: `${newProduct.name || '商品详情'} - 衣设服装设计`,
+        description: productDescription,
+        keywords: productKeywords.value.join(',') || '服装设计,创意印花,图案设计',
+        image: productImage,
+        url: productUrl,
+        type: 'product',
+        structuredData: useProductStructuredData({
+          name: newProduct.name || '商品',
+          description: productDescription,
+          image: productImage,
+          url: productUrl,
+          category: newProduct.type || '服装设计',
+        }),
+      })
+    }
+  },
+  { immediate: true }
+)
 
 // 监听路由参数变化
 watch(
