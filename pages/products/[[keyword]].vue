@@ -238,6 +238,12 @@ const handleImageError = (event: Event, product: any) => {
   // 隐藏图片
   img.style.opacity = '0'
   
+  // 隐藏骨架屏
+  const loadingEl = img.parentElement?.querySelector('.img-loading') as HTMLElement | null
+  if (loadingEl) {
+    loadingEl.style.display = 'none'
+  }
+  
   // 显示占位符
   const parent = img.parentElement
   if (parent) {
@@ -253,6 +259,12 @@ const handleImageLoad = (event: Event) => {
   const img = event.target as HTMLImageElement
   // 确保图片显示
   img.style.opacity = '1'
+  
+  // 隐藏骨架屏
+  const loadingEl = img.parentElement?.querySelector('.img-loading') as HTMLElement | null
+  if (loadingEl) {
+    loadingEl.style.display = 'none'
+  }
   
   // 隐藏占位符
   const parent = img.parentElement
@@ -523,18 +535,19 @@ onMounted(() => {
           @mouseleave="hoveredProductId = null"
           @click="goToProductDetail(product.id)"
         >
-          <!-- 商品图片 -->
+          <!-- 商品图片：纯 CSS 骨架屏 + 平滑过渡 -->
           <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
             <template v-if="getProductImage(product)">
+              <div class="absolute inset-0 img-loading"></div>
               <img
                 :src="getPreviewImageUrl(getProductImage(product), { width: 500, quality: 80, format: 'webp' }) || undefined"
                 :alt="product.name || '商品图片'"
-                class="w-full h-full object-cover transition-all duration-700 ease-out"
-                :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
+                class="product-img"
+                :class="hoveredProductId === product.id ? 'scale-110 brightness-110' : ''"
                 @error="handleImageError($event, product)"
                 @load="handleImageLoad"
               />
-              <div 
+              <div
                 class="image-placeholder absolute inset-0 w-full h-full flex items-center justify-center bg-gray-100 z-1"
                 style="display: none;"
               >
@@ -671,6 +684,39 @@ onMounted(() => {
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.img-loading {
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  background-image: linear-gradient(100deg, #fafafa 25%, #eaeaea 37%, #fafafa 63%);
+  background-size: 400% 100%;
+  background-position: 100% 50%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.45s ease, transform 0.7s ease, filter 0.7s ease;
+  opacity: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.product-img[src] {
+  opacity: 1;
 }
 </style>
 
