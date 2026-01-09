@@ -64,20 +64,27 @@
 
           <!-- 图片容器 -->
           <div
-            class="relative w-full max-w-full md:max-w-2xl mx-auto px-2 sm:px-4 product-image-container"
+            class="relative w-full max-w-full md:max-w-2xl mx-auto product-image-container overflow-hidden image-card"
           >
-            <!-- 主图 -->
-            <img
-              v-if="currentImage"
-              :src="currentImage"
-              :alt="product.name"
-              class="w-full h-full object-contain cursor-pointer"
-              @error="handleImageError"
-              @click="openImagePreview"
-            />
-            <div v-else class="w-full h-full flex items-center justify-center">
-              <span class="text-gray-400 text-sm">暂无图片</span>
-            </div>
+            <!-- 主图（带左右滑动动画） -->
+            <transition :name="`slide-${slideDirection}`">
+              <img
+                v-if="currentImage"
+                :key="currentImage"
+                :src="currentImage"
+                :alt="product.name"
+                class="w-full h-full object-contain cursor-pointer"
+                @error="handleImageError"
+                @click="openImagePreview"
+              />
+              <div
+                v-else
+                key="no-image"
+                class="w-full h-full flex items-center justify-center"
+              >
+                <span class="text-gray-400 text-sm">暂无图片</span>
+              </div>
+            </transition>
 
             <!-- 图片缩略图导航 -->
             <div
@@ -263,6 +270,7 @@ const currentImageIndex = ref(0);
 const isPreviewOpen = ref(false);
 const isFavorite = ref(false);
 const favoriteCount = ref<number | null>(null);
+const slideDirection = ref<"next" | "prev">("next");
 
 // 计算属性
 const productImages = computed(() => {
@@ -466,6 +474,7 @@ const handleImageError = (event) => {
 // 切换到上一张图片
 const previousImage = () => {
   if (productImages.value.length > 0) {
+    slideDirection.value = "prev";
     currentImageIndex.value =
       (currentImageIndex.value - 1 + productImages.value.length) %
       productImages.value.length;
@@ -475,6 +484,7 @@ const previousImage = () => {
 // 切换到下一张图片
 const nextImage = () => {
   if (productImages.value.length > 0) {
+    slideDirection.value = "next";
     currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length;
   }
 };
@@ -578,6 +588,13 @@ watch(
   aspect-ratio: 4 / 5;
 }
 
+/* 图片卡片样式：圆角 + 立体阴影 */
+.image-card {
+  border-radius: 8px;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+  background-color: #ffffff;
+}
+
 @media (min-width: 768px) {
   .product-image-container {
     /* 桌面端略宽一点，但仍保持较大的高度 */
@@ -596,6 +613,48 @@ watch(
 .product-image-container img {
   max-height: 80vh;
   object-fit: contain;
+}
+
+/* 图片左右滑动过渡动画：只做位移动画，避免透明度导致空白闪动 */
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  transition: transform 0.2s ease-out;
+  position: absolute;
+  inset: 0;
+}
+
+.slide-next-enter-from {
+  transform: translateX(100%);
+}
+
+.slide-next-enter-to {
+  transform: translateX(0%);
+}
+
+.slide-next-leave-from {
+  transform: translateX(0%);
+}
+
+.slide-next-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-prev-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-prev-enter-to {
+  transform: translateX(0%);
+}
+
+.slide-prev-leave-from {
+  transform: translateX(0%);
+}
+
+.slide-prev-leave-to {
+  transform: translateX(100%);
 }
 </style>
 
