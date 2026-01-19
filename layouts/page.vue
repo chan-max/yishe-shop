@@ -565,7 +565,7 @@ onMounted(() => {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: .5rem;
   
   @media (max-width: 991px) {
     display: none;
