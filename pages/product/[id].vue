@@ -64,7 +64,7 @@
 
           <!-- 图片容器 -->
           <div
-            class="relative w-full max-w-full md:max-w-2xl mx-auto product-image-container overflow-hidden image-card"
+            class="relative mx-auto product-image-container overflow-hidden image-card"
           >
             <!-- 主图（带左右滑动动画） -->
             <transition :name="`slide-${slideDirection}`">
@@ -73,7 +73,7 @@
                 :key="currentImage"
                 :src="currentImage"
                 :alt="product.name"
-                class="w-full h-full object-contain cursor-pointer"
+                class="product-main-image cursor-pointer"
                 @error="handleImageError"
                 @click="openImagePreview"
               />
@@ -582,10 +582,26 @@ watch(
 </script>
 
 <style scoped>
-/* 商品主图尺寸优化：移动端和桌面端都尽量更大一些 */
+/* 商品主图容器：紧贴图片尺寸，避免阴影留白 */
 .product-image-container {
-  /* 提高纵向占比，让图片更高一些 */
-  aspect-ratio: 4 / 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: min(100%, 960px);
+  height: auto;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.product-main-image {
+  height: clamp(320px, 70vh, 520px);
+  width: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
 }
 
 /* 图片卡片样式：圆角 + 立体阴影 */
@@ -597,8 +613,6 @@ watch(
 
 @media (min-width: 768px) {
   .product-image-container {
-    /* 桌面端略宽一点，但仍保持较大的高度 */
-    aspect-ratio: 3 / 2;
     max-width: 960px;
   }
 }
