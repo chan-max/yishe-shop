@@ -4,7 +4,7 @@ const { resolve } = createResolver(import.meta.url)
 export default defineNuxtConfig({
   // 兼容日期
   compatibilityDate: '2025-12-21',
-  
+
   // exp
   experimental: {
     localLayerAliases: true,
@@ -41,12 +41,12 @@ export default defineNuxtConfig({
 
   // modules
   modules: [// chore
-  // '@nuxtjs/eslint-module',
-  // styling & ui
-  '@nuxtjs/tailwindcss', 'nuxt-headlessui', 'nuxt-icon', '@nuxtjs/color-mode', // management
-  '@pinia/nuxt', '@vueuse/nuxt', // contents
-  '@nuxt/content', '@nuxtjs/sitemap', 
-  '@nuxtjs/seo' // SEO 模块
+    // '@nuxtjs/eslint-module',
+    // styling & ui
+    '@nuxtjs/tailwindcss', 'nuxt-headlessui', 'nuxt-icon', '@nuxtjs/color-mode', // management
+    '@pinia/nuxt', '@vueuse/nuxt', // contents
+    '@nuxt/content', '@nuxtjs/sitemap',
+    '@nuxtjs/seo' // SEO 模块
   ],
 
   build: {
@@ -55,6 +55,7 @@ export default defineNuxtConfig({
 
   css: [
     'vuetify/styles',
+    '~/assets/css/main.css',
   ],
 
   components: [
@@ -122,7 +123,7 @@ export default defineNuxtConfig({
       priority: 0.8,
     },
   },
-  
+
   // 搜索引擎优化配置
   robots: {
     enabled: true,
@@ -137,12 +138,12 @@ export default defineNuxtConfig({
     allow: ['/'],
     sitemap: 'https://1s.design/sitemap.xml',
   },
-  
+
   // Schema.org 结构化数据配置
   schema: {
     enabled: true,
   },
-  
+
   sitemap: {
 
     autoLastmod: true,
@@ -155,7 +156,7 @@ export default defineNuxtConfig({
     sitemaps: true, // sitemap多文件开关
     defaultSitemapsChunkSize: 1000,
   },
- 
+
   hooks: {
   },
   devServer: {
@@ -164,14 +165,14 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production' 
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production'
         ? 'https://1s.design:1520/api'
         : 'http://localhost:1520/api')
     }
   },
-  
+
   // prerender configuration
-  nitro:{
+  nitro: {
     prerender: {
       failOnError: false
     },

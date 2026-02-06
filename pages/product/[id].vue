@@ -16,13 +16,19 @@
     <div v-else-if="product" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <!-- 返回按钮 -->
       <div class="mb-6">
-        <button
+      <div class="mb-6">
+        <BaseButton
+          variant="ghost"
+          size="sm"
           @click="router.back()"
-          class="inline-flex items-center space-x-2 text-sm text-black hover:text-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-100 uppercase tracking-wider px-3 py-2 rounded-md hover:bg-gray-50"
+          class="!px-0 hover:!bg-transparent hover:text-gray-600 space-x-2"
         >
-          <Icon name="heroicons:arrow-left" class="w-4 h-4" />
-          <span>返回</span>
-        </button>
+          <template #prefix>
+            <Icon name="heroicons:arrow-left" class="w-4 h-4" />
+          </template>
+          返回
+        </BaseButton>
+      </div>
       </div>
 
       <!-- 主要内容区域 -->
@@ -157,10 +163,10 @@
           >
             <!-- 商品代码 -->
             <div v-if="product.code">
-              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
                 产品代码
               </h3>
-              <p class="text-sm text-black uppercase tracking-wider">
+              <p class="text-sm font-medium text-gray-900 tracking-wider">
                 {{ product.code }}
               </p>
             </div>
@@ -168,12 +174,12 @@
 
             <!-- 关键词 -->
             <div v-if="productKeywords.length > 0">
-              <h3 class="text-xs uppercase tracking-wider text-gray-500 mb-2">关键词</h3>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">关键词</h3>
               <div class="flex flex-wrap gap-2">
                 <span
                   v-for="keyword in productKeywords"
                   :key="keyword"
-                  class="text-xs text-gray-600"
+                  class="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-default"
                 >
                   {{ keyword }}
                 </span>
@@ -182,21 +188,28 @@
           </div>
 
           <!-- 交互按钮 -->
-          <div class="flex items-center space-x-6 pt-6 border-t border-gray-200">
-            <button
+          <div class="flex items-center space-x-4 pt-6 border-t border-gray-100">
+            <BaseButton
+              variant="secondary"
+              size="sm"
               @click="copyLink"
-              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 px-3 py-2 rounded-md hover:bg-gray-50"
             >
-              <Icon name="heroicons:link" class="w-5 h-5" />
-              <span class="uppercase tracking-wider">复制链接</span>
-            </button>
-            <button
+              <template #prefix>
+                <Icon name="heroicons:link" class="w-4 h-4" />
+              </template>
+              复制链接
+            </BaseButton>
+            
+            <BaseButton
+              variant="secondary"
+              size="sm"
               @click="shareProduct"
-              class="flex items-center space-x-2 text-sm text-gray-600 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 px-3 py-2 rounded-md hover:bg-gray-50"
             >
-              <Icon name="heroicons:share" class="w-5 h-5" />
-              <span class="uppercase tracking-wider">分享</span>
-            </button>
+              <template #prefix>
+                <Icon name="heroicons:share" class="w-4 h-4" />
+              </template>
+              分享
+            </BaseButton>
           </div>
           
           <!-- 收藏数量显示 -->
@@ -216,12 +229,12 @@
         />
         <h3 class="text-lg font-light text-gray-900 mb-2">商品不存在</h3>
         <p class="text-sm text-gray-500 mb-6">抱歉，您查找的商品不存在或已被删除</p>
-        <button
+        <BaseButton
+          variant="primary"
           @click="router.push('/products')"
-          class="px-6 py-2 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 active:scale-100"
         >
           返回商品列表
-        </button>
+        </BaseButton>
       </div>
     </div>
 
@@ -584,14 +597,17 @@ watch(
 <style scoped>
 /* 商品主图容器：紧贴图片尺寸，避免阴影留白 */
 .product-image-container {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   width: fit-content;
   max-width: min(100%, 960px);
   height: auto;
   max-height: 80vh;
   overflow: hidden;
+}
+
+.product-image-container > * {
+  grid-area: 1 / 1;
 }
 
 .product-main-image {
@@ -606,8 +622,8 @@ watch(
 
 /* 图片卡片样式：圆角 + 立体阴影 */
 .image-card {
-  border-radius: 8px;
-  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.08);
   background-color: #ffffff;
 }
 
@@ -635,8 +651,6 @@ watch(
 .slide-prev-enter-active,
 .slide-prev-leave-active {
   transition: transform 0.2s ease-out;
-  position: absolute;
-  inset: 0;
 }
 
 .slide-next-enter-from {
