@@ -238,17 +238,21 @@ const isVisible = (id: string) => {
 <template>
   <div class="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden w-full max-w-full">
     <!-- Hero Section - Full Screen -->
-    <section class="relative w-full max-w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden box-border mt-8 md:mt-8">
-      <div class="absolute inset-0 w-full h-full " style="background:#f6f6f6;"></div>
-      <div class="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full box-border">
-        <div class="mb-12">
-          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light tracking-wider mb-6 uppercase text-black">衣设</h1>
-          <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light tracking-widest mb-4 uppercase text-black">创意印花图案设计平台</p>
-          <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">探索无限创意，定义时尚未来</p>
+    <section class="relative w-full max-w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden box-border mt-0">
+      <div class="absolute inset-0 w-full h-full bg-gray-50"></div>
+      <div class="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto w-full box-border">
+        <div class="mb-12 animate-in" style="--delay: 0s">
+          <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-widest mb-6 uppercase text-black font-sans">衣设</h1>
+          <p class="text-xl sm:text-2xl md:text-3xl font-light tracking-[0.2em] mb-4 uppercase text-black">创意印花图案设计平台</p>
+          <p class="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed tracking-wide mt-8">探索无限创意 · 定义时尚未来</p>
         </div>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button class="px-8 sm:px-10 py-4 bg-white text-black uppercase text-xs sm:text-sm tracking-wider border border-black min-w-[160px] sm:min-w-[180px] w-full sm:w-auto hover:bg-black hover:text-white transition-colors" @click="goToExplore">探索设计</button>
-          <button class="px-8 sm:px-10 py-4 bg-transparent text-black uppercase text-xs sm:text-sm tracking-wider border border-black min-w-[160px] sm:min-w-[180px] w-full sm:w-auto hover:bg-black hover:text-white transition-colors" @click="goToSearch">开始创作</button>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-in opacity-0" style="--delay: 0.2s">
+          <BaseButton size="xl" variant="primary" class="!px-12 !py-5 min-w-[200px] uppercase tracking-widest text-sm" @click="goToExplore">
+            探索设计
+          </BaseButton>
+          <BaseButton size="xl" variant="outline" class="!px-12 !py-5 min-w-[200px] uppercase tracking-widest text-sm" @click="goToSearch">
+            开始创作
+          </BaseButton>
         </div>
       </div>
     </section>
@@ -300,12 +304,14 @@ const isVisible = (id: string) => {
                     :title="product.title">{{ product.title }}</h3>
                 <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 transform transition-transform duration-300 delay-75"
                    :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'">{{ product.description }}</p>
-                <button 
-                  class="px-4 sm:px-6 py-2 sm:py-3 bg-white/10 backdrop-blur-sm text-white text-xs font-semibold tracking-wide uppercase border border-white/40 rounded-sm transition-all duration-300 transform hover:bg-white/20 hover:border-white/80 hover:scale-105 active:scale-100"
+                <BaseButton 
+                  size="sm"
+                  variant="outline"
+                  class="!text-white !border-white/40 !bg-white/10 hover:!bg-white/20 hover:!border-white !backdrop-blur-sm"
                   :class="hoveredProductId === product.id ? 'opacity-100 delay-150' : 'opacity-0'"
                   @click.stop="goToProductDetail(product.id)">
                   查看详情
-                </button>
+                </BaseButton>
               </div>
             </div>
           </div>
@@ -405,7 +411,7 @@ const isVisible = (id: string) => {
             <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">新品</span>
             <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">创意印花设计</h2>
             <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">探索我们的最新系列，每一件作品都经过精心设计，融合了艺术与时尚的完美平衡。</p>
-            <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToExplore">立即探索</button>
+            <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToExplore">立即探索</BaseButton>
           </div>
         </div>
         
@@ -417,7 +423,7 @@ const isVisible = (id: string) => {
             <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">精选</span>
             <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">服装设计服务</h2>
             <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">专业的服装设计服务，从概念到成品，为您打造独特的时尚风格。</p>
-            <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToSearch">了解更多</button>
+            <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToSearch">了解更多</BaseButton>
           </div>
         </div>
       </div>
@@ -555,7 +561,12 @@ const isVisible = (id: string) => {
                 {{ designer.followers }} 关注
               </span>
             </div>
-            <button class="w-full px-3 py-3 bg-transparent border border-black rounded-lg text-black text-sm font-normal tracking-wide cursor-pointer uppercase hover:bg-black hover:text-white">关注</button>
+            <BaseButton 
+              variant="outline" 
+              class="w-full uppercase tracking-wide text-xs group-hover:bg-black group-hover:text-white"
+            >
+              关注
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -628,8 +639,8 @@ const isVisible = (id: string) => {
         <h2 class="text-5xl md:text-6xl lg:text-7xl font-light tracking-wider mb-6 uppercase">加入创意社区</h2>
         <p class="text-lg md:text-xl font-light text-gray-600 leading-relaxed mb-10">与全球设计师一起，分享您的创意，发现无限可能</p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center flex-wrap">
-          <button class="px-10 py-4 bg-black text-white uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToSearch">开始创作</button>
-          <button class="px-10 py-4 bg-transparent text-black uppercase text-sm tracking-wider border border-black min-w-[180px]" @click="goToExplore">探索作品</button>
+          <BaseButton size="lg" variant="primary" class="min-w-[200px] uppercase tracking-wider" @click="goToSearch">开始创作</BaseButton>
+          <BaseButton size="lg" variant="outline" class="min-w-[200px] uppercase tracking-wider bg-transparent" @click="goToExplore">探索作品</BaseButton>
         </div>
       </div>
     </section>

@@ -838,51 +838,51 @@ const handleBlur = () => {
 .light-theme {
   // 背景色 - 更柔和的白色系
   --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --bg-hover: rgba(0, 0, 0, 0.04);
-  --bg-active: rgba(0, 0, 0, 0.08);
+  --bg-secondary: #f9f9f9;
+  --bg-tertiary: #f3f3f3;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-active: rgba(0, 0, 0, 0.1);
   
   // 文字颜色 - 更好的对比度
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --text-muted: #94a3b8;
+  --text-primary: #000000;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --text-muted: #aaaaaa;
   
   // 边框颜色 - 更细腻的边框
-  --border-primary: #e2e8f0;
-  --border-secondary: rgba(0, 0, 0, 0.08);
-  --border-hover: rgba(0, 0, 0, 0.15);
+  --border-primary: #eeeeee;
+  --border-secondary: rgba(0, 0, 0, 0.05);
+  --border-hover: #000000;
   
-  // 主题色
-  --theme-primary: #3b82f6;
-  --theme-primary-hover: #2563eb;
-  --theme-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  // 主题色 - 升级为黑色系 (Luxury Brand)
+  --theme-primary: #000000;
+  --theme-primary-hover: #333333;
+  --theme-gradient: linear-gradient(135deg, #000000, #333333);
   
   // 阴影 - 更柔和的阴影
-  --shadow-primary: rgba(0, 0, 0, 0.08);
-  --shadow-secondary: rgba(0, 0, 0, 0.12);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-card-hover: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-primary: rgba(0, 0, 0, 0.04);
+  --shadow-secondary: rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 12px 24px rgba(0, 0, 0, 0.08);
   
   // 输入框背景 - 更清晰的输入框
   --input-bg: #ffffff;
-  --input-bg-hover: #f8fafc;
+  --input-bg-hover: #fafafa;
   --input-bg-focus: #ffffff;
-  --input-border: #d1d5db;
-  --input-border-hover: #9ca3af;
-  --input-border-focus: #3b82f6;
+  --input-border: #e0e0e0;
+  --input-border-hover: #000000;
+  --input-border-focus: #000000;
   
   // 卡片背景
   --card-bg: #ffffff;
-  --card-bg-hover: #f8fafc;
+  --card-bg-hover: #ffffff;
   
   // 按钮样式
-  --btn-primary-bg: #3b82f6;
-  --btn-primary-hover: #2563eb;
-  --btn-secondary-bg: #f1f5f9;
-  --btn-secondary-hover: #e2e8f0;
-  --btn-text: #475569;
+  --btn-primary-bg: #000000;
+  --btn-primary-hover: #333333;
+  --btn-secondary-bg: #f5f5f5;
+  --btn-secondary-hover: #e5e5e5;
+  --btn-text: #000000;
 }
 
 // 全局滚动条样式

@@ -2,7 +2,7 @@
   <button
     :type="type"
     :class="[
-      'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]',
+      'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98] cursor-pointer',
       // Variant styles
       {
         'bg-black text-white hover:bg-gray-800 focus-visible:ring-black border border-transparent shadow-sm hover:shadow-md': variant === 'primary',

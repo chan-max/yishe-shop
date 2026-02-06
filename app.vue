@@ -69,7 +69,7 @@ useHead({
   >
     <!-- 页面加载进度条 -->
     <NuxtLoadingIndicator 
-      color="#3b82f6" 
+      color="#000000" 
       height="3" 
       :throttle="200"
     />
@@ -125,7 +125,7 @@ useHead({
 
 /* 自定义 NuxtLoadingIndicator 进度条样式 */
 #nuxt-loading-indicator {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899) !important;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 5px rgba(59, 130, 246, 0.3) !important;
+  background: linear-gradient(90deg, #000000, #333333, #666666) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 5px rgba(0, 0, 0, 0.3) !important;
 }
 </style>

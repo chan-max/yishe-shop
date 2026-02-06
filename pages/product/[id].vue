@@ -16,19 +16,17 @@
     <div v-else-if="product" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <!-- 返回按钮 -->
       <div class="mb-6">
-      <div class="mb-6">
         <BaseButton
           variant="ghost"
           size="sm"
           @click="router.back()"
-          class="!px-0 hover:!bg-transparent hover:text-gray-600 space-x-2"
+          class="!px-0 hover:!bg-transparent hover:text-gray-900 space-x-2"
         >
           <template #prefix>
-            <Icon name="heroicons:arrow-left" class="w-4 h-4" />
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
           </template>
           返回
         </BaseButton>
-      </div>
       </div>
 
       <!-- 主要内容区域 -->

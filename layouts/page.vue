@@ -586,21 +586,38 @@ onMounted(() => {
   border-radius: 6px;
   position: relative;
   
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1.5px;
+    background-color: #000000;
+    transition: width 0.3s ease;
+  }
+  
   &:hover {
     color: #000000;
-    background-color: rgba(0, 0, 0, 0.04);
-    transform: translateY(-1px);
+    background-color: transparent;
+    &::after {
+      width: 100%;
+    }
   }
   
   &:active {
-    transform: translateY(0);
-    background-color: rgba(0, 0, 0, 0.06);
+    transform: translateY(1px);
+    background-color: transparent;
   }
   
   &.router-link-active {
     color: #000000;
     font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: transparent;
+    &::after {
+      width: 100%;
+    }
   }
   
   .nav-chevron {
@@ -798,18 +815,15 @@ onMounted(() => {
   &:hover {
     background-color: #1a1a1a;
     border-color: #1a1a1a;
-    color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
   &:active {
-    background-color: #0d0d0d;
-    border-color: #0d0d0d;
-    color: #ffffff;
     transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transform: scale(0.98);
   }
+
 }
 
 

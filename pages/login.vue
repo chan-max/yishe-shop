@@ -25,34 +25,28 @@
       </div>
       <form class="mt-12 space-y-8" @submit.prevent="handleSubmit">
         <div class="space-y-6">
-          <div>
-            <label for="username" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
-              账号
-            </label>
-            <input
-              id="username"
-              v-model="form.username"
-              name="username"
-              type="text"
-              required
-              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
-              placeholder="请输入您的账号"
-            />
-          </div>
-          <div>
-            <label for="password" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">
-              密码
-            </label>
-            <input
-              id="password"
-              v-model="form.password"
-              name="password"
-              type="password"
-              required
-              class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
-              placeholder="请输入您的密码"
-            />
-          </div>
+          <BaseInput
+            id="username"
+            v-model="form.username"
+            label="账号"
+            name="username"
+            type="text"
+            required
+            variant="underlined"
+            placeholder="请输入您的账号"
+            class="tracking-wide"
+          />
+          <BaseInput
+            id="password"
+            v-model="form.password"
+            label="密码"
+            name="password"
+            type="password"
+            required
+            variant="underlined"
+            placeholder="请输入您的密码"
+            class="tracking-wide"
+          />
         </div>
 
         <div v-if="errorMessage" class="text-red-500 text-sm text-center tracking-wide uppercase">
@@ -60,13 +54,14 @@
         </div>
 
         <div>
-          <button
+          <BaseButton
             type="submit"
-            :disabled="loading"
-            class="w-full py-4 px-6 bg-black text-white text-sm uppercase tracking-[0.2em] font-light hover:bg-gray-800 focus:outline-none transition-all duration-300 transform hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            :loading="loading"
+            class="w-full !py-4 uppercase tracking-[0.2em] font-light"
+            size="lg"
           >
-            {{ loading ? '登录中...' : '登录' }}
-          </button>
+            登录
+          </BaseButton>
         </div>
 
         <div class="text-center">
