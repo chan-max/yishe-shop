@@ -68,7 +68,7 @@
 
           <!-- 图片容器 -->
           <div
-            class="relative mx-auto product-image-container overflow-hidden image-card"
+            class="relative mx-auto product-image-container overflow-hidden"
           >
             <!-- 主图（带左右滑动动画） -->
             <transition :name="`slide-${slideDirection}`">
@@ -77,7 +77,7 @@
                 :key="currentImage"
                 :src="currentImage"
                 :alt="product.name"
-                class="product-main-image cursor-pointer"
+                class="product-main-image cursor-pointer image-card"
                 @error="handleImageError"
                 @click="openImagePreview"
               />
@@ -595,27 +595,29 @@ watch(
 <style scoped>
 /* 商品主图容器：紧贴图片尺寸，避免阴影留白 */
 .product-image-container {
+  width: 100%;
+  height: 600px;
   display: grid;
   place-items: center;
-  width: fit-content;
-  max-width: min(100%, 960px);
-  height: auto;
-  max-height: 80vh;
+  position: relative;
+  /* background-color: #f9fafb; Removed background so it doesn't look like a card */
   overflow: hidden;
 }
 
 .product-image-container > * {
   grid-area: 1 / 1;
+  /* Allow content to size itself up to container limits */
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .product-main-image {
-  height: clamp(320px, 70vh, 520px);
+  /* Image size is intrinsic but constrained by max-width/height */
   width: auto;
+  height: auto;
+  max-height: 100%;
   max-width: 100%;
-  max-height: 80vh;
   display: block;
-  margin: 0 auto;
-  object-fit: contain;
 }
 
 /* 图片卡片样式：圆角 + 立体阴影 */
@@ -648,7 +650,8 @@ watch(
 .slide-next-leave-active,
 .slide-prev-enter-active,
 .slide-prev-leave-active {
-  transition: transform 0.2s ease-out;
+  transition: transform 0.3s ease-in-out;
+  /* Grid layout handles overlap, so no absolute position needed */
 }
 
 .slide-next-enter-from {
