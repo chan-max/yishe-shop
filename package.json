@@ -27,11 +27,11 @@
         "tsconfig.json"
     ],
     "scripts": {
-        "build": "nuxt build ./app",
+        "build": "nuxt build",
         "dev": "nuxt dev --port 15201 --host",
-        "generate": "nuxt generate ./app",
-        "preview": "nuxt preview ./app",
-        "postinstall": "nuxt prepare ./app",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
         "dev:starter": "nuxt dev ./examples/starter",
         "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
