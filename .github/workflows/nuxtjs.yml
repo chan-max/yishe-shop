@@ -56,15 +56,21 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            dist
+            .output
             .nuxt
-          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('dist') }}
+          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('.output') }}
           restore-keys: |
             ${{ runner.os }}-nuxt-build-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Static HTML export with Nuxt
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
+      - name: Verify build output
+        run: |
+          echo "Checking build output..."
+          ls -la .output/ || echo ".output directory not found"
+          ls -la .output/public/ || echo ".output/public directory not found"
+          find .output/public -type f | head -20 || echo "No files found in .output/public"
         
       - name: Deploy to Tencent Cloud
         id: deploy
@@ -74,9 +80,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
-          source: ".output/public/**"
+          source: ".output/public"
           target: "/www/wwwroot/1s.design"
-          rm: false
+          rm: true
           strip_components: 2
           overwrite: true
           command_timeout: "10m"
