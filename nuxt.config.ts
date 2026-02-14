@@ -55,7 +55,7 @@ export default defineNuxtConfig({
 
   css: [
     'vuetify/styles',
-    '@/assets/css/main.css',
+    resolve('./assets/css/main.css'),
   ],
 
   components: [
@@ -180,5 +180,15 @@ export default defineNuxtConfig({
     prerender: {
       failOnError: false
     },
+    output: {
+      dir: '.output',
+      publicDir: '.output/public'
+    }
+  },
+  
+  // build configuration
+  buildDir: '.nuxt',
+  generate: {
+    dir: '.output/public'
   }
 })
