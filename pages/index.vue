@@ -16,9 +16,9 @@ definePageMeta({ layout: 'page' })
 
 // SEO 配置
 usePageSEO({
-  title: '衣设服装设计 - 创意印花图案与服装设计平台',
-  description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
-  keywords: '服装设计,创意印花,图案设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,设计师社区,创意设计平台',
+  title: '衣设服装设计 - 创意印花图案与服装设计平�?,
+  description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务�?,
+  keywords: '服装设计,创意印花,图案设计,服装设计师平�?服装设计作品�?服装设计灵感,印花图案,时尚设计,设计师社�?创意设计平台',
   url: 'https://1s.design',
   type: 'website',
   structuredData: [
@@ -67,11 +67,11 @@ const horizontalCategories = [
 // Featured designers
 const featuredDesigners = [
   { id: 1, name: '张设计师', avatar: 'https://picsum.photos/80/80?random=1', works: 124, followers: '2.5K' },
-  { id: 2, name: '李创意', avatar: 'https://picsum.photos/80/80?random=2', works: 98, followers: '1.8K' },
-  { id: 3, name: '王艺术', avatar: 'https://picsum.photos/80/80?random=3', works: 156, followers: '3.2K' },
-  { id: 4, name: '陈设计', avatar: 'https://picsum.photos/80/80?random=4', works: 87, followers: '1.5K' },
-  { id: 5, name: '刘时尚', avatar: 'https://picsum.photos/80/80?random=5', works: 203, followers: '4.1K' },
-  { id: 6, name: '周视觉', avatar: 'https://picsum.photos/80/80?random=6', works: 145, followers: '2.8K' }
+  { id: 2, name: '李创�?, avatar: 'https://picsum.photos/80/80?random=2', works: 98, followers: '1.8K' },
+  { id: 3, name: '王艺�?, avatar: 'https://picsum.photos/80/80?random=3', works: 156, followers: '3.2K' },
+  { id: 4, name: '陈设�?, avatar: 'https://picsum.photos/80/80?random=4', works: 87, followers: '1.5K' },
+  { id: 5, name: '刘时�?, avatar: 'https://picsum.photos/80/80?random=5', works: 203, followers: '4.1K' },
+  { id: 6, name: '周视�?, avatar: 'https://picsum.photos/80/80?random=6', works: 145, followers: '2.8K' }
 ]
 
 // Popular tags
@@ -102,28 +102,28 @@ const hoveredProductId = ref<string | null>(null)
 // Stats
 const stats = [
   { number: '15K+', label: '设计作品' },
-  { number: '8K+', label: '活跃设计师' },
+  { number: '8K+', label: '活跃设计�? },
   { number: '70+', label: '国家地区' },
-  { number: '3M+', label: '月度浏览量' }
+  { number: '3M+', label: '月度浏览�? }
 ]
 
 // Intersection Observer for animations
 let observer: IntersectionObserver | null = null
 
-// 获取精选商品
+// 获取精选商�?
 const fetchFeaturedProducts = async () => {
   try {
     const response = await api.productList.getPage({
       page: 1,
       pageSize: 6,
       isPublish: true,
-      includeRelations: false, // 不包含关联信息
+      includeRelations: false, // 不包含关联信�?
     })
     
     if (response.code === 0 || response.status === true || response.code === 200) {
       const products = response.data?.list || []
       featuredProducts.value = products.map((product: any) => {
-        // 获取第一张图片作为展示图片
+        // 获取第一张图片作为展示图�?
         const firstImage = Array.isArray(product.images) && product.images.length > 0 
           ? product.images[0] 
           : null
@@ -134,13 +134,13 @@ const fetchFeaturedProducts = async () => {
           description: product.description || '',
           category: product.type || 'pattern',
           image: 'grad1', // 保留原有的占位符逻辑
-          imageUrl: firstImage, // 保存原始图片URL，在模板中调用 getPreviewImageUrl 处理
+          imageUrl: firstImage, // 保存原始图片URL，在模板中调�?getPreviewImageUrl 处理
         }
       })
     }
   } catch (error) {
-    console.error('获取精选商品失败:', error)
-    // 失败时使用默认数据
+    console.error('获取精选商品失�?', error)
+    // 失败时使用默认数�?
     featuredProducts.value = [
       { id: '1', title: '春季印花系列', category: 'pattern', image: 'grad1' },
       { id: '2', title: '现代服装设计', category: 'clothing', image: 'grad2' },
@@ -153,7 +153,7 @@ const fetchFeaturedProducts = async () => {
 }
 
 onMounted(() => {
-  // 获取精选商品
+  // 获取精选商�?
   fetchFeaturedProducts()
   
   // Handle scroll
@@ -251,7 +251,7 @@ const isVisible = (id: string) => {
             探索设计
           </BaseButton>
           <BaseButton size="xl" variant="outline" class="!px-12 !py-5 min-w-[200px] uppercase tracking-widest text-sm" @click="goToSearch">
-            开始创作
+            开始创�?
           </BaseButton>
         </div>
       </div>
@@ -260,7 +260,7 @@ const isVisible = (id: string) => {
     <!-- Featured Products Section -->
     <section class="py-32 px-4 sm:px-6 md:px-8 bg-white max-w-[1920px] mx-auto w-full">
       <div class="text-center mb-16" data-animate-id="products-header">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('products-header') }">精选商�?/h2>
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
       </div>
         
@@ -276,7 +276,7 @@ const isVisible = (id: string) => {
           @mouseleave="hoveredProductId = null"
         >
           <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-            <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
+            <!-- 如果有实际图片URL，优先使用；否则使用占位�?-->
             <img 
               v-if="product.imageUrl" 
               :src="getPreviewImageUrl(product.imageUrl, { width: 500, quality: 80, format: 'webp' }) || undefined" 
@@ -292,7 +292,7 @@ const isVisible = (id: string) => {
               class="w-full h-full object-cover transition-all duration-700 ease-out"
               :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
             />
-            <!-- Hover 遮罩层 -->
+            <!-- Hover 遮罩�?-->
             <div 
               class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black/95 flex items-center justify-center transition-all duration-500 z-10 backdrop-blur-[1px]"
               :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0 pointer-events-none'"
@@ -340,7 +340,7 @@ const isVisible = (id: string) => {
     <!-- Featured Collections Section -->
     <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900">精选系列</h2>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900">精选系�?/h2>
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现全球设计师的创意杰作</p>
       </div>
       
@@ -369,7 +369,7 @@ const isVisible = (id: string) => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad2)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
           </div>
           <div class="p-6 md:p-8 bg-white">
-            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">印花图案库</h3>
+            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">印花图案�?/h3>
             <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">数千种高质量创意图案</p>
             <NuxtLink to="/search?category=pattern" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
               <span class="relative">
@@ -386,8 +386,8 @@ const isVisible = (id: string) => {
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23fafafa'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad3)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
           </div>
           <div class="p-6 md:p-8 bg-white">
-            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">设计师作品</h3>
-            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">来自全球顶尖设计师</p>
+            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">设计师作�?/h3>
+            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">来自全球顶尖设计�?/p>
             <NuxtLink to="/search?category=designer" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
               <span class="relative">
                 查看作品
@@ -400,6 +400,480 @@ const isVisible = (id: string) => {
       </div>
     </section>
 
+    <!-- POD Services Section -->
+    <section class="py-20 px-4 sm:px-6 md:px-8 bg-white max-w-[1920px] mx-auto w-full">
+      <div class="text-center mb-12" data-animate-id="services-header">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-normal tracking-wide mb-3 uppercase text-gray-900" :class="{ 'animate-in': isVisible('services-header') }">我们的服�?/h2>
+        <p class="text-sm md:text-base font-light text-gray-600 tracking-wide" :class="{ 'animate-in': isVisible('services-header') }">提供全方位按需定制印刷解决方案</p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+        <!-- 服装定制 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-custom"
+          :class="{ 'animate-in': isVisible('service-custom') }"
+          style="--delay: 0s"
+          @click="navigateTo('/services/custom')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/custom-tshirt.jpg" 
+              alt="服装定制"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">服装定制</h3>
+              <p class="text-xs text-white/90">T�?· 卫衣 · 帽子</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>1件起印，无需大量起订</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>支持DTG、热转印工艺</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>3-5天制作发�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 广告制作 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-advertising"
+          :class="{ 'animate-in': isVisible('service-advertising') }"
+          style="--delay: 0.1s"
+          @click="navigateTo('/services/advertising')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/advertising-poster.jpg" 
+              alt="广告制作"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">广告制作</h3>
+              <p class="text-xs text-white/90">海报 · 横幅 · 展架</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>提供设计服务或使用自有设�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>PP、KT板、灯箱片等材�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>100张起批量优惠�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 企业礼品 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-corporate"
+          :class="{ 'animate-in': isVisible('service-corporate') }"
+          style="--delay: 0.2s"
+          @click="navigateTo('/services/corporate')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/corporate-gifts.jpg" 
+              alt="企业礼品"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">企业礼品</h3>
+              <p class="text-xs text-white/90">马克�?· 笔记�?· U�?/p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>50+品类可选择定制</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>激光雕刻、丝印LOGO</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>50件起享批量折�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 包装印刷 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-packaging"
+          :class="{ 'animate-in': isVisible('service-packaging') }"
+          style="--delay: 0.3s"
+          @click="navigateTo('/services/packaging')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/packaging-box.jpg" 
+              alt="包装印刷"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">包装印刷</h3>
+              <p class="text-xs text-white/90">纸箱 · 手提�?· 标签</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>白卡纸、牛皮纸等环保材�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>可定制任意尺寸和形状</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>烫金、UV、压纹等特殊工艺</span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 家居装饰 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-homedecor"
+          :class="{ 'animate-in': isVisible('service-homedecor') }"
+          style="--delay: 0.4s"
+          @click="navigateTo('/services/homedecor')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/home-decor.jpg" 
+              alt="家居装饰"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">家居装饰</h3>
+              <p class="text-xs text-white/90">装饰�?· 抱枕 · 地毯</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>上传照片或设计图即可定制</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>纯棉、亚麻等优质面料</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>常规尺寸现货，特殊尺寸定�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 书籍画册 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-printing"
+          :class="{ 'animate-in': isVisible('service-printing') }"
+          style="--delay: 0.5s"
+          @click="navigateTo('/services/printing')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/book-printing.jpg" 
+              alt="书籍画册"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">书籍画册</h3>
+              <p class="text-xs text-white/90">宣传�?· 说明�?· 手册</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>骑马钉、胶装、精装可�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>铜版纸、双胶纸等多种纸�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>10本起印，量大价优</span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 名片票据 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-cards"
+          :class="{ 'animate-in': isVisible('service-cards') }"
+          style="--delay: 0.6s"
+          @click="navigateTo('/services/cards')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/business-cards.jpg" 
+              alt="名片票据"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">名片票据</h3>
+              <p class="text-xs text-white/90">名片 · 优惠�?· 门票</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>200张起印，当天可取</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>普通纸、特种纸、PVC可�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>免费提供名片模板设计</span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 照片打印 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-photo"
+          :class="{ 'animate-in': isVisible('service-photo') }"
+          style="--delay: 0.7s"
+          @click="navigateTo('/services/photo')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/photo-printing.jpg" 
+              alt="照片打印"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">照片打印</h3>
+              <p class="text-xs text-white/90">冲印 · 证件�?· 照片�?/p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>高清数码冲印，色彩还原真�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>1寸至20寸全尺寸支持</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>证件照即拍即取，电子版免�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 办公用品 -->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-office"
+          :class="{ 'animate-in': isVisible('service-office') }"
+          style="--delay: 0.8s"
+          @click="navigateTo('/services/office')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/office-supplies.jpg" 
+              alt="办公用品"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">办公用品</h3>
+              <p class="text-xs text-white/90">文件�?· 信封 · 便签</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>公司信息、LOGO一站式定制</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>信纸、信封、文件袋等全�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>企业客户可月结账�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 不干胶标�?-->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-stickers"
+          :class="{ 'animate-in': isVisible('service-stickers') }"
+          style="--delay: 0.9s"
+          @click="navigateTo('/services/stickers')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/stickers.jpg" 
+              alt="不干胶标�?
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">不干胶标�?/h3>
+              <p class="text-xs text-white/90">贴纸 · 标签 · 封口�?/p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>任意形状模切，支持异�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>哑面、光面、透明材质可�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>100张起印，3天快速交�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 工艺品定�?-->
+        <div 
+          class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-gray-300"
+          data-animate-id="service-crafts"
+          :class="{ 'animate-in': isVisible('service-crafts') }"
+          style="--delay: 1s"
+          @click="navigateTo('/services/crafts')"
+        >
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="/images/services/crafts.jpg" 
+              alt="工艺品定�?
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <h3 class="text-lg font-medium text-white mb-1">工艺品定�?/h3>
+              <p class="text-xs text-white/90">亚克�?· 水晶 · 奖杯</p>
+            </div>
+          </div>
+          <div class="p-4">
+            <ul class="space-y-2 text-xs text-gray-600 mb-4">
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>激光内雕、UV打印、雕�?/span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>奖牌、摆件、纪念品定制</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <v-icon name="mdi-check" size="16" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span>3D效果，精美包装附�?/span>
+              </li>
+            </ul>
+            <div class="flex items-center justify-between text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              <span>查看详情</span>
+              <v-icon name="mdi-arrow-right" size="16" class="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
     <!-- Product Showcase Section -->
     <section class="py-32 bg-white w-full max-w-full box-border overflow-x-hidden">
       <div class="max-w-[1920px] mx-auto px-8 w-full max-w-full box-border">
@@ -410,7 +884,7 @@ const isVisible = (id: string) => {
           <div class="p-8">
             <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">新品</span>
             <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">创意印花设计</h2>
-            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">探索我们的最新系列，每一件作品都经过精心设计，融合了艺术与时尚的完美平衡。</p>
+            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">探索我们的最新系列，每一件作品都经过精心设计，融合了艺术与时尚的完美平衡�?/p>
             <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToExplore">立即探索</BaseButton>
           </div>
         </div>
@@ -420,9 +894,9 @@ const isVisible = (id: string) => {
             <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200'><defs><linearGradient id='show2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f8f8f8'/><stop offset='50%' stop-color='%23f0f0f0'/><stop offset='100%' stop-color='%23e5e5e5'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23show2)'/></svg>" alt="Product" />
           </div>
           <div class="p-8 lg:order-1">
-            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">精选</span>
+            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">精�?/span>
             <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">服装设计服务</h2>
-            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">专业的服装设计服务，从概念到成品，为您打造独特的时尚风格。</p>
+            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">专业的服装设计服务，从概念到成品，为您打造独特的时尚风格�?/p>
             <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToSearch">了解更多</BaseButton>
           </div>
         </div>
@@ -451,7 +925,7 @@ const isVisible = (id: string) => {
     <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full bg-white">
       <div class="text-center mb-16" data-animate-id="categories-header">
         <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('categories-header') }">商品分类</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分�?/p>
       </div>
       
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
@@ -510,7 +984,7 @@ const isVisible = (id: string) => {
     <section class="py-32 px-8 max-w-[1920px] mx-auto w-full max-w-full box-border">
       <div class="text-center mb-16">
         <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">设计画廊</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现灵感，激发创意</p>
+        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现灵感，激发创�?/p>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full box-border">
@@ -524,7 +998,7 @@ const isVisible = (id: string) => {
           </div>
           <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 md:opacity-100">
             <h3 class="text-xl font-light tracking-wider mb-2 uppercase">设计作品 {{ i }}</h3>
-            <p class="text-sm font-light opacity-90">创意设计师作品</p>
+            <p class="text-sm font-light opacity-90">创意设计师作�?/p>
           </div>
         </div>
       </div>
@@ -533,7 +1007,7 @@ const isVisible = (id: string) => {
     <!-- Featured Designers Section -->
     <section class="py-32 px-8 max-w-[1920px] mx-auto bg-white w-full max-w-full box-border">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">推荐设计师</h2>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">推荐设计�?/h2>
         <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现顶尖创意人才</p>
       </div>
       
@@ -600,12 +1074,12 @@ const isVisible = (id: string) => {
           <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-8 uppercase leading-tight">衣设服装设计平台</h2>
           <p class="text-base font-light text-gray-600 leading-relaxed mb-6">
             衣设是一个专注于创意印花图案和服装设计的专业平台。我们汇聚了来自全球的设计师和创意人才，
-            为时尚行业提供高质量的设计资源和灵感。无论是寻找灵感、展示作品，还是寻找合作伙伴，
-            衣设都是您的理想之选。
+            为时尚行业提供高质量的设计资源和灵感。无论是寻找灵感、展示作品，还是寻找合作伙伴�?
+            衣设都是您的理想之选�?
           </p>
           <p class="text-base font-light text-gray-600 leading-relaxed mb-8">
-            我们的使命是连接全球的设计师和创意爱好者，让优秀的创意设计能够被更多人发现和欣赏。
-            我们提供免费的设计服务，包括印花图案、服装设计、品牌标识、海报设计等多种类型的设计服务。
+            我们的使命是连接全球的设计师和创意爱好者，让优秀的创意设计能够被更多人发现和欣赏�?
+            我们提供免费的设计服务，包括印花图案、服装设计、品牌标识、海报设计等多种类型的设计服务�?
           </p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
             <div class="flex items-center gap-3 text-base text-black">
@@ -614,11 +1088,11 @@ const isVisible = (id: string) => {
             </div>
             <div class="flex items-center gap-3 text-base text-black">
               <v-icon name="mdi-check-circle" size="24" />
-              <span>全球设计师社区</span>
+              <span>全球设计师社�?/span>
             </div>
             <div class="flex items-center gap-3 text-base text-black">
               <v-icon name="mdi-check-circle" size="24" />
-              <span>高质量设计作品</span>
+              <span>高质量设计作�?/span>
             </div>
             <div class="flex items-center gap-3 text-base text-black">
               <v-icon name="mdi-check-circle" size="24" />
@@ -637,9 +1111,9 @@ const isVisible = (id: string) => {
       <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 opacity-50"></div>
       <div class="relative z-10 max-w-[800px] mx-auto w-full box-border px-4">
         <h2 class="text-5xl md:text-6xl lg:text-7xl font-light tracking-wider mb-6 uppercase">加入创意社区</h2>
-        <p class="text-lg md:text-xl font-light text-gray-600 leading-relaxed mb-10">与全球设计师一起，分享您的创意，发现无限可能</p>
+        <p class="text-lg md:text-xl font-light text-gray-600 leading-relaxed mb-10">与全球设计师一起，分享您的创意，发现无限可�?/p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center flex-wrap">
-          <BaseButton size="lg" variant="primary" class="min-w-[200px] uppercase tracking-wider" @click="goToSearch">开始创作</BaseButton>
+          <BaseButton size="lg" variant="primary" class="min-w-[200px] uppercase tracking-wider" @click="goToSearch">开始创�?/BaseButton>
           <BaseButton size="lg" variant="outline" class="min-w-[200px] uppercase tracking-wider bg-transparent" @click="goToExplore">探索作品</BaseButton>
         </div>
       </div>
@@ -665,7 +1139,7 @@ const isVisible = (id: string) => {
   }
 }
 
-// 隐藏滚动条的工具类
+// 隐藏滚动条的工具�?
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
