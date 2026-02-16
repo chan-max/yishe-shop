@@ -47,6 +47,7 @@ const socialLinks = [
         <!-- Brand Section -->
         <div class="footer-brand">
           <div class="footer-logo">
+            <img src="/logo.svg" alt="1s Logo" class="footer-logo-img" />
             <span class="footer-logo-text">衣设服装设计</span>
           </div>
           <p class="footer-description">
@@ -187,10 +188,15 @@ const socialLinks = [
 
 .footer-logo {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-logo-img {
+  height: 48px;
+  width: auto;
+  filter: brightness(0) invert(1); /* Force white color for dark footer */
 }
 
 .footer-logo-text {

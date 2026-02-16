@@ -28,7 +28,7 @@
           <!-- Left Section: Logo -->
           <div class="header-left">
             <NuxtLink to="/" class="logo-link">
-              <img src="/onestyle.png" alt="衣设服装设计" class="logo-image" />
+              <img src="/logo.svg" alt="1s Fashion Design" class="logo-image" />
             </NuxtLink>
           </div>
           
@@ -526,7 +526,6 @@ onMounted(() => {
   height: 60px;
   width: auto;
   transition: opacity 0.2s ease;
-  transform: translateY(4px);
   
   @media (max-width: 1024px) {
     height: 56px;
