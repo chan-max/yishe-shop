@@ -596,7 +596,7 @@ watch(
 /* 商品主图容器：紧贴图片尺寸，避免阴影留白 */
 .product-image-container {
   width: 100%;
-  height: 600px;
+  min-height: 600px;
   display: grid;
   place-items: center;
   position: relative;
