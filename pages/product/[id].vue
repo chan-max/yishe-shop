@@ -18,9 +18,9 @@
         <div v-if="favoriteCount !== null" class="text-[11px] text-stone-400">{{ favoriteCount }} 人收藏了此商品</div>
       </div>
 
-      <div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-        <section class="rounded-[1.5rem] border border-stone-200 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-5">
-          <div class="group relative overflow-hidden rounded-[1.1rem] bg-[#f6f4f1]">
+      <div class="space-y-5">
+        <section>
+          <div class="group relative overflow-hidden rounded-[1rem] bg-transparent">
             <button v-if="productImages.length > 1" class="absolute left-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-white/96 text-stone-600 shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="previousImage" aria-label="上一张图片">
               <Icon name="heroicons:chevron-left" class="h-4 w-4" />
             </button>
@@ -28,8 +28,8 @@
               <Icon name="heroicons:chevron-right" class="h-4 w-4" />
             </button>
 
-            <div class="product-image-container">
-              <transition :name="`slide-${slideDirection}`">
+            <div class="product-image-container rounded-[0.9rem] bg-[#f6f4f1]">
+              <transition :name="`gallery-${slideDirection}`" mode="out-in">
                 <img v-if="currentImage" :key="currentImage" :src="currentImage" :alt="product.name" class="product-main-image cursor-pointer transition duration-500 group-hover:scale-[1.03]" @error="handleImageError" @click="openImagePreview" />
                 <div v-else key="no-image" class="flex h-full w-full items-center justify-center text-[12px] text-stone-400">暂无图片</div>
               </transition>
@@ -37,47 +37,59 @@
           </div>
 
           <div v-if="productImages.length > 1" class="mt-4 flex flex-wrap gap-2">
-            <button v-for="(img, index) in productImages" :key="index" class="overflow-hidden rounded-[0.9rem] border bg-white p-0.5 transition duration-200 hover:-translate-y-0.5" :class="currentImageIndex === index ? 'border-stone-900 shadow-[0_10px_20px_rgba(28,25,23,0.08)]' : 'border-stone-200 hover:border-stone-300'" @click="currentImageIndex = index">
-              <img :src="img" :alt="`${product.name}-${index + 1}`" class="h-16 w-16 object-cover transition duration-300 hover:scale-[1.06] sm:h-20 sm:w-20" />
+            <button v-for="(img, index) in productImages" :key="index" class="overflow-hidden rounded-[0.85rem] border bg-white p-0.5 transition duration-200 hover:-translate-y-0.5" :class="currentImageIndex === index ? 'border-stone-900 shadow-[0_8px_18px_rgba(28,25,23,0.07)]' : 'border-stone-200 hover:border-stone-300'" @click="setCurrentImage(index)">
+              <img :src="img" :alt="`${product.name}-${index + 1}`" class="h-[56px] w-auto min-w-[56px] max-w-[72px] object-cover transition duration-300 hover:scale-[1.06] sm:h-[68px] sm:min-w-[68px] sm:max-w-[84px]" />
             </button>
           </div>
         </section>
 
-        <section class="rounded-[1.5rem] border border-stone-200 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-7">
-          <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Product Detail</div>
-          <div class="mt-3 flex items-start justify-between gap-4">
-            <h1 class="text-[28px] font-semibold leading-tight text-stone-950 sm:text-[34px]">{{ product.name }}</h1>
-            <FavoriteButton :is-favorite="isFavorite" :count="favoriteCount" :show-count="false" @click="toggleFavorite" />
-          </div>
-
-          <p v-if="product.description" class="mt-4 text-[13px] leading-7 text-stone-500">{{ product.description }}</p>
-          <div v-if="product.createTime" class="mt-4 text-[11px] text-stone-400">{{ formatDate(product.createTime) }}</div>
-
-          <div class="mt-6 grid gap-4 border-t border-stone-100 pt-6 sm:grid-cols-2">
-            <div v-if="product.code" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb]">
-              <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">产品代码</div>
-              <p class="mt-2 text-[13px] text-stone-900">{{ product.code }}</p>
+        <section class="rounded-[1.5rem] border border-stone-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-7">
+          <div class="max-w-5xl">
+            <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Product Detail</div>
+            <div class="mt-3 flex items-start justify-between gap-4">
+              <h1 class="text-[28px] font-semibold leading-tight text-stone-950 sm:text-[34px]">{{ product.name }}</h1>
+              <FavoriteButton :is-favorite="isFavorite" :count="favoriteCount" :show-count="false" @click="toggleFavorite" />
             </div>
 
-            <div v-if="productKeywords.length > 0" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb] sm:col-span-2">
-              <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">关键词</div>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <span v-for="keyword in productKeywords" :key="keyword" class="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500 transition duration-200 hover:border-stone-900 hover:bg-stone-900 hover:text-white">
-                  {{ keyword }}
-                </span>
+            <p v-if="product.description" class="mt-4 max-w-4xl text-[14px] leading-8 text-stone-500">{{ product.description }}</p>
+            <div v-if="product.createTime" class="mt-4 text-[12px] text-stone-400">{{ formatDate(product.createTime) }}</div>
+          </div>
+
+          <div class="mt-6 grid gap-4 border-t border-stone-100 pt-6 lg:grid-cols-[minmax(0,0.78fr)_minmax(280px,0.22fr)]">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div v-if="product.code" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb]">
+                <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">产品代码</div>
+                <p class="mt-2 text-[13px] text-stone-900">{{ product.code }}</p>
+              </div>
+
+              <div v-if="product.createTime" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb]">
+                <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">上架时间</div>
+                <p class="mt-2 text-[13px] text-stone-900">{{ formatDate(product.createTime) }}</p>
+              </div>
+
+              <div v-if="productKeywords.length > 0" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb] sm:col-span-2">
+                <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">关键词</div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <span v-for="keyword in productKeywords" :key="keyword" class="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500 transition duration-200 hover:border-stone-900 hover:bg-stone-900 hover:text-white">
+                    {{ keyword }}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="mt-6 flex flex-wrap gap-3 border-t border-stone-100 pt-6">
-            <BaseButton variant="secondary" size="sm" class="!text-[12px]" @click="copyLink">
-              <template #prefix><Icon name="heroicons:link" class="h-4 w-4" /></template>
-              复制链接
-            </BaseButton>
-            <BaseButton variant="secondary" size="sm" class="!text-[12px]" @click="shareProduct">
-              <template #prefix><Icon name="heroicons:share" class="h-4 w-4" /></template>
-              分享
-            </BaseButton>
+            <div class="rounded-[1rem] bg-[#faf8f5] p-4">
+              <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">操作</div>
+              <div class="mt-4 flex flex-wrap gap-3 lg:flex-col">
+                <BaseButton variant="secondary" size="sm" class="!text-[12px] lg:w-full lg:justify-center" @click="copyLink">
+                  <template #prefix><Icon name="heroicons:link" class="h-4 w-4" /></template>
+                  复制链接
+                </BaseButton>
+                <BaseButton variant="secondary" size="sm" class="!text-[12px] lg:w-full lg:justify-center" @click="shareProduct">
+                  <template #prefix><Icon name="heroicons:share" class="h-4 w-4" /></template>
+                  分享
+                </BaseButton>
+              </div>
+            </div>
           </div>
         </section>
       </div>
@@ -256,17 +268,25 @@ const handleImageError = (event: Event) => {
   img.style.display = 'none'
 }
 
+const setCurrentImage = (index: number) => {
+  if (productImages.value.length === 0 || index === currentImageIndex.value) return
+  slideDirection.value = index > currentImageIndex.value ? 'next' : 'prev'
+  currentImageIndex.value = index
+}
+
 const previousImage = () => {
   if (productImages.value.length > 0) {
+    const nextIndex = (currentImageIndex.value - 1 + productImages.value.length) % productImages.value.length
     slideDirection.value = 'prev'
-    currentImageIndex.value = (currentImageIndex.value - 1 + productImages.value.length) % productImages.value.length
+    currentImageIndex.value = nextIndex
   }
 }
 
 const nextImage = () => {
   if (productImages.value.length > 0) {
+    const nextIndex = (currentImageIndex.value + 1) % productImages.value.length
     slideDirection.value = 'next'
-    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length
+    currentImageIndex.value = nextIndex
   }
 }
 
@@ -305,7 +325,7 @@ const openImagePreview = () => {
 }
 
 const handlePreviewImageChange = (index: number) => {
-  currentImageIndex.value = index
+  setCurrentImage(index)
 }
 
 watch(() => product.value, (newProduct) => {
@@ -339,21 +359,9 @@ watch(() => route.params.id, () => {
 
 <style scoped>
 .product-image-container {
-  position: relative;
-  aspect-ratio: 1 / 1;
-}
-
-.product-main-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-</style>
-
-<style scoped>
-.product-image-container {
-  width: 100%;
-  min-height: 600px;
+  min-height: min(52vw, 440px);
+  max-height: 560px;
   display: grid;
   place-items: center;
   position: relative;
@@ -369,25 +377,52 @@ watch(() => route.params.id, () => {
 .product-main-image {
   width: auto;
   height: auto;
-  max-height: 72vh;
+  max-height: min(70vh, 560px);
   max-width: 100%;
   display: block;
   object-fit: contain;
 }
 
-.slide-next-enter-active,
-.slide-next-leave-active,
-.slide-prev-enter-active,
-.slide-prev-leave-active {
-  transition: transform 0.25s ease-in-out;
+.gallery-next-enter-active,
+.gallery-next-leave-active,
+.gallery-prev-enter-active,
+.gallery-prev-leave-active {
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.slide-next-enter-from { transform: translateX(100%); }
-.slide-next-enter-to { transform: translateX(0%); }
-.slide-next-leave-from { transform: translateX(0%); }
-.slide-next-leave-to { transform: translateX(-100%); }
-.slide-prev-enter-from { transform: translateX(-100%); }
-.slide-prev-enter-to { transform: translateX(0%); }
-.slide-prev-leave-from { transform: translateX(0%); }
-.slide-prev-leave-to { transform: translateX(100%); }
+.gallery-next-enter-from {
+  opacity: 0;
+  transform: translate3d(32px, 0, 0) scale(0.985);
+  filter: blur(4px);
+}
+
+.gallery-next-leave-to {
+  opacity: 0;
+  transform: translate3d(-32px, 0, 0) scale(1.01);
+  filter: blur(4px);
+}
+
+.gallery-prev-enter-from {
+  opacity: 0;
+  transform: translate3d(-32px, 0, 0) scale(0.985);
+  filter: blur(4px);
+}
+
+.gallery-prev-leave-to {
+  opacity: 0;
+  transform: translate3d(32px, 0, 0) scale(1.01);
+  filter: blur(4px);
+}
+
+.gallery-next-enter-to,
+.gallery-next-leave-from,
+.gallery-prev-enter-to,
+.gallery-prev-leave-from {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
 </style>
