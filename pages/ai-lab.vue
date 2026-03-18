@@ -1,41 +1,75 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'page' })
+definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: 'AI 设计实验室 - 衣设',
-  description: '集中展示 AI 情绪板、图案延展和版式建议等设计工具方向，作为后续功能接入预览。',
-  keywords: 'AI设计,设计实验室,情绪板生成,图案延展,智能排版',
-  url: 'https://1s.design/ai-lab',
-  type: 'website',
-})
+  title: "AI 设计实验室 - 衣设",
+  description:
+    "这里放的是衣设接下来会接进来的创作辅助工具，用来帮你更快把感觉落成画面。",
+  keywords: "创作工具,设计实验室,情绪板生成,图案延展,版式辅助",
+  url: "https://1s.design/ai-lab",
+  type: "website",
+});
 
 const workflows = [
-  { id: 'moodboard', name: 'Moodboard Engine', intro: '把 brief 转成气质板、色板和材质建议。', points: ['风格关键词识别', '色彩气质归纳', '材质参考生成'] },
-  { id: 'pattern', name: 'Pattern Extend', intro: '从 1 个主图案扩展到完整系列，适配不同商品尺寸。', points: ['主次纹样生成', '尺寸适配', '商品场景预览'] },
-  { id: 'layout', name: 'Smart Layout', intro: '为首页、详情页、海报和社媒图自动推荐版式结构。', points: ['首屏布局建议', '模块层级优化', '投放尺寸延展'] },
-]
+  {
+    id: "moodboard",
+    name: "灵感整理板",
+    intro: "把一句模糊的话，先翻成能看懂的色板、材质和气质。",
+    points: ["风格关键词整理", "色彩气氛归纳", "参考材质补全"],
+  },
+  {
+    id: "pattern",
+    name: "图案延展台",
+    intro: "从一张主图或一个概念，慢慢长出一组能落到商品上的系列。",
+    points: ["主次纹样展开", "尺寸适配建议", "商品画面预览"],
+  },
+  {
+    id: "layout",
+    name: "版式草稿区",
+    intro: "先把首页、详情页和宣传图的阅读顺序搭出来，再决定细节。",
+    points: ["首屏结构建议", "信息层级整理", "不同尺寸延展"],
+  },
+];
 
-const activeWorkflow = ref(workflows[0].id)
+const activeWorkflow = ref(workflows[0].id);
 const prompts = [
-  '法式花园感的春季围巾与香氛礼盒系列',
-  '偏艺术家联名的餐具与桌布组合，要留白感',
-  '年轻女性向的轻运动卫衣图案，适合社媒传播',
-]
-const selectedPrompt = ref(prompts[0])
+  "法式花园感的春季围巾与香氛礼盒系列",
+  "偏艺术家联名的餐具与桌布组合，要留白感",
+  "年轻女性向的轻运动卫衣图案，适合社媒传播",
+];
+const selectedPrompt = ref(prompts[0]);
 
 const outputModules = [
-  { title: 'Prompt 输入区', text: '让品牌方、设计师、运营共同定义方向。' },
-  { title: '视觉推演区', text: '输出 moodboard、色板、图案、版式建议。' },
-  { title: '商品映射区', text: '把结果转换成 SKU、详情页与展示物料。' },
-]
+  {
+    title: "想法输入区",
+    text: "你可以只说一个场景、一种情绪，或者一句很主观的话。",
+  },
+  { title: "画面整理区", text: "把色板、图案、材质和版式慢慢拉到一个方向上。" },
+  { title: "商品落图区", text: "再往下就是它会落在哪件东西上，怎么被人看到。" },
+];
 
 const roadmap = [
-  { phase: 'Now', title: '界面与交互草案', desc: '先把浏览逻辑、阅读顺序和功能区块整理清楚。' },
-  { phase: 'Next', title: '模型接入', desc: '接文字生成、图像理解和风格延展能力。' },
-  { phase: 'Later', title: '设计协作工作台', desc: '把生成结果、人工修订、客户反馈放在同一空间。' },
-]
+  {
+    phase: "Now",
+    title: "先把入口和动作做顺",
+    desc: "先让人愿意点进来，愿意试一下，而不是先被工具吓退。",
+  },
+  {
+    phase: "Next",
+    title: "再把辅助能力接进来",
+    desc: "让整理灵感、延展图案和搭画面这几步先轻下来。",
+  },
+  {
+    phase: "Later",
+    title: "最后再做协作空间",
+    desc: "把草稿、修改、确认和上线都放在同一条线上。",
+  },
+];
 
-const activeItem = computed(() => workflows.find(item => item.id === activeWorkflow.value) || workflows[0])
+const activeItem = computed(
+  () =>
+    workflows.find((item) => item.id === activeWorkflow.value) || workflows[0],
+);
 </script>
 
 <template>
@@ -44,11 +78,13 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
       <section class="grid gap-5 xl:grid-cols-[1.02fr_0.98fr]">
         <div class="ys-card rounded-[1.75rem] p-6 sm:p-8">
           <div class="minimal-kicker">AI Design Lab</div>
-          <h1 class="mt-4 max-w-3xl text-[34px] font-semibold leading-[1.14] text-stone-950 sm:text-[46px]">
-            这里集中展示平台计划接入的 AI 设计辅助功能。
+          <h1
+            class="mt-4 max-w-3xl text-[34px] font-semibold leading-[1.14] text-stone-950 sm:text-[46px]"
+          >
+            工具应该让人更敢动手，而不是更像在上课。
           </h1>
           <p class="mt-4 max-w-2xl text-[13px] leading-7 text-stone-500">
-            当前主要展示情绪板整理、图案延展和版式建议等模块，方便提前了解功能方向和使用场景。
+            这里放的是衣设接下来会用到的创作辅助模块。它们的作用不是替你设计，而是先把起步这一步变轻。
           </p>
           <div class="mt-6 flex flex-wrap gap-2">
             <span class="ys-chip text-[11px]">AI 情绪板</span>
@@ -59,21 +95,30 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
         </div>
 
         <div class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
-          <div class="minimal-kicker">Demo Prompt</div>
+          <div class="minimal-kicker">Try a direction</div>
           <div class="mt-4 space-y-2">
             <button
               v-for="item in prompts"
               :key="item"
               type="button"
-              :class="['w-full rounded-[1rem] border px-4 py-3 text-left text-[12px] transition duration-200', selectedPrompt === item ? 'border-stone-900 bg-stone-900 text-stone-50' : 'border-stone-200 bg-white text-stone-600 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]']"
+              :class="[
+                'w-full rounded-[1rem] border px-4 py-3 text-left text-[12px] transition duration-200',
+                selectedPrompt === item
+                  ? 'border-stone-900 bg-stone-900 text-stone-50'
+                  : 'border-stone-200 bg-white text-stone-600 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]',
+              ]"
               @click="selectedPrompt = item"
             >
               {{ item }}
             </button>
           </div>
           <div class="mt-5 rounded-[1.2rem] bg-[#faf8f5] p-4">
-            <div class="text-[10px] uppercase tracking-[0.18em] text-stone-400">当前模拟输入</div>
-            <p class="mt-3 text-[13px] leading-7 text-stone-600">{{ selectedPrompt }}</p>
+            <div class="text-[10px] uppercase tracking-[0.18em] text-stone-400">
+              假设你就从这句话开始
+            </div>
+            <p class="mt-3 text-[13px] leading-7 text-stone-600">
+              {{ selectedPrompt }}
+            </p>
           </div>
         </div>
       </section>
@@ -81,8 +126,8 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
       <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
         <BusinessSectionIntro
           kicker="Workflow Engine"
-          title="把 AI 能力整理成清晰的功能模块。"
-          description="每个模块对应一个具体用途，后续可以单独上线，也可以逐步组合进设计流程。"
+          title="每个工具，都只解决一件具体的小事。"
+          description="先把灵感理顺，再把图案做开，最后把页面搭好。这样工具才真的有用。"
         />
         <div class="mt-6 grid gap-3 lg:grid-cols-[0.92fr_1.08fr]">
           <div class="space-y-3">
@@ -90,19 +135,43 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
               v-for="item in workflows"
               :key="item.id"
               type="button"
-              :class="['w-full rounded-[1.2rem] border px-5 py-5 text-left transition duration-200', activeWorkflow === item.id ? 'border-stone-900 bg-stone-900 text-stone-50' : 'border-stone-200 bg-white hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]']"
+              :class="[
+                'w-full rounded-[1.2rem] border px-5 py-5 text-left transition duration-200',
+                activeWorkflow === item.id
+                  ? 'border-stone-900 bg-stone-900 text-stone-50'
+                  : 'border-stone-200 bg-white hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]',
+              ]"
               @click="activeWorkflow = item.id"
             >
               <div class="text-[15px] font-semibold">{{ item.name }}</div>
-              <p class="mt-2 text-[12px] leading-6" :class="activeWorkflow === item.id ? 'text-stone-300' : 'text-stone-500'">{{ item.intro }}</p>
+              <p
+                class="mt-2 text-[12px] leading-6"
+                :class="
+                  activeWorkflow === item.id
+                    ? 'text-stone-300'
+                    : 'text-stone-500'
+                "
+              >
+                {{ item.intro }}
+              </p>
             </button>
           </div>
           <div class="rounded-[1.35rem] bg-[#faf8f5] p-5 sm:p-6">
-            <div class="text-[10px] uppercase tracking-[0.22em] text-stone-400">Selected Module</div>
-            <h2 class="mt-3 text-[26px] font-semibold text-stone-950">{{ activeItem.name }}</h2>
-            <p class="mt-3 text-[13px] leading-7 text-stone-500">{{ activeItem.intro }}</p>
+            <div class="text-[10px] uppercase tracking-[0.22em] text-stone-400">
+              当前模块
+            </div>
+            <h2 class="mt-3 text-[26px] font-semibold text-stone-950">
+              {{ activeItem.name }}
+            </h2>
+            <p class="mt-3 text-[13px] leading-7 text-stone-500">
+              {{ activeItem.intro }}
+            </p>
             <div class="mt-6 grid gap-3 sm:grid-cols-3">
-              <div v-for="point in activeItem.points" :key="point" class="rounded-[1rem] bg-white px-4 py-4 text-[12px] leading-6 text-stone-600">
+              <div
+                v-for="point in activeItem.points"
+                :key="point"
+                class="rounded-[1rem] bg-white px-4 py-4 text-[12px] leading-6 text-stone-600"
+              >
                 {{ point }}
               </div>
             </div>
@@ -114,13 +183,21 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
         <div class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Future Surface"
-            title="未来界面结构"
-            description="模型接入后，这些区域可以直接替换为真实输出结果，不需要重做页面结构。"
+            title="以后大概会长这样"
+            description="真正接进来以后，页面不用大改，只是把示意区换成你的真实结果。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
-            <div v-for="item in outputModules" :key="item.title" class="ys-card rounded-[1.2rem] p-4">
-              <div class="text-[14px] font-semibold text-stone-950">{{ item.title }}</div>
-              <p class="mt-2 text-[12px] leading-6 text-stone-500">{{ item.text }}</p>
+            <div
+              v-for="item in outputModules"
+              :key="item.title"
+              class="ys-card rounded-[1.2rem] p-4"
+            >
+              <div class="text-[14px] font-semibold text-stone-950">
+                {{ item.title }}
+              </div>
+              <p class="mt-2 text-[12px] leading-6 text-stone-500">
+                {{ item.text }}
+              </p>
             </div>
           </div>
         </div>
@@ -128,16 +205,27 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
         <div class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Roadmap"
-            title="产品演进路线"
-            description="先完成前台展示与交互，再逐步接入可用的 AI 能力。"
+            title="不是一下子做满，而是一步一步接进去"
+            description="先让人敢用，再让结果好用，最后再谈复杂协作。"
           />
           <div class="mt-6 space-y-3">
-            <div v-for="item in roadmap" :key="item.phase" class="rounded-[1.2rem] bg-white px-4 py-4">
+            <div
+              v-for="item in roadmap"
+              :key="item.phase"
+              class="rounded-[1.2rem] bg-white px-4 py-4"
+            >
               <div class="flex items-center justify-between gap-3">
-                <div class="text-[15px] font-semibold text-stone-950">{{ item.title }}</div>
-                <span class="rounded-full bg-[#faf8f5] px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-stone-500">{{ item.phase }}</span>
+                <div class="text-[15px] font-semibold text-stone-950">
+                  {{ item.title }}
+                </div>
+                <span
+                  class="rounded-full bg-[#faf8f5] px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-stone-500"
+                  >{{ item.phase }}</span
+                >
               </div>
-              <p class="mt-2 text-[12px] leading-6 text-stone-500">{{ item.desc }}</p>
+              <p class="mt-2 text-[12px] leading-6 text-stone-500">
+                {{ item.desc }}
+              </p>
             </div>
           </div>
         </div>

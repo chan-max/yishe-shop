@@ -4,17 +4,33 @@
     class="favorite-button-container"
     :class="{ 'is-favorite': isFavorite }"
     :aria-pressed="isFavorite"
-    :title="isFavorite ? '取消收藏' : '点击收藏'"
+    :title="isFavorite ? '已经留住这件了' : '先把这件留住'"
     @click="handleClick"
   >
-    <span class="heart-container" :class="[{ 'is-favorite': isFavorite }, `size-${size}`]">
+    <span
+      class="heart-container"
+      :class="[{ 'is-favorite': isFavorite }, `size-${size}`]"
+    >
       <span class="heart-surface"></span>
       <span class="svg-container">
-        <svg viewBox="0 0 24 24" class="svg-heart" :class="{ 'is-favorite': isFavorite }" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+        <svg
+          viewBox="0 0 24 24"
+          class="svg-heart"
+          :class="{ 'is-favorite': isFavorite }"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"
+          ></path>
         </svg>
 
-        <svg v-if="showCelebrate" class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          v-if="showCelebrate"
+          class="svg-celebrate"
+          width="100"
+          height="100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <polygon points="10,10 20,20"></polygon>
           <polygon points="10,50 20,50"></polygon>
           <polygon points="20,80 30,70"></polygon>
@@ -26,7 +42,7 @@
     </span>
 
     <span class="favorite-text" :class="{ 'is-favorite': isFavorite }">
-      {{ isFavorite ? '已收藏' : '收藏' }}
+      {{ isFavorite ? "留住了" : "先留一下" }}
     </span>
 
     <div v-if="showCount && count !== null" class="favorite-count">
@@ -36,39 +52,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch } from "vue";
 
 interface Props {
-  isFavorite: boolean
-  count?: number | null
-  showCount?: boolean
-  size?: 'small' | 'medium' | 'large'
+  isFavorite: boolean;
+  count?: number | null;
+  showCount?: boolean;
+  size?: "small" | "medium" | "large";
 }
 
 const props = withDefaults(defineProps<Props>(), {
   count: null,
   showCount: false,
-  size: 'medium',
-})
+  size: "medium",
+});
 
 const emit = defineEmits<{
-  click: []
-}>()
+  click: [];
+}>();
 
-const showCelebrate = ref(false)
+const showCelebrate = ref(false);
 
-watch(() => props.isFavorite, (newVal, oldVal) => {
-  if (newVal && !oldVal) {
-    showCelebrate.value = true
-    setTimeout(() => {
-      showCelebrate.value = false
-    }, 420)
-  }
-})
+watch(
+  () => props.isFavorite,
+  (newVal, oldVal) => {
+    if (newVal && !oldVal) {
+      showCelebrate.value = true;
+      setTimeout(() => {
+        showCelebrate.value = false;
+      }, 420);
+    }
+  },
+);
 
 const handleClick = () => {
-  emit('click')
-}
+  emit("click");
+};
 </script>
 
 <style scoped>
@@ -115,7 +134,11 @@ const handleClick = () => {
   border-radius: 999px;
   background: #faf8f5;
   border: 1px solid rgba(28, 25, 23, 0.08);
-  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .favorite-button-container:hover .heart-surface {
@@ -152,7 +175,9 @@ const handleClick = () => {
   width: 100%;
   height: 100%;
   fill: #a8a29e;
-  transition: fill 0.22s ease, transform 0.22s ease;
+  transition:
+    fill 0.22s ease,
+    transform 0.22s ease;
   pointer-events: none;
 }
 
@@ -217,10 +242,18 @@ const handleClick = () => {
 }
 
 @keyframes keyframes-svg-filled {
-  0% { transform: scale(1); }
-  35% { transform: scale(1.15); }
-  70% { transform: scale(0.94); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes keyframes-svg-celebrate {

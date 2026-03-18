@@ -3,8 +3,10 @@
     <div class="empty-logo">
       <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
     </div>
-    <div class="empty-title">暂无内容</div>
-    <div class="empty-text">当前条件下还没有可展示的结果，可以换个关键词或重新加载。</div>
+    <div class="empty-title">这里还没人放东西</div>
+    <div class="empty-text">
+      这个条件下暂时没有合适内容。换个词，或者稍微拐一下方向，也许就出来了。
+    </div>
     <button
       v-if="showRetry"
       type="button"
@@ -19,30 +21,30 @@
 
 <script lang="ts" setup>
 interface Props {
-  icon?: string
-  iconSize?: number | string
-  iconColor?: string
-  showRetry?: boolean
-  retryText?: string
-  retryIcon?: string
-  retryButtonColor?: string
+  icon?: string;
+  iconSize?: number | string;
+  iconColor?: string;
+  showRetry?: boolean;
+  retryText?: string;
+  retryIcon?: string;
+  retryButtonColor?: string;
 }
 
 interface Emits {
-  (e: 'retry'): void
+  (e: "retry"): void;
 }
 
 withDefaults(defineProps<Props>(), {
-  icon: 'mdi-package-variant-empty',
+  icon: "mdi-package-variant-empty",
   iconSize: 64,
-  iconColor: 'grey-lighten-1',
+  iconColor: "grey-lighten-1",
   showRetry: false,
-  retryText: '重新加载',
-  retryIcon: 'mdi-refresh',
-  retryButtonColor: 'primary'
-})
+  retryText: "再试一次",
+  retryIcon: "mdi-refresh",
+  retryButtonColor: "primary",
+});
 
-defineEmits<Emits>()
+defineEmits<Emits>();
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +59,7 @@ defineEmits<Emits>()
   border: 1px dashed rgba(28, 25, 23, 0.12);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.72);
-  
+
   .empty-logo {
     display: inline-flex;
     align-items: center;
@@ -76,7 +78,7 @@ defineEmits<Emits>()
     color: #1c1917;
     margin-bottom: 0.45rem;
   }
-  
+
   .empty-text {
     max-width: 320px;
     font-size: 12px;
@@ -85,7 +87,7 @@ defineEmits<Emits>()
     color: #78716c;
     margin-bottom: 1rem;
   }
-  
+
   .retry-btn {
     display: inline-flex;
     align-items: center;
@@ -99,7 +101,11 @@ defineEmits<Emits>()
     color: #44403c;
     font-size: 12px;
     cursor: pointer;
-    transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+    transition:
+      transform 0.16s ease,
+      border-color 0.16s ease,
+      background-color 0.16s ease,
+      color 0.16s ease;
 
     &:hover {
       transform: translateY(-1px);

@@ -1,33 +1,33 @@
 <script lang="ts" setup>
-const { awesome } = useAppConfig()
+const { awesome } = useAppConfig();
 
 const footerGroups = {
   discover: [
-    { name: '印花图案', href: '/search?category=pattern' },
-    { name: '服装设计', href: '/search?category=clothing' },
-    { name: '包装与周边', href: '/search?category=packaging' },
-    { name: '创作者作品', href: '/portfolio' },
+    { name: "印花图案", href: "/products/%E5%9B%BE%E6%A1%88" },
+    { name: "服饰单品", href: "/products" },
+    { name: "周边与礼物", href: "/products/%E7%A4%BC%E7%89%A9" },
+    { name: "作品集", href: "/portfolio" },
   ],
   creators: [
-    { name: '设计灵感', href: '/inspiration' },
-    { name: '趋势观察', href: '/trends' },
-    { name: '创作挑战', href: '/challenges' },
-    { name: '分享社区', href: '/designers' },
+    { name: "灵感资料", href: "/portfolio" },
+    { name: "创作方向", href: "/ai-lab" },
+    { name: "定制服务", href: "/design" },
+    { name: "关于衣设", href: "/about" },
   ],
   service: [
-    { name: 'POD 定制', href: '/design' },
-    { name: '帮助中心', href: '/help' },
-    { name: '联系我们', href: '/contact' },
-    { name: '意见反馈', href: '/feedback' },
+    { name: "POD 定制", href: "/design" },
+    { name: "登录", href: "/login" },
+    { name: "联系我们", href: "/contact" },
+    { name: "注册", href: "/register" },
   ],
-}
+};
 
 const socialLinks = [
-  { name: 'Instagram', icon: 'mdi-instagram', href: '#' },
-  { name: 'Pinterest', icon: 'mdi-pinterest', href: '#' },
-  { name: 'Behance', icon: 'mdi-behance', href: '#' },
-  { name: 'Dribbble', icon: 'mdi-dribbble', href: '#' },
-]
+  { name: "Instagram", icon: "mdi-instagram", href: "#" },
+  { name: "Pinterest", icon: "mdi-pinterest", href: "#" },
+  { name: "Behance", icon: "mdi-behance", href: "#" },
+  { name: "Dribbble", icon: "mdi-dribbble", href: "#" },
+];
 </script>
 
 <template>
@@ -35,12 +35,20 @@ const socialLinks = [
     <div class="footer-inner">
       <section class="footer-top">
         <div>
-          <span class="footer-kicker">Creative POD House</span>
-          <h2>更简约地组织设计、商品与分享。</h2>
-          <p>让页面减少负担，把视觉焦点让给作品本身，同时保留清晰的内容结构与品牌感。</p>
+          <span class="footer-kicker">yishe / 1s.design</span>
+          <h2>不是买商品，是在穿自己的想法。</h2>
+          <p>
+            衣设想把设计这件事还给更多普通人。灵感可以很轻，但表达最好别太随便。
+          </p>
         </div>
         <div class="footer-socials">
-          <a v-for="social in socialLinks" :key="social.name" :href="social.href" :title="social.name" class="social-link">
+          <a
+            v-for="social in socialLinks"
+            :key="social.name"
+            :href="social.href"
+            :title="social.name"
+            class="social-link"
+          >
             <v-icon size="16">{{ social.icon }}</v-icon>
           </a>
         </div>
@@ -50,25 +58,47 @@ const socialLinks = [
         <div class="footer-brand">
           <img src="/logo.svg" alt="衣设" class="footer-logo" />
           <strong>衣设</strong>
-          <p>Premium design commerce & sharing</p>
+          <p>给有表达欲的人留一个把想法穿出去的地方。</p>
         </div>
 
         <div class="footer-column">
           <h3>探索内容</h3>
-          <NuxtLink v-for="link in footerGroups.discover" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
+          <NuxtLink
+            v-for="link in footerGroups.discover"
+            :key="link.name"
+            :to="link.href"
+            class="footer-link"
+            >{{ link.name }}</NuxtLink
+          >
         </div>
         <div class="footer-column">
-          <h3>创作者生态</h3>
-          <NuxtLink v-for="link in footerGroups.creators" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
+          <h3>给想做点东西的人</h3>
+          <NuxtLink
+            v-for="link in footerGroups.creators"
+            :key="link.name"
+            :to="link.href"
+            class="footer-link"
+            >{{ link.name }}</NuxtLink
+          >
         </div>
         <div class="footer-column">
-          <h3>服务支持</h3>
-          <NuxtLink v-for="link in footerGroups.service" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
+          <h3>入口</h3>
+          <NuxtLink
+            v-for="link in footerGroups.service"
+            :key="link.name"
+            :to="link.href"
+            class="footer-link"
+            >{{ link.name }}</NuxtLink
+          >
         </div>
       </section>
 
       <section class="footer-bottom">
-        <p>Copyright © {{ awesome?.layout?.footer?.year || new Date().getFullYear() }} {{ awesome?.author?.name || '衣设' }}. 保留所有权利。</p>
+        <p>
+          Copyright ©
+          {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
+          {{ awesome?.author?.name || "衣设" }}. 保留所有权利。
+        </p>
         <div class="footer-legal">
           <NuxtLink to="/privacy">隐私政策</NuxtLink>
           <NuxtLink to="/terms">服务条款</NuxtLink>
@@ -80,13 +110,13 @@ const socialLinks = [
 </template>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap");
 
 .footer-shell {
   border-top: 1px solid rgba(28, 25, 23, 0.08);
   background: #f7f5f2;
   color: #44403c;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .footer-inner {
@@ -114,7 +144,7 @@ const socialLinks = [
 }
 
 .footer-top h2 {
-  font-family: 'Noto Serif SC', serif;
+  font-family: "Noto Serif SC", serif;
   font-size: 1.5rem;
   line-height: 1.3;
   color: #1c1917;
@@ -164,7 +194,7 @@ const socialLinks = [
 }
 
 .footer-brand strong {
-  font-family: 'Noto Serif SC', serif;
+  font-family: "Noto Serif SC", serif;
   font-size: 1rem;
   color: #1c1917;
 }

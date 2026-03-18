@@ -5,11 +5,11 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'update:activeCategory', value: number): void;
-  (e: 'update:isDropdownVisible', value: boolean): void;
-  (e: 'mouseenter', index: number): void;
-  (e: 'mouseleave'): void;
-  (e: 'tabChange', index: number): void;
+  (e: "update:activeCategory", value: number): void;
+  (e: "update:isDropdownVisible", value: boolean): void;
+  (e: "mouseenter", index: number): void;
+  (e: "mouseleave"): void;
+  (e: "tabChange", index: number): void;
 }
 
 const props = defineProps<Props>();
@@ -19,71 +19,74 @@ const emit = defineEmits<Emits>();
 const isMobile = ref(false);
 const updateIsMobile = () => {
   if (process.client) {
-    isMobile.value = window.matchMedia('(max-width: 768px)').matches;
+    isMobile.value = window.matchMedia("(max-width: 768px)").matches;
   }
 };
 
 onMounted(() => {
   updateIsMobile();
   if (process.client) {
-    window.addEventListener('resize', updateIsMobile, { passive: true } as AddEventListenerOptions);
+    window.addEventListener("resize", updateIsMobile, {
+      passive: true,
+    } as AddEventListenerOptions);
   }
 });
 
 onBeforeUnmount(() => {
   if (process.client) {
-    window.removeEventListener('resize', updateIsMobile as EventListener);
+    window.removeEventListener("resize", updateIsMobile as EventListener);
   }
 });
 
 // 直接在组件中定义tab数据
 const categories = [
   {
-    name: '全部商品',
-    description: '探索我们丰富的服装系列，从日常休闲到正式场合，满足您的各种需求'
+    name: "全部商品",
+    description:
+      "探索我们丰富的服装系列，从日常休闲到正式场合，满足您的各种需求",
   },
   {
-    name: '快速配送',
-    description: '24小时内发货，让您快速获得心仪的服装'
+    name: "快速配送",
+    description: "24小时内发货，让您快速获得心仪的服装",
   },
   {
-    name: '艺术字设计',
-    description: '个性化文字设计服务，将您的想法转化为独特的艺术字体作品'
+    name: "艺术字设计",
+    description: "个性化文字设计服务，将您的想法转化为独特的艺术字体作品",
   },
   {
-    name: '筹款活动',
-    description: '支持公益事业，购买服装的同时为慈善事业贡献力量'
+    name: "筹款活动",
+    description: "支持公益事业，购买服装的同时为慈善事业贡献力量",
   },
   {
-    name: 'LGBTQ+创作者',
-    description: '支持多元文化，展现包容与平等的时尚理念'
+    name: "LGBTQ+创作者",
+    description: "支持多元文化，展现包容与平等的时尚理念",
   },
   {
-    name: '女性创作者',
-    description: '由女性设计师打造的独特服装，展现女性力量'
+    name: "女性创作者",
+    description: "由女性设计师打造的独特服装，展现女性力量",
   },
   {
-    name: '更多',
-    description: '探索更多分类和品牌，发现更多精彩'
-  }
+    name: "更多",
+    description: "探索更多分类和品牌，发现更多精彩",
+  },
 ];
 
 const handleMouseEnter = (index: number) => {
-  emit('mouseenter', index);
+  emit("mouseenter", index);
 };
 
 const handleMouseLeave = () => {
-  emit('mouseleave');
+  emit("mouseleave");
 };
 
 const handleTabChange = (index: number) => {
-  emit('tabChange', index);
+  emit("tabChange", index);
   // 在移动端点击 Tab 时，切换展开/收起下拉菜单（PC 端保持不变，依旧用 hover 控制）
   if (isMobile.value) {
     const isSameTab = props.activeCategory === index;
     const nextVisible = isSameTab ? !props.isDropdownVisible : true;
-    emit('update:activeCategory', index);
-    emit('update:isDropdownVisible', nextVisible);
+    emit("update:activeCategory", index);
+    emit("update:isDropdownVisible", nextVisible);
   }
 };
 
@@ -91,230 +94,350 @@ const handleTabChange = (index: number) => {
 const handleItemClick = (categoryName: string, itemName: string) => {
   // 跳转到 products 页面并携带参数
   const searchParams = {
-    search: itemName
+    search: itemName,
   };
-  
+
   navigateTo({
-    path: '/products',
-    query: searchParams
+    path: "/products",
+    query: searchParams,
   });
 };
 
 // 根据activeCategory返回对应的热门搜索项目
 const getTrendingItems = (categoryIndex: number) => {
   const trendingData = {
-    0: [ // 全部商品 - 参考ASOS风格
-      { 
-        name: '商品分类',
+    0: [
+      // 全部商品 - 参考ASOS风格
+      {
+        name: "商品分类",
         items: [
-          { name: '最近发布', isBold: false },
-          { name: '人气最高', isBold: false },
-          { name: '好评最高', isBold: false },
-          { name: '情侣装', isBold: false },
-          { name: '童装专属', isBold: false },
-          { name: '团队风格', isBold: false },
-          { name: '限量发售', isBold: true },
-          { name: '热销爆款', isBold: true }
-        ]
+          { name: "最近发布", isBold: false },
+          { name: "人气最高", isBold: false },
+          { name: "好评最高", isBold: false },
+          { name: "情侣装", isBold: false },
+          { name: "童装专属", isBold: false },
+          { name: "团队风格", isBold: false },
+          { name: "限量发售", isBold: true },
+          { name: "高频选择", isBold: true },
+        ],
       },
-      { 
-        name: '品类',
+      {
+        name: "品类",
         items: [
-          { name: '服装 &T恤', image: '/thumbnail/tshirt.png' },
-          { name: '杯子 & 马克杯', image: '/thumbnail/cup.png' },
-          { name: '挎包', image: '/thumbnail/bag.png' },
-          { name: '挂毯', image: '/thumbnail/tapestry.png' },
-          { name: '毛巾', image: '/thumbnail/towel.png' },
-          { name: '鼠标垫', image: '/thumbnail/mousepad.png' },
-          { name: '帽子', image: '/thumbnail/hat.png' },
-          { name: '抱枕 & 靠枕', image: '/thumbnail/pillow.png' },
-          { name: '手机壳', image: '/thumbnail/phonecover.png' }
-        ]
+          { name: "服装 &T恤", image: "/thumbnail/tshirt.png" },
+          { name: "杯子 & 马克杯", image: "/thumbnail/cup.png" },
+          { name: "挎包", image: "/thumbnail/bag.png" },
+          { name: "挂毯", image: "/thumbnail/tapestry.png" },
+          { name: "毛巾", image: "/thumbnail/towel.png" },
+          { name: "鼠标垫", image: "/thumbnail/mousepad.png" },
+          { name: "帽子", image: "/thumbnail/hat.png" },
+          { name: "抱枕 & 靠枕", image: "/thumbnail/pillow.png" },
+          { name: "手机壳", image: "/thumbnail/phonecover.png" },
+        ],
       },
-      { 
-        name: '设计风格',
+      {
+        name: "设计风格",
         items: [
-          { name: '动漫风', icon: 'uil:smile-dizzy' },
-          { name: '简约风', icon: 'uil:minus-circle' },
-          { name: '商务风', icon: 'uil:briefcase' },
-          { name: '抽象风格', icon: 'uil:palette' },
-          { name: '搞笑风', icon: 'uil:smile' },
-          { name: '复古风', icon: 'uil:clock' },
-          { name: '科技风', icon: 'uil:setting' },
-          { name: '自然风', icon: 'uil:flower' },
-          { name: '艺术风', icon: 'uil:brush-alt' },
-          { name: '运动风', icon: 'uil:football' },
-          { name: '可爱风', icon: 'uil:heart' },
-          { name: '酷炫风', icon: 'uil:star' },
-          { name: '工业风', icon: 'uil:cog' },
-          { name: '未来风', icon: 'uil:rocket' },
-          { name: '民族风', icon: 'uil:globe' },
-          { name: '街头风', icon: 'uil:music' },
-          { name: '优雅风', icon: 'uil:star' },
-          { name: '朋克风', icon: 'uil:bolt' }
-        ]
+          { name: "动漫风", icon: "uil:smile-dizzy" },
+          { name: "简约风", icon: "uil:minus-circle" },
+          { name: "商务风", icon: "uil:briefcase" },
+          { name: "抽象风格", icon: "uil:palette" },
+          { name: "搞笑风", icon: "uil:smile" },
+          { name: "复古风", icon: "uil:clock" },
+          { name: "科技风", icon: "uil:setting" },
+          { name: "自然风", icon: "uil:flower" },
+          { name: "艺术风", icon: "uil:brush-alt" },
+          { name: "运动风", icon: "uil:football" },
+          { name: "可爱风", icon: "uil:heart" },
+          { name: "酷炫风", icon: "uil:star" },
+          { name: "工业风", icon: "uil:cog" },
+          { name: "未来风", icon: "uil:rocket" },
+          { name: "民族风", icon: "uil:globe" },
+          { name: "街头风", icon: "uil:music" },
+          { name: "优雅风", icon: "uil:star" },
+          { name: "朋克风", icon: "uil:bolt" },
+        ],
       },
-
     ],
-    1: [ // 快速配送
-      { name: '24小时发货', image: '@/thumbnail/24h-shipping.jpg' },
-      { name: '48小时发货', image: '@/thumbnail/48h-shipping.jpg' },
-      { name: '同城配送', image: '@/thumbnail/local-delivery.jpg' },
-      { name: '现货商品', image: '@/thumbnail/in-stock.jpg' },
-      { name: '快速物流', image: '@/thumbnail/fast-logistics.jpg' }
+    1: [
+      // 快速配送
+      { name: "24小时发货", image: "@/thumbnail/24h-shipping.jpg" },
+      { name: "48小时发货", image: "@/thumbnail/48h-shipping.jpg" },
+      { name: "同城配送", image: "@/thumbnail/local-delivery.jpg" },
+      { name: "现货商品", image: "@/thumbnail/in-stock.jpg" },
+      { name: "快速物流", image: "@/thumbnail/fast-logistics.jpg" },
     ],
-    2: [ // 艺术字设计 - 功能展示
-      { 
-        name: '设计服务',
+    2: [
+      // 艺术字设计 - 功能展示
+      {
+        name: "设计服务",
         items: [
-          { name: '个性化定制', isBold: false },
-          { name: '艺术字体设计', isBold: false },
-          { name: '创意文字设计', isBold: false },
-          { name: '品牌标识设计', isBold: false },
-          { name: '节日祝福设计', isBold: false },
-          { name: '服装印花设计', isBold: false },
-          { name: '家居装饰设计', isBold: true },
-          { name: '数字媒体设计', isBold: true }
-        ]
+          { name: "个性化定制", isBold: false },
+          { name: "艺术字体设计", isBold: false },
+          { name: "创意文字设计", isBold: false },
+          { name: "品牌标识设计", isBold: false },
+          { name: "节日祝福设计", isBold: false },
+          { name: "服装印花设计", isBold: false },
+          { name: "家居装饰设计", isBold: true },
+          { name: "数字媒体设计", isBold: true },
+        ],
       },
-      { 
-        name: '设计风格',
+      {
+        name: "设计风格",
         items: [
-          { name: '现代简约', icon: 'uil:minus-circle' },
-          { name: '艺术创意', icon: 'uil:palette' },
-          { name: '商务专业', icon: 'uil:briefcase' },
-          { name: '复古经典', icon: 'uil:clock' },
-          { name: '浪漫温馨', icon: 'uil:heart' },
-          { name: '科技未来', icon: 'uil:rocket' },
-          { name: '自然清新', icon: 'uil:flower' },
-          { name: '街头潮流', icon: 'uil:music' }
-        ]
+          { name: "现代简约", icon: "uil:minus-circle" },
+          { name: "艺术创意", icon: "uil:palette" },
+          { name: "商务专业", icon: "uil:briefcase" },
+          { name: "复古经典", icon: "uil:clock" },
+          { name: "浪漫温馨", icon: "uil:heart" },
+          { name: "科技未来", icon: "uil:rocket" },
+          { name: "自然清新", icon: "uil:flower" },
+          { name: "街头潮流", icon: "uil:music" },
+        ],
       },
-      { 
-        name: '应用场景',
+      {
+        name: "应用场景",
         items: [
-          { name: '品牌标识', image: '/thumbnail/brand-logo.png' },
-          { name: '节日祝福', image: '/thumbnail/festival-greeting.png' },
-          { name: '服装印花', image: '/thumbnail/clothing-print.png' },
-          { name: '家居装饰', image: '/thumbnail/home-decoration.png' },
-          { name: '贺卡设计', image: '/thumbnail/greeting-card.png' },
-          { name: '数字媒体', image: '/thumbnail/digital-media.png' }
-        ]
-      }
+          { name: "品牌标识", image: "/thumbnail/brand-logo.png" },
+          { name: "节日祝福", image: "/thumbnail/festival-greeting.png" },
+          { name: "服装印花", image: "/thumbnail/clothing-print.png" },
+          { name: "家居装饰", image: "/thumbnail/home-decoration.png" },
+          { name: "贺卡设计", image: "/thumbnail/greeting-card.png" },
+          { name: "数字媒体", image: "/thumbnail/digital-media.png" },
+        ],
+      },
     ],
-    3: [ // 筹款活动
-      { name: '慈善筹款', image: '@/thumbnail/charity-fundraiser.jpg' },
-      { name: '公益项目', image: '@/thumbnail/public-welfare.jpg' },
-      { name: '社区支持', image: '@/thumbnail/community-support.jpg' },
-      { name: '爱心捐赠', image: '@/thumbnail/donation.jpg' },
-      { name: '公益行动', image: '@/thumbnail/action.jpg' }
+    3: [
+      // 筹款活动
+      { name: "慈善筹款", image: "@/thumbnail/charity-fundraiser.jpg" },
+      { name: "公益项目", image: "@/thumbnail/public-welfare.jpg" },
+      { name: "社区支持", image: "@/thumbnail/community-support.jpg" },
+      { name: "爱心捐赠", image: "@/thumbnail/donation.jpg" },
+      { name: "公益行动", image: "@/thumbnail/action.jpg" },
     ],
-    4: [ // LGBTQ+创作者
-      { name: '彩虹系列', image: '@/thumbnail/rainbow-collection.jpg' },
-      { name: '包容设计', image: '@/thumbnail/inclusive-design.jpg' },
-      { name: '多元文化', image: '@/thumbnail/diverse-culture.jpg' },
-      { name: '平等时尚', image: '@/thumbnail/equality-fashion.jpg' },
-      { name: '自由表达', image: '@/thumbnail/freedom-expression.jpg' }
+    4: [
+      // LGBTQ+创作者
+      { name: "彩虹系列", image: "@/thumbnail/rainbow-collection.jpg" },
+      { name: "包容设计", image: "@/thumbnail/inclusive-design.jpg" },
+      { name: "多元文化", image: "@/thumbnail/diverse-culture.jpg" },
+      { name: "平等时尚", image: "@/thumbnail/equality-fashion.jpg" },
+      { name: "自由表达", image: "@/thumbnail/freedom-expression.jpg" },
     ],
-    5: [ // 女性创作者
-      { name: '女性设计', image: '@/thumbnail/female-design.jpg' },
-      { name: '女性品牌', image: '@/thumbnail/female-brand.jpg' },
-      { name: '女性力量', image: '@/thumbnail/female-empowerment.jpg' },
-      { name: '独立女性', image: '@/thumbnail/independent-woman.jpg' },
-      { name: '女性时尚', image: '@/thumbnail/female-fashion.jpg' }
+    5: [
+      // 女性创作者
+      { name: "女性设计", image: "@/thumbnail/female-design.jpg" },
+      { name: "女性品牌", image: "@/thumbnail/female-brand.jpg" },
+      { name: "女性力量", image: "@/thumbnail/female-empowerment.jpg" },
+      { name: "独立女性", image: "@/thumbnail/independent-woman.jpg" },
+      { name: "女性时尚", image: "@/thumbnail/female-fashion.jpg" },
     ],
-    6: [ // 更多
-      { name: '所有分类', image: '@/thumbnail/all-categories.jpg' },
-      { name: '品牌专区', image: '@/thumbnail/brand-zone.jpg' },
-      { name: '设计师', image: '@/thumbnail/designers.jpg' },
-      { name: '活动', image: '@/thumbnail/events.jpg' },
-      { name: '定制设计', image: '@/thumbnail/custom-design.jpg' }
-    ]
+    6: [
+      // 更多
+      { name: "所有分类", image: "@/thumbnail/all-categories.jpg" },
+      { name: "品牌专区", image: "@/thumbnail/brand-zone.jpg" },
+      { name: "设计师", image: "@/thumbnail/designers.jpg" },
+      { name: "活动", image: "@/thumbnail/events.jpg" },
+      { name: "定制设计", image: "@/thumbnail/custom-design.jpg" },
+    ],
   };
-  
-  return trendingData[categoryIndex as keyof typeof trendingData] || trendingData[0];
+
+  return (
+    trendingData[categoryIndex as keyof typeof trendingData] || trendingData[0]
+  );
 };
 
 // 根据activeCategory返回对应的特色商品
 const getFeaturedItems = (categoryIndex: number) => {
   const featuredData = {
-    0: [ // 全部商品 - 特色分类导航
-      { 
-        name: '受众人群', 
-        image: '/thumbnail/people_bg.jpg',
-        description: '针对不同人群特点，量身定制的时尚选择',
-        subItems: ['年轻人', '中年人', '老年人', '男性', '女性', '儿童', '青少年', '情侣', '闺蜜', '亲子', '职场人士', '学生党']
+    0: [
+      // 全部商品 - 特色分类导航
+      {
+        name: "受众人群",
+        image: "/thumbnail/people_bg.jpg",
+        description: "针对不同人群特点，量身定制的时尚选择",
+        subItems: [
+          "年轻人",
+          "中年人",
+          "老年人",
+          "男性",
+          "女性",
+          "儿童",
+          "青少年",
+          "情侣",
+          "闺蜜",
+          "亲子",
+          "职场人士",
+          "学生党",
+        ],
       },
-      { 
-        name: '按生活场景', 
-        image: '/thumbnail/scene_bg.jpg',
-        description: '不同生活场景的着装需求，让您在每个场合都能穿出精彩',
-        subItems: ['日常', '夜晚', '外出', '职场', '聚会', '工作', '约会', '旅行', '运动', '居家', '派对', '商务']
+      {
+        name: "按生活场景",
+        image: "/thumbnail/scene_bg.jpg",
+        description: "不同生活场景的着装需求，让您在每个场合都能穿出精彩",
+        subItems: [
+          "日常",
+          "夜晚",
+          "外出",
+          "职场",
+          "聚会",
+          "工作",
+          "约会",
+          "旅行",
+          "运动",
+          "居家",
+          "派对",
+          "商务",
+        ],
       },
-      { 
-        name: '按元素', 
-        image: '/thumbnail/element_bg.jpg',
-        description: '服装上的设计元素，让每件衣服都独一无二',
-        subItems: ['文字', '艺术字', '图片', '拼图', '徽章', '印章', 'logo', '图案', '符号', '标语', '数字', '字母']
+      {
+        name: "按元素",
+        image: "/thumbnail/element_bg.jpg",
+        description: "服装上的设计元素，让每件衣服都独一无二",
+        subItems: [
+          "文字",
+          "艺术字",
+          "图片",
+          "拼图",
+          "徽章",
+          "印章",
+          "logo",
+          "图案",
+          "符号",
+          "标语",
+          "数字",
+          "字母",
+        ],
       },
-      { 
-        name: '按颜色', 
-        image: '/thumbnail/color_bg.jpg',
-        description: '丰富的色彩选择，让您的穿搭更加生动有趣',
-        subItems: ['黑色', '白色', '红色', '蓝色', '绿色', '黄色', '粉色', '紫色', '橙色', '灰色', '棕色', '彩虹色']
+      {
+        name: "按颜色",
+        image: "/thumbnail/color_bg.jpg",
+        description: "丰富的色彩选择，让您的穿搭更加生动有趣",
+        subItems: [
+          "黑色",
+          "白色",
+          "红色",
+          "蓝色",
+          "绿色",
+          "黄色",
+          "粉色",
+          "紫色",
+          "橙色",
+          "灰色",
+          "棕色",
+          "彩虹色",
+        ],
       },
-      { 
-        name: '按定制类型', 
-        image: '/thumbnail/custom_bg.jpg',
-        description: '个性化定制服务，让每件衣服都独一无二',
-        subItems: ['个人定制', '情侣定制', '团队定制', '品牌定制', '节日定制', '纪念定制', '艺术定制', '主题定制', '限量定制', '专属定制', '创意定制', '个性定制']
+      {
+        name: "按定制类型",
+        image: "/thumbnail/custom_bg.jpg",
+        description: "个性化定制服务，让每件衣服都独一无二",
+        subItems: [
+          "个人定制",
+          "情侣定制",
+          "团队定制",
+          "品牌定制",
+          "节日定制",
+          "纪念定制",
+          "艺术定制",
+          "主题定制",
+          "限量定制",
+          "专属定制",
+          "创意定制",
+          "个性定制",
+        ],
       },
-      { 
-        name: '按设计主题', 
-        image: '/thumbnail/theme_bg.jpg',
-        description: '独特设计主题，传递不同的文化内涵',
-        subItems: ['动漫', '游戏', '电影', '音乐', '艺术', '文化', '科技', '自然', '城市', '历史', '未来', '童话']
-      }
+      {
+        name: "按设计主题",
+        image: "/thumbnail/theme_bg.jpg",
+        description: "独特设计主题，传递不同的文化内涵",
+        subItems: [
+          "动漫",
+          "游戏",
+          "电影",
+          "音乐",
+          "艺术",
+          "文化",
+          "科技",
+          "自然",
+          "城市",
+          "历史",
+          "未来",
+          "童话",
+        ],
+      },
     ],
-    1: [ // 快速配送
-      { name: '24小时发货', image: '/featured/24h-shipping.jpg' },
-      { name: '同城配送', image: '/featured/local-delivery.jpg' },
-      { name: '快速物流', image: '/featured/fast-logistics.jpg' }
+    1: [
+      // 快速配送
+      { name: "24小时发货", image: "/featured/24h-shipping.jpg" },
+      { name: "同城配送", image: "/featured/local-delivery.jpg" },
+      { name: "快速物流", image: "/featured/fast-logistics.jpg" },
     ],
-    2: [ // 艺术字设计
-      { name: '个性化定制', image: '/featured/custom-text.jpg', subItems: ['品牌标识', '节日祝福', '服装印花'] },
-      { name: '艺术字体', image: '/featured/artistic-font.jpg', subItems: ['现代简约', '艺术创意', '商务专业'] },
-      { name: '创意文字', image: '/featured/creative-text.jpg', subItems: ['家居装饰', '贺卡设计', '数字媒体'] }
+    2: [
+      // 艺术字设计
+      {
+        name: "个性化定制",
+        image: "/featured/custom-text.jpg",
+        subItems: ["品牌标识", "节日祝福", "服装印花"],
+      },
+      {
+        name: "艺术字体",
+        image: "/featured/artistic-font.jpg",
+        subItems: ["现代简约", "艺术创意", "商务专业"],
+      },
+      {
+        name: "创意文字",
+        image: "/featured/creative-text.jpg",
+        subItems: ["家居装饰", "贺卡设计", "数字媒体"],
+      },
     ],
-    3: [ // 筹款活动
-      { name: '慈善筹款', image: '/featured/charity-fundraiser.jpg' },
-      { name: '公益项目', image: '/featured/public-welfare.jpg' },
-      { name: '社区支持', image: '/featured/community-support.jpg' }
+    3: [
+      // 筹款活动
+      { name: "慈善筹款", image: "/featured/charity-fundraiser.jpg" },
+      { name: "公益项目", image: "/featured/public-welfare.jpg" },
+      { name: "社区支持", image: "/featured/community-support.jpg" },
     ],
-    4: [ // LGBTQ+创作者
-      { name: '彩虹系列', image: '/featured/rainbow-collection.jpg' },
-      { name: '包容设计', image: '/featured/inclusive-design.jpg' },
-      { name: '多元文化', image: '/featured/diverse-culture.jpg' }
+    4: [
+      // LGBTQ+创作者
+      { name: "彩虹系列", image: "/featured/rainbow-collection.jpg" },
+      { name: "包容设计", image: "/featured/inclusive-design.jpg" },
+      { name: "多元文化", image: "/featured/diverse-culture.jpg" },
     ],
-    5: [ // 女性创作者
-      { name: '女性设计', image: '/featured/female-design.jpg' },
-      { name: '女性品牌', image: '/featured/female-brand.jpg' },
-      { name: '女性力量', image: '/featured/female-empowerment.jpg' }
+    5: [
+      // 女性创作者
+      { name: "女性设计", image: "/featured/female-design.jpg" },
+      { name: "女性品牌", image: "/featured/female-brand.jpg" },
+      { name: "女性力量", image: "/featured/female-empowerment.jpg" },
     ],
-    6: [ // 更多
-      { name: '所有分类', image: '/featured/all-categories.jpg' },
-      { name: '品牌专区', image: '/featured/brand-zone.jpg' },
-      { name: '设计师', image: '/featured/designers.jpg' }
-    ]
+    6: [
+      // 更多
+      { name: "所有分类", image: "/featured/all-categories.jpg" },
+      { name: "品牌专区", image: "/featured/brand-zone.jpg" },
+      { name: "设计师", image: "/featured/designers.jpg" },
+    ],
   };
-  
-  return featuredData[categoryIndex as keyof typeof featuredData] || featuredData[0];
+
+  return (
+    featuredData[categoryIndex as keyof typeof featuredData] || featuredData[0]
+  );
 };
 
 // 类型声明用于改善模板中的类型提示与校验
-interface TrendingSectionItem { name: string; isBold?: boolean; image?: string; icon?: string }
-interface TrendingSection { name: string; items: TrendingSectionItem[] }
-interface FeaturedCard { name: string; image: string; description?: string; subItems?: string[] }
+interface TrendingSectionItem {
+  name: string;
+  isBold?: boolean;
+  image?: string;
+  icon?: string;
+}
+interface TrendingSection {
+  name: string;
+  items: TrendingSectionItem[];
+}
+interface FeaturedCard {
+  name: string;
+  image: string;
+  description?: string;
+  subItems?: string[];
+}
 
 // 辅助函数：仅用于“全部商品”分栏（activeCategory === 0）
 const getAllProductsTrendingSections = (): TrendingSection[] => {
@@ -333,12 +456,12 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     <div class="tab-bar">
       <div class="mx-auto">
         <div class="tab-container">
-          <div 
-            v-for="(category, index) in categories" 
+          <div
+            v-for="(category, index) in categories"
             :key="`tab-group-${index}`"
             class="tab-group"
           >
-            <button 
+            <button
               :class="`tab-button ${activeCategory === index ? 'active' : ''}`"
               @click="handleTabChange(index)"
               @mouseenter="handleMouseEnter(index)"
@@ -364,48 +487,55 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     </div> -->
 
     <!-- 大菜单 -->
-    <div 
+    <div
       v-if="isDropdownVisible"
       class="dropdown-menu"
       @mouseenter="handleMouseEnter(activeCategory)"
       @mouseleave="handleMouseLeave"
     >
-      <div class=" mx-auto">
+      <div class="mx-auto">
         <div class="menu-content">
           <!-- 左侧热门搜索 -->
           <div class="menu-left">
             <div v-if="activeCategory === 0" class="asos-style-menu">
-              <div 
-                v-for="(section, index) in getAllProductsTrendingSections()" 
+              <div
+                v-for="(section, index) in getAllProductsTrendingSections()"
                 :key="index"
                 :class="`menu-section ${section.name === '设计风格' ? 'style-section' : ''}`"
               >
                 <h3 class="section-title">{{ section.name }}</h3>
-                <div :class="`section-items ${section.name === '设计风格' ? 'style-items' : ''}`">
-                  <div 
-                    v-for="(item, itemIndex) in section.items" 
+                <div
+                  :class="`section-items ${section.name === '设计风格' ? 'style-items' : ''}`"
+                >
+                  <div
+                    v-for="(item, itemIndex) in section.items"
                     :key="itemIndex"
                     class="menu-item"
                     @click="handleItemClick(section.name, item.name)"
                   >
                     <div v-if="item.image || item.icon" class="item-with-image">
                       <div class="item-image">
-                        <img 
+                        <img
                           v-if="item.image"
-                          :src="item.image" 
+                          :src="item.image"
                           :alt="item.name"
-                          @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                          @error="
+                            (event) => {
+                              const target = event.target as HTMLImageElement;
+                              if (target) target.style.display = 'none';
+                            }
+                          "
                         />
-                        <Icon 
+                        <Icon
                           v-else-if="item.icon"
-                          :name="item.icon" 
+                          :name="item.icon"
                           class="w-4 h-4 text-gray-600"
                         />
                       </div>
                       <span class="item-name">{{ item.name }}</span>
                     </div>
-                    <span 
-                      v-else 
+                    <span
+                      v-else
                       :class="`item-name ${item.isBold ? 'bold' : ''}`"
                     >
                       {{ item.name }}
@@ -414,7 +544,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
                 </div>
               </div>
             </div>
-            
+
             <!-- 艺术字设计专用UI -->
             <div v-if="activeCategory === 2" class="artistic-text-design-menu">
               <!-- 功能介绍 -->
@@ -422,55 +552,85 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
                 <h3 class="intro-title">艺术字设计</h3>
                 <p class="intro-desc">将您的文字转化为独特的艺术作品</p>
               </div>
-              
+
               <!-- 设计风格 -->
               <div class="design-styles">
                 <h4 class="section-title">设计风格</h4>
                 <div class="styles-list">
-                  <div class="style-item" @click="handleItemClick('设计风格', '现代简约')">
+                  <div
+                    class="style-item"
+                    @click="handleItemClick('设计风格', '现代简约')"
+                  >
                     <Icon name="uil:minus-circle" class="w-4 h-4" />
                     <span>现代简约</span>
                   </div>
-                  <div class="style-item" @click="handleItemClick('设计风格', '艺术创意')">
+                  <div
+                    class="style-item"
+                    @click="handleItemClick('设计风格', '艺术创意')"
+                  >
                     <Icon name="uil:palette" class="w-4 h-4" />
                     <span>艺术创意</span>
                   </div>
-                  <div class="style-item" @click="handleItemClick('设计风格', '商务专业')">
+                  <div
+                    class="style-item"
+                    @click="handleItemClick('设计风格', '商务专业')"
+                  >
                     <Icon name="uil:briefcase" class="w-4 h-4" />
                     <span>商务专业</span>
                   </div>
-                  <div class="style-item" @click="handleItemClick('设计风格', '复古经典')">
+                  <div
+                    class="style-item"
+                    @click="handleItemClick('设计风格', '复古经典')"
+                  >
                     <Icon name="uil:clock" class="w-4 h-4" />
                     <span>复古经典</span>
                   </div>
                 </div>
               </div>
-              
+
               <!-- 应用场景 -->
               <div class="design-applications">
                 <h4 class="section-title">应用场景</h4>
                 <div class="applications-list">
-                  <div class="app-item" @click="handleItemClick('应用场景', '品牌标识')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '品牌标识')"
+                  >
                     <Icon name="uil:building" class="w-4 h-4" />
                     <span>品牌标识</span>
                   </div>
-                  <div class="app-item" @click="handleItemClick('应用场景', '节日祝福')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '节日祝福')"
+                  >
                     <Icon name="uil:gift" class="w-4 h-4" />
                     <span>节日祝福</span>
                   </div>
-                  <div class="app-item" @click="handleItemClick('应用场景', '服装印花')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '服装印花')"
+                  >
                     <Icon name="uil:tshirt" class="w-4 h-4" />
                     <span>服装印花</span>
                   </div>
-                  <div class="app-item" @click="handleItemClick('应用场景', '家居装饰')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '家居装饰')"
+                  >
                     <Icon name="uil:home" class="w-4 h-4" />
                     <span>家居装饰</span>
                   </div>
-                  <div class="app-item" @click="handleItemClick('应用场景', '贺卡设计')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '贺卡设计')"
+                  >
                     <Icon name="uil:envelope" class="w-4 h-4" />
                     <span>贺卡设计</span>
                   </div>
-                  <div class="app-item" @click="handleItemClick('应用场景', '数字媒体')">
+                  <div
+                    class="app-item"
+                    @click="handleItemClick('应用场景', '数字媒体')"
+                  >
                     <Icon name="uil:mobile" class="w-4 h-4" />
                     <span>数字媒体</span>
                   </div>
@@ -483,16 +643,23 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
           <div class="menu-right">
             <h3 v-if="activeCategory === 0" class="menu-title">筛选分类</h3>
             <div v-if="activeCategory === 0" class="featured-cards">
-              <div 
-                v-for="(featured, index) in getFeaturedCardsForCategory(activeCategory)" 
+              <div
+                v-for="(featured, index) in getFeaturedCardsForCategory(
+                  activeCategory,
+                )"
                 :key="index"
                 class="featured-card"
               >
                 <div class="featured-image">
-                  <img 
-                    :src="featured.image" 
+                  <img
+                    :src="featured.image"
                     :alt="featured.name"
-                    @error="(event) => { const target = event.target as HTMLImageElement; if (target) target.style.display = 'none'; }"
+                    @error="
+                      (event) => {
+                        const target = event.target as HTMLImageElement;
+                        if (target) target.style.display = 'none';
+                      }
+                    "
                   />
                 </div>
                 <div class="featured-content">
@@ -501,8 +668,8 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
                     {{ featured.description }}
                   </div>
                   <div v-if="featured.subItems" class="featured-sub-items">
-                    <span 
-                      v-for="(subItem, subIndex) in featured.subItems" 
+                    <span
+                      v-for="(subItem, subIndex) in featured.subItems"
                       :key="subIndex"
                       class="sub-item clickable-label"
                       @click="handleItemClick('筛选分类', subItem)"
@@ -513,32 +680,41 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
                 </div>
               </div>
             </div>
-            
+
             <!-- 艺术字设计右侧展示区域 -->
             <div v-if="activeCategory === 2" class="artistic-design-showcase">
               <div class="showcase-header">
                 <h3 class="showcase-title">设计服务</h3>
                 <p class="showcase-subtitle">个性化文字设计</p>
               </div>
-              
+
               <div class="service-list">
-                <div class="service-item" @click="handleItemClick('设计服务', '个性化定制')">
+                <div
+                  class="service-item"
+                  @click="handleItemClick('设计服务', '个性化定制')"
+                >
                   <Icon name="uil:pen" class="w-5 h-5" />
                   <div class="service-info">
                     <h4>个性化定制</h4>
                     <p>根据您的需求定制独特字体</p>
                   </div>
                 </div>
-                
-                <div class="service-item" @click="handleItemClick('设计服务', '创意设计')">
+
+                <div
+                  class="service-item"
+                  @click="handleItemClick('设计服务', '创意设计')"
+                >
                   <Icon name="uil:palette" class="w-5 h-5" />
                   <div class="service-info">
                     <h4>创意设计</h4>
                     <p>专业设计师创意无限</p>
                   </div>
                 </div>
-                
-                <div class="service-item" @click="handleItemClick('设计服务', '多格式输出')">
+
+                <div
+                  class="service-item"
+                  @click="handleItemClick('设计服务', '多格式输出')"
+                >
                   <Icon name="uil:download" class="w-5 h-5" />
                   <div class="service-info">
                     <h4>多格式输出</h4>
@@ -546,9 +722,12 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
                   </div>
                 </div>
               </div>
-              
+
               <div class="contact-section">
-                <button class="contact-btn" @click="handleItemClick('联系咨询', '立即咨询')">
+                <button
+                  class="contact-btn"
+                  @click="handleItemClick('联系咨询', '立即咨询')"
+                >
                   立即咨询
                 </button>
               </div>
@@ -585,7 +764,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   gap: 8px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
-  
+
   @media (max-width: 768px) {
     gap: 6px;
   }
@@ -609,18 +788,18 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   text-align: center;
   border: none;
   scroll-snap-align: start;
-  
+
   &:hover {
     background: #f9fafb;
     color: #374151;
   }
-  
+
   &.active {
-    background: #F0F0F0;
+    background: #f0f0f0;
     color: #111;
     border-radius: 4px;
   }
-  
+
   @media (max-width: 768px) {
     padding: 4px 8px;
     font-size: 11px;
@@ -689,7 +868,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   // max-width: 1200px;
   margin: 0 auto;
   align-items: flex-start;
-  
+
   @media (max-width: 768px) {
     padding: 32px 20px;
     gap: 24px;
@@ -726,7 +905,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   padding: 8px 0;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     .trending-name {
       text-decoration: underline;
@@ -749,9 +928,9 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   position: relative;
   padding: 2px;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -1px;
     left: -1px;
@@ -761,7 +940,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     border-radius: 50%;
     z-index: -1;
   }
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -801,11 +980,11 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   padding: 0 32px;
   border-right: 1px solid #e5e7eb;
   min-width: 200px;
-  
+
   &:last-child {
     border-right: none;
   }
-  
+
   // 设计风格部分增加宽度
   &.style-section {
     min-width: 280px;
@@ -828,7 +1007,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   display: flex;
   flex-direction: column;
   gap: 0;
-  
+
   // 设计风格部分使用两列布局
   &.style-items {
     display: grid;
@@ -842,28 +1021,28 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   cursor: pointer;
   transition: all 0.2s ease;
   margin: 0;
-  
+
   &:hover {
     text-decoration: underline;
     text-decoration-color: #374151;
     text-decoration-thickness: 1px;
   }
-  
+
   // 设计风格部分的菜单项样式
   .style-items & {
     padding: 4px 0;
     margin: 0;
-    
+
     .item-image {
       border: none;
       box-shadow: none;
       padding: 0;
-      
+
       &::before {
         display: none;
       }
     }
-    
+
     .item-with-image {
       gap: 6px;
     }
@@ -879,11 +1058,11 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   margin: 0;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:last-child {
     border-bottom: none;
   }
-  
+
   &:hover {
     .item-name {
       text-decoration: underline;
@@ -907,9 +1086,9 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -1px;
     left: -1px;
@@ -919,7 +1098,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     border-radius: 50%;
     z-index: -1;
   }
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -933,7 +1112,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   color: #6b7280;
   font-weight: 400;
   line-height: 1.4;
-  
+
   &.bold {
     font-weight: 600;
     color: #374151;
@@ -956,7 +1135,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   border-radius: 8px;
   overflow: hidden;
   transition: all 0.3s ease;
-  
+
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
@@ -967,14 +1146,14 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   height: 160px;
   overflow: hidden;
   background: #fff;
-  
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
-  
+
   &:hover img {
     transform: scale(1.05);
   }
@@ -1021,17 +1200,17 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   border-radius: 8px;
   backdrop-filter: blur(4px);
   white-space: nowrap;
-  
+
   &.clickable-label {
     cursor: pointer;
     transition: all 0.2s ease;
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.4);
       transform: scale(1.05);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    
+
     &:active {
       transform: scale(0.95);
     }
@@ -1051,7 +1230,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
       justify-content: center;
       align-items: center;
     }
-    
+
     .banner-text {
       font-size: 14px;
       text-align: center;
@@ -1060,74 +1239,73 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
   }
-  
 
   .tab-container {
     overflow-x: auto;
     padding-bottom: 4px;
-    
+
     &::-webkit-scrollbar {
       height: 4px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: #f1f5f9;
       border-radius: 2px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 2px;
-      
+
       &:hover {
         background: #94a3b8;
       }
     }
   }
-  
+
   .menu-content {
     flex-direction: column;
     padding: 32px 20px;
     gap: 24px;
   }
-  
+
   .menu-left {
     max-width: none;
     min-width: auto;
   }
-  
+
   .asos-style-menu {
     flex-direction: column;
     gap: 0;
   }
-  
+
   .menu-section {
     padding: 0 20px;
     border-right: none;
     border-bottom: 1px solid #e5e7eb;
     min-width: auto;
-    
+
     &:last-child {
       border-bottom: none;
     }
   }
-  
+
   .section-title {
     font-size: 13px;
     margin: 0 0 12px 0;
   }
-  
+
   .menu-item {
     padding: 4px 0;
     margin: 0;
   }
-  
+
   .item-with-image {
     gap: 6px;
     padding: 4px 0;
     margin: 0;
   }
-  
+
   .item-image {
     width: 32px;
     height: 32px;
@@ -1135,9 +1313,9 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     position: relative;
     padding: 2px;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: -1px;
       left: -1px;
@@ -1148,7 +1326,7 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
       z-index: -1;
     }
   }
-  
+
   .item-name {
     font-size: 11px;
   }
@@ -1156,34 +1334,34 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
   .menu-right {
     min-width: auto;
   }
-  
+
   .featured-cards {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .featured-image {
     height: 140px;
   }
-  
+
   .featured-content {
     padding: 12px;
   }
-  
+
   .featured-title {
     font-size: 14px;
     margin-bottom: 4px;
   }
-  
+
   .featured-description {
     font-size: 10px;
     margin-bottom: 6px;
   }
-  
+
   .featured-sub-items {
     gap: 2px;
   }
-  
+
   .sub-item {
     font-size: 8px;
     padding: 1px 4px;
@@ -1362,12 +1540,12 @@ const getFeaturedCardsForCategory = (index: number): FeaturedCard[] => {
     padding: 16px;
     gap: 20px;
   }
-  
+
   .styles-list,
   .applications-list {
     grid-template-columns: 1fr;
   }
-  
+
   .artistic-design-showcase {
     padding: 16px;
   }
