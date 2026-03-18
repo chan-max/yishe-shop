@@ -353,7 +353,7 @@ watch(() => route.params.id, () => {
 <style scoped>
 .product-image-container {
   width: 100%;
-  min-height: 480px;
+  min-height: 600px;
   display: grid;
   place-items: center;
   position: relative;
