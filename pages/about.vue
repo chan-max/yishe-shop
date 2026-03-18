@@ -33,7 +33,7 @@ useHead({
       <section class="about-hero">
         <h1 class="about-title">关于衣设</h1>
         <p class="about-subtitle">
-          为创意设计师打造的优质平台，展示作品，探索灵感，连接全球设计社区。
+          衣设是一个聚合设计作品、商品案例与定制服务信息的展示平台。
         </p>
       </section>
 
@@ -41,8 +41,8 @@ useHead({
       <section class="about-section">
         <h2 class="section-title">我们的使命</h2>
         <p class="section-content">
-          我们相信优秀的设计具有启发、连接和改变世界的力量。我们的使命是为设计师提供一个展示创意、
-          相互学习并在设计社区内建立有意义联系的平台。
+          我们希望把作品展示、商品分类、定制服务和工具入口整理在同一个平台里，
+          让设计内容更容易被浏览、理解和继续使用。
         </p>
       </section>
 
@@ -50,8 +50,7 @@ useHead({
       <section class="about-section">
         <h2 class="section-title">我们的愿景</h2>
         <p class="section-content">
-          成为世界领先的设计社区平台，让每一位设计师都能找到自己的声音，分享自己的愿景，
-          为全球创意生态系统做出贡献。
+          逐步建立一个更清晰的设计内容平台，让用户既能看作品，也能直接找到相关服务和后续工具。
         </p>
       </section>
 
@@ -65,7 +64,7 @@ useHead({
             </div>
             <h3 class="value-title">创新</h3>
             <p class="value-description">
-              我们庆祝并培育各种形式的创意表达。
+              持续整理更适合设计行业使用的内容结构与工具入口。
             </p>
           </div>
           
@@ -75,7 +74,7 @@ useHead({
             </div>
             <h3 class="value-title">社区</h3>
             <p class="value-description">
-              我们相信社区的力量能够启发和支持成长。
+              通过作品、案例和服务连接更多设计相关角色。
             </p>
           </div>
           
@@ -85,7 +84,7 @@ useHead({
             </div>
             <h3 class="value-title">卓越</h3>
             <p class="value-description">
-              我们力求在所做的每一件事和支持的每一件事上都追求卓越。
+              用更清楚、更稳定的页面体验呈现平台内容。
             </p>
           </div>
         </div>
@@ -95,8 +94,8 @@ useHead({
       <section class="about-section">
         <h2 class="section-title">我们的团队</h2>
         <p class="section-content">
-          我们是一支充满热情的设计师、开发者和创意工作者团队，相信设计的变革力量。
-          我们不同的背景和专业能力汇聚在一起，创造一个为全球设计社区服务的平台。
+          我们由设计、产品和开发成员共同协作，持续完善平台的展示方式、服务页面和工具模块，
+          让衣设的内容结构更完整、也更容易使用。
         </p>
       </section>
     </div>

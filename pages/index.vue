@@ -7,7 +7,7 @@ definePageMeta({ layout: 'page' })
 
 usePageSEO({
   title: '衣设服装设计 - 创意 POD 产品设计与分享平台',
-  description: '衣设聚合创意图案、服装与 POD 商品设计，让设计师在更克制简约的品牌界面里展示作品、分享灵感并完成商品化表达。',
+  description: '衣设汇集图案、服装与 POD 商品设计内容，提供作品展示、商品浏览、定制设计与 AI 工具预览等入口。',
   keywords: 'POD设计,创意印花,服装设计,图案设计,设计分享,设计师社区,商品设计,视觉品牌',
   url: 'https://1s.design',
   type: 'website',
@@ -31,39 +31,39 @@ const impactStats = [
   { value: '3M+', label: '月度浏览' },
 ]
 const storySteps = [
-  { step: '01', title: '发现灵感', description: '从创意图案、系列视觉到服装方向，先建立内容气质。' },
-  { step: '02', title: '完成商品化', description: '把设计自然延展到 POD 商品、包装和展示场景。' },
-  { step: '03', title: '持续分享', description: '让作品被收藏、被转发，也被看作一个完整品牌表达。' },
+  { step: '01', title: '浏览作品与分类', description: '先按商品、风格或主题查看平台内的设计内容。' },
+  { step: '02', title: '进入定制服务', description: '根据项目类型选择合适的定制设计服务与合作方式。' },
+  { step: '03', title: '查看工具模块', description: '继续了解 AI 工具预览和后续功能入口。' },
 ]
 const businessModules = [
   {
-    title: '灵感发现与作品分享',
-    text: '把作品集、系列视觉和收藏流组织成更完整的内容入口，让平台先具备社区和分享价值。',
+    title: '作品浏览与案例展示',
+    text: '集中展示平台内的作品系列、视觉案例和内容专题，方便快速浏览与筛选。',
     action: '进入作品集',
     to: '/portfolio',
   },
   {
     title: '个性化定制设计',
-    text: '围绕品牌首发、主题企划和艺术家联名，先做成可配置、可预览的服务工作台。',
+    text: '面向品牌首发、主题企划和联名合作，提供清晰的服务说明与需求配置入口。',
     action: '配置定制需求',
     to: '/design',
   },
   {
     title: 'AI 设计实验室',
-    text: '预留 AI moodboard、图案延展、详情页排版等能力，让未来服务升级有清晰承接面。',
+    text: '展示 AI 情绪板、图案延展和版式建议等预研能力，便于后续逐步接入平台。',
     action: '查看 AI 模块',
     to: '/ai-lab',
   },
 ]
 const personalizedModes = [
-  { name: '品牌冷启动', detail: '适合从 0 到 1 的系列与商品首发。' },
-  { name: '节日主题企划', detail: '强调速度、传播与陈列统一。' },
-  { name: '创作者联名', detail: '把艺术语言延展为可售卖周边。' },
+  { name: '品牌冷启动', detail: '适合新品牌首发、系列规划和首批商品准备。' },
+  { name: '节日主题企划', detail: '适合活动上新、礼盒企划和短周期宣传项目。' },
+  { name: '创作者联名', detail: '适合将插画或艺术风格整理成联名商品系列。' },
 ]
 const futureSignals = [
-  { title: '智能 brief', desc: '把用户输入自动整理成设计任务摘要。' },
-  { title: '风格推演', desc: '从关键词生成 moodboard 与色板结构。' },
-  { title: '商品映射', desc: '自动推导哪些图案适合哪些 POD SKU。' },
+  { title: '智能 brief', desc: '将用户填写的信息整理成更清晰的设计需求摘要。' },
+  { title: '风格推演', desc: '根据关键词输出参考风格、色板和方向建议。' },
+  { title: '商品映射', desc: '辅助判断不同图案更适合哪些 POD 商品类型。' },
 ]
 const podCategories = [
   { name: 'T 恤 / 卫衣', count: '120+', image: '/discovery/pod-tee.svg', keyword: 'T恤', use: '服装印花', audience: '大众服饰', tone: 'soft' },
@@ -93,7 +93,7 @@ const audiences = [
 const useCases = [
   { title: '想快速找能做 POD 的商品', text: '先看产品分类，再进入对应商品详情或灵感结果。', action: '浏览商品分类', path: '/products' },
   { title: '我已经知道想要的风格', text: '直接从风格方向进入，减少在商品列表里盲找。', action: '查看风格方向', path: '/portfolio' },
-  { title: '我只知道一个模糊需求', text: '先用热搜词和热门用途帮你聚焦，再进入搜索与定制。', action: '去搜索探索', path: '/search' },
+  { title: '我只知道一个模糊需求', text: '先用热门主题和商品分类帮你聚焦，再进入商品列表或定制设计。', action: '去商品列表', path: '/products' },
 ]
 
 const featuredProducts = ref<FeaturedProduct[]>([])
@@ -122,7 +122,7 @@ const fetchFeaturedProducts = async () => {
     console.error('获取精选商品失败:', error)
     featuredProducts.value = [
       { id: '1', title: '鎏金花卉印花系列', description: '适合高级女装与围巾延展的精致图案。', category: 'pattern', image: 'grad1' },
-      { id: '2', title: '解构廓形卫衣企划', description: '从版型到图案叙事，适合独立品牌首发。', category: 'clothing', image: 'grad2' },
+      { id: '2', title: '解构廓形卫衣企划', description: '适合独立品牌首发的卫衣系列方案。', category: 'clothing', image: 'grad2' },
       { id: '3', title: '艺术家联名杯具周边', description: '把平面创作自然转化成可售卖的 POD 商品。', category: 'product', image: 'grad3' },
       { id: '4', title: '包装视觉提案', description: '提升品牌礼盒和包装开箱体验。', category: 'packaging', image: 'grad4' },
       { id: '5', title: '秀场海报与社媒素材', description: '统一活动物料和社交传播视觉。', category: 'campaign', image: 'grad5' },
@@ -131,7 +131,7 @@ const fetchFeaturedProducts = async () => {
   }
 }
 
-const goToSearch = () => navigateTo('/search')
+const goToSearch = () => navigateTo('/products')
 const goToExplore = () => navigateTo('/products')
 const goToProductDetail = (productId: string) => navigateTo(`/product/${productId}`)
 const goToCustomDesign = () => navigateTo('/design')
@@ -161,17 +161,17 @@ onMounted(() => {
             Creative POD Product Design & Sharing
           </span>
           <h1 class="mt-6 text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[42px] lg:text-[52px]">
-            简约、克制地展示设计，让作品本身成为视觉中心。
+            衣设是一个聚合设计作品、商品分类与定制服务的展示平台。
           </h1>
           <p class="mt-4 max-w-xl text-[13px] leading-7 text-stone-500">
-            衣设把创意图案、服装设计、POD 商品化和分享表达放进一个更轻、更扁平的界面里，减少多余装饰，把内容、图片和节奏本身做精。
+            你可以在这里浏览图案、服装和 POD 商品案例，也可以查看定制设计服务与 AI 工具预览，快速了解平台目前提供的内容。
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <BaseButton variant="primary" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToExplore">探索精选作品</BaseButton>
-            <BaseButton variant="outline" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToSearch">开始创作与分享</BaseButton>
+            <BaseButton variant="outline" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToSearch">浏览商品分类</BaseButton>
           </div>
           <div class="mt-6 flex flex-wrap gap-2">
-            <span v-for="pill in categoryPills" :key="pill" class="cursor-default rounded-full bg-white px-3 py-1 text-[11px] text-stone-500 transition hover:-translate-y-[1px] hover:bg-stone-900 hover:text-white">{{ pill }}</span>
+            <span v-for="pill in categoryPills" :key="pill" class="ys-chip cursor-default rounded-full px-3 py-1 text-[11px] transition hover:-translate-y-[1px]">{{ pill }}</span>
           </div>
         </div>
 
@@ -203,8 +203,8 @@ onMounted(() => {
             <div class="grid gap-3">
               <article class="rounded-[1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9]">
                 <div class="text-[10px] uppercase tracking-[0.22em] text-stone-400">Creative POD House</div>
-                <h2 class="mt-3 text-[18px] font-semibold leading-7 text-stone-950">更轻的比例，更统一的配色，更细的组件细节。</h2>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">首屏右侧高度已经收下来，避免压过左侧主文案，让整体阅读节奏更稳。</p>
+                <h2 class="mt-3 text-[18px] font-semibold leading-7 text-stone-950">作品、分类和服务入口集中展示在一个首页里。</h2>
+                <p class="mt-2 text-[12px] leading-6 text-stone-500">首页优先展示精选案例，再向下承接商品分类、定制服务和 AI 模块介绍。</p>
               </article>
 
               <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
@@ -239,131 +239,84 @@ onMounted(() => {
         />
 
         <div class="mt-6 space-y-5">
-          <section>
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="text-[16px] font-semibold text-stone-950">POD 产品分类</h3>
-              <button class="ys-quiet-link text-[11px]" @click="goToExplore">查看全部商品</button>
-            </div>
-            <div class="mt-4">
-              <div class="flex flex-wrap gap-2.5">
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <button
+              v-for="item in podCategories"
+              :key="item.name"
+              type="button"
+              class="group rounded-[1.1rem] border border-stone-200 bg-white px-4 py-5 text-center transition duration-200 hover:-translate-y-[2px] hover:border-stone-300 hover:bg-[#fcfbf9]"
+              @click="goToKeyword(item.keyword)"
+            >
+              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-[1rem] bg-[#f7f3ec]">
+                <img :src="item.image" :alt="item.name" class="h-8 w-8 object-contain transition duration-200 group-hover:scale-[1.04]" />
+              </div>
+              <div class="mt-4 text-[14px] font-medium leading-6 text-stone-950">{{ item.name }}</div>
+              <div class="mt-1 text-[11px] text-stone-400">{{ item.use }}</div>
+              <div class="mt-3 text-[10px] uppercase tracking-[0.14em] text-stone-400">{{ item.count }}</div>
+            </button>
+          </div>
+
+          <div class="grid gap-4 lg:grid-cols-2">
+            <section class="rounded-[1.25rem] border border-stone-200 bg-[#fcfbf9] p-4 sm:p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h3 class="text-[15px] font-semibold text-stone-950">风格分类</h3>
+                <button class="ys-quiet-link text-[11px]" @click="goToPortfolio">查看作品集</button>
+              </div>
+              <div class="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 <button
-                  v-for="(item, index) in podCategories"
+                  v-for="item in styleBoards"
                   :key="item.name"
                   type="button"
-                  class="group relative w-full min-w-0 overflow-hidden rounded-[1rem] border border-stone-200 bg-white p-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
+                  class="rounded-[0.95rem] border border-stone-200 bg-white px-3 py-3 text-center transition duration-200 hover:border-stone-300 hover:bg-[#faf7f2]"
                   @click="goToKeyword(item.keyword)"
                 >
-                  <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-stone-200 transition duration-200 group-hover:bg-stone-400"></div>
-                  <div class="flex items-start gap-2.5">
-                    <div class="flex h-[50px] w-[50px] items-center justify-center overflow-hidden rounded-[0.8rem] bg-[#f7f4ee]">
-                      <img :src="item.image" :alt="item.name" class="h-[30px] w-[30px] object-contain opacity-90 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100" />
-                    </div>
-                    <div class="min-w-0 flex-1">
-                      <div class="flex items-start justify-between gap-2">
-                        <div class="text-[13px] font-medium leading-5 text-stone-900">{{ item.name }}</div>
-                        <span class="text-[10px] uppercase tracking-[0.14em] text-stone-400">0{{ index + 1 }}</span>
-                      </div>
-                      <div class="mt-1 text-[11px] text-stone-400">{{ item.use }}</div>
-                    </div>
+                  <div class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#f6f2eb]">
+                    <img :src="item.image" :alt="item.name" class="h-5 w-5 object-contain" />
                   </div>
-                  <div class="mt-2.5 flex flex-wrap gap-1.5">
-                    <span class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] text-stone-500">{{ item.count }}</span>
-                    <span class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] text-stone-500">{{ item.audience }}</span>
-                  </div>
+                  <div class="mt-2 text-[12px] font-medium text-stone-900">{{ item.name }}</div>
+                  <div class="mt-1 text-[10px] text-stone-400">{{ item.keyword }}</div>
                 </button>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section>
-            <h3 class="text-[16px] font-semibold text-stone-950">风格方向</h3>
-            <div class="mt-4">
-              <div class="flex flex-wrap gap-2.5">
+            <section class="rounded-[1.25rem] border border-stone-200 bg-[#fcfbf9] p-4 sm:p-5">
+              <div class="flex items-center justify-between gap-3">
+                <h3 class="text-[15px] font-semibold text-stone-950">快捷入口</h3>
+                <button class="ys-quiet-link text-[11px]" @click="goToSearch">进入商品列表</button>
+              </div>
+              <div class="mt-4 grid gap-2.5">
                 <button
-                  v-for="(item, index) in styleBoards"
-                  :key="item.name"
+                  v-for="item in useCases"
+                  :key="item.title"
                   type="button"
-                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
-                  @click="goToKeyword(item.keyword)"
+                  class="flex items-center justify-between rounded-[0.95rem] border border-stone-200 bg-white px-4 py-3 text-left transition duration-200 hover:border-stone-300 hover:bg-[#faf7f2]"
+                  @click="goToModule(item.path)"
                 >
-                  <div class="relative flex h-[82px] items-center justify-center overflow-hidden rounded-t-[1rem] bg-[#f6f4f1]">
-                    <div class="absolute left-2 top-2 z-[1] rounded-full bg-white/85 px-1.5 py-0.5 text-[9px] uppercase tracking-[0.1em] text-stone-500">
-                      0{{ index + 1 }}
-                    </div>
-                    <img :src="item.image" :alt="item.name" class="h-[38px] w-[38px] object-contain transition duration-300 group-hover:scale-[1.03]" />
+                  <div class="min-w-0">
+                    <div class="text-[12px] font-medium text-stone-900">{{ item.title }}</div>
+                    <div class="mt-1 text-[10px] text-stone-400">{{ item.action }}</div>
                   </div>
-                  <div class="px-3 py-3">
-                    <div class="text-[13px] font-medium text-stone-900">{{ item.name }}</div>
-                    <div class="mt-1 text-[11px] text-stone-400">{{ item.note }}</div>
-                  </div>
+                  <v-icon size="16" class="text-stone-300">mdi-chevron-right</v-icon>
                 </button>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
-          <section>
-            <h3 class="text-[16px] font-semibold text-stone-950">适用人群</h3>
-            <div class="mt-4">
-              <div class="flex flex-wrap gap-2.5">
-                <button
-                  v-for="(item, index) in audiences"
-                  :key="item.name"
-                  type="button"
-                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white px-3 py-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
-                  @click="goToKeyword(item.keywords[0])"
-                >
-                  <div class="flex items-center justify-between gap-2">
-                    <div class="text-[13px] font-medium text-stone-900">{{ item.name }}</div>
-                    <span class="text-[10px] uppercase tracking-[0.14em] text-stone-400">0{{ index + 1 }}</span>
-                  </div>
-                  <p class="mt-2 text-[11px] leading-6 text-stone-500">{{ item.desc }}</p>
-                  <div class="mt-3 flex flex-wrap gap-1.5">
-                    <span v-for="tag in item.keywords" :key="tag" class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] text-stone-500">{{ tag }}</span>
-                  </div>
-                </button>
+          <section class="rounded-[1.25rem] border border-stone-200 bg-white p-4 sm:p-5">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h3 class="text-[15px] font-semibold text-stone-950">热门搜索</h3>
+                <p class="mt-1 text-[11px] text-stone-400">像电商首页一样保留常用主题词，方便快速进入。</p>
               </div>
-            </div>
-          </section>
-
-          <section class="rounded-[1.2rem] bg-[#faf8f5] p-4 sm:p-5">
-            <div class="text-[11px] uppercase tracking-[0.18em] text-stone-400">热搜词与入口词</div>
-            <div class="mt-4">
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="item in hotKeywords"
                   :key="item"
                   type="button"
-                  class="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[11px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-900"
+                  class="ys-chip rounded-full px-3 py-1.5 text-[11px]"
                   @click="goToKeyword(item)"
                 >
                   {{ item }}
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h3 class="text-[16px] font-semibold text-stone-950">常用浏览方式</h3>
-            <div class="mt-4">
-              <div class="flex flex-wrap gap-2.5">
-                <button
-                  v-for="(item, index) in useCases"
-                  :key="item.title"
-                  type="button"
-                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white p-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
-                  @click="goToModule(item.path)"
-                >
-                  <div class="flex items-center justify-between gap-2">
-                    <div class="text-[13px] font-medium text-stone-950">{{ item.title }}</div>
-                    <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-[#faf8f5] text-stone-500">
-                      <v-icon size="12">mdi-compass-outline</v-icon>
-                    </span>
-                  </div>
-                  <p class="mt-2 text-[11px] leading-6 text-stone-500">{{ item.text }}</p>
-                  <div class="mt-3 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.12em] text-stone-400">
-                    0{{ index + 1 }}
-                    <span class="normal-case tracking-normal text-stone-500">{{ item.action }}</span>
-                  </div>
                 </button>
               </div>
             </div>
@@ -385,8 +338,8 @@ onMounted(() => {
       <div class="mx-auto grid max-w-[1560px] gap-5 lg:grid-cols-[0.72fr_1.28fr]">
         <div>
           <span class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Workflow</span>
-          <h2 class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950">保留叙事，但整体更轻、更小、更平衡。</h2>
-          <p class="mt-4 max-w-md text-[13px] leading-7 text-stone-500">把风格集中在版式、间距和图片陈列，不再依赖大量边框、重叠分隔和视觉噪声。</p>
+          <h2 class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950">把平台主要内容整理成更清楚的浏览路径。</h2>
+          <p class="mt-4 max-w-md text-[13px] leading-7 text-stone-500">通过分类浏览、服务入口和功能模块三部分，让用户更快找到自己需要的内容。</p>
         </div>
         <div class="grid gap-3 md:grid-cols-3">
           <article v-for="item in storySteps" :key="item.step" class="rounded-[1rem] bg-white p-5 transition duration-200 hover:-translate-y-[2px] hover:bg-[#fcfbf9]">
@@ -402,14 +355,14 @@ onMounted(() => {
       <div class="mx-auto max-w-[1560px] rounded-[1.6rem] bg-white p-5 sm:p-6 lg:p-7">
         <BusinessSectionIntro
           kicker="Business Modules"
-          title="围绕设计分享、定制服务与创作工具整理网站结构。"
-          description="让作品浏览、定制委托与实验性功能各自有清晰位置，阅读和跳转都会更自然。"
+          title="把平台内容整理成清晰的三类入口。"
+          description="作品浏览、定制设计和 AI 工具预览分别对应不同需求，用户可以根据目的直接进入。"
         />
         <div class="mt-6 grid gap-3 xl:grid-cols-3">
           <article v-for="item in businessModules" :key="item.title" class="ys-card rounded-[1.2rem] p-5">
             <div class="text-[16px] font-semibold text-stone-950">{{ item.title }}</div>
             <p class="mt-3 text-[12px] leading-6 text-stone-500">{{ item.text }}</p>
-            <button class="mt-5 inline-flex items-center gap-2 rounded-full bg-[#faf8f5] px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-900 hover:text-white" @click="goToModule(item.to)">
+            <button class="ys-chip mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] transition duration-200 hover:-translate-y-[1px]" @click="goToModule(item.to)">
               {{ item.action }}
               <v-icon size="14">mdi-arrow-top-right</v-icon>
             </button>
@@ -423,8 +376,8 @@ onMounted(() => {
         <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Personalized Studio"
-            title="把定制设计的内容与合作方式展示得更清楚。"
-            description="从品牌首发到联名企划，把常见的委托方向拆开陈列，方便快速判断合适的设计路径。"
+            title="用更清楚的方式介绍定制设计服务。"
+            description="按项目类型整理服务内容，方便用户快速判断适合自己的合作方式。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
             <div v-for="item in personalizedModes" :key="item.name" class="rounded-[1rem] bg-[#faf8f5] p-4">
@@ -441,8 +394,8 @@ onMounted(() => {
         <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="AI Ready"
-            title="把实验性设计工具预留在合适的位置。"
-            description="先把界面结构、浏览方式和说明文字整理好，后续接入生成式能力时会更顺畅。"
+            title="保留 AI 工具的展示入口。"
+            description="当前先展示工具方向和功能模块，后续再逐步接入实际能力。"
           />
           <div class="mt-6 grid gap-3">
             <div v-for="item in futureSignals" :key="item.title" class="rounded-[1rem] bg-[#faf8f5] p-4">

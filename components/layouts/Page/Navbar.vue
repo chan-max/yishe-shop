@@ -35,8 +35,8 @@ const closeMobileMenu = () => {
         
         <!-- Desktop Navigation Menu -->
         <nav class="nav-menu desktop-nav">
-          <NuxtLink to="/search" class="nav-link" :class="{ 'active': route.path === '/search' }">
-            Search
+          <NuxtLink to="/products" class="nav-link" :class="{ 'active': route.path === '/products' }">
+            Products
                     </NuxtLink>
           <NuxtLink to="/about" class="nav-link" :class="{ 'active': route.path === '/about' }">
             About
@@ -74,13 +74,13 @@ const closeMobileMenu = () => {
           <!-- Mobile Menu Links -->
           <nav class="mobile-nav-menu">
                       <NuxtLink
-              to="/search" 
+              to="/products" 
               class="mobile-nav-link"
-              :class="{ 'active': route.path === '/search' }"
+              :class="{ 'active': route.path === '/products' }"
                         @click="closeMobileMenu"
                       >
-              <v-icon left>mdi-magnify</v-icon>
-              Search
+              <v-icon left>mdi-shopping-outline</v-icon>
+              Products
                       </NuxtLink>
                       <NuxtLink
               to="/about" 

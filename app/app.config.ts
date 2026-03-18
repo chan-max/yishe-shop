@@ -10,9 +10,9 @@ import type { AppConfigInput } from 'nuxt/schema'
 
 export default defineAppConfig({
   awesome: {
-    name: '衣设 | 开放式的创意服装社区',
+    name: '衣设 | 服装设计与 POD 商品展示平台',
     description:
-      '开放式的创意服装社区',
+      '集中展示服装设计、图案作品、POD 商品分类与定制服务内容。',
     project: {
       links: {
         github: '',
@@ -39,11 +39,11 @@ export default defineAppConfig({
             },
             {
               type: 'dropdown',
-              title: '衣设服装设计 - 开放式的创意服装社区',
+              title: '衣设服装设计 - 平台介绍',
               children: [
                 {
                   type: 'link',
-                  title: '最具创意的开放式服装设计平台',
+                  title: '服装设计与 POD 商品展示平台',
                   to: { name: 'about' },
                 },
               ],
@@ -63,7 +63,7 @@ export default defineAppConfig({
         year: new Date().getFullYear(),
       },
       welcome: {
-        title: '最具创意的&nbsp;开放式服装设计平台',
+        title: '服装设计与&nbsp;POD 商品展示平台',
         disableInfoReplaceIndexInWelcomePage: true,
       },
     },

@@ -21,10 +21,10 @@
       <div class="space-y-5">
         <section>
           <div class="group relative overflow-hidden rounded-[1rem] bg-transparent">
-            <button v-if="productImages.length > 1" class="absolute left-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-white/96 text-stone-600 shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="previousImage" aria-label="上一张图片">
+            <button v-if="productImages.length > 1" class="ys-icon-btn absolute left-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 active:translate-y-0" @click="previousImage" aria-label="上一张图片">
               <Icon name="heroicons:chevron-left" class="h-4 w-4" />
             </button>
-            <button v-if="productImages.length > 1" class="absolute right-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-white/96 text-stone-600 shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="nextImage" aria-label="下一张图片">
+            <button v-if="productImages.length > 1" class="ys-icon-btn absolute right-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 active:translate-y-0" @click="nextImage" aria-label="下一张图片">
               <Icon name="heroicons:chevron-right" class="h-4 w-4" />
             </button>
 
@@ -70,7 +70,7 @@
               <div v-if="productKeywords.length > 0" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb] sm:col-span-2">
                 <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">关键词</div>
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <span v-for="keyword in productKeywords" :key="keyword" class="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500 transition duration-200 hover:border-stone-900 hover:bg-stone-900 hover:text-white">
+                  <span v-for="keyword in productKeywords" :key="keyword" class="ys-chip rounded-full px-3 py-1 text-[11px] transition duration-200">
                     {{ keyword }}
                   </span>
                 </div>

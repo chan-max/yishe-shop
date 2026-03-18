@@ -3,8 +3,8 @@ definePageMeta({ layout: 'page' })
 
 usePageSEO({
   title: '作品集与灵感库 - 衣设',
-  description: '浏览精选设计系列、风格板与创作方向，让作品分享、收藏和发现更像一个完整的设计社区。',
-  keywords: '作品集,灵感库,设计分享,设计社区,POD作品集',
+  description: '浏览平台内的精选作品系列、视觉案例与内容专题，查看不同方向的设计整理方式。',
+  keywords: '作品集,灵感库,设计分享,设计展示,POD作品集',
   url: 'https://1s.design/portfolio',
   type: 'website',
 })
@@ -46,7 +46,7 @@ const boards = [
 
 const articleFeeds = [
   { title: '如何把一个图案做成系列商品', tag: '策略', time: '6 分钟' },
-  { title: 'POD 首页展示为什么要先做叙事顺序', tag: '展示', time: '4 分钟' },
+  { title: 'POD 首页展示为什么要先整理内容顺序', tag: '展示', time: '4 分钟' },
   { title: 'AI 共创会如何改变设计交付', tag: 'AI', time: '7 分钟' },
 ]
 
@@ -71,10 +71,10 @@ const toggleSave = (id: string) => {
         <div class="mt-4 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
             <h1 class="max-w-3xl text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[44px]">
-              让作品不只是“被看见”，还要被保存、被引用、被拿来继续创作。
+              把作品、案例和专题内容整理成更方便浏览的资料库。
             </h1>
             <p class="mt-4 max-w-2xl text-[13px] leading-7 text-stone-500">
-              这里把作品集做成内容化的灵感库。用户可以筛选方向、保存灵感板，并自然进入定制设计或 AI 服务入口。
+              这里集中展示平台内的设计系列、视觉案例和专题内容，方便筛选方向，也方便继续进入定制设计或工具页面。
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <button
@@ -109,8 +109,8 @@ const toggleSave = (id: string) => {
         <div class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Curated Boards"
-            title="像逛设计编辑部一样浏览作品方向。"
-            description="不只是罗列缩略图，而是把每一组设计内容组织成可理解、可复用、可继续委托的创意板。"
+            title="按主题和类型浏览不同的作品方向。"
+            description="每组内容都按系列方式整理，方便了解作品定位、适配场景和延展方向。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-2">
             <article
@@ -122,7 +122,7 @@ const toggleSave = (id: string) => {
                 <span class="rounded-full bg-[#faf8f5] px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-stone-500">{{ item.category }}</span>
                 <button
                   type="button"
-                  :class="['inline-flex h-8 w-8 items-center justify-center rounded-full border text-[11px] transition', savedBoards.includes(item.id) ? 'border-stone-900 bg-stone-900 text-white' : 'border-stone-200 bg-white text-stone-500 hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-950']"
+                  :class="['inline-flex h-8 w-8 items-center justify-center rounded-full text-[11px] transition', savedBoards.includes(item.id) ? 'ys-action-btn-active' : 'ys-action-btn hover:-translate-y-0.5']"
                   @click="toggleSave(item.id)"
                 >
                   <v-icon size="15">{{ savedBoards.includes(item.id) ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
@@ -141,31 +141,31 @@ const toggleSave = (id: string) => {
         <div class="space-y-5">
           <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
             <BusinessSectionIntro
-              kicker="Saved Flow"
-              title="把收藏行为变成继续转化的起点。"
-              description="后端以后可以接真实收藏、分享和委托逻辑，前端先把路径组织出来。"
+            kicker="Saved Flow"
+            title="把收藏和整理路径预留出来。"
+            description="当前先展示前台流程，后续可继续接入真实收藏、项目清单与委托逻辑。"
             />
             <div class="mt-5 space-y-3">
               <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">保存灵感板</div>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">用户先把作品板加入收藏夹，作为后续定制设计 brief 的参考输入。</p>
+                <p class="mt-2 text-[12px] leading-6 text-stone-500">先把感兴趣的作品板加入收藏，方便后续整理需求时继续参考。</p>
               </div>
               <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">加入项目清单</div>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">把多块灵感板合并成一个项目提案，后续接入工作台和协作流程。</p>
+                <p class="mt-2 text-[12px] leading-6 text-stone-500">将多组作品整理成同一个项目方向，后续可继续扩展为工作台流程。</p>
               </div>
               <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">一键发起定制</div>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">直接带着收藏结果进入定制设计页面，减少用户重新整理需求的成本。</p>
+                <p class="mt-2 text-[12px] leading-6 text-stone-500">从收藏结果直接进入定制设计页面，减少重复整理需求的步骤。</p>
               </div>
             </div>
           </section>
 
           <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
             <BusinessSectionIntro
-              kicker="Editorial Feed"
-              title="配套内容流"
-              description="用内容把平台从作品展示延伸到方法分享与 AI 趋势教育。"
+            kicker="Editorial Feed"
+            title="配套内容流"
+            description="除了作品浏览，也补充方法文章和案例解读，方便了解平台内容方向。"
             />
             <div class="mt-5 space-y-3">
               <article v-for="item in articleFeeds" :key="item.title" class="rounded-[1.1rem] border border-stone-200 bg-white px-4 py-4 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]">

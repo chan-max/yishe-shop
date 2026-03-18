@@ -97,7 +97,7 @@ const handleClick = (event: MouseEvent) => {
 
 .ys-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(28, 25, 23, 0.12);
+  box-shadow: 0 0 0 3px var(--ys-focus-ring);
 }
 
 .ys-btn:disabled {
@@ -150,7 +150,11 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ys-btn--primary:hover:not(:disabled) {
-  background: #292524;
+  background: #2c2827;
+}
+
+.ys-btn--primary:active:not(:disabled) {
+  background: #3a3534;
 }
 
 .ys-btn--secondary,
@@ -166,16 +170,26 @@ const handleClick = (event: MouseEvent) => {
   border-color: rgba(28, 25, 23, 0.2);
 }
 
+.ys-btn--secondary:active:not(:disabled),
+.ys-btn--glass:active:not(:disabled) {
+  background: #f3efe9;
+}
+
 .ys-btn--outline {
-  background: transparent;
-  color: #1c1917;
-  border-color: rgba(28, 25, 23, 0.22);
+  background: #ffffff;
+  color: #57534e;
+  border-color: rgba(28, 25, 23, 0.16);
 }
 
 .ys-btn--outline:hover:not(:disabled) {
-  background: #1c1917;
-  color: #f7f5f2;
-  border-color: #1c1917;
+  background: #fcfbf9;
+  color: #1c1917;
+  border-color: rgba(28, 25, 23, 0.24);
+}
+
+.ys-btn--outline:active:not(:disabled) {
+  background: #f3efe9;
+  color: #1c1917;
 }
 
 .ys-btn--ghost {
@@ -187,6 +201,10 @@ const handleClick = (event: MouseEvent) => {
 .ys-btn--ghost:hover:not(:disabled) {
   background: #f1ede6;
   color: #1c1917;
+}
+
+.ys-btn--ghost:active:not(:disabled) {
+  background: #ece6de;
 }
 
 .ys-btn--link {
@@ -214,6 +232,10 @@ const handleClick = (event: MouseEvent) => {
   background: #b91c1c;
 }
 
+.ys-btn--danger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
+}
+
 .ys-btn--luxury {
   background: #c8a46a;
   color: #1c1917;
@@ -223,5 +245,10 @@ const handleClick = (event: MouseEvent) => {
 .ys-btn--luxury:hover:not(:disabled) {
   background: #b99253;
   border-color: #b99253;
+}
+
+.ys-btn--luxury:active:not(:disabled) {
+  background: #a98348;
+  border-color: #a98348;
 }
 </style>

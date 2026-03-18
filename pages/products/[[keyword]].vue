@@ -228,7 +228,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1560px]">
-      <div>
+      <div class="mx-auto max-w-2xl text-center">
         <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Catalog</div>
         <h1 class="mt-3 text-[30px] font-semibold text-stone-950">商品列表</h1>
         <p class="mt-2 text-[13px] leading-6 text-stone-500">发现所有精选设计作品，保持更轻、更简洁的浏览体验。</p>
@@ -243,10 +243,10 @@ onMounted(() => {
                 <line x1="15" y1="15" x2="20" y2="20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
               </svg>
             </span>
-            <input v-model="searchKeyword" type="text" placeholder="搜索商品名称、描述、关键词..." class="w-full rounded-xl border border-stone-200 bg-[#faf8f5] py-3 pl-11 pr-4 text-[13px] text-stone-900 outline-none transition duration-200 hover:border-stone-300 hover:bg-white focus:border-stone-900 focus:bg-white" @keyup.enter="handleSearch" />
+            <input v-model="searchKeyword" type="text" placeholder="搜索商品名称、描述、关键词..." class="ys-field w-full rounded-xl bg-[#faf8f5] py-3 pl-11 pr-4 text-[13px] outline-none transition duration-200" @keyup.enter="handleSearch" />
           </div>
           <div class="flex gap-2">
-            <button class="rounded-xl border border-stone-200 px-4 py-3 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:border-stone-300 hover:bg-stone-50 hover:text-stone-950 active:translate-y-0" @click="toggleFilters">
+            <button class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition duration-200 hover:-translate-y-[1px] active:translate-y-0" @click="toggleFilters">
               {{ showFilters ? '收起筛选' : '筛选' }}
             </button>
             <BaseButton size="lg" class="!px-5 !py-3 !text-[12px]" @click="handleSearch">搜索</BaseButton>
@@ -254,64 +254,64 @@ onMounted(() => {
         </div>
 
         <div class="mt-3 flex flex-wrap items-center gap-2">
-          <button v-for="keyword in recommendedKeywords" :key="keyword" class="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500 transition duration-200 hover:-translate-y-[1px] hover:border-stone-300 hover:bg-stone-900 hover:text-white" @click="handleKeywordClick(keyword)">
+          <button v-for="keyword in recommendedKeywords" :key="keyword" class="ys-chip rounded-full px-3 py-1 text-[11px] transition duration-200 hover:-translate-y-[1px]" @click="handleKeywordClick(keyword)">
             {{ keyword }}
           </button>
           <button class="ml-auto text-[11px] text-stone-400 transition duration-200 hover:text-stone-900" @click="resetFilters">清空</button>
         </div>
 
         <div v-if="showFilters" class="mt-4 grid gap-3 border-t border-stone-100 pt-4 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
-          <input v-model="startDate" type="date" class="rounded-xl border border-stone-200 bg-white px-4 py-3 text-[12px] outline-none transition focus:border-stone-900" @change="handleSearch" />
-          <input v-model="endDate" type="date" class="rounded-xl border border-stone-200 bg-white px-4 py-3 text-[12px] outline-none transition focus:border-stone-900" @change="handleSearch" />
-          <button class="rounded-xl border border-stone-200 px-4 py-3 text-[12px] text-stone-600 transition hover:border-stone-300 hover:text-stone-950" @click="resetFilters">重置筛选</button>
+          <input v-model="startDate" type="date" class="ys-field rounded-xl px-4 py-3 text-[12px] outline-none transition" @change="handleSearch" />
+          <input v-model="endDate" type="date" class="ys-field rounded-xl px-4 py-3 text-[12px] outline-none transition" @change="handleSearch" />
+          <button class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition" @click="resetFilters">重置筛选</button>
         </div>
       </div>
 
-      <div class="mt-6 rounded-[1.5rem] border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
+      <div class="mt-6">
         <div v-if="loading" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-          <div v-for="i in 12" :key="i" class="overflow-hidden rounded-[1rem] border border-stone-100 p-3">
-            <div class="aspect-[4/5] animate-pulse rounded-[0.9rem] bg-stone-100"></div>
-            <div class="mt-3 h-3 w-24 animate-pulse rounded bg-stone-100"></div>
-            <div class="mt-2 h-3 w-16 animate-pulse rounded bg-stone-100"></div>
+          <div v-for="i in 12" :key="i" class="product-skeleton rounded-[0.9rem] bg-transparent p-1">
+            <div class="skeleton-wave skeleton-image aspect-[4/5] rounded-[0.85rem]"></div>
+            <div class="mt-3 h-3 w-24 rounded skeleton-wave"></div>
+            <div class="mt-2 h-3 w-16 rounded skeleton-wave skeleton-wave-delay"></div>
           </div>
         </div>
 
-        <div v-else-if="productList.length > 0" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-          <article v-for="product in productList" :key="product.id" class="group cursor-pointer overflow-hidden rounded-[1rem] border border-stone-100 p-3 transition duration-200 hover:-translate-y-[3px] hover:border-stone-200 hover:bg-[#fcfbf9] active:translate-y-0" @click="goToProductDetail(product.id)">
-            <div class="overflow-hidden rounded-[0.9rem] bg-stone-100">
+        <div v-else-if="productList.length > 0" class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+          <article v-for="product in productList" :key="product.id" class="group cursor-pointer bg-transparent" @click="goToProductDetail(product.id)">
+            <div class="overflow-hidden rounded-[0.95rem] bg-stone-100">
               <div class="relative aspect-[4/5] overflow-hidden">
                 <template v-if="getProductImage(product)">
                   <div class="img-loading absolute inset-0 bg-stone-100"></div>
-                  <img :src="getPreviewImageUrl(getProductImage(product), { width: 500, quality: 80, format: 'webp' }) || undefined" :alt="product.name || '商品图片'" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]" @error="handleImageError($event, product)" @load="handleImageLoad" />
+                  <img :src="getPreviewImageUrl(getProductImage(product), { width: 500, quality: 80, format: 'webp' }) || undefined" :alt="product.name || '商品图片'" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]" @error="handleImageError($event, product)" @load="handleImageLoad" />
                   <div class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400">暂无图片</div>
                 </template>
                 <div v-else class="absolute inset-0 flex items-center justify-center bg-stone-100 text-[12px] text-stone-400">暂无图片</div>
               </div>
             </div>
-            <div class="mt-3">
-              <h3 class="text-[13px] font-medium leading-6 text-stone-900">{{ product.name }}</h3>
+            <div class="mt-3 px-0.5">
+              <h3 class="text-[13px] font-medium leading-6 text-stone-900 transition duration-200 group-hover:text-stone-700">{{ product.name }}</h3>
               <p v-if="product.description" class="mt-1 line-clamp-2 text-[12px] leading-5 text-stone-500">{{ product.description }}</p>
-              <div v-if="product.code" class="mt-2 text-[10px] uppercase tracking-[0.18em] text-stone-300 transition duration-200 group-hover:text-stone-500">{{ product.code }}</div>
+              <div v-if="product.code" class="mt-2 text-[10px] uppercase tracking-[0.16em] text-stone-300">{{ product.code }}</div>
             </div>
           </article>
         </div>
 
         <div v-else class="py-20 text-center">
           <p class="text-[13px] text-stone-500">暂无商品</p>
-          <button class="mt-5 rounded-xl border border-stone-200 px-5 py-3 text-[12px] text-stone-900 transition hover:border-stone-900" @click="resetFilters">清除筛选</button>
+          <button class="ys-action-btn mt-5 rounded-xl px-5 py-3 text-[12px] transition" @click="resetFilters">清除筛选</button>
         </div>
 
-        <div v-if="!loading && totalPages > 1 && productList.length > 0" class="mt-8 flex flex-col items-center gap-4 border-t border-stone-100 pt-6">
+        <div v-if="!loading && totalPages > 1 && productList.length > 0" class="mt-10 flex flex-col items-center gap-4 border-t border-stone-100 pt-6">
           <div class="flex flex-wrap items-center justify-center gap-2">
-            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition hover:border-stone-300 hover:text-stone-950 disabled:opacity-35">上一页</button>
-            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition hover:border-stone-300 hover:text-stone-950">1</button>
+            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition disabled:opacity-35">上一页</button>
+            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition">1</button>
             <span v-if="pageNumbers[0] > 2" class="px-1 text-stone-300">...</span>
-            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl border px-4 py-2 text-[12px] transition', currentPage === page ? 'border-stone-900 bg-stone-900 text-white' : 'border-stone-200 text-stone-600 hover:border-stone-300 hover:text-stone-950']">
+            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl px-4 py-2 text-[12px] transition', currentPage === page ? 'ys-action-btn-active' : 'ys-action-btn']">
               {{ page }}
             </button>
             <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="px-1 text-stone-300">...</span>
-            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition hover:border-stone-300 hover:text-stone-950">{{ totalPages }}</button>
-            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition hover:border-stone-300 hover:text-stone-950 disabled:opacity-35">下一页</button>
+            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition">{{ totalPages }}</button>
+            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition disabled:opacity-35">下一页</button>
           </div>
         </div>
       </div>
@@ -320,6 +320,35 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.product-skeleton .skeleton-wave {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f0ece6 0%, #ebe5dd 100%);
+}
+
+.product-skeleton .skeleton-wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.52) 48%, transparent 100%);
+  animation: skeleton-wave 1.5s ease-in-out infinite;
+}
+
+.product-skeleton .skeleton-image {
+  background: linear-gradient(180deg, #eee8df 0%, #e7dfd5 100%);
+}
+
+.product-skeleton .skeleton-wave-delay::after {
+  animation-delay: 0.18s;
+}
+
+@keyframes skeleton-wave {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

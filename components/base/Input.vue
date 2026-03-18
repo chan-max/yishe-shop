@@ -20,12 +20,12 @@
         :class="[
           $slots.prefix ? 'pl-10' : 'pl-4',
           $slots.suffix ? 'pr-10' : 'pr-4',
-          disabled ? 'cursor-not-allowed bg-stone-100 text-stone-400' : 'bg-white hover:bg-[#fcfbf9] focus:bg-white',
+          disabled ? 'cursor-not-allowed bg-stone-100 text-stone-400' : 'bg-white hover:bg-[var(--ys-surface-soft)] focus:bg-white',
           variant === 'bordered'
-            ? 'rounded-xl border border-stone-200 py-3 shadow-[0_0_0_0_rgba(28,25,23,0)] hover:border-stone-300 focus:border-stone-900 focus:shadow-[0_0_0_4px_rgba(28,25,23,0.08)]'
-            : 'rounded-none border-0 border-b border-stone-200 px-0 py-3 hover:border-stone-400 focus:border-stone-900 focus:shadow-[inset_0_-2px_0_0_#1c1917]',
+            ? 'rounded-xl border border-stone-200 py-3 shadow-[0_0_0_0_rgba(28,25,23,0)] hover:border-[color:var(--ys-border-strong)] focus:border-[color:var(--ys-focus-border)] focus:shadow-[0_0_0_4px_var(--ys-focus-ring)]'
+            : 'rounded-none border-0 border-b border-stone-200 px-0 py-3 hover:border-[color:var(--ys-border-strong)] focus:border-[color:var(--ys-focus-border)] focus:shadow-[inset_0_-2px_0_0_var(--ys-focus-border)]',
           error
-            ? (variant === 'bordered' ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]' : 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:shadow-[inset_0_-2px_0_0_#ef4444]')
+            ? (variant === 'bordered' ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:shadow-[0_0_0_4px_var(--ys-danger-ring)]' : 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:shadow-[inset_0_-2px_0_0_#ef4444]')
             : ''
         ]"
         @input="updateValue"
@@ -91,7 +91,7 @@ defineExpose({
 
 <style scoped>
 .input-shell:focus-within .pointer-events-none {
-  color: #1c1917;
+  color: var(--ys-focus-border);
 }
 
 .input-element::placeholder {

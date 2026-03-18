@@ -17,7 +17,7 @@
         </nav>
 
         <div class="header-actions">
-          <NuxtLink to="/search" class="header-chip desktop-only">探索设计</NuxtLink>
+          <NuxtLink to="/products" class="header-chip desktop-only">探索商品</NuxtLink>
 
           <template v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser">
             <div class="user-menu-wrapper">

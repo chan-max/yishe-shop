@@ -549,13 +549,13 @@ const navigateToProduct = (productId: string) => {
 
 const leadingsText = computed(() => [
   {
-    text: "最具创意的",
+    text: "服装设计与",
     startColor: "#007CF0",
     endColor: "#00DFD8",
     delay: 0,
   },
   {
-    text: "开放式服装设计平台",
+    text: "POD 商品展示平台",
     startColor: "#7928CA",
     endColor: "#FF0080",
     delay: 2,
@@ -745,7 +745,7 @@ onMounted(() => {
             </span>
           </h1>
           <div class="px-2 sm:px-4 mt-6 text-center max-w-[500px] md:max-w-[600px] text-black">
-            {{ awesome?.description || "最具创意的开放式服装设计平台" }}
+            {{ awesome?.description || "集中展示服装设计、图案作品、POD 商品分类与定制服务内容。" }}
           </div>
           <div class="flex space-x-4 ml-2 mt-8 justify-center md:justify-start">
             <v-btn

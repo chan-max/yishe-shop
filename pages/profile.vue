@@ -26,7 +26,7 @@
 
           <div>
             <label for="sex" class="mb-2 block text-[12px] font-medium text-stone-600">性别</label>
-            <select id="sex" v-model="form.sex" class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[13px] text-stone-900 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9] focus:border-stone-900 focus:bg-white focus:shadow-[0_0_0_4px_rgba(28,25,23,0.08)] focus:outline-none">
+            <select id="sex" v-model="form.sex" class="ys-field w-full rounded-xl px-4 py-3 text-[13px] transition duration-200 focus:outline-none">
               <option :value="undefined">请选择</option>
               <option :value="1">男</option>
               <option :value="0">女</option>
@@ -35,7 +35,7 @@
 
           <div>
             <label for="birthday" class="mb-2 block text-[12px] font-medium text-stone-600">出生日期</label>
-            <input id="birthday" v-model="form.birthday" type="date" class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[13px] text-stone-900 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9] focus:border-stone-900 focus:bg-white focus:shadow-[0_0_0_4px_rgba(28,25,23,0.08)] focus:outline-none" />
+            <input id="birthday" v-model="form.birthday" type="date" class="ys-field w-full rounded-xl px-4 py-3 text-[13px] transition duration-200 focus:outline-none" />
           </div>
         </div>
 

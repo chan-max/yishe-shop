@@ -3,14 +3,98 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --ys-bg: #f7f5f2;
+    --ys-surface: #ffffff;
+    --ys-surface-soft: #fcfbf9;
+    --ys-surface-active: #f3efe9;
+    --ys-border: rgba(28, 25, 23, 0.12);
+    --ys-border-strong: rgba(28, 25, 23, 0.2);
+    --ys-text: #1c1917;
+    --ys-text-soft: #57534e;
+    --ys-text-muted: #78716c;
+    --ys-focus-ring: rgba(184, 139, 74, 0.18);
+    --ys-focus-border: #8b6a3d;
+    --ys-danger-ring: rgba(239, 68, 68, 0.12);
+  }
+
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
   
   body {
-    @apply antialiased text-gray-900 bg-white;
+    @apply antialiased;
+    color: var(--ys-text);
+    background: var(--ys-bg);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role='button'] {
+    transition:
+      color 160ms ease,
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease,
+      opacity 160ms ease;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    color: var(--ys-text);
+  }
+
+  button,
+  [role='button'] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:active,
+  [role='button']:active,
+  a:active {
+    transform: translateY(0.5px);
+  }
+
+  :where(button, a, input, select, textarea, [role='button']):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ys-focus-ring);
+  }
+
+  input,
+  select,
+  textarea {
+    color: var(--ys-text);
+    background: var(--ys-surface);
+    border-color: var(--ys-border);
+    caret-color: var(--ys-focus-border);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #a8a29e;
+  }
+
+  input:hover,
+  select:hover,
+  textarea:hover {
+    background: var(--ys-surface-soft);
+    border-color: var(--ys-border-strong);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    background: var(--ys-surface);
+    border-color: var(--ys-focus-border);
   }
 
   /* Custom Scrollbar */
@@ -43,6 +127,120 @@
   /* Glass Effect */
   .glass {
     @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  .ys-surface-action {
+    background: var(--ys-surface);
+    color: var(--ys-text-soft);
+    border: 1px solid var(--ys-border);
+  }
+
+  .ys-surface-action:hover {
+    background: var(--ys-surface-soft);
+    color: var(--ys-text);
+    border-color: var(--ys-border-strong);
+  }
+
+  .ys-surface-action:active {
+    background: var(--ys-surface-active);
+    color: var(--ys-text);
+  }
+
+  .ys-surface-inverse {
+    background: #1c1917;
+    color: #f7f5f2;
+    border: 1px solid transparent;
+  }
+
+  .ys-surface-inverse:hover {
+    background: #2c2827;
+    color: #f7f5f2;
+  }
+
+  .ys-surface-inverse:active {
+    background: #3a3534;
+  }
+
+  .ys-chip {
+    background: var(--ys-surface);
+    color: var(--ys-text-soft);
+    border: 1px solid var(--ys-border);
+  }
+
+  .ys-chip:hover {
+    background: var(--ys-surface-soft);
+    color: var(--ys-text);
+    border-color: var(--ys-border-strong);
+  }
+
+  .ys-chip:active {
+    background: var(--ys-surface-active);
+    color: var(--ys-text);
+  }
+
+  .ys-chip-active {
+    background: #2f2a29;
+    color: #f7f5f2;
+    border-color: #2f2a29;
+  }
+
+  .ys-action-btn {
+    background: var(--ys-surface);
+    color: var(--ys-text-soft);
+    border: 1px solid var(--ys-border);
+    box-shadow: none;
+  }
+
+  .ys-action-btn:hover {
+    background: var(--ys-surface-soft);
+    color: var(--ys-text);
+    border-color: var(--ys-border-strong);
+  }
+
+  .ys-action-btn:active {
+    background: var(--ys-surface-active);
+    color: var(--ys-text);
+  }
+
+  .ys-action-btn-active {
+    background: #2f2a29;
+    color: #f7f5f2;
+    border-color: #2f2a29;
+    box-shadow: 0 10px 20px rgba(28, 25, 23, 0.08);
+  }
+
+  .ys-icon-btn {
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--ys-text-soft);
+    border: 1px solid rgba(28, 25, 23, 0.12);
+  }
+
+  .ys-icon-btn:hover {
+    background: #fcfbf9;
+    color: var(--ys-text);
+    border-color: rgba(28, 25, 23, 0.2);
+  }
+
+  .ys-icon-btn:active {
+    background: #f3efe9;
+  }
+
+  .ys-field {
+    background: var(--ys-surface);
+    color: var(--ys-text);
+    border: 1px solid var(--ys-border);
+    box-shadow: none;
+  }
+
+  .ys-field:hover {
+    background: var(--ys-surface-soft);
+    border-color: var(--ys-border-strong);
+  }
+
+  .ys-field:focus {
+    background: var(--ys-surface);
+    border-color: var(--ys-focus-border);
+    box-shadow: 0 0 0 4px var(--ys-focus-ring);
   }
 }
 

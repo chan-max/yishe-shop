@@ -3,7 +3,7 @@ definePageMeta({ layout: 'page' })
 
 usePageSEO({
   title: '定制设计服务 - 衣设',
-  description: '从图案、服装到 POD 商品化策略，快速配置你的个性化设计需求，并预览未来可接入的 AI 协同设计服务。',
+  description: '查看品牌首发、主题企划和联名合作等定制设计服务，并在线整理项目需求。',
   keywords: '定制设计,POD设计服务,个性化设计,服装设计服务,AI设计协同',
   url: 'https://1s.design/design',
   type: 'website',
@@ -50,16 +50,16 @@ const packages = [
   {
     name: 'Studio Partner',
     price: '定制报价',
-    summary: '适合持续合作，把设计内容变成长期栏目。',
-    items: ['月度企划共创', '新品节奏规划', 'AI 服务优先内测'],
+    summary: '适合月度合作与持续上新需求。',
+    items: ['月度企划共创', '新品节奏规划', '新功能优先体验'],
   },
 ]
 
 const serviceTags = ['印花图案', '服装廓形', '包装礼盒', '社媒素材', '详情页视觉', '艺术家联名']
 const aiFeatures = [
-  { title: 'AI 情绪板生成', text: '基于 brief 自动整理材质、色板和参考叙事。' },
-  { title: '图案延展建议', text: '从一个主视觉扩展出系列纹样与 SKU 适配版本。' },
-  { title: '智能陈列草图', text: '自动生成首屏、详情页、海报等展示构图建议。' },
+  { title: 'AI 情绪板生成', text: '根据项目需求整理参考风格、材质和色彩方向。' },
+  { title: '图案延展建议', text: '从一个主视觉延展出系列纹样与不同商品版本。' },
+  { title: '智能陈列草图', text: '辅助生成首页、详情页和宣传画面的构图建议。' },
 ]
 
 const selectedTrack = ref(tracks[0].id)
@@ -97,10 +97,10 @@ const summaryLines = computed(() => [
         <div class="ys-card rounded-[1.75rem] p-6 sm:p-8">
           <div class="minimal-kicker">Custom Design Studio</div>
           <h1 class="mt-4 max-w-3xl text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[46px]">
-            不只是接单，而是把你的设计方向、商品结构和分享表达一起做完整。
+            用更清楚的方式整理定制设计服务与合作需求。
           </h1>
           <p class="mt-4 max-w-2xl text-[13px] leading-7 text-stone-500">
-            从品牌首发、主题企划到艺术家联名，把常见的设计委托方式整理成清晰的服务页，方便先浏览方向，再细化需求。
+            这里按品牌首发、主题企划和联名合作整理服务内容，方便先了解方案，再提交具体需求。
           </p>
           <div class="mt-6 flex flex-wrap gap-2">
             <span v-for="tag in serviceTags" :key="tag" class="ys-chip text-[11px]">{{ tag }}</span>
@@ -141,7 +141,7 @@ const summaryLines = computed(() => [
         <BusinessSectionIntro
           kicker="Design Track"
           title="先确定合作模型，再展开具体设计需求。"
-          description="每一种轨道都对应不同的输出重点。品牌首发更看完整度，主题企划更看传播速度，个人艺术家系列更看表达辨识度。"
+          description="不同项目类型对应不同输出内容，先选方向，再看交付范围和周期。"
         />
         <div class="mt-6 grid gap-3 lg:grid-cols-3">
           <button
@@ -235,8 +235,8 @@ const summaryLines = computed(() => [
           <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
             <BusinessSectionIntro
               kicker="AI Ready"
-              title="这里预留图案延展与版式辅助工具。"
-              description="后续接入生成与分析能力时，可以自然补进现有的设计流程，不会打断页面结构。"
+              title="这里预留 AI 辅助功能入口。"
+              description="后续会逐步接入需求整理、图案延展和版式建议等辅助能力。"
             />
             <div class="mt-5 grid gap-3">
               <div v-for="item in aiFeatures" :key="item.title" class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">

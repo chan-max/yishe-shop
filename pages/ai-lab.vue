@@ -3,7 +3,7 @@ definePageMeta({ layout: 'page' })
 
 usePageSEO({
   title: 'AI 设计实验室 - 衣设',
-  description: '整理情绪板、图案延展与版式辅助等实验性设计工具，让未来的生成式能力与现有设计流程更自然地结合。',
+  description: '集中展示 AI 情绪板、图案延展和版式建议等设计工具方向，作为后续功能接入预览。',
   keywords: 'AI设计,设计实验室,情绪板生成,图案延展,智能排版',
   url: 'https://1s.design/ai-lab',
   type: 'website',
@@ -45,10 +45,10 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
         <div class="ys-card rounded-[1.75rem] p-6 sm:p-8">
           <div class="minimal-kicker">AI Design Lab</div>
           <h1 class="mt-4 max-w-3xl text-[34px] font-semibold leading-[1.14] text-stone-950 sm:text-[46px]">
-            先把 AI 服务想对，再把它接进平台。
+            这里集中展示平台计划接入的 AI 设计辅助功能。
           </h1>
           <p class="mt-4 max-w-2xl text-[13px] leading-7 text-stone-500">
-            重点不是堆功能，而是把情绪板整理、图案延展和版式建议这些真正对设计流程有帮助的能力安排在合适的位置。
+            当前主要展示情绪板整理、图案延展和版式建议等模块，方便提前了解功能方向和使用场景。
           </p>
           <div class="mt-6 flex flex-wrap gap-2">
             <span class="ys-chip text-[11px]">AI 情绪板</span>
@@ -81,8 +81,8 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
       <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
         <BusinessSectionIntro
           kicker="Workflow Engine"
-          title="把 AI 能力拆成真正能落地的服务模块。"
-          description="每个模块都能单独上线，也能组合成一个完整的设计协同流程。"
+          title="把 AI 能力整理成清晰的功能模块。"
+          description="每个模块对应一个具体用途，后续可以单独上线，也可以逐步组合进设计流程。"
         />
         <div class="mt-6 grid gap-3 lg:grid-cols-[0.92fr_1.08fr]">
           <div class="space-y-3">
@@ -115,7 +115,7 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
           <BusinessSectionIntro
             kicker="Future Surface"
             title="未来界面结构"
-            description="等模型接入后，可以直接把这些区域替换成真实结果，不需要重做页面骨架。"
+            description="模型接入后，这些区域可以直接替换为真实输出结果，不需要重做页面结构。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
             <div v-for="item in outputModules" :key="item.title" class="ys-card rounded-[1.2rem] p-4">
@@ -129,7 +129,7 @@ const activeItem = computed(() => workflows.find(item => item.id === activeWorkf
           <BusinessSectionIntro
             kicker="Roadmap"
             title="产品演进路线"
-            description="先用前台体验验证价值，再逐步把 AI 能力嵌进去。"
+            description="先完成前台展示与交互，再逐步接入可用的 AI 能力。"
           />
           <div class="mt-6 space-y-3">
             <div v-for="item in roadmap" :key="item.phase" class="rounded-[1.2rem] bg-white px-4 py-4">

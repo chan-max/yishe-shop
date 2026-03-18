@@ -10,6 +10,10 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+definePageMeta({
+  middleware: () => navigateTo('/products'),
+})
+
 // import { useSearchStore } from '~/stores/use-search'
 
 // Import content area components
@@ -511,7 +515,7 @@ const clearSearch = () => {
   // 清空全局状态
   searchQuery.value = ''
   showSuggestions.value = false
-  router.replace({ path: '/search' })
+  router.replace({ path: '/products' })
 }
 
 // Handle filter updates

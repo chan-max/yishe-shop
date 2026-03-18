@@ -206,7 +206,7 @@ onMounted(() => {
                   <button class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 hover:text-red-600 active:translate-y-0" @click="removeFavorite(favorite.productId, favorite.id)">
                     取消收藏
                   </button>
-                  <button class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="goToProductDetail(favorite.productId)">
+                  <button class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 active:translate-y-0" @click="goToProductDetail(favorite.productId)">
                     查看详情
                   </button>
                 </div>
@@ -218,7 +218,7 @@ onMounted(() => {
         <div v-else class="py-20 text-center">
           <Icon name="heroicons:heart" class="mx-auto h-12 w-12 text-stone-300" />
           <p class="mt-4 text-[13px] text-stone-500">暂无收藏</p>
-          <NuxtLink to="/products" class="mt-5 inline-flex rounded-xl border border-stone-200 px-5 py-3 text-[12px] text-stone-900 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white">
+          <NuxtLink to="/products" class="ys-action-btn mt-5 inline-flex rounded-xl px-5 py-3 text-[12px] transition duration-200 hover:-translate-y-0.5">
             去逛逛
           </NuxtLink>
         </div>
@@ -226,17 +226,17 @@ onMounted(() => {
         <div v-if="!loading && favoriteList.length > 0" class="mt-8 flex flex-col items-center gap-4 border-t border-stone-100 pt-6">
           <div class="text-[11px] text-stone-400">共 {{ total }} 件收藏，第 {{ currentPage }} / {{ totalPages }} 页</div>
           <div class="flex flex-wrap items-center justify-center gap-2">
-            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
+            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
               上一页
             </button>
-            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white">1</button>
+            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5">1</button>
             <span v-if="pageNumbers[0] > 2" class="px-1 text-stone-300">...</span>
-            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl border px-4 py-2 text-[12px] transition duration-200', currentPage === page ? 'border-stone-900 bg-stone-900 text-white shadow-[0_10px_20px_rgba(28,25,23,0.08)]' : 'border-stone-200 text-stone-600 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white']">
+            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl px-4 py-2 text-[12px] transition duration-200', currentPage === page ? 'ys-action-btn-active' : 'ys-action-btn hover:-translate-y-0.5']">
               {{ page }}
             </button>
             <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="px-1 text-stone-300">...</span>
-            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white">{{ totalPages }}</button>
-            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-stone-900 hover:bg-stone-900 hover:text-white disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
+            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5">{{ totalPages }}</button>
+            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
               下一页
             </button>
           </div>
