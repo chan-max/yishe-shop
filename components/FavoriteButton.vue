@@ -1,36 +1,20 @@
-<!--
- * @Author: chan-max jackieontheway666@gmail.com
- * @Date: 2025-01-XX XX:XX:XX
- * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-XX XX:XX:XX
- * @FilePath: /yishe-nuxt/components/FavoriteButton.vue
- * @Description: 收藏按钮组件 - 带动画效果的心形按钮
--->
 <template>
-  <div class="favorite-button-container" @click="handleClick">
-    <div 
-      class="heart-container" 
-      :class="{ 'is-favorite': isFavorite }"
-    >
-      <div class="svg-container">
-        <!-- 心形图标 - 未收藏时显示灰色填充，已收藏时显示红色填充 -->
-        <svg 
-          viewBox="0 0 24 24" 
-          class="svg-heart" 
-          :class="{ 'is-favorite': isFavorite }"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+  <button
+    type="button"
+    class="favorite-button-container"
+    :class="{ 'is-favorite': isFavorite }"
+    :aria-pressed="isFavorite"
+    :title="isFavorite ? '取消收藏' : '点击收藏'"
+    @click="handleClick"
+  >
+    <span class="heart-container" :class="[{ 'is-favorite': isFavorite }, `size-${size}`]">
+      <span class="heart-surface"></span>
+      <span class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-heart" :class="{ 'is-favorite': isFavorite }" xmlns="http://www.w3.org/2000/svg">
           <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
         </svg>
-        
-        <!-- 庆祝动画（点击收藏时显示） -->
-        <svg 
-          v-if="showCelebrate" 
-          class="svg-celebrate" 
-          width="100" 
-          height="100" 
-          xmlns="http://www.w3.org/2000/svg"
-        >
+
+        <svg v-if="showCelebrate" class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
           <polygon points="10,10 20,20"></polygon>
           <polygon points="10,50 20,50"></polygon>
           <polygon points="20,80 30,70"></polygon>
@@ -38,19 +22,17 @@
           <polygon points="90,50 80,50"></polygon>
           <polygon points="80,80 70,70"></polygon>
         </svg>
-      </div>
-    </div>
-    
-    <!-- 文字提示 -->
-    <span class="favorite-text" :class="{ 'is-favorite': isFavorite }">
-      {{ isFavorite ? '取消收藏' : '点击收藏' }}
+      </span>
     </span>
-    
-    <!-- 收藏数量显示（可选） -->
+
+    <span class="favorite-text" :class="{ 'is-favorite': isFavorite }">
+      {{ isFavorite ? '已收藏' : '收藏' }}
+    </span>
+
     <div v-if="showCount && count !== null" class="favorite-count">
       {{ count }}
     </div>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -75,14 +57,12 @@ const emit = defineEmits<{
 
 const showCelebrate = ref(false)
 
-// 监听收藏状态变化，触发庆祝动画
 watch(() => props.isFavorite, (newVal, oldVal) => {
-  // 从未收藏变为已收藏时，显示庆祝动画
   if (newVal && !oldVal) {
     showCelebrate.value = true
     setTimeout(() => {
       showCelebrate.value = false
-    }, 500)
+    }, 420)
   }
 })
 
@@ -96,105 +76,123 @@ const handleClick = () => {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  z-index: 20;
+  gap: 4px;
   position: relative;
   cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 2px;
+  transition: transform 0.18s ease;
+}
+
+.favorite-button-container:focus-visible .heart-surface {
+  box-shadow: 0 0 0 3px rgba(28, 25, 23, 0.14);
+}
+
+.favorite-button-container:hover {
+  transform: translateY(-1px);
+}
+
+.favorite-button-container:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .heart-container {
-  --heart-color: rgb(255, 91, 137);
+  --heart-color: #dd5b73;
   position: relative;
-  width: 36px;
-  height: 36px;
-  transition: transform 0.3s ease;
-  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  z-index: 20;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.heart-container:hover {
-  transform: scale(1.1);
+.heart-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #faf8f5;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.heart-container:active {
-  transform: scale(0.95);
+.favorite-button-container:hover .heart-surface {
+  transform: translateY(-1px) scale(1.04);
+  background: #fff;
+  border-color: rgba(28, 25, 23, 0.18);
+  box-shadow: 0 10px 20px rgba(28, 25, 23, 0.06);
 }
 
+.favorite-button-container:active .heart-surface {
+  transform: translateY(0) scale(0.98);
+}
 
-.heart-container .svg-container {
-  width: 100%;
-  height: 100%;
+.heart-container.is-favorite .heart-surface {
+  background: rgba(221, 91, 115, 0.1);
+  border-color: rgba(221, 91, 115, 0.28);
+}
+
+.favorite-button-container:hover .heart-container.is-favorite .heart-surface {
+  box-shadow: 0 10px 22px rgba(221, 91, 115, 0.14);
+}
+
+.svg-container {
+  width: 18px;
+  height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: visible;
+  z-index: 1;
 }
 
-.heart-container .svg-heart {
-  position: absolute;
+.svg-heart {
   width: 100%;
   height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  fill: #d1d5db; /* 灰色 - 未收藏状态 */
-  transition: fill 0.3s ease, transform 0.3s ease;
+  fill: #a8a29e;
+  transition: fill 0.22s ease, transform 0.22s ease;
   pointer-events: none;
 }
 
-.heart-container .svg-heart.is-favorite {
-  fill: var(--heart-color); /* 红色 - 已收藏状态 */
-  animation: keyframes-svg-filled 0.6s ease-out;
+.favorite-button-container:hover .svg-heart {
+  fill: #78716c;
+  transform: scale(1.08);
 }
 
-.heart-container .svg-celebrate {
+.svg-heart.is-favorite {
+  fill: var(--heart-color);
+  animation: keyframes-svg-filled 0.45s ease-out;
+}
+
+.svg-celebrate {
   position: absolute;
-  animation: keyframes-svg-celebrate 0.5s ease-out;
+  animation: keyframes-svg-celebrate 0.42s ease-out;
   animation-fill-mode: forwards;
   stroke: var(--heart-color);
   fill: var(--heart-color);
   stroke-width: 2px;
-  width: 100px;
-  height: 100px;
+  width: 86px;
+  height: 86px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 100;
-  overflow: visible;
-}
-
-
-.favorite-text {
-  font-size: 12px;
-  color: #666;
-  font-weight: 400;
-  margin-top: 4px;
-  transition: color 0.3s ease;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.favorite-text.is-favorite {
-  color: var(--heart-color);
+  z-index: 10;
 }
 
 .favorite-text {
-  font-size: 12px;
-  color: #666;
-  font-weight: 400;
-  margin-top: 4px;
-  transition: color 0.3s ease;
-  cursor: pointer;
+  font-size: 11px;
+  color: #78716c;
+  font-weight: 500;
+  transition: color 0.18s ease;
   white-space: nowrap;
   user-select: none;
+}
+
+.favorite-button-container:hover .favorite-text {
+  color: #292524;
 }
 
 .favorite-text.is-favorite {
@@ -202,76 +200,37 @@ const handleClick = () => {
 }
 
 .favorite-count {
-  font-size: 11px;
-  color: #999;
-  font-weight: 400;
-  margin-top: 2px;
-  min-height: 14px;
+  font-size: 10px;
+  color: #a8a29e;
+  font-weight: 500;
+  min-height: 12px;
 }
 
-/* 尺寸变体 */
 .heart-container.size-small {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 
 .heart-container.size-large {
-  width: 60px;
-  height: 60px;
+  width: 42px;
+  height: 42px;
 }
 
 @keyframes keyframes-svg-filled {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  25% {
-    transform: translate(-50%, -50%) scale(1.15);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(0.95);
-    filter: brightness(1.3);
-  }
-  75% {
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    filter: brightness(1);
-  }
-}
-
-/* 当填充的心形显示时，应用动画 */
-.heart-container .svg-filled:not(.hidden) {
-  animation: keyframes-svg-filled 0.6s ease-out;
+  0% { transform: scale(1); }
+  35% { transform: scale(1.15); }
+  70% { transform: scale(0.94); }
+  100% { transform: scale(1); }
 }
 
 @keyframes keyframes-svg-celebrate {
   0% {
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0.4);
     opacity: 1;
-  }
-  50% {
-    opacity: 1;
-    filter: brightness(1.5);
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.4);
+    transform: translate(-50%, -50%) scale(1.1);
     opacity: 0;
   }
 }
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .heart-container {
-    width: 45px;
-    height: 45px;
-  }
-}
 </style>
-

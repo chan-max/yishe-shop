@@ -156,7 +156,7 @@ const activeFiltersCount = computed(() => {
 const selectedCategory = ref('home') // Default to home
 
 // Theme mode state
-const isDarkMode = ref(true) // Default to dark mode
+const isDarkMode = ref(false) // Default to dark mode
 
 // Photo wall data
 const photoWallData = ref<any[]>([])
@@ -2189,5 +2189,201 @@ const handleBlur = () => {
   .product-stats {
     gap: 0.375rem;
   }
+}
+</style>
+
+<style lang="scss">
+/* search-page-refined-overrides */
+.search-page {
+  --bg-primary: #f7f5f2 !important;
+  --bg-secondary: #ffffff !important;
+  --bg-tertiary: #faf8f5 !important;
+  --bg-hover: rgba(28, 25, 23, 0.05) !important;
+  --bg-active: rgba(28, 25, 23, 0.08) !important;
+  --text-primary: #1c1917 !important;
+  --text-secondary: #57534e !important;
+  --text-tertiary: #78716c !important;
+  --text-muted: #a8a29e !important;
+  --border-primary: rgba(28, 25, 23, 0.08) !important;
+  --border-secondary: rgba(28, 25, 23, 0.05) !important;
+  --border-hover: rgba(28, 25, 23, 0.16) !important;
+  --theme-primary: #1c1917 !important;
+  --theme-primary-hover: #292524 !important;
+  --theme-gradient: none !important;
+  --shadow-primary: rgba(28, 25, 23, 0.04) !important;
+  --shadow-secondary: rgba(28, 25, 23, 0.08) !important;
+  --shadow-card: 0 10px 22px rgba(28, 25, 23, 0.04) !important;
+  --shadow-card-hover: 0 18px 32px rgba(28, 25, 23, 0.06) !important;
+  --input-bg: #faf8f5 !important;
+  --input-bg-hover: #ffffff !important;
+  --input-bg-focus: #ffffff !important;
+  --input-border: rgba(28, 25, 23, 0.09) !important;
+  --input-border-hover: rgba(28, 25, 23, 0.16) !important;
+  --input-border-focus: #1c1917 !important;
+  --card-bg: #ffffff !important;
+  --card-bg-hover: #ffffff !important;
+}
+
+.search-page,
+.search-page * {
+  font-family: var(--ys-font-sans), sans-serif !important;
+}
+
+.search-page .sidebar {
+  width: 220px;
+  background: #faf8f5 !important;
+  box-shadow: none !important;
+}
+
+.search-page .search-main-content {
+  background: #f7f5f2 !important;
+}
+
+.search-page .nav-btn,
+.search-page .theme-toggle-btn,
+.search-page .toggle-btn {
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease !important;
+}
+
+.search-page .nav-btn.active,
+.search-page .theme-toggle-btn:hover,
+.search-page .toggle-btn:hover {
+  background: #f3f0eb !important;
+}
+
+.search-page .v-card,
+.search-page .content-card,
+.search-page .result-card,
+.search-page .material-card,
+.search-page .image-card,
+.search-page .card-item,
+.search-page .search-header,
+.search-page .search-filter,
+.search-page .filter-panel,
+.search-page .content-area {
+  border: 1px solid rgba(28, 25, 23, 0.08) !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+}
+
+.search-page .search-header,
+.search-page .filter-section,
+.search-page .filter-panel,
+.search-page .sidebar,
+.search-page .content-area {
+  box-shadow: none !important;
+}
+
+.search-page .nav-btn:hover,
+.search-page .toggle-btn:hover,
+.search-page .theme-btn:hover,
+.search-page .mobile-nav-item:hover,
+.search-page .filter-chip:hover,
+.search-page .style-chip:hover {
+  transform: translateY(-1px);
+}
+
+.search-page .nav-btn.active,
+.search-page .nav-btn-selected,
+.search-page .theme-btn.active,
+.search-page .chip-selected,
+.search-page .filter-chip.chip-selected,
+.search-page .style-chip.chip-selected {
+  background: #1c1917 !important;
+  color: #f7f5f2 !important;
+  border-color: #1c1917 !important;
+  box-shadow: 0 10px 18px rgba(28, 25, 23, 0.08) !important;
+}
+
+.search-page .search-box,
+.search-page .v-field,
+.search-page .search-input,
+.search-page .filter-select .v-field {
+  min-height: 42px;
+  border: 1px solid rgba(28, 25, 23, 0.08) !important;
+  background: #faf8f5 !important;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+.search-page .search-box:hover,
+.search-page .v-field:hover,
+.search-page .filter-select .v-field:hover {
+  border-color: rgba(28, 25, 23, 0.14) !important;
+  background: #ffffff !important;
+}
+
+.search-page .search-box:focus-within,
+.search-page .v-field.v-field--focused,
+.search-page .filter-select .v-field.v-field--focused {
+  border-color: #1c1917 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(28, 25, 23, 0.08) !important;
+}
+
+.search-page .content-card:hover,
+.search-page .result-card:hover,
+.search-page .material-card:hover,
+.search-page .image-card:hover,
+.search-page .card-item:hover,
+.search-page .product-card:hover,
+.search-page .design-card:hover,
+.search-page .logo-card:hover,
+.search-page .palette-card:hover,
+.search-page .ui-card:hover,
+.search-page .text-card:hover,
+.search-page .media-card:hover {
+  border-color: rgba(28, 25, 23, 0.16) !important;
+  background: #fcfbf9 !important;
+  box-shadow: 0 18px 32px rgba(28, 25, 23, 0.06) !important;
+  transform: translateY(-2px);
+}
+
+.search-page input,
+.search-page select,
+.search-page textarea,
+.search-page .v-field,
+.search-page .search-input,
+.search-page .search-box {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+.search-page .v-btn,
+.search-page button {
+  box-shadow: none !important;
+}
+
+.search-page .v-btn {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  border-radius: 999px !important;
+}
+
+.search-page .sidebar .nav-text,
+.search-page .theme-text,
+.search-page .v-btn,
+.search-page input,
+.search-page select,
+.search-page textarea {
+  font-size: 12px !important;
+}
+
+.search-page .logo-container,
+.search-page .sidebar-header,
+.search-page .sidebar-nav,
+.search-page .theme-toggle-section {
+  border-color: rgba(28, 25, 23, 0.08) !important;
+}
+
+.search-page .mobile-overlay {
+  background: rgba(28, 25, 23, 0.12) !important;
+}
+
+.search-page .pagination-btn,
+.search-page .action-btn,
+.search-page .retry-btn {
+  transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, color 160ms ease !important;
 }
 </style>

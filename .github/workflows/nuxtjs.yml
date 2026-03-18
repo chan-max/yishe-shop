@@ -1,49 +1,80 @@
-# Sample workflow for building and deploying a Nuxt site to GitHub Pages
-#
-# To get started with Nuxt see: https://nuxtjs.org/docs/get-started/installation
-#
 name: Deploy Nuxt site to Tencent Cloud
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    paths:
+      - "package.json"
   workflow_dispatch:
 
 jobs:
-  # Build job
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check package version changed
+        id: version_check
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "current_version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          PREVIOUS_CONTENT=$(git show HEAD^:package.json 2>/dev/null || true)
+
+          if [ -z "$PREVIOUS_CONTENT" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PREVIOUS_VERSION=$(printf '%s' "$PREVIOUS_CONTENT" | node -e "let data=''; process.stdin.on('data', c => data += c); process.stdin.on('end', () => console.log(JSON.parse(data).version || ''))")
+
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "previous_version=$PREVIOUS_VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Detect package manager
+        if: steps.version_check.outputs.changed == 'true'
         id: detect-package-manager
         run: |
           if [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
+            echo "manager=pnpm" >> "$GITHUB_OUTPUT"
+            echo "command=install" >> "$GITHUB_OUTPUT"
             exit 0
           elif [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
+            echo "manager=yarn" >> "$GITHUB_OUTPUT"
+            echo "command=install" >> "$GITHUB_OUTPUT"
             exit 0
           elif [ -f "${{ github.workspace }}/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "manager=npm" >> "$GITHUB_OUTPUT"
+            echo "command=ci" >> "$GITHUB_OUTPUT"
             exit 0
           else
             echo "Unable to determine package manager"
             exit 1
           fi
+
       - name: Setup pnpm
-        if: steps.detect-package-manager.outputs.manager == 'pnpm'
+        if: steps.version_check.outputs.changed == 'true' && steps.detect-package-manager.outputs.manager == 'pnpm'
         uses: pnpm/action-setup@v3
         with:
           version: 8
+
       - name: Setup Node
+        if: steps.version_check.outputs.changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -52,7 +83,9 @@ jobs:
             pnpm-lock.yaml
             yarn.lock
             package-lock.json
+
       - name: Restore cache
+        if: steps.version_check.outputs.changed == 'true'
         uses: actions/cache@v4
         with:
           path: |
@@ -61,18 +94,25 @@ jobs:
           key: ${{ runner.os }}-nuxt-build-${{ hashFiles('.output') }}
           restore-keys: |
             ${{ runner.os }}-nuxt-build-
+
       - name: Install dependencies
+        if: steps.version_check.outputs.changed == 'true'
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
       - name: Static HTML export with Nuxt
+        if: steps.version_check.outputs.changed == 'true'
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
+
       - name: Verify build output
+        if: steps.version_check.outputs.changed == 'true'
         run: |
           echo "Checking build output..."
           ls -la .output/ || echo ".output directory not found"
           ls -la .output/public/ || echo ".output/public directory not found"
           find .output/public -type f | head -20 || echo "No files found in .output/public"
-        
+
       - name: Deploy to Tencent Cloud
+        if: steps.version_check.outputs.changed == 'true'
         id: deploy
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -89,26 +129,33 @@ jobs:
           timeout: "10m"
           debug: true
 
-      - name: Send Feishu Notification
-        if: steps.deploy.outcome == 'success'
-        run: |
-          curl -X POST ${{ secrets.FEISHU_WEBHOOK_URL }} \
-            -H "Content-Type: application/json" \
-            -d '{
-              "msg_type": "text",
-              "content": {
-                "text": "🎉 衣设前端nuxt项目部署成功！\n\n📌 部署信息：\n• 环境：生产环境\n• 分支：main\n• 时间：'"$(date +'%Y-%m-%d %H:%M:%S')"'\n• 服务器：'"${{ secrets.SERVER_HOST }}"'\n\n✨ 静态文件已成功部署到 /www/wwwroot/1s.design"
-              }
-            }'
+      - name: Skip deploy when package version is unchanged
+        if: steps.version_check.outputs.changed != 'true'
+        run: echo "package.json version unchanged, skipping build and deploy."
 
-      - name: Send Failure Notification
-        if: steps.deploy.outcome == 'failure'
-        run: |
-          curl -X POST ${{ secrets.FEISHU_WEBHOOK_URL }} \
-            -H "Content-Type: application/json" \
-            -d '{
-              "msg_type": "text",
-              "content": {
-                "text": "❌ 衣设前端nuxt项目部署失败！\n分支: main\n时间: '"$(date +'%Y-%m-%d %H:%M:%S')"'"
+      - name: Send Feishu Notification
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const skipped = '${{ steps.version_check.outputs.changed }}' !== 'true';
+            const versionText = skipped
+              ? '版本号未变化，已跳过编译部署'
+              : `部署版本: ${{ steps.version_check.outputs.current_version }}`;
+            const emoji = skipped ? '⏭️' : status === 'success' ? '🎉' : '❌';
+            const commitMessage = `${{ github.event.head_commit.message || '' }}` || '手动触发';
+            const message = {
+              msg_type: 'text',
+              content: {
+                text: `${emoji} 衣设前端 Nuxt 项目${skipped ? '跳过部署' : status === 'success' ? '部署成功' : '部署失败'}！\n\n项目: ${{ github.repository }}\n分支: ${{ github.ref }}\n提交者: ${{ github.actor }}\n提交信息: ${commitMessage}\n${versionText}\n时间: ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`
               }
-            }'
+            };
+
+            await fetch('${{ secrets.FEISHU_WEBHOOK_URL }}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(message)
+            });

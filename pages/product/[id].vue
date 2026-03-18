@@ -1,715 +1,393 @@
 <template>
-  <div class="min-h-screen bg-white">
-    <!-- 加载状态 -->
-    <div v-if="loading" class="min-h-screen flex items-center justify-center">
+  <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
+    <div v-if="loading" class="flex min-h-[60vh] items-center justify-center">
       <div class="text-center">
-        <div class="relative inline-block mb-6">
-          <div
-            class="w-16 h-16 border-2 border-gray-200 border-t-black rounded-full animate-spin"
-          ></div>
-        </div>
-        <p class="text-sm text-gray-500 uppercase tracking-wider">加载中...</p>
+        <div class="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-stone-200 border-t-stone-900"></div>
+        <p class="mt-4 text-[12px] text-stone-500">加载中...</p>
       </div>
     </div>
 
-    <!-- 商品详情 -->
-    <div v-else-if="product" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <!-- 返回按钮 -->
-      <div class="mb-6">
-        <BaseButton
-          variant="ghost"
-          size="sm"
-          @click="router.back()"
-          class="!px-0 hover:!bg-transparent hover:text-gray-900 space-x-2"
-        >
+    <div v-else-if="product" class="mx-auto max-w-[1560px]">
+      <div class="mb-6 flex items-center justify-between gap-4">
+        <BaseButton variant="ghost" size="sm" class="!px-0 !text-[12px] hover:!bg-transparent" @click="router.back()">
           <template #prefix>
-             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
           </template>
           返回
         </BaseButton>
+        <div v-if="favoriteCount !== null" class="text-[11px] text-stone-400">{{ favoriteCount }} 人收藏了此商品</div>
       </div>
 
-      <!-- 主要内容区域 -->
-      <div class="relative">
-        <!-- 左侧导航箭头 -->
-        <button
-          v-if="hasPreviousProduct"
-          @click="navigateToPrevious"
-          class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-all duration-300 transform hover:scale-110 active:scale-105"
-          aria-label="上一个商品"
-        >
-          <Icon name="heroicons:chevron-left" class="w-6 h-6 text-black" />
-        </button>
+      <div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        <section class="rounded-[1.5rem] border border-stone-200 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-5">
+          <div class="group relative overflow-hidden rounded-[1.1rem] bg-[#f6f4f1]">
+            <button v-if="productImages.length > 1" class="absolute left-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-white/96 text-stone-600 shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="previousImage" aria-label="上一张图片">
+              <Icon name="heroicons:chevron-left" class="h-4 w-4" />
+            </button>
+            <button v-if="productImages.length > 1" class="absolute right-3 top-1/2 z-10 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-stone-200 bg-white/96 text-stone-600 shadow-[0_8px_18px_rgba(28,25,23,0.05)] transition duration-200 hover:-translate-y-1 hover:scale-105 hover:border-stone-900 hover:bg-stone-900 hover:text-white active:translate-y-0" @click="nextImage" aria-label="下一张图片">
+              <Icon name="heroicons:chevron-right" class="h-4 w-4" />
+            </button>
 
-        <!-- 右侧导航箭头 -->
-        <button
-          v-if="hasNextProduct"
-          @click="navigateToNext"
-          class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:border-black transition-all duration-300 transform hover:scale-110 active:scale-105"
-          aria-label="下一个商品"
-        >
-          <Icon name="heroicons:chevron-right" class="w-6 h-6 text-black" />
-        </button>
-
-        <!-- 商品图片区域 -->
-        <div class="mb-8 flex items-center justify-center relative">
-          <!-- 左侧切换按钮 -->
-          <button
-            v-if="productImages.length > 1"
-            @click="previousImage"
-            class="absolute left-0 sm:left-2 md:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-105 z-10 backdrop-blur-sm"
-            aria-label="上一张图片"
-          >
-            <Icon
-              name="heroicons:chevron-left"
-              class="w-5 h-5 sm:w-6 sm:h-6 text-black"
-            />
-          </button>
-
-          <!-- 图片容器 -->
-          <div
-            class="relative mx-auto product-image-container overflow-hidden"
-          >
-            <!-- 主图（带左右滑动动画） -->
-            <transition :name="`slide-${slideDirection}`">
-              <img
-                v-if="currentImage"
-                :key="currentImage"
-                :src="currentImage"
-                :alt="product.name"
-                class="product-main-image cursor-pointer image-card"
-                @error="handleImageError"
-                @click="openImagePreview"
-              />
-              <div
-                v-else
-                key="no-image"
-                class="w-full h-full flex items-center justify-center"
-              >
-                <span class="text-gray-400 text-sm">暂无图片</span>
-              </div>
-            </transition>
-
-            <!-- 图片缩略图导航 -->
-            <div
-              v-if="productImages.length > 1"
-              class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"
-            >
-              <button
-                v-for="(img, index) in productImages"
-                :key="index"
-                @click="currentImageIndex = index"
-                :class="[
-                  'w-2 h-2 rounded-full transition-all',
-                  currentImageIndex === index
-                    ? 'bg-black w-8'
-                    : 'bg-gray-300 hover:bg-gray-400',
-                ]"
-                :aria-label="`查看图片 ${index + 1}`"
-              />
+            <div class="product-image-container">
+              <transition :name="`slide-${slideDirection}`">
+                <img v-if="currentImage" :key="currentImage" :src="currentImage" :alt="product.name" class="product-main-image cursor-pointer transition duration-500 group-hover:scale-[1.03]" @error="handleImageError" @click="openImagePreview" />
+                <div v-else key="no-image" class="flex h-full w-full items-center justify-center text-[12px] text-stone-400">暂无图片</div>
+              </transition>
             </div>
           </div>
 
-          <!-- 右侧切换按钮 -->
-          <button
-            v-if="productImages.length > 1"
-            @click="nextImage"
-            class="absolute right-0 sm:right-2 md:right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white border border-gray-200 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-105 z-10 backdrop-blur-sm"
-            aria-label="下一张图片"
-          >
-            <Icon
-              name="heroicons:chevron-right"
-              class="w-5 h-5 sm:w-6 sm:h-6 text-black"
-            />
-          </button>
-        </div>
+          <div v-if="productImages.length > 1" class="mt-4 flex flex-wrap gap-2">
+            <button v-for="(img, index) in productImages" :key="index" class="overflow-hidden rounded-[0.9rem] border bg-white p-0.5 transition duration-200 hover:-translate-y-0.5" :class="currentImageIndex === index ? 'border-stone-900 shadow-[0_10px_20px_rgba(28,25,23,0.08)]' : 'border-stone-200 hover:border-stone-300'" @click="currentImageIndex = index">
+              <img :src="img" :alt="`${product.name}-${index + 1}`" class="h-16 w-16 object-cover transition duration-300 hover:scale-[1.06] sm:h-20 sm:w-20" />
+            </button>
+          </div>
+        </section>
 
-        <!-- 商品信息区域 -->
-        <div class="max-w-4xl mx-auto space-y-6">
-          <!-- 商品名称和收藏按钮 -->
-          <div>
-            <div class="flex items-start justify-between mb-2">
-              <h1 class="text-2xl sm:text-3xl font-light tracking-wide text-black flex-1">
-                {{ product.name }}
-              </h1>
-              <!-- 收藏按钮 -->
-              <div class="ml-4 flex-shrink-0">
-                <FavoriteButton
-                  :is-favorite="isFavorite"
-                  :count="favoriteCount"
-                  :show-count="false"
-                  @click="toggleFavorite"
-                />
-              </div>
-            </div>
-            <p v-if="product.description" class="text-base text-gray-600 leading-relaxed">
-              {{ product.description }}
-            </p>
+        <section class="rounded-[1.5rem] border border-stone-200 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-7">
+          <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Product Detail</div>
+          <div class="mt-3 flex items-start justify-between gap-4">
+            <h1 class="text-[28px] font-semibold leading-tight text-stone-950 sm:text-[34px]">{{ product.name }}</h1>
+            <FavoriteButton :is-favorite="isFavorite" :count="favoriteCount" :show-count="false" @click="toggleFavorite" />
           </div>
 
-          <!-- 创建时间信息 -->
-          <div
-            v-if="product.createTime && product.type !== '二维产品图'"
-            class="text-sm text-gray-500"
-          >
-            <span>{{ formatDate(product.createTime) }}</span>
-          </div>
+          <p v-if="product.description" class="mt-4 text-[13px] leading-7 text-stone-500">{{ product.description }}</p>
+          <div v-if="product.createTime" class="mt-4 text-[11px] text-stone-400">{{ formatDate(product.createTime) }}</div>
 
-          <!-- 详细信息 -->
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-gray-200"
-          >
-            <!-- 商品代码 -->
-            <div v-if="product.code">
-              <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
-                产品代码
-              </h3>
-              <p class="text-sm font-medium text-gray-900 tracking-wider">
-                {{ product.code }}
-              </p>
+          <div class="mt-6 grid gap-4 border-t border-stone-100 pt-6 sm:grid-cols-2">
+            <div v-if="product.code" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb]">
+              <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">产品代码</div>
+              <p class="mt-2 text-[13px] text-stone-900">{{ product.code }}</p>
             </div>
 
-
-            <!-- 关键词 -->
-            <div v-if="productKeywords.length > 0">
-              <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">关键词</h3>
-              <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="keyword in productKeywords"
-                  :key="keyword"
-                  class="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-default"
-                >
+            <div v-if="productKeywords.length > 0" class="rounded-[1rem] bg-[#faf8f5] p-4 transition duration-200 hover:-translate-y-0.5 hover:bg-[#f6f2eb] sm:col-span-2">
+              <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">关键词</div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span v-for="keyword in productKeywords" :key="keyword" class="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500 transition duration-200 hover:border-stone-900 hover:bg-stone-900 hover:text-white">
                   {{ keyword }}
                 </span>
               </div>
             </div>
           </div>
 
-          <!-- 交互按钮 -->
-          <div class="flex items-center space-x-4 pt-6 border-t border-gray-100">
-            <BaseButton
-              variant="secondary"
-              size="sm"
-              @click="copyLink"
-            >
-              <template #prefix>
-                <Icon name="heroicons:link" class="w-4 h-4" />
-              </template>
+          <div class="mt-6 flex flex-wrap gap-3 border-t border-stone-100 pt-6">
+            <BaseButton variant="secondary" size="sm" class="!text-[12px]" @click="copyLink">
+              <template #prefix><Icon name="heroicons:link" class="h-4 w-4" /></template>
               复制链接
             </BaseButton>
-            
-            <BaseButton
-              variant="secondary"
-              size="sm"
-              @click="shareProduct"
-            >
-              <template #prefix>
-                <Icon name="heroicons:share" class="w-4 h-4" />
-              </template>
+            <BaseButton variant="secondary" size="sm" class="!text-[12px]" @click="shareProduct">
+              <template #prefix><Icon name="heroicons:share" class="h-4 w-4" /></template>
               分享
             </BaseButton>
           </div>
-          
-          <!-- 收藏数量显示 -->
-          <div v-if="favoriteCount !== null" class="pt-4 text-sm text-gray-500">
-            <span>{{ favoriteCount }} 人收藏了此商品</span>
-          </div>
-        </div>
+        </section>
       </div>
     </div>
 
-    <!-- 未找到商品 -->
-    <div v-else class="min-h-screen flex items-center justify-center">
-      <div class="text-center">
-        <Icon
-          name="heroicons:exclamation-triangle"
-          class="w-16 h-16 text-gray-400 mx-auto mb-4"
-        />
-        <h3 class="text-lg font-light text-gray-900 mb-2">商品不存在</h3>
-        <p class="text-sm text-gray-500 mb-6">抱歉，您查找的商品不存在或已被删除</p>
-        <BaseButton
-          variant="primary"
-          @click="router.push('/products')"
-        >
-          返回商品列表
-        </BaseButton>
+    <div v-else class="flex min-h-[60vh] items-center justify-center">
+      <div class="rounded-[1.5rem] border border-stone-200 bg-white px-8 py-10 text-center">
+        <Icon name="heroicons:exclamation-triangle" class="mx-auto h-12 w-12 text-stone-300" />
+        <h3 class="mt-4 text-[18px] font-medium text-stone-900">商品不存在</h3>
+        <p class="mt-2 text-[13px] text-stone-500">抱歉，您查找的商品不存在或已被删除。</p>
+        <BaseButton variant="primary" class="mt-6 !text-[12px]" @click="router.push('/products')">返回商品列表</BaseButton>
       </div>
     </div>
 
-    <!-- 图片预览组件 -->
-    <ImagePreview
-      v-model="isPreviewOpen"
-      :images="productImages"
-      :initial-index="currentImageIndex"
-      :alt="product?.name || '商品图片'"
-      :z-index="9999"
-      @image-change="handlePreviewImageChange"
-    />
+    <ImagePreview v-model="isPreviewOpen" :images="productImages" :initial-index="currentImageIndex" :alt="product?.name || '商品图片'" :z-index="9999" @image-change="handlePreviewImageChange" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { api } from "~/utils/api";
-import ImagePreview from "../components/ImagePreview.vue";
-import FavoriteButton from "~/components/FavoriteButton.vue";
-import { usePublicUserStore } from "~/stores/public-user";
-import { useToast } from "~/composables/use-toast";
-import { usePageSEO, useProductStructuredData } from "~/composables/use-seo";
+import { ref, computed, watch } from 'vue'
+import { api } from '~/utils/api'
+import ImagePreview from '../components/ImagePreview.vue'
+import FavoriteButton from '~/components/FavoriteButton.vue'
+import { usePublicUserStore } from '~/stores/public-user'
+import { useToast } from '~/composables/use-toast'
+import { usePageSEO, useProductStructuredData } from '~/composables/use-seo'
 
-const toast = useToast();
+const toast = useToast()
 
-definePageMeta({ layout: "page" });
+definePageMeta({ layout: 'page' })
 
-// 先初始化 route 和 router
-const route = useRoute();
-const router = useRouter();
-const publicUserStore = usePublicUserStore();
+const route = useRoute()
+const router = useRouter()
+const publicUserStore = usePublicUserStore()
 
-// 默认 SEO（在商品加载前）
 usePageSEO({
-  title: "商品详情 - 衣设服装设计",
-  description: "查看商品详情，发现更多创意设计作品",
+  title: '商品详情 - 衣设服装设计',
+  description: '查看商品详情，发现更多创意设计作品',
   url: `https://1s.design/product/${route.params.id}`,
-  type: "product",
-});
+  type: 'product',
+})
 
-// 状态
-const loading = ref(true);
-const product = ref(null);
-const currentImageIndex = ref(0);
-const isPreviewOpen = ref(false);
-const isFavorite = ref(false);
-const favoriteCount = ref<number | null>(null);
-const slideDirection = ref<"next" | "prev">("next");
+const loading = ref(true)
+const product = ref<any>(null)
+const currentImageIndex = ref(0)
+const isPreviewOpen = ref(false)
+const isFavorite = ref(false)
+const favoriteCount = ref<number | null>(null)
+const slideDirection = ref<'next' | 'prev'>('next')
 
-// 计算属性
 const productImages = computed(() => {
-  if (!product.value) return [];
-
-  const images = [];
-
-  // 添加商品图片
+  if (!product.value) return []
+  const images: string[] = []
   if (product.value.images && Array.isArray(product.value.images)) {
-    product.value.images.forEach((url) => {
-      if (url && typeof url === "string" && url.trim() && url.startsWith("http")) {
-        images.push(url);
-      }
-    });
+    product.value.images.forEach((url: string) => {
+      if (url && typeof url === 'string' && url.trim() && url.startsWith('http')) images.push(url)
+    })
   }
-
-  return images;
-});
+  return images
+})
 
 const currentImage = computed(() => {
-  if (productImages.value.length === 0) return null;
-  return productImages.value[currentImageIndex.value] || productImages.value[0];
-});
+  if (productImages.value.length === 0) return null
+  return productImages.value[currentImageIndex.value] || productImages.value[0]
+})
 
 const productKeywords = computed(() => {
-  if (!product.value?.keywords) return [];
-  return product.value.keywords
-    .split(",")
-    .map((k) => k.trim())
-    .filter((k) => k.length > 0);
-});
+  if (!product.value?.keywords) return []
+  return product.value.keywords.split(',').map((k: string) => k.trim()).filter((k: string) => k.length > 0)
+})
 
-const hasPreviousProduct = computed(() => {
-  // TODO: 实现上一个商品的逻辑
-  return false;
-});
+const hasPreviousProduct = computed(() => false)
+const hasNextProduct = computed(() => false)
+const isLoggedIn = computed(() => publicUserStore.isLoggedIn)
 
-const hasNextProduct = computed(() => {
-  // TODO: 实现下一个商品的逻辑
-  return false;
-});
-
-// 是否已登录
-const isLoggedIn = computed(() => {
-  return publicUserStore.isLoggedIn;
-});
-
-// 获取商品详情
 const fetchProductDetail = async () => {
-  loading.value = true;
+  loading.value = true
   try {
-    const response = await api.productList.getById(route.params.id, false);
-
+    const response = await api.productList.getById(route.params.id, false)
     if (response.code === 0 || response.status === true || response.code === 200) {
-      product.value = response.data;
-      // 重置图片索引
-      currentImageIndex.value = 0;
-      // 获取收藏状态和收藏数
-      await Promise.all([
-        checkFavoriteStatus(),
-        fetchFavoriteCount(),
-      ]);
+      product.value = response.data
+      currentImageIndex.value = 0
+      await Promise.all([checkFavoriteStatus(), fetchFavoriteCount()])
     } else {
-      console.error("获取商品详情失败:", response.message);
-      product.value = null;
+      product.value = null
     }
   } catch (error) {
-    console.error("获取商品详情失败:", error);
-    product.value = null;
+    console.error('获取商品详情失败:', error)
+    product.value = null
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
-// 检查收藏状态
 const checkFavoriteStatus = async () => {
-  if (!isLoggedIn.value || !product.value?.id) return;
-  
+  if (!isLoggedIn.value || !product.value?.id) return
   try {
-    const response = await api.favorite.check(product.value.id);
+    const response = await api.favorite.check(product.value.id)
     if (response.code === 0 || response.status === true || response.code === 200) {
-      isFavorite.value = response.data === true;
+      isFavorite.value = response.data === true
     }
   } catch (error) {
-    console.error("检查收藏状态失败:", error);
+    console.error('检查收藏状态失败:', error)
   }
-};
+}
 
-// 获取收藏数量
 const fetchFavoriteCount = async () => {
-  if (!product.value?.id) return;
-  
+  if (!product.value?.id) return
   try {
-    const response = await api.favorite.getProductCount(product.value.id);
+    const response = await api.favorite.getProductCount(product.value.id)
     if (response.code === 0 || response.status === true || response.code === 200) {
-      favoriteCount.value = response.data;
+      favoriteCount.value = response.data
     }
   } catch (error) {
-    console.error("获取收藏数量失败:", error);
+    console.error('获取收藏数量失败:', error)
   }
-};
+}
 
-// 切换收藏状态 - 立即切换，后台处理接口
 const toggleFavorite = async () => {
-  if (!product.value?.id) return;
-
-  // 未登录，跳转到登录页
+  if (!product.value?.id) return
   if (!isLoggedIn.value) {
-    router.push('/login');
-    return;
+    router.push('/login')
+    return
   }
 
-  // 保存当前状态，用于失败时回滚
-  const previousFavoriteState = isFavorite.value;
-  const previousCount = favoriteCount.value;
+  const previousFavoriteState = isFavorite.value
+  const previousCount = favoriteCount.value
+  isFavorite.value = !isFavorite.value
 
-  // 立即切换状态
-  isFavorite.value = !isFavorite.value;
-  
-  // 立即更新收藏数量（乐观更新）
   if (isFavorite.value) {
-    // 添加收藏
-    if (favoriteCount.value !== null) {
-      favoriteCount.value += 1;
-    } else {
-      favoriteCount.value = 1;
-    }
-  } else {
-    // 取消收藏
-    if (favoriteCount.value !== null && favoriteCount.value > 0) {
-      favoriteCount.value -= 1;
-    }
+    favoriteCount.value = favoriteCount.value !== null ? favoriteCount.value + 1 : 1
+  } else if (favoriteCount.value !== null && favoriteCount.value > 0) {
+    favoriteCount.value -= 1
   }
 
-  // 后台异步处理接口
   try {
     if (previousFavoriteState) {
-      // 取消收藏
-      const response = await api.favorite.remove(product.value.id);
+      const response = await api.favorite.remove(product.value.id)
       if (response.code !== 0 && response.status !== true && response.code !== 200) {
-        // 失败，回滚状态
-        isFavorite.value = previousFavoriteState;
-        favoriteCount.value = previousCount;
-        toast.error(response.message || '取消收藏失败');
+        isFavorite.value = previousFavoriteState
+        favoriteCount.value = previousCount
+        toast.error(response.message || '取消收藏失败')
       }
     } else {
-      // 添加收藏
-      const response = await api.favorite.create({
-        productId: product.value.id,
-      });
+      const response = await api.favorite.create({ productId: product.value.id })
       if (response.code !== 0 && response.status !== true && response.code !== 200) {
-        // 失败，回滚状态
-        isFavorite.value = previousFavoriteState;
-        favoriteCount.value = previousCount;
-        if (response.code === 409) {
-          toast.warning('该商品已收藏');
-        } else {
-          toast.error(response.message || '收藏失败');
-        }
+        isFavorite.value = previousFavoriteState
+        favoriteCount.value = previousCount
+        if (response.code === 409) toast.warning('该商品已收藏')
+        else toast.error(response.message || '收藏失败')
       }
     }
   } catch (error: any) {
-    console.error("切换收藏状态失败:", error);
-    // 失败，回滚状态
-    isFavorite.value = previousFavoriteState;
-    favoriteCount.value = previousCount;
-    
-    // 处理错误响应
+    isFavorite.value = previousFavoriteState
+    favoriteCount.value = previousCount
     if (error.code === 401 || error.statusCode === 401) {
-      // 未授权，清除登录状态并跳转登录页
-      publicUserStore.clearToken();
-      toast.error('登录已过期，请重新登录');
-      router.push('/login');
+      publicUserStore.clearToken()
+      toast.error('登录已过期，请重新登录')
+      router.push('/login')
     } else if (error.code === 500 || error.statusCode === 500) {
-      // 服务器错误
-      toast.error(error.message || '服务器错误，请稍后重试');
+      toast.error(error.message || '服务器错误，请稍后重试')
     } else {
-      // 其他错误
-      toast.error(error.message || '操作失败，请稍后重试');
+      toast.error(error.message || '操作失败，请稍后重试')
     }
   }
-};
+}
 
-// 格式化日期
-const formatDate = (dateString) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("zh-CN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+const formatDate = (dateString: string) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+}
 
-// 处理图片加载错误
-const handleImageError = (event) => {
-  const img = event.target as HTMLImageElement;
-  img.style.display = "none";
-};
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  img.style.display = 'none'
+}
 
-// 切换到上一张图片
 const previousImage = () => {
   if (productImages.value.length > 0) {
-    slideDirection.value = "prev";
-    currentImageIndex.value =
-      (currentImageIndex.value - 1 + productImages.value.length) %
-      productImages.value.length;
+    slideDirection.value = 'prev'
+    currentImageIndex.value = (currentImageIndex.value - 1 + productImages.value.length) % productImages.value.length
   }
-};
+}
 
-// 切换到下一张图片
 const nextImage = () => {
   if (productImages.value.length > 0) {
-    slideDirection.value = "next";
-    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length;
+    slideDirection.value = 'next'
+    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length
   }
-};
+}
 
-// 复制链接
 const copyLink = async () => {
   try {
-    const url = window.location.href;
-    await navigator.clipboard.writeText(url);
-    // TODO: 显示成功提示
-    alert("链接已复制到剪贴板");
+    const url = window.location.href
+    await navigator.clipboard.writeText(url)
+    toast.success('复制成功', '链接已复制到剪贴板')
   } catch (error) {
-    console.error("复制链接失败:", error);
+    console.error('复制链接失败:', error)
   }
-};
+}
 
-// 分享商品
 const shareProduct = async () => {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: product.value?.name || "商品详情",
-        text: product.value?.description || "",
+        title: product.value?.name || '商品详情',
+        text: product.value?.description || '',
         url: window.location.href,
-      });
+      })
     } catch (error) {
-      console.error("分享失败:", error);
+      console.error('分享失败:', error)
     }
   } else {
-    // 降级到复制链接
-    copyLink();
+    copyLink()
   }
-};
+}
 
-// 导航到上一个商品
-const navigateToPrevious = () => {
-  // TODO: 实现上一个商品的导航逻辑
-};
+const navigateToPrevious = () => {}
+const navigateToNext = () => {}
 
-// 导航到下一个商品
-const navigateToNext = () => {
-  // TODO: 实现下一个商品的导航逻辑
-};
-
-// 打开图片预览
 const openImagePreview = () => {
-  if (productImages.value.length === 0) return;
-  isPreviewOpen.value = true;
-};
+  if (productImages.value.length === 0) return
+  isPreviewOpen.value = true
+}
 
-// 处理预览图片变化
 const handlePreviewImageChange = (index: number) => {
-  currentImageIndex.value = index;
-};
+  currentImageIndex.value = index
+}
 
-// 监听产品数据变化，更新 SEO
-watch(
-  () => product.value,
-  (newProduct) => {
-    if (newProduct) {
-      const productImage = productImages.value[0] || 'https://1s.design/logo/logo.svg'
-      const productUrl = `https://1s.design/product/${newProduct.id}`
-      const productDescription = newProduct.description || newProduct.name || '查看商品详情'
-      
-      usePageSEO({
-        title: `${newProduct.name || '商品详情'} - 衣设服装设计`,
+watch(() => product.value, (newProduct) => {
+  if (newProduct) {
+    const productImage = productImages.value[0] || 'https://1s.design/logo/logo.svg'
+    const productUrl = `https://1s.design/product/${newProduct.id}`
+    const productDescription = newProduct.description || newProduct.name || '查看商品详情'
+
+    usePageSEO({
+      title: `${newProduct.name || '商品详情'} - 衣设服装设计`,
+      description: productDescription,
+      keywords: productKeywords.value.join(',') || '服装设计,创意印花,图案设计',
+      image: productImage,
+      url: productUrl,
+      type: 'product',
+      structuredData: useProductStructuredData({
+        name: newProduct.name || '商品',
         description: productDescription,
-        keywords: productKeywords.value.join(',') || '服装设计,创意印花,图案设计',
         image: productImage,
         url: productUrl,
-        type: 'product',
-        structuredData: useProductStructuredData({
-          name: newProduct.name || '商品',
-          description: productDescription,
-          image: productImage,
-          url: productUrl,
-          category: newProduct.type || '服装设计',
-        }),
-      })
-    }
-  },
-  { immediate: true }
-)
+        category: '创意商品',
+      }),
+    })
+  }
+}, { immediate: true })
 
-// 监听路由参数变化
-watch(
-  () => route.params.id,
-  () => {
-    if (route.params.id) {
-      fetchProductDetail();
-    }
-  },
-  { immediate: true }
-);
+watch(() => route.params.id, () => {
+  if (route.params.id) fetchProductDetail()
+}, { immediate: true })
 </script>
 
 <style scoped>
-/* 商品主图容器：紧贴图片尺寸，避免阴影留白 */
+.product-image-container {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+.product-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+
+<style scoped>
 .product-image-container {
   width: 100%;
-  height: 600px;
+  min-height: 480px;
   display: grid;
   place-items: center;
   position: relative;
-  /* background-color: #f9fafb; Removed background so it doesn't look like a card */
   overflow: hidden;
 }
 
 .product-image-container > * {
   grid-area: 1 / 1;
-  /* Allow content to size itself up to container limits */
   max-width: 100%;
   max-height: 100%;
 }
 
 .product-main-image {
-  /* Image size is intrinsic but constrained by max-width/height */
   width: auto;
   height: auto;
-  max-height: 100%;
+  max-height: 72vh;
   max-width: 100%;
   display: block;
-}
-
-/* 图片卡片样式：圆角 + 立体阴影 */
-.image-card {
-  border-radius: 4px;
-  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.08);
-  background-color: #ffffff;
-}
-
-@media (min-width: 768px) {
-  .product-image-container {
-    max-width: 960px;
-  }
-}
-
-/* 减少双击缩放触发几率 */
-.product-image-container,
-.product-image-container img {
-  touch-action: manipulation;
-}
-
-/* 限制主图最大高度，尽量占据视口但不超出 */
-.product-image-container img {
-  max-height: 80vh;
   object-fit: contain;
 }
 
-/* 图片左右滑动过渡动画：只做位移动画，避免透明度导致空白闪动 */
 .slide-next-enter-active,
 .slide-next-leave-active,
 .slide-prev-enter-active,
 .slide-prev-leave-active {
-  transition: transform 0.3s ease-in-out;
-  /* Grid layout handles overlap, so no absolute position needed */
+  transition: transform 0.25s ease-in-out;
 }
 
-.slide-next-enter-from {
-  transform: translateX(100%);
-}
-
-.slide-next-enter-to {
-  transform: translateX(0%);
-}
-
-.slide-next-leave-from {
-  transform: translateX(0%);
-}
-
-.slide-next-leave-to {
-  transform: translateX(-100%);
-}
-
-.slide-prev-enter-from {
-  transform: translateX(-100%);
-}
-
-.slide-prev-enter-to {
-  transform: translateX(0%);
-}
-
-.slide-prev-leave-from {
-  transform: translateX(0%);
-}
-
-.slide-prev-leave-to {
-  transform: translateX(100%);
-}
-</style>
-
-<!-- global styles to mitigate fast-scroll header gap -->
-<style>
-html,
-body {
-  background-color: #ffffff;
-  overscroll-behavior-y: contain; /* reduce rubber-band over-scroll revealing gaps */
-  overscroll-behavior-x: none;
-}
-
-/* Ensure the app header stays on its own compositing layer */
-header,
-.site-header,
-.app-header {
-  backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
-  background-color: #ffffff; /* avoid transparent flash */
-}
-
-/* Respect safe area and avoid a visual seam on iOS */
-header,
-.site-header,
-.app-header {
-  padding-top: max(env(safe-area-inset-top), 0px);
-}
+.slide-next-enter-from { transform: translateX(100%); }
+.slide-next-enter-to { transform: translateX(0%); }
+.slide-next-leave-from { transform: translateX(0%); }
+.slide-next-leave-to { transform: translateX(-100%); }
+.slide-prev-enter-from { transform: translateX(-100%); }
+.slide-prev-enter-to { transform: translateX(0%); }
+.slide-prev-leave-from { transform: translateX(0%); }
+.slide-prev-leave-to { transform: translateX(100%); }
 </style>

@@ -1,992 +1,496 @@
-<!--
- * @Author: chan-max jackieontheway666@gmail.com
- * @Date: 2025-01-27 11:00:00
- * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-11-12 07:07:41
- * @FilePath: /yishe-nuxt/pages/index.vue
- * @Description: Luxury Brand Homepage - LV/Nike Style
--->
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { api } from '../utils/api'
 import { getPreviewImageUrl } from '../utils/image'
 
-const { awesome } = useAppConfig()
 definePageMeta({ layout: 'page' })
 
-const router = useRouter()
-const handleNavigate = (path: string) => {
-  navigateTo(path)
-}
-
-// SEO 配置
 usePageSEO({
-  title: '衣设服装设计 - 创意印花图案与服装设计平台',
-  description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
-  keywords: '服装设计,创意印花,图案设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,设计师社区,创意设计平台',
+  title: '衣设服装设计 - 创意 POD 产品设计与分享平台',
+  description: '衣设聚合创意图案、服装与 POD 商品设计，让设计师在更克制简约的品牌界面里展示作品、分享灵感并完成商品化表达。',
+  keywords: 'POD设计,创意印花,服装设计,图案设计,设计分享,设计师社区,商品设计,视觉品牌',
   url: 'https://1s.design',
   type: 'website',
-  structuredData: [
-    useWebsiteStructuredData(),
-    useOrganizationStructuredData(),
-  ],
+  structuredData: [useWebsiteStructuredData(), useOrganizationStructuredData()],
 })
 
-// Navigation state
-const isMenuOpen = ref(false)
-const isScrolled = ref(false)
-
-// Animation state
-const visibleElements = ref<Set<string>>(new Set())
-
-// Product categories
-const categories = [
-  { id: 'pattern', name: '印花图案', icon: 'mdi-palette', count: '15K+', color: '#FF6B6B' },
-  { id: 'clothing', name: '服装设计', icon: 'mdi-tshirt-crew', count: '8K+', color: '#4ECDC4' },
-  { id: 'brand', name: '品牌标识', icon: 'mdi-shape', count: '5K+', color: '#95E1D3' },
-  { id: 'poster', name: '海报设计', icon: 'mdi-post', count: '12K+', color: '#F38181' },
-  { id: 'packaging', name: '包装设计', icon: 'mdi-package-variant', count: '6K+', color: '#AA96DA' },
-  { id: 'social', name: '社交媒体', icon: 'mdi-instagram', count: '10K+', color: '#FCBAD3' },
-  { id: 'illustration', name: '插画设计', icon: 'mdi-brush', count: '9K+', color: '#FFD93D' },
-  { id: 'typography', name: '字体设计', icon: 'mdi-format-font', count: '7K+', color: '#6BCB77' },
-  { id: 'logo', name: 'Logo设计', icon: 'mdi-star', count: '11K+', color: '#FF9F43' },
-  { id: 'web', name: '网页设计', icon: 'mdi-monitor', count: '13K+', color: '#5F7A61' }
-]
-
-// Horizontal categories for scroll
-const horizontalCategories = [
-  { id: 'all', name: '全部', active: true },
-  { id: 'pattern', name: '印花图案' },
-  { id: 'clothing', name: '服装设计' },
-  { id: 'brand', name: '品牌标识' },
-  { id: 'poster', name: '海报设计' },
-  { id: 'packaging', name: '包装设计' },
-  { id: 'illustration', name: '插画设计' },
-  { id: 'typography', name: '字体设计' },
-  { id: 'logo', name: 'Logo设计' },
-  { id: 'web', name: '网页设计' },
-  { id: 'social', name: '社交媒体' },
-  { id: 'print', name: '印刷设计' }
-]
-
-// Featured designers
-const featuredDesigners = [
-  { id: 1, name: '张设计师', avatar: 'https://picsum.photos/80/80?random=1', works: 124, followers: '2.5K' },
-  { id: 2, name: '李创意', avatar: 'https://picsum.photos/80/80?random=2', works: 98, followers: '1.8K' },
-  { id: 3, name: '王艺术', avatar: 'https://picsum.photos/80/80?random=3', works: 156, followers: '3.2K' },
-  { id: 4, name: '陈设计', avatar: 'https://picsum.photos/80/80?random=4', works: 87, followers: '1.5K' },
-  { id: 5, name: '刘时尚', avatar: 'https://picsum.photos/80/80?random=5', works: 203, followers: '4.1K' },
-  { id: 6, name: '周视觉', avatar: 'https://picsum.photos/80/80?random=6', works: 145, followers: '2.8K' }
-]
-
-// Popular tags
-const popularTags = [
-  { name: '极简主义', count: 1250 },
-  { name: '复古风格', count: 980 },
-  { name: '现代设计', count: 2100 },
-  { name: '手绘风格', count: 750 },
-  { name: '几何图形', count: 890 },
-  { name: '渐变色彩', count: 1100 },
-  { name: '黑白设计', count: 680 },
-  { name: '3D效果', count: 540 }
-]
-
-// Featured products - 从API获取
-const featuredProducts = ref<Array<{
+type FeaturedProduct = {
   id: string
   title: string
   description?: string
   category: string
   image: string
   imageUrl?: string
-}>>([])
+}
 
-// Hover state for product cards
-const hoveredProductId = ref<string | null>(null)
-
-// Stats
-const stats = [
-  { number: '15K+', label: '设计作品' },
-  { number: '8K+', label: '活跃设计师' },
-  { number: '70+', label: '国家地区' },
-  { number: '3M+', label: '月度浏览量' }
+const categoryPills = ['印花图案', '服装设计', '包装与周边', '品牌视觉', '艺术家联名']
+const impactStats = [
+  { value: '15K+', label: '设计作品' },
+  { value: '8K+', label: '创作者' },
+  { value: '70+', label: '覆盖地区' },
+  { value: '3M+', label: '月度浏览' },
+]
+const storySteps = [
+  { step: '01', title: '发现灵感', description: '从创意图案、系列视觉到服装方向，先建立内容气质。' },
+  { step: '02', title: '完成商品化', description: '把设计自然延展到 POD 商品、包装和展示场景。' },
+  { step: '03', title: '持续分享', description: '让作品被收藏、被转发，也被看作一个完整品牌表达。' },
+]
+const businessModules = [
+  {
+    title: '灵感发现与作品分享',
+    text: '把作品集、系列视觉和收藏流组织成更完整的内容入口，让平台先具备社区和分享价值。',
+    action: '进入作品集',
+    to: '/portfolio',
+  },
+  {
+    title: '个性化定制设计',
+    text: '围绕品牌首发、主题企划和艺术家联名，先做成可配置、可预览的服务工作台。',
+    action: '配置定制需求',
+    to: '/design',
+  },
+  {
+    title: 'AI 设计实验室',
+    text: '预留 AI moodboard、图案延展、详情页排版等能力，让未来服务升级有清晰承接面。',
+    action: '查看 AI 模块',
+    to: '/ai-lab',
+  },
+]
+const personalizedModes = [
+  { name: '品牌冷启动', detail: '适合从 0 到 1 的系列与商品首发。' },
+  { name: '节日主题企划', detail: '强调速度、传播与陈列统一。' },
+  { name: '创作者联名', detail: '把艺术语言延展为可售卖周边。' },
+]
+const futureSignals = [
+  { title: '智能 brief', desc: '把用户输入自动整理成设计任务摘要。' },
+  { title: '风格推演', desc: '从关键词生成 moodboard 与色板结构。' },
+  { title: '商品映射', desc: '自动推导哪些图案适合哪些 POD SKU。' },
+]
+const podCategories = [
+  { name: 'T 恤 / 卫衣', count: '120+', image: '/discovery/pod-tee.svg', keyword: 'T恤', use: '服装印花', audience: '大众服饰', tone: 'soft' },
+  { name: '马克杯 / 水杯', count: '86+', image: '/discovery/pod-mug.svg', keyword: '杯子', use: '礼品周边', audience: '礼赠用户', tone: 'dark' },
+  { name: '托特包 / 帆布包', count: '74+', image: '/discovery/pod-bag.svg', keyword: '帆布包', use: '日常配件', audience: '通勤人群', tone: 'line' },
+  { name: '手机壳', count: '68+', image: '/discovery/pod-phone.svg', keyword: '手机壳', use: '快消爆款', audience: '年轻用户', tone: 'soft' },
+  { name: '抱枕 / 家居布艺', count: '58+', image: '/discovery/pod-pillow.svg', keyword: '抱枕', use: '家居陈列', audience: '家居用户', tone: 'line' },
+  { name: '挂毯 / 墙面装饰', count: '42+', image: '/discovery/pod-tapestry.svg', keyword: '挂毯', use: '空间装饰', audience: '生活方式', tone: 'dark' },
+  { name: '毛巾 / 织物', count: '35+', image: '/discovery/pod-pillow.svg', keyword: '毛巾', use: '生活方式', audience: '家庭用户', tone: 'soft' },
+  { name: '鼠标垫 / 办公周边', count: '29+', image: '/discovery/pod-phone.svg', keyword: '鼠标垫', use: '办公礼赠', audience: '办公人群', tone: 'line' },
+]
+const styleBoards = [
+  { name: '极简高级', image: '/discovery/pod-tee.svg', keyword: '极简', note: '留白、克制、品牌感' },
+  { name: '日系留白', image: '/discovery/pod-mug.svg', keyword: '日系', note: '柔和、安静、生活化' },
+  { name: '街头潮流', image: '/discovery/pod-bag.svg', keyword: '街头', note: '符号化、视觉冲击' },
+  { name: '轻奢礼赠', image: '/discovery/pod-phone.svg', keyword: '轻奢', note: '精致、礼盒、节庆' },
+  { name: '可爱治愈', image: '/discovery/pod-pillow.svg', keyword: '可爱', note: '插画感、软萌、温和' },
+  { name: '户外自然', image: '/discovery/pod-tapestry.svg', keyword: '户外', note: '自然、露营、旅行' },
+]
+const hotKeywords = ['联名系列', '新中式图案', '法式花卉', '宠物周边', '情侣礼物', '露营风', '国潮插画', '节日限定', '品牌首发', '艺术家合作', '文创礼盒', 'ins 家居']
+const audiences = [
+  { name: '品牌主理人', desc: '找适合首发与联名的 POD 商品结构', keywords: ['品牌首发', '联名系列'] },
+  { name: '插画师 / 创作者', desc: '把个人视觉语言延展到可售卖周边', keywords: ['艺术家合作', '文创礼盒'] },
+  { name: '礼赠采购 / 活动方', desc: '更关注节日礼盒、伴手礼、活动周边', keywords: ['节日限定', '情侣礼物'] },
+  { name: '个人消费者', desc: '直接找适合自己审美的图案与商品', keywords: ['法式花卉', 'ins 家居'] },
+]
+const useCases = [
+  { title: '想快速找能做 POD 的商品', text: '先看产品分类，再进入对应商品详情或灵感结果。', action: '浏览商品分类', path: '/products' },
+  { title: '我已经知道想要的风格', text: '直接从风格方向进入，减少在商品列表里盲找。', action: '查看风格方向', path: '/portfolio' },
+  { title: '我只知道一个模糊需求', text: '先用热搜词和热门用途帮你聚焦，再进入搜索与定制。', action: '去搜索探索', path: '/search' },
 ]
 
-// Intersection Observer for animations
-let observer: IntersectionObserver | null = null
+const featuredProducts = ref<FeaturedProduct[]>([])
+const featuredShowcase = computed(() => featuredProducts.value.slice(0, 6))
+const heroPrimary = computed(() => featuredProducts.value[0])
+const heroSecondary = computed(() => featuredProducts.value.slice(1, 3))
 
-// 获取精选商品
 const fetchFeaturedProducts = async () => {
   try {
-    const response = await api.productList.getPage({
-      page: 1,
-      pageSize: 6,
-      isPublish: true,
-      includeRelations: false, // 不包含关联信息
-    })
-    
+    const response = await api.productList.getPage({ page: 1, pageSize: 6, isPublish: true, includeRelations: false })
     if (response.code === 0 || response.status === true || response.code === 200) {
       const products = (response.data as any)?.list || []
       featuredProducts.value = products.map((product: any) => {
-        // 获取第一张图片作为展示图片
-        const firstImage = Array.isArray(product.images) && product.images.length > 0 
-          ? product.images[0] 
-          : null
-        
+        const firstImage = Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : null
         return {
           id: product.id,
           title: product.name || '商品',
           description: product.description || '',
-          category: product.type || 'pattern',
-          image: 'grad1', // 保留原有的占位符逻辑
-          imageUrl: firstImage, // 保存原始图片URL，在模板中调用 getPreviewImageUrl 处理
+          category: '精选作品',
+          image: 'grad1',
+          imageUrl: firstImage,
         }
       })
     }
   } catch (error) {
     console.error('获取精选商品失败:', error)
-    // 失败时使用默认数据
     featuredProducts.value = [
-      { id: '1', title: '春季印花系列', category: 'pattern', image: 'grad1' },
-      { id: '2', title: '现代服装设计', category: 'clothing', image: 'grad2' },
-      { id: '3', title: '品牌视觉识别', category: 'brand', image: 'grad3' },
-      { id: '4', title: '创意海报设计', category: 'poster', image: 'grad4' },
-      { id: '5', title: '产品包装设计', category: 'packaging', image: 'grad5' },
-      { id: '6', title: '社交媒体图形', category: 'social', image: 'grad6' }
+      { id: '1', title: '鎏金花卉印花系列', description: '适合高级女装与围巾延展的精致图案。', category: 'pattern', image: 'grad1' },
+      { id: '2', title: '解构廓形卫衣企划', description: '从版型到图案叙事，适合独立品牌首发。', category: 'clothing', image: 'grad2' },
+      { id: '3', title: '艺术家联名杯具周边', description: '把平面创作自然转化成可售卖的 POD 商品。', category: 'product', image: 'grad3' },
+      { id: '4', title: '包装视觉提案', description: '提升品牌礼盒和包装开箱体验。', category: 'packaging', image: 'grad4' },
+      { id: '5', title: '秀场海报与社媒素材', description: '统一活动物料和社交传播视觉。', category: 'campaign', image: 'grad5' },
+      { id: '6', title: '艺术家家居装饰画', description: '将作品延伸到更适合陈列与分享的场景。', category: 'decor', image: 'grad6' },
     ]
   }
 }
 
-onMounted(() => {
-  // 获取精选商品
-  fetchFeaturedProducts()
-  
-  // Handle scroll
-  const handleScroll = () => {
-    isScrolled.value = window.scrollY > 50
-  }
-  window.addEventListener('scroll', handleScroll)
+const goToSearch = () => navigateTo('/search')
+const goToExplore = () => navigateTo('/products')
+const goToProductDetail = (productId: string) => navigateTo(`/product/${productId}`)
+const goToCustomDesign = () => navigateTo('/design')
+const goToPortfolio = () => navigateTo('/portfolio')
+const goToAiLab = () => navigateTo('/ai-lab')
+const goToModule = (path: string) => navigateTo(path)
+const goToKeyword = (keyword: string) => navigateTo(`/products/${encodeURIComponent(keyword)}`)
 
-  // Setup Intersection Observer
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('data-animate-id')
-          if (id) {
-            visibleElements.value.add(id)
-          }
-        }
-      })
-    },
-    {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    }
-  )
-
-  // Observe all elements with data-animate-id after DOM is ready
-  nextTick(() => {
-    document.querySelectorAll('[data-animate-id]').forEach((el) => {
-      observer?.observe(el)
-    })
-  })
-
-  return () => {
-    window.removeEventListener('scroll', handleScroll)
-    observer?.disconnect()
-  }
-})
-
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect()
-  }
-})
-
-// Navigation functions
-const goToSearch = () => {
-  navigateTo('/search')
-}
-
-const goToExplore = () => {
-  navigateTo('/search?category=clothing')
-}
-
-const goToCategory = (categoryId: string) => {
-  navigateTo(`/search?category=${categoryId}`)
-}
-
-const goToProductDetail = (productId: string) => {
-  navigateTo(`/product/${productId}`)
-}
-
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-// 处理图片加载错误
-const handleImageError = (event: Event, product: any) => {
+const handleImageError = (event: Event, product: FeaturedProduct) => {
   const img = event.target as HTMLImageElement
-  // 如果实际图片加载失败，回退到占位符
   if (product.imageUrl) {
-    img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`
+    img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f4'/><stop offset='100%' stop-color='%23d6d3d1'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`
   }
 }
 
-// Check if element is visible
-const isVisible = (id: string) => {
-  return visibleElements.value.has(id)
-}
+onMounted(() => {
+  fetchFeaturedProducts()
+})
 </script>
 
 <template>
-  <div class="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden w-full max-w-full">
-    <!-- Hero Section - Full Screen -->
-    <section class="relative w-full max-w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden box-border mt-0">
-      <div class="absolute inset-0 w-full h-full bg-gray-50"></div>
-      <div class="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto w-full box-border">
-        <div class="mb-12 animate-in" style="--delay: 0s">
-          <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-widest mb-6 uppercase text-black font-sans">衣设</h1>
-          <p class="text-xl sm:text-2xl md:text-3xl font-light tracking-[0.2em] mb-4 uppercase text-black">创意印花图案设计平台</p>
-          <p class="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed tracking-wide mt-8">探索无限创意 · 定义时尚未来</p>
+  <div class="bg-[#f7f5f2] text-stone-950">
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="mx-auto grid max-w-[1560px] gap-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-center">
+        <div class="max-w-2xl pt-2">
+          <span class="inline-flex items-center rounded-full bg-white px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-stone-500 transition hover:-translate-y-[1px] hover:text-stone-900">
+            Creative POD Product Design & Sharing
+          </span>
+          <h1 class="mt-6 text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[42px] lg:text-[52px]">
+            简约、克制地展示设计，让作品本身成为视觉中心。
+          </h1>
+          <p class="mt-4 max-w-xl text-[13px] leading-7 text-stone-500">
+            衣设把创意图案、服装设计、POD 商品化和分享表达放进一个更轻、更扁平的界面里，减少多余装饰，把内容、图片和节奏本身做精。
+          </p>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <BaseButton variant="primary" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToExplore">探索精选作品</BaseButton>
+            <BaseButton variant="outline" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToSearch">开始创作与分享</BaseButton>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span v-for="pill in categoryPills" :key="pill" class="cursor-default rounded-full bg-white px-3 py-1 text-[11px] text-stone-500 transition hover:-translate-y-[1px] hover:bg-stone-900 hover:text-white">{{ pill }}</span>
+          </div>
         </div>
-        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-in opacity-0" style="--delay: 0.2s">
-          <BaseButton size="xl" variant="primary" class="!px-12 !py-5 min-w-[200px] uppercase tracking-widest text-sm" @click="goToExplore">
-            探索设计
-          </BaseButton>
-          <BaseButton size="xl" variant="outline" class="!px-12 !py-5 min-w-[200px] uppercase tracking-widest text-sm" @click="goToSearch">
-            开始创作
-          </BaseButton>
-        </div>
-      </div>
-    </section>
 
-    <!-- Featured Products Section -->
-    <section class="py-32 px-4 sm:px-6 md:px-8 bg-white max-w-[1920px] mx-auto w-full">
-      <div class="text-center mb-16" data-animate-id="products-header">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('products-header') }">精选商品</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('products-header') }">发现最受欢迎的设计作品</p>
-      </div>
-        
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 mb-16">
-        <div 
-          v-for="(product, index) in featuredProducts" 
-          :key="product.id"
-          class="group overflow-hidden transition-all duration-500 cursor-pointer bg-white"
-          :data-animate-id="`product-${product.id}`"
-          :class="{ 'animate-in': isVisible(`product-${product.id}`) }"
-          :style="{ '--delay': `${index * 0.1}s` }"
-          @mouseenter="hoveredProductId = product.id"
-          @mouseleave="hoveredProductId = null"
-        >
-          <div class="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-            <!-- 如果有实际图片URL，优先使用；否则使用占位符 -->
-            <img 
-              v-if="product.imageUrl" 
-              :src="getPreviewImageUrl(product.imageUrl, { width: 500, quality: 80, format: 'webp' }) || undefined" 
-              :alt="product.title"
-              class="w-full h-full object-cover transition-all duration-700 ease-out"
-              :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
-              @error="handleImageError($event, product)"
-            />
-            <img 
-              v-else
-              :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='${product.image}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23${product.image})'/></svg>`" 
-              :alt="product.title"
-              class="w-full h-full object-cover transition-all duration-700 ease-out"
-              :class="{ 'scale-110 brightness-110': hoveredProductId === product.id }"
-            />
-            <!-- Hover 遮罩层 -->
-            <div 
-              class="absolute inset-0 bg-gradient-to-b from-black/95 via-black/85 to-black/95 flex items-center justify-center transition-all duration-500 z-10 backdrop-blur-[1px]"
-              :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0 pointer-events-none'"
-            >
-              <div class="px-4 sm:px-8 text-center text-white max-w-[90%] transform transition-all duration-300"
-                   :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'">
-                <h3 class="text-lg sm:text-xl md:text-lg font-light tracking-wide uppercase mb-2 sm:mb-4 leading-snug truncate whitespace-nowrap overflow-hidden text-ellipsis text-center transform transition-transform duration-300"
-                    :class="hoveredProductId === product.id ? 'scale-100' : 'scale-95'"
-                    :title="product.title">{{ product.title }}</h3>
-                <p v-if="product.description" class="text-xs sm:text-sm md:text-xs font-light text-white/90 leading-relaxed mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 md:line-clamp-2 transform transition-transform duration-300 delay-75"
-                   :class="hoveredProductId === product.id ? 'opacity-100' : 'opacity-0'">{{ product.description }}</p>
-                <BaseButton 
-                  size="sm"
-                  variant="outline"
-                  class="!text-white !border-white/40 !bg-white/10 hover:!bg-white/20 hover:!border-white !backdrop-blur-sm"
-                  :class="hoveredProductId === product.id ? 'opacity-100 delay-150' : 'opacity-0'"
-                  @click.stop="goToProductDetail(product.id)">
-                  查看详情
-                </BaseButton>
+        <div class="rounded-[1.35rem] bg-white p-3 sm:p-4">
+          <div class="grid gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+            <article class="group rounded-[1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9] sm:p-5">
+              <div v-if="heroPrimary" class="grid h-full grid-rows-[auto_1fr_auto] gap-4">
+                <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-stone-400">
+                  <span>{{ heroPrimary.category }}</span>
+                  <span>Featured</span>
+                </div>
+                <div class="overflow-hidden rounded-[0.9rem] bg-stone-200">
+                  <div class="aspect-[16/11] overflow-hidden">
+                    <img v-if="heroPrimary.imageUrl" :src="getPreviewImageUrl(heroPrimary.imageUrl, { width: 900, quality: 80, format: 'webp' }) || undefined" :alt="heroPrimary.title" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" @error="handleImageError($event, heroPrimary)" />
+                    <div v-else class="h-full w-full bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)]"></div>
+                  </div>
+                </div>
+                <div>
+                  <h2 class="text-[18px] font-semibold leading-7 text-stone-950 sm:text-[20px]">{{ heroPrimary.title }}</h2>
+                  <p class="mt-2 line-clamp-2 text-[12px] leading-6 text-stone-500">{{ heroPrimary.description || '更轻量的品牌画册式内容展示。' }}</p>
+                  <button class="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-950 hover:text-white" @click="goToProductDetail(heroPrimary.id)">
+                    查看作品
+                    <v-icon size="14" class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">mdi-arrow-top-right</v-icon>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <div class="grid gap-3">
+              <article class="rounded-[1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9]">
+                <div class="text-[10px] uppercase tracking-[0.22em] text-stone-400">Creative POD House</div>
+                <h2 class="mt-3 text-[18px] font-semibold leading-7 text-stone-950">更轻的比例，更统一的配色，更细的组件细节。</h2>
+                <p class="mt-2 text-[12px] leading-6 text-stone-500">首屏右侧高度已经收下来，避免压过左侧主文案，让整体阅读节奏更稳。</p>
+              </article>
+
+              <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                <article v-for="product in heroSecondary" :key="product.id" class="group cursor-pointer rounded-[1rem] bg-[#f6f4f1] p-2.5 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9]" @click="goToProductDetail(product.id)">
+                  <div class="grid grid-cols-[88px_1fr] gap-3">
+                    <div class="overflow-hidden rounded-[0.8rem] bg-stone-200">
+                      <div class="aspect-square overflow-hidden">
+                        <img v-if="product.imageUrl" :src="getPreviewImageUrl(product.imageUrl, { width: 320, quality: 80, format: 'webp' }) || undefined" :alt="product.title" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]" @error="handleImageError($event, product)" />
+                        <div v-else class="h-full w-full bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)]"></div>
+                      </div>
+                    </div>
+                    <div class="min-w-0 py-1">
+                      <div class="text-[10px] uppercase tracking-[0.2em] text-stone-400">{{ product.category }}</div>
+                      <div class="mt-1 line-clamp-2 text-[13px] font-medium leading-6 text-stone-900">{{ product.title }}</div>
+                      <p class="mt-1 line-clamp-2 text-[11px] leading-5 text-stone-500">{{ product.description || '更干净的小型作品卡片。' }}</p>
+                    </div>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
-          <div class="pt-4 sm:pt-5 px-4 sm:px-5 pb-3 sm:pb-4">
-            <h3 class="text-xs sm:text-sm md:text-base font-semibold tracking-wide text-gray-900 mb-2 sm:mb-3 line-clamp-2 text-left leading-snug transition-colors duration-300 group-hover:text-black" :title="product.title">{{ product.title }}</h3>
-            <p v-if="product.description" class="text-[10px] sm:text-xs font-medium text-gray-600 leading-relaxed line-clamp-2 mb-3 text-left transition-colors duration-300 group-hover:text-gray-700" :title="product.description">{{ product.description }}</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="text-center mt-16" data-animate-id="products-footer">
-        <NuxtLink 
-          to="/products" 
-          class="inline-flex items-center gap-4 px-0 py-3 text-sm font-light tracking-[0.2em] uppercase text-gray-600 hover:text-black transition-all duration-300 group relative"
-          :class="{ 'animate-in': isVisible('products-footer') }"
-        >
-          <span class="relative">
-            查看更多商品
-            <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <v-icon size="18" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
-        </NuxtLink>
-      </div>
-    </section>
-
-    <!-- Featured Collections Section -->
-    <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900">精选系列</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现全球设计师的创意杰作</p>
-      </div>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Large Featured Item -->
-        <div class="lg:row-span-2 relative overflow-hidden bg-gray-100 w-full">
-          <div class="w-full h-full">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><defs><linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad1)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-8 bg-white">
-            <h3 class="text-2xl md:text-xl font-light tracking-wide uppercase mb-3">2024春季系列</h3>
-            <p class="text-base md:text-sm font-light text-gray-500 leading-relaxed mb-6">融合现代艺术与传统文化，展现独特的视觉语言</p>
-            <NuxtLink to="/search?category=spring" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
-              <span class="relative">
-                查看系列
-                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-              </span>
-              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <!-- Medium Items -->
-        <div class="relative overflow-hidden bg-gray-100 w-full">
-          <div class="w-full h-96 lg:h-[400px] xl:h-[350px]">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad2)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
-          </div>
-          <div class="p-6 md:p-8 bg-white">
-            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">印花图案库</h3>
-            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">数千种高质量创意图案</p>
-            <NuxtLink to="/search?category=pattern" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
-              <span class="relative">
-                浏览图案
-                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-              </span>
-              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div class="relative overflow-hidden bg-gray-100 w-full">
-          <div class="w-full h-96 lg:h-[400px] xl:h-[350px]">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='grad3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23fafafa'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23grad3)'/></svg>" alt="Collection" class="w-full h-full object-cover" />
-          </div>
-          <div class="p-6 md:p-8 bg-white">
-            <h3 class="text-xl md:text-lg font-light tracking-wide uppercase mb-3">设计师作品</h3>
-            <p class="text-sm md:text-xs font-light text-gray-500 leading-relaxed mb-6">来自全球顶尖设计师</p>
-            <NuxtLink to="/search?category=designer" class="inline-flex items-center gap-3 text-sm font-light tracking-[0.15em] uppercase text-gray-600 hover:text-black transition-all duration-300 group">
-              <span class="relative">
-                查看作品
-                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-              </span>
-              <v-icon size="16" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
-            </NuxtLink>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- POD Services Section -->
-    <section class="py-16 px-4 sm:px-6 md:px-8 bg-white max-w-[1920px] mx-auto w-full box-border border-t border-gray-100">
-      <div class="mb-12 px-8">
-        <h2 class="text-3xl md:text-4xl font-light tracking-[0.2em] mb-4 uppercase text-black">POD 定制服务</h2>
-        <div class="w-12 h-0.5 bg-black mb-6"></div>
-        <p class="text-sm md:text-base font-light text-gray-400 tracking-widest uppercase">专业的柔性生产与一件代发服务</p>
+    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div class="mx-auto max-w-[1560px] rounded-[1.7rem] bg-white p-5 sm:p-6 lg:p-7">
+        <BusinessSectionIntro
+          kicker="POD Discovery Hub"
+          title="从商品、风格到使用场景，把 POD 线索整理得更清楚。"
+          description="把常见的 POD 品类、风格方向、适用人群与热门主题放在同一处浏览，查找路径更直接，设计方向也更容易聚焦。"
+        />
+
+        <div class="mt-6 space-y-5">
+          <section>
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-[16px] font-semibold text-stone-950">POD 产品分类</h3>
+              <button class="ys-quiet-link text-[11px]" @click="goToExplore">查看全部商品</button>
+            </div>
+            <div class="mt-4">
+              <div class="flex flex-wrap gap-2.5">
+                <button
+                  v-for="(item, index) in podCategories"
+                  :key="item.name"
+                  type="button"
+                  class="group relative w-full min-w-0 overflow-hidden rounded-[1rem] border border-stone-200 bg-white p-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
+                  @click="goToKeyword(item.keyword)"
+                >
+                  <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-stone-200 transition duration-200 group-hover:bg-stone-400"></div>
+                  <div class="flex items-start gap-2.5">
+                    <div class="flex h-[50px] w-[50px] items-center justify-center overflow-hidden rounded-[0.8rem] bg-[#f7f4ee]">
+                      <img :src="item.image" :alt="item.name" class="h-[30px] w-[30px] object-contain opacity-90 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100" />
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-start justify-between gap-2">
+                        <div class="text-[13px] font-medium leading-5 text-stone-900">{{ item.name }}</div>
+                        <span class="text-[10px] uppercase tracking-[0.14em] text-stone-400">0{{ index + 1 }}</span>
+                      </div>
+                      <div class="mt-1 text-[11px] text-stone-400">{{ item.use }}</div>
+                    </div>
+                  </div>
+                  <div class="mt-2.5 flex flex-wrap gap-1.5">
+                    <span class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] text-stone-500">{{ item.count }}</span>
+                    <span class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] text-stone-500">{{ item.audience }}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-[16px] font-semibold text-stone-950">风格方向</h3>
+            <div class="mt-4">
+              <div class="flex flex-wrap gap-2.5">
+                <button
+                  v-for="(item, index) in styleBoards"
+                  :key="item.name"
+                  type="button"
+                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
+                  @click="goToKeyword(item.keyword)"
+                >
+                  <div class="relative flex h-[82px] items-center justify-center overflow-hidden rounded-t-[1rem] bg-[#f6f4f1]">
+                    <div class="absolute left-2 top-2 z-[1] rounded-full bg-white/85 px-1.5 py-0.5 text-[9px] uppercase tracking-[0.1em] text-stone-500">
+                      0{{ index + 1 }}
+                    </div>
+                    <img :src="item.image" :alt="item.name" class="h-[38px] w-[38px] object-contain transition duration-300 group-hover:scale-[1.03]" />
+                  </div>
+                  <div class="px-3 py-3">
+                    <div class="text-[13px] font-medium text-stone-900">{{ item.name }}</div>
+                    <div class="mt-1 text-[11px] text-stone-400">{{ item.note }}</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-[16px] font-semibold text-stone-950">适用人群</h3>
+            <div class="mt-4">
+              <div class="flex flex-wrap gap-2.5">
+                <button
+                  v-for="(item, index) in audiences"
+                  :key="item.name"
+                  type="button"
+                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white px-3 py-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
+                  @click="goToKeyword(item.keywords[0])"
+                >
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="text-[13px] font-medium text-stone-900">{{ item.name }}</div>
+                    <span class="text-[10px] uppercase tracking-[0.14em] text-stone-400">0{{ index + 1 }}</span>
+                  </div>
+                  <p class="mt-2 text-[11px] leading-6 text-stone-500">{{ item.desc }}</p>
+                  <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span v-for="tag in item.keywords" :key="tag" class="rounded-full bg-[#f6f3ee] px-2.5 py-1 text-[10px] text-stone-500">{{ tag }}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-[1.2rem] bg-[#faf8f5] p-4 sm:p-5">
+            <div class="text-[11px] uppercase tracking-[0.18em] text-stone-400">热搜词与入口词</div>
+            <div class="mt-4">
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="item in hotKeywords"
+                  :key="item"
+                  type="button"
+                  class="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[11px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-900"
+                  @click="goToKeyword(item)"
+                >
+                  {{ item }}
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-[16px] font-semibold text-stone-950">常用浏览方式</h3>
+            <div class="mt-4">
+              <div class="flex flex-wrap gap-2.5">
+                <button
+                  v-for="(item, index) in useCases"
+                  :key="item.title"
+                  type="button"
+                  class="group w-full min-w-0 rounded-[1rem] border border-stone-200 bg-white p-3 text-left transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:w-[calc(50%-0.3125rem)] lg:w-[calc(25%-0.46875rem)]"
+                  @click="goToModule(item.path)"
+                >
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="text-[13px] font-medium text-stone-950">{{ item.title }}</div>
+                    <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-[#faf8f5] text-stone-500">
+                      <v-icon size="12">mdi-compass-outline</v-icon>
+                    </span>
+                  </div>
+                  <p class="mt-2 text-[11px] leading-6 text-stone-500">{{ item.text }}</p>
+                  <div class="mt-3 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.12em] text-stone-400">
+                    0{{ index + 1 }}
+                    <span class="normal-case tracking-normal text-stone-500">{{ item.action }}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
+    </section>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 w-full box-border">
-        <!-- 1. 服装定制 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/custom')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/custom-tshirt.jpg" alt="服装定制" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">服装定制</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">T-SHIRT · HOODIE · HAT</p>
+    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div class="mx-auto grid max-w-[1560px] gap-3 md:grid-cols-4">
+        <div v-for="item in impactStats" :key="item.label" class="rounded-[1rem] bg-white px-5 py-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#fcfbf9]">
+          <dt class="text-[10px] uppercase tracking-[0.22em] text-stone-400">{{ item.label }}</dt>
+          <dd class="mt-2 text-[24px] font-semibold text-stone-950">{{ item.value }}</dd>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div class="mx-auto grid max-w-[1560px] gap-5 lg:grid-cols-[0.72fr_1.28fr]">
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Workflow</span>
+          <h2 class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950">保留叙事，但整体更轻、更小、更平衡。</h2>
+          <p class="mt-4 max-w-md text-[13px] leading-7 text-stone-500">把风格集中在版式、间距和图片陈列，不再依赖大量边框、重叠分隔和视觉噪声。</p>
+        </div>
+        <div class="grid gap-3 md:grid-cols-3">
+          <article v-for="item in storySteps" :key="item.step" class="rounded-[1rem] bg-white p-5 transition duration-200 hover:-translate-y-[2px] hover:bg-[#fcfbf9]">
+            <span class="text-[10px] uppercase tracking-[0.22em] text-stone-400">{{ item.step }}</span>
+            <h3 class="mt-3 text-[18px] font-semibold text-stone-950">{{ item.title }}</h3>
+            <p class="mt-3 text-[12px] leading-6 text-stone-500">{{ item.description }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div class="mx-auto max-w-[1560px] rounded-[1.6rem] bg-white p-5 sm:p-6 lg:p-7">
+        <BusinessSectionIntro
+          kicker="Business Modules"
+          title="围绕设计分享、定制服务与创作工具整理网站结构。"
+          description="让作品浏览、定制委托与实验性功能各自有清晰位置，阅读和跳转都会更自然。"
+        />
+        <div class="mt-6 grid gap-3 xl:grid-cols-3">
+          <article v-for="item in businessModules" :key="item.title" class="ys-card rounded-[1.2rem] p-5">
+            <div class="text-[16px] font-semibold text-stone-950">{{ item.title }}</div>
+            <p class="mt-3 text-[12px] leading-6 text-stone-500">{{ item.text }}</p>
+            <button class="mt-5 inline-flex items-center gap-2 rounded-full bg-[#faf8f5] px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-900 hover:text-white" @click="goToModule(item.to)">
+              {{ item.action }}
+              <v-icon size="14">mdi-arrow-top-right</v-icon>
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div class="mx-auto grid max-w-[1560px] gap-5 xl:grid-cols-[1fr_1fr]">
+        <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
+          <BusinessSectionIntro
+            kicker="Personalized Studio"
+            title="把定制设计的内容与合作方式展示得更清楚。"
+            description="从品牌首发到联名企划，把常见的委托方向拆开陈列，方便快速判断合适的设计路径。"
+          />
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div v-for="item in personalizedModes" :key="item.name" class="rounded-[1rem] bg-[#faf8f5] p-4">
+              <div class="text-[14px] font-semibold text-stone-950">{{ item.name }}</div>
+              <p class="mt-2 text-[12px] leading-6 text-stone-500">{{ item.detail }}</p>
             </div>
           </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                1件起印，无需起订量
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                DTG、热转印、刺绣工艺
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <BaseButton variant="primary" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToCustomDesign">开始配置定制需求</BaseButton>
+            <BaseButton variant="secondary" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToPortfolio">先看灵感案例</BaseButton>
           </div>
         </div>
 
-        <!-- 2. 广告制作 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/advertising')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/advertising-poster.jpg" alt="广告制作" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">广告制作</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">POSTER · BANNER · STAND</p>
+        <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
+          <BusinessSectionIntro
+            kicker="AI Ready"
+            title="把实验性设计工具预留在合适的位置。"
+            description="先把界面结构、浏览方式和说明文字整理好，后续接入生成式能力时会更顺畅。"
+          />
+          <div class="mt-6 grid gap-3">
+            <div v-for="item in futureSignals" :key="item.title" class="rounded-[1rem] bg-[#faf8f5] p-4">
+              <div class="text-[14px] font-semibold text-stone-950">{{ item.title }}</div>
+              <p class="mt-2 text-[12px] leading-6 text-stone-500">{{ item.desc }}</p>
             </div>
           </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                PP、KT板、灯箱片材质
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                专业级色彩管理系统
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. 企业礼品 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/gifts')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/corporate-gifts.jpg" alt="企业礼品" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">企业礼品</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">MUG · NOTEBOOK · GIFT BOX</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                企业Logo专属高端定制
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                一站式商务礼品方案
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. 包装印刷 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/packaging')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/packaging-box.jpg" alt="包装印刷" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">包装印刷</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">BOX · BAG · PACKAGING</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                多种精品特种纸工艺
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                全自动数码打样模切
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. 家居装饰 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/decor')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/home-decor.jpg" alt="家居装饰" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">家居装饰</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">ART · PILLOW · CARPET</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                高精度艺术微喷品质
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                环保墨水，家居安全无害
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 6. 书籍画册 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/books')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/book-printing.jpg" alt="书籍画册" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">书籍画册</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">ALBUM · MANUAL · JOURNAL</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                提供多种专业装订方案
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                海量精品纸张触手可及
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 7. 名片票据 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/business-cards')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/business-cards.jpg" alt="名片票据" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">名片票据</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">CARD · FORM · TICKET</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                独家特种工艺名片设计
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                专业级防伪票据印刷
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 8. 照片打印 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/photos')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/photo-printing.jpg" alt="照片打印" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">照片打印</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">PHOTO · ALBUM · FRAME</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                影像级真彩色还原技术
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                博物馆级艺术微喷工艺
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 9. 办公用品 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/office')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/office-supplies.jpg" alt="办公用品" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">办公用品</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">ID · STATIONERY · FOLDER</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                全套定制化行政办公物料
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                提升企业整体形象与调性
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 10. 不干胶标签 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/stickers')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/stickers.jpg" alt="不干胶标签" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-normal text-white tracking-widest uppercase mb-1">不干胶标签</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">STICKER · LABEL · BARCODE</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                工业级高品质多样性材料
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                支持任意形状高精度模切
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-
-        <!-- 11. 工艺品定制 -->
-        <div class="group relative bg-white transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-300 hover:bg-gray-50 transition-colors" @click="handleNavigate('/services/crafts')">
-          <div class="relative h-64 overflow-hidden">
-            <img src="/images/services/crafts.jpg" alt="工艺品定制" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
-              <h3 class="text-lg font-medium text-white tracking-widest uppercase mb-1">工艺品定制</h3>
-              <p class="text-[10px] text-white/80 tracking-widest uppercase">WOOD · METAL · RESIN</p>
-            </div>
-          </div>
-          <div class="p-5">
-            <ul class="space-y-3 mb-6">
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                工业级激光雕刻与成型
-              </li>
-              <li class="flex items-center gap-3 text-xs font-light text-gray-500 tracking-wider">
-                <span class="w-1 h-1 bg-black"></span>
-                礼品级精致质感细节表现
-              </li>
-            </ul>
-            <div class="flex items-center justify-between text-[11px] font-medium tracking-[0.2em] uppercase text-black">
-              <span>EXPLORE MORE</span>
-              <v-icon name="mdi-arrow-right" size="14" class="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
+          <div class="mt-6">
+            <BaseButton variant="outline" size="lg" class="!px-6 !py-2.5 !text-[12px]" @click="goToAiLab">查看 AI 设计实验室</BaseButton>
           </div>
         </div>
       </div>
     </section>
 
-
-    <!-- Product Showcase Section -->
-
-    <section class="py-32 bg-white w-full max-w-full box-border overflow-x-hidden">
-      <div class="max-w-[1920px] mx-auto px-8 w-full max-w-full box-border">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 w-full max-w-full">
-          <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-gray-100 max-w-full">
-            <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200'><defs><linearGradient id='show1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='50%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e8e8e8'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23show1)'/></svg>" alt="Product" />
-          </div>
-          <div class="p-8">
-            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">新品</span>
-            <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">创意印花设计</h2>
-            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">探索我们的最新系列，每一件作品都经过精心设计，融合了艺术与时尚的完美平衡。</p>
-            <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToExplore">立即探索</BaseButton>
-          </div>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full max-w-full lg:flex-row-reverse">
-          <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-gray-100 max-w-full lg:order-2">
-            <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1200'><defs><linearGradient id='show2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f8f8f8'/><stop offset='50%' stop-color='%23f0f0f0'/><stop offset='100%' stop-color='%23e5e5e5'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23show2)'/></svg>" alt="Product" />
-          </div>
-          <div class="p-8 lg:order-1">
-            <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">精选</span>
-            <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-6 uppercase leading-tight">服装设计服务</h2>
-            <p class="text-base md:text-lg font-light text-gray-600 leading-relaxed mb-8">专业的服装设计服务，从概念到成品，为您打造独特的时尚风格。</p>
-            <BaseButton size="lg" variant="primary" class="uppercase tracking-wider min-w-[180px]" @click="goToSearch">了解更多</BaseButton>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Horizontal Categories Filter -->
-    <section class="py-16 bg-white overflow-x-auto">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8" data-animate-id="horizontal-categories">
-        <div class="flex gap-4 overflow-x-auto scrollbar-hide" :class="{ 'animate-in': isVisible('horizontal-categories') }">
-          <button 
-            v-for="(category, index) in horizontalCategories" 
-            :key="category.id"
-            class="px-6 py-3 whitespace-nowrap text-sm font-normal tracking-wide uppercase border border-gray-300 bg-white text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all flex-shrink-0"
-            :class="{ 'bg-black text-white border-black': category.active }"
-            :style="{ '--delay': `${index * 0.05}s` }"
-            @click="goToCategory(category.id)"
-          >
-            {{ category.name }}
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="py-32 px-4 sm:px-6 md:px-8 max-w-[1920px] mx-auto w-full bg-white">
-      <div class="text-center mb-16" data-animate-id="categories-header">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-gray-900" :class="{ 'animate-in': isVisible('categories-header') }">商品分类</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider" :class="{ 'animate-in': isVisible('categories-header') }">探索我们的完整设计分类</p>
-      </div>
-      
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
-        <div 
-          v-for="(category, index) in categories" 
-          :key="category.id"
-          class="group cursor-pointer transition-all duration-300 text-center"
-          :data-animate-id="`category-${category.id}`"
-          :class="{ 'animate-in': isVisible(`category-${category.id}`) }"
-          :style="{ '--delay': `${index * 0.1}s` }"
-          @click="goToCategory(category.id)"
-        >
-          <div class="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" :style="{ 'background': `linear-gradient(135deg, ${category.color}15, ${category.color}05)` }">
-            <v-icon :name="category.icon" class="text-2xl transition-transform duration-300 group-hover:scale-110" :style="{ 'color': category.color }" />
-          </div>
-          <h3 class="text-base font-light tracking-wide mb-2 text-gray-900 transition-colors duration-300 group-hover:text-black">{{ category.name }}</h3>
-          <p class="text-xs text-gray-400 tracking-wider uppercase">{{ category.count }} 作品</p>
-        </div>
-      </div>
-      
-      <div class="text-center mt-12" data-animate-id="categories-footer">
-        <NuxtLink 
-          to="/search" 
-          class="inline-flex items-center gap-4 px-0 py-3 text-sm font-light tracking-[0.2em] uppercase text-gray-600 hover:text-black transition-all duration-300 group" 
-          :class="{ 'animate-in': isVisible('categories-footer') }"
-        >
-          <span class="relative">
-            查看全部分类
-            <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-          </span>
-          <v-icon size="18" class="transition-transform duration-300 group-hover:translate-x-1">mdi-arrow-right</v-icon>
-        </NuxtLink>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-24 bg-gray-50">
-      <div class="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-          <div 
-            v-for="(stat, index) in stats" 
-            :key="index"
-            class="text-center"
-            :data-animate-id="`stat-${index}`"
-            :class="{ 'animate-in': isVisible(`stat-${index}`) }"
-            :style="{ '--delay': `${index * 0.15}s` }"
-          >
-            <h3 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 text-gray-900">{{ stat.number }}</h3>
-            <p class="text-sm md:text-base font-light text-gray-500 tracking-wide uppercase">{{ stat.label }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Gallery Grid Section -->
-    <section class="py-32 px-8 max-w-[1920px] mx-auto w-full max-w-full box-border">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">设计画廊</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现灵感，激发创意</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full box-border">
-        <div 
-          v-for="i in 6" 
-          :key="i"
-          class="relative overflow-hidden aspect-[3/4] bg-gray-100 cursor-pointer rounded-xl w-full max-w-full group"
-        >
-          <div class="w-full h-full max-w-full overflow-hidden">
-            <img class="w-full h-full object-cover max-w-full" :src="`data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800'><defs><linearGradient id='gal${i}' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23f0f0f0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23gal${i})'/></svg>`" :alt="`Gallery ${i}`" />
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 md:opacity-100">
-            <h3 class="text-xl font-light tracking-wider mb-2 uppercase">设计作品 {{ i }}</h3>
-            <p class="text-sm font-light opacity-90">创意设计师作品</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Designers Section -->
-    <section class="py-32 px-8 max-w-[1920px] mx-auto bg-white w-full max-w-full box-border">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">推荐设计师</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">发现顶尖创意人才</p>
-      </div>
-      
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 w-full box-border">
-        <div 
-          v-for="designer in featuredDesigners" 
-          :key="designer.id"
-          class="bg-gray-100 rounded-xl p-8 text-center cursor-pointer border border-transparent w-full max-w-full hover:border-gray-300 hover:bg-white"
-        >
-          <div class="relative w-20 h-20 mx-auto mb-6">
-            <img class="w-full h-full rounded-full object-cover border-[3px] border-white" :src="designer.avatar" :alt="designer.name" />
-            <div class="absolute bottom-0 right-0 w-7 h-7 bg-black rounded-full flex items-center justify-center border-[3px] border-white">
-              <v-icon name="mdi-check-circle" class="w-4 h-4 text-white" />
-            </div>
-          </div>
+    <section class="px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-10">
+      <div class="mx-auto max-w-[1560px]">
+        <div class="flex items-end justify-between gap-6">
           <div>
-            <h3 class="text-lg font-medium tracking-wide mb-4 text-black">{{ designer.name }}</h3>
-            <div class="flex flex-col gap-2 mb-6 text-sm text-gray-500">
-              <span class="flex items-center justify-center gap-2">
-                <v-icon name="mdi-image-multiple" size="16" />
-                {{ designer.works }} 作品
-              </span>
-              <span class="flex items-center justify-center gap-2">
-                <v-icon name="mdi-account-group" size="16" />
-                {{ designer.followers }} 关注
-              </span>
-            </div>
-            <BaseButton 
-              variant="outline" 
-              class="w-full uppercase tracking-wide text-xs group-hover:bg-black group-hover:text-white"
-            >
-              关注
-            </BaseButton>
+            <span class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Selected Works</span>
+            <h2 class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950">更轻的内容陈列，更小的卡片尺度。</h2>
           </div>
+          <NuxtLink to="/products" class="hidden text-[11px] text-stone-500 transition hover:text-stone-950 sm:inline-flex sm:items-center sm:gap-2">
+            查看全部
+            <v-icon size="15" class="transition duration-200 hover:translate-x-0.5">mdi-arrow-right</v-icon>
+          </NuxtLink>
         </div>
-      </div>
-    </section>
 
-    <!-- Popular Tags Section -->
-    <section class="py-32 px-8 max-w-[1920px] mx-auto bg-gray-100 w-full max-w-full box-border">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-wider mb-4 uppercase text-black">热门标签</h2>
-        <p class="text-base md:text-lg font-light text-gray-500 tracking-wider">探索流行设计趋势</p>
-      </div>
-      
-      <div class="flex flex-wrap gap-4 justify-center max-w-[1200px] mx-auto">
-        <button 
-          v-for="tag in popularTags" 
-          :key="tag.name"
-          class="px-6 py-4 bg-white border border-gray-200 rounded-full flex items-center gap-3 cursor-pointer hover:border-black"
-          @click="goToSearch"
-        >
-          <span class="text-sm font-normal tracking-wide text-black">{{ tag.name }}</span>
-          <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full min-w-[40px] text-center">{{ tag.count }}</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="py-32 px-8 bg-gray-100 w-full max-w-full box-border">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-[1920px] mx-auto items-center w-full box-border">
-        <div class="p-8">
-          <span class="inline-block text-xs font-normal tracking-widest uppercase text-gray-500 mb-4">关于我们</span>
-          <h2 class="text-4xl md:text-5xl font-light tracking-wider mb-8 uppercase leading-tight">衣设服装设计平台</h2>
-          <p class="text-base font-light text-gray-600 leading-relaxed mb-6">
-            衣设是一个专注于创意印花图案和服装设计的专业平台。我们汇聚了来自全球的设计师和创意人才，
-            为时尚行业提供高质量的设计资源和灵感。无论是寻找灵感、展示作品，还是寻找合作伙伴，
-            衣设都是您的理想之选。
-          </p>
-          <p class="text-base font-light text-gray-600 leading-relaxed mb-8">
-            我们的使命是连接全球的设计师和创意爱好者，让优秀的创意设计能够被更多人发现和欣赏。
-            我们提供免费的设计服务，包括印花图案、服装设计、品牌标识、海报设计等多种类型的设计服务。
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-            <div class="flex items-center gap-3 text-base text-black">
-              <v-icon name="mdi-check-circle" size="24" />
-              <span>免费设计资源</span>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <article v-for="product in featuredShowcase" :key="product.id" class="group cursor-pointer rounded-[1rem] bg-white p-3 transition duration-200 hover:-translate-y-[3px] hover:bg-[#fcfbf9]" @click="goToProductDetail(product.id)">
+            <div class="overflow-hidden rounded-[0.9rem] bg-stone-100">
+              <div class="aspect-[4/5] overflow-hidden">
+                <img v-if="product.imageUrl" :src="getPreviewImageUrl(product.imageUrl, { width: 760, quality: 80, format: 'webp' }) || undefined" :alt="product.title" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" @error="handleImageError($event, product)" />
+                <div v-else class="h-full w-full bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)]"></div>
+              </div>
             </div>
-            <div class="flex items-center gap-3 text-base text-black">
-              <v-icon name="mdi-check-circle" size="24" />
-              <span>全球设计师社区</span>
+            <div class="mt-3 flex items-start justify-between gap-3">
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.22em] text-stone-400">{{ product.category }}</div>
+                <h3 class="mt-1 text-[14px] font-medium leading-6 text-stone-900">{{ product.title }}</h3>
+                <p class="mt-1 line-clamp-2 text-[12px] leading-6 text-stone-500">{{ product.description || '以更干净的陈列方式展示设计作品。' }}</p>
+              </div>
+              <button class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#f6f4f1] text-stone-500 transition duration-200 group-hover:bg-stone-900 group-hover:text-white" @click.stop="goToProductDetail(product.id)">
+                <v-icon size="14" class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">mdi-arrow-top-right</v-icon>
+              </button>
             </div>
-            <div class="flex items-center gap-3 text-base text-black">
-              <v-icon name="mdi-check-circle" size="24" />
-              <span>高质量设计作品</span>
-            </div>
-            <div class="flex items-center gap-3 text-base text-black">
-              <v-icon name="mdi-check-circle" size="24" />
-              <span>专业设计服务</span>
-            </div>
-          </div>
-        </div>
-        <div class="w-full h-[600px] md:h-[400px] overflow-hidden bg-white max-w-full">
-          <img class="w-full h-full object-cover max-w-full" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'><defs><linearGradient id='about1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23f5f5f5'/><stop offset='100%' stop-color='%23e0e0e0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23about1)'/></svg>" alt="About" />
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="relative py-32 px-8 text-center bg-gray-100 overflow-hidden w-full max-w-full box-border">
-      <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 opacity-50"></div>
-      <div class="relative z-10 max-w-[800px] mx-auto w-full box-border px-4">
-        <h2 class="text-5xl md:text-6xl lg:text-7xl font-light tracking-wider mb-6 uppercase">加入创意社区</h2>
-        <p class="text-lg md:text-xl font-light text-gray-600 leading-relaxed mb-10">与全球设计师一起，分享您的创意，发现无限可能</p>
-        <div class="flex flex-col sm:flex-row gap-6 justify-center flex-wrap">
-          <BaseButton size="lg" variant="primary" class="min-w-[200px] uppercase tracking-wider" @click="goToSearch">开始创作</BaseButton>
-          <BaseButton size="lg" variant="outline" class="min-w-[200px] uppercase tracking-wider bg-transparent" @click="goToExplore">探索作品</BaseButton>
+          </article>
         </div>
       </div>
     </section>
   </div>
 </template>
-
-<style lang="scss" scoped>
-// 只保留必要的动画样式
-.animate-in {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// 隐藏滚动条的工具类
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-</style>

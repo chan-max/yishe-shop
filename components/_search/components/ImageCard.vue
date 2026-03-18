@@ -167,19 +167,29 @@ const onImageError = (event: Event) => {
 
 <style lang="scss" scoped>
 .image-card {
-  background: transparent;
-  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 18px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform 0.22s ease, border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
   position: relative;
-  width: 100%; /* 占满容器宽度 */
+  width: 100%;
   
   &.hover-effect:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(28, 25, 23, 0.16);
+    background: #fcfbf9;
+    box-shadow: 0 18px 30px rgba(28, 25, 23, 0.06);
+
+    .card-image img {
+      transform: scale(1.035);
+    }
+
+    .image-overlay {
+      opacity: 1;
+    }
     
     .card-info {
-      opacity: 1;
       transform: translateY(0);
     }
   }
@@ -187,16 +197,16 @@ const onImageError = (event: Event) => {
   .card-image {
     position: relative;
     overflow: hidden;
-    border-radius: 8px; /* 添加圆角 */
+    border-radius: 18px;
     
     img {
       width: 100%;
-      height: auto; /* 保持原始比例 */
-      display: block; /* 移除底部间隙 */
-      transition: opacity 0.3s ease;
-      border-radius: 8px; /* 图片圆角 */
-      object-fit: cover; /* 覆盖容器，保持比例 */
-      object-position: center; /* 居中显示 */
+      height: 100%;
+      display: block;
+      transition: opacity 0.28s ease, transform 0.45s ease;
+      border-radius: 18px;
+      object-fit: cover;
+      object-position: center;
     }
     
     .empty-image {
@@ -205,14 +215,14 @@ const onImageError = (event: Event) => {
       align-items: center;
       justify-content: center;
       width: 100%;
-      min-height: 200px; /* 设置最小高度 */
-      background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-      border-radius: 8px; /* 保持圆角一致 */
+      min-height: 200px;
+      background: #f6f4f1;
+      border-radius: 18px;
       
       .empty-image-text {
         margin-top: 0.5rem;
-        font-size: 0.8rem;
-        color: #999;
+        font-size: 12px;
+        color: #a8a29e;
       }
     }
     
@@ -222,50 +232,42 @@ const onImageError = (event: Event) => {
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: linear-gradient(180deg, rgba(28, 25, 23, 0.04) 0%, rgba(28, 25, 23, 0.52) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
+      gap: 0.65rem;
       opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    &:hover .image-overlay {
-      opacity: 1;
+      transition: opacity 0.22s ease;
     }
     
     .image-badge {
       position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
+      top: 0.65rem;
+      right: 0.65rem;
     }
   }
   
   .card-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    padding: 1rem 0.75rem 0.75rem;
-    opacity: 0;
-    transform: translateY(100%);
-    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.95rem 0.95rem 1rem;
+    opacity: 1;
+    transform: translateY(1px);
+    transition: transform 0.22s ease;
     
     .card-title {
-      font-size: 0.9rem;
+      font-size: 13px;
       font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.25rem;
-      line-height: 1.2;
+      color: #1c1917;
+      margin-bottom: 0.3rem;
+      line-height: 1.45;
     }
     
     .card-description {
-      color: #e0e0e0;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
+      color: #78716c;
+      font-size: 12px;
+      margin-bottom: 0.6rem;
+      line-height: 1.6;
     }
     
     .card-tags {
@@ -275,9 +277,10 @@ const onImageError = (event: Event) => {
       margin-bottom: 0.5rem;
       
       .card-tag {
-        font-size: 0.7rem;
-        background: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
+        font-size: 11px;
+        background: #faf8f5;
+        color: #57534e;
+        border-color: rgba(28, 25, 23, 0.08);
       }
     }
     
@@ -290,8 +293,8 @@ const onImageError = (event: Event) => {
         display: flex;
         align-items: center;
         gap: 0.25rem;
-        color: #e0e0e0;
-        font-size: 0.8rem;
+        color: #78716c;
+        font-size: 11px;
       }
     }
     
@@ -299,11 +302,12 @@ const onImageError = (event: Event) => {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.75rem;
       
       .card-price {
-        font-size: 1rem;
+        font-size: 13px;
         font-weight: 600;
-        color: #ff6b35;
+        color: #1c1917;
       }
       
       .card-likes,
@@ -311,9 +315,26 @@ const onImageError = (event: Event) => {
         display: flex;
         align-items: center;
         gap: 0.25rem;
-        color: #e0e0e0;
-        font-size: 0.85rem;
+        color: #78716c;
+        font-size: 11px;
       }
+    }
+  }
+
+  :deep(.v-btn) {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94) !important;
+    color: #44403c !important;
+    border: 1px solid rgba(28, 25, 23, 0.08);
+    box-shadow: none !important;
+
+    &:hover {
+      transform: translateY(-1px);
+      background: #1c1917 !important;
+      color: #f7f5f2 !important;
+      border-color: #1c1917;
     }
   }
 }

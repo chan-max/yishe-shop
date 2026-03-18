@@ -1,143 +1,59 @@
 <template>
-  <div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-    <!-- 返回首页导航 -->
-    <div class="max-w-3xl mx-auto mb-8">
-      <NuxtLink
-        to="/"
-        class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black tracking-[0.15em] uppercase transition-all duration-300 group font-light"
-      >
-        <Icon name="heroicons:arrow-left" class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-        <span class="relative">
-          返回首页
-          <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-        </span>
+  <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-[1480px]">
+      <NuxtLink to="/" class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-stone-950">
+        <Icon name="heroicons:arrow-left" class="h-4 w-4" />
+        <span>返回首页</span>
       </NuxtLink>
     </div>
 
-    <div class="max-w-3xl mx-auto">
-      <div class="bg-white">
-        <h2 class="text-4xl md:text-5xl font-light tracking-[0.05em] mb-3 uppercase text-gray-900">个人信息</h2>
-        <p class="text-sm text-gray-400 tracking-[0.1em] uppercase mb-12">管理您的个人资料</p>
-
-        <div v-if="loading" class="text-center py-16">
-          <p class="text-sm text-gray-400 tracking-[0.1em] uppercase">加载中...</p>
-        </div>
-
-        <div v-else-if="errorMessage" class="text-red-500 text-sm text-center py-16 tracking-wide uppercase">
-          {{ errorMessage }}
-        </div>
-
-        <form v-else @submit.prevent="handleSubmit" class="space-y-10">
-          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            <div>
-              <label for="account" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">账号</label>
-              <input
-                id="account"
-                v-model="form.account"
-                type="text"
-                disabled
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 bg-transparent text-gray-400 text-base tracking-wide focus:outline-none cursor-not-allowed"
-              />
-            </div>
-
-            <div>
-              <label for="name" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">昵称</label>
-              <input
-                id="name"
-                v-model="form.name"
-                type="text"
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
-                placeholder="请输入昵称"
-              />
-            </div>
-
-            <div>
-              <label for="email" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">邮箱</label>
-              <input
-                id="email"
-                v-model="form.email"
-                type="email"
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
-                placeholder="请输入邮箱"
-              />
-            </div>
-
-            <div>
-              <label for="phone" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">手机号</label>
-              <input
-                id="phone"
-                v-model="form.phone"
-                type="tel"
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 placeholder:text-gray-400 transition-colors duration-300"
-                placeholder="请输入手机号"
-              />
-            </div>
-
-            <div>
-              <label for="sex" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">性别</label>
-              <select
-                id="sex"
-                v-model="form.sex"
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 transition-colors duration-300 appearance-none cursor-pointer"
-              >
-                <option :value="undefined">请选择</option>
-                <option :value="1">男</option>
-                <option :value="0">女</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="birthday" class="block text-sm text-gray-500 uppercase tracking-[0.15em] mb-4 font-light">出生日期</label>
-              <input
-                id="birthday"
-                v-model="form.birthday"
-                type="date"
-                class="w-full px-0 py-3 border-0 border-b border-gray-200 focus:border-gray-900 focus:outline-none text-base tracking-wide bg-transparent text-gray-900 transition-colors duration-300"
-              />
-            </div>
-          </div>
-
-
-          <div v-if="updateErrorMessage" class="text-red-500 text-sm tracking-wide uppercase">
-            {{ updateErrorMessage }}
-          </div>
-
-          <div v-if="updateSuccessMessage" class="text-green-600 text-sm tracking-wide uppercase">
-            {{ updateSuccessMessage }}
-          </div>
-
-          <div class="flex flex-col sm:flex-row justify-end gap-4 pt-6">
-            <NuxtLink
-              to="/change-password"
-              class="px-6 py-3 text-sm uppercase tracking-[0.15em] text-gray-500 hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-100 font-light text-center sm:text-left relative group"
-            >
-              <span class="relative">
-                修改密码
-                <span class="absolute bottom-0 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full"></span>
-              </span>
-            </NuxtLink>
-            <button
-              type="submit"
-              :disabled="updating"
-              class="px-8 py-4 bg-black text-white text-sm uppercase tracking-[0.2em] font-light hover:bg-gray-800 focus:outline-none transition-all duration-300 transform hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            >
-              {{ updating ? '保存中...' : '保存' }}
-            </button>
-          </div>
-        </form>
-
-        <div class="mt-12 pt-8 border-t border-gray-100">
-          <button
-            @click="handleLogout"
-            class="w-full px-6 py-4 text-sm uppercase tracking-[0.15em] text-red-500 hover:text-red-600 transition-all duration-300 transform hover:scale-105 active:scale-100 font-light relative group"
-          >
-            <span class="relative">
-              退出登录
-              <span class="absolute bottom-0 left-0 w-0 h-px bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-            </span>
-          </button>
-        </div>
+    <div class="mx-auto mt-8 max-w-4xl rounded-[1.5rem] border border-stone-200 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-8">
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Profile</div>
+        <h2 class="mt-3 text-[28px] font-semibold text-stone-950">个人信息</h2>
+        <p class="mt-2 text-[13px] leading-6 text-stone-500">管理你的基本资料与账号信息。</p>
       </div>
+
+      <div v-if="loading" class="py-16 text-center text-[13px] text-stone-500">加载中...</div>
+      <div v-else-if="errorMessage" class="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[12px] text-red-600">{{ errorMessage }}</div>
+
+      <form v-else class="mt-8 space-y-8" @submit.prevent="handleSubmit">
+        <div class="grid gap-5 sm:grid-cols-2">
+          <BaseInput id="account" v-model="form.account" label="账号" type="text" disabled helper="账号不可修改" />
+          <BaseInput id="name" v-model="form.name" label="昵称" type="text" placeholder="请输入昵称" />
+          <BaseInput id="email" v-model="form.email" label="邮箱" type="email" placeholder="请输入邮箱" />
+          <BaseInput id="phone" v-model="form.phone" label="手机号" type="tel" placeholder="请输入手机号" />
+
+          <div>
+            <label for="sex" class="mb-2 block text-[12px] font-medium text-stone-600">性别</label>
+            <select id="sex" v-model="form.sex" class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[13px] text-stone-900 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9] focus:border-stone-900 focus:bg-white focus:shadow-[0_0_0_4px_rgba(28,25,23,0.08)] focus:outline-none">
+              <option :value="undefined">请选择</option>
+              <option :value="1">男</option>
+              <option :value="0">女</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="birthday" class="mb-2 block text-[12px] font-medium text-stone-600">出生日期</label>
+            <input id="birthday" v-model="form.birthday" type="date" class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[13px] text-stone-900 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9] focus:border-stone-900 focus:bg-white focus:shadow-[0_0_0_4px_rgba(28,25,23,0.08)] focus:outline-none" />
+          </div>
+        </div>
+
+        <div v-if="updateErrorMessage" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[12px] text-red-600 shadow-[0_0_0_4px_rgba(239,68,68,0.06)]">{{ updateErrorMessage }}</div>
+        <div v-if="updateSuccessMessage" class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[12px] text-emerald-700 shadow-[0_0_0_4px_rgba(16,185,129,0.06)]">{{ updateSuccessMessage }}</div>
+
+        <div class="flex flex-col gap-3 border-t border-stone-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <NuxtLink to="/change-password" class="inline-flex w-fit rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:bg-stone-100 hover:text-stone-950">修改密码</NuxtLink>
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <button type="button" class="rounded-xl border border-stone-200 px-5 py-3 text-[12px] text-red-500 transition duration-200 hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 active:translate-y-0" @click="handleLogout">
+              退出登录
+            </button>
+            <BaseButton type="submit" :loading="updating" size="lg" class="!px-6 !py-3 !text-[12px]">
+              {{ updating ? '保存中...' : '保存资料' }}
+            </BaseButton>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -169,20 +85,18 @@ const form = ref({
   birthday: '',
 })
 
-// 加载用户信息
 const loadUserInfo = async () => {
   try {
     loading.value = true
     errorMessage.value = ''
-    
+
     const response = await api.publicUser.getUserInfo()
-    
-    // 后端成功时 code 为 0 或 200，注意：status: true 不能作为成功判断
+
     if (response.code === 0 || response.code === 200) {
       if (response.data) {
         const userInfo = response.data
         publicUserStore.setUserInfo(userInfo)
-        
+
         form.value = {
           account: userInfo.account,
           name: userInfo.name || '',
@@ -204,56 +118,33 @@ const loadUserInfo = async () => {
   }
 }
 
-// 更新用户信息
 const handleSubmit = async () => {
   try {
     updating.value = true
     updateErrorMessage.value = ''
     updateSuccessMessage.value = ''
-    
-    // 获取当前用户信息
+
     const currentUser = publicUserStore.currentUser
     if (!currentUser || !currentUser.id) {
       updateErrorMessage.value = '用户信息不存在，请重新登录'
       toast.error('保存失败', '用户信息不存在，请重新登录')
       return
     }
-    
-    const updateData: any = {
-      id: currentUser.id, // 必须传递用户 ID
-    }
-    
-    // 只传递有值的字段，空字符串也传递（允许清空字段）
-    if (form.value.name !== undefined && form.value.name !== null) {
-      updateData.name = form.value.name.trim() || null
-    }
-    if (form.value.email !== undefined && form.value.email !== null) {
-      updateData.email = form.value.email.trim() || null
-    }
-    if (form.value.phone !== undefined && form.value.phone !== null) {
-      updateData.phone = form.value.phone.trim() || null
-    }
-    if (form.value.sex !== undefined) {
-      updateData.sex = form.value.sex
-    }
-    if (form.value.birthday !== undefined && form.value.birthday !== null) {
-      updateData.birthday = form.value.birthday.trim() || null
-    }
-    
-    console.log('更新用户信息，请求数据:', updateData)
-    
+
+    const updateData: any = { id: currentUser.id }
+
+    if (form.value.name !== undefined && form.value.name !== null) updateData.name = form.value.name.trim() || null
+    if (form.value.email !== undefined && form.value.email !== null) updateData.email = form.value.email.trim() || null
+    if (form.value.phone !== undefined && form.value.phone !== null) updateData.phone = form.value.phone.trim() || null
+    if (form.value.sex !== undefined) updateData.sex = form.value.sex
+    if (form.value.birthday !== undefined && form.value.birthday !== null) updateData.birthday = form.value.birthday.trim() || null
+
     const response = await api.publicUser.update(updateData)
-    
-    console.log('更新用户信息，响应数据:', response)
-    
-    // 后端成功时 code 为 0 或 200，注意：status: true 不能作为成功判断，因为错误响应也可能有 status: true
+
     if (response.code === 0 || response.code === 200) {
-      // 确保有数据才认为是成功
       if (response.data) {
         updateSuccessMessage.value = '保存成功'
-        // 更新 store 中的用户信息
         publicUserStore.setUserInfo(response.data)
-        // 同时更新表单数据，确保显示最新数据
         form.value = {
           account: response.data.account,
           name: response.data.name || '',
@@ -262,36 +153,22 @@ const handleSubmit = async () => {
           sex: response.data.sex,
           birthday: response.data.birthday ? response.data.birthday.split('T')[0] : '',
         }
-        toast.success('保存成功', '个人信息已更新', 3000)
-        // 3秒后清除成功消息
-        setTimeout(() => {
-          updateSuccessMessage.value = ''
-        }, 3000)
+        toast.success('保存成功', '个人信息已更新')
       } else {
-        // code 是 0 或 200 但没有数据，可能是异常情况
-        const errorMsg = response.message || '保存失败：服务器返回数据为空'
-        updateErrorMessage.value = errorMsg
-        toast.error('保存失败', errorMsg)
-        console.error('保存失败：响应 code 正常但 data 为空:', response)
+        updateErrorMessage.value = response.message || '保存失败：服务器返回数据为空'
       }
     } else {
-      // code 不是 0 或 200，肯定是错误
-      const errorMsg = response.message || `保存失败（错误码: ${response.code}）`
-      updateErrorMessage.value = errorMsg
-      toast.error('保存失败', errorMsg)
-      console.error('保存失败:', response)
+      updateErrorMessage.value = response.message || `保存失败（错误码: ${response.code}）`
+      toast.error('保存失败', updateErrorMessage.value)
     }
   } catch (error: any) {
-    const errorMsg = error.message || error.data?.message || '保存失败，请重试'
-    updateErrorMessage.value = errorMsg
-    toast.error('保存失败', errorMsg)
-    console.error('保存失败，错误信息:', error)
+    updateErrorMessage.value = error.message || '保存失败'
+    toast.error('保存失败', updateErrorMessage.value)
   } finally {
     updating.value = false
   }
 }
 
-// 退出登录
 const handleLogout = async () => {
   try {
     await api.publicUser.logout()
@@ -299,7 +176,8 @@ const handleLogout = async () => {
     console.error('登出失败:', error)
   } finally {
     publicUserStore.clearToken()
-    await router.push('/login')
+    toast.success('已退出登录')
+    await router.push('/')
   }
 }
 
@@ -307,4 +185,3 @@ onMounted(() => {
   loadUserInfo()
 })
 </script>
-

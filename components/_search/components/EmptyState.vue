@@ -3,16 +3,17 @@
     <div class="empty-logo">
       <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
     </div>
-    <div class="empty-text">empty</div>
-    <v-btn 
-      v-if="showRetry" 
-      :color="retryButtonColor" 
-      @click="$emit('retry')" 
+    <div class="empty-title">暂无内容</div>
+    <div class="empty-text">当前条件下还没有可展示的结果，可以换个关键词或重新加载。</div>
+    <button
+      v-if="showRetry"
+      type="button"
+      @click="$emit('retry')"
       class="retry-btn"
     >
-      <v-icon left>{{ retryIcon }}</v-icon>
+      <v-icon size="16">{{ retryIcon }}</v-icon>
       {{ retryText }}
-    </v-btn>
+    </button>
   </div>
 </template>
 
@@ -36,7 +37,7 @@ withDefaults(defineProps<Props>(), {
   iconSize: 64,
   iconColor: 'grey-lighten-1',
   showRetry: false,
-  retryText: 'Retry',
+  retryText: '重新加载',
   retryIcon: 'mdi-refresh',
   retryButtonColor: 'primary'
 })
@@ -52,27 +53,60 @@ defineEmits<Emits>()
   justify-content: center;
   min-height: 300px;
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
+  border: 1px dashed rgba(28, 25, 23, 0.12);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
   
   .empty-logo {
-    margin-bottom: 0.75rem;
-    opacity: 0.6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1rem;
+    border-radius: 999px;
+    background: #faf8f5;
+    border: 1px solid rgba(28, 25, 23, 0.08);
+  }
+
+  .empty-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1c1917;
+    margin-bottom: 0.45rem;
   }
   
   .empty-text {
-    font-size: 0.875rem;
+    max-width: 320px;
+    font-size: 12px;
     font-weight: 400;
-    color: #6b7280;
-    letter-spacing: 0.05em;
-    text-transform: lowercase;
+    line-height: 1.7;
+    color: #78716c;
     margin-bottom: 1rem;
-    opacity: 0.8;
   }
   
   .retry-btn {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    text-transform: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+    min-height: 34px;
+    padding: 0 14px;
+    border: 1px solid rgba(28, 25, 23, 0.1);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #44403c;
+    font-size: 12px;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      border-color: rgba(28, 25, 23, 0.18);
+      background: #fcfbf9;
+      color: #1c1917;
+    }
   }
 }
 </style>

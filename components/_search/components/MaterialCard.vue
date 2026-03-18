@@ -136,20 +136,25 @@ const handlePreview = () => {
 <style lang="scss" scoped>
 .material-card {
   width: 100%;
-  background: #1a1a1a;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 18px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform 0.22s ease, border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
   cursor: pointer;
-  border: 1px solid #2a2a2a;
+  border: 1px solid rgba(28, 25, 23, 0.08);
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 30px rgba(28, 25, 23, 0.06);
+    border-color: rgba(28, 25, 23, 0.16);
+    background: #fcfbf9;
     
     .image-overlay {
       opacity: 1;
+    }
+
+    .material-image {
+      transform: scale(1.04);
     }
   }
 }
@@ -159,13 +164,13 @@ const handlePreview = () => {
   width: 100%;
   aspect-ratio: 4/3;
   overflow: hidden;
-  background: #2a2a2a;
+  background: #f6f4f1;
   
   .material-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: all 0.3s ease;
+    transition: all 0.35s ease;
     opacity: 0;
     
     &.loaded {
@@ -182,13 +187,13 @@ const handlePreview = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #2a2a2a;
+    background: #f6f4f1;
     
     .loading-spinner {
       width: 24px;
       height: 24px;
-      border: 2px solid #444;
-      border-top: 2px solid #3b82f6;
+      border: 2px solid rgba(28, 25, 23, 0.12);
+      border-top: 2px solid #1c1917;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -200,12 +205,7 @@ const handlePreview = () => {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.1) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.7) 100%
-    );
+    background: linear-gradient(to bottom, rgba(28, 25, 23, 0.04) 0%, rgba(28, 25, 23, 0.26) 48%, rgba(28, 25, 23, 0.56) 100%);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -215,10 +215,10 @@ const handlePreview = () => {
     
     .format-badge {
       align-self: flex-start;
-      background: #3b82f6;
-      color: white;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1c1917;
       padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 999px;
       font-size: 12px;
       font-weight: 500;
     }
@@ -232,9 +232,9 @@ const handlePreview = () => {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        border: none;
+        border: 1px solid rgba(28, 25, 23, 0.08);
         background: rgba(255, 255, 255, 0.9);
-        color: #333;
+        color: #44403c;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -242,9 +242,9 @@ const handlePreview = () => {
         transition: all 0.2s ease;
         
         &:hover {
-          background: #3b82f6;
-          color: white;
-          transform: scale(1.1);
+          background: #1c1917;
+          color: #f7f5f2;
+          transform: translateY(-1px);
         }
         
         i {
@@ -261,7 +261,7 @@ const handlePreview = () => {
   .material-title {
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: #1c1917;
     margin: 0 0 8px 0;
     line-height: 1.4;
     display: -webkit-box;
@@ -273,7 +273,7 @@ const handlePreview = () => {
   
   .material-description {
     font-size: 12px;
-    color: #b0b0b0;
+    color: #78716c;
     margin: 0 0 12px 0;
     line-height: 1.4;
     display: -webkit-box;
@@ -293,7 +293,7 @@ const handlePreview = () => {
       align-items: center;
       gap: 4px;
       font-size: 11px;
-      color: #888;
+      color: #78716c;
       
       i {
         font-size: 14px;

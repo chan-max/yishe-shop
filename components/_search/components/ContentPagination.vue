@@ -116,17 +116,17 @@ const goToPage = (page: number | string) => {
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
 }
 
 .pagination-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  padding: 0.25rem;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 999px;
+  padding: 0.35rem;
 }
 
 .page-numbers {
@@ -139,32 +139,36 @@ const goToPage = (page: number | string) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 4px;
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   background: transparent;
-  color: #666;
+  color: #78716c;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.16s ease;
   position: relative;
   
   &:hover:not(:disabled):not(.ellipsis) {
-    background: rgba(255, 255, 255, 0.05);
-    color: #999;
+    transform: translateY(-1px);
+    background: #fcfbf9;
+    border-color: rgba(28, 25, 23, 0.12);
+    color: #1c1917;
   }
   
   &.active {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
+    background: #1c1917;
+    color: #f7f5f2;
+    border-color: #1c1917;
     font-weight: 500;
+    box-shadow: 0 8px 16px rgba(28, 25, 23, 0.08);
   }
   
   &.ellipsis {
     cursor: default;
-    color: #444;
+    color: #a8a29e;
     font-weight: 400;
     
     &:hover {
@@ -173,7 +177,7 @@ const goToPage = (page: number | string) => {
   }
   
   &:disabled {
-    opacity: 0.2;
+    opacity: 0.35;
     cursor: not-allowed;
     
     &:hover {
@@ -184,11 +188,10 @@ const goToPage = (page: number | string) => {
   // 上一页/下一页按钮
   &.prev-btn,
   &.next-btn {
-    color: #777;
+    color: #57534e;
     
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.05);
-      color: #999;
+      color: #1c1917;
     }
   }
 }

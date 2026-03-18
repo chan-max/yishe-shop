@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<ToastProps>(), {
   title: '',
   text: '',
   duration: 3000,
-  show: false
+  show: false,
 })
 
 const emit = defineEmits<{
@@ -20,11 +20,13 @@ const emit = defineEmits<{
 }>()
 
 const showToast = ref(props.show)
+let timer: ReturnType<typeof setTimeout> | null = null
 
 watch(() => props.show, (newVal) => {
   showToast.value = newVal
+  if (timer) clearTimeout(timer)
   if (newVal && props.duration > 0) {
-    setTimeout(() => {
+    timer = setTimeout(() => {
       showToast.value = false
       emit('update:show', false)
     }, props.duration)
@@ -33,104 +35,62 @@ watch(() => props.show, (newVal) => {
 
 const toastStyles = {
   success: {
-    bg: 'bg-green-500',
-    darkBg: 'dark:bg-green-600',
-    border: 'border-green-400',
-    darkBorder: 'dark:border-green-300',
-    text: 'text-white',
-    darkText: 'text-white',
-    icon: 'text-white',
-    hover: 'hover:bg-green-400',
-    darkHover: 'dark:hover:bg-green-500'
+    iconWrap: 'bg-emerald-50 text-emerald-600',
+    border: 'border-emerald-200',
+    title: 'text-emerald-700',
   },
   danger: {
-    bg: 'bg-red-600',
-    darkBg: 'dark:bg-red-700',
-    border: 'border-red-500',
-    darkBorder: 'dark:border-red-400',
-    text: 'text-white',
-    darkText: 'text-white',
-    icon: 'text-white',
-    hover: 'hover:bg-red-500',
-    darkHover: 'dark:hover:bg-red-600'
+    iconWrap: 'bg-red-50 text-red-600',
+    border: 'border-red-200',
+    title: 'text-red-700',
   },
   warning: {
-    bg: 'bg-yellow-500',
-    darkBg: 'dark:bg-yellow-600',
-    border: 'border-yellow-400',
-    darkBorder: 'dark:border-yellow-300',
-    text: 'text-white',
-    darkText: 'text-white',
-    icon: 'text-white',
-    hover: 'hover:bg-yellow-400',
-    darkHover: 'dark:hover:bg-yellow-500'
+    iconWrap: 'bg-amber-50 text-amber-600',
+    border: 'border-amber-200',
+    title: 'text-amber-700',
   },
   info: {
-    bg: 'bg-blue-600',
-    darkBg: 'dark:bg-blue-700',
-    border: 'border-blue-500',
-    darkBorder: 'dark:border-blue-400',
-    text: 'text-white',
-    darkText: 'text-white',
-    icon: 'text-white',
-    hover: 'hover:bg-blue-500',
-    darkHover: 'dark:hover:bg-blue-600'
-  }
+    iconWrap: 'bg-sky-50 text-sky-600',
+    border: 'border-sky-200',
+    title: 'text-sky-700',
+  },
 }
 
 const currentStyle = computed(() => toastStyles[props.type])
 
-// SVG 图标路径 (Heroicons)
 const iconPaths = {
   success: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
   danger: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z',
   warning: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
-  info: 'M13 16h-1v-4h1m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+  info: 'M13 16h-1v-4h1m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
 }
 </script>
 
 <template>
-  <div class="fixed top-6 left-1/2 transform -translate-x-1/2" style="z-index: 10000;">
+  <div class="fixed left-1/2 top-5 z-[10000] -translate-x-1/2">
     <Transition
       enter-active-class="transition duration-300 ease-out"
-      enter-from-class="transform -translate-y-6 opacity-0 scale-95"
-      enter-to-class="transform translate-y-0 opacity-100 scale-100"
+      enter-from-class="-translate-y-3 scale-[0.98] opacity-0"
+      enter-to-class="translate-y-0 opacity-100"
       leave-active-class="transition duration-200 ease-in"
-      leave-from-class="transform translate-y-0 opacity-100 scale-100"
-      leave-to-class="transform -translate-y-6 opacity-0 scale-95"
+      leave-from-class="translate-y-0 opacity-100"
+      leave-to-class="-translate-y-2 scale-[0.99] opacity-0"
     >
       <div v-if="showToast" class="relative">
-        <div
-          role="alert"
-          :class="`${currentStyle.bg} ${currentStyle.darkBg} border-l-4 ${currentStyle.border} ${currentStyle.darkBorder} ${currentStyle.text} ${currentStyle.darkText} p-4 rounded-lg flex items-center transition duration-300 ease-in-out ${currentStyle.hover} ${currentStyle.darkHover} transform hover:scale-105 shadow-lg min-w-[320px] max-w-[500px]`"
-        >
-          <!-- SVG 图标 -->
-          <svg
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            fill="none"
-            :class="`h-5 w-5 flex-shrink-0 mr-3 ${currentStyle.icon}`"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              :d="iconPaths[props.type]"
-              stroke-width="2"
-              stroke-linejoin="round"
-              stroke-linecap="round"
-            ></path>
-          </svg>
-          
-          <!-- 内容区域 -->
-          <div class="flex-1 min-w-0">
-            <p v-if="props.title" class="text-xs font-semibold leading-tight">
-              {{ props.title }}
-            </p>
-            <p v-if="props.text" class="text-xs font-medium mt-1 leading-tight opacity-90">
-              {{ props.text }}
-            </p>
+        <div role="alert" :class="`relative overflow-hidden flex min-w-[300px] max-w-[460px] items-start gap-3 rounded-[1rem] border bg-white px-4 py-3 shadow-[0_18px_32px_rgba(28,25,23,0.08)] ${currentStyle.border}`">
+          <div class="absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,rgba(28,25,23,0.06),rgba(28,25,23,0.18),rgba(28,25,23,0.06))]"></div>
+          <div :class="`mt-0.5 inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${currentStyle.iconWrap}`">
+            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-4 w-4" xmlns="http://www.w3.org/2000/svg">
+              <path :d="iconPaths[props.type]" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <p v-if="props.title" :class="`text-[12px] font-semibold ${currentStyle.title}`">{{ props.title }}</p>
+            <p v-if="props.text" class="mt-1 text-[12px] leading-5 text-stone-500">{{ props.text }}</p>
           </div>
         </div>
       </div>
     </Transition>
   </div>
-</template> 
+</template>

@@ -1,363 +1,235 @@
 <script lang="ts" setup>
 const { awesome } = useAppConfig()
 
-// Footer navigation links
-const footerLinks = {
-  design: [
-    { name: '服装设计', href: '/search?category=fashion' },
-    { name: '图案设计', href: '/search?category=graphic' },
-    { name: '印花设计', href: '/search?category=print' },
-    { name: '面料设计', href: '/search?category=fabric' }
+const footerGroups = {
+  discover: [
+    { name: '印花图案', href: '/search?category=pattern' },
+    { name: '服装设计', href: '/search?category=clothing' },
+    { name: '包装与周边', href: '/search?category=packaging' },
+    { name: '创作者作品', href: '/portfolio' },
   ],
-  community: [
-    { name: '设计师', href: '/designers' },
-    { name: '灵感库', href: '/inspiration' },
-    { name: '流行趋势', href: '/trends' },
-    { name: '设计挑战', href: '/challenges' }
+  creators: [
+    { name: '设计灵感', href: '/inspiration' },
+    { name: '趋势观察', href: '/trends' },
+    { name: '创作挑战', href: '/challenges' },
+    { name: '分享社区', href: '/designers' },
   ],
-  support: [
+  service: [
+    { name: 'POD 定制', href: '/design' },
     { name: '帮助中心', href: '/help' },
     { name: '联系我们', href: '/contact' },
     { name: '意见反馈', href: '/feedback' },
-    { name: '问题报告', href: '/bug-report' }
   ],
-  company: [
-    { name: '关于我们', href: '/about' },
-    { name: '招聘信息', href: '/careers' },
-    { name: '新闻动态', href: '/press' },
-    { name: '合作伙伴', href: '/partners' }
-  ]
 }
 
-// Social media links
 const socialLinks = [
-  { name: 'Twitter', icon: 'mdi-twitter', href: '#' },
   { name: 'Instagram', icon: 'mdi-instagram', href: '#' },
-  { name: 'Facebook', icon: 'mdi-facebook', href: '#' },
-  { name: 'LinkedIn', icon: 'mdi-linkedin', href: '#' },
-  { name: 'Dribbble', icon: 'mdi-dribbble', href: '#' }
+  { name: 'Pinterest', icon: 'mdi-pinterest', href: '#' },
+  { name: 'Behance', icon: 'mdi-behance', href: '#' },
+  { name: 'Dribbble', icon: 'mdi-dribbble', href: '#' },
 ]
 </script>
 
 <template>
-  <footer class="footer">
-    <div class="footer-container">
-      <!-- Main Footer Content -->
-      <div class="footer-main">
-        <!-- Brand Section -->
+  <footer class="footer-shell">
+    <div class="footer-inner">
+      <section class="footer-top">
+        <div>
+          <span class="footer-kicker">Creative POD House</span>
+          <h2>更简约地组织设计、商品与分享。</h2>
+          <p>让页面减少负担，把视觉焦点让给作品本身，同时保留清晰的内容结构与品牌感。</p>
+        </div>
+        <div class="footer-socials">
+          <a v-for="social in socialLinks" :key="social.name" :href="social.href" :title="social.name" class="social-link">
+            <v-icon size="16">{{ social.icon }}</v-icon>
+          </a>
+        </div>
+      </section>
+
+      <section class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo">
-            <img src="/logo.svg" alt="1s Logo" class="footer-logo-img" />
-            <span class="footer-logo-text">衣设服装设计</span>
-          </div>
-          <p class="footer-description">
-            专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。
-          </p>
-          <div class="footer-social">
-            <a 
-              v-for="social in socialLinks" 
-              :key="social.name"
-              :href="social.href"
-              class="social-link"
-              :title="social.name"
-            >
-              <v-icon>{{ social.icon }}</v-icon>
-            </a>
-          </div>
+          <img src="/logo.svg" alt="衣设" class="footer-logo" />
+          <strong>衣设</strong>
+          <p>Premium design commerce & sharing</p>
         </div>
 
-        <!-- Navigation Links -->
-        <div class="footer-nav">
-          <div class="footer-nav-section">
-            <h3 class="footer-nav-title">设计分类</h3>
-            <ul class="footer-nav-list">
-              <li v-for="link in footerLinks.design" :key="link.name">
-                <NuxtLink :to="link.href" class="footer-nav-link">
-                  {{ link.name }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-
-          <div class="footer-nav-section">
-            <h3 class="footer-nav-title">社区</h3>
-            <ul class="footer-nav-list">
-              <li v-for="link in footerLinks.community" :key="link.name">
-                <NuxtLink :to="link.href" class="footer-nav-link">
-                  {{ link.name }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-
-          <div class="footer-nav-section">
-            <h3 class="footer-nav-title">支持</h3>
-            <ul class="footer-nav-list">
-              <li v-for="link in footerLinks.support" :key="link.name">
-                <NuxtLink :to="link.href" class="footer-nav-link">
-                  {{ link.name }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-
-          <div class="footer-nav-section">
-            <h3 class="footer-nav-title">公司</h3>
-            <ul class="footer-nav-list">
-              <li v-for="link in footerLinks.company" :key="link.name">
-                <NuxtLink :to="link.href" class="footer-nav-link">
-                  {{ link.name }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
+        <div class="footer-column">
+          <h3>探索内容</h3>
+          <NuxtLink v-for="link in footerGroups.discover" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
         </div>
-      </div>
-
-      <!-- Footer Bottom -->
-      <div class="footer-bottom">
-        <div class="footer-copyright">
-          <p>
-            Copyright © {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
-            {{ awesome?.author?.name || '衣设服装设计' }}. 保留所有权利。
-          </p>
+        <div class="footer-column">
+          <h3>创作者生态</h3>
+          <NuxtLink v-for="link in footerGroups.creators" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
         </div>
+        <div class="footer-column">
+          <h3>服务支持</h3>
+          <NuxtLink v-for="link in footerGroups.service" :key="link.name" :to="link.href" class="footer-link">{{ link.name }}</NuxtLink>
+        </div>
+      </section>
+
+      <section class="footer-bottom">
+        <p>Copyright © {{ awesome?.layout?.footer?.year || new Date().getFullYear() }} {{ awesome?.author?.name || '衣设' }}. 保留所有权利。</p>
         <div class="footer-legal">
-          <NuxtLink to="/privacy" class="footer-legal-link">隐私政策</NuxtLink>
-          <NuxtLink to="/terms" class="footer-legal-link">服务条款</NuxtLink>
-          <NuxtLink to="/cookies" class="footer-legal-link">Cookie政策</NuxtLink>
+          <NuxtLink to="/privacy">隐私政策</NuxtLink>
+          <NuxtLink to="/terms">服务条款</NuxtLink>
+          <NuxtLink to="/cookies">Cookie 政策</NuxtLink>
         </div>
-      </div>
+      </section>
     </div>
   </footer>
 </template>
 
 <style lang="scss" scoped>
-// CSS Variables - Pure Black Theme
-:root {
-  --primary-color: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #000000;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --border-color: #333333;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+
+.footer-shell {
+  border-top: 1px solid rgba(28, 25, 23, 0.08);
+  background: #f7f5f2;
+  color: #44403c;
+  font-family: 'Inter', sans-serif;
 }
 
-.footer {
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border-color);
-  color: var(--text-secondary);
-}
-
-.footer-container {
-  max-width: 1200px;
+.footer-inner {
+  width: min(1560px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2.5rem 0 1.25rem;
 }
 
-.footer-main {
-  padding: 3.5rem 0 2rem;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 4rem;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding: 2.5rem 0 1.5rem;
-  }
-}
-
-.footer-brand {
-  max-width: 400px;
-  
-  @media (max-width: 1024px) {
-    max-width: 100%;
-  }
-}
-
-.footer-logo {
+.footer-top {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.footer-logo-img {
-  height: 48px;
-  width: auto;
-  filter: brightness(0) invert(1); /* Force white color for dark footer */
-}
-
-.footer-logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  letter-spacing: -0.5px;
-}
-
-.footer-description {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-}
-
-.footer-social {
-  display: flex;
+  align-items: end;
+  justify-content: space-between;
   gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(28, 25, 23, 0.08);
+}
+
+.footer-kicker {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: #78716c;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.footer-top h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: #1c1917;
+}
+
+.footer-top p {
+  margin-top: 0.6rem;
+  max-width: 36rem;
+  font-size: 0.78rem;
+  line-height: 1.9;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .social-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-muted);
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 999px;
+  color: #57534e;
   text-decoration: none;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
+  background: #fff;
 }
 
-.footer-nav {
+.footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem 0;
 }
 
-.footer-nav-section {
-  min-width: 0;
-  
-  @media (max-width: 768px) {
-    min-width: 0;
-  }
-  
-  @media (max-width: 480px) {
-    min-width: 0;
-  }
+.footer-brand {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
 }
 
-.footer-nav-title {
+.footer-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.footer-brand strong {
+  font-family: 'Noto Serif SC', serif;
   font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-    margin-bottom: 0.6rem;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.85rem;
-    margin-bottom: 0.5rem;
-  }
+  color: #1c1917;
 }
 
-.footer-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.footer-brand p,
+.footer-link,
+.footer-bottom,
+.footer-legal a {
+  font-size: 0.75rem;
+  line-height: 1.9;
 }
 
-.footer-nav-link {
-  display: block;
-  color: var(--text-muted);
+.footer-column {
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+}
+
+.footer-column h3 {
+  margin-bottom: 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #1c1917;
+}
+
+.footer-link,
+.footer-legal a {
+  color: #57534e;
   text-decoration: none;
-  font-size: 0.9rem;
-  padding: 0.5rem 0;
-  transition: all 0.3s ease;
-  
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-    padding: 0.4rem 0;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-    padding: 0.35rem 0;
-  }
-  
-  &:hover {
-    color: var(--primary-color);
-    transform: translateX(4px);
-  }
+}
+
+.footer-link:hover,
+.footer-legal a:hover {
+  color: #1c1917;
 }
 
 .footer-bottom {
-  padding: 2rem 0;
-  border-top: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 1rem;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    padding: 1.5rem 0;
-  }
-}
-
-.footer-copyright {
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(28, 25, 23, 0.08);
 }
 
 .footer-legal {
   display: flex;
-  gap: 1.5rem;
-  
-  @media (max-width: 480px) {
+  gap: 1rem;
+}
+
+@media (max-width: 960px) {
+  .footer-top,
+  .footer-bottom {
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-.footer-legal-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-  
-  &:hover {
-    color: var(--primary-color);
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

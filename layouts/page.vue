@@ -1,219 +1,105 @@
-<!--
- * @Author: chan-max jackieontheway666@gmail.com
- * @Date: 2025-04-03 05:45:40
- * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-12-21 19:27:51
- * @FilePath: /yishe-nuxt/layouts/page.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-  <div class="overflow-x-hidden min-h-screen bg-white">
-    <!-- 经典上方Header布局 -->
-    <div class="main-layout">
-      <!-- Top Header Navigation -->
-      <header 
-        class="top-header" 
-        :class="{ 'scrolled': isScrolled }" 
-        :style="{ 
-          position: isScrolled ? 'fixed' : 'sticky',
-          top: '0',
-          left: '0',
-          right: '0',
-          zIndex: isScrolled ? '9999' : '1000',
-          background: isScrolled ? 'rgba(255, 255, 255, 0.98)' : '#ffffff',
-          boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none',
-          backdropFilter: isScrolled ? 'blur(12px)' : 'none'
-        }">
-        <div class="header-container">
-          <!-- Left Section: Logo -->
-          <div class="header-left">
-            <NuxtLink to="/" class="logo-link">
-              <img src="/logo.svg" alt="1s Fashion Design" class="logo-image" />
-            </NuxtLink>
+  <div class="page-shell">
+    <header class="site-header" :class="{ 'site-header-scrolled': isScrolled }">
+      <div class="header-inner">
+        <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
+          <img src="/logo.svg" alt="衣设" class="brand-logo" />
+          <div class="brand-copy">
+            <span class="brand-kicker">Creative POD House</span>
+            <strong>衣设</strong>
           </div>
-          
-          <!-- Right Section: Navigation and Actions -->
-          <div class="header-right">
-            <div class="nav-links">
-              <NuxtLink to="/" class="nav-link">
-                <span>首页</span>
-              </NuxtLink>
-              <NuxtLink to="/products" class="nav-link">
-                <span>产品</span>
-                <v-icon size="16" class="nav-chevron">mdi-chevron-down</v-icon>
-              </NuxtLink>
-              <NuxtLink to="/design" class="nav-link">
-                <span>设计服务</span>
-                <v-icon size="16" class="nav-chevron">mdi-chevron-down</v-icon>
-              </NuxtLink>
-              <NuxtLink to="/portfolio" class="nav-link">
-                <span>作品集</span>
-              </NuxtLink>
-              <NuxtLink to="/blog" class="nav-link">
-                <span>博客</span>
-              </NuxtLink>
-              <NuxtLink to="/contact" class="contact-link">联系我们</NuxtLink>
-            </div>
-            <div class="action-buttons">
-              <!-- 用户登录状态 -->
-              <template v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser">
-                <div class="user-menu-wrapper">
-                  <button 
-                    class="user-menu-button"
-                    @click.stop="isUserMenuOpen = !isUserMenuOpen"
-                    ref="userButtonRef"
-                  >
-                    <div class="user-avatar">
-                      <v-avatar 
-                        size="28" 
-                        :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)"
-                      >
-                        {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
-                      </v-avatar>
-                    </div>
-                    <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
-                    <v-icon size="16" class="user-menu-icon">mdi-menu-down</v-icon>
-                  </button>
-                  <!-- 用户下拉菜单 -->
-                  <Transition name="user-menu">
-                    <div v-if="isUserMenuOpen" class="user-menu-dropdown" ref="userMenuRef" @click.stop>
-                      <NuxtLink 
-                        to="/profile" 
-                        class="user-menu-item"
-                        @click="isUserMenuOpen = false"
-                      >
-                        <span>个人信息</span>
-                      </NuxtLink>
-                      <NuxtLink 
-                        to="/favorites" 
-                        class="user-menu-item"
-                        @click="isUserMenuOpen = false"
-                      >
-                        <span>我的收藏</span>
-                      </NuxtLink>
-                      <button 
-                        class="user-menu-item logout-item"
-                        @click="handleLogout"
-                      >
-                        <span>退出登录</span>
-                      </button>
-                    </div>
-                  </Transition>
-                </div>
-     
-              </template>
-              <!-- 未登录状态 -->
-              <template v-else>
-                <!-- 登录按钮 -->
-                <div class="auth-buttons-group">
-                  <NuxtLink to="/login" class="login-button">登录</NuxtLink>
-                </div>
-              </template>
-            </div>
-          </div>
-          
-          <!-- Mobile Menu Button -->
-          <button 
-            class="mobile-menu-btn"
-            @click="toggleMobileMenu"
-            :class="{ 'active': isMobileMenuOpen }"
-            :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
-          >
-            <v-icon size="24" class="menu-icon">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
-          </button>
-        </div>
-      </header>
+        </NuxtLink>
 
-      <!-- Mobile Menu Overlay -->
-      <Transition name="mobile-menu">
-        <div v-if="isMobileMenuOpen" class="mobile-menu-overlay" @click="closeMobileMenu">
-          <div class="mobile-menu-content" @click.stop>
-            <!-- Mobile Menu Header -->
-            <div class="mobile-menu-header">
-              <button @click="closeMobileMenu" class="close-btn">
-                <v-icon>mdi-close</v-icon>
-              </button>
-            </div>
+        <nav class="desktop-nav" aria-label="主导航">
+          <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-item">
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
 
-            <!-- Mobile Menu Links -->
-            <nav class="mobile-nav-menu">
-              <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
-                首页
-              </NuxtLink>
-              <NuxtLink to="/products" class="mobile-nav-link" @click="closeMobileMenu">
-                产品
-              </NuxtLink>
-              <NuxtLink to="/design" class="mobile-nav-link" @click="closeMobileMenu">
-                设计服务
-              </NuxtLink>
-              <NuxtLink to="/portfolio" class="mobile-nav-link" @click="closeMobileMenu">
-                作品集
-              </NuxtLink>
-              <NuxtLink to="/blog" class="mobile-nav-link" @click="closeMobileMenu">
-                博客
-              </NuxtLink>
-            </nav>
+        <div class="header-actions">
+          <NuxtLink to="/search" class="header-chip desktop-only">探索设计</NuxtLink>
 
-            <!-- Mobile User Section -->
-            <div v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser" class="mobile-user-section">
-              <div class="mobile-user-info">
-                <v-avatar 
-                  size="32" 
-                  :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)"
-                >
+          <template v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser">
+            <div class="user-menu-wrapper">
+              <button ref="userButtonRef" class="user-menu-button" @click.stop="isUserMenuOpen = !isUserMenuOpen">
+                <v-avatar size="26" :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)">
                   {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
                 </v-avatar>
-                <span class="mobile-user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
-              </div>
-              <NuxtLink 
-                to="/profile" 
-                class="mobile-nav-link" 
-                @click="closeMobileMenu"
-              >
-                个人信息
-              </NuxtLink>
-              <NuxtLink 
-                to="/favorites" 
-                class="mobile-nav-link" 
-                @click="closeMobileMenu"
-              >
-                我的收藏
-              </NuxtLink>
-              <button 
-                class="mobile-nav-link logout-link"
-                @click="async () => { await handleLogout(); }"
-              >
-                退出登录
+                <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
+                <v-icon size="16" class="user-menu-caret">mdi-chevron-down</v-icon>
               </button>
-            </div>
-            <!-- Mobile Login Button -->
-            <div v-else class="mobile-login-section">
-              <NuxtLink 
-                to="/login" 
-                class="mobile-nav-link" 
-                @click="closeMobileMenu"
-              >
-                登录
-              </NuxtLink>
-            </div>
 
-            <!-- Mobile Action Buttons -->
-            <div class="mobile-action-buttons">
-              <NuxtLink to="/contact" class="mobile-contact-link" @click="closeMobileMenu">
-                联系我们
-              </NuxtLink>
+              <Transition name="user-menu">
+                <div v-if="isUserMenuOpen" ref="userMenuRef" class="user-menu-dropdown" @click.stop>
+                  <NuxtLink to="/profile" class="user-menu-item" @click="isUserMenuOpen = false">个人信息</NuxtLink>
+                  <NuxtLink to="/favorites" class="user-menu-item" @click="isUserMenuOpen = false">我的收藏</NuxtLink>
+                  <button class="user-menu-item logout-item" @click="handleLogout">退出登录</button>
+                </div>
+              </Transition>
+            </div>
+          </template>
+
+          <template v-else>
+            <NuxtLink to="/login" class="login-button">登录</NuxtLink>
+          </template>
+
+          <button class="mobile-menu-btn" :class="{ active: isMobileMenuOpen }" :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'" @click="toggleMobileMenu">
+            <v-icon size="20">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <Transition name="mobile-menu">
+      <div v-if="isMobileMenuOpen" class="mobile-panel-overlay" @click="closeMobileMenu">
+        <aside class="mobile-panel" @click.stop>
+          <div class="mobile-panel-head">
+            <div>
+              <span class="brand-kicker">Creative POD House</span>
+              <h2>衣设导航</h2>
+            </div>
+            <button class="mobile-close-btn" @click="closeMobileMenu">
+              <v-icon>mdi-close</v-icon>
+            </button>
+          </div>
+
+          <nav class="mobile-nav" aria-label="移动端导航">
+            <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="mobile-nav-link" @click="closeMobileMenu">
+              {{ item.label }}
+            </NuxtLink>
+            <NuxtLink to="/contact" class="mobile-nav-link mobile-nav-link-accent" @click="closeMobileMenu">
+              联系我们
+            </NuxtLink>
+          </nav>
+
+          <div v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser" class="mobile-user-card">
+            <div class="mobile-user-meta">
+              <v-avatar size="32" :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)">
+                {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
+              </v-avatar>
+              <div>
+                <strong>{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</strong>
+                <p>管理你的收藏与创作偏好</p>
+              </div>
+            </div>
+            <div class="mobile-user-actions">
+              <NuxtLink to="/profile" class="mobile-secondary-link" @click="closeMobileMenu">个人信息</NuxtLink>
+              <NuxtLink to="/favorites" class="mobile-secondary-link" @click="closeMobileMenu">我的收藏</NuxtLink>
+              <button class="mobile-secondary-link" @click="handleLogout">退出登录</button>
             </div>
           </div>
-        </div>
-      </Transition>
 
-      <!-- Main Content Area -->
-      <main class="main-content">
-        <slot />
-      </main>
-    </div>
-    
-    <!-- Footer -->
+          <NuxtLink v-else to="/login" class="mobile-login-button" @click="closeMobileMenu">
+            登录 / 注册
+          </NuxtLink>
+        </aside>
+      </div>
+    </Transition>
+
+    <main class="page-content">
+      <slot />
+    </main>
+
     <LayoutPageFooter />
   </div>
 </template>
@@ -222,27 +108,29 @@
 import { usePublicUserStore } from '~/stores/public-user'
 import { api } from '~/utils/api'
 
-// 确保 composables 在顶层调用，按正确顺序初始化
 const router = useRouter()
-const route = useRoute()
 const publicUserStore = usePublicUserStore()
 
-// 移动端菜单状态
+const navItems = [
+  { label: '首页', to: '/' },
+  { label: '产品', to: '/products' },
+  { label: '定制设计', to: '/design' },
+  { label: '作品集', to: '/portfolio' },
+  { label: 'AI 实验室', to: '/ai-lab' },
+]
+
 const isMobileMenuOpen = ref(false)
-
-// 滚动状态
 const isScrolled = ref(false)
-
-// 用户下拉菜单状态
 const isUserMenuOpen = ref(false)
 
-// 初始化时加载用户信息
+const userMenuRef = ref(null)
+const userButtonRef = ref(null)
+
 onMounted(async () => {
   publicUserStore.initToken()
   if (publicUserStore.isLoggedIn) {
     try {
       const response = await api.publicUser.getUserInfo()
-      // 后端成功时 code 为 0，status 为 true
       if (response.code === 0 || response.status === true || response.code === 200) {
         publicUserStore.setUserInfo(response.data)
       }
@@ -250,9 +138,19 @@ onMounted(async () => {
       console.error('获取用户信息失败:', error)
     }
   }
+
+  if (process.client) {
+    nextTick(() => {
+      document.addEventListener('click', handleClickOutside)
+      isScrolled.value = window.scrollY > 16
+    })
+  }
 })
 
-// 退出登录
+onUnmounted(() => {
+  if (process.client) document.removeEventListener('click', handleClickOutside)
+})
+
 const handleLogout = async () => {
   try {
     await api.publicUser.logout()
@@ -266,964 +164,427 @@ const handleLogout = async () => {
   }
 }
 
-// 点击外部关闭用户菜单
-const userMenuRef = ref(null)
-const userButtonRef = ref(null)
-
 const handleClickOutside = (event) => {
-  if (process.client && isUserMenuOpen.value) {
-    const userMenu = userMenuRef.value
-    const userButton = userButtonRef.value
-    if (userMenu && userButton && !userMenu.contains(event.target) && !userButton.contains(event.target)) {
-      isUserMenuOpen.value = false
-    }
+  if (!process.client || !isUserMenuOpen.value) return
+  const userMenu = userMenuRef.value
+  const userButton = userButtonRef.value
+  if (userMenu && userButton && !userMenu.contains(event.target) && !userButton.contains(event.target)) {
+    isUserMenuOpen.value = false
   }
 }
 
-onMounted(() => {
-  if (process.client) {
-    nextTick(() => {
-      document.addEventListener('click', handleClickOutside)
-    })
-  }
-})
-
-onUnmounted(() => {
-  if (process.client) {
-    document.removeEventListener('click', handleClickOutside)
-  }
-})
-
-// 移动端菜单控制
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
-// 关闭移动端菜单
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
-// 获取用户名的首字母
 const getAvatarInitial = (name) => {
   if (!name) return 'U'
   const trimmed = name.trim()
-  if (trimmed.length === 0) return 'U'
-  // 获取第一个字符，如果是中文则直接返回，如果是英文则返回大写字母
+  if (!trimmed) return 'U'
   const firstChar = trimmed[0]
-  if (/[a-zA-Z]/.test(firstChar)) {
-    return firstChar.toUpperCase()
-  }
-  return firstChar
+  return /[a-zA-Z]/.test(firstChar) ? firstChar.toUpperCase() : firstChar
 }
 
-// 根据用户名生成随机背景色（基于字符串哈希）
 const getAvatarColor = (name) => {
   if (!name) return 'grey-lighten-2'
-  
-  // 预定义的颜色列表（Vuetify 颜色）
   const colors = [
-    'red-lighten-2',
-    'pink-lighten-2',
-    'purple-lighten-2',
-    'deep-purple-lighten-2',
-    'indigo-lighten-2',
-    'blue-lighten-2',
-    'light-blue-lighten-2',
-    'cyan-lighten-2',
-    'teal-lighten-2',
-    'green-lighten-2',
-    'light-green-lighten-2',
-    'lime-lighten-2',
-    'yellow-lighten-2',
-    'amber-lighten-2',
-    'orange-lighten-2',
-    'deep-orange-lighten-2',
-    'brown-lighten-2',
-    'blue-grey-lighten-2',
+    'red-lighten-2', 'pink-lighten-2', 'purple-lighten-2', 'deep-purple-lighten-2', 'indigo-lighten-2',
+    'blue-lighten-2', 'light-blue-lighten-2', 'cyan-lighten-2', 'teal-lighten-2', 'green-lighten-2',
+    'light-green-lighten-2', 'lime-lighten-2', 'yellow-lighten-2', 'amber-lighten-2', 'orange-lighten-2',
+    'deep-orange-lighten-2', 'brown-lighten-2', 'blue-grey-lighten-2',
   ]
-  
-  // 简单的字符串哈希算法
+
   let hash = 0
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash)
-  }
-  
-  // 确保索引为正数
-  const index = Math.abs(hash) % colors.length
-  return colors[index]
+  for (let i = 0; i < name.length; i += 1) hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  return colors[Math.abs(hash) % colors.length]
 }
 
-// 监听路由变化，关闭移动端菜单
-// 使用 router 的导航守卫，避免 route 初始化问题
 router.afterEach(() => {
   isMobileMenuOpen.value = false
 })
 
-// 使用 Nuxt 3 的 useEventListener
 useEventListener('scroll', () => {
-  if (process.client) {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-    const shouldScroll = scrollTop > 100
-    
-    isScrolled.value = shouldScroll
-  }
+  if (process.client) isScrolled.value = window.scrollY > 16
 }, { passive: true })
-
-// 初始检查
-onMounted(() => {
-  if (process.client) {
-    nextTick(() => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-      isScrolled.value = scrollTop > 100
-    })
-  }
-})
 </script>
 
 <style lang="scss" scoped>
-// CSS Variables - White Theme
-:root {
-  --primary-color: #2563eb;
-  --secondary-color: #f8fafc;
-  --accent-color: #64748b;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap');
 
-// Main Layout
-.main-layout {
-  display: flex;
-  flex-direction: column;
+.page-shell {
   min-height: 100vh;
+  overflow-x: hidden;
+  background: #f7f5f2;
+  color: #1c1917;
+  font-family: 'Inter', sans-serif;
 }
 
-// Top Header
-.top-header {
-  background: var(--bg-primary);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
-  
-  // 滚动后的样式变化
-  &.scrolled {
-    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 0.75rem 0;
+  background: rgba(247, 245, 242, 0.94);
+  border-bottom: 1px solid rgba(28, 25, 23, 0.05);
+  transition: background-color 0.18s ease, border-color 0.18s ease;
 }
 
-// 顶部黑色条（可选，参考图中最上方）
-.top-bar {
-  width: 100%;
-  height: 1px;
-  background: #000000;
+.site-header-scrolled {
+  background: rgba(247, 245, 242, 0.98);
 }
 
-.header-container {
-  max-width: 1920px;
-  margin: 0 auto;
-  padding: 0 1em;
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 85px;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
   gap: 1rem;
-  min-width: 0;
-  // border-bottom: 1px solid #eee;
-
-  @media (min-width: 1200px) {
-    padding: 0 2rem;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 1400px) {
-    padding: 0 3.2rem;
-    gap: 1rem;
-  }
-  
-  @media (min-width: 1600px) {
-    padding: 0 3.6rem;
-  }
-  
-  @media (min-width: 1800px) {
-    padding: 0 4.8rem;
-  }
-
-  @media (max-width: 1024px) {
-    height: 80px;
-    padding: 0 1rem;
-  }
-
-  @media (max-width: 768px) {
-    padding: 0 1rem;
-    height: 75px;
-    gap: 0.75rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 0 0.75rem;
-    height: 70px;
-    gap: 0.5rem;
-  }
+  width: min(1560px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0.4rem 0;
 }
 
-// Left Section - Logo + Search
-.header-left {
+.brand-mark {
   display: flex;
   align-items: center;
-  flex: 1;
-  flex-shrink: 1;
-  min-width: 0;
-  gap: 1.5rem;
-  overflow: hidden;
-  
-  @media (min-width: 1400px) {
-    gap: 2rem;
-  }
-  
-  @media (max-width: 768px) {
-    gap: 0.75rem;
-    flex-shrink: 0;
-    flex: 0 0 auto;
-  }
-  
-  @media (max-width: 480px) {
-    gap: 0.5rem;
-  }
-}
-
-.logo-link {
+  gap: 0.65rem;
+  color: #1c1917;
   text-decoration: none;
-  color: #0d0c22;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-block;
-  flex-shrink: 0;
-  flex: 0 0 auto;
-  min-width: 0;
-  
-  &:hover {
-    opacity: 0.8;
-    transform: scale(1.02);
-  }
-  
-  &:active {
-    transform: scale(0.98);
-  }
 }
 
-.logo-image {
-  height: 60px;
-  width: auto;
-  transition: opacity 0.2s ease;
-  
-  @media (max-width: 1024px) {
-    height: 56px;
-    transform: translateY(3px);
-  }
-  
-  @media (max-width: 768px) {
-    height: 52px;
-    transform: translateY(3px);
-  }
-  
-  @media (max-width: 480px) {
-    height: 48px;
-    transform: translateY(2px);
-  }
+.brand-mark:hover .brand-logo {
+  transform: scale(1.03);
 }
 
+.brand-logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+  transition: transform 0.18s ease;
+}
 
-// Right Section - Navigation and Actions
-.header-right {
+.brand-copy {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-shrink: 0;
-  min-width: 0;
-  
-  @media (max-width: 768px) {
-    gap: 0.75rem;
-  }
-  
-  @media (max-width: 480px) {
-    gap: 0.5rem;
-  }
+  flex-direction: column;
+  line-height: 1.05;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
+.brand-copy strong {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
-.nav-link {
+.brand-kicker {
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #78716c;
+}
+
+.desktop-nav {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+.nav-item,
+.header-chip,
+.login-button {
+  position: relative;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  color: #44403c;
   text-decoration: none;
-  color: #0d0c22;
-  font-size: 0.75rem;
-  font-weight: 400;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 1.5px;
-    background-color: #000000;
-    transition: width 0.3s ease;
-  }
-  
-  &:hover {
-    color: #000000;
-    background-color: transparent;
-    &::after {
-      width: 100%;
-    }
-  }
-  
-  &:active {
-    transform: translateY(1px);
-    background-color: transparent;
-  }
-  
-  &.router-link-active {
-    color: #000000;
-    font-weight: 500;
-    background-color: transparent;
-    &::after {
-      width: 100%;
-    }
-  }
-  
-  .nav-chevron {
-    color: #9e9ea7;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover .nav-chevron {
-    transform: translateX(2px);
-  }
+  font-size: 0.74rem;
+  line-height: 1;
+  transition: color 0.16s ease, background-color 0.16s ease, transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
-.action-buttons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  
-  @media (max-width: 768px) {
-    gap: 0.75rem;
-  }
+.nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  right: 0.7rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: #1c1917;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.16s ease;
+  opacity: 0.75;
 }
 
-// 用户菜单
-.user-menu-wrapper {
-  position: relative;
-  z-index: 100;
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
+.nav-item:hover,
+.header-chip:hover,
+.login-button:hover {
+  color: #1c1917;
+  background: rgba(28, 25, 23, 0.065);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(28, 25, 23, 0.05);
 }
 
-.user-menu-button {
+.nav-item:hover::after,
+.nav-item.router-link-active::after,
+.nav-item.router-link-exact-active::after {
+  transform: scaleX(1);
+}
+
+.nav-item.router-link-active,
+.nav-item.router-link-exact-active {
+  color: #1c1917;
+  background: rgba(28, 25, 23, 0.07);
+}
+
+.header-chip,
+.login-button {
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  background: #fff;
+}
+
+.header-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
+}
+
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem 0.3rem 0.3rem;
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 999px;
+  background: #fff;
+  color: #1c1917;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #0d0c22;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  flex-shrink: 0;
-  min-width: 0;
-  
-  @media (max-width: 1100px) {
-    padding: 0.5rem 0.75rem;
-  }
-  
-  @media (max-width: 1024px) {
-    padding: 0.5rem;
-  }
-  
-  &:hover {
-    background-color: #f8f8f8;
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-  
-  .user-avatar {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover .user-avatar {
-    transform: scale(1.05);
-  }
-  
-  .user-name {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    
-    @media (max-width: 1200px) {
-      max-width: 100px;
-    }
-    
-    @media (max-width: 1100px) {
-      max-width: 80px;
-    }
-    
-    @media (max-width: 1024px) {
-      display: none;
-    }
-  }
-  
-  .user-menu-icon {
-    color: #9e9ea7;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-    
-    @media (max-width: 1024px) {
-      display: none;
-    }
-  }
-  
-  &:hover .user-menu-icon {
-    transform: rotate(180deg);
-  }
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.user-menu-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(28, 25, 23, 0.16);
+  background: #fcfbf9;
+  box-shadow: 0 10px 18px rgba(28, 25, 23, 0.05);
+}
+
+.user-menu-button:hover .user-menu-caret {
+  transform: translateY(1px);
+}
+
+.user-menu-caret {
+  transition: transform 0.16s ease;
+}
+
+.user-name {
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.74rem;
 }
 
 .user-menu-dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  min-width: 180px;
-  z-index: 10001;
-  overflow: visible;
-  white-space: nowrap;
+  min-width: 11rem;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(28, 25, 23, 0.06);
 }
 
 .user-menu-item {
-  display: flex;
-  align-items: center;
+  display: block;
   width: 100%;
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-  color: #0d0c22;
-  font-size: 0.85rem;
-  font-weight: 400;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
+  padding: 0.65rem 0.75rem;
+  border: 0;
+  border-radius: 0.7rem;
   background: transparent;
-  cursor: pointer;
+  color: #44403c;
   text-align: left;
-  position: relative;
-  
-  &:hover {
-    background-color: #f8f8f8;
-    transform: translateX(4px);
-    padding-left: 1.25rem;
-  }
-  
-  &:active {
-    transform: translateX(2px);
-    background-color: #f0f0f0;
-  }
-  
-  &.logout-item {
-    border-top: 1px solid #e2e8f0;
-    color: #dc2626;
-    
-    &:hover {
-      background-color: #fef2f2;
-      color: #b91c1c;
-    }
-    
-    &:active {
-      background-color: #fee2e2;
-    }
-  }
-}
-
-// 登录/注册按钮组
-.auth-buttons-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
-.login-button {
   text-decoration: none;
-  color: #ffffff;
-  background-color: #000000;
-  border: 1.5px solid #000000;
-  font-size: 0.8rem;
-  font-weight: 600;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  
-  &:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  &:active {
-    transform: translateY(0);
-    transform: scale(0.98);
-  }
-
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
 }
 
-
-// 用户菜单动画
-.user-menu-enter-active,
-.user-menu-leave-active {
-  transition: all 0.2s ease;
+.user-menu-item:hover {
+  background: #f5f4f1;
+  color: #1c1917;
+  transform: translateX(2px);
 }
 
-.user-menu-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
+.logout-item {
+  color: #b91c1c;
 }
 
-.user-menu-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-// 移动端用户区域
-.mobile-user-section {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.mobile-user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  margin-bottom: 0.5rem;
-  
-  v-icon {
-    color: #2563eb;
-  }
-}
-
-.mobile-user-name {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #0d0c22;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.mobile-login-section {
-  padding: 0.25rem 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.logout-link {
-  color: #dc2626 !important;
-  
-  &:hover {
-    color: #b91c1c !important;
-  }
-}
-
-.contact-link {
-  text-decoration: none;
-  color: #0d0c22;
-  font-size: 0.8rem;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  display: inline-block;
-  
-  &:hover {
-    color: #000000;
-    background-color: rgba(0, 0, 0, 0.04);
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
-    background-color: rgba(0, 0, 0, 0.06);
-  }
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
-.customize-button {
-  text-decoration: none;
-  color: #ffffff;
-  background-color: #0d0c22;
-  font-size: 0.8rem;
-  font-weight: 600;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-block;
-  position: relative;
-  
-  &:hover {
-    background-color: #1a1926;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 12, 34, 0.3);
-  }
-  
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(13, 12, 34, 0.2);
-    background-color: #0a0918;
-  }
-  
-  @media (max-width: 991px) {
-    display: none;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.75rem;
-  }
-}
-
-// Mobile Menu Button
 .mobile-menu-btn {
   display: none;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  color: #0d0c22;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  @media (max-width: 991px) {
-    display: flex;
-  }
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    transform: scale(1.1);
-  }
-  
-  &:active {
-    transform: scale(1.05);
-    background-color: rgba(0, 0, 0, 0.08);
-  }
-  
-  .menu-icon {
-    color: #0d0c22;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover .menu-icon {
-    transform: rotate(90deg);
-  }
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 999px;
+  background: #fff;
+  color: #1c1917;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
 }
 
-
-// Main Content
-.main-content {
-  flex: 1;
-  padding: 0;
-  max-width: 1920px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  
-  @media (min-width: 1200px) {
-    padding: 0 2rem;
-  }
-
-  @media (min-width: 1400px) {
-    padding: 0 3rem;
-  }
-  
-  @media (min-width: 1600px) {
-    padding: 0 4rem;
-  }
-  
-  @media (min-width: 1800px) {
-    padding: 0 5rem;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0 1rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 0 0.75rem;
-  }
+.mobile-menu-btn:hover,
+.mobile-close-btn:hover,
+.mobile-nav-link:hover,
+.mobile-secondary-link:hover,
+.mobile-login-button:hover {
+  border-color: rgba(28, 25, 23, 0.16);
+  background: #fcfbf9;
+  transform: translateY(-1px);
 }
 
+.mobile-menu-btn.active {
+  background: #1c1917;
+  color: #f7f5f2;
+  border-color: #1c1917;
+}
 
-// Mobile Menu Overlay
-.mobile-menu-overlay {
+.page-content {
+  min-height: 1px;
+}
+
+.mobile-panel-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-  padding: 0;
-  
-  @media (max-width: 1024px) {
-    display: flex;
-  }
+  inset: 0;
+  z-index: 60;
+  background: rgba(28, 25, 23, 0.14);
 }
 
-.mobile-menu-content {
-  background: #ffffff;
-  border-right: 1px solid #e2e8f0;
-  width: 320px;
-  height: 100vh;
-  overflow-y: auto;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  
-  @media (max-width: 480px) {
-    width: 100%;
-    max-width: 320px;
-  }
+.mobile-panel {
+  width: min(22rem, calc(100vw - 1rem));
+  height: calc(100vh - 1rem);
+  margin: 0.5rem 0.5rem 0.5rem auto;
+  padding: 1rem;
+  border-left: 1px solid rgba(28, 25, 23, 0.08);
+  background: #f7f5f2;
 }
 
-.mobile-menu-header {
+.mobile-panel-head,
+.mobile-user-meta {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 1rem 1.25rem;
-  background: #ffffff;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  color: #333333;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    transform: rotate(90deg) scale(1.1);
-    color: #000000;
-  }
-  
-  &:active {
-    transform: rotate(90deg) scale(1.05);
-    background-color: rgba(0, 0, 0, 0.08);
-  }
+.mobile-panel-head h2 {
+  margin-top: 0.25rem;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.05rem;
 }
 
-
-.mobile-nav-menu {
-  padding: 0.25rem 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.mobile-close-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 999px;
+  background: #fff;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
 }
 
-.mobile-nav-link {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  color: #0d0c22;
-  text-decoration: none;
+.mobile-nav {
+  display: grid;
   gap: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 400;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: 0.1px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 1px solid #f5f5f5;
-  border-radius: 8px;
-  margin: 0.25rem 0;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  &:hover {
-    color: #000000;
-    background-color: rgba(0, 0, 0, 0.04);
-    transform: translateX(4px);
-    padding-left: 1.25rem;
-  }
-  
-  &:active {
-    transform: translateX(2px);
-    background-color: rgba(0, 0, 0, 0.06);
-  }
-  
-  &.router-link-active {
-    color: #000000;
-    opacity: 1;
-    font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.06);
-  }
+  margin-top: 1.5rem;
 }
 
-// Mobile Action Buttons
-.mobile-action-buttons {
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  border-top: 1px solid #e2e8f0;
-}
-
-.mobile-contact-link {
-  text-decoration: none;
-  color: #0d0c22;
-  font-size: 0.85rem;
-  font-weight: 500;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 0.75rem 1rem;
-  text-align: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.mobile-nav-link,
+.mobile-login-button,
+.mobile-secondary-link {
   display: block;
-  
-  &:hover {
-    background-color: #f8f8f8;
-    border-color: #d0d0d0;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  }
-}
-
-.mobile-customize-button {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 0.9rem;
+  background: #fff;
+  color: #1c1917;
   text-decoration: none;
-  color: #ffffff;
-  background-color: #0d0c22;
-  font-size: 0.85rem;
-  font-weight: 500;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 0.75rem 1rem;
-  text-align: center;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: block;
-  
-  &:hover {
-    background-color: #1a1926;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 12, 34, 0.3);
-  }
-  
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(13, 12, 34, 0.2);
-    background-color: #0a0918;
-  }
+  font-size: 0.8rem;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
 }
 
-// Mobile Menu Animation
+.mobile-user-card {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.mobile-user-meta p {
+  margin-top: 0.25rem;
+  color: #78716c;
+  font-size: 0.74rem;
+}
+
+.mobile-user-actions {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.mobile-secondary-link {
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-menu-enter-active,
+.user-menu-leave-active,
 .mobile-menu-enter-active,
 .mobile-menu-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
-.mobile-menu-enter-from {
+.user-menu-enter-from,
+.user-menu-leave-to {
   opacity: 0;
-  
-  .mobile-menu-content {
-    transform: translateX(-100%);
-  }
+  transform: translateY(-6px);
 }
 
+.mobile-menu-enter-from,
 .mobile-menu-leave-to {
   opacity: 0;
-  
-  .mobile-menu-content {
-    transform: translateX(-100%);
+}
+
+.mobile-menu-enter-from .mobile-panel,
+.mobile-menu-leave-to .mobile-panel {
+  transform: translateX(10px);
+}
+
+@media (max-width: 1024px) {
+  .desktop-nav,
+  .desktop-only,
+  .user-name {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+
+  .header-inner {
+    width: min(100%, calc(100% - 1rem));
   }
 }
-
-.mobile-menu-enter-active .mobile-menu-content,
-.mobile-menu-leave-active .mobile-menu-content {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.mobile-menu-enter-from .mobile-menu-content,
-.mobile-menu-leave-to .mobile-menu-content {
-  transform: translateX(-100%);
-}
 </style>
-
