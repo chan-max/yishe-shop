@@ -146,6 +146,7 @@ const selectedPrompt = ref(prompts[0]);
   grid-template-columns: minmax(0, 1.56fr) minmax(18.5rem, 0.44fr);
   gap: 0.8rem;
   padding-top: 0.8rem;
+  align-items: stretch;
 }
 
 .lab-label,
@@ -168,6 +169,12 @@ const selectedPrompt = ref(prompts[0]);
   font-weight: 800;
   letter-spacing: -0.03em;
   text-wrap: balance;
+}
+
+.lab-hero__copy {
+  display: grid;
+  align-content: center;
+  min-height: 11.5rem;
 }
 
 .lab-hero__copy p:last-child {
@@ -208,6 +215,7 @@ const selectedPrompt = ref(prompts[0]);
   padding: 0.82rem 0 0.95rem;
   border-top: 1px solid rgba(34, 49, 39, 0.08);
   border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+  align-items: stretch;
 }
 
 .lab-console__left,
@@ -217,6 +225,15 @@ const selectedPrompt = ref(prompts[0]);
   display: grid;
   align-content: start;
   gap: 0.58rem;
+  height: 100%;
+}
+
+.lab-console__left,
+.lab-console__center,
+.lab-console__right {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .lab-prompt,
@@ -253,11 +270,11 @@ const selectedPrompt = ref(prompts[0]);
 .lab-canvas {
   display: grid;
   gap: 0.75rem;
-  min-height: 20rem;
+  min-height: 100%;
   align-content: space-between;
-  border-radius: 1.1rem;
-  background: rgba(255, 255, 255, 0.34);
-  padding: 1rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 0.95rem;
 }
 
 .lab-canvas__summary {
@@ -310,11 +327,16 @@ const selectedPrompt = ref(prompts[0]);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.8rem;
+  align-items: stretch;
 }
 
 .lab-capability strong {
   color: #223127;
   font-size: 0.84rem;
+}
+
+.lab-capability {
+  min-height: 8.6rem;
 }
 
 @media (max-width: 1100px) {

@@ -259,6 +259,7 @@ const summaryRows = computed(() => [
   grid-template-columns: minmax(0, 1.52fr) minmax(18.5rem, 0.48fr);
   gap: 0.8rem;
   padding-top: 0.8rem;
+  align-items: stretch;
 }
 
 .design-label {
@@ -277,6 +278,13 @@ const summaryRows = computed(() => [
   font-weight: 800;
   letter-spacing: -0.03em;
   text-wrap: balance;
+}
+
+.design-hero__copy {
+  display: grid;
+  align-content: center;
+  min-height: 11.5rem;
+  padding: 0.2rem 0;
 }
 
 .design-hero__text {
@@ -352,6 +360,14 @@ const summaryRows = computed(() => [
   grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
   gap: 1rem;
   padding: 0.95rem 0;
+  align-items: stretch;
+}
+
+.design-stage__lead,
+.design-stage__side {
+  padding: 0.95rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .design-stage__head {
@@ -420,12 +436,17 @@ const summaryRows = computed(() => [
   grid-template-columns: 0.84fr 1.14fr 0.92fr;
   gap: 0.9rem;
   padding: 0.15rem 0 2rem;
+  align-items: stretch;
 }
 
 .design-panel {
   display: grid;
   align-content: start;
   gap: 0.65rem;
+  height: 100%;
+  padding: 0.88rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .design-panel__head {
@@ -480,12 +501,6 @@ const summaryRows = computed(() => [
   line-height: 1.58;
   color: inherit;
   opacity: 0.82;
-}
-
-.design-panel--brief {
-  padding: 0.86rem 0.9rem;
-  border-radius: 0.95rem;
-  background: rgba(255, 255, 255, 0.34);
 }
 
 .design-brief__fields {

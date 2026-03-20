@@ -160,6 +160,7 @@ const toggleSave = (id: string) => {
   grid-template-columns: minmax(0, 1.54fr) minmax(18.5rem, 0.46fr);
   gap: 0.8rem;
   padding-top: 0.8rem;
+  align-items: stretch;
 }
 
 .portfolio-label,
@@ -180,6 +181,12 @@ const toggleSave = (id: string) => {
   font-weight: 800;
   letter-spacing: -0.03em;
   text-wrap: balance;
+}
+
+.portfolio-hero__copy {
+  display: grid;
+  align-content: center;
+  min-height: 11.5rem;
 }
 
 .portfolio-hero__copy p:last-child {
@@ -243,13 +250,16 @@ const toggleSave = (id: string) => {
   grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
   gap: 0.95rem;
   padding: 0.95rem 0 0.8rem;
+  align-items: stretch;
 }
 
 .portfolio-stage__lead {
   display: grid;
   align-content: space-between;
   gap: 0.8rem;
-  padding: 0.25rem 0 0.1rem;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .portfolio-stage__meta h2 {
@@ -277,7 +287,7 @@ const toggleSave = (id: string) => {
 .portfolio-stage__notes {
   display: grid;
   gap: 0.55rem;
-  align-content: end;
+  align-content: stretch;
 }
 
 .portfolio-stage__note {
@@ -287,6 +297,8 @@ const toggleSave = (id: string) => {
   color: #223127;
   font-size: 0.74rem;
   line-height: 1.62;
+  display: flex;
+  align-items: center;
 }
 
 .portfolio-grid {
@@ -294,12 +306,17 @@ const toggleSave = (id: string) => {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.85rem;
   padding: 0.2rem 0 2rem;
+  align-items: stretch;
 }
 
 .portfolio-card {
+  display: grid;
+  align-content: start;
+  gap: 0.02rem;
   padding: 0.8rem;
   border-radius: 0.98rem;
   background: rgba(255, 255, 255, 0.34);
+  min-height: 12rem;
 }
 
 .portfolio-card__head {
@@ -336,7 +353,8 @@ const toggleSave = (id: string) => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.42rem;
-  margin-top: 0.62rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 .portfolio-card__stats span {

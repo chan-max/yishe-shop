@@ -327,26 +327,38 @@ const goToPath = (path: string) => navigateTo(path);
 }
 
 .fd-hero__headline h1 {
-  max-width: 12ch;
+  max-width: min(100%, 14.5em);
   margin-top: 0.7rem;
   color: #1f2b25;
-  font-size: clamp(1.55rem, 3.3vw, 3rem);
-  line-height: 1.04;
+  font-size: clamp(1.34rem, 2.5vw, 2.35rem);
+  line-height: 1.08;
   font-weight: 800;
   letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.fd-hero__bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.38fr) minmax(22rem, 0.62fr);
+  align-items: stretch;
 }
 
 .fd-hero__lead {
-  max-width: 24rem;
+  max-width: 38rem;
   color: #556158;
   font-size: 0.78rem;
   line-height: 1.68;
+  display: grid;
+  align-content: center;
+  min-height: 8.8rem;
 }
 
 .fd-hero__aside {
   display: grid;
   gap: 0.7rem;
   width: min(25rem, 100%);
+  justify-self: end;
+  min-height: 8.8rem;
 }
 
 .fd-hero__meta {
@@ -443,6 +455,14 @@ const goToPath = (path: string) => navigateTo(path);
   grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
   gap: 1.2rem;
   padding: 1rem 0 1.15rem;
+  align-items: stretch;
+}
+
+.fd-stage__left,
+.fd-stage__right {
+  padding: 0.95rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .fd-stage__left h2 {
@@ -556,10 +576,15 @@ const goToPath = (path: string) => navigateTo(path);
   grid-template-columns: 0.8fr 1.05fr 0.95fr;
   gap: 1rem;
   padding: 1rem 0 1.15rem;
+  align-items: stretch;
 }
 
 .fd-content__block {
   min-height: auto;
+  height: 100%;
+  padding: 0.85rem 0.9rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .fd-scene-list,
@@ -589,20 +614,6 @@ const goToPath = (path: string) => navigateTo(path);
   border-color: #223127;
   background: #223127;
   color: #f4efe7;
-}
-
-.fd-content__block--scenes {
-  padding-top: 0.3rem;
-}
-
-.fd-content__block--outputs {
-  padding: 0.3rem 0 0;
-}
-
-.fd-content__block--brief {
-  padding: 0.8rem 0.9rem;
-  background: rgba(255, 255, 255, 0.42);
-  border-radius: 0.9rem;
 }
 
 .fd-brief {
@@ -642,6 +653,7 @@ const goToPath = (path: string) => navigateTo(path);
   gap: 1.2rem;
   padding: 1rem 0 2.2rem;
   border-top: 1px solid rgba(34, 49, 39, 0.08);
+  align-items: start;
 }
 
 .fd-cta__copy h3 {
