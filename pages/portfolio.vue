@@ -149,7 +149,7 @@ const toggleSave = (id: string) => {
             <article
               v-for="item in visibleBoards"
               :key="item.id"
-              class="ys-card rounded-[1.35rem] p-4"
+              class="ys-card rounded-[1.15rem] p-4"
             >
               <div class="flex items-center justify-between">
                 <span
@@ -174,7 +174,7 @@ const toggleSave = (id: string) => {
                 </button>
               </div>
               <div
-                class="mt-4 aspect-[4/3] rounded-[1rem] bg-[linear-gradient(135deg,#ebe6de,#f7f5f2,#d9d1c3)]"
+                class="mt-4 aspect-[4/3] rounded-[0.95rem] border border-stone-200 bg-[linear-gradient(135deg,#ebe6de,#f7f5f2,#d9d1c3)]"
               ></div>
               <h2 class="mt-4 text-[16px] font-semibold text-stone-950">
                 {{ item.title }}
@@ -186,7 +186,7 @@ const toggleSave = (id: string) => {
                 <span
                   v-for="stat in item.stats"
                   :key="stat"
-                  class="rounded-full bg-[#faf8f5] px-3 py-1 text-[11px] text-stone-500"
+                  class="rounded-full border border-stone-200 bg-[#faf8f5] px-3 py-1 text-[11px] text-stone-500"
                   >{{ stat }}</span
                 >
               </div>
@@ -202,7 +202,7 @@ const toggleSave = (id: string) => {
               description="先存起来，晚点回来看。很多项目不是第一次看到就下决定，但会在第二次、第三次确认自己要什么。"
             />
             <div class="mt-5 space-y-3">
-              <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
+              <div class="rounded-[1.1rem] border border-stone-200 bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">
                   保存灵感板
                 </div>
@@ -210,7 +210,7 @@ const toggleSave = (id: string) => {
                   先留住那种你说不清、但知道自己喜欢的感觉。
                 </p>
               </div>
-              <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
+              <div class="rounded-[1.1rem] border border-stone-200 bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">
                   加入项目清单
                 </div>
@@ -218,7 +218,7 @@ const toggleSave = (id: string) => {
                   把几块气质相近的内容放在一起，方向就会慢慢清楚。
                 </p>
               </div>
-              <div class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4">
+              <div class="rounded-[1.1rem] border border-stone-200 bg-[#faf8f5] px-4 py-4">
                 <div class="text-[14px] font-semibold text-stone-950">
                   一键发起定制
                 </div>

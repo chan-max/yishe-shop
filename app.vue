@@ -1,49 +1,56 @@
 <script setup lang="ts">
-import { useToast } from '~/composables/use-toast'
+import { useToast } from "~/composables/use-toast";
 
-const toast = useToast()
+const toast = useToast();
 
-const toastType = computed(() => toast.toastType.value)
-const toastTitle = computed(() => toast.toastTitle.value)
-const toastText = computed(() => toast.toastText.value)
-const toastDuration = computed(() => toast.toastDuration.value)
+const toastType = computed(() => toast.toastType.value);
+const toastTitle = computed(() => toast.toastTitle.value);
+const toastText = computed(() => toast.toastText.value);
+const toastDuration = computed(() => toast.toastDuration.value);
 const showToast = computed({
   get: () => toast.showToast.value,
-  set: (val) => { toast.showToast.value = val },
-})
+  set: (val) => {
+    toast.showToast.value = val;
+  },
+});
 
 useSeoMeta({
-  title: '衣设服装设计 - 创意印花图案与服装设计平台',
-  description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
-  keywords: '衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,服装设计服务,设计师社区',
-  author: '衣设设计团队',
-  language: 'zh-CN',
-  robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
-  ogTitle: '衣设服装设计 - 创意印花图案与服装设计平台',
-  ogDescription: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
-  ogType: 'website',
-  ogUrl: 'https://1s.design',
-  ogImage: 'https://1s.design/logo/logo.svg',
-  ogSiteName: '衣设服装设计',
-  ogLocale: 'zh_CN',
-  twitterCard: 'summary_large_image',
-  twitterTitle: '衣设服装设计 - 创意印花图案与服装设计平台',
-  twitterDescription: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感。',
-  twitterImage: 'https://1s.design/logo/logo.svg',
-  'theme-color': '#f7f5f2',
-  'apple-mobile-web-app-capable': 'yes',
-  'apple-mobile-web-app-status-bar-style': 'default',
-})
+  title: "衣设服装设计 - 创意印花图案与服装设计平台",
+  description:
+    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+  keywords:
+    "衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,服装设计服务,设计师社区",
+  author: "衣设设计团队",
+  language: "zh-CN",
+  robots:
+    "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  ogTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
+  ogDescription:
+    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+  ogType: "website",
+  ogUrl: "https://1s.design",
+  ogImage: "https://1s.design/logo/logo.svg",
+  ogSiteName: "衣设服装设计",
+  ogLocale: "zh_CN",
+  twitterCard: "summary_large_image",
+  twitterTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
+  twitterDescription:
+    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感。",
+  twitterImage: "https://1s.design/logo/logo.svg",
+  "theme-color": "#f7f5f2",
+  "apple-mobile-web-app-capable": "yes",
+  "apple-mobile-web-app-status-bar-style": "default",
+});
 
 useHead({
-  htmlAttrs: { lang: 'zh-CN' },
-  link: [{ rel: 'canonical', href: 'https://1s.design' }],
-})
+  htmlAttrs: { lang: "zh-CN" },
+  link: [{ rel: "canonical", href: "https://1s.design" }],
+});
 </script>
 
 <template>
   <Body class="app-body">
-    <NuxtLoadingIndicator color="#1c1917" height="2" :throttle="200" />
+    <NuxtLoadingIndicator color="#1c1917" :height="2" :throttle="200" />
 
     <NuxtLayout>
       <NuxtPage />
@@ -61,7 +68,7 @@ useHead({
 
 <style>
 :root {
-  --version: '1.0.0';
+  --version: "1.0.0";
   --ys-bg: #f7f5f2;
   --ys-surface: #ffffff;
   --ys-surface-soft: #f3f0eb;
@@ -75,8 +82,12 @@ useHead({
   --ys-accent: #b88b4a;
   --ys-accent-soft: rgba(184, 139, 74, 0.12);
   --ys-focus: rgba(28, 25, 23, 0.16);
-  --ys-font-sans: 'MiSans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
-  --ys-font-display: 'MiSans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --ys-font-sans:
+    "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  --ys-font-display:
+    "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", sans-serif;
   font-family: var(--ys-font-sans);
 }
 
@@ -136,7 +147,7 @@ button,
 input,
 select,
 textarea,
-[role='button'] {
+[role="button"] {
   transition:
     color 160ms ease,
     background-color 160ms ease,
@@ -148,7 +159,7 @@ textarea,
 
 a,
 button,
-[role='button'] {
+[role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -157,7 +168,7 @@ a:hover {
 }
 
 button:active,
-[role='button']:active,
+[role="button"]:active,
 a:active {
   transform: translateY(0.5px);
 }
@@ -213,7 +224,7 @@ textarea {
   background: var(--ys-surface-hover);
   border-color: var(--ys-border-strong);
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(28, 25, 23, 0.04);
+  box-shadow: 0 6px 16px rgba(28, 25, 23, 0.025);
 }
 
 .interactive-surface:active {
@@ -242,7 +253,7 @@ textarea {
   transform: translateY(-1px);
   border-color: var(--ys-border-strong);
   background: var(--ys-surface-hover);
-  box-shadow: 0 14px 28px rgba(28, 25, 23, 0.05);
+  box-shadow: 0 8px 18px rgba(28, 25, 23, 0.03);
 }
 
 .ys-soft-card {

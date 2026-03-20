@@ -106,6 +106,8 @@ const podCategories = [
     use: "服装印花",
     audience: "大众服饰",
     tone: "soft",
+    bg: "#f2ebe2",
+    iconBg: "#e9dfd2",
   },
   {
     name: "马克杯 / 水杯",
@@ -115,6 +117,8 @@ const podCategories = [
     use: "礼品周边",
     audience: "礼赠用户",
     tone: "dark",
+    bg: "#ece7de",
+    iconBg: "#dfd6c8",
   },
   {
     name: "托特包 / 帆布包",
@@ -124,6 +128,8 @@ const podCategories = [
     use: "日常配件",
     audience: "通勤人群",
     tone: "line",
+    bg: "#f4efe7",
+    iconBg: "#e8dfd4",
   },
   {
     name: "手机壳",
@@ -133,6 +139,8 @@ const podCategories = [
     use: "日常高频",
     audience: "年轻用户",
     tone: "soft",
+    bg: "#eee8e0",
+    iconBg: "#e2d8cb",
   },
   {
     name: "抱枕 / 家居布艺",
@@ -142,6 +150,8 @@ const podCategories = [
     use: "家居陈列",
     audience: "家居用户",
     tone: "line",
+    bg: "#f3ede6",
+    iconBg: "#e5dbcf",
   },
   {
     name: "挂毯 / 墙面装饰",
@@ -151,6 +161,8 @@ const podCategories = [
     use: "空间装饰",
     audience: "生活方式",
     tone: "dark",
+    bg: "#efe8dd",
+    iconBg: "#e0d5c6",
   },
   {
     name: "毛巾 / 织物",
@@ -160,6 +172,8 @@ const podCategories = [
     use: "生活方式",
     audience: "家庭用户",
     tone: "soft",
+    bg: "#f5efe8",
+    iconBg: "#e9dfd3",
   },
   {
     name: "鼠标垫 / 办公周边",
@@ -169,6 +183,8 @@ const podCategories = [
     use: "办公礼赠",
     audience: "办公人群",
     tone: "line",
+    bg: "#ede7df",
+    iconBg: "#e0d6c9",
   },
 ];
 const styleBoards = [
@@ -263,6 +279,27 @@ const useCases = [
     text: "先从主题词和分类里缩小范围，再决定要买还是要做。",
     action: "先理一理",
     path: "/products",
+  },
+];
+const discoveryScenes = [
+  {
+    title: "穿去见朋友",
+    description: "适合先看 T 恤、卫衣、托特包这类会直接带出门的东西。",
+    keyword: "T恤",
+    action: "看穿搭方向",
+  },
+  {
+    title: "放在办公桌上",
+    description:
+      "从马克杯、鼠标垫、手机壳开始，日常使用频率高，也更容易先试一轮。",
+    keyword: "马克杯",
+    action: "看桌面小物",
+  },
+  {
+    title: "拿去当礼物",
+    description: "如果是送人，优先看礼盒感、轻奢感和容易被记住的周边组合。",
+    keyword: "礼物",
+    action: "看送礼方向",
   },
 ];
 
@@ -561,92 +598,99 @@ onMounted(() => {
     </section>
 
     <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-      <div
-        class="mx-auto max-w-[1560px] rounded-[1.7rem] bg-white p-5 sm:p-6 lg:p-7"
-      >
+      <div class="mx-auto max-w-[1560px] space-y-4">
         <BusinessSectionIntro
           kicker="POD Discovery Hub"
-          title="先从你会真的用上的东西开始。"
-          description="T 恤、杯子、包、手机壳、家居小物都在这里。不是为了堆品类，而是让灵感有地方落下去。"
+          title="每一种分类，都单独放出来看。"
+          description="不再堆成一整片分类墙。每个模块只讲一种使用场景，读起来更轻，也更像扁平化电商首页。"
         />
 
-        <div class="mt-6 space-y-5">
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <button
-              v-for="item in podCategories"
-              :key="item.name"
-              type="button"
-              class="group rounded-[1.1rem] border border-stone-200 bg-white px-4 py-5 text-center transition duration-200 hover:-translate-y-[2px] hover:border-stone-300 hover:bg-[#fcfbf9]"
-              @click="goToKeyword(item.keyword)"
-            >
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <button
+            v-for="item in podCategories"
+            :key="item.name"
+            type="button"
+            class="group flex min-h-[188px] flex-col justify-between rounded-[1.2rem] px-5 py-5 text-left transition duration-200 hover:-translate-y-[1px]"
+            :style="{ backgroundColor: item.surface }"
+            @click="goToKeyword(item.keyword)"
+          >
+            <div class="flex items-start justify-between gap-4">
               <div
-                class="mx-auto flex h-14 w-14 items-center justify-center rounded-[1rem] bg-[#f7f3ec]"
+                class="flex h-12 w-12 items-center justify-center rounded-[1rem]"
+                :style="{ backgroundColor: item.iconSurface }"
               >
                 <img
                   :src="item.image"
                   :alt="item.name"
-                  class="h-8 w-8 object-contain transition duration-200 group-hover:scale-[1.04]"
+                  class="h-6 w-6 object-contain transition duration-200 group-hover:scale-[1.04]"
                 />
               </div>
               <div
-                class="mt-4 text-[14px] font-medium leading-6 text-stone-950"
-              >
-                {{ item.name }}
-              </div>
-              <div class="mt-1 text-[11px] text-stone-400">{{ item.use }}</div>
-              <div
-                class="mt-3 text-[10px] uppercase tracking-[0.14em] text-stone-400"
+                class="text-[10px] uppercase tracking-[0.18em] text-stone-400"
               >
                 {{ item.count }}
               </div>
-            </button>
-          </div>
+            </div>
 
-          <div class="grid gap-4 lg:grid-cols-2">
-            <section
-              class="rounded-[1.25rem] border border-stone-200 bg-[#fcfbf9] p-4 sm:p-5"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <h3 class="text-[15px] font-semibold text-stone-950">
-                  风格方向
-                </h3>
-                <button
-                  class="ys-quiet-link text-[11px]"
-                  @click="goToPortfolio"
-                >
-                  去翻作品
-                </button>
+            <div class="mt-6">
+              <div class="text-[15px] font-semibold leading-6 text-stone-950">
+                {{ item.name }}
               </div>
-              <div class="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-                <button
-                  v-for="item in styleBoards"
-                  :key="item.name"
-                  type="button"
-                  class="rounded-[0.95rem] border border-stone-200 bg-white px-3 py-3 text-center transition duration-200 hover:border-stone-300 hover:bg-[#faf7f2]"
-                  @click="goToKeyword(item.keyword)"
+              <p class="mt-2 text-[12px] leading-6 text-stone-500">
+                {{ item.moduleText }}
+              </p>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between gap-3">
+              <div class="text-[11px] text-stone-400">{{ item.audience }}</div>
+              <div
+                class="text-[10px] uppercase tracking-[0.16em] text-stone-500"
+              >
+                {{ item.use }}
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div class="grid gap-3 xl:grid-cols-[1.05fr_0.95fr]">
+          <section class="rounded-[1.2rem] bg-[#f6f1e8] px-5 py-5">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-[15px] font-semibold text-stone-950">风格方向</h3>
+              <button class="ys-quiet-link text-[11px]" @click="goToPortfolio">
+                去翻作品
+              </button>
+            </div>
+            <div class="mt-4 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
+              <button
+                v-for="item in styleBoards"
+                :key="item.name"
+                type="button"
+                class="flex items-center gap-3 rounded-[1rem] bg-[#fbf8f3] px-3 py-3 text-left transition duration-200 hover:bg-white"
+                @click="goToKeyword(item.keyword)"
+              >
+                <div
+                  class="flex h-10 w-10 items-center justify-center rounded-[0.85rem] bg-[#efe7db]"
                 >
-                  <div
-                    class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#f6f2eb]"
-                  >
-                    <img
-                      :src="item.image"
-                      :alt="item.name"
-                      class="h-5 w-5 object-contain"
-                    />
-                  </div>
-                  <div class="mt-2 text-[12px] font-medium text-stone-900">
+                  <img
+                    :src="item.image"
+                    :alt="item.name"
+                    class="h-5 w-5 object-contain"
+                  />
+                </div>
+                <div class="min-w-0">
+                  <div class="text-[12px] font-medium text-stone-900">
                     {{ item.name }}
                   </div>
-                  <div class="mt-1 text-[10px] text-stone-400">
-                    {{ item.keyword }}
+                  <div class="mt-0.5 text-[10px] text-stone-400">
+                    {{ item.note }}
                   </div>
-                </button>
-              </div>
-            </section>
+                </div>
+              </button>
+            </div>
+          </section>
 
-            <section
-              class="rounded-[1.25rem] border border-stone-200 bg-[#fcfbf9] p-4 sm:p-5"
-            >
+          <div class="grid gap-3">
+            <section class="rounded-[1.2rem] bg-[#f3ede4] px-5 py-5">
               <div class="flex items-center justify-between gap-3">
                 <h3 class="text-[15px] font-semibold text-stone-950">
                   从哪开始都行
@@ -660,52 +704,48 @@ onMounted(() => {
                   v-for="item in useCases"
                   :key="item.title"
                   type="button"
-                  class="flex items-center justify-between rounded-[0.95rem] border border-stone-200 bg-white px-4 py-3 text-left transition duration-200 hover:border-stone-300 hover:bg-[#faf7f2]"
+                  class="rounded-[1rem] bg-[#fbf8f3] px-4 py-4 text-left transition duration-200 hover:bg-white"
                   @click="goToModule(item.path)"
                 >
-                  <div class="min-w-0">
+                  <div class="flex items-center justify-between gap-3">
                     <div class="text-[12px] font-medium text-stone-900">
                       {{ item.title }}
                     </div>
-                    <div class="mt-1 text-[10px] text-stone-400">
+                    <div
+                      class="text-[10px] uppercase tracking-[0.16em] text-stone-400"
+                    >
                       {{ item.action }}
                     </div>
                   </div>
-                  <v-icon size="16" class="text-stone-300"
-                    >mdi-chevron-right</v-icon
-                  >
+                  <div class="mt-2 text-[11px] leading-6 text-stone-500">
+                    {{ item.text }}
+                  </div>
                 </button>
               </div>
             </section>
-          </div>
 
-          <section
-            class="rounded-[1.25rem] border border-stone-200 bg-white p-4 sm:p-5"
-          >
-            <div
-              class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"
-            >
+            <section class="rounded-[1.2rem] bg-[#f8f3eb] px-5 py-5">
               <div>
                 <h3 class="text-[15px] font-semibold text-stone-950">
                   大家最近在翻这些
                 </h3>
                 <p class="mt-1 text-[11px] text-stone-400">
-                  有些词会一下子把方向拎出来，你可以从这里偷个懒。
+                  先从词开始，比先想完整需求更轻。
                 </p>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="mt-4 flex flex-wrap gap-2">
                 <button
                   v-for="item in hotKeywords"
                   :key="item"
                   type="button"
-                  class="ys-chip rounded-full px-3 py-1.5 text-[11px]"
+                  class="rounded-full bg-[#fbf8f3] px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:bg-white hover:text-stone-950"
                   @click="goToKeyword(item)"
                 >
                   {{ item }}
                 </button>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
     </section>
@@ -715,7 +755,7 @@ onMounted(() => {
         <div
           v-for="item in impactStats"
           :key="item.label"
-          class="rounded-[1rem] bg-white px-5 py-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#fcfbf9]"
+          class="rounded-[1rem] border border-stone-200 bg-white px-5 py-4 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
         >
           <dt class="text-[10px] uppercase tracking-[0.22em] text-stone-400">
             {{ item.label }}
@@ -748,7 +788,7 @@ onMounted(() => {
           <article
             v-for="item in storySteps"
             :key="item.step"
-            class="rounded-[1rem] bg-white p-5 transition duration-200 hover:-translate-y-[2px] hover:bg-[#fcfbf9]"
+            class="rounded-[1rem] border border-stone-200 bg-white p-5 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
           >
             <span
               class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
@@ -810,7 +850,7 @@ onMounted(() => {
             <div
               v-for="item in personalizedModes"
               :key="item.name"
-              class="rounded-[1rem] bg-[#faf8f5] p-4"
+              class="rounded-[1rem] border border-stone-200 bg-[#faf8f5] p-4"
             >
               <div class="text-[14px] font-semibold text-stone-950">
                 {{ item.name }}
@@ -848,7 +888,7 @@ onMounted(() => {
             <div
               v-for="item in futureSignals"
               :key="item.title"
-              class="rounded-[1rem] bg-[#faf8f5] p-4"
+              class="rounded-[1rem] border border-stone-200 bg-[#faf8f5] p-4"
             >
               <div class="text-[14px] font-semibold text-stone-950">
                 {{ item.title }}
@@ -901,7 +941,7 @@ onMounted(() => {
           <article
             v-for="product in featuredShowcase"
             :key="product.id"
-            class="group cursor-pointer rounded-[1rem] bg-white p-3 transition duration-200 hover:-translate-y-[3px] hover:bg-[#fcfbf9]"
+            class="group cursor-pointer rounded-[1rem] border border-stone-200 bg-white p-3 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
             @click="goToProductDetail(product.id)"
           >
             <div class="overflow-hidden rounded-[0.9rem] bg-stone-100">

@@ -279,7 +279,7 @@ onMounted(() => {
       </div>
 
       <div
-        class="sticky top-[58px] z-20 mt-6 rounded-[1.25rem] border border-stone-200 bg-white p-4 sm:p-5"
+        class="sticky top-[58px] z-20 mt-6 rounded-[1.15rem] border border-stone-200 bg-white/95 p-4 backdrop-blur-sm sm:p-5"
       >
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
           <div class="relative flex-1">
@@ -334,7 +334,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="mt-3 flex flex-wrap items-center gap-2">
+        <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-stone-100 pt-3">
           <button
             v-for="keyword in recommendedKeywords"
             :key="keyword"
@@ -398,12 +398,12 @@ onMounted(() => {
 
         <div
           v-else-if="productList.length > 0"
-          class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6"
+          class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
         >
           <article
             v-for="product in productList"
             :key="product.id"
-            class="group cursor-pointer bg-transparent"
+            class="group cursor-pointer rounded-[1rem] border border-transparent bg-transparent p-2 transition duration-200 hover:border-stone-200 hover:bg-white"
             @click="goToProductDetail(product.id)"
           >
             <div class="overflow-hidden rounded-[0.95rem] bg-stone-100">
@@ -437,7 +437,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div class="mt-3 px-0.5">
+            <div class="mt-3 px-1">
               <h3
                 class="text-[13px] font-medium leading-6 text-stone-900 transition duration-200 group-hover:text-stone-700"
               >
@@ -451,7 +451,7 @@ onMounted(() => {
               </p>
               <div
                 v-if="product.code"
-                class="mt-2 text-[10px] uppercase tracking-[0.16em] text-stone-300"
+                class="mt-2 text-[10px] uppercase tracking-[0.16em] text-stone-400"
               >
                 {{ product.code }}
               </div>
