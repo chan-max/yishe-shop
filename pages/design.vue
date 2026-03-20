@@ -13,46 +13,45 @@ usePageSEO({
 const tracks = [
   {
     id: "brand",
-    name: "品牌第一轮",
-    blurb: "适合刚起步的品牌，把视觉方向、首批商品和对外样子一起定下来。",
-    outputs: ["品牌视觉基调", "首发图案系列", "6 款 POD 商品方案"],
-    cycle: "7-12 天",
+    name: "品牌首发",
+    phase: "01",
+    note: "适合刚起步的品牌，把视觉基调、首发商品和对外表达一次定准。",
+    line: "先把品牌样子立住，再决定第一批该卖什么。",
+    outputs: ["品牌基调", "首发图案", "首批 SKU"],
   },
   {
     id: "campaign",
     name: "主题企划",
-    blurb: "给节日、联名、快闪和上新做一套能被记住的表达，不会只停在换个封面。",
-    outputs: ["主题 KV", "物料延展", "社媒视觉包"],
-    cycle: "5-8 天",
+    phase: "02",
+    note: "适合节日、联名、快闪和上新节点，需要强记忆点和传播感。",
+    line: "短周期项目，也可以有完整的叙事和视觉秩序。",
+    outputs: ["主题 KV", "物料延展", "社媒包"],
   },
   {
     id: "signature",
     name: "个人系列",
-    blurb: "把你的个人风格变成一组真的能卖、也愿意反复做下去的东西。",
-    outputs: ["艺术家图案整理", "作品集页面", "周边 SKU 组合"],
-    cycle: "10-15 天",
+    phase: "03",
+    note: "适合创作者、主理人和想长期做自己风格的人。",
+    line: "把个人审美整理成一组可以持续发布的系列。",
+    outputs: ["图案整理", "SKU 组合", "作品页"],
   },
 ];
 
 const packages = [
   {
-    name: "Essentials",
+    name: "Starter",
     price: "¥1,980",
-    summary: "先把方向试出来，适合第一次认真做。",
-    items: ["1 次风格校准", "3 个视觉方向", "1 套商品陈列草图"],
+    text: "先把方向试准，适合第一次认真做项目。",
   },
   {
     name: "Signature",
     price: "¥4,800",
-    summary: "适合做一组可以发布、可以试卖、也可以拿去谈合作的系列。",
-    items: ["品牌故事板", "6-8 个图案提案", "商品视觉与落地页建议"],
-    featured: true,
+    text: "适合需要完整发布感、可试卖、可提案的一组系列。",
   },
   {
     name: "Studio Partner",
     price: "定制报价",
-    summary: "适合把上新节奏和审美基调长期交给同一套合作方式。",
-    items: ["月度企划共创", "新品节奏规划", "新功能优先体验"],
+    text: "适合长期上新和持续共创，视觉节奏由同一套方法维护。",
   },
 ];
 
@@ -64,32 +63,25 @@ const serviceTags = [
   "详情页视觉",
   "联名企划",
 ];
-const aiFeatures = [
-  {
-    title: "灵感整理",
-    text: "把你脑子里那团还说不清的感觉，先整理成能沟通的方向。",
-  },
-  {
-    title: "图案延展",
-    text: "从一张主图、一个词或者一个情绪，慢慢长出完整系列。",
-  },
-  { title: "陈列草图", text: "提前看看首页、详情页和宣传图大概会长成什么样。" },
+
+const checkpoints = [
+  ["方向确认", "把项目目标、受众、风格边界定清楚"],
+  ["系统设计", "把图案、版式和商品结构整理成一组"],
+  ["上线交付", "输出发布物料、页面内容和后续延展建议"],
 ];
 
 const selectedTrack = ref(tracks[0].id);
 const selectedPackage = ref(packages[1].name);
 const selectedNeeds = ref<string[]>(["印花图案", "详情页视觉"]);
 const briefForm = reactive({
-  brand: "",
+  project: "",
   audience: "",
   tone: "",
-  launchWindow: "",
+  launch: "",
   notes: "",
 });
 
-const activeTrack = computed(
-  () => tracks.find((item) => item.id === selectedTrack.value) || tracks[0],
-);
+const activeTrack = computed(() => tracks.find((item) => item.id === selectedTrack.value) || tracks[0]);
 
 const toggleNeed = (item: string) => {
   if (selectedNeeds.value.includes(item)) {
@@ -99,307 +91,468 @@ const toggleNeed = (item: string) => {
   selectedNeeds.value = [...selectedNeeds.value, item];
 };
 
-const summaryLines = computed(() => [
-  `方向：${activeTrack.value.name}`,
-  `套餐：${selectedPackage.value}`,
-  `需求：${selectedNeeds.value.length > 0 ? selectedNeeds.value.join(" / ") : "待补充"}`,
+const summaryRows = computed(() => [
+  ["项目类型", activeTrack.value.name],
+  ["合作方式", selectedPackage.value],
+  ["重点需求", selectedNeeds.value.join(" / ") || "待补充"],
 ]);
 </script>
 
 <template>
-  <div class="bg-[#f7f5f2] px-4 py-10 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1560px] space-y-8">
-      <section class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div class="ys-card rounded-[1.75rem] p-6 sm:p-8">
-          <div class="minimal-kicker">Custom Design Studio</div>
-          <h1
-            class="mt-4 max-w-3xl text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[46px]"
-          >
-            有些想法，不该只停在草稿里。
-          </h1>
-          <p class="mt-4 max-w-2xl text-[13px] leading-7 text-stone-500">
-            如果你想做品牌、试副业、做一轮联名，或者只是想把自己的审美变成一组像样的商品，这页就是给这种时候用的。
+  <div class="design-page">
+    <section class="design-hero">
+      <div class="minimal-kicker">Custom Design Studio</div>
+      <div class="design-hero__top">
+        <div class="design-hero__copy">
+          <p class="design-label">Project Intake</p>
+          <h1>定制设计不是下单页，而是一张项目启动桌面。</h1>
+          <p class="design-hero__text">
+            这次不再把内容排成几张服务卡片，而是按真实合作流程重组。先判断你是哪一种项目，再决定应该产出什么、按什么节奏推进。
           </p>
-          <div class="mt-6 flex flex-wrap gap-2">
-            <span
-              v-for="tag in serviceTags"
-              :key="tag"
-              class="ys-chip text-[11px]"
-              >{{ tag }}</span
-            >
-          </div>
-          <div class="mt-8 grid gap-3 sm:grid-cols-3">
-            <div class="ys-soft-card rounded-[1.2rem] p-4">
-              <div
-                class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
-              >
-                从想法到初稿
-              </div>
-              <div class="mt-2 text-[20px] font-semibold text-stone-950">
-                5-15 天
-              </div>
-            </div>
-            <div class="ys-soft-card rounded-[1.2rem] p-4">
-              <div
-                class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
-              >
-                最常见的人
-              </div>
-              <div class="mt-2 text-[20px] font-semibold text-stone-950">
-                品牌 / 创作者 / 副业尝试者
-              </div>
-            </div>
-            <div class="ys-soft-card rounded-[1.2rem] p-4">
-              <div
-                class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
-              >
-                辅助方式
-              </div>
-              <div class="mt-2 text-[20px] font-semibold text-stone-950">
-                灵感整理 + 共创辅助
-              </div>
-            </div>
-          </div>
         </div>
 
-        <aside class="ys-card rounded-[1.75rem] p-5 sm:p-6">
-          <div class="minimal-kicker">Brief Snapshot</div>
-          <div class="mt-4 space-y-3">
-            <div
-              v-for="line in summaryLines"
-              :key="line"
-              class="rounded-[1rem] bg-[#faf8f5] px-4 py-3 text-[12px] text-stone-600"
-            >
-              {{ line }}
-            </div>
+        <div class="design-hero__board">
+          <div class="design-hero__board-top">
+            <span>当前项目</span>
+            <strong>{{ activeTrack.name }}</strong>
           </div>
-          <div
-            class="mt-5 rounded-[1.2rem] bg-[#1c1917] px-5 py-5 text-stone-50"
-          >
-            <div class="text-[10px] uppercase tracking-[0.22em] text-stone-300">
-              当前更适合你
-            </div>
-            <div class="mt-3 text-[22px] font-semibold">
-              {{ activeTrack.name }}
-            </div>
-            <p class="mt-2 text-[12px] leading-6 text-stone-300">
-              {{ activeTrack.blurb }}
-            </p>
-            <div class="mt-4 text-[11px] text-stone-300">
-              预计交付周期 {{ activeTrack.cycle }}
-            </div>
+          <p>{{ activeTrack.line }}</p>
+          <div class="design-hero__board-actions">
+            <BaseButton variant="primary" size="lg">发起合作</BaseButton>
+            <BaseButton variant="outline" size="lg" @click="selectedTrack = tracks[1].id">查看主题企划</BaseButton>
           </div>
-        </aside>
-      </section>
+        </div>
+      </div>
+    </section>
 
-      <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
-        <BusinessSectionIntro
-          kicker="Design Track"
-          title="先选这次想把什么做出来。"
-          description="不同项目的节奏不一样。有人先做首发，有人先做主题，有人只是想让自己的风格开始赚钱。"
-        />
-        <div class="mt-6 grid gap-3 lg:grid-cols-3">
+    <section class="design-strip">
+      <span v-for="tag in serviceTags" :key="tag">{{ tag }}</span>
+    </section>
+
+    <section class="design-stage">
+      <div class="design-stage__lead">
+        <div class="design-stage__head">
+          <span>{{ activeTrack.phase }}</span>
+          <h2>{{ activeTrack.name }}</h2>
+        </div>
+        <p class="design-stage__line">{{ activeTrack.line }}</p>
+        <p class="design-stage__note">{{ activeTrack.note }}</p>
+        <div class="design-stage__outputs">
+          <span v-for="output in activeTrack.outputs" :key="output">{{ output }}</span>
+        </div>
+      </div>
+
+      <div class="design-stage__side">
+        <div class="design-meta-card" v-for="row in summaryRows" :key="row[0]">
+          <span>{{ row[0] }}</span>
+          <strong>{{ row[1] }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="design-layout">
+      <div class="design-panel design-panel--tracks">
+        <div class="design-panel__head">
+          <span class="design-label">Tracks</span>
+          <strong>项目类型</strong>
+        </div>
+        <button
+          v-for="item in tracks"
+          :key="item.id"
+          type="button"
+          :class="['design-track', selectedTrack === item.id ? 'is-active' : '']"
+          @click="selectedTrack = item.id"
+        >
+          <div class="design-track__top">
+            <span>{{ item.phase }}</span>
+            <strong>{{ item.name }}</strong>
+          </div>
+          <p>{{ item.note }}</p>
+        </button>
+      </div>
+
+      <div class="design-panel design-panel--brief">
+        <div class="design-panel__head">
+          <span class="design-label">Brief</span>
+          <strong>项目简报</strong>
+        </div>
+
+        <div class="design-brief__fields">
+          <input v-model="briefForm.project" type="text" placeholder="这次项目叫什么" />
+          <input v-model="briefForm.audience" type="text" placeholder="主要面向谁" />
+          <input v-model="briefForm.tone" type="text" placeholder="你想要的感觉" />
+          <input v-model="briefForm.launch" type="text" placeholder="预计什么时候上线" />
+          <textarea
+            v-model="briefForm.notes"
+            placeholder="补充一点背景，比如参考风格、预算区间、希望先解决的问题。"
+          ></textarea>
+        </div>
+
+        <div class="design-need-cloud">
           <button
-            v-for="item in tracks"
-            :key="item.id"
+            v-for="item in serviceTags"
+            :key="item"
             type="button"
-            :class="[
-              'rounded-[1.2rem] border p-5 text-left transition duration-200',
-              selectedTrack === item.id
-                ? 'border-stone-900 bg-stone-900 text-stone-50 shadow-[0_16px_28px_rgba(28,25,23,0.12)]'
-                : 'border-stone-200 bg-white hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]',
-            ]"
-            @click="selectedTrack = item.id"
+            :class="['design-need', selectedNeeds.includes(item) ? 'is-active' : '']"
+            @click="toggleNeed(item)"
           >
-            <div class="flex items-center justify-between">
-              <div class="text-[16px] font-semibold">{{ item.name }}</div>
-              <div
-                class="text-[11px] uppercase tracking-[0.18em]"
-                :class="
-                  selectedTrack === item.id
-                    ? 'text-stone-300'
-                    : 'text-stone-400'
-                "
-              >
-                {{ item.cycle }}
-              </div>
-            </div>
-            <p
-              class="mt-3 text-[12px] leading-6"
-              :class="
-                selectedTrack === item.id ? 'text-stone-300' : 'text-stone-500'
-              "
-            >
-              {{ item.blurb }}
-            </p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span
-                v-for="output in item.outputs"
-                :key="output"
-                :class="[
-                  'rounded-full px-3 py-1 text-[11px]',
-                  selectedTrack === item.id
-                    ? 'bg-white/10 text-stone-200'
-                    : 'bg-[#faf8f5] text-stone-500',
-                ]"
-              >
-                {{ output }}
-              </span>
-            </div>
+            {{ item }}
           </button>
         </div>
-      </section>
+      </div>
 
-      <section class="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
-        <div class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
-          <BusinessSectionIntro
-            kicker="Service Config"
-            title="把脑子里的感觉，翻成别人能接住的话。"
-            description="不用写得像提案。只要把你想给谁看、想做成什么样、准备什么时候上线说清楚就够了。"
-          />
-          <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            <BaseInput
-              v-model="briefForm.brand"
-              label="这次项目叫什么"
-              placeholder="例如：晚风工作室 / 夏季小系列"
-            />
-            <BaseInput
-              v-model="briefForm.audience"
-              label="你想让谁会想买它"
-              placeholder="例如：城市女生、插画控、送礼的人"
-            />
-            <BaseInput
-              v-model="briefForm.tone"
-              label="你想要的感觉"
-              placeholder="例如：安静、锋利、复古、轻一点的叛逆"
-            />
-            <BaseInput
-              v-model="briefForm.launchWindow"
-              label="大概什么时候想上线"
-              placeholder="例如：6 月中旬，赶在第一波上新前"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="mb-2 block text-[12px] font-medium text-stone-600"
-              >这次准备做到哪一步</label
-            >
-            <div class="flex flex-wrap gap-2">
-              <button
-                v-for="item in serviceTags"
-                :key="item"
-                type="button"
-                :class="[
-                  'ys-chip text-[11px]',
-                  selectedNeeds.includes(item) ? 'is-active' : '',
-                ]"
-                @click="toggleNeed(item)"
-              >
-                {{ item }}
-              </button>
-            </div>
-          </div>
-          <div class="mt-4">
-            <label class="mb-2 block text-[12px] font-medium text-stone-600"
-              >多说一点也行</label
-            >
-            <textarea
-              v-model="briefForm.notes"
-              rows="5"
-              class="ys-control w-full px-4 py-3 text-[13px] text-stone-900 focus:outline-none"
-              placeholder="比如你最近反复收藏的风格、准备卖给谁、预算大概在哪，或者你只是想做一件会真的穿出去的东西。"
-            ></textarea>
+      <div class="design-panel design-panel--side">
+        <div class="design-panel__head">
+          <span class="design-label">Flow</span>
+          <strong>合作节奏</strong>
+        </div>
+
+        <div class="design-checkpoints">
+          <div v-for="item in checkpoints" :key="item[0]" class="design-checkpoint">
+            <span>{{ item[0] }}</span>
+            <p>{{ item[1] }}</p>
           </div>
         </div>
 
-        <div class="space-y-5">
-          <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
-            <BusinessSectionIntro
-              kicker="Package"
-              title="合作可以轻一点，也可以做深一点。"
-              description="先试一轮，或者直接做完整一套，都可以。重点是不要把方向做散。"
-            />
-            <div class="mt-5 space-y-3">
-              <button
-                v-for="item in packages"
-                :key="item.name"
-                type="button"
-                :class="[
-                  'w-full rounded-[1.2rem] border p-4 text-left transition duration-200',
-                  selectedPackage === item.name
-                    ? 'border-stone-900 bg-stone-900 text-stone-50'
-                    : 'border-stone-200 bg-white hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9]',
-                ]"
-                @click="selectedPackage = item.name"
-              >
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <h3 class="text-[15px] font-semibold">{{ item.name }}</h3>
-                      <span
-                        v-if="item.featured"
-                        class="rounded-full bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em]"
-                        :class="
-                          selectedPackage === item.name
-                            ? 'text-stone-200'
-                            : 'bg-[#faf8f5] text-stone-500'
-                        "
-                        >Most chosen</span
-                      >
-                    </div>
-                    <p
-                      class="mt-2 text-[12px] leading-6"
-                      :class="
-                        selectedPackage === item.name
-                          ? 'text-stone-300'
-                          : 'text-stone-500'
-                      "
-                    >
-                      {{ item.summary }}
-                    </p>
-                  </div>
-                  <div class="text-[18px] font-semibold">{{ item.price }}</div>
-                </div>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span
-                    v-for="line in item.items"
-                    :key="line"
-                    :class="[
-                      'rounded-full px-3 py-1 text-[11px]',
-                      selectedPackage === item.name
-                        ? 'bg-white/10 text-stone-200'
-                        : 'bg-[#faf8f5] text-stone-500',
-                    ]"
-                  >
-                    {{ line }}
-                  </span>
-                </div>
-              </button>
+        <div class="design-package-list">
+          <button
+            v-for="item in packages"
+            :key="item.name"
+            type="button"
+            :class="['design-package', selectedPackage === item.name ? 'is-active' : '']"
+            @click="selectedPackage = item.name"
+          >
+            <div class="design-package__top">
+              <strong>{{ item.name }}</strong>
+              <span>{{ item.price }}</span>
             </div>
-          </section>
-
-          <section class="ys-panel rounded-[1.75rem] p-5 sm:p-6">
-            <BusinessSectionIntro
-              kicker="AI Ready"
-              title="工具会帮你省力，但不会替你做决定。"
-              description="衣设后面会把这些辅助能力接进来，让起步更轻一点，判断还是留给你自己。"
-            />
-            <div class="mt-5 grid gap-3">
-              <div
-                v-for="item in aiFeatures"
-                :key="item.title"
-                class="rounded-[1.1rem] bg-[#faf8f5] px-4 py-4"
-              >
-                <div class="text-[14px] font-semibold text-stone-950">
-                  {{ item.title }}
-                </div>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">
-                  {{ item.text }}
-                </p>
-              </div>
-            </div>
-          </section>
+            <p>{{ item.text }}</p>
+          </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
+
+<style scoped>
+.design-page {
+  padding: 0;
+  background:
+    radial-gradient(circle at top left, rgba(215, 155, 113, 0.16), transparent 26rem),
+    linear-gradient(180deg, #f4ece1 0%, #efeee8 100%);
+}
+
+.design-hero,
+.design-strip,
+.design-stage,
+.design-layout {
+  width: min(1560px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.design-hero {
+  padding: 0.95rem 0 0.85rem;
+}
+
+.design-hero__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.52fr) minmax(18.5rem, 0.48fr);
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+}
+
+.design-label {
+  color: rgba(34, 49, 39, 0.5);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.design-hero__copy h1 {
+  max-width: min(100%, 14.5em);
+  margin-top: 0.55rem;
+  color: #1f2b25;
+  font-size: clamp(1.34rem, 2.05vw, 2.08rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.design-hero__text {
+  max-width: 38rem;
+  margin-top: 0.7rem;
+  color: #59655c;
+  font-size: 0.76rem;
+  line-height: 1.68;
+}
+
+.design-hero__board {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  min-height: 11.5rem;
+  padding: 0.88rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.design-hero__board-top span,
+.design-meta-card span,
+.design-checkpoint span {
+  display: block;
+  color: rgba(34, 49, 39, 0.48);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.design-hero__board-top strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: #223127;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.design-hero__board p {
+  color: #223127;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.design-hero__board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.design-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.62rem 0 0.72rem;
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+}
+
+.design-strip span,
+.design-stage__outputs span,
+.design-need {
+  padding: 0.52rem 0.68rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+  color: #223127;
+  font-size: 0.64rem;
+}
+
+.design-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+  gap: 1rem;
+  padding: 0.95rem 0;
+}
+
+.design-stage__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.design-stage__head span {
+  color: rgba(34, 49, 39, 0.42);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.design-stage__lead h2 {
+  color: #1f2b25;
+  font-size: clamp(1.3rem, 2.4vw, 2.35rem);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.design-stage__line {
+  margin-top: 0.55rem;
+  color: #223127;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.design-stage__note {
+  max-width: 33rem;
+  margin-top: 0.55rem;
+  color: #5b675e;
+  font-size: 0.74rem;
+  line-height: 1.62;
+}
+
+.design-stage__outputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.design-stage__side {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.design-meta-card {
+  padding: 0.82rem 0.88rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.design-meta-card strong {
+  display: block;
+  margin-top: 0.32rem;
+  color: #223127;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.design-layout {
+  display: grid;
+  grid-template-columns: 0.84fr 1.14fr 0.92fr;
+  gap: 0.9rem;
+  padding: 0.15rem 0 2rem;
+}
+
+.design-panel {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+}
+
+.design-panel__head {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.design-panel__head strong {
+  color: #223127;
+  font-size: 0.9rem;
+}
+
+.design-track,
+.design-package {
+  padding: 0.82rem 0.85rem;
+  border: 1px solid rgba(34, 49, 39, 0.08);
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.36);
+  text-align: left;
+}
+
+.design-track.is-active,
+.design-package.is-active,
+.design-need.is-active {
+  background: #223127;
+  color: #f4efe7;
+  border-color: #223127;
+}
+
+.design-track__top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.design-track__top span {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  opacity: 0.65;
+}
+
+.design-track strong,
+.design-package strong {
+  font-size: 0.84rem;
+}
+
+.design-track p,
+.design-package p,
+.design-checkpoint p {
+  margin-top: 0.38rem;
+  font-size: 0.7rem;
+  line-height: 1.58;
+  color: inherit;
+  opacity: 0.82;
+}
+
+.design-panel--brief {
+  padding: 0.86rem 0.9rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.design-brief__fields {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.design-brief__fields input,
+.design-brief__fields textarea {
+  width: 100%;
+  padding: 0.62rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(34, 49, 39, 0.12);
+  background: transparent;
+  color: #223127;
+  font-size: 0.72rem;
+  outline: none;
+}
+
+.design-brief__fields textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.design-need-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+  margin-top: 0.7rem;
+}
+
+.design-need {
+  border: 1px solid rgba(34, 49, 39, 0.08);
+}
+
+.design-checkpoints {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.design-checkpoint {
+  padding: 0.75rem 0.78rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.design-package-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.design-package__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.design-package__top span {
+  font-size: 0.72rem;
+}
+
+@media (max-width: 1100px) {
+  .design-hero__top,
+  .design-stage,
+  .design-layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
