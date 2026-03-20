@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { api } from "../utils/api";
 import { getPreviewImageUrl } from "../utils/image";
 
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "衣设 yishe - 把想法穿出去的 POD 设计平台",
+  title: "衣设 yishe - 免费设计、AI设计、POD商品与创作者服务平台",
   description:
-    "衣设把设计灵感、POD 商品、创作工具和分享内容放在同一个地方。不是先学会设计才来，而是先把想法做出来。",
+    "衣设把免费设计、POD商品、AI设计、创作者服务和社区内容放在同一个入口，让灵感从设计到商品再到变现形成完整闭环。",
   keywords:
-    "POD设计,个性设计,服装设计,图案设计,创意分享,独立设计品牌,商品设计,1s.design",
+    "免费设计,POD商品,AI设计,设计师服务,创意社区,商品定制,印花设计,1s.design",
   url: "https://1s.design",
   type: "website",
   structuredData: [useWebsiteStructuredData(), useOrganizationStructuredData()],
@@ -26,76 +26,73 @@ type FeaturedProduct = {
 };
 
 const categoryPills = [
-  "印花图案",
-  "服饰单品",
-  "周边与礼物",
-  "品牌视觉",
-  "联名系列",
+  "免费设计入口",
+  "AI 图案生成",
+  "POD 商品定制",
+  "设计师接单",
+  "创意社区",
 ];
 const impactStats = [
-  { value: "15K+", label: "正在被看的设计" },
-  { value: "8K+", label: "有表达欲的人" },
-  { value: "70+", label: "正在发生的城市" },
-  { value: "3M+", label: "每月被翻到的次数" },
+  { value: "120+", label: "免费设计场景" },
+  { value: "300+", label: "可延展商品类型" },
+  { value: "50+", label: "设计服务能力" },
+  { value: "24h", label: "AI 创意响应周期" },
 ];
 const storySteps = [
   {
     step: "01",
-    title: "先逛",
-    description: "从风格、品类和别人做过的东西里，先找到一点你愿意靠近的审美。",
+    title: "先找方向",
+    description: "从免费设计分类、热门风格和真实案例里快速找到你要做的内容方向。",
   },
   {
     step: "02",
-    title: "再动手",
-    description: "想认真做，就进定制服务；想先试试，也可以从一件小东西开始。",
+    title: "再生成方案",
+    description: "可以自己用 AI 先出稿，也可以直接进入定制服务和设计师协作流程。",
   },
   {
     step: "03",
-    title: "然后留下来",
-    description: "把作品放出来，被人看到，被人记住，慢慢长成你自己的风格。",
+    title: "最后变成商品或服务",
+    description: "一个设计可以继续延展成商品、展示页、社媒素材和长期可售的创作资产。",
   },
 ];
 const businessModules = [
   {
-    title: "看看别人都把什么想法穿出去了",
-    text: "从作品集、案例和专题里先找感觉。看得越多，越容易知道自己真正想做什么。",
-    action: "去翻作品",
+    title: "免费设计中心，覆盖企业、电商、个人和社媒场景",
+    text: "Logo、海报、主图、详情页、小红书封面、礼品图案、服饰印花都能作为统一入口承接流量。",
+    action: "看设计能力",
     to: "/portfolio",
   },
   {
-    title: "把一个念头认真做成系列",
-    text: "适合要做品牌首发、联名企划或长期上新的项目，不是随便出图，是把方向做顺。",
-    action: "写下想法",
+    title: "定制设计与设计师服务，适合更完整的商业需求",
+    text: "从品牌视觉、包装、印花系列到活动物料和联名企划，适合需要专业落地的人群。",
+    action: "提交需求",
     to: "/design",
   },
   {
-    title: "先把灵感摊开，再看它能长成什么",
-    text: "这里放的是衣设接下来会接进来的创作工具，让做设计这件事更像日常动作，而不是专业门槛。",
-    action: "看看工具",
+    title: "AI 设计实验室，把生成、改稿、配图和营销一并做掉",
+    text: "不只是出图，还能做风格推荐、自动排版、设计建议、场景图生成和营销文案辅助。",
+    action: "体验 AI",
     to: "/ai-lab",
   },
 ];
 const personalizedModes = [
   {
-    name: "品牌刚开始",
-    detail: "从第一批上新、第一组视觉到第一件拿得出手的商品，一起定下来。",
+    name: "品牌刚起步",
+    detail: "先把 logo、视觉风格、首批商品和社媒物料一起搭出来，形成完整对外形象。",
   },
   {
-    name: "想做一波主题",
-    detail: "适合节日、活动、联名或短期上新，重点是让人一眼记住这次表达。",
+    name: "想做一波主题企划",
+    detail: "适合节日活动、品牌联名、限定上新和礼赠套装，一次性生成完整主题表达。",
   },
   {
-    name: "有作品想变现",
-    detail: "把你原本画出来、拍出来、写出来的东西，慢慢变成能卖的系列。",
+    name: "创作者想变现",
+    detail: "把图案、插画和风格内容继续做成可售商品、授权设计和可持续运营的系列作品。",
   },
 ];
 const futureSignals = [
-  { title: "想法整理", desc: "把一堆零散关键词，整理成能继续做下去的方向。" },
-  { title: "风格试穿", desc: "先看看同一个概念换几种气质，会不会更像你。" },
-  {
-    title: "商品落位",
-    desc: "判断一张图、一个字或一个情绪，更适合落在哪类商品上。",
-  },
+  { title: "AI 设计评分", desc: "给出配色、排版、风格统一度和商业可用性的综合建议，辅助改稿。" },
+  { title: "商品场景生成", desc: "让一张设计稿快速变成商品主图、模特展示图和详情页陈列素材。" },
+  { title: "趋势与风格推荐", desc: "把热点主题、人群偏好和平台风格趋势转化为可操作的设计方向。" },
 ];
 const podCategories = [
   {
@@ -103,8 +100,8 @@ const podCategories = [
     count: "120+",
     image: "/discovery/pod-tee.svg",
     keyword: "T恤",
-    use: "服装印花",
-    audience: "大众服饰",
+    use: "服饰印花",
+    audience: "品牌上新",
     tone: "soft",
     bg: "#f2ebe2",
     iconBg: "#e9dfd2",
@@ -114,8 +111,8 @@ const podCategories = [
     count: "86+",
     image: "/discovery/pod-mug.svg",
     keyword: "杯子",
-    use: "礼品周边",
-    audience: "礼赠用户",
+    use: "礼赠周边",
+    audience: "企业礼品",
     tone: "dark",
     bg: "#ece7de",
     iconBg: "#dfd6c8",
@@ -125,8 +122,8 @@ const podCategories = [
     count: "74+",
     image: "/discovery/pod-bag.svg",
     keyword: "帆布包",
-    use: "日常配件",
-    audience: "通勤人群",
+    use: "日常周边",
+    audience: "通勤消费",
     tone: "line",
     bg: "#f4efe7",
     iconBg: "#e8dfd4",
@@ -136,7 +133,7 @@ const podCategories = [
     count: "68+",
     image: "/discovery/pod-phone.svg",
     keyword: "手机壳",
-    use: "日常高频",
+    use: "数码配件",
     audience: "年轻用户",
     tone: "soft",
     bg: "#eee8e0",
@@ -147,8 +144,8 @@ const podCategories = [
     count: "58+",
     image: "/discovery/pod-pillow.svg",
     keyword: "抱枕",
-    use: "家居陈列",
-    audience: "家居用户",
+    use: "家居延展",
+    audience: "空间美学",
     tone: "line",
     bg: "#f3ede6",
     iconBg: "#e5dbcf",
@@ -158,7 +155,7 @@ const podCategories = [
     count: "42+",
     image: "/discovery/pod-tapestry.svg",
     keyword: "挂毯",
-    use: "空间装饰",
+    use: "空间陈列",
     audience: "生活方式",
     tone: "dark",
     bg: "#efe8dd",
@@ -169,7 +166,7 @@ const podCategories = [
     count: "35+",
     image: "/discovery/pod-pillow.svg",
     keyword: "毛巾",
-    use: "生活方式",
+    use: "生活织物",
     audience: "家庭用户",
     tone: "soft",
     bg: "#f5efe8",
@@ -181,7 +178,7 @@ const podCategories = [
     image: "/discovery/pod-phone.svg",
     keyword: "鼠标垫",
     use: "办公礼赠",
-    audience: "办公人群",
+    audience: "团队定制",
     tone: "line",
     bg: "#ede7df",
     iconBg: "#e0d6c9",
@@ -192,114 +189,71 @@ const styleBoards = [
     name: "极简高级",
     image: "/discovery/pod-tee.svg",
     keyword: "极简",
-    note: "留白、克制、品牌感",
+    note: "适合品牌视觉和高客单商品",
   },
   {
     name: "日系留白",
     image: "/discovery/pod-mug.svg",
     keyword: "日系",
-    note: "柔和、安静、生活化",
+    note: "适合生活方式和柔和家居",
   },
   {
     name: "街头潮流",
     image: "/discovery/pod-bag.svg",
     keyword: "街头",
-    note: "符号化、视觉冲击",
+    note: "适合服饰系列和个性单品",
   },
   {
     name: "轻奢礼赠",
     image: "/discovery/pod-phone.svg",
     keyword: "轻奢",
-    note: "精致、礼盒、节庆",
+    note: "适合企业礼盒和节庆周边",
   },
   {
     name: "可爱治愈",
     image: "/discovery/pod-pillow.svg",
     keyword: "可爱",
-    note: "插画感、软萌、温和",
+    note: "适合女性向和宠物周边",
   },
   {
     name: "户外自然",
     image: "/discovery/pod-tapestry.svg",
     keyword: "户外",
-    note: "自然、露营、旅行",
+    note: "适合露营、旅行和自然主题系列",
   },
 ];
 const hotKeywords = [
-  "联名系列",
+  "免费 Logo",
+  "商品主图",
+  "详情页设计",
+  "小红书封面",
   "新中式图案",
   "法式花卉",
-  "宠物周边",
   "情侣礼物",
-  "露营风",
-  "国潮插画",
-  "节日限定",
   "品牌首发",
-  "艺术家合作",
   "文创礼盒",
-  "ins 家居",
-];
-const audiences = [
-  {
-    name: "想做副业的创作者",
-    desc: "把自己的风格慢慢变成会有人买单的东西",
-    keywords: ["品牌首发", "联名系列"],
-  },
-  {
-    name: "有表达欲的普通人",
-    desc: "不用先成为设计师，也能做点像自己的东西",
-    keywords: ["艺术家合作", "文创礼盒"],
-  },
-  {
-    name: "挑剔的个性消费者",
-    desc: "逛的不是普通商品，而是能说明你是谁的选择",
-    keywords: ["法式花卉", "ins 家居"],
-  },
-  {
-    name: "活动与礼赠需求方",
-    desc: "想找一批看起来不敷衍、送出去也有记忆点的设计",
-    keywords: ["节日限定", "情侣礼物"],
-  },
+  "AI 生成海报",
+  "节日限定",
+  "设计师接单",
 ];
 const useCases = [
   {
-    title: "我想先找一件顺眼的",
-    text: "直接去商品列表，先看什么东西会让你停下来。",
-    action: "去逛逛",
+    title: "我想先看平台能做什么设计",
+    text: "先从免费设计能力和分类入口看起，快速确认这里是不是能覆盖你的需求。",
+    action: "看能力",
     path: "/products",
   },
   {
     title: "我已经知道自己偏什么风格",
-    text: "从作品和专题里进，比在列表里硬翻更快。",
+    text: "从作品和专题里进入会更快，也更容易找到适合的设计师和商品方向。",
     action: "看风格",
     path: "/portfolio",
   },
   {
-    title: "我脑子里有个模糊的想法",
-    text: "先从主题词和分类里缩小范围，再决定要买还是要做。",
-    action: "先理一理",
-    path: "/products",
-  },
-];
-const discoveryScenes = [
-  {
-    title: "穿去见朋友",
-    description: "适合先看 T 恤、卫衣、托特包这类会直接带出门的东西。",
-    keyword: "T恤",
-    action: "看穿搭方向",
-  },
-  {
-    title: "放在办公桌上",
-    description:
-      "从马克杯、鼠标垫、手机壳开始，日常使用频率高，也更容易先试一轮。",
-    keyword: "马克杯",
-    action: "看桌面小物",
-  },
-  {
-    title: "拿去当礼物",
-    description: "如果是送人，优先看礼盒感、轻奢感和容易被记住的周边组合。",
-    keyword: "礼物",
-    action: "看送礼方向",
+    title: "我脑子里已经有个需求",
+    text: "可以直接进入定制设计或 AI 实验室，把模糊想法更快转成方案。",
+    action: "去转化",
+    path: "/design",
   },
 ];
 
@@ -342,43 +296,43 @@ const fetchFeaturedProducts = async () => {
       {
         id: "1",
         title: "鎏金花卉印花系列",
-        description: "适合高级女装与围巾延展的精致图案。",
-        category: "pattern",
+        description: "从图案、商品到展示图一体化延展的精选系列。",
+        category: "精选作品",
         image: "grad1",
       },
       {
         id: "2",
         title: "解构廓形卫衣企划",
-        description: "适合独立品牌首发的卫衣系列方案。",
-        category: "clothing",
+        description: "适合品牌首发和潮流上新的完整服饰提案。",
+        category: "精选作品",
         image: "grad2",
       },
       {
         id: "3",
         title: "艺术家联名杯具周边",
-        description: "把平面创作自然转化成可售卖的 POD 商品。",
-        category: "product",
+        description: "让创作内容快速延伸成适合售卖和礼赠的商品。",
+        category: "精选作品",
         image: "grad3",
       },
       {
         id: "4",
         title: "包装视觉提案",
-        description: "提升品牌礼盒和包装开箱体验。",
-        category: "packaging",
+        description: "覆盖礼盒、包装、详情展示和品牌感表达。",
+        category: "精选作品",
         image: "grad4",
       },
       {
         id: "5",
         title: "秀场海报与社媒素材",
-        description: "统一活动物料和社交传播视觉。",
-        category: "campaign",
+        description: "适合活动传播和品牌话题发酵的内容组合。",
+        category: "精选作品",
         image: "grad5",
       },
       {
         id: "6",
         title: "艺术家家居装饰画",
-        description: "将作品延伸到更适合陈列与分享的场景。",
-        category: "decor",
+        description: "把平面创作延展到空间陈列和家居消费场景。",
+        category: "精选作品",
         image: "grad6",
       },
     ];
@@ -392,6 +346,7 @@ const goToProductDetail = (productId: string) =>
 const goToCustomDesign = () => navigateTo("/design");
 const goToPortfolio = () => navigateTo("/portfolio");
 const goToAiLab = () => navigateTo("/ai-lab");
+const goToFreeDesign = () => navigateTo("/free-design");
 const goToModule = (path: string) => navigateTo(path);
 const goToKeyword = (keyword: string) =>
   navigateTo(`/products/${encodeURIComponent(keyword)}`);
@@ -418,30 +373,31 @@ onMounted(() => {
           <span
             class="inline-flex items-center rounded-full bg-white px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-stone-500 transition hover:-translate-y-[1px] hover:text-stone-900"
           >
-            yishe / 1s.design
+            yishe / free design + ai + pod
           </span>
           <h1
             class="mt-6 text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[42px] lg:text-[52px]"
           >
-            有些想法，适合穿在身上。
+            从免费设计开始，把创意一路做成商品与服务。
           </h1>
           <p class="mt-4 max-w-xl text-[13px] leading-7 text-stone-500">
-            衣设把灵感、商品、创作和分享放在一起。不是先学会设计才来，而是先做一件你真的会穿出去的东西。
+            衣设不只是卖商品，也不只是做设计。这里把免费设计、AI
+            创意、POD 商品、设计师服务和社区内容放在同一个入口里。
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <BaseButton
               variant="primary"
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
-              @click="goToExplore"
-              >先做一件看看</BaseButton
+              @click="goToFreeDesign"
+              >进入免费设计</BaseButton
             >
             <BaseButton
               variant="outline"
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
-              @click="goToSearch"
-              >先去逛逛</BaseButton
+              @click="goToAiLab"
+              >体验 AI 设计</BaseButton
             >
           </div>
           <div class="mt-6 flex flex-wrap gap-2">
@@ -464,7 +420,7 @@ onMounted(() => {
                 class="grid gap-4 md:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] md:items-stretch"
               >
                 <div class="overflow-hidden rounded-[0.9rem] bg-stone-200">
-                  <div class="aspect-[4/5] sm:aspect-[16/12] md:h-full md:min-h-[440px] md:aspect-auto overflow-hidden">
+                  <div class="aspect-[4/5] overflow-hidden sm:aspect-[16/12] md:h-full md:min-h-[440px] md:aspect-auto">
                     <img
                       v-if="heroPrimary.imageUrl"
                       :src="
@@ -495,7 +451,7 @@ onMounted(() => {
                     <div
                       class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
                     >
-                      A place for personal taste
+                      One hero product, clearer first screen
                     </div>
                     <h2
                       class="mt-3 text-[20px] font-semibold leading-8 text-stone-950 sm:text-[24px]"
@@ -507,7 +463,7 @@ onMounted(() => {
                     >
                       {{
                         heroPrimary.description ||
-                        "先看到画面，再决定这是不是你会带走的那件。"
+                        "先用一件商品把平台能力讲清楚，再引导用户继续进入设计、服务和商品链路。"
                       }}
                     </p>
                   </div>
@@ -518,10 +474,10 @@ onMounted(() => {
                       <h3
                         class="text-[16px] font-semibold leading-7 text-stone-950"
                       >
-                        不是在挑一件现成商品，是在找哪件更像你。
+                        保持单商品展示，但让它承担“平台样板间”的角色。
                       </h3>
                       <p class="mt-2 text-[12px] leading-6 text-stone-500">
-                        右侧只保留一件代表商品，让首屏信息更聚焦，在平板和小屏下也更容易保持完整比例。
+                        首屏右侧只放一个商品，保证手机、平板和大屏都能稳定适配，同时承接免费设计、AI、商品化和变现的入口认知。
                       </p>
                     </div>
                     <button
@@ -548,8 +504,8 @@ onMounted(() => {
       <div class="mx-auto max-w-[1560px] space-y-4">
         <BusinessSectionIntro
           kicker="POD Discovery Hub"
-          title="每一种分类，都单独放出来看。"
-          description="不再堆成一整片分类墙。每个模块只讲一种使用场景，读起来更轻，也更像扁平化电商首页。"
+          title="保留原有分类结构，但把每个入口讲得更完整。"
+          description="仍然是原先的分类浏览方式，只是把它升级成设计能力、商品延展和使用场景的联合入口。"
         />
 
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -677,7 +633,7 @@ onMounted(() => {
                   大家最近在翻这些
                 </h3>
                 <p class="mt-1 text-[11px] text-stone-400">
-                  先从词开始，比先想完整需求更轻。
+                  把设计、商品、服务和趋势词放进同一个检索入口。
                 </p>
               </div>
               <div class="mt-4 flex flex-wrap gap-2">
@@ -725,10 +681,10 @@ onMounted(() => {
           <h2
             class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950"
           >
-            表达这件事，不该搞得太重。
+            还是原来的流程结构，但升级成完整平台闭环。
           </h2>
           <p class="mt-4 max-w-md text-[13px] leading-7 text-stone-500">
-            所以衣设把路径做得很轻。先看，先试，先留下一个像你的东西，再慢慢往前走。
+            用户仍然按照原先的阅读节奏理解页面，只是现在会更明确地感知到设计、AI、商品与变现的连续关系。
           </p>
         </div>
         <div class="grid gap-3 md:grid-cols-3">
@@ -758,8 +714,8 @@ onMounted(() => {
       >
         <BusinessSectionIntro
           kicker="Business Modules"
-          title="三个入口，对应三种靠近衣设的方式。"
-          description="有人先逛，有人先做，有人先找工具。都可以，重点是别把灵感晾太久。"
+          title="三个入口不变，但每个入口都能承接更强的平台能力。"
+          description="保留你原来的三栏结构，只增强里面的功能表达，让用户看到这是一个完整设计生态，而不是单点页面。"
         />
         <div class="mt-6 grid gap-3 xl:grid-cols-3">
           <article
@@ -790,8 +746,8 @@ onMounted(() => {
         <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Personalized Studio"
-            title="想认真做一轮，就把它做得像回事。"
-            description="适合品牌、创作者或正在试副业的人，把一个模糊念头整理成能展示、能上架、也能继续卖的系列。"
+            title="左侧还是原来的服务卡，但改成更强的商业化叙事。"
+            description="适合品牌、创作者和有项目需求的人，把模糊想法一路做成设计方案、商品体系和可持续运营内容。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
             <div
@@ -813,14 +769,14 @@ onMounted(() => {
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToCustomDesign"
-              >把刚刚那个想法写下来</BaseButton
+              >提交设计需求</BaseButton
             >
             <BaseButton
               variant="secondary"
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToPortfolio"
-              >先看别人怎么做</BaseButton
+              >先看作品案例</BaseButton
             >
           </div>
         </div>
@@ -828,8 +784,8 @@ onMounted(() => {
         <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="AI Ready"
-            title="工具是用来帮你动手，不是替你决定审美。"
-            description="衣设会把该有的辅助能力接进来，但最后留下来的，还是你的判断和态度。"
+            title="右侧仍然是 AI 模块，但内容升级为真正可包装的产品能力。"
+            description="保留原有信息布局，只把 AI 的价值说清楚: 不只是灵感工具，而是设计生成、优化和商品化助手。"
           />
           <div class="mt-6 grid gap-3">
             <div
@@ -851,7 +807,7 @@ onMounted(() => {
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToAiLab"
-              >看看工具会怎么帮忙</BaseButton
+              >进入 AI 实验室</BaseButton
             >
           </div>
         </div>
@@ -868,7 +824,7 @@ onMounted(() => {
             <h2
               class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950"
             >
-              这些东西，被带走以后才算完整。
+              原来的作品区继续保留，用来承接平台可信度。
             </h2>
           </div>
           <NuxtLink

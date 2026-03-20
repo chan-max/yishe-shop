@@ -180,15 +180,10 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       failOnError: false
-    },
-    output: {
-      dir: '.output',
-      publicDir: '.output/public'
     }
   },
   
   // build configuration
-  buildDir: '.nuxt',
   generate: {
     dir: '.output/public'
   }

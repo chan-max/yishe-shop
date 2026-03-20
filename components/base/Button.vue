@@ -72,11 +72,16 @@ const handleClick = (event: MouseEvent) => {
 <style scoped>
 .ys-btn {
   appearance: none;
+  gap: 0.45rem;
+  min-height: 2.8rem;
   border: 1px solid transparent;
-  background: #1c1917;
-  color: #f7f5f2;
-  font-weight: 500;
+  border-radius: 999px;
+  background: var(--ys-text);
+  color: #f8f5ef;
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   white-space: nowrap;
   transition:
     color 160ms ease,
@@ -89,6 +94,7 @@ const handleClick = (event: MouseEvent) => {
 
 .ys-btn:hover:not(:disabled) {
   transform: translateY(-1px);
+  box-shadow: var(--ys-shadow-sm);
 }
 
 .ys-btn:active:not(:disabled) {
@@ -114,60 +120,62 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ys-btn--xs {
-  padding: 0.375rem 0.625rem;
-  border-radius: 0.5rem;
+  min-height: 2rem;
+  padding: 0.35rem 0.85rem;
   font-size: 11px;
 }
 
 .ys-btn--sm {
-  padding: 0.4rem 0.75rem;
-  border-radius: 0.625rem;
+  min-height: 2.35rem;
+  padding: 0.45rem 1rem;
   font-size: 12px;
 }
 
 .ys-btn--md {
-  padding: 0.55rem 1rem;
-  border-radius: 0.75rem;
+  min-height: 2.8rem;
+  padding: 0.65rem 1.25rem;
   font-size: 12px;
 }
 
 .ys-btn--lg {
-  padding: 0.7rem 1.15rem;
-  border-radius: 0.8rem;
+  min-height: 3.25rem;
+  padding: 0.8rem 1.8rem;
   font-size: 13px;
 }
 
 .ys-btn--xl {
-  padding: 0.85rem 1.35rem;
-  border-radius: 1rem;
+  min-height: 3.5rem;
+  padding: 0.95rem 2rem;
   font-size: 14px;
 }
 
 .ys-btn--primary {
-  background: #1c1917;
-  color: #f7f5f2;
-  border-color: transparent;
+  background: var(--ys-text);
+  color: #f8f5ef;
+  border-color: var(--ys-text);
 }
 
 .ys-btn--primary:hover:not(:disabled) {
-  background: #2c2827;
+  background: var(--ys-warm);
+  border-color: var(--ys-warm);
 }
 
 .ys-btn--primary:active:not(:disabled) {
-  background: #3a3534;
+  background: #b57857;
+  border-color: #b57857;
 }
 
 .ys-btn--secondary,
 .ys-btn--glass {
   background: #ffffff;
-  color: #1c1917;
-  border-color: rgba(28, 25, 23, 0.12);
+  color: var(--ys-text);
+  border-color: rgba(36, 49, 39, 0.12);
 }
 
 .ys-btn--secondary:hover:not(:disabled),
 .ys-btn--glass:hover:not(:disabled) {
   background: #fcfbf9;
-  border-color: rgba(28, 25, 23, 0.2);
+  border-color: rgba(36, 49, 39, 0.2);
 }
 
 .ys-btn--secondary:active:not(:disabled),
@@ -176,31 +184,31 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ys-btn--outline {
-  background: #ffffff;
-  color: #57534e;
-  border-color: rgba(28, 25, 23, 0.16);
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--ys-accent-strong);
+  border-color: rgba(139, 154, 135, 0.34);
 }
 
 .ys-btn--outline:hover:not(:disabled) {
-  background: #fcfbf9;
-  color: #1c1917;
-  border-color: rgba(28, 25, 23, 0.24);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ys-text);
+  border-color: rgba(139, 154, 135, 0.56);
 }
 
 .ys-btn--outline:active:not(:disabled) {
-  background: #f3efe9;
-  color: #1c1917;
+  background: var(--ys-surface-active);
+  color: var(--ys-text);
 }
 
 .ys-btn--ghost {
   background: transparent;
-  color: #57534e;
+  color: var(--ys-text-soft);
   border-color: transparent;
 }
 
 .ys-btn--ghost:hover:not(:disabled) {
-  background: #f1ede6;
-  color: #1c1917;
+  background: var(--ys-accent-soft);
+  color: var(--ys-text);
 }
 
 .ys-btn--ghost:active:not(:disabled) {
@@ -210,16 +218,18 @@ const handleClick = (event: MouseEvent) => {
 .ys-btn--link {
   padding-left: 0;
   padding-right: 0;
+  min-height: auto;
   background: transparent;
-  color: #57534e;
+  color: var(--ys-accent-strong);
   border-color: transparent;
   border-radius: 0;
 }
 
 .ys-btn--link:hover:not(:disabled) {
-  color: #1c1917;
+  color: var(--ys-text);
   text-decoration: underline;
   text-underline-offset: 0.22em;
+  box-shadow: none;
 }
 
 .ys-btn--danger {
@@ -237,18 +247,18 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ys-btn--luxury {
-  background: #c8a46a;
-  color: #1c1917;
-  border-color: #c8a46a;
+  background: linear-gradient(135deg, #f3ede5, #e5ddd1);
+  color: var(--ys-text);
+  border-color: rgba(36, 49, 39, 0.12);
 }
 
 .ys-btn--luxury:hover:not(:disabled) {
-  background: #b99253;
-  border-color: #b99253;
+  background: linear-gradient(135deg, #fcfaf6, #ece3d8);
+  border-color: rgba(36, 49, 39, 0.18);
 }
 
 .ys-btn--luxury:active:not(:disabled) {
-  background: #a98348;
-  border-color: #a98348;
+  background: linear-gradient(135deg, #ece3d8, #ddd2c6);
+  border-color: rgba(36, 49, 39, 0.14);
 }
 </style>

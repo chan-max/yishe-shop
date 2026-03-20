@@ -50,6 +50,7 @@ useHead({
 
 <template>
   <Body class="app-body">
+    <div class="ys-grain" aria-hidden="true"></div>
     <NuxtLoadingIndicator color="#1c1917" :height="2" :throttle="200" />
 
     <NuxtLayout>
@@ -67,27 +68,34 @@ useHead({
 </template>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap");
+
 :root {
   --version: "1.0.0";
-  --ys-bg: #f7f5f2;
+  --ys-bg: #f8f5ef;
   --ys-surface: #ffffff;
-  --ys-surface-soft: #f3f0eb;
-  --ys-surface-hover: #fcfbf9;
-  --ys-surface-active: #f4efe9;
-  --ys-border: rgba(28, 25, 23, 0.09);
-  --ys-border-strong: rgba(28, 25, 23, 0.18);
-  --ys-text: #1c1917;
-  --ys-text-soft: #57534e;
-  --ys-text-muted: #78716c;
-  --ys-accent: #b88b4a;
-  --ys-accent-soft: rgba(184, 139, 74, 0.12);
-  --ys-focus: rgba(28, 25, 23, 0.16);
+  --ys-surface-soft: #f2ede5;
+  --ys-surface-hover: #fcfaf6;
+  --ys-surface-active: #efe7dd;
+  --ys-border: rgba(36, 49, 39, 0.1);
+  --ys-border-strong: rgba(36, 49, 39, 0.18);
+  --ys-text: #243127;
+  --ys-text-soft: #556258;
+  --ys-text-muted: #7c847d;
+  --ys-accent: #8b9a87;
+  --ys-accent-strong: #6d7d6a;
+  --ys-accent-soft: rgba(139, 154, 135, 0.14);
+  --ys-warm: #c48a6a;
+  --ys-focus: rgba(139, 154, 135, 0.2);
+  --ys-focus-ring: rgba(139, 154, 135, 0.16);
+  --ys-shadow-sm: 0 10px 24px rgba(36, 49, 39, 0.05);
+  --ys-shadow-md: 0 18px 40px rgba(36, 49, 39, 0.08);
+  --ys-shadow-lg: 0 24px 60px rgba(36, 49, 39, 0.12);
   --ys-font-sans:
-    "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Source Sans 3", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
   --ys-font-display:
-    "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans SC", sans-serif;
+    "Noto Serif SC", "Songti SC", "STSong", serif;
   font-family: var(--ys-font-sans);
 }
 
@@ -114,7 +122,10 @@ textarea {
 body {
   margin: 0;
   color: var(--ys-text);
-  background: var(--ys-bg);
+  background:
+    radial-gradient(circle at top left, rgba(196, 138, 106, 0.08), transparent 22rem),
+    radial-gradient(circle at top right, rgba(139, 154, 135, 0.12), transparent 24rem),
+    var(--ys-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -124,12 +135,22 @@ body {
 }
 
 *::selection {
-  background: rgba(184, 139, 74, 0.18);
+  background: rgba(139, 154, 135, 0.24);
 }
 
 .app-body {
   background: var(--ys-bg);
   color: var(--ys-text);
+}
+
+.ys-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
 }
 
 h1,
@@ -140,6 +161,7 @@ h5,
 h6 {
   font-family: var(--ys-font-display);
   letter-spacing: 0;
+  font-weight: 600;
 }
 
 a,
@@ -206,7 +228,7 @@ textarea {
 
 .minimal-kicker {
   font-size: 10px;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--ys-text-muted);
 }
@@ -224,7 +246,7 @@ textarea {
   background: var(--ys-surface-hover);
   border-color: var(--ys-border-strong);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(28, 25, 23, 0.025);
+  box-shadow: var(--ys-shadow-sm);
 }
 
 .interactive-surface:active {
@@ -253,7 +275,7 @@ textarea {
   transform: translateY(-1px);
   border-color: var(--ys-border-strong);
   background: var(--ys-surface-hover);
-  box-shadow: 0 8px 18px rgba(28, 25, 23, 0.03);
+  box-shadow: var(--ys-shadow-md);
 }
 
 .ys-soft-card {
@@ -290,9 +312,9 @@ textarea {
 
 .ys-chip.is-active,
 .ys-pill.is-active {
-  border-color: #1c1917;
-  background: #1c1917;
-  color: #f7f5f2;
+  border-color: var(--ys-text);
+  background: var(--ys-text);
+  color: #f8f5ef;
 }
 
 .ys-control {
@@ -313,9 +335,9 @@ textarea {
 
 .ys-control:focus-within,
 .ys-control.is-active {
-  border-color: #1c1917;
+  border-color: var(--ys-accent-strong);
   background: var(--ys-surface);
-  box-shadow: 0 0 0 4px rgba(28, 25, 23, 0.08);
+  box-shadow: 0 0 0 4px var(--ys-focus-ring);
 }
 
 .ys-quiet-link {
@@ -336,6 +358,15 @@ textarea {
   transform: translateY(-1px);
   background: var(--ys-surface);
   color: var(--ys-text);
+}
+
+.ys-display {
+  font-family: var(--ys-font-display);
+}
+
+.ys-shell {
+  position: relative;
+  z-index: 2;
 }
 
 .ys-feedback {
