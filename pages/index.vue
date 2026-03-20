@@ -306,7 +306,6 @@ const discoveryScenes = [
 const featuredProducts = ref<FeaturedProduct[]>([]);
 const featuredShowcase = computed(() => featuredProducts.value.slice(0, 6));
 const heroPrimary = computed(() => featuredProducts.value[0]);
-const heroSecondary = computed(() => featuredProducts.value.slice(1, 3));
 
 const fetchFeaturedProducts = async () => {
   try {
@@ -413,7 +412,7 @@ onMounted(() => {
   <div class="bg-[#f7f5f2] text-stone-950">
     <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div
-        class="mx-auto grid max-w-[1560px] gap-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-center"
+        class="mx-auto grid max-w-[1560px] gap-8 xl:grid-cols-[0.96fr_1.04fr] xl:items-center"
       >
         <div class="max-w-2xl pt-2">
           <span
@@ -455,23 +454,17 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="rounded-[1.35rem] bg-white p-3 sm:p-4">
-          <div class="grid gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="rounded-[1.35rem] bg-white p-3 sm:p-4 lg:p-5">
+          <div class="grid gap-4">
             <article
-              class="group rounded-[1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9] sm:p-5"
+              class="group rounded-[1.1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9] sm:p-5 lg:p-6"
             >
               <div
                 v-if="heroPrimary"
-                class="grid h-full grid-rows-[auto_1fr_auto] gap-4"
+                class="grid gap-4 md:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] md:items-stretch"
               >
-                <div
-                  class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-stone-400"
-                >
-                  <span>{{ heroPrimary.category }}</span>
-                  <span>Featured</span>
-                </div>
                 <div class="overflow-hidden rounded-[0.9rem] bg-stone-200">
-                  <div class="aspect-[16/11] overflow-hidden">
+                  <div class="aspect-[4/5] sm:aspect-[16/12] md:h-full md:min-h-[440px] md:aspect-auto overflow-hidden">
                     <img
                       v-if="heroPrimary.imageUrl"
                       :src="
@@ -482,7 +475,7 @@ onMounted(() => {
                         }) || undefined
                       "
                       :alt="heroPrimary.title"
-                      class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                      class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                       @error="handleImageError($event, heroPrimary)"
                     />
                     <div
@@ -491,107 +484,61 @@ onMounted(() => {
                     ></div>
                   </div>
                 </div>
-                <div>
-                  <h2
-                    class="text-[18px] font-semibold leading-7 text-stone-950 sm:text-[20px]"
+                <div class="flex h-full flex-col gap-4">
+                  <div
+                    class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-stone-400"
                   >
-                    {{ heroPrimary.title }}
-                  </h2>
-                  <p
-                    class="mt-2 line-clamp-2 text-[12px] leading-6 text-stone-500"
-                  >
-                    {{
-                      heroPrimary.description ||
-                      "先看到画面，再决定这是不是你会带走的那件。"
-                    }}
-                  </p>
-                  <button
-                    class="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-950 hover:text-white"
-                    @click="goToProductDetail(heroPrimary.id)"
-                  >
-                    看这件
-                    <v-icon
-                      size="14"
-                      class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      >mdi-arrow-top-right</v-icon
+                    <span>{{ heroPrimary.category }}</span>
+                    <span>Featured</span>
+                  </div>
+                  <div class="rounded-[1rem] bg-white/70 p-4 sm:p-5">
+                    <div
+                      class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
                     >
-                  </button>
+                      A place for personal taste
+                    </div>
+                    <h2
+                      class="mt-3 text-[20px] font-semibold leading-8 text-stone-950 sm:text-[24px]"
+                    >
+                      {{ heroPrimary.title }}
+                    </h2>
+                    <p
+                      class="mt-3 text-[13px] leading-7 text-stone-500 sm:text-[14px]"
+                    >
+                      {{
+                        heroPrimary.description ||
+                        "先看到画面，再决定这是不是你会带走的那件。"
+                      }}
+                    </p>
+                  </div>
+                  <div
+                    class="flex flex-1 flex-col justify-between rounded-[1rem] border border-white/70 bg-[#efe8df] p-4 sm:p-5"
+                  >
+                    <div>
+                      <h3
+                        class="text-[16px] font-semibold leading-7 text-stone-950"
+                      >
+                        不是在挑一件现成商品，是在找哪件更像你。
+                      </h3>
+                      <p class="mt-2 text-[12px] leading-6 text-stone-500">
+                        右侧只保留一件代表商品，让首屏信息更聚焦，在平板和小屏下也更容易保持完整比例。
+                      </p>
+                    </div>
+                    <button
+                      class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-950 hover:text-white"
+                      @click="goToProductDetail(heroPrimary.id)"
+                    >
+                      看这件
+                      <v-icon
+                        size="14"
+                        class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        >mdi-arrow-top-right</v-icon
+                      >
+                    </button>
+                  </div>
                 </div>
               </div>
             </article>
-
-            <div class="grid gap-3">
-              <article
-                class="rounded-[1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9]"
-              >
-                <div
-                  class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
-                >
-                  A place for personal taste
-                </div>
-                <h2
-                  class="mt-3 text-[18px] font-semibold leading-7 text-stone-950"
-                >
-                  不是在挑一件现成商品，是在找哪件更像你。
-                </h2>
-                <p class="mt-2 text-[12px] leading-6 text-stone-500">
-                  你可以先看别人怎么表达，也可以直接把自己的想法做出来。
-                </p>
-              </article>
-
-              <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                <article
-                  v-for="product in heroSecondary"
-                  :key="product.id"
-                  class="group cursor-pointer rounded-[1rem] bg-[#f6f4f1] p-2.5 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9]"
-                  @click="goToProductDetail(product.id)"
-                >
-                  <div class="grid grid-cols-[88px_1fr] gap-3">
-                    <div class="overflow-hidden rounded-[0.8rem] bg-stone-200">
-                      <div class="aspect-square overflow-hidden">
-                        <img
-                          v-if="product.imageUrl"
-                          :src="
-                            getPreviewImageUrl(product.imageUrl, {
-                              width: 320,
-                              quality: 80,
-                              format: 'webp',
-                            }) || undefined
-                          "
-                          :alt="product.title"
-                          class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
-                          @error="handleImageError($event, product)"
-                        />
-                        <div
-                          v-else
-                          class="h-full w-full bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)]"
-                        ></div>
-                      </div>
-                    </div>
-                    <div class="min-w-0 py-1">
-                      <div
-                        class="text-[10px] uppercase tracking-[0.2em] text-stone-400"
-                      >
-                        {{ product.category }}
-                      </div>
-                      <div
-                        class="mt-1 line-clamp-2 text-[13px] font-medium leading-6 text-stone-900"
-                      >
-                        {{ product.title }}
-                      </div>
-                      <p
-                        class="mt-1 line-clamp-2 text-[11px] leading-5 text-stone-500"
-                      >
-                        {{
-                          product.description ||
-                          "尺寸不大，但足够让人记住你的偏好。"
-                        }}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -611,13 +558,13 @@ onMounted(() => {
             :key="item.name"
             type="button"
             class="group flex min-h-[188px] flex-col justify-between rounded-[1.2rem] px-5 py-5 text-left transition duration-200 hover:-translate-y-[1px]"
-            :style="{ backgroundColor: item.surface }"
+            :style="{ backgroundColor: item.bg }"
             @click="goToKeyword(item.keyword)"
           >
             <div class="flex items-start justify-between gap-4">
               <div
                 class="flex h-12 w-12 items-center justify-center rounded-[1rem]"
-                :style="{ backgroundColor: item.iconSurface }"
+                :style="{ backgroundColor: item.iconBg }"
               >
                 <img
                   :src="item.image"
@@ -637,7 +584,7 @@ onMounted(() => {
                 {{ item.name }}
               </div>
               <p class="mt-2 text-[12px] leading-6 text-stone-500">
-                {{ item.moduleText }}
+                {{ item.use }}
               </p>
             </div>
 

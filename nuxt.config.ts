@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   // exp
   experimental: {
     localLayerAliases: true,
+    appManifest: false,
   },
 
   // app config

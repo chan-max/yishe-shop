@@ -1,6 +1,21 @@
 <template>
   <div class="page-shell">
-    <header class="site-header" :class="{ 'site-header-scrolled': isScrolled }">
+    <div
+      v-if="showStickyHeader"
+      class="site-header-spacer"
+      :style="{ height: `${headerHeight}px` }"
+      aria-hidden="true"
+    ></div>
+
+    <header
+      ref="headerRef"
+      class="site-header"
+      :class="{
+        'site-header-scrolled': isScrolled,
+        'site-header-fixed': showStickyHeader,
+        'site-header-visible': showStickyHeader,
+      }"
+    >
       <div class="header-inner">
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
           <img src="/logo.svg" alt="衣设" class="brand-logo" />
@@ -19,13 +34,13 @@
         <div class="header-actions">
           <NuxtLink to="/products" class="header-chip desktop-only">探索商品</NuxtLink>
 
-          <template v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser">
+          <template v-if="isLoggedIn && currentUser">
             <div class="user-menu-wrapper">
               <button ref="userButtonRef" class="user-menu-button" @click.stop="isUserMenuOpen = !isUserMenuOpen">
-                <v-avatar size="26" :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)">
-                  {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
+                <v-avatar size="26" :color="getAvatarColor(currentUser.name || currentUser.account)">
+                  {{ getAvatarInitial(currentUser.name || currentUser.account) }}
                 </v-avatar>
-                <span class="user-name">{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</span>
+                <span class="user-name">{{ currentUser.name || currentUser.account }}</span>
                 <v-icon size="16" class="user-menu-caret">mdi-chevron-down</v-icon>
               </button>
 
@@ -72,13 +87,13 @@
             </NuxtLink>
           </nav>
 
-          <div v-if="publicUserStore.isLoggedIn && publicUserStore.currentUser" class="mobile-user-card">
+          <div v-if="isLoggedIn && currentUser" class="mobile-user-card">
             <div class="mobile-user-meta">
-              <v-avatar size="32" :color="getAvatarColor(publicUserStore.currentUser.name || publicUserStore.currentUser.account)">
-                {{ getAvatarInitial(publicUserStore.currentUser.name || publicUserStore.currentUser.account) }}
+              <v-avatar size="32" :color="getAvatarColor(currentUser.name || currentUser.account)">
+                {{ getAvatarInitial(currentUser.name || currentUser.account) }}
               </v-avatar>
               <div>
-                <strong>{{ publicUserStore.currentUser.name || publicUserStore.currentUser.account }}</strong>
+                <strong>{{ currentUser.name || currentUser.account }}</strong>
                 <p>管理你的收藏与创作偏好</p>
               </div>
             </div>
@@ -104,12 +119,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { usePublicUserStore } from '~/stores/public-user'
 import { api } from '~/utils/api'
 
 const router = useRouter()
 const publicUserStore = usePublicUserStore()
+const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false)
+const currentUser = computed(() => publicUserStore?.currentUser ?? null)
 
 const navItems = [
   { label: '首页', to: '/' },
@@ -122,13 +139,18 @@ const navItems = [
 const isMobileMenuOpen = ref(false)
 const isScrolled = ref(false)
 const isUserMenuOpen = ref(false)
+const showStickyHeader = ref(false)
+const headerHeight = ref(0)
 
 const userMenuRef = ref(null)
 const userButtonRef = ref(null)
+const headerRef = ref<HTMLElement | null>(null)
+
+const STICKY_TRIGGER_OFFSET = 220
 
 onMounted(async () => {
   publicUserStore.initToken()
-  if (publicUserStore.isLoggedIn) {
+  if (isLoggedIn.value) {
     try {
       const response = await api.publicUser.getUserInfo()
       if (response.code === 0 || response.status === true || response.code === 200) {
@@ -142,13 +164,17 @@ onMounted(async () => {
   if (process.client) {
     nextTick(() => {
       document.addEventListener('click', handleClickOutside)
-      isScrolled.value = window.scrollY > 16
+      updateHeaderState()
+      syncHeaderHeight()
     })
+
+    window.addEventListener('resize', syncHeaderHeight, { passive: true })
   }
 })
 
 onUnmounted(() => {
   if (process.client) document.removeEventListener('click', handleClickOutside)
+  if (process.client) window.removeEventListener('resize', syncHeaderHeight)
 })
 
 const handleLogout = async () => {
@@ -181,6 +207,19 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
+const syncHeaderHeight = () => {
+  if (!process.client) return
+  headerHeight.value = headerRef.value?.offsetHeight || 0
+}
+
+const updateHeaderState = () => {
+  if (!process.client) return
+  const scrollTop = window.scrollY
+  isScrolled.value = scrollTop > 16
+  showStickyHeader.value = scrollTop > STICKY_TRIGGER_OFFSET
+  syncHeaderHeight()
+}
+
 const getAvatarInitial = (name) => {
   if (!name) return 'U'
   const trimmed = name.trim()
@@ -208,7 +247,7 @@ router.afterEach(() => {
 })
 
 useEventListener('scroll', () => {
-  if (process.client) isScrolled.value = window.scrollY > 16
+  updateHeaderState()
 }, { passive: true })
 </script>
 
@@ -217,24 +256,50 @@ useEventListener('scroll', () => {
 
 .page-shell {
   min-height: 100vh;
-  overflow-x: hidden;
   background: #f7f5f2;
   color: #1c1917;
   font-family: 'Inter', sans-serif;
 }
 
+.site-header-spacer {
+  width: 100%;
+}
+
 .site-header {
-  position: sticky;
+  position: relative;
   top: 0;
-  z-index: 50;
   padding: 0.75rem 0;
-  background: rgba(247, 245, 242, 0.94);
-  border-bottom: 1px solid rgba(28, 25, 23, 0.05);
-  transition: background-color 0.18s ease, border-color 0.18s ease;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms ease;
 }
 
 .site-header-scrolled {
   background: rgba(247, 245, 242, 0.98);
+  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.05);
+}
+
+.site-header-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transform: translateY(-120%);
+  opacity: 0;
+  background: rgba(247, 245, 242, 0.92);
+  border-bottom-color: rgba(28, 25, 23, 0.05);
+  backdrop-filter: blur(14px);
+}
+
+.site-header-visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .header-inner {
