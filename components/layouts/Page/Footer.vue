@@ -110,13 +110,11 @@ const socialLinks = [
 </template>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap");
-
 .footer-shell {
   border-top: 1px solid rgba(28, 25, 23, 0.08);
   background: #f7f5f2;
   color: #44403c;
-  font-family: "Inter", sans-serif;
+  font-family: var(--ys-font-sans);
 }
 
 .footer-inner {
@@ -144,7 +142,7 @@ const socialLinks = [
 }
 
 .footer-top h2 {
-  font-family: "Noto Serif SC", serif;
+  font-family: var(--ys-font-display);
   font-size: 1.5rem;
   line-height: 1.3;
   color: #1c1917;
@@ -194,7 +192,7 @@ const socialLinks = [
 }
 
 .footer-brand strong {
-  font-family: "Noto Serif SC", serif;
+  font-family: var(--ys-font-display);
   font-size: 1rem;
   color: #1c1917;
 }

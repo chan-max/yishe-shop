@@ -260,6 +260,14 @@ const useCases = [
 const featuredProducts = ref<FeaturedProduct[]>([]);
 const featuredShowcase = computed(() => featuredProducts.value.slice(0, 6));
 const heroPrimary = computed(() => featuredProducts.value[0]);
+const heroFallback: FeaturedProduct = {
+  id: "hero-placeholder",
+  title: "衣设精选作品",
+  description: "从图案、商品到展示图一体化延展的精选系列。",
+  category: "精选作品",
+  image: "grad1",
+};
+const heroDisplay = computed(() => heroPrimary.value || heroFallback);
 
 const fetchFeaturedProducts = async () => {
   try {
@@ -416,35 +424,38 @@ onMounted(() => {
               class="group rounded-[1.1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9] sm:p-5 lg:p-6"
             >
               <div
-                v-if="heroPrimary"
                 class="grid gap-4 md:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] md:items-stretch"
               >
                 <div class="overflow-hidden rounded-[0.9rem] bg-stone-200">
-                  <div class="aspect-[4/5] overflow-hidden sm:aspect-[16/12] md:h-full md:min-h-[440px] md:aspect-auto">
+                  <div class="min-h-[360px] overflow-hidden sm:min-h-[420px] md:h-full md:min-h-[440px]">
                     <img
-                      v-if="heroPrimary.imageUrl"
+                      v-if="heroDisplay.imageUrl"
                       :src="
-                        getPreviewImageUrl(heroPrimary.imageUrl, {
+                        getPreviewImageUrl(heroDisplay.imageUrl, {
                           width: 900,
                           quality: 80,
                           format: 'webp',
                         }) || undefined
                       "
-                      :alt="heroPrimary.title"
+                      :alt="heroDisplay.title"
                       class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                      @error="handleImageError($event, heroPrimary)"
+                      @error="handleImageError($event, heroDisplay)"
                     />
                     <div
                       v-else
-                      class="h-full w-full bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)]"
-                    ></div>
+                      class="flex h-full min-h-[360px] w-full items-center justify-center bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)] sm:min-h-[420px] md:min-h-[440px]"
+                    >
+                      <div class="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-stone-500">
+                        Featured Preview
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="flex h-full flex-col gap-4">
                   <div
                     class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-stone-400"
                   >
-                    <span>{{ heroPrimary.category }}</span>
+                    <span>{{ heroDisplay.category }}</span>
                     <span>Featured</span>
                   </div>
                   <div class="rounded-[1rem] bg-white/70 p-4 sm:p-5">
@@ -456,13 +467,13 @@ onMounted(() => {
                     <h2
                       class="mt-3 text-[20px] font-semibold leading-8 text-stone-950 sm:text-[24px]"
                     >
-                      {{ heroPrimary.title }}
+                      {{ heroDisplay.title }}
                     </h2>
                     <p
                       class="mt-3 text-[13px] leading-7 text-stone-500 sm:text-[14px]"
                     >
                       {{
-                        heroPrimary.description ||
+                        heroDisplay.description ||
                         "先用一件商品把平台能力讲清楚，再引导用户继续进入设计、服务和商品链路。"
                       }}
                     </p>
@@ -482,7 +493,7 @@ onMounted(() => {
                     </div>
                     <button
                       class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-950 hover:text-white"
-                      @click="goToProductDetail(heroPrimary.id)"
+                      @click="heroDisplay.id !== 'hero-placeholder' && goToProductDetail(heroDisplay.id)"
                     >
                       看这件
                       <v-icon

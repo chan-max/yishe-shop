@@ -1049,7 +1049,7 @@ const handleBlur = () => {
       color: var(--text-tertiary);
       font-size: 0.85rem;
       font-weight: 500;
-      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--ys-font-sans);
       text-transform: none;
       border-radius: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1205,7 +1205,7 @@ const handleBlur = () => {
       color: var(--text-tertiary);
       font-size: 0.85rem;
       font-weight: 500;
-      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--ys-font-sans);
       text-transform: none;
       border-radius: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

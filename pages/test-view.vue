@@ -103,7 +103,7 @@ useHead({
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
   padding: 2rem;
-  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--ys-font-sans);
 }
 
 .container {

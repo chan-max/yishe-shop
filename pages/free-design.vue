@@ -4,7 +4,7 @@ definePageMeta({ layout: "page" });
 usePageSEO({
   title: "免费设计中心 - 衣设",
   description:
-    "衣设免费设计中心以工作台的方式承接品牌、电商、社媒、生活与行业设计需求，让用户直接从场景进入设计流程。",
+    "衣设免费设计中心以更具品牌感和场景感的方式承接品牌、电商、社媒、生活与行业设计需求，让用户从目标直接进入设计方向。",
   keywords:
     "免费设计,Logo设计,电商主图,详情页,小红书封面,礼品设计,印花设计,衣设",
   url: "https://1s.design/free-design",
@@ -14,107 +14,99 @@ usePageSEO({
 type DesignWorld = {
   id: string;
   name: string;
+  short: string;
   icon: string;
+  manifesto: string;
   summary: string;
+  mood: string;
+  scenes: string[];
   outputs: string[];
-  views: { title: string; description: string; tone: string }[];
-  suggestedFlow: string[];
+  route: string[];
+  statement: string;
 };
 
 const worlds: DesignWorld[] = [
   {
     id: "brand",
     name: "企业品牌",
+    short: "Brand",
     icon: "mdi-domain",
-    summary: "适合从 Logo、VI、包装到门店传播的一整套品牌启动视觉。",
-    outputs: ["Logo", "品牌 VI", "门头招牌", "宣传册", "招商海报", "包装标签"],
-    views: [
-      { title: "品牌起始页", description: "先把品牌名字、主色、字体和第一张传播首图搭出来。", tone: "专业、克制、品牌感" },
-      { title: "线下应用面", description: "门头、海报、导视和物料都在同一个视觉系统里。", tone: "统一、可信、可落地" },
-      { title: "商品包装面", description: "包装和宣传图属于同一种品牌语言。", tone: "精致、完整、可销售" },
-    ],
-    suggestedFlow: ["先定品牌气质", "再出 Logo / VI", "再延展到包装和传播"],
+    manifesto: "先建立品牌语气，再让所有触点说同一种语言。",
+    summary: "适合从 Logo、VI、包装到招商传播的一整套品牌启动与焕新。",
+    mood: "稳、干净、可信、长期",
+    scenes: ["新品牌启动", "老品牌焕新", "招商发布", "线下门店"],
+    outputs: ["Logo", "品牌 VI", "包装设计", "宣传物料", "门店延展", "招商首图"],
+    route: ["定品牌气质", "出核心识别", "铺开应用系统"],
+    statement: "品牌不是先做一张 Logo 图，而是先决定以后所有画面长什么样。",
   },
   {
     id: "commerce",
     name: "电商转化",
+    short: "Commerce",
     icon: "mdi-storefront-outline",
-    summary: "适合主图、详情页、促销节点、直播视觉和首页装修这类增长型场景。",
-    outputs: ["商品主图", "详情页模块", "促销海报", "直播贴片", "首页装修", "卖点可视化"],
-    views: [
-      { title: "点击入口面", description: "主图、封面和首屏活动图优先解决点击问题。", tone: "直接、醒目、可转化" },
-      { title: "详情叙事面", description: "卖点、参数、场景和对比模块被编排成成交节奏。", tone: "清晰、顺滑、有说服力" },
-      { title: "活动换肤面", description: "618、双11、秒杀和上新能快速切换视觉皮肤。", tone: "高效、快反、适配节点" },
-    ],
-    suggestedFlow: ["先做点击入口", "再排详情节奏", "最后做活动节点素材"],
+    manifesto: "不是把图做满，而是把点击、停留和成交做顺。",
+    summary: "适合商品主图、详情页、活动节点和直播视觉这一类增长型场景。",
+    mood: "直接、锋利、清楚、可转化",
+    scenes: ["新品上架", "活动换肤", "直播主视觉", "详情页重做"],
+    outputs: ["商品主图", "详情页模块", "活动海报", "卖点长图", "直播贴片", "首页装修"],
+    route: ["抓点击", "排节奏", "推成交"],
+    statement: "好的电商设计，不是信息堆得多，而是用户每一步都知道下一步该看什么。",
   },
   {
     id: "social",
     name: "社媒内容",
+    short: "Social",
     icon: "mdi-cellphone-play",
-    summary: "适合小红书、短视频、公众号、视频号和私域传播，强调封面节奏和账号记忆点。",
-    outputs: ["小红书封面", "短视频封面", "公众号头图", "九宫格", "热点海报", "朋友圈传播图"],
-    views: [
-      { title: "封面系统面", description: "让一组内容看起来像来自同一个内容品牌。", tone: "有记忆点、系列感强" },
-      { title: "热点快反面", description: "节日、热点和话题营销能快速出一波图。", tone: "轻、快、可传播" },
-      { title: "私域扩散面", description: "适合转发、邀约和裂变传播。", tone: "高识别、易转发、低门槛" },
-    ],
-    suggestedFlow: ["先定封面语法", "再做栏目系统", "最后做热点和私域扩散"],
+    manifesto: "让内容不是一张张零散地发，而是像一个有记忆点的账号。",
+    summary: "适合小红书、短视频、公众号和私域传播，强调封面系统和内容识别。",
+    mood: "轻、快、系列化、易传播",
+    scenes: ["账号起号", "栏目更新", "热点追踪", "私域传播"],
+    outputs: ["小红书封面", "视频封面", "九宫格", "头图海报", "热点快反图", "传播海报"],
+    route: ["定封面语法", "做系列模板", "扩散热点内容"],
+    statement: "账号感不是靠一句 slogan，而是靠几十张图放在一起仍然像同一组内容。",
   },
   {
     id: "life",
     name: "生活方式",
+    short: "Lifestyle",
     icon: "mdi-home-heart",
-    summary: "适合家居、礼物、穿搭、婚礼与纪念场景，让设计回到日常生活。",
-    outputs: ["礼物设计", "家居图案", "穿搭图案", "婚礼物料", "个人卡片", "亲子周边"],
-    views: [
-      { title: "礼物情绪面", description: "更强调关系感、纪念感和独特表达。", tone: "温柔、私人、有温度" },
-      { title: "空间延展面", description: "抱枕、挂画、桌布和墙面被放进统一生活语境。", tone: "柔和、耐看、家居感" },
-      { title: "个人表达面", description: "穿搭、卡片和周边更像个人风格投射。", tone: "松弛、像本人、易分享" },
-    ],
-    suggestedFlow: ["先定关系或场景", "再定风格气质", "最后延展到礼物或家居"],
+    manifesto: "让设计回到关系、礼物、家和个人表达这些真实生活里。",
+    summary: "适合礼物、家居、穿搭、婚礼和纪念场景，强调情绪和分享欲。",
+    mood: "温柔、私人、有温度、耐看",
+    scenes: ["生日礼物", "节日定制", "婚礼纪念", "家居焕新"],
+    outputs: ["礼物设计", "家居图案", "穿搭图案", "婚礼物料", "纪念卡片", "亲子周边"],
+    route: ["定关系场景", "定情绪气质", "延展成物件"],
+    statement: "有些设计不是为了卖货，而是为了把关系和记忆留在一件东西上。",
   },
   {
     id: "industry",
     name: "行业专项",
+    short: "Industry",
     icon: "mdi-briefcase-outline",
-    summary: "面向服装、美妆、餐饮、教育、会务等垂直行业，更强调业务适配度。",
-    outputs: ["服装印花", "美妆包装", "餐饮品牌图", "课程招生图", "会务视觉", "活动大屏"],
-    views: [
-      { title: "行业模板面", description: "先进入更懂业务的设计模板世界，而不是空白画布。", tone: "专业、贴业务、可执行" },
-      { title: "批量输出面", description: "适合高频、多尺寸、集中交付。", tone: "高效、成套、流程化" },
-      { title: "现场应用面", description: "从线上传播一直延展到线下会场和物料。", tone: "完整、稳、可落地" },
-    ],
-    suggestedFlow: ["先选行业模板", "再套业务语境", "最后集中出图和延展"],
+    manifesto: "先进入业务语境，再进入视觉语境。",
+    summary: "面向服装、美妆、餐饮、教育和会务等垂直行业，更强调适配度和落地性。",
+    mood: "专业、克制、懂业务、可执行",
+    scenes: ["服装上新", "课程招生", "餐饮开店", "会务活动"],
+    outputs: ["服装印花", "课程招生图", "餐饮物料", "美妆包装", "活动大屏", "现场导视"],
+    route: ["选行业模板", "套业务语境", "批量出图交付"],
+    statement: "很多需求不是缺创意，而是缺一个真正懂行业的人先把场景翻译出来。",
   },
 ];
 
-const goalOptions = ["品牌启动", "提升转化", "账号种草", "礼物定制", "商品上新", "活动传播"];
-const styleOptions = ["极简高级", "法式花卉", "新中式", "街头潮流", "轻奢礼赠", "自然有机"];
-const paceOptions = ["快速单张", "系列输出", "商品化延展"];
-
 const activeWorldId = ref(worlds[0].id);
-const activeGoal = ref(goalOptions[0]);
-const activeStyle = ref(styleOptions[0]);
-const activePace = ref(paceOptions[1]);
-const selectedOutputs = ref<string[]>([]);
-const activeCanvasView = ref(0);
-
+const selectedOutputs = ref<string[]>(worlds[0].outputs.slice(0, 3));
 const brief = reactive({
-  use_case: "",
+  scenario: "",
   audience: "",
-  keywords: "",
+  tone: "",
 });
 
-const activeWorld = computed(
-  () => worlds.find((item) => item.id === activeWorldId.value) || worlds[0],
-);
+const activeWorld = computed(() => worlds.find((item) => item.id === activeWorldId.value) || worlds[0]);
 
 watch(
   activeWorldId,
   () => {
     selectedOutputs.value = activeWorld.value.outputs.slice(0, 3);
-    activeCanvasView.value = 0;
   },
   { immediate: true },
 );
@@ -127,589 +119,618 @@ const toggleOutput = (item: string) => {
   selectedOutputs.value = [...selectedOutputs.value, item];
 };
 
-const currentView = computed(
-  () => activeWorld.value.views[activeCanvasView.value] || activeWorld.value.views[0],
-);
+const fillBrief = () => {
+  brief.scenario = activeWorld.value.scenes[0];
+  brief.audience = activeWorld.value.name;
+  brief.tone = `${activeWorld.value.mood} / ${selectedOutputs.value.join("、")}`;
+};
 
-const statusList = computed(() => [
-  `设计世界：${activeWorld.value.name}`,
-  `目标：${activeGoal.value}`,
-  `风格：${activeStyle.value}`,
-  `节奏：${activePace.value}`,
+const tickerItems = computed(() => [
+  activeWorld.value.name,
+  activeWorld.value.mood,
+  ...activeWorld.value.scenes,
+  ...selectedOutputs.value,
 ]);
 
 const goToPath = (path: string) => navigateTo(path);
 </script>
 
 <template>
-  <div class="free-workbench-page px-4 py-8 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1700px]">
-      <div class="workbench-shell">
-        <aside class="wb-sidebar">
-          <div class="wb-brand">
-            <div class="minimal-kicker">Free Design Workbench</div>
-            <h1>免费设计中心</h1>
-            <p>这里不再是介绍页，而是可以直接开始筛选和构建设计方向的前端工作台。</p>
-          </div>
-
-          <nav class="wb-worlds" aria-label="设计世界">
-            <button
-              v-for="item in worlds"
-              :key="item.id"
-              type="button"
-              :class="['wb-world', activeWorldId === item.id ? 'is-active' : '']"
-              @click="activeWorldId = item.id"
-            >
-              <div class="wb-world-top">
-                <v-icon size="18">{{ item.icon }}</v-icon>
-                <span>{{ item.id }}</span>
-              </div>
-              <strong>{{ item.name }}</strong>
-              <p>{{ item.summary }}</p>
-            </button>
-          </nav>
-        </aside>
-
-        <main class="wb-stage">
-          <header class="wb-stage-header">
-            <div class="wb-stage-copy">
-              <div class="minimal-kicker">Current Workspace</div>
-              <h2>{{ activeWorld.name }}</h2>
-              <p>{{ activeWorld.summary }}</p>
-            </div>
-            <div class="wb-header-meta">
-              <span>已选输出</span>
-              <strong>{{ selectedOutputs.length }}</strong>
-            </div>
-          </header>
-
-          <section class="wb-canvas">
-            <div class="wb-canvas-left">
-              <div class="wb-canvas-viewer">
-                <div class="wb-canvas-arch">
-                  <div class="wb-canvas-overlay">
-                    <span>{{ currentView.title }}</span>
-                    <strong>{{ activeStyle }}</strong>
-                    <p>{{ currentView.description }}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="wb-view-tabs">
-                <button
-                  v-for="(item, index) in activeWorld.views"
-                  :key="item.title"
-                  type="button"
-                  :class="['wb-view-tab', activeCanvasView === index ? 'is-active' : '']"
-                  @click="activeCanvasView = index"
-                >
-                  <strong>{{ item.title }}</strong>
-                  <span>{{ item.tone }}</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="wb-canvas-right">
-              <div class="wb-flow-card">
-                <span class="wb-label">推荐流程</span>
-                <div class="wb-flow-steps">
-                  <div v-for="item in activeWorld.suggestedFlow" :key="item" class="wb-flow-step">
-                    {{ item }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="wb-cloud-card">
-                <span class="wb-label">输出结果</span>
-                <div class="wb-output-cloud">
-                  <button
-                    v-for="item in activeWorld.outputs"
-                    :key="item"
-                    type="button"
-                    :class="['wb-output-pill', selectedOutputs.includes(item) ? 'is-active' : '']"
-                    @click="toggleOutput(item)"
-                  >
-                    {{ item }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="wb-composer">
-            <div class="wb-control-strip">
-              <span class="wb-label">目标导向</span>
-              <div class="wb-token-row">
-                <button
-                  v-for="item in goalOptions"
-                  :key="item"
-                  type="button"
-                  :class="['wb-token', activeGoal === item ? 'is-active' : '']"
-                  @click="activeGoal = item"
-                >
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-
-            <div class="wb-control-strip">
-              <span class="wb-label">风格方向</span>
-              <div class="wb-token-row">
-                <button
-                  v-for="item in styleOptions"
-                  :key="item"
-                  type="button"
-                  :class="['wb-token', activeStyle === item ? 'is-active' : '']"
-                  @click="activeStyle = item"
-                >
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-
-            <div class="wb-pace-panel">
-              <span class="wb-label">输出节奏</span>
-              <button
-                v-for="item in paceOptions"
-                :key="item"
-                type="button"
-                :class="['wb-pace', activePace === item ? 'is-active' : '']"
-                @click="activePace = item"
-              >
-                {{ item }}
-              </button>
-            </div>
-          </section>
-        </main>
-
-        <aside class="wb-inspector">
-          <div class="wb-panel">
-            <div class="wb-label">Brief</div>
-            <input v-model="brief.use_case" class="wb-input" type="text" placeholder="这次设计用在什么地方" />
-            <input v-model="brief.audience" class="wb-input" type="text" placeholder="面向谁，想影响谁" />
-            <textarea v-model="brief.keywords" class="wb-input wb-textarea" placeholder="补充关键词、语气、颜色偏好和参考感觉"></textarea>
-          </div>
-
-          <div class="wb-panel warm">
-            <div class="wb-label">Live Status</div>
-            <div class="wb-status-list">
-              <div v-for="item in statusList" :key="item" class="wb-status-item">
-                {{ item }}
-              </div>
-            </div>
-            <div class="wb-scene-list">
-              <span v-for="item in activeWorld.scenes" :key="item">{{ item }}</span>
-            </div>
-          </div>
-
-          <div class="wb-panel dark">
-            <div class="wb-label light">Next Move</div>
-            <button class="wb-link" @click="goToPath('/ai-lab')">继续进入 AI 设计中台</button>
-            <button class="wb-link" @click="goToPath('/design')">继续进入定制设计服务</button>
-            <button class="wb-link" @click="goToPath('/products')">继续进入商品系统</button>
-          </div>
-        </aside>
+  <div class="fd-page">
+    <section class="fd-hero">
+      <div class="fd-hero__top">
+        <div class="minimal-kicker">Free Design Center</div>
+        <button class="fd-hero__switch" type="button" @click="fillBrief">把当前方向写进 brief</button>
       </div>
-    </div>
+
+      <div class="fd-hero__headline">
+        <p>免费设计中心</p>
+        <h1>不再做“几个分类入口”。<br>而是直接给你一整种视觉立场。</h1>
+      </div>
+
+      <div class="fd-hero__bottom">
+        <div class="fd-hero__lead">
+          你可以把它理解成一张设计地图。先选你属于哪一种业务世界，再决定图应该长成什么样，而不是先掉进一堆模板里。
+        </div>
+        <div class="fd-hero__aside">
+          <div class="fd-hero__meta">
+            <div class="fd-hero__meta-item">
+              <span>当前方向</span>
+              <strong>{{ activeWorld.name }}</strong>
+            </div>
+            <div class="fd-hero__meta-item">
+              <span>画面气质</span>
+              <strong>{{ activeWorld.mood }}</strong>
+            </div>
+          </div>
+          <div class="fd-hero__actions">
+            <BaseButton variant="primary" size="lg" @click="goToPath('/design')">进入定制设计</BaseButton>
+            <BaseButton variant="secondary" size="lg" @click="goToPath('/ai-lab')">进入 AI 设计</BaseButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fd-selector">
+      <button
+        v-for="item in worlds"
+        :key="item.id"
+        type="button"
+        :class="['fd-selector__item', activeWorldId === item.id ? 'is-active' : '']"
+        @click="activeWorldId = item.id"
+      >
+        <span>{{ item.short }}</span>
+        <strong>{{ item.name }}</strong>
+        <v-icon size="18">{{ item.icon }}</v-icon>
+      </button>
+    </section>
+
+    <section class="fd-stage">
+      <div class="fd-stage__left">
+        <div class="fd-stage__label">Current World</div>
+        <h2>{{ activeWorld.name }}</h2>
+        <div class="fd-stage__manifesto">{{ activeWorld.manifesto }}</div>
+        <p class="fd-stage__summary">{{ activeWorld.summary }}</p>
+        <div class="fd-stage__statement">
+          {{ activeWorld.statement }}
+        </div>
+      </div>
+
+      <div class="fd-stage__right">
+        <div class="fd-stage__column">
+          <span class="fd-mini">Mood</span>
+          <strong>{{ activeWorld.mood }}</strong>
+        </div>
+        <div class="fd-stage__column">
+          <span class="fd-mini">Route</span>
+          <div class="fd-route">
+            <div v-for="(item, index) in activeWorld.route" :key="item" class="fd-route__item">
+              <em>{{ `0${index + 1}` }}</em>
+              <span>{{ item }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fd-ribbon" aria-label="current context">
+      <div class="fd-ribbon__track">
+        <span v-for="(item, index) in tickerItems.concat(tickerItems)" :key="`${item}-${index}`">{{ item }}</span>
+      </div>
+    </section>
+
+    <section class="fd-content">
+      <div class="fd-content__block fd-content__block--scenes">
+        <div class="fd-section-kicker">Scenes</div>
+        <div class="fd-scene-list">
+          <div v-for="item in activeWorld.scenes" :key="item" class="fd-scene-list__item">
+            {{ item }}
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-content__block fd-content__block--outputs">
+        <div class="fd-section-kicker">Outputs</div>
+        <div class="fd-output-cloud">
+          <button
+            v-for="item in activeWorld.outputs"
+            :key="item"
+            type="button"
+            :class="['fd-output-cloud__item', selectedOutputs.includes(item) ? 'is-active' : '']"
+            @click="toggleOutput(item)"
+          >
+            {{ item }}
+          </button>
+        </div>
+      </div>
+
+      <div class="fd-content__block fd-content__block--brief">
+        <div class="fd-section-kicker">Brief</div>
+        <div class="fd-brief">
+          <input v-model="brief.scenario" type="text" placeholder="这次设计要落在哪个场景" />
+          <input v-model="brief.audience" type="text" placeholder="主要面对谁" />
+          <textarea v-model="brief.tone" placeholder="补充风格、语气、画面倾向和参考感觉"></textarea>
+          <div class="fd-brief__actions">
+            <BaseButton variant="primary" size="md" @click="fillBrief">自动补全</BaseButton>
+            <BaseButton variant="outline" size="md" @click="goToPath('/portfolio')">先看作品</BaseButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fd-cta">
+      <div class="fd-cta__copy">
+        <div class="fd-section-kicker">Next Step</div>
+        <h3>选完方向以后，不要停在这里。</h3>
+        <p>继续去 AI 生成、定制设计或商品系统，把这套方向变成真的图、真的方案、真的可交付内容。</p>
+      </div>
+      <div class="fd-cta__links">
+        <button type="button" class="fd-cta__link" @click="goToPath('/ai-lab')">进入 AI 设计中台</button>
+        <button type="button" class="fd-cta__link" @click="goToPath('/design')">进入定制设计服务</button>
+        <button type="button" class="fd-cta__link" @click="goToPath('/products')">进入商品系统</button>
+      </div>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.free-workbench-page {
+.fd-page {
+  padding: 0;
   background:
-    radial-gradient(circle at 10% 10%, rgba(196, 138, 106, 0.13), transparent 24rem),
-    radial-gradient(circle at 88% 16%, rgba(139, 154, 135, 0.16), transparent 28rem),
-    linear-gradient(180deg, #f8f5ef, #efe8df);
+    radial-gradient(circle at 0% 0%, rgba(226, 154, 96, 0.16), transparent 28rem),
+    radial-gradient(circle at 100% 14%, rgba(98, 151, 132, 0.16), transparent 30rem),
+    linear-gradient(180deg, #f3eadf 0%, #efece5 52%, #ecefe8 100%);
 }
 
-.workbench-shell {
-  display: grid;
-  gap: 1rem;
+.fd-hero,
+.fd-stage,
+.fd-content,
+.fd-cta {
+  width: min(1560px, calc(100% - 2rem));
+  margin: 0 auto;
 }
 
-@media (min-width: 1500px) {
-  .workbench-shell {
-    grid-template-columns: minmax(18rem, 0.86fr) minmax(0, 1.55fr) minmax(18rem, 0.72fr);
-  }
+.fd-hero {
+  padding: 0.7rem 0 0.95rem;
 }
 
-.wb-sidebar,
-.wb-stage,
-.wb-inspector {
-  display: grid;
-  gap: 0.9rem;
-}
-
-@media (min-width: 1500px) {
-  .wb-sidebar,
-  .wb-inspector {
-    position: sticky;
-    top: 6rem;
-    align-self: start;
-  }
-}
-
-.wb-brand,
-.wb-world,
-.wb-stage,
-.wb-panel,
-.wb-stage-header,
-.wb-flow-card,
-.wb-cloud-card,
-.wb-control-strip,
-.wb-pace-panel,
-.wb-view-tab {
-  border: 1px solid rgba(36, 49, 39, 0.08);
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.82);
-}
-
-.wb-brand {
-  padding: 1.3rem;
-  background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(243,236,228,0.86));
-}
-
-.wb-brand h1 {
-  margin-top: 0.8rem;
-  font-size: 2rem;
-  line-height: 1.02;
-  color: #223127;
-}
-
-.wb-brand p {
-  margin-top: 0.75rem;
-  font-size: 0.84rem;
-  line-height: 1.8;
-  color: #5f695f;
-}
-
-.wb-worlds,
-.wb-flow-steps,
-.wb-status-list {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.wb-world {
-  padding: 1rem;
-  text-align: left;
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.wb-world:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--ys-shadow-sm);
-}
-
-.wb-world.is-active {
-  background: #263328;
-  color: #f8f5ef;
-}
-
-.wb-world-top {
+.fd-hero__top,
+.fd-hero__bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.66;
-}
-
-.wb-world strong {
-  display: block;
-  margin-top: 0.55rem;
-  font-size: 1rem;
-}
-
-.wb-world p {
-  margin-top: 0.45rem;
-  font-size: 0.78rem;
-  line-height: 1.7;
-  color: inherit;
-  opacity: 0.82;
-}
-
-.wb-stage {
-  padding: 1rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(245,239,231,0.9));
-  backdrop-filter: blur(12px);
-}
-
-.wb-stage-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.2rem;
-}
-
-.wb-stage-copy h2 {
-  margin-top: 0.75rem;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 0.98;
-  color: #223127;
-}
-
-.wb-stage-copy p {
-  margin-top: 0.85rem;
-  max-width: 38rem;
-  font-size: 0.9rem;
-  line-height: 1.95;
-  color: #5d685e;
-}
-
-.wb-header-meta {
-  align-self: flex-start;
-  border-radius: 999px;
-  padding: 0.85rem 1rem;
-  background: #fff;
-  font-size: 0.76rem;
-  color: #606b61;
-}
-
-.wb-header-meta strong {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 1.35rem;
-  color: #223127;
-}
-
-.wb-canvas {
-  display: grid;
   gap: 1rem;
 }
 
-@media (min-width: 1180px) {
-  .wb-canvas {
-    grid-template-columns: minmax(0, 1.18fr) minmax(18rem, 0.82fr);
-  }
-}
-
-.wb-canvas-left,
-.wb-canvas-right {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.wb-canvas-viewer {
-  border-radius: 1.8rem;
-  padding: 1rem;
-  background: linear-gradient(155deg, #e8ddd0, #dee6dc);
-  min-height: 31rem;
-}
-
-.wb-canvas-arch {
-  position: relative;
-  height: 100%;
-  min-height: 29rem;
-  border-radius: 16rem 16rem 1.4rem 1.4rem;
-  background: rgba(255,255,255,0.34);
-  overflow: hidden;
-}
-
-.wb-canvas-overlay {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  border-radius: 1.2rem;
-  padding: 1rem 1rem 1.1rem;
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(10px);
-}
-
-.wb-canvas-overlay span,
-.wb-label {
-  font-size: 0.66rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #7e857b;
-}
-
-.wb-canvas-overlay strong {
-  display: block;
-  margin-top: 0.85rem;
-  font-family: var(--ys-font-display);
-  font-size: 2rem;
-  line-height: 1.04;
-  color: #233128;
-}
-
-.wb-canvas-overlay p {
-  margin-top: 0.8rem;
-  font-size: 0.84rem;
-  line-height: 1.85;
-  color: #5e695f;
-}
-
-.wb-view-tabs {
-  display: grid;
-  gap: 0.8rem;
-}
-
-@media (min-width: 900px) {
-  .wb-view-tabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.wb-view-tab {
-  padding: 1rem;
-  text-align: left;
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
-}
-
-.wb-view-tab.is-active {
-  background: #263328;
-  color: #f8f5ef;
-}
-
-.wb-view-tab strong {
-  display: block;
-  font-size: 0.92rem;
-}
-
-.wb-view-tab span {
-  display: block;
-  margin-top: 0.45rem;
-  font-size: 0.76rem;
-  color: inherit;
-  opacity: 0.8;
-}
-
-.wb-flow-card,
-.wb-cloud-card {
-  padding: 1rem;
-}
-
-.wb-flow-step {
-  border-radius: 1rem;
-  padding: 0.9rem 1rem;
-  background: rgba(255,255,255,0.88);
-  font-size: 0.8rem;
-  color: #5a655b;
-}
-
-.wb-output-cloud,
-.wb-token-row,
-.wb-scene-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-}
-
-.wb-output-cloud,
-.wb-token-row {
-  margin-top: 0.85rem;
-}
-
-.wb-output-pill,
-.wb-token,
-.wb-scene-list span {
-  border-radius: 999px;
+.fd-hero__switch {
   padding: 0.72rem 0.95rem;
-  background: rgba(255,255,255,0.9);
-  font-size: 0.75rem;
-  color: #586359;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(28, 41, 34, 0.08);
+  color: #223127;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
 }
 
-.wb-output-pill.is-active,
-.wb-token.is-active {
-  background: linear-gradient(135deg, #263328, #5d6d5c);
-  color: #fff;
+.fd-hero__headline {
+  padding: 1.25rem 0 0.95rem;
 }
 
-.wb-composer {
+.fd-hero__headline p,
+.fd-section-kicker,
+.fd-stage__label,
+.fd-mini {
+  color: rgba(34, 49, 39, 0.54);
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.fd-hero__headline h1 {
+  max-width: 12ch;
+  margin-top: 0.7rem;
+  color: #1f2b25;
+  font-size: clamp(1.55rem, 3.3vw, 3rem);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.fd-hero__lead {
+  max-width: 24rem;
+  color: #556158;
+  font-size: 0.78rem;
+  line-height: 1.68;
+}
+
+.fd-hero__aside {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.7rem;
+  width: min(25rem, 100%);
 }
 
-@media (min-width: 1180px) {
-  .wb-composer {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(14rem, 0.72fr);
-  }
-}
-
-.wb-control-strip,
-.wb-pace-panel {
-  padding: 1rem;
-}
-
-.wb-pace-panel {
+.fd-hero__meta {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
-.wb-pace {
+.fd-hero__meta-item {
+  padding: 0.72rem 0.8rem;
+  border: 1px solid rgba(34, 49, 39, 0.08);
   border-radius: 1rem;
-  padding: 0.92rem;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.fd-hero__meta-item span {
+  display: block;
+  color: rgba(34, 49, 39, 0.48);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.fd-hero__meta-item strong {
+  display: block;
+  margin-top: 0.38rem;
+  color: #223127;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.fd-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+
+.fd-selector {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  width: min(1560px, calc(100% - 2rem));
+  margin: 0 auto;
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+}
+
+.fd-selector__item {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.82rem 0.8rem;
+  border: 0;
+  border-right: 1px solid rgba(34, 49, 39, 0.08);
+  background: transparent;
   text-align: left;
-  background: #faf8f5;
-  color: #59645a;
+  transition: background-color 180ms ease, color 180ms ease, padding 180ms ease;
 }
 
-.wb-pace.is-active {
-  background: #263328;
-  color: #fff;
+.fd-selector__item:last-child {
+  border-right: 0;
 }
 
-.wb-panel {
-  padding: 1rem;
+.fd-selector__item span {
+  color: rgba(34, 49, 39, 0.48);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-.wb-panel.warm {
-  background: linear-gradient(135deg, rgba(239,232,223,0.94), rgba(255,255,255,0.84));
+.fd-selector__item strong {
+  color: #213027;
+  font-size: 0.84rem;
+  line-height: 1.25;
 }
 
-.wb-panel.dark {
-  background: linear-gradient(180deg, rgba(36,49,39,0.96), rgba(73,87,77,0.94));
+.fd-selector__item.is-active {
+  background: #223127;
 }
 
-.wb-label.light {
-  color: rgba(255,255,255,0.58);
+.fd-selector__item:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.24);
 }
 
-.wb-input {
+.fd-selector__item.is-active span,
+.fd-selector__item.is-active strong,
+.fd-selector__item.is-active :deep(.v-icon) {
+  color: #f4efe7;
+}
+
+.fd-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+  gap: 1.2rem;
+  padding: 1rem 0 1.15rem;
+}
+
+.fd-stage__left h2 {
+  margin-top: 0.55rem;
+  color: #1f2b25;
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.fd-stage__manifesto {
+  max-width: 10ch;
+  margin-top: 0.55rem;
+  color: #223127;
+  font-size: clamp(0.96rem, 1.5vw, 1.28rem);
+  line-height: 1.18;
+  font-weight: 700;
+}
+
+.fd-stage__summary {
+  max-width: 40rem;
+  margin-top: 0.75rem;
+  color: #566159;
+  font-size: 0.76rem;
+  line-height: 1.62;
+}
+
+.fd-stage__statement {
+  max-width: 26rem;
+  margin-top: 1rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(34, 49, 39, 0.1);
+  color: #223127;
+  font-size: 0.8rem;
+  line-height: 1.62;
+}
+
+.fd-stage__right {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  padding-top: 0.15rem;
+}
+
+.fd-stage__column strong {
+  display: block;
+  margin-top: 0.45rem;
+  color: #223127;
+  font-size: 0.92rem;
+  line-height: 1.24;
+  font-weight: 700;
+}
+
+.fd-route {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+}
+
+.fd-route__item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.48rem 0;
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+}
+
+.fd-route__item em {
+  color: rgba(34, 49, 39, 0.42);
+  font-size: 0.66rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+}
+
+.fd-route__item span {
+  color: #223127;
+  font-size: 0.74rem;
+}
+
+.fd-ribbon {
+  overflow: hidden;
   width: 100%;
-  margin-top: 0.8rem;
-  border: 1px solid rgba(36,49,39,0.1);
-  border-radius: 1rem;
-  background: #faf8f5;
-  padding: 0.95rem 1rem;
-  font-size: 0.78rem;
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.fd-ribbon__track {
+  display: flex;
+  gap: 0.9rem;
+  width: max-content;
+  padding: 0.55rem 0;
+  animation: fdTicker 30s linear infinite;
+}
+
+.fd-ribbon__track span {
+  color: #27352d;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.fd-ribbon__track span::after {
+  content: " /";
+  margin-left: 0.9rem;
+  color: rgba(39, 53, 45, 0.35);
+}
+
+.fd-content {
+  display: grid;
+  grid-template-columns: 0.8fr 1.05fr 0.95fr;
+  gap: 1rem;
+  padding: 1rem 0 1.15rem;
+}
+
+.fd-content__block {
+  min-height: auto;
+}
+
+.fd-scene-list,
+.fd-output-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.fd-scene-list__item,
+.fd-output-cloud__item {
+  padding: 0.58rem 0.72rem;
+  border: 1px solid rgba(34, 49, 39, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  color: #223127;
+  font-size: 0.66rem;
+}
+
+.fd-output-cloud__item {
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.fd-output-cloud__item.is-active {
+  border-color: #223127;
+  background: #223127;
+  color: #f4efe7;
+}
+
+.fd-content__block--scenes {
+  padding-top: 0.3rem;
+}
+
+.fd-content__block--outputs {
+  padding: 0.3rem 0 0;
+}
+
+.fd-content__block--brief {
+  padding: 0.8rem 0.9rem;
+  background: rgba(255, 255, 255, 0.42);
+  border-radius: 0.9rem;
+}
+
+.fd-brief {
+  display: grid;
+  gap: 0.52rem;
+  margin-top: 0.55rem;
+}
+
+.fd-brief input,
+.fd-brief textarea {
+  width: 100%;
+  padding: 0.6rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(34, 49, 39, 0.12);
+  border-radius: 0;
+  background: transparent;
+  color: #223127;
+  font-size: 0.72rem;
   outline: none;
 }
 
-.wb-textarea {
-  min-height: 8rem;
+.fd-brief textarea {
+  min-height: 5.5rem;
   resize: vertical;
 }
 
-.wb-status-list {
-  margin-top: 0.9rem;
+.fd-brief__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.3rem;
 }
 
-.wb-status-item {
-  border-radius: 1rem;
-  padding: 0.9rem 1rem;
-  background: rgba(255,255,255,0.84);
-  font-size: 0.76rem;
-  color: #59645a;
+.fd-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.78fr);
+  gap: 1.2rem;
+  padding: 1rem 0 2.2rem;
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
 }
 
-.wb-scene-list {
-  margin-top: 1rem;
+.fd-cta__copy h3 {
+  max-width: 12ch;
+  margin-top: 0.55rem;
+  color: #1f2b25;
+  font-size: clamp(1.15rem, 2vw, 1.95rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
-.wb-link {
-  width: 100%;
-  margin-top: 0.75rem;
-  border-radius: 1rem;
-  padding: 0.95rem 1rem;
+.fd-cta__copy p {
+  max-width: 32rem;
+  margin-top: 0.55rem;
+  color: #5b665d;
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.fd-cta__links {
+  display: grid;
+  gap: 0;
+}
+
+.fd-cta__link {
+  padding: 0.72rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+  background: transparent;
+  color: #223127;
   text-align: left;
-  background: rgba(255,255,255,0.08);
-  color: #f8f5ef;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
+  transition: padding-left 180ms ease, color 180ms ease;
+}
+
+.fd-cta__link:first-child {
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
+}
+
+.fd-cta__link:hover {
+  padding-left: 0.4rem;
+  color: #111915;
+}
+
+@keyframes fdTicker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .fd-selector,
+  .fd-stage,
+  .fd-content,
+  .fd-cta,
+  .fd-hero__top,
+  .fd-hero__bottom {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fd-selector {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .fd-hero__aside,
+  .fd-hero__meta {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .fd-selector__item {
+    border-right: 0;
+    border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+  }
+
+  .fd-selector__item:last-child {
+    border-bottom: 0;
+  }
+
+  .fd-content__block {
+    min-height: auto;
+  }
 }
 </style>

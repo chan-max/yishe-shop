@@ -252,13 +252,11 @@ useEventListener('scroll', () => {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600&family=Inter:wght@400;500;600&display=swap');
-
 .page-shell {
   min-height: 100vh;
   background: #f7f5f2;
   color: #1c1917;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--ys-font-sans);
 }
 
 .site-header-spacer {
@@ -281,7 +279,7 @@ useEventListener('scroll', () => {
 
 .site-header-scrolled {
   background: rgba(247, 245, 242, 0.98);
-  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.05);
+  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.03);
 }
 
 .site-header-fixed {
@@ -338,9 +336,9 @@ useEventListener('scroll', () => {
 }
 
 .brand-copy strong {
-  font-family: 'Noto Serif SC', serif;
+  font-family: var(--ys-font-display);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
 }
 
@@ -390,7 +388,7 @@ useEventListener('scroll', () => {
   color: #1c1917;
   background: rgba(28, 25, 23, 0.065);
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(28, 25, 23, 0.05);
+  box-shadow: 0 4px 10px rgba(28, 25, 23, 0.03);
 }
 
 .nav-item:hover::after,
@@ -438,7 +436,7 @@ useEventListener('scroll', () => {
   transform: translateY(-1px);
   border-color: rgba(28, 25, 23, 0.16);
   background: #fcfbf9;
-  box-shadow: 0 10px 18px rgba(28, 25, 23, 0.05);
+  box-shadow: 0 4px 12px rgba(28, 25, 23, 0.03);
 }
 
 .user-menu-button:hover .user-menu-caret {
@@ -468,7 +466,7 @@ useEventListener('scroll', () => {
   border: 1px solid rgba(28, 25, 23, 0.08);
   border-radius: 0.9rem;
   background: #fff;
-  box-shadow: 0 10px 24px rgba(28, 25, 23, 0.06);
+  box-shadow: 0 8px 20px rgba(28, 25, 23, 0.04);
 }
 
 .user-menu-item {
@@ -555,7 +553,7 @@ useEventListener('scroll', () => {
 
 .mobile-panel-head h2 {
   margin-top: 0.25rem;
-  font-family: 'Noto Serif SC', serif;
+  font-family: var(--ys-font-display);
   font-size: 1.05rem;
 }
 

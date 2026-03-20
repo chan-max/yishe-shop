@@ -68,8 +68,6 @@ useHead({
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap");
-
 :root {
   --version: "1.0.0";
   --ys-bg: #f8f5ef;
@@ -92,10 +90,13 @@ useHead({
   --ys-shadow-md: 0 18px 40px rgba(36, 49, 39, 0.08);
   --ys-shadow-lg: 0 24px 60px rgba(36, 49, 39, 0.12);
   --ys-font-sans:
-    "Source Sans 3", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
+    "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
+    "Helvetica Neue", Arial, sans-serif;
   --ys-font-display:
-    "Noto Serif SC", "Songti SC", "STSong", serif;
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
+    "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
+    "Helvetica Neue", Arial, sans-serif;
   font-family: var(--ys-font-sans);
 }
 
@@ -161,7 +162,7 @@ h5,
 h6 {
   font-family: var(--ys-font-display);
   letter-spacing: 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 a,

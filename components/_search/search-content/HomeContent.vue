@@ -235,7 +235,7 @@ const handleBlur = () => {
   outline: none;
   color: var(--text-primary);
   font-size: 0.9rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--ys-font-sans);
   font-weight: 400;
   height: 100%;
   min-height: auto;
