@@ -154,7 +154,7 @@ interface ProductResponse {
 export const api = {
   // 测试接口
   hello: {
-    get: () => request<ApiResponse<HelloResponse>>('/hello'),
+    get: () => request<ApiResponse<HelloResponse>>('/hello', { authMode: 'none' }),
   },
   // 认证相关接口
   auth: {
@@ -162,6 +162,7 @@ export const api = {
       request<ApiResponse<LoginResponse>>('/auth/login', {
         method: 'POST',
         body: params,
+        authMode: 'none',
       }),
   },
   // 开放用户相关接口
@@ -171,12 +172,14 @@ export const api = {
       request<ApiResponse<PublicUserInfo>>('/public-user/register', {
         method: 'POST',
         body: params,
+        authMode: 'none',
       }),
     // 登录
     login: (params: PublicUserLoginParams) =>
       request<ApiResponse<PublicUserLoginResponse>>('/public-user-auth/login', {
         method: 'POST',
         body: params,
+        authMode: 'none',
       }),
     // 登出
     logout: () =>
@@ -208,6 +211,7 @@ export const api = {
       request<ApiResponse<DesignRequestResponse>>('/design-request', {
         method: 'POST',
         body: params,
+        authMode: 'none',
       }),
   },
   // 商品相关接口 - 已暂时注释，不再使用 2d 商品相关逻辑
@@ -248,11 +252,13 @@ export const api = {
           ...params,
           includeRelations: params.includeRelations ?? false, // 默认不包含关联信息
         },
+        authMode: 'openApiKey',
       }),
     // 根据ID获取商品详情（不包含关联信息）
     getById: (id: string, includeRelations: boolean = false) =>
       request<ApiResponse<ProductResponse>>(`/product/${id}?includeRelations=${includeRelations}`, {
         method: 'GET',
+        authMode: 'openApiKey',
       }),
   },
   // 收藏相关接口（开放用户商品收藏）

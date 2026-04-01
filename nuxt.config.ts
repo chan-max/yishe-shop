@@ -172,7 +172,8 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || (process.env.NODE_ENV === 'production'
         ? 'https://1s.design:1520/api'
-        : 'http://localhost:1520/api')
+        : 'http://localhost:1520/api'),
+      openApiKey: process.env.NUXT_PUBLIC_OPEN_API_KEY || '698fa3584d6d4dda04c7a3d2513fb9d076fc7a894f9ef27c',
     }
   },
 
@@ -182,7 +183,7 @@ export default defineNuxtConfig({
       failOnError: false
     }
   },
-  
+
   // build configuration
   generate: {
     dir: '.output/public'

@@ -1,4 +1,5 @@
 import { defineNuxtPlugin } from '#app'
+import { resolveOpenApiKey } from '~/utils/open-api-key'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
@@ -6,6 +7,18 @@ export default defineNuxtPlugin((nuxtApp) => {
   // 创建自定义的 fetch 实例
   const customFetch = $fetch.create({
     baseURL: config.public.apiBase,
+    async onRequest({ options }) {
+      const openApiKey = resolveOpenApiKey(config)
+      if (!openApiKey) {
+        return
+      }
+
+      const headers = {
+        ...(options.headers as Record<string, string> | undefined),
+        'x-open-api-key': openApiKey,
+      }
+      options.headers = headers
+    },
     // 响应拦截器
     async onResponse({ response }) {
       // 统一处理响应数据结构

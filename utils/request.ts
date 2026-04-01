@@ -7,12 +7,16 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { ofetch } from "ofetch";
+import { resolveOpenApiKey } from "./open-api-key";
+
+type AuthMode = "token" | "openApiKey" | "none";
 
 interface RequestOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   params?: Record<string, any>;
   body?: any;
   headers?: Record<string, string>;
+  authMode?: AuthMode;
 }
 
 interface Response<T = any> {
@@ -26,7 +30,7 @@ export const request = async <T = any>(
   url: string,
   options: RequestOptions = {},
 ): Promise<Response<T>> => {
-  const { method = "GET", params, body, headers = {} } = options;
+  const { method = "GET", params, body, headers = {}, authMode = "token" } = options;
 
   const resolveBaseUrl = () => {
     if (process.client) {
@@ -48,6 +52,7 @@ export const request = async <T = any>(
   };
 
   const BASE_URL = resolveBaseUrl();
+  const openApiKey = resolveOpenApiKey();
 
   // 仅在客户端读取本地存储，避免 SSR 时访问导致报错
   // 优先使用 public-user-token（开放用户），如果没有则使用普通 token（管理员）
@@ -61,16 +66,33 @@ export const request = async <T = any>(
 
   const finalToken = publicUserToken || token;
 
+  const requestHeaders: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...headers,
+  };
+
+  if (authMode === "token" && finalToken) {
+    requestHeaders.Authorization = `Bearer ${finalToken}`;
+  }
+
+  if (authMode === "openApiKey") {
+    if (!openApiKey) {
+      return Promise.reject({
+        code: 401,
+        message: "Open API Key 未配置，请先设置 NUXT_PUBLIC_OPEN_API_KEY 或本地 open-api-key",
+        data: null,
+        statusCode: 401,
+      });
+    }
+    requestHeaders["x-open-api-key"] = openApiKey;
+  }
+
   try {
     const response = await ofetch<Response<T>>(`${BASE_URL}${url}`, {
       method,
       params,
       body,
-      headers: {
-        "Content-Type": "application/json",
-        ...(finalToken ? { Authorization: `Bearer ${finalToken}` } : {}),
-        ...headers,
-      },
+      headers: requestHeaders,
     });
 
     // 检查响应状态码，即使请求成功但返回了错误码，也应该视为失败
