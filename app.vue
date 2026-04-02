@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import { useToast } from "~/composables/use-toast";
+import {
+  SITE_AUTHOR,
+  SITE_DEFAULT_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_OG_NAME,
+  SITE_ROBOTS,
+  SITE_THEME_COLOR,
+  SITE_TWITTER_DESCRIPTION,
+  SITE_URL,
+} from "~/utils/seo";
 
 const toast = useToast();
 
@@ -15,36 +27,36 @@ const showToast = computed({
 });
 
 useSeoMeta({
-  title: "衣设服装设计 - 创意印花图案与服装设计平台",
-  description:
-    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
-  keywords:
-    "衣设服装设计,创意印花,图案设计,服装设计,服装设计师平台,服装设计作品集,服装设计灵感,印花图案,时尚设计,服装设计服务,设计师社区",
-  author: "衣设设计团队",
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  author: SITE_AUTHOR,
   language: "zh-CN",
-  robots:
-    "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-  ogTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
-  ogDescription:
-    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。",
+  robots: SITE_ROBOTS,
+  ogTitle: SITE_NAME,
+  ogDescription: SITE_DESCRIPTION,
   ogType: "website",
-  ogUrl: "https://1s.design",
-  ogImage: "https://1s.design/logo/logo.svg",
-  ogSiteName: "衣设服装设计",
+  ogUrl: SITE_URL,
+  ogImage: SITE_DEFAULT_IMAGE,
+  ogSiteName: SITE_OG_NAME,
   ogLocale: "zh_CN",
   twitterCard: "summary_large_image",
-  twitterTitle: "衣设服装设计 - 创意印花图案与服装设计平台",
-  twitterDescription:
-    "衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感。",
-  twitterImage: "https://1s.design/logo/logo.svg",
-  "theme-color": "#f7f5f2",
+  twitterTitle: SITE_NAME,
+  twitterDescription: SITE_TWITTER_DESCRIPTION,
+  twitterImage: SITE_DEFAULT_IMAGE,
+  "theme-color": SITE_THEME_COLOR,
   "apple-mobile-web-app-capable": "yes",
   "apple-mobile-web-app-status-bar-style": "default",
 });
 
 useHead({
   htmlAttrs: { lang: "zh-CN" },
-  link: [{ rel: "canonical", href: "https://1s.design" }],
+  meta: [
+    {
+      name: "format-detection",
+      content: "telephone=no, email=no, address=no",
+    },
+  ],
 });
 </script>
 
@@ -70,25 +82,25 @@ useHead({
 <style>
 :root {
   --version: "1.0.0";
-  --ys-bg: #f8f5ef;
-  --ys-surface: #ffffff;
-  --ys-surface-soft: #f2ede5;
-  --ys-surface-hover: #fcfaf6;
-  --ys-surface-active: #efe7dd;
-  --ys-border: rgba(36, 49, 39, 0.1);
-  --ys-border-strong: rgba(36, 49, 39, 0.18);
+  --ys-bg: #f5f1ea;
+  --ys-surface: #fffdf9;
+  --ys-surface-soft: #f3eee6;
+  --ys-surface-hover: #faf6ef;
+  --ys-surface-active: #ede6db;
+  --ys-border: rgba(36, 49, 39, 0.07);
+  --ys-border-strong: rgba(36, 49, 39, 0.12);
   --ys-text: #243127;
   --ys-text-soft: #556258;
   --ys-text-muted: #7c847d;
-  --ys-accent: #8b9a87;
+  --ys-accent: #859480;
   --ys-accent-strong: #6d7d6a;
-  --ys-accent-soft: rgba(139, 154, 135, 0.14);
+  --ys-accent-soft: rgba(133, 148, 128, 0.12);
   --ys-warm: #c48a6a;
-  --ys-focus: rgba(139, 154, 135, 0.2);
-  --ys-focus-ring: rgba(139, 154, 135, 0.16);
-  --ys-shadow-sm: 0 10px 24px rgba(36, 49, 39, 0.05);
-  --ys-shadow-md: 0 18px 40px rgba(36, 49, 39, 0.08);
-  --ys-shadow-lg: 0 24px 60px rgba(36, 49, 39, 0.12);
+  --ys-focus: rgba(133, 148, 128, 0.18);
+  --ys-focus-ring: rgba(133, 148, 128, 0.14);
+  --ys-shadow-sm: 0 2px 10px rgba(36, 49, 39, 0.025);
+  --ys-shadow-md: 0 8px 20px rgba(36, 49, 39, 0.04);
+  --ys-shadow-lg: 0 14px 34px rgba(36, 49, 39, 0.055);
   --ys-font-sans:
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
     "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
@@ -124,8 +136,17 @@ body {
   margin: 0;
   color: var(--ys-text);
   background:
-    radial-gradient(circle at top left, rgba(196, 138, 106, 0.08), transparent 22rem),
-    radial-gradient(circle at top right, rgba(139, 154, 135, 0.12), transparent 24rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 18rem),
+    radial-gradient(
+      circle at top left,
+      rgba(196, 138, 106, 0.05),
+      transparent 26rem
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(133, 148, 128, 0.08),
+      transparent 28rem
+    ),
     var(--ys-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -149,7 +170,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.02;
+  opacity: 0.012;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
 }
@@ -246,12 +267,12 @@ textarea {
 .interactive-surface:hover {
   background: var(--ys-surface-hover);
   border-color: var(--ys-border-strong);
-  transform: translateY(-1px);
-  box-shadow: var(--ys-shadow-sm);
+  transform: none;
+  box-shadow: none;
 }
 
 .interactive-surface:active {
-  transform: translateY(1px);
+  transform: none;
   background: var(--ys-surface-active);
   box-shadow: none;
 }
@@ -273,10 +294,10 @@ textarea {
 }
 
 .ys-card:hover {
-  transform: translateY(-1px);
+  transform: none;
   border-color: var(--ys-border-strong);
   background: var(--ys-surface-hover);
-  box-shadow: var(--ys-shadow-md);
+  box-shadow: none;
 }
 
 .ys-soft-card {
@@ -305,7 +326,7 @@ textarea {
 
 .ys-chip:hover,
 .ys-pill:hover {
-  transform: translateY(-1px);
+  transform: none;
   border-color: var(--ys-border-strong);
   background: var(--ys-surface-hover);
   color: var(--ys-text);
@@ -338,7 +359,7 @@ textarea {
 .ys-control.is-active {
   border-color: var(--ys-accent-strong);
   background: var(--ys-surface);
-  box-shadow: 0 0 0 4px var(--ys-focus-ring);
+  box-shadow: 0 0 0 3px var(--ys-focus-ring);
 }
 
 .ys-quiet-link {
@@ -356,8 +377,8 @@ textarea {
 }
 
 .ys-quiet-link:hover {
-  transform: translateY(-1px);
-  background: var(--ys-surface);
+  transform: none;
+  background: var(--ys-surface-soft);
   color: var(--ys-text);
 }
 
@@ -368,6 +389,18 @@ textarea {
 .ys-shell {
   position: relative;
   z-index: 2;
+}
+
+.ys-section-shell {
+  border: 1px solid rgba(36, 49, 39, 0.05);
+  border-radius: 1.6rem;
+  background: rgba(255, 253, 249, 0.72);
+}
+
+.ys-flat-block {
+  border: 1px solid rgba(36, 49, 39, 0.05);
+  border-radius: 1.15rem;
+  background: var(--ys-surface-soft);
 }
 
 .ys-feedback {

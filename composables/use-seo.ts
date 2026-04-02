@@ -2,18 +2,33 @@
  * SEO 相关的 composable
  * 用于统一管理页面的 SEO 配置
  */
+import {
+  SITE_AUTHOR,
+  SITE_DEFAULT_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_LOGO,
+  SITE_NAME,
+  SITE_OG_NAME,
+  SITE_ORGANIZATION_NAME,
+  SITE_ROBOTS,
+  SITE_SEARCH_URL_TEMPLATE,
+  SITE_URL,
+} from "~/utils/seo";
+
+type StructuredDataNode = Record<string, any>;
 
 export interface SEOConfig {
-  title?: string
-  description?: string
-  keywords?: string
-  image?: string
-  url?: string
-  type?: 'website' | 'article' | 'product' | 'profile'
-  publishedTime?: string
-  modifiedTime?: string
-  author?: string
-  structuredData?: Record<string, any>
+  title?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article" | "product" | "profile";
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  structuredData?: StructuredDataNode | StructuredDataNode[];
 }
 
 /**
@@ -21,15 +36,16 @@ export interface SEOConfig {
  * @param config SEO 配置
  */
 export function usePageSEO(config: SEOConfig) {
-  const siteUrl = 'https://1s.design'
-  const defaultImage = `${siteUrl}/logo/logo.svg`
-  
-  const title = config.title || '衣设服装设计 - 创意印花图案与服装设计平台'
-  const description = config.description || '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。'
-  const image = config.image || defaultImage
-  const url = config.url || siteUrl
-  const type = config.type || 'website'
-  
+  const route = useRoute();
+  const title = config.title || SITE_NAME;
+  const description = config.description || SITE_DESCRIPTION;
+  const image = config.image || SITE_DEFAULT_IMAGE;
+  const url =
+    config.url ||
+    new URL(route.fullPath || route.path || "/", SITE_URL).toString();
+  const type = config.type || "website";
+  const keywords = config.keywords || SITE_KEYWORDS;
+
   // 设置 SEO Meta
   useSeoMeta({
     title,
@@ -39,40 +55,46 @@ export function usePageSEO(config: SEOConfig) {
     ogImage: image,
     ogUrl: url,
     ogType: type,
-    ogSiteName: '衣设服装设计',
-    ogLocale: 'zh_CN',
-    twitterCard: 'summary_large_image',
+    ogSiteName: SITE_OG_NAME,
+    ogLocale: "zh_CN",
+    twitterCard: "summary_large_image",
     twitterTitle: title,
     twitterDescription: description,
     twitterImage: image,
-    keywords: config.keywords,
-    author: config.author || '衣设设计团队',
+    keywords,
+    author: config.author || SITE_AUTHOR,
+    robots: SITE_ROBOTS,
     ...(config.publishedTime && { articlePublishedTime: config.publishedTime }),
     ...(config.modifiedTime && { articleModifiedTime: config.modifiedTime }),
-  })
-  
+  });
+
   // 设置 canonical URL
   useHead({
-    link: [
-      { rel: 'canonical', href: url },
-    ],
-  })
-  
+    link: [{ rel: "canonical", href: url }],
+  });
+
   // 添加结构化数据（JSON-LD）
   if (config.structuredData) {
-    // 如果 structuredData 是数组，使用 @graph 包装
     const structuredDataToUse = Array.isArray(config.structuredData)
-      ? { '@context': 'https://schema.org', '@graph': config.structuredData }
-      : config.structuredData
-    
+      ? {
+          "@context": "https://schema.org",
+          "@graph": config.structuredData.map((item) => {
+            if (!item || typeof item !== "object" || Array.isArray(item))
+              return item;
+            const { ["@context"]: _context, ...rest } = item;
+            return rest;
+          }),
+        }
+      : config.structuredData;
+
     useHead({
       script: [
         {
-          type: 'application/ld+json',
+          type: "application/ld+json",
           children: JSON.stringify(structuredDataToUse),
         },
       ],
-    })
+    });
   }
 }
 
@@ -81,22 +103,22 @@ export function usePageSEO(config: SEOConfig) {
  */
 export function useWebsiteStructuredData() {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: '衣设服装设计',
-    alternateName: '1s design',
-    url: 'https://1s.design',
-    description: '衣设是一个专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感，提供服装设计作品展示、设计师交流、设计灵感获取等服务。',
-    inLanguage: 'zh-CN',
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_ORGANIZATION_NAME,
+    alternateName: SITE_OG_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    inLanguage: "zh-CN",
     potentialAction: {
-      '@type': 'SearchAction',
+      "@type": "SearchAction",
       target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://1s.design/search?q={search_term_string}',
+        "@type": "EntryPoint",
+        urlTemplate: SITE_SEARCH_URL_TEMPLATE,
       },
-      'query-input': 'required name=search_term_string',
+      "query-input": "required name=search_term_string",
     },
-  }
+  };
 }
 
 /**
@@ -104,68 +126,68 @@ export function useWebsiteStructuredData() {
  */
 export function useOrganizationStructuredData() {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: '衣设服装设计',
-    alternateName: '1s design',
-    url: 'https://1s.design',
-    logo: 'https://1s.design/logo/logo.svg',
-    description: '专注于创意印花图案和服装设计的专业平台',
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_ORGANIZATION_NAME,
+    alternateName: SITE_OG_NAME,
+    url: SITE_URL,
+    logo: SITE_LOGO,
+    description: SITE_DESCRIPTION,
     sameAs: [
       // 可以添加社交媒体链接
       // 'https://weibo.com/...',
       // 'https://www.zhihu.com/...',
     ],
-  }
+  };
 }
 
 /**
  * 生成产品结构化数据
  */
 export function useProductStructuredData(product: {
-  name: string
-  description: string
-  image: string
-  url: string
-  price?: number
-  currency?: string
-  availability?: string
-  category?: string
+  name: string;
+  description: string;
+  image: string;
+  url: string;
+  price?: number;
+  currency?: string;
+  availability?: string;
+  category?: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.name,
     description: product.description,
     image: product.image,
     url: product.url,
     ...(product.price && {
       offers: {
-        '@type': 'Offer',
+        "@type": "Offer",
         price: product.price,
-        priceCurrency: product.currency || 'CNY',
-        availability: product.availability || 'https://schema.org/InStock',
+        priceCurrency: product.currency || "CNY",
+        availability: product.availability || "https://schema.org/InStock",
       },
     }),
     ...(product.category && { category: product.category }),
-  }
+  };
 }
 
 /**
  * 生成文章结构化数据
  */
 export function useArticleStructuredData(article: {
-  headline: string
-  description: string
-  image: string
-  url: string
-  datePublished: string
-  dateModified?: string
-  author?: string
+  headline: string;
+  description: string;
+  image: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  author?: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: article.headline,
     description: article.description,
     image: article.image,
@@ -173,17 +195,16 @@ export function useArticleStructuredData(article: {
     datePublished: article.datePublished,
     dateModified: article.dateModified || article.datePublished,
     author: {
-      '@type': 'Person',
-      name: article.author || '衣设设计团队',
+      "@type": "Person",
+      name: article.author || SITE_AUTHOR,
     },
     publisher: {
-      '@type': 'Organization',
-      name: '衣设服装设计',
+      "@type": "Organization",
+      name: SITE_ORGANIZATION_NAME,
       logo: {
-        '@type': 'ImageObject',
-        url: 'https://1s.design/logo/logo.svg',
+        "@type": "ImageObject",
+        url: SITE_LOGO,
       },
     },
-  }
+  };
 }
-

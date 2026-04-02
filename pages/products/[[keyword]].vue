@@ -1,7 +1,13 @@
 <script lang="ts" setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { api } from "../../utils/api";
 import { getPreviewImageUrl } from "../../utils/image";
+import {
+  SITE_DEFAULT_IMAGE,
+  SITE_KEYWORDS,
+  SITE_ORGANIZATION_NAME,
+  SITE_URL,
+} from "../../utils/seo";
 
 definePageMeta({ layout: "page" });
 
@@ -27,6 +33,7 @@ const pageSize = ref<number>(24);
 const loading = ref<boolean>(false);
 const productList = ref<any[]>([]);
 const total = ref<number>(0);
+const requestSequence = ref<number>(0);
 
 const recommendedKeywords = [
   "法式花卉",
@@ -38,17 +45,22 @@ const recommendedKeywords = [
 ];
 const showFilters = ref<boolean>(false);
 
-const initFromQuery = () => {
-  const decodedKeyword = getDecodedKeyword();
-  if (decodedKeyword) searchKeyword.value = decodedKeyword;
+const routeKeyword = computed(() => getDecodedKeyword());
+
+const syncStateFromRoute = () => {
+  searchKeyword.value = routeKeyword.value || "";
   const query = route.query;
-  if (query.start) startDate.value = String(query.start);
-  if (query.end) endDate.value = String(query.end);
-  if (query.page) currentPage.value = Number(query.page) || 1;
+  startDate.value = typeof query.start === "string" ? query.start : "";
+  endDate.value = typeof query.end === "string" ? query.end : "";
+  currentPage.value =
+    typeof query.page === "string" ? Number(query.page) || 1 : 1;
 };
 
 const fetchProducts = async () => {
+  const requestId = requestSequence.value + 1;
+  requestSequence.value = requestId;
   loading.value = true;
+
   try {
     const response = await api.productList.getPage({
       page: currentPage.value,
@@ -59,6 +71,8 @@ const fetchProducts = async () => {
       startTime: startDate.value || undefined,
       endTime: endDate.value || undefined,
     });
+
+    if (requestId !== requestSequence.value) return;
 
     if (
       response.code === 0 ||
@@ -74,46 +88,81 @@ const fetchProducts = async () => {
     }
   } catch (error) {
     console.error("获取商品列表失败:", error);
-    productList.value = [];
-    total.value = 0;
+    if (requestId === requestSequence.value) {
+      productList.value = [];
+      total.value = 0;
+    }
   } finally {
-    loading.value = false;
+    if (requestId === requestSequence.value) loading.value = false;
   }
 };
 
-const updateQuery = () => {
-  const query: any = {};
+const buildRouteQuery = () => {
+  const query: Record<string, string> = {};
   if (startDate.value) query.start = startDate.value;
   if (endDate.value) query.end = endDate.value;
-  if (currentPage.value > 1) query.page = currentPage.value;
+  if (currentPage.value > 1) query.page = String(currentPage.value);
+  return query;
+};
 
-  if (searchKeyword.value && searchKeyword.value.trim()) {
-    const encodedKeyword = encodeURIComponent(searchKeyword.value.trim());
-    router.push({ path: `/products/${encodedKeyword}`, query });
-  } else {
-    router.push({ path: "/products", query });
+const hasSameQuery = (nextQuery: Record<string, string>) => {
+  const currentQuery: Record<string, string> = {};
+  if (typeof route.query.start === "string" && route.query.start) {
+    currentQuery.start = route.query.start;
   }
+  if (typeof route.query.end === "string" && route.query.end) {
+    currentQuery.end = route.query.end;
+  }
+  if (typeof route.query.page === "string" && Number(route.query.page) > 1) {
+    currentQuery.page = route.query.page;
+  }
+  return JSON.stringify(currentQuery) === JSON.stringify(nextQuery);
 };
 
-const handleSearch = () => {
+const navigateWithFilters = async () => {
+  const keyword = searchKeyword.value.trim();
+  const nextPath = keyword
+    ? `/products/${encodeURIComponent(keyword)}`
+    : "/products";
+  const nextQuery = buildRouteQuery();
+
+  if (route.path === nextPath && hasSameQuery(nextQuery)) {
+    await fetchProducts();
+    return false;
+  }
+
+  await router.push({ path: nextPath, query: nextQuery });
+  return true;
+};
+
+const handleSearch = async () => {
   currentPage.value = 1;
-  updateQuery();
-  fetchProducts();
+  await navigateWithFilters();
 };
 
-const resetFilters = () => {
+const resetFilters = async () => {
   searchKeyword.value = "";
   startDate.value = "";
   endDate.value = "";
   currentPage.value = 1;
-  router.push("/products");
+
+  if (
+    route.path === "/products" &&
+    typeof route.query.start !== "string" &&
+    typeof route.query.end !== "string" &&
+    typeof route.query.page !== "string"
+  ) {
+    await fetchProducts();
+    return;
+  }
+
+  await router.push("/products");
 };
 
-const handlePageChange = (page: number) => {
+const handlePageChange = async (page: number) => {
   currentPage.value = page;
-  updateQuery();
-  fetchProducts();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  await navigateWithFilters();
+  if (process.client) window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const handleKeywordClick = (keyword: string) => {
@@ -197,89 +246,147 @@ const pageNumbers = computed(() => {
 });
 
 const pageTitle = computed(() => {
-  const keyword = searchKeyword.value || getDecodedKeyword();
-  return keyword ? `${keyword} - 衣设商品列表` : "商品列表 - 衣设";
+  return routeKeyword.value
+    ? `${routeKeyword.value} - 衣设商品列表`
+    : "衣设商品列表 - POD 商品与设计内容";
 });
 
 const pageDescription = computed(() => {
-  const keyword = searchKeyword.value || getDecodedKeyword();
-  return keyword
-    ? `看看和“${keyword}”有关的商品与设计表达。`
-    : "浏览衣设里的商品与设计内容，找到更像你的一件。";
+  return routeKeyword.value
+    ? `浏览衣设里与“${routeKeyword.value}”相关的商品、图案和设计表达，继续延展你的灵感与选品方向。`
+    : "浏览衣设里的 POD 商品、印花设计与创意内容，找到适合商品化、定制和灵感延展的方向。";
+});
+
+const pageKeywords = computed(() => {
+  const baseKeywords = `商品列表,POD商品,印花设计,商品定制,设计灵感,${SITE_KEYWORDS}`;
+  return routeKeyword.value
+    ? `${routeKeyword.value},${baseKeywords}`
+    : baseKeywords;
+});
+
+const resultSummary = computed(() => {
+  if (loading.value) return "正在整理当前筛选下的商品结果";
+  if (routeKeyword.value) {
+    return `共找到 ${total.value} 个和“${routeKeyword.value}”相关的商品与设计内容`;
+  }
+  return `当前共有 ${total.value} 个可浏览的商品与设计内容`;
+});
+
+const activeFilters = computed(() => {
+  const filters: string[] = [];
+  if (routeKeyword.value) filters.push(`关键词 ${routeKeyword.value}`);
+  if (startDate.value) filters.push(`开始 ${startDate.value}`);
+  if (endDate.value) filters.push(`结束 ${endDate.value}`);
+  return filters;
+});
+
+const robotsValue = computed(() =>
+  startDate.value || endDate.value || currentPage.value > 1
+    ? "noindex, follow, max-image-preview:large"
+    : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+);
+
+const canonicalUrl = computed(() => {
+  const path = routeKeyword.value
+    ? `/products/${encodeURIComponent(routeKeyword.value)}`
+    : "/products";
+  const query = new URLSearchParams();
+
+  if (startDate.value) query.set("start", startDate.value);
+  if (endDate.value) query.set("end", endDate.value);
+  if (currentPage.value > 1) query.set("page", String(currentPage.value));
+
+  const queryString = query.toString();
+  return `${SITE_URL}${path}${queryString ? `?${queryString}` : ""}`;
+});
+
+const collectionStructuredData = computed(() => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: pageTitle.value,
+  description: pageDescription.value,
+  url: canonicalUrl.value,
+  inLanguage: "zh-CN",
+  isPartOf: {
+    "@type": "WebSite",
+    name: SITE_ORGANIZATION_NAME,
+    url: SITE_URL,
+  },
+  about: routeKeyword.value || "衣设商品与设计内容",
+  numberOfItems: total.value,
+}));
+const collectionStructuredDataJson = computed(() =>
+  JSON.stringify(collectionStructuredData.value),
+);
+
+useSeoMeta({
+  title: () => pageTitle.value,
+  description: () => pageDescription.value,
+  keywords: () => pageKeywords.value,
+  ogTitle: () => pageTitle.value,
+  ogDescription: () => pageDescription.value,
+  ogUrl: () => canonicalUrl.value,
+  ogType: "website",
+  ogImage: SITE_DEFAULT_IMAGE,
+  ogSiteName: SITE_ORGANIZATION_NAME,
+  ogLocale: "zh_CN",
+  twitterCard: "summary_large_image",
+  twitterTitle: () => pageTitle.value,
+  twitterDescription: () => pageDescription.value,
+  twitterImage: SITE_DEFAULT_IMAGE,
+  robots: () => robotsValue.value,
 });
 
 useHead({
-  titleTemplate: "",
-  title: pageTitle,
-  meta: [{ name: "description", content: pageDescription }],
+  link: [{ rel: "canonical", href: canonicalUrl }],
+  script: [
+    {
+      type: "application/ld+json",
+      children: collectionStructuredDataJson,
+    },
+  ],
 });
 
 watch(
-  () => route.params.keyword,
-  (newKeyword) => {
-    const keywordValue = Array.isArray(newKeyword) ? newKeyword[0] : newKeyword;
-    if (keywordValue) {
-      try {
-        const decoded =
-          typeof keywordValue === "string"
-            ? decodeURIComponent(keywordValue)
-            : String(keywordValue);
-        if (decoded !== searchKeyword.value) {
-          searchKeyword.value = decoded;
-          currentPage.value = 1;
-          fetchProducts();
-        }
-      } catch {
-        searchKeyword.value = String(keywordValue);
-        currentPage.value = 1;
-        fetchProducts();
-      }
-    } else if (searchKeyword.value) {
-      searchKeyword.value = "";
-      currentPage.value = 1;
-      fetchProducts();
-    }
+  () => [
+    Array.isArray(route.params.keyword)
+      ? route.params.keyword.join("/")
+      : route.params.keyword || "",
+    typeof route.query.start === "string" ? route.query.start : "",
+    typeof route.query.end === "string" ? route.query.end : "",
+    typeof route.query.page === "string" ? route.query.page : "",
+  ],
+  () => {
+    syncStateFromRoute();
+    fetchProducts();
   },
   { immediate: true },
 );
-
-watch(
-  () => route.query,
-  () => {
-    initFromQuery();
-    fetchProducts();
-  },
-  { deep: true },
-);
-
-const initialKeyword = getDecodedKeyword();
-if (initialKeyword) searchKeyword.value = initialKeyword;
-
-onMounted(() => {
-  const keyword = getDecodedKeyword();
-  if (keyword && keyword !== searchKeyword.value) searchKeyword.value = keyword;
-  initFromQuery();
-  fetchProducts();
-});
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-[#f7f5f2] px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
     <div class="mx-auto max-w-[1560px]">
-      <div class="mx-auto max-w-2xl text-center">
+      <div
+        class="ys-section-shell mx-auto max-w-3xl px-5 py-7 text-center sm:px-8 sm:py-8"
+      >
         <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">
           Catalog
         </div>
-        <h1 class="mt-3 text-[30px] font-semibold text-stone-950">
+        <h1
+          class="mt-3 text-[30px] font-semibold text-stone-950 sm:text-[34px]"
+        >
           先看看哪件像你
         </h1>
-        <p class="mt-2 text-[13px] leading-6 text-stone-500">
-          这里放的是衣设当前能直接浏览的商品和设计内容。逛的时候不用太快，停住的那件通常有点准。
+        <p
+          class="mx-auto mt-3 max-w-2xl text-[13px] leading-7 text-stone-500 sm:text-[14px]"
+        >
+          这里放的是衣设当前能直接浏览的商品和设计内容。页面先帮你把搜索、筛选和结果状态讲清楚，再慢慢去挑那件真正合适的。
         </p>
       </div>
 
       <div
-        class="sticky top-[58px] z-20 mt-6 rounded-[1.15rem] border border-stone-200 bg-white/95 p-4 backdrop-blur-sm sm:p-5"
+        class="ys-section-shell sticky top-[58px] z-20 mt-8 p-4 backdrop-blur-sm sm:p-5"
       >
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
           <div class="relative flex-1">
@@ -320,7 +427,7 @@ onMounted(() => {
           </div>
           <div class="flex gap-2">
             <button
-              class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition duration-200 hover:-translate-y-[1px] active:translate-y-0"
+              class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition duration-200"
               @click="toggleFilters"
             >
               {{ showFilters ? "先收起来" : "挑一挑" }}
@@ -334,26 +441,27 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="mt-3 flex flex-wrap items-center gap-2 border-t border-stone-100 pt-3">
-          <button
-            v-for="keyword in recommendedKeywords"
-            :key="keyword"
-            class="ys-chip rounded-full px-3 py-1 text-[11px] transition duration-200 hover:-translate-y-[1px]"
-            @click="handleKeywordClick(keyword)"
-          >
-            {{ keyword }}
-          </button>
-          <button
-            class="ml-auto text-[11px] text-stone-400 transition duration-200 hover:text-stone-900"
-            @click="resetFilters"
-          >
+        <div
+          class="mt-4 flex flex-col gap-3 border-t border-white/70 pt-4 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              v-for="keyword in recommendedKeywords"
+              :key="keyword"
+              class="ys-chip rounded-full px-3 py-1 text-[11px]"
+              @click="handleKeywordClick(keyword)"
+            >
+              {{ keyword }}
+            </button>
+          </div>
+          <button class="ys-quiet-link text-[11px]" @click="resetFilters">
             清掉重来
           </button>
         </div>
 
         <div
           v-if="showFilters"
-          class="mt-4 grid gap-3 border-t border-stone-100 pt-4 sm:grid-cols-[1fr_1fr_auto] sm:items-center"
+          class="mt-4 grid gap-3 border-t border-white/70 pt-4 sm:grid-cols-[1fr_1fr_auto] sm:items-center"
         >
           <input
             v-model="startDate"
@@ -374,12 +482,40 @@ onMounted(() => {
             重新选
           </button>
         </div>
+
+        <div
+          class="mt-4 flex flex-col gap-3 border-t border-white/70 pt-4 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-[12px] text-stone-500">{{ resultSummary }}</span>
+            <span
+              v-if="activeFilters.length"
+              class="ml-1 text-[10px] uppercase tracking-[0.18em] text-stone-400"
+            >
+              当前筛选
+            </span>
+            <span
+              v-for="filter in activeFilters"
+              :key="filter"
+              class="ys-chip cursor-default rounded-full px-3 py-1 text-[11px]"
+            >
+              {{ filter }}
+            </span>
+          </div>
+          <div class="text-[11px] text-stone-400">
+            {{
+              totalPages > 0
+                ? `第 ${currentPage} / ${totalPages} 页`
+                : "等待结果"
+            }}
+          </div>
+        </div>
       </div>
 
-      <div class="mt-6">
+      <div class="mt-8">
         <div
           v-if="loading"
-          class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6"
+          class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6"
         >
           <div
             v-for="i in 12"
@@ -398,12 +534,12 @@ onMounted(() => {
 
         <div
           v-else-if="productList.length > 0"
-          class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+          class="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
         >
           <article
             v-for="product in productList"
             :key="product.id"
-            class="group cursor-pointer rounded-[1rem] border border-transparent bg-transparent p-2 transition duration-200 hover:border-stone-200 hover:bg-white"
+            class="ys-flat-block group cursor-pointer rounded-[1.05rem] p-2.5 transition duration-200 hover:bg-white/92"
             @click="goToProductDetail(product.id)"
           >
             <div class="overflow-hidden rounded-[0.95rem] bg-stone-100">
@@ -459,9 +595,12 @@ onMounted(() => {
           </article>
         </div>
 
-        <div v-else class="py-20 text-center">
-          <p class="text-[13px] text-stone-500">
-            这一页还没出现让人停下来的东西，换个词试试。
+        <div
+          v-else
+          class="ys-section-shell mx-auto max-w-xl px-6 py-16 text-center sm:px-8"
+        >
+          <p class="text-[13px] leading-7 text-stone-500">
+            这一页还没出现让人停下来的东西，换个词、换个时间范围，或者回到默认列表看看。
           </p>
           <button
             class="ys-action-btn mt-5 rounded-xl px-5 py-3 text-[12px] transition"
@@ -473,7 +612,7 @@ onMounted(() => {
 
         <div
           v-if="!loading && totalPages > 1 && productList.length > 0"
-          class="mt-10 flex flex-col items-center gap-4 border-t border-stone-100 pt-6"
+          class="mt-12 flex flex-col items-center gap-4 border-t border-white/70 pt-6"
         >
           <div class="flex flex-wrap items-center justify-center gap-2">
             <button

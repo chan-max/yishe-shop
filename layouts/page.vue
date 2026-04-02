@@ -26,29 +26,71 @@
         </NuxtLink>
 
         <nav class="desktop-nav" aria-label="主导航">
-          <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-item">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.to"
+            :to="item.to"
+            class="nav-item"
+          >
             {{ item.label }}
           </NuxtLink>
         </nav>
 
         <div class="header-actions">
-          <NuxtLink to="/products" class="header-chip desktop-only">探索商品</NuxtLink>
+          <NuxtLink to="/products" class="header-chip desktop-only"
+            >探索商品</NuxtLink
+          >
 
           <template v-if="isLoggedIn && currentUser">
             <div class="user-menu-wrapper">
-              <button ref="userButtonRef" class="user-menu-button" @click.stop="isUserMenuOpen = !isUserMenuOpen">
-                <v-avatar size="26" :color="getAvatarColor(currentUser.name || currentUser.account)">
-                  {{ getAvatarInitial(currentUser.name || currentUser.account) }}
+              <button
+                ref="userButtonRef"
+                class="user-menu-button"
+                @click.stop="isUserMenuOpen = !isUserMenuOpen"
+              >
+                <v-avatar
+                  size="26"
+                  :color="
+                    getAvatarColor(currentUser.name || currentUser.account)
+                  "
+                >
+                  {{
+                    getAvatarInitial(currentUser.name || currentUser.account)
+                  }}
                 </v-avatar>
-                <span class="user-name">{{ currentUser.name || currentUser.account }}</span>
-                <v-icon size="16" class="user-menu-caret">mdi-chevron-down</v-icon>
+                <span class="user-name">{{
+                  currentUser.name || currentUser.account
+                }}</span>
+                <v-icon size="16" class="user-menu-caret"
+                  >mdi-chevron-down</v-icon
+                >
               </button>
 
               <Transition name="user-menu">
-                <div v-if="isUserMenuOpen" ref="userMenuRef" class="user-menu-dropdown" @click.stop>
-                  <NuxtLink to="/profile" class="user-menu-item" @click="isUserMenuOpen = false">个人信息</NuxtLink>
-                  <NuxtLink to="/favorites" class="user-menu-item" @click="isUserMenuOpen = false">我的收藏</NuxtLink>
-                  <button class="user-menu-item logout-item" @click="handleLogout">退出登录</button>
+                <div
+                  v-if="isUserMenuOpen"
+                  ref="userMenuRef"
+                  class="user-menu-dropdown"
+                  @click.stop
+                >
+                  <NuxtLink
+                    to="/profile"
+                    class="user-menu-item"
+                    @click="isUserMenuOpen = false"
+                    >个人信息</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/favorites"
+                    class="user-menu-item"
+                    @click="isUserMenuOpen = false"
+                    >我的收藏</NuxtLink
+                  >
+                  <button
+                    class="user-menu-item logout-item"
+                    @click="handleLogout"
+                  >
+                    退出登录
+                  </button>
                 </div>
               </Transition>
             </div>
@@ -58,15 +100,26 @@
             <NuxtLink to="/login" class="login-button">登录</NuxtLink>
           </template>
 
-          <button class="mobile-menu-btn" :class="{ active: isMobileMenuOpen }" :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'" @click="toggleMobileMenu">
-            <v-icon size="20">{{ isMobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+          <button
+            class="mobile-menu-btn"
+            :class="{ active: isMobileMenuOpen }"
+            :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
+            @click="toggleMobileMenu"
+          >
+            <v-icon size="20">{{
+              isMobileMenuOpen ? "mdi-close" : "mdi-menu"
+            }}</v-icon>
           </button>
         </div>
       </div>
     </header>
 
     <Transition name="mobile-menu">
-      <div v-if="isMobileMenuOpen" class="mobile-panel-overlay" @click="closeMobileMenu">
+      <div
+        v-if="isMobileMenuOpen"
+        class="mobile-panel-overlay"
+        @click="closeMobileMenu"
+      >
         <aside class="mobile-panel" @click.stop>
           <div class="mobile-panel-head">
             <div>
@@ -79,17 +132,30 @@
           </div>
 
           <nav class="mobile-nav" aria-label="移动端导航">
-            <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="mobile-nav-link" @click="closeMobileMenu">
+            <NuxtLink
+              v-for="item in navItems"
+              :key="item.to"
+              :to="item.to"
+              class="mobile-nav-link"
+              @click="closeMobileMenu"
+            >
               {{ item.label }}
             </NuxtLink>
-            <NuxtLink to="/contact" class="mobile-nav-link mobile-nav-link-accent" @click="closeMobileMenu">
+            <NuxtLink
+              to="/contact"
+              class="mobile-nav-link mobile-nav-link-accent"
+              @click="closeMobileMenu"
+            >
               联系我们
             </NuxtLink>
           </nav>
 
           <div v-if="isLoggedIn && currentUser" class="mobile-user-card">
             <div class="mobile-user-meta">
-              <v-avatar size="32" :color="getAvatarColor(currentUser.name || currentUser.account)">
+              <v-avatar
+                size="32"
+                :color="getAvatarColor(currentUser.name || currentUser.account)"
+              >
                 {{ getAvatarInitial(currentUser.name || currentUser.account) }}
               </v-avatar>
               <div>
@@ -98,13 +164,30 @@
               </div>
             </div>
             <div class="mobile-user-actions">
-              <NuxtLink to="/profile" class="mobile-secondary-link" @click="closeMobileMenu">个人信息</NuxtLink>
-              <NuxtLink to="/favorites" class="mobile-secondary-link" @click="closeMobileMenu">我的收藏</NuxtLink>
-              <button class="mobile-secondary-link" @click="handleLogout">退出登录</button>
+              <NuxtLink
+                to="/profile"
+                class="mobile-secondary-link"
+                @click="closeMobileMenu"
+                >个人信息</NuxtLink
+              >
+              <NuxtLink
+                to="/favorites"
+                class="mobile-secondary-link"
+                @click="closeMobileMenu"
+                >我的收藏</NuxtLink
+              >
+              <button class="mobile-secondary-link" @click="handleLogout">
+                退出登录
+              </button>
             </div>
           </div>
 
-          <NuxtLink v-else to="/login" class="mobile-login-button" @click="closeMobileMenu">
+          <NuxtLink
+            v-else
+            to="/login"
+            class="mobile-login-button"
+            @click="closeMobileMenu"
+          >
             登录 / 注册
           </NuxtLink>
         </aside>
@@ -120,135 +203,163 @@
 </template>
 
 <script setup lang="ts">
-import { usePublicUserStore } from '~/stores/public-user'
-import { api } from '~/utils/api'
+import { usePublicUserStore } from "~/stores/public-user";
+import { api } from "~/utils/api";
 
-const router = useRouter()
-const publicUserStore = usePublicUserStore()
-const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false)
-const currentUser = computed(() => publicUserStore?.currentUser ?? null)
+const router = useRouter();
+const publicUserStore = usePublicUserStore();
+const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
+const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
-  { label: '首页', to: '/' },
-  { label: '产品', to: '/products' },
-  { label: '定制设计', to: '/design' },
-  { label: '作品集', to: '/portfolio' },
-  { label: 'AI 实验室', to: '/ai-lab' },
-]
+  { label: "首页", to: "/" },
+  { label: "产品", to: "/products" },
+  { label: "定制设计", to: "/design" },
+  { label: "作品集", to: "/portfolio" },
+  { label: "AI 实验室", to: "/ai-lab" },
+];
 
-const isMobileMenuOpen = ref(false)
-const isScrolled = ref(false)
-const isUserMenuOpen = ref(false)
-const showStickyHeader = ref(false)
-const headerHeight = ref(0)
+const isMobileMenuOpen = ref(false);
+const isScrolled = ref(false);
+const isUserMenuOpen = ref(false);
+const showStickyHeader = ref(false);
+const headerHeight = ref(0);
 
-const userMenuRef = ref(null)
-const userButtonRef = ref(null)
-const headerRef = ref<HTMLElement | null>(null)
+const userMenuRef = ref(null);
+const userButtonRef = ref(null);
+const headerRef = ref<HTMLElement | null>(null);
 
-const STICKY_TRIGGER_OFFSET = 220
+const STICKY_TRIGGER_OFFSET = 220;
 
 onMounted(async () => {
-  publicUserStore.initToken()
+  publicUserStore.initToken();
   if (isLoggedIn.value) {
     try {
-      const response = await api.publicUser.getUserInfo()
-      if (response.code === 0 || response.status === true || response.code === 200) {
-        publicUserStore.setUserInfo(response.data)
+      const response = await api.publicUser.getUserInfo();
+      if (
+        response.code === 0 ||
+        response.status === true ||
+        response.code === 200
+      ) {
+        publicUserStore.setUserInfo(response.data);
       }
     } catch (error) {
-      console.error('获取用户信息失败:', error)
+      console.error("获取用户信息失败:", error);
     }
   }
 
   if (process.client) {
     nextTick(() => {
-      document.addEventListener('click', handleClickOutside)
-      updateHeaderState()
-      syncHeaderHeight()
-    })
+      document.addEventListener("click", handleClickOutside);
+      updateHeaderState();
+      syncHeaderHeight();
+    });
 
-    window.addEventListener('resize', syncHeaderHeight, { passive: true })
+    window.addEventListener("resize", syncHeaderHeight, { passive: true });
   }
-})
+});
 
 onUnmounted(() => {
-  if (process.client) document.removeEventListener('click', handleClickOutside)
-  if (process.client) window.removeEventListener('resize', syncHeaderHeight)
-})
+  if (process.client) document.removeEventListener("click", handleClickOutside);
+  if (process.client) window.removeEventListener("resize", syncHeaderHeight);
+});
 
 const handleLogout = async () => {
   try {
-    await api.publicUser.logout()
+    await api.publicUser.logout();
   } catch (error) {
-    console.error('登出失败:', error)
+    console.error("登出失败:", error);
   } finally {
-    publicUserStore.clearToken()
-    isUserMenuOpen.value = false
-    isMobileMenuOpen.value = false
-    await router.push('/')
+    publicUserStore.clearToken();
+    isUserMenuOpen.value = false;
+    isMobileMenuOpen.value = false;
+    await router.push("/");
   }
-}
+};
 
 const handleClickOutside = (event) => {
-  if (!process.client || !isUserMenuOpen.value) return
-  const userMenu = userMenuRef.value
-  const userButton = userButtonRef.value
-  if (userMenu && userButton && !userMenu.contains(event.target) && !userButton.contains(event.target)) {
-    isUserMenuOpen.value = false
+  if (!process.client || !isUserMenuOpen.value) return;
+  const userMenu = userMenuRef.value;
+  const userButton = userButtonRef.value;
+  if (
+    userMenu &&
+    userButton &&
+    !userMenu.contains(event.target) &&
+    !userButton.contains(event.target)
+  ) {
+    isUserMenuOpen.value = false;
   }
-}
+};
 
 const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
-}
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
 
 const closeMobileMenu = () => {
-  isMobileMenuOpen.value = false
-}
+  isMobileMenuOpen.value = false;
+};
 
 const syncHeaderHeight = () => {
-  if (!process.client) return
-  headerHeight.value = headerRef.value?.offsetHeight || 0
-}
+  if (!process.client) return;
+  headerHeight.value = headerRef.value?.offsetHeight || 0;
+};
 
 const updateHeaderState = () => {
-  if (!process.client) return
-  const scrollTop = window.scrollY
-  isScrolled.value = scrollTop > 16
-  showStickyHeader.value = scrollTop > STICKY_TRIGGER_OFFSET
-  syncHeaderHeight()
-}
+  if (!process.client) return;
+  const scrollTop = window.scrollY;
+  isScrolled.value = scrollTop > 16;
+  showStickyHeader.value = scrollTop > STICKY_TRIGGER_OFFSET;
+  syncHeaderHeight();
+};
 
 const getAvatarInitial = (name) => {
-  if (!name) return 'U'
-  const trimmed = name.trim()
-  if (!trimmed) return 'U'
-  const firstChar = trimmed[0]
-  return /[a-zA-Z]/.test(firstChar) ? firstChar.toUpperCase() : firstChar
-}
+  if (!name) return "U";
+  const trimmed = name.trim();
+  if (!trimmed) return "U";
+  const firstChar = trimmed[0];
+  return /[a-zA-Z]/.test(firstChar) ? firstChar.toUpperCase() : firstChar;
+};
 
 const getAvatarColor = (name) => {
-  if (!name) return 'grey-lighten-2'
+  if (!name) return "grey-lighten-2";
   const colors = [
-    'red-lighten-2', 'pink-lighten-2', 'purple-lighten-2', 'deep-purple-lighten-2', 'indigo-lighten-2',
-    'blue-lighten-2', 'light-blue-lighten-2', 'cyan-lighten-2', 'teal-lighten-2', 'green-lighten-2',
-    'light-green-lighten-2', 'lime-lighten-2', 'yellow-lighten-2', 'amber-lighten-2', 'orange-lighten-2',
-    'deep-orange-lighten-2', 'brown-lighten-2', 'blue-grey-lighten-2',
-  ]
+    "red-lighten-2",
+    "pink-lighten-2",
+    "purple-lighten-2",
+    "deep-purple-lighten-2",
+    "indigo-lighten-2",
+    "blue-lighten-2",
+    "light-blue-lighten-2",
+    "cyan-lighten-2",
+    "teal-lighten-2",
+    "green-lighten-2",
+    "light-green-lighten-2",
+    "lime-lighten-2",
+    "yellow-lighten-2",
+    "amber-lighten-2",
+    "orange-lighten-2",
+    "deep-orange-lighten-2",
+    "brown-lighten-2",
+    "blue-grey-lighten-2",
+  ];
 
-  let hash = 0
-  for (let i = 0; i < name.length; i += 1) hash = name.charCodeAt(i) + ((hash << 5) - hash)
-  return colors[Math.abs(hash) % colors.length]
-}
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1)
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return colors[Math.abs(hash) % colors.length];
+};
 
 router.afterEach(() => {
-  isMobileMenuOpen.value = false
-})
+  isMobileMenuOpen.value = false;
+});
 
-useEventListener('scroll', () => {
-  updateHeaderState()
-}, { passive: true })
+useEventListener(
+  "scroll",
+  () => {
+    updateHeaderState();
+  },
+  { passive: true },
+);
 </script>
 
 <style lang="scss" scoped>
@@ -272,14 +383,14 @@ useEventListener('scroll', () => {
   transition:
     background-color 240ms ease,
     border-color 240ms ease,
-    box-shadow 240ms ease,
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 420ms ease;
 }
 
 .site-header-scrolled {
-  background: rgba(247, 245, 242, 0.98);
-  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.03);
+  background: rgba(247, 245, 242, 0.95);
+  border-bottom-color: rgba(28, 25, 23, 0.035);
+  backdrop-filter: blur(14px);
 }
 
 .site-header-fixed {
@@ -290,9 +401,9 @@ useEventListener('scroll', () => {
   z-index: 100;
   transform: translateY(-120%);
   opacity: 0;
-  background: rgba(247, 245, 242, 0.92);
-  border-bottom-color: rgba(28, 25, 23, 0.05);
-  backdrop-filter: blur(14px);
+  background: rgba(247, 245, 242, 0.88);
+  border-bottom-color: rgba(28, 25, 23, 0.045);
+  backdrop-filter: blur(18px) saturate(110%);
 }
 
 .site-header-visible {
@@ -307,7 +418,7 @@ useEventListener('scroll', () => {
   gap: 1rem;
   width: min(1560px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 0.4rem 0;
+  padding: 0.35rem 0;
 }
 
 .brand-mark {
@@ -316,6 +427,7 @@ useEventListener('scroll', () => {
   gap: 0.65rem;
   color: #1c1917;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .brand-mark:hover .brand-logo {
@@ -360,16 +472,22 @@ useEventListener('scroll', () => {
 .login-button {
   position: relative;
   padding: 0.55rem 0.85rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-  color: #44403c;
+  background: transparent;
+  color: #57534e;
   text-decoration: none;
   font-size: 0.74rem;
   line-height: 1;
-  transition: color 0.16s ease, background-color 0.16s ease, transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  white-space: nowrap;
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease,
+    border-color 0.16s ease;
 }
 
 .nav-item::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0.7rem;
   right: 0.7rem;
@@ -386,9 +504,8 @@ useEventListener('scroll', () => {
 .header-chip:hover,
 .login-button:hover {
   color: #1c1917;
-  background: rgba(28, 25, 23, 0.065);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(28, 25, 23, 0.03);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(28, 25, 23, 0.05);
 }
 
 .nav-item:hover::after,
@@ -400,13 +517,14 @@ useEventListener('scroll', () => {
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
   color: #1c1917;
-  background: rgba(28, 25, 23, 0.07);
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(28, 25, 23, 0.055);
 }
 
 .header-chip,
 .login-button {
-  border: 1px solid rgba(28, 25, 23, 0.1);
-  background: #fff;
+  border-color: rgba(28, 25, 23, 0.065);
+  background: rgba(255, 255, 255, 0.84);
 }
 
 .header-actions {
@@ -424,19 +542,19 @@ useEventListener('scroll', () => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.55rem 0.3rem 0.3rem;
-  border: 1px solid rgba(28, 25, 23, 0.1);
+  border: 1px solid rgba(28, 25, 23, 0.065);
   border-radius: 999px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.86);
   color: #1c1917;
   cursor: pointer;
-  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease;
 }
 
 .user-menu-button:hover {
-  transform: translateY(-1px);
-  border-color: rgba(28, 25, 23, 0.16);
-  background: #fcfbf9;
-  box-shadow: 0 4px 12px rgba(28, 25, 23, 0.03);
+  border-color: rgba(28, 25, 23, 0.1);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .user-menu-button:hover .user-menu-caret {
@@ -463,10 +581,10 @@ useEventListener('scroll', () => {
   display: grid;
   gap: 0.25rem;
   padding: 0.35rem;
-  border: 1px solid rgba(28, 25, 23, 0.08);
+  border: 1px solid rgba(28, 25, 23, 0.06);
   border-radius: 0.9rem;
-  background: #fff;
-  box-shadow: 0 8px 20px rgba(28, 25, 23, 0.04);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
 }
 
 .user-menu-item {
@@ -481,13 +599,14 @@ useEventListener('scroll', () => {
   text-decoration: none;
   font-size: 0.74rem;
   cursor: pointer;
-  transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .user-menu-item:hover {
-  background: #f5f4f1;
+  background: rgba(28, 25, 23, 0.045);
   color: #1c1917;
-  transform: translateX(2px);
 }
 
 .logout-item {
@@ -500,11 +619,13 @@ useEventListener('scroll', () => {
   justify-content: center;
   width: 2.2rem;
   height: 2.2rem;
-  border: 1px solid rgba(28, 25, 23, 0.1);
+  border: 1px solid rgba(28, 25, 23, 0.07);
   border-radius: 999px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.82);
   color: #1c1917;
-  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease;
 }
 
 .mobile-menu-btn:hover,
@@ -512,9 +633,8 @@ useEventListener('scroll', () => {
 .mobile-nav-link:hover,
 .mobile-secondary-link:hover,
 .mobile-login-button:hover {
-  border-color: rgba(28, 25, 23, 0.16);
-  background: #fcfbf9;
-  transform: translateY(-1px);
+  border-color: rgba(28, 25, 23, 0.11);
+  background: rgba(255, 255, 255, 0.94);
 }
 
 .mobile-menu-btn.active {
@@ -539,8 +659,10 @@ useEventListener('scroll', () => {
   height: calc(100vh - 1rem);
   margin: 0.5rem 0.5rem 0.5rem auto;
   padding: 1rem;
-  border-left: 1px solid rgba(28, 25, 23, 0.08);
-  background: #f7f5f2;
+  border: 1px solid rgba(28, 25, 23, 0.055);
+  border-radius: 1.4rem;
+  background: rgba(248, 245, 239, 0.96);
+  backdrop-filter: blur(18px);
 }
 
 .mobile-panel-head,
@@ -560,10 +682,12 @@ useEventListener('scroll', () => {
 .mobile-close-btn {
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid rgba(28, 25, 23, 0.1);
+  border: 1px solid rgba(28, 25, 23, 0.07);
   border-radius: 999px;
-  background: #fff;
-  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  background: rgba(255, 255, 255, 0.84);
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease;
 }
 
 .mobile-nav {
@@ -578,21 +702,24 @@ useEventListener('scroll', () => {
   display: block;
   width: 100%;
   padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(28, 25, 23, 0.08);
+  border: 1px solid rgba(28, 25, 23, 0.055);
   border-radius: 0.9rem;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.78);
   color: #1c1917;
   text-decoration: none;
   font-size: 0.8rem;
-  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .mobile-user-card {
   margin-top: 1rem;
   padding: 0.9rem;
-  border: 1px solid rgba(28, 25, 23, 0.08);
+  border: 1px solid rgba(28, 25, 23, 0.055);
   border-radius: 1rem;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .mobile-user-meta p {

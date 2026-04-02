@@ -42,17 +42,20 @@ const storySteps = [
   {
     step: "01",
     title: "先找方向",
-    description: "从免费设计分类、热门风格和真实案例里快速找到你要做的内容方向。",
+    description:
+      "从免费设计分类、热门风格和真实案例里快速找到你要做的内容方向。",
   },
   {
     step: "02",
     title: "再生成方案",
-    description: "可以自己用 AI 先出稿，也可以直接进入定制服务和设计师协作流程。",
+    description:
+      "可以自己用 AI 先出稿，也可以直接进入定制服务和设计师协作流程。",
   },
   {
     step: "03",
     title: "最后变成商品或服务",
-    description: "一个设计可以继续延展成商品、展示页、社媒素材和长期可售的创作资产。",
+    description:
+      "一个设计可以继续延展成商品、展示页、社媒素材和长期可售的创作资产。",
   },
 ];
 const businessModules = [
@@ -78,21 +81,33 @@ const businessModules = [
 const personalizedModes = [
   {
     name: "品牌刚起步",
-    detail: "先把 logo、视觉风格、首批商品和社媒物料一起搭出来，形成完整对外形象。",
+    detail:
+      "先把 logo、视觉风格、首批商品和社媒物料一起搭出来，形成完整对外形象。",
   },
   {
     name: "想做一波主题企划",
-    detail: "适合节日活动、品牌联名、限定上新和礼赠套装，一次性生成完整主题表达。",
+    detail:
+      "适合节日活动、品牌联名、限定上新和礼赠套装，一次性生成完整主题表达。",
   },
   {
     name: "创作者想变现",
-    detail: "把图案、插画和风格内容继续做成可售商品、授权设计和可持续运营的系列作品。",
+    detail:
+      "把图案、插画和风格内容继续做成可售商品、授权设计和可持续运营的系列作品。",
   },
 ];
 const futureSignals = [
-  { title: "AI 设计评分", desc: "给出配色、排版、风格统一度和商业可用性的综合建议，辅助改稿。" },
-  { title: "商品场景生成", desc: "让一张设计稿快速变成商品主图、模特展示图和详情页陈列素材。" },
-  { title: "趋势与风格推荐", desc: "把热点主题、人群偏好和平台风格趋势转化为可操作的设计方向。" },
+  {
+    title: "AI 设计评分",
+    desc: "给出配色、排版、风格统一度和商业可用性的综合建议，辅助改稿。",
+  },
+  {
+    title: "商品场景生成",
+    desc: "让一张设计稿快速变成商品主图、模特展示图和详情页陈列素材。",
+  },
+  {
+    title: "趋势与风格推荐",
+    desc: "把热点主题、人群偏好和平台风格趋势转化为可操作的设计方向。",
+  },
 ];
 const podCategories = [
   {
@@ -373,13 +388,13 @@ onMounted(() => {
 
 <template>
   <div class="bg-[#f7f5f2] text-stone-950">
-    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <section class="px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div
-        class="mx-auto grid max-w-[1560px] gap-8 xl:grid-cols-[0.96fr_1.04fr] xl:items-center"
+        class="mx-auto grid max-w-[1560px] gap-10 xl:grid-cols-[0.96fr_1.04fr] xl:items-center"
       >
-        <div class="max-w-2xl pt-2">
+        <div class="max-w-2xl pt-2 lg:pr-4">
           <span
-            class="inline-flex items-center rounded-full bg-white px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-stone-500 transition hover:-translate-y-[1px] hover:text-stone-900"
+            class="ys-chip cursor-default rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-stone-500"
           >
             yishe / free design + ai + pod
           </span>
@@ -388,9 +403,9 @@ onMounted(() => {
           >
             从免费设计开始，把创意一路做成商品与服务。
           </h1>
-          <p class="mt-4 max-w-xl text-[13px] leading-7 text-stone-500">
-            衣设不只是卖商品，也不只是做设计。这里把免费设计、AI
-            创意、POD 商品、设计师服务和社区内容放在同一个入口里。
+          <p class="mt-4 max-w-xl text-[14px] leading-8 text-stone-500">
+            衣设不只是卖商品，也不只是做设计。这里把免费设计、AI 创意、POD
+            商品、设计师服务和社区内容放在同一个入口里。
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <BaseButton
@@ -412,22 +427,24 @@ onMounted(() => {
             <span
               v-for="pill in categoryPills"
               :key="pill"
-              class="ys-chip cursor-default rounded-full px-3 py-1 text-[11px] transition hover:-translate-y-[1px]"
+              class="ys-chip cursor-default rounded-full px-3 py-1 text-[11px]"
               >{{ pill }}</span
             >
           </div>
         </div>
 
-        <div class="rounded-[1.35rem] bg-white p-3 sm:p-4 lg:p-5">
+        <div class="ys-section-shell p-3 sm:p-4 lg:p-5">
           <div class="grid gap-4">
             <article
-              class="group rounded-[1.1rem] bg-[#f6f4f1] p-4 transition duration-200 hover:-translate-y-[2px] hover:bg-[#f3efe9] sm:p-5 lg:p-6"
+              class="group rounded-[1.25rem] bg-[#f6f2eb] p-4 sm:p-5 lg:p-6"
             >
               <div
-                class="grid gap-4 md:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] md:items-stretch"
+                class="grid gap-5 md:grid-cols-[minmax(0,1.08fr)_minmax(280px,0.92fr)] md:items-stretch"
               >
-                <div class="overflow-hidden rounded-[0.9rem] bg-stone-200">
-                  <div class="min-h-[360px] overflow-hidden sm:min-h-[420px] md:h-full md:min-h-[440px]">
+                <div class="overflow-hidden rounded-[1rem] bg-[#e6dfd3]">
+                  <div
+                    class="min-h-[360px] overflow-hidden sm:min-h-[420px] md:h-full md:min-h-[440px]"
+                  >
                     <img
                       v-if="heroDisplay.imageUrl"
                       :src="
@@ -445,7 +462,9 @@ onMounted(() => {
                       v-else
                       class="flex h-full min-h-[360px] w-full items-center justify-center bg-[linear-gradient(135deg,#e7e5e4,#f5f5f4,#d6d3d1)] sm:min-h-[420px] md:min-h-[440px]"
                     >
-                      <div class="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-stone-500">
+                      <div
+                        class="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-stone-500"
+                      >
                         Featured Preview
                       </div>
                     </div>
@@ -458,7 +477,9 @@ onMounted(() => {
                     <span>{{ heroDisplay.category }}</span>
                     <span>Featured</span>
                   </div>
-                  <div class="rounded-[1rem] bg-white/70 p-4 sm:p-5">
+                  <div
+                    class="ys-flat-block rounded-[1rem] bg-white/70 p-4 sm:p-5"
+                  >
                     <div
                       class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
                     >
@@ -479,7 +500,7 @@ onMounted(() => {
                     </p>
                   </div>
                   <div
-                    class="flex flex-1 flex-col justify-between rounded-[1rem] border border-white/70 bg-[#efe8df] p-4 sm:p-5"
+                    class="ys-flat-block flex flex-1 flex-col justify-between rounded-[1.05rem] bg-[#efe8df] p-4 sm:p-5"
                   >
                     <div>
                       <h3
@@ -492,13 +513,14 @@ onMounted(() => {
                       </p>
                     </div>
                     <button
-                      class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:-translate-y-[1px] hover:bg-stone-950 hover:text-white"
-                      @click="heroDisplay.id !== 'hero-placeholder' && goToProductDetail(heroDisplay.id)"
+                      class="ys-quiet-link mt-4 inline-flex w-fit rounded-full bg-white/78 px-3 py-1.5 text-[11px] text-stone-600 hover:bg-white"
+                      @click="
+                        heroDisplay.id !== 'hero-placeholder' &&
+                        goToProductDetail(heroDisplay.id)
+                      "
                     >
                       看这件
-                      <v-icon
-                        size="14"
-                        class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      <v-icon size="14" class="transition duration-200"
                         >mdi-arrow-top-right</v-icon
                       >
                     </button>
@@ -511,20 +533,20 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-      <div class="mx-auto max-w-[1560px] space-y-4">
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="mx-auto max-w-[1560px] space-y-5">
         <BusinessSectionIntro
           kicker="POD Discovery Hub"
           title="保留原有分类结构，但把每个入口讲得更完整。"
           description="仍然是原先的分类浏览方式，只是把它升级成设计能力、商品延展和使用场景的联合入口。"
         />
 
-        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <button
             v-for="item in podCategories"
             :key="item.name"
             type="button"
-            class="group flex min-h-[188px] flex-col justify-between rounded-[1.2rem] px-5 py-5 text-left transition duration-200 hover:-translate-y-[1px]"
+            class="group flex min-h-[196px] flex-col justify-between rounded-[1.25rem] border border-white/40 px-5 py-5 text-left transition duration-200 sm:px-6"
             :style="{ backgroundColor: item.bg }"
             @click="goToKeyword(item.keyword)"
           >
@@ -566,20 +588,20 @@ onMounted(() => {
           </button>
         </div>
 
-        <div class="grid gap-3 xl:grid-cols-[1.05fr_0.95fr]">
-          <section class="rounded-[1.2rem] bg-[#f6f1e8] px-5 py-5">
+        <div class="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+          <section class="ys-section-shell px-5 py-5 sm:px-6">
             <div class="flex items-center justify-between gap-3">
               <h3 class="text-[15px] font-semibold text-stone-950">风格方向</h3>
               <button class="ys-quiet-link text-[11px]" @click="goToPortfolio">
                 去翻作品
               </button>
             </div>
-            <div class="mt-4 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               <button
                 v-for="item in styleBoards"
                 :key="item.name"
                 type="button"
-                class="flex items-center gap-3 rounded-[1rem] bg-[#fbf8f3] px-3 py-3 text-left transition duration-200 hover:bg-white"
+                class="ys-flat-block flex items-center gap-3 rounded-[1rem] px-3 py-3 text-left"
                 @click="goToKeyword(item.keyword)"
               >
                 <div
@@ -603,8 +625,8 @@ onMounted(() => {
             </div>
           </section>
 
-          <div class="grid gap-3">
-            <section class="rounded-[1.2rem] bg-[#f3ede4] px-5 py-5">
+          <div class="grid gap-4">
+            <section class="ys-section-shell px-5 py-5 sm:px-6">
               <div class="flex items-center justify-between gap-3">
                 <h3 class="text-[15px] font-semibold text-stone-950">
                   从哪开始都行
@@ -618,7 +640,7 @@ onMounted(() => {
                   v-for="item in useCases"
                   :key="item.title"
                   type="button"
-                  class="rounded-[1rem] bg-[#fbf8f3] px-4 py-4 text-left transition duration-200 hover:bg-white"
+                  class="ys-flat-block rounded-[1rem] px-4 py-4 text-left"
                   @click="goToModule(item.path)"
                 >
                   <div class="flex items-center justify-between gap-3">
@@ -638,7 +660,7 @@ onMounted(() => {
               </div>
             </section>
 
-            <section class="rounded-[1.2rem] bg-[#f8f3eb] px-5 py-5">
+            <section class="ys-section-shell px-5 py-5 sm:px-6">
               <div>
                 <h3 class="text-[15px] font-semibold text-stone-950">
                   大家最近在翻这些
@@ -652,7 +674,7 @@ onMounted(() => {
                   v-for="item in hotKeywords"
                   :key="item"
                   type="button"
-                  class="rounded-full bg-[#fbf8f3] px-3 py-1.5 text-[11px] text-stone-600 transition duration-200 hover:bg-white hover:text-stone-950"
+                  class="ys-chip rounded-full px-3 py-1.5 text-[11px] text-stone-600"
                   @click="goToKeyword(item)"
                 >
                   {{ item }}
@@ -664,12 +686,12 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-      <div class="mx-auto grid max-w-[1560px] gap-3 md:grid-cols-4">
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="mx-auto grid max-w-[1560px] gap-4 md:grid-cols-4">
         <div
           v-for="item in impactStats"
           :key="item.label"
-          class="rounded-[1rem] border border-stone-200 bg-white px-5 py-4 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
+          class="ys-flat-block rounded-[1.05rem] px-5 py-5"
         >
           <dt class="text-[10px] uppercase tracking-[0.22em] text-stone-400">
             {{ item.label }}
@@ -681,9 +703,9 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div
-        class="mx-auto grid max-w-[1560px] gap-5 lg:grid-cols-[0.72fr_1.28fr]"
+        class="mx-auto grid max-w-[1560px] gap-6 lg:grid-cols-[0.72fr_1.28fr]"
       >
         <div>
           <span class="text-[10px] uppercase tracking-[0.24em] text-stone-400"
@@ -698,11 +720,11 @@ onMounted(() => {
             用户仍然按照原先的阅读节奏理解页面，只是现在会更明确地感知到设计、AI、商品与变现的连续关系。
           </p>
         </div>
-        <div class="grid gap-3 md:grid-cols-3">
+        <div class="grid gap-4 md:grid-cols-3">
           <article
             v-for="item in storySteps"
             :key="item.step"
-            class="rounded-[1rem] border border-stone-200 bg-white p-5 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
+            class="ys-flat-block rounded-[1.05rem] p-5"
           >
             <span
               class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
@@ -719,10 +741,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-      <div
-        class="mx-auto max-w-[1560px] rounded-[1.6rem] bg-white p-5 sm:p-6 lg:p-7"
-      >
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="ys-section-shell mx-auto max-w-[1560px] p-5 sm:p-6 lg:p-7">
         <BusinessSectionIntro
           kicker="Business Modules"
           title="三个入口不变，但每个入口都能承接更强的平台能力。"
@@ -741,7 +761,7 @@ onMounted(() => {
               {{ item.text }}
             </p>
             <button
-              class="ys-chip mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] transition duration-200 hover:-translate-y-[1px]"
+              class="ys-chip mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px]"
               @click="goToModule(item.to)"
             >
               {{ item.action }}
@@ -752,9 +772,9 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-      <div class="mx-auto grid max-w-[1560px] gap-5 xl:grid-cols-[1fr_1fr]">
-        <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
+    <section class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div class="mx-auto grid max-w-[1560px] gap-6 xl:grid-cols-[1fr_1fr]">
+        <div class="ys-section-shell p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Personalized Studio"
             title="左侧还是原来的服务卡，但改成更强的商业化叙事。"
@@ -764,7 +784,7 @@ onMounted(() => {
             <div
               v-for="item in personalizedModes"
               :key="item.name"
-              class="rounded-[1rem] border border-stone-200 bg-[#faf8f5] p-4"
+              class="ys-flat-block rounded-[1rem] p-4"
             >
               <div class="text-[14px] font-semibold text-stone-950">
                 {{ item.name }}
@@ -792,7 +812,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="rounded-[1.55rem] bg-white p-5 sm:p-6">
+        <div class="ys-section-shell p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="AI Ready"
             title="右侧仍然是 AI 模块，但内容升级为真正可包装的产品能力。"
@@ -802,7 +822,7 @@ onMounted(() => {
             <div
               v-for="item in futureSignals"
               :key="item.title"
-              class="rounded-[1rem] border border-stone-200 bg-[#faf8f5] p-4"
+              class="ys-flat-block rounded-[1rem] p-4"
             >
               <div class="text-[14px] font-semibold text-stone-950">
                 {{ item.title }}
@@ -825,7 +845,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-10">
+    <section class="px-4 pb-20 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-14">
       <div class="mx-auto max-w-[1560px]">
         <div class="flex items-end justify-between gap-6">
           <div>
@@ -840,25 +860,23 @@ onMounted(() => {
           </div>
           <NuxtLink
             to="/products"
-            class="hidden text-[11px] text-stone-500 transition hover:text-stone-950 sm:inline-flex sm:items-center sm:gap-2"
+            class="ys-quiet-link hidden text-[11px] sm:inline-flex sm:items-center sm:gap-2"
           >
             去看更多
-            <v-icon
-              size="15"
-              class="transition duration-200 hover:translate-x-0.5"
+            <v-icon size="15" class="transition duration-200"
               >mdi-arrow-right</v-icon
             >
           </NuxtLink>
         </div>
 
-        <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <article
             v-for="product in featuredShowcase"
             :key="product.id"
-            class="group cursor-pointer rounded-[1rem] border border-stone-200 bg-white p-3 transition duration-200 hover:border-stone-300 hover:bg-[#fcfbf9]"
+            class="ys-flat-block group cursor-pointer rounded-[1.05rem] p-3 sm:p-4"
             @click="goToProductDetail(product.id)"
           >
-            <div class="overflow-hidden rounded-[0.9rem] bg-stone-100">
+            <div class="overflow-hidden rounded-[0.95rem] bg-stone-100">
               <div class="aspect-[4/5] overflow-hidden">
                 <img
                   v-if="product.imageUrl"
@@ -901,12 +919,10 @@ onMounted(() => {
                 </p>
               </div>
               <button
-                class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#f6f4f1] text-stone-500 transition duration-200 group-hover:bg-stone-900 group-hover:text-white"
+                class="ys-icon-btn mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full transition duration-200 group-hover:bg-white group-hover:text-stone-900"
                 @click.stop="goToProductDetail(product.id)"
               >
-                <v-icon
-                  size="14"
-                  class="transition duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                <v-icon size="14" class="transition duration-200"
                   >mdi-arrow-top-right</v-icon
                 >
               </button>
