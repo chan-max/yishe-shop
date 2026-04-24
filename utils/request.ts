@@ -71,6 +71,11 @@ export const request = async <T = any>(
     ...headers,
   };
 
+  // 独立站所有请求都尽量携带 openApiKey，用于绑定所属主账号上下文。
+  if (openApiKey) {
+    requestHeaders["x-open-api-key"] = openApiKey;
+  }
+
   if (authMode === "token" && finalToken) {
     requestHeaders.Authorization = `Bearer ${finalToken}`;
   }
