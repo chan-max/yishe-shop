@@ -62,21 +62,22 @@ jobs:
         if: steps.version_check.outputs.changed == 'true'
         run: npm ci --prefer-offline --no-audit
 
-      - name: Static HTML export with Nuxt
+      - name: Build Nuxt SSR app
         if: steps.version_check.outputs.changed == 'true'
-        run: npm run generate
+        run: npm run build
 
       - name: Verify build output
         if: steps.version_check.outputs.changed == 'true'
         run: |
           echo "Checking build output..."
           ls -la .output/ || echo ".output directory not found"
+          ls -la .output/server/ || echo ".output/server directory not found"
           ls -la .output/public/ || echo ".output/public directory not found"
-          find .output/public -type f | head -20 || echo "No files found in .output/public"
+          test -f .output/server/index.mjs
 
       - name: Package build artifacts
         if: steps.version_check.outputs.changed == 'true'
-        run: tar -czf nuxt-public.tar.gz -C .output public
+        run: tar -czf nuxt-output.tar.gz .output
 
       - name: Upload package to Tencent Cloud
         if: steps.version_check.outputs.changed == 'true'
@@ -86,13 +87,13 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
-          source: "nuxt-public.tar.gz"
+          source: "nuxt-output.tar.gz"
           target: "/tmp"
           command_timeout: "10m"
           timeout: "10m"
           debug: true
 
-      - name: Extract package on Tencent Cloud
+      - name: Deploy SSR app on Tencent Cloud
         if: steps.version_check.outputs.changed == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -102,11 +103,23 @@ jobs:
           port: 22
           script: |
             mkdir -p /www/wwwroot/1s.design
-            tar -xzf /tmp/nuxt-public.tar.gz -C /tmp
-            rm -rf /www/wwwroot/1s.design/*
-            cp -r /tmp/public/. /www/wwwroot/1s.design/
-            rm -rf /tmp/public
-            rm -f /tmp/nuxt-public.tar.gz
+            tar -xzf /tmp/nuxt-output.tar.gz -C /tmp
+            rm -rf /www/wwwroot/1s.design/.output
+            cp -r /tmp/.output /www/wwwroot/1s.design/.output
+            rm -rf /tmp/.output
+            rm -f /tmp/nuxt-output.tar.gz
+
+            if ! command -v pm2 >/dev/null 2>&1; then
+              npm install -g pm2
+            fi
+
+            cd /www/wwwroot/1s.design
+            if pm2 describe yishe-shop >/dev/null 2>&1; then
+              NODE_ENV=production PORT=3000 HOST=0.0.0.0 pm2 restart yishe-shop --update-env
+            else
+              NODE_ENV=production PORT=3000 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop
+            fi
+            pm2 save
           command_timeout: "10m"
           timeout: "10m"
           debug: true
