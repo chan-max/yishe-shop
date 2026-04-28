@@ -213,6 +213,10 @@ export default defineNuxtConfig({
   nitro: {
     externals: {
       inline: [/^unhead(\/.*)?$/, /^@unhead\//],
+      traceInclude: [
+        "node_modules/unhead/dist/**",
+        "node_modules/@unhead/vue/node_modules/unhead/dist/**",
+      ],
     },
     prerender: {
       failOnError: false,
