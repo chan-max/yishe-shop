@@ -66,6 +66,16 @@ jobs:
         if: steps.version_check.outputs.changed == 'true'
         run: npm run build
 
+      - name: Include unhead runtime files
+        if: steps.version_check.outputs.changed == 'true'
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" .output/server/chunks >/dev/null 2>&1; then
+            rm -rf .output/server/node_modules/unhead
+            mkdir -p .output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. .output/server/node_modules/unhead/
+          fi
+
       - name: Verify build output
         if: steps.version_check.outputs.changed == 'true'
         run: |
@@ -74,6 +84,9 @@ jobs:
           ls -la .output/server/ || echo ".output/server directory not found"
           ls -la .output/public/ || echo ".output/public directory not found"
           test -f .output/server/index.mjs
+          if grep -R "from 'unhead/\|from \"unhead/" .output/server/chunks >/dev/null 2>&1; then
+            test -f .output/server/node_modules/unhead/dist/server.mjs
+          fi
 
       - name: Package build artifacts
         if: steps.version_check.outputs.changed == 'true'
