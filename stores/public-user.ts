@@ -7,7 +7,22 @@
  * @Description: 开放用户状态管理
  */
 import { defineStore } from 'pinia'
-import { useLocalStorage } from '@vueuse/core'
+
+const PUBLIC_USER_TOKEN_KEY = 'public-user-token'
+
+const getStoredToken = () => {
+  if (!process.client) return null
+  return window.localStorage.getItem(PUBLIC_USER_TOKEN_KEY)
+}
+
+const setStoredToken = (token: string | null) => {
+  if (!process.client) return
+  if (token) {
+    window.localStorage.setItem(PUBLIC_USER_TOKEN_KEY, token)
+  } else {
+    window.localStorage.removeItem(PUBLIC_USER_TOKEN_KEY)
+  }
+}
 
 interface PublicUserInfo {
   id: number
@@ -38,8 +53,7 @@ export const usePublicUserStore = defineStore('publicUser', {
     isLoggedIn(state) {
       // 在客户端时，每次都从 localStorage 读取最新的 token
       if (process.client) {
-        const tokenStorage = useLocalStorage('public-user-token', null)
-        return !!tokenStorage.value
+        return !!getStoredToken()
       }
       // SSR 时使用 state 中的 token
       return !!state.token
@@ -50,18 +64,12 @@ export const usePublicUserStore = defineStore('publicUser', {
   actions: {
     setToken(token: string) {
       this.token = token
-      if (process.client) {
-        const tokenStorage = useLocalStorage('public-user-token', null)
-        tokenStorage.value = token
-      }
+      setStoredToken(token)
     },
 
     clearToken() {
       this.token = null
-      if (process.client) {
-        const tokenStorage = useLocalStorage('public-user-token', null)
-        tokenStorage.value = null
-      }
+      setStoredToken(null)
       this.userInfo = null
     },
 
@@ -71,14 +79,10 @@ export const usePublicUserStore = defineStore('publicUser', {
 
     // 初始化时从 localStorage 恢复 token
     initToken() {
-      if (process.client) {
-        const tokenStorage = useLocalStorage('public-user-token', null)
-        const token = tokenStorage.value
-        if (token) {
-          this.token = token
-        }
+      const token = getStoredToken()
+      if (token) {
+        this.token = token
       }
     },
   },
 })
-

@@ -2,11 +2,11 @@
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "设计知识库 - 衣设",
+  title: "POD 设计知识库 - 衣设",
   description:
-    "衣设知识中心聚合设计教程、创意案例、技巧分享与趋势资讯，帮助用户更快学习、找到灵感，并进入设计实践与商品化流程。",
+    "衣设知识库聚合 POD 印花教程、图案延展方法、商品化案例、趋势资讯和 AI 设计经验，帮助创作者把灵感变成定制商品。",
   keywords:
-    "设计知识库,设计教程,创意案例,色彩搭配,排版技巧,POD设计,创意趋势,衣设",
+    "POD设计知识库,印花教程,图案延展,商品化案例,AI设计,创意趋势,定制商品,衣设",
   url: "https://1s.design/post",
   type: "website",
 });
@@ -82,7 +82,7 @@ const knowledgeItems: KnowledgeItem[] = [
     coverLabel: "Pattern to SKU",
     hot: true,
     practicePath: "/products",
-    practiceText: "去商品系统里看图案如何继续商品化",
+    practiceText: "去 POD 商品库看图案如何继续商品化",
   },
   {
     id: "color-system",
@@ -100,7 +100,7 @@ const knowledgeItems: KnowledgeItem[] = [
     coverTone: "from-[#efe2d7] via-[#f8f5ee] to-[#e2e5da]",
     coverLabel: "Color Logic",
     practicePath: "/free-design",
-    practiceText: "去免费设计里测试不同配色方向",
+    practiceText: "去免费设计里尝试不同配色方向",
   },
   {
     id: "xiaohongshu-cover",
@@ -156,7 +156,7 @@ const knowledgeItems: KnowledgeItem[] = [
     coverTone: "from-[#e6ddcf] via-[#fbf7f0] to-[#d8e0d6]",
     coverLabel: "Textile Mood",
     practicePath: "/products",
-    practiceText: "去商品系统看家居图案如何落地",
+    practiceText: "去 POD 商品库看家居图案如何落地",
   },
   {
     id: "type-hierarchy",
@@ -174,7 +174,7 @@ const knowledgeItems: KnowledgeItem[] = [
     coverTone: "from-[#ece4da] via-[#ffffff] to-[#dce3d8]",
     coverLabel: "Type System",
     practicePath: "/free-design",
-    practiceText: "去免费设计里直接测试排版方向",
+    practiceText: "去免费设计里尝试排版方向",
   },
   {
     id: "trend-report",
@@ -226,13 +226,13 @@ const learningPaths: LearningPath[] = [
     title: "商品化验证路径",
     description: "从图案延展到 SKU 映射，适合把知识接入 POD。",
     target: "/products",
-    action: "进入商品系统",
+    action: "进入 POD 商品库",
   },
   {
     title: "AI 共创路径",
     description: "适合快速试风格、做改稿和趋势推演。",
     target: "/ai-lab",
-    action: "进入 AI 实验室",
+    action: "进入 AI 工作台",
   },
 ];
 
@@ -327,10 +327,10 @@ const goToPath = (path: string) => navigateTo(path);
           <div class="mt-4 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div>
               <h1 class="max-w-[12ch] font-[var(--ys-font-display),Georgia,serif] text-[clamp(2.8rem,5vw,5.4rem)] leading-[0.9] text-[#243127]">
-                把知识页做成设计中台，而不是文章列表。
+                POD 印花、视觉趋势与商品化知识库。
               </h1>
               <p class="mt-4 max-w-3xl text-[0.95rem] leading-8 text-[#5f695f]">
-                这里不只是放教程，而是把教程、案例、趋势、实践入口串成一条连续路径。用户先筛选，再预览，再进入设计动作。
+                学习图案延展、商品映射、品牌视觉、AI 辅助创作和上新企划，把设计知识直接连接到定制商品和创意资产。
               </p>
             </div>
 
@@ -663,12 +663,12 @@ const goToPath = (path: string) => navigateTo(path);
         <div class="footer-cta-copy">
           <div class="minimal-kicker">Practice Now</div>
           <h2>从知识继续走向设计实践，再走向商品化。</h2>
-          <p>学到这里不必停住。你可以直接进入免费设计、AI 设计中台或 POD 商品系统，把刚刚吸收的知识变成真实动作。</p>
+          <p>学到这里不必停住。你可以直接进入设计灵感、AI 工作台或 POD 商品库，把刚刚吸收的知识变成真实动作。</p>
         </div>
         <div class="footer-cta-actions">
-          <BaseButton variant="primary" size="lg" @click="goToPath('/free-design')">进入免费设计</BaseButton>
-          <BaseButton variant="outline" size="lg" @click="goToPath('/ai-lab')">进入 AI 设计</BaseButton>
-          <BaseButton variant="secondary" size="lg" @click="goToPath('/products')">进入商品系统</BaseButton>
+          <BaseButton variant="primary" size="lg" @click="goToPath('/free-design')">进入设计灵感</BaseButton>
+          <BaseButton variant="outline" size="lg" @click="goToPath('/ai-lab')">进入 AI 工作台</BaseButton>
+          <BaseButton variant="secondary" size="lg" @click="goToPath('/products')">进入 POD 商品库</BaseButton>
         </div>
       </section>
     </div>

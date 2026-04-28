@@ -12,15 +12,15 @@ definePageMeta({ layout: 'page' })
 // Page title and meta
 useHead({
   titleTemplate: '',
-  title: '联系我们 - 1s Design | 陈政 Jackie Chan',
+  title: '联系我们 - 衣设 yishe POD 定制设计',
   meta: [
     {
       name: 'description',
-      content: '联系 1s Design 创始人陈政（Jackie Chan）。邮箱：jackieontheway666@gmail.com，电话：18742539196 / 13224229196。通过微信、QQ、抖音、小红书等多种方式与我们取得联系。'
+      content: '联系衣设 yishe，咨询 POD 印花设计、私人定制、品牌周边、礼品定制和创意设计合作。'
     },
     {
       name: 'keywords',
-      content: '联系1s Design, 陈政联系方式, Jackie Chan, contact, 邮箱, 电话, 微信, QQ, 抖音, 小红书, 1s.design, 衣设网'
+      content: '联系衣设,POD定制,印花设计合作,私人定制,品牌周边,礼品定制,创意设计服务,1s.design'
     }
   ]
 })

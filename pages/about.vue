@@ -12,15 +12,15 @@ definePageMeta({ layout: "page" });
 // Page title and meta
 useHead({
   titleTemplate: "",
-  title: "关于衣设 - 1s.design",
+  title: "关于衣设 - POD 印花与定制设计开放平台",
   meta: [
     {
       name: "description",
-      content: "衣设相信每个人都有表达的权利。不是先成为设计师，才配做设计。",
+      content: "了解衣设 yishe，一个面向品牌、创作者和个人用户的 POD 印花、定制商品与创意设计开放平台。",
     },
     {
       name: "keywords",
-      content: "衣设,1s.design,设计平台,独立设计品牌,POD电商",
+      content: "衣设,1s.design,POD平台,印花设计,定制商品,私人定制,创意设计平台",
     },
   ],
 });
@@ -32,15 +32,15 @@ useHead({
       <!-- Hero Section -->
       <section class="about-hero">
         <h1 class="about-title">关于衣设</h1>
-        <p class="about-subtitle">衣设想做的，首先是一个能容纳表达的网站。</p>
+        <p class="about-subtitle">一个连接图案、商品和私人表达的创意设计平台。</p>
       </section>
 
       <!-- Mission Section -->
       <section class="about-section">
         <h2 class="section-title">我们的使命</h2>
         <p class="section-content">
-          我们相信每个人都有表达的权利。设计不该只属于专业圈子，
-          也不该总是停在草稿、收藏夹和脑子里。衣设想把这件事变得更日常一点。
+          我们相信好的设计应该从灵感走向真实产品。衣设把 POD 印花、定制商品、
+          视觉素材和设计师服务连接起来，让创作者和品牌更快完成表达。
         </p>
       </section>
 
@@ -48,8 +48,7 @@ useHead({
       <section class="about-section">
         <h2 class="section-title">我们的愿景</h2>
         <p class="section-content">
-          让普通人也能把自己的审美做成一件会真的穿出去、送出去、摆出来的东西。
-          不是买一个现成答案，而是慢慢形成自己的样子。
+          让一张图案、一句主题或一份纪念心意，延展成可以穿出去、送出去、摆出来的定制商品。
         </p>
       </section>
 
@@ -93,8 +92,7 @@ useHead({
       <section class="about-section">
         <h2 class="section-title">我们的团队</h2>
         <p class="section-content">
-          我们由设计、产品和开发一起把这件事慢慢做出来。
-          有人负责把方向看清，有人负责把页面做顺，有人负责让表达真的能落到商品和内容里。
+          我们由设计、产品和技术共同构建衣设，让图案资源、商品展示、定制服务和内容发布保持同一套审美标准。
         </p>
       </section>
     </div>

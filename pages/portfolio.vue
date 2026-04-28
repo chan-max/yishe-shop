@@ -2,10 +2,10 @@
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "作品集与灵感库 - 衣设",
+  title: "POD 作品集与印花灵感库 - 衣设",
   description:
-    "看别人怎么把审美做成衣服、周边和系列内容，也顺手看看哪一类表达最像你。",
-  keywords: "作品集,灵感库,设计分享,设计展示,POD作品集",
+    "浏览衣设精选 POD 系列、印花图案、品牌视觉、包装周边和艺术家联名案例，寻找适合定制商品的创意方向。",
+  keywords: "POD作品集,印花灵感,图案设计,品牌视觉,包装周边,艺术家联名,定制商品案例",
   url: "https://1s.design/portfolio",
   type: "website",
 });
@@ -72,9 +72,9 @@ const toggleSave = (id: string) => {
       <div class="portfolio-hero__grid">
         <div class="portfolio-hero__copy">
           <p class="portfolio-label">Curated Selection</p>
-          <h1>作品集应该像策展，不应该像一堆项目缩略图。</h1>
+          <h1>像逛创意素材库一样，浏览可延展成商品的作品系列。</h1>
           <p>
-            所以这页改成更像编辑台和收藏墙的结构。你先判断哪种审美路径更像你，再继续往下看项目怎么长成系列、商品和内容。
+            从 POD 系列、品牌视觉、包装周边到艺术家联名，观察一组图案如何延伸为服饰、礼品、家居和内容资产。
           </p>
         </div>
 

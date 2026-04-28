@@ -254,7 +254,7 @@
           variant="primary"
           class="mt-6 !text-[12px]"
           @click="router.push('/products')"
-          >回商品列表</BaseButton
+          >回 POD 商品库</BaseButton
         >
       </div>
     </div>
@@ -281,15 +281,18 @@ import { usePageSEO, useProductStructuredData } from "~/composables/use-seo";
 
 const toast = useToast();
 
-definePageMeta({ layout: "page" });
+definePageMeta({
+  layout: "page",
+  middleware: "product-or-search",
+});
 
 const route = useRoute();
 const router = useRouter();
 const publicUserStore = usePublicUserStore();
 
 usePageSEO({
-  title: "商品详情 - 衣设服装设计",
-  description: "查看这件商品背后的气质、场景和设计方向。",
+  title: "POD 商品详情 - 衣设 yishe",
+  description: "查看 POD 定制商品的图案、场景、灵感说明和设计方向。",
   url: `https://1s.design/product/${route.params.id}`,
   type: "product",
 });
@@ -566,10 +569,10 @@ watch(
         "查看商品详情";
 
       usePageSEO({
-        title: `${newProduct.name || "商品详情"} - 衣设服装设计`,
+        title: `${newProduct.name || "POD 商品详情"} - 衣设 yishe`,
         description: productDescription,
         keywords:
-          productKeywords.value.join(",") || "服装设计,创意印花,图案设计",
+          productKeywords.value.join(",") || "POD商品,印花设计,定制商品,图案设计",
         image: productImage,
         url: productUrl,
         type: "product",
@@ -578,7 +581,7 @@ watch(
           description: productDescription,
           image: productImage,
           url: productUrl,
-          category: "创意商品",
+          category: "POD 定制商品",
         }),
       });
     }

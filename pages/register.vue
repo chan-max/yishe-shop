@@ -105,6 +105,12 @@ definePageMeta({
   layoutTransition: false,
 });
 
+useSeoMeta({
+  title: "注册 - 衣设 yishe",
+  description: "创建衣设账号，收藏 POD 印花灵感、定制商品方向和创意设计资源。",
+  robots: "noindex, nofollow",
+});
+
 const publicUserStore = usePublicUserStore();
 const router = useRouter();
 const loading = ref(false);

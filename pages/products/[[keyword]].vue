@@ -247,29 +247,29 @@ const pageNumbers = computed(() => {
 
 const pageTitle = computed(() => {
   return routeKeyword.value
-    ? `${routeKeyword.value} - 衣设商品列表`
-    : "衣设商品列表 - POD 商品与设计内容";
+    ? `${routeKeyword.value} POD 设计与定制商品灵感 - 衣设`
+    : "POD 印花商品与定制设计灵感 - 衣设";
 });
 
 const pageDescription = computed(() => {
   return routeKeyword.value
-    ? `浏览衣设里与“${routeKeyword.value}”相关的商品、图案和设计表达，继续延展你的灵感与选品方向。`
-    : "浏览衣设里的 POD 商品、印花设计与创意内容，找到适合商品化、定制和灵感延展的方向。";
+    ? `浏览衣设中与“${routeKeyword.value}”相关的 POD 图案、印花商品、定制周边和创意设计灵感。`
+    : "发现适合服饰印花、礼品周边、家居布艺和私人定制的 POD 商品设计灵感。";
 });
 
 const pageKeywords = computed(() => {
-  const baseKeywords = `商品列表,POD商品,印花设计,商品定制,设计灵感,${SITE_KEYWORDS}`;
+  const baseKeywords = `POD商品,印花设计,定制商品,私人定制,图案素材,服装印花,设计灵感,${SITE_KEYWORDS}`;
   return routeKeyword.value
     ? `${routeKeyword.value},${baseKeywords}`
     : baseKeywords;
 });
 
 const resultSummary = computed(() => {
-  if (loading.value) return "正在整理当前筛选下的商品结果";
+  if (loading.value) return "正在加载当前筛选下的 POD 设计资源";
   if (routeKeyword.value) {
-    return `共找到 ${total.value} 个和“${routeKeyword.value}”相关的商品与设计内容`;
+    return `共找到 ${total.value} 个和“${routeKeyword.value}”相关的 POD 设计资源`;
   }
-  return `当前共有 ${total.value} 个可浏览的商品与设计内容`;
+  return `当前共有 ${total.value} 个可浏览的 POD 设计资源`;
 });
 
 const activeFilters = computed(() => {
@@ -367,26 +367,10 @@ watch(
 <template>
   <div class="min-h-screen bg-[#f7f5f2] px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
     <div class="mx-auto max-w-[1560px]">
-      <div
-        class="ys-section-shell mx-auto max-w-3xl px-5 py-7 text-center sm:px-8 sm:py-8"
-      >
-        <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">
-          Catalog
-        </div>
-        <h1
-          class="mt-3 text-[30px] font-semibold text-stone-950 sm:text-[34px]"
-        >
-          先看看哪件像你
-        </h1>
-        <p
-          class="mx-auto mt-3 max-w-2xl text-[13px] leading-7 text-stone-500 sm:text-[14px]"
-        >
-          这里放的是衣设当前能直接浏览的商品和设计内容。页面先帮你把搜索、筛选和结果状态讲清楚，再慢慢去挑那件真正合适的。
-        </p>
-      </div>
+      <h1 class="sr-only">{{ pageTitle }}</h1>
 
       <div
-        class="ys-section-shell sticky top-[58px] z-20 mt-8 p-4 backdrop-blur-sm sm:p-5"
+        class="ys-section-shell sticky top-[58px] z-20 p-4 backdrop-blur-sm sm:p-5"
       >
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
           <div class="relative flex-1">
@@ -420,7 +404,7 @@ watch(
             <input
               v-model="searchKeyword"
               type="text"
-              placeholder="搜一个你现在想穿、想送、想试试的词"
+              placeholder="搜索印花图案、POD 商品、礼品周边或定制主题"
               class="ys-field w-full rounded-xl bg-[#faf8f5] py-3 pl-11 pr-4 text-[13px] outline-none transition duration-200"
               @keyup.enter="handleSearch"
             />
@@ -430,13 +414,13 @@ watch(
               class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition duration-200"
               @click="toggleFilters"
             >
-              {{ showFilters ? "先收起来" : "挑一挑" }}
+              {{ showFilters ? "收起筛选" : "筛选" }}
             </button>
             <BaseButton
               size="lg"
               class="!px-5 !py-3 !text-[12px]"
               @click="handleSearch"
-              >去找找</BaseButton
+              >搜索</BaseButton
             >
           </div>
         </div>
@@ -455,7 +439,7 @@ watch(
             </button>
           </div>
           <button class="ys-quiet-link text-[11px]" @click="resetFilters">
-            清掉重来
+            重置
           </button>
         </div>
 
@@ -479,7 +463,7 @@ watch(
             class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition"
             @click="resetFilters"
           >
-            重新选
+            重置筛选
           </button>
         </div>
 
@@ -506,7 +490,7 @@ watch(
             {{
               totalPages > 0
                 ? `第 ${currentPage} / ${totalPages} 页`
-                : "等待结果"
+                : "等待资源"
             }}
           </div>
         </div>
@@ -554,7 +538,7 @@ watch(
                         format: 'webp',
                       }) || undefined
                     "
-                    :alt="product.name || '商品图片'"
+                    :alt="product.name || 'POD 定制商品图片'"
                     class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]"
                     @error="handleImageError($event, product)"
                     @load="handleImageLoad"
@@ -562,14 +546,14 @@ watch(
                   <div
                     class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400"
                   >
-                    这张图还没放上来
+                    暂无预览图
                   </div>
                 </template>
                 <div
                   v-else
                   class="absolute inset-0 flex items-center justify-center bg-stone-100 text-[12px] text-stone-400"
                 >
-                  这张图还没放上来
+                  暂无预览图
                 </div>
               </div>
             </div>
@@ -600,13 +584,13 @@ watch(
           class="ys-section-shell mx-auto max-w-xl px-6 py-16 text-center sm:px-8"
         >
           <p class="text-[13px] leading-7 text-stone-500">
-            这一页还没出现让人停下来的东西，换个词、换个时间范围，或者回到默认列表看看。
+            暂时没有匹配的 POD 设计资源。可以换一个图案、商品品类或定制主题继续搜索。
           </p>
           <button
             class="ys-action-btn mt-5 rounded-xl px-5 py-3 text-[12px] transition"
             @click="resetFilters"
           >
-            换个方向
+            查看全部资源
           </button>
         </div>
 

@@ -48,6 +48,12 @@ definePageMeta({
   middleware: 'public-user-auth',
 })
 
+useSeoMeta({
+  title: '修改密码 - 衣设 yishe',
+  description: '更新衣设账号密码，保护个人定制资料和收藏内容。',
+  robots: 'noindex, nofollow',
+})
+
 const publicUserStore = usePublicUserStore()
 const router = useRouter()
 const loading = ref(false)
@@ -105,4 +111,3 @@ const handleSubmit = async () => {
   }
 }
 </script>
-

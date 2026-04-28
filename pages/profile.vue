@@ -67,6 +67,12 @@ definePageMeta({
   middleware: 'public-user-auth',
 })
 
+useSeoMeta({
+  title: '个人资料 - 衣设 yishe',
+  description: '管理衣设账号资料、POD 灵感收藏和定制设计信息。',
+  robots: 'noindex, nofollow',
+})
+
 const publicUserStore = usePublicUserStore()
 const router = useRouter()
 const loading = ref(true)

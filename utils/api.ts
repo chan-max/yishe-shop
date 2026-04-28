@@ -16,12 +16,6 @@ interface ApiResponse<T = any> {
   status?: boolean
 }
 
-// 定义测试接口的返回数据类型
-interface HelloResponse {
-  message: string
-  timestamp: number
-}
-
 // 登录接口的请求参数类型
 interface LoginParams {
   username: string
@@ -152,10 +146,6 @@ interface ProductResponse {
 
 // API 方法封装
 export const api = {
-  // 测试接口
-  hello: {
-    get: () => request<ApiResponse<HelloResponse>>('/hello', { authMode: 'none' }),
-  },
   // 认证相关接口
   auth: {
     login: (params: LoginParams) => 

@@ -31,12 +31,20 @@ export const request = async <T = any>(
   options: RequestOptions = {},
 ): Promise<Response<T>> => {
   const { method = "GET", params, body, headers = {}, authMode = "token" } = options;
+  const runtimeConfig = (() => {
+    try {
+      return useRuntimeConfig();
+    } catch {
+      return undefined;
+    }
+  })();
 
   const resolveBaseUrl = () => {
     if (process.client) {
       const nuxtPayload = (window as typeof window & { __NUXT__?: any })
         .__NUXT__;
       return (
+        runtimeConfig?.public?.apiBase ||
         nuxtPayload?.config?.public?.apiBase ||
         import.meta.env.NUXT_PUBLIC_API_BASE ||
         "http://localhost:1520/api"
@@ -44,6 +52,7 @@ export const request = async <T = any>(
     }
 
     return (
+      runtimeConfig?.public?.apiBase ||
       process.env.NUXT_PUBLIC_API_BASE ||
       (process.env.NODE_ENV === "production"
         ? "https://1s.design:1520/api"
@@ -52,7 +61,7 @@ export const request = async <T = any>(
   };
 
   const BASE_URL = resolveBaseUrl();
-  const openApiKey = resolveOpenApiKey();
+  const openApiKey = resolveOpenApiKey(runtimeConfig);
 
   // 仅在客户端读取本地存储，避免 SSR 时访问导致报错
   // 优先使用 public-user-token（开放用户），如果没有则使用普通 token（管理员）

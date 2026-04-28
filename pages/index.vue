@@ -6,11 +6,11 @@ import { getPreviewImageUrl } from "../utils/image";
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "衣设 yishe - 免费设计、AI设计、POD商品与创作者服务平台",
+  title: "衣设 yishe - POD 印花、定制商品与创意设计开放平台",
   description:
-    "衣设把免费设计、POD商品、AI设计、创作者服务和社区内容放在同一个入口，让灵感从设计到商品再到变现形成完整闭环。",
+    "探索可商用 POD 图案、印花商品、品牌周边、私人定制和创意设计服务。衣设帮助创作者与品牌把视觉灵感转化为真实产品。",
   keywords:
-    "免费设计,POD商品,AI设计,设计师服务,创意社区,商品定制,印花设计,1s.design",
+    "POD,印花设计,定制商品,私人定制,创意设计,AI设计,设计师服务,品牌周边,服装印花,图案素材,1s.design",
   url: "https://1s.design",
   type: "website",
   structuredData: [useWebsiteStructuredData(), useOrganizationStructuredData()],
@@ -26,55 +26,55 @@ type FeaturedProduct = {
 };
 
 const categoryPills = [
-  "免费设计入口",
-  "AI 图案生成",
+  "POD 印花图库",
+  "定制商品灵感",
   "POD 商品定制",
-  "设计师接单",
-  "创意社区",
+  "私人定制服务",
+  "设计师协作",
 ];
 const impactStats = [
-  { value: "120+", label: "免费设计场景" },
-  { value: "300+", label: "可延展商品类型" },
-  { value: "50+", label: "设计服务能力" },
-  { value: "24h", label: "AI 创意响应周期" },
+  { value: "120+", label: "POD 创意场景" },
+  { value: "300+", label: "可定制商品类型" },
+  { value: "50+", label: "专业设计服务" },
+  { value: "24h", label: "灵感到方案响应" },
 ];
 const storySteps = [
   {
     step: "01",
-    title: "先找方向",
+    title: "发现灵感",
     description:
-      "从免费设计分类、热门风格和真实案例里快速找到你要做的内容方向。",
+      "从图案、风格、品类和使用场景进入，快速锁定适合商品化的视觉方向。",
   },
   {
     step: "02",
-    title: "再生成方案",
+    title: "形成系列",
     description:
-      "可以自己用 AI 先出稿，也可以直接进入定制服务和设计师协作流程。",
+      "围绕同一主题延展服饰、家居、礼品、数码配件和品牌周边。",
   },
   {
     step: "03",
-    title: "最后变成商品或服务",
+    title: "落成产品",
     description:
-      "一个设计可以继续延展成商品、展示页、社媒素材和长期可售的创作资产。",
+      "把设计稿、展示图、商品主图和定制需求接入可执行的 POD 生产链路。",
   },
 ];
 const businessModules = [
   {
-    title: "免费设计中心，覆盖企业、电商、个人和社媒场景",
-    text: "Logo、海报、主图、详情页、小红书封面、礼品图案、服饰印花都能作为统一入口承接流量。",
-    action: "看设计能力",
+    title: "开放式 POD 资源库",
+    text: "围绕服饰印花、礼品周边、家居布艺和数字配件组织图案、样机与商品灵感。",
+    action: "浏览资源",
     to: "/portfolio",
   },
   {
-    title: "定制设计与设计师服务，适合更完整的商业需求",
-    text: "从品牌视觉、包装、印花系列到活动物料和联名企划，适合需要专业落地的人群。",
-    action: "提交需求",
+    title: "品牌与私人定制服务",
+    text: "为品牌首发、节日礼赠、个人纪念和创作者周边提供从视觉方向到商品落地的定制方案。",
+    action: "发起定制",
     to: "/design",
   },
   {
-    title: "AI 设计实验室，把生成、改稿、配图和营销一并做掉",
-    text: "不只是出图，还能做风格推荐、自动排版、设计建议、场景图生成和营销文案辅助。",
-    action: "体验 AI",
+    title: "AI 辅助创意工作台",
+    text: "用生成、扩图、排版和趋势建议加速创意验证，为设计师和创作者保留更大的表达空间。",
+    action: "进入工作台",
     to: "/ai-lab",
   },
 ];
@@ -97,16 +97,16 @@ const personalizedModes = [
 ];
 const futureSignals = [
   {
-    title: "AI 设计评分",
-    desc: "给出配色、排版、风格统一度和商业可用性的综合建议，辅助改稿。",
+    title: "图案趋势建议",
+    desc: "围绕节日、风格、人群和商品品类提供更接近市场的创意方向。",
   },
   {
     title: "商品场景生成",
     desc: "让一张设计稿快速变成商品主图、模特展示图和详情页陈列素材。",
   },
   {
-    title: "趋势与风格推荐",
-    desc: "把热点主题、人群偏好和平台风格趋势转化为可操作的设计方向。",
+    title: "系列化延展",
+    desc: "把一个主题继续扩展成服饰、礼品、家居和社媒内容的完整系列。",
   },
 ];
 const podCategories = [
@@ -253,21 +253,21 @@ const hotKeywords = [
 ];
 const useCases = [
   {
-    title: "我想先看平台能做什么设计",
-    text: "先从免费设计能力和分类入口看起，快速确认这里是不是能覆盖你的需求。",
-    action: "看能力",
+    title: "寻找可商用 POD 灵感",
+    text: "从图案、品类和风格进入，快速浏览适合上架、礼赠和品牌活动的创意方向。",
+    action: "探索",
     path: "/products",
   },
   {
-    title: "我已经知道自己偏什么风格",
-    text: "从作品和专题里进入会更快，也更容易找到适合的设计师和商品方向。",
-    action: "看风格",
+    title: "搭建品牌视觉系列",
+    text: "从作品案例理解色彩、图案、包装和商品陈列如何组成统一的品牌表达。",
+    action: "看案例",
     path: "/portfolio",
   },
   {
-    title: "我脑子里已经有个需求",
-    text: "可以直接进入定制设计或 AI 实验室，把模糊想法更快转成方案。",
-    action: "去转化",
+    title: "发起私人定制项目",
+    text: "提交礼物、服饰、活动周边或品牌首发需求，由设计服务继续推进落地。",
+    action: "定制",
     path: "/design",
   },
 ];
@@ -277,9 +277,9 @@ const featuredShowcase = computed(() => featuredProducts.value.slice(0, 6));
 const heroPrimary = computed(() => featuredProducts.value[0]);
 const heroFallback: FeaturedProduct = {
   id: "hero-placeholder",
-  title: "衣设精选作品",
-  description: "从图案、商品到展示图一体化延展的精选系列。",
-  category: "精选作品",
+  title: "POD 花卉印花系列",
+  description: "适合服饰、帆布包、杯具和家居布艺延展的高识别度图案方向。",
+  category: "POD Selection",
   image: "grad1",
 };
 const heroDisplay = computed(() => heroPrimary.value || heroFallback);
@@ -319,7 +319,7 @@ const fetchFeaturedProducts = async () => {
       {
         id: "1",
         title: "鎏金花卉印花系列",
-        description: "从图案、商品到展示图一体化延展的精选系列。",
+        description: "适合服饰、礼品和家居商品延展的高识别度印花方向。",
         category: "精选作品",
         image: "grad1",
       },
@@ -333,7 +333,7 @@ const fetchFeaturedProducts = async () => {
       {
         id: "3",
         title: "艺术家联名杯具周边",
-        description: "让创作内容快速延伸成适合售卖和礼赠的商品。",
+        description: "把插画内容延展为杯具、餐具和礼赠周边。",
         category: "精选作品",
         image: "grad3",
       },
@@ -396,16 +396,15 @@ onMounted(() => {
           <span
             class="ys-chip cursor-default rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-stone-500"
           >
-            yishe / free design + ai + pod
+            yishe / pod resources + custom design
           </span>
           <h1
             class="mt-6 text-[34px] font-semibold leading-[1.15] text-stone-950 sm:text-[42px] lg:text-[52px]"
           >
-            从免费设计开始，把创意一路做成商品与服务。
+            像浏览设计素材一样，发现可以真正做成商品的 POD 灵感。
           </h1>
           <p class="mt-4 max-w-xl text-[14px] leading-8 text-stone-500">
-            衣设不只是卖商品，也不只是做设计。这里把免费设计、AI 创意、POD
-            商品、设计师服务和社区内容放在同一个入口里。
+            衣设聚合印花图案、定制商品、品牌周边和创意设计服务，让每个想法都能找到适合的产品载体。
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <BaseButton
@@ -413,14 +412,14 @@ onMounted(() => {
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToFreeDesign"
-              >进入免费设计</BaseButton
+              >探索 POD 资源</BaseButton
             >
             <BaseButton
               variant="outline"
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToAiLab"
-              >体验 AI 设计</BaseButton
+              >打开创意工作台</BaseButton
             >
           </div>
           <div class="mt-6 flex flex-wrap gap-2">
@@ -483,7 +482,7 @@ onMounted(() => {
                     <div
                       class="text-[10px] uppercase tracking-[0.22em] text-stone-400"
                     >
-                      One hero product, clearer first screen
+                      Featured POD concept
                     </div>
                     <h2
                       class="mt-3 text-[20px] font-semibold leading-8 text-stone-950 sm:text-[24px]"
@@ -495,7 +494,7 @@ onMounted(() => {
                     >
                       {{
                         heroDisplay.description ||
-                        "先用一件商品把平台能力讲清楚，再引导用户继续进入设计、服务和商品链路。"
+                        "从图案到商品展示，一套适合继续定制、上架和传播的视觉方案。"
                       }}
                     </p>
                   </div>
@@ -506,10 +505,10 @@ onMounted(() => {
                       <h3
                         class="text-[16px] font-semibold leading-7 text-stone-950"
                       >
-                        保持单商品展示，但让它承担“平台样板间”的角色。
+                        从一件样品，看见一整套可延展的 POD 商品系列。
                       </h3>
                       <p class="mt-2 text-[12px] leading-6 text-stone-500">
-                        首屏右侧只放一个商品，保证手机、平板和大屏都能稳定适配，同时承接免费设计、AI、商品化和变现的入口认知。
+                        同一图案可以延伸到服饰、礼品、家居和品牌物料，适合个人表达，也适合商业企划。
                       </p>
                     </div>
                     <button
@@ -537,8 +536,8 @@ onMounted(() => {
       <div class="mx-auto max-w-[1560px] space-y-5">
         <BusinessSectionIntro
           kicker="POD Discovery Hub"
-          title="保留原有分类结构，但把每个入口讲得更完整。"
-          description="仍然是原先的分类浏览方式，只是把它升级成设计能力、商品延展和使用场景的联合入口。"
+          title="按商品载体浏览 POD 创意资源。"
+          description="从 T 恤、杯具、帆布包、手机壳到家居布艺，快速找到适合印花、定制和上架的设计方向。"
         />
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -629,7 +628,7 @@ onMounted(() => {
             <section class="ys-section-shell px-5 py-5 sm:px-6">
               <div class="flex items-center justify-between gap-3">
                 <h3 class="text-[15px] font-semibold text-stone-950">
-                  从哪开始都行
+                  从你的目标开始
                 </h3>
                 <button class="ys-quiet-link text-[11px]" @click="goToSearch">
                   去逛商品
@@ -666,7 +665,7 @@ onMounted(() => {
                   大家最近在翻这些
                 </h3>
                 <p class="mt-1 text-[11px] text-stone-400">
-                  把设计、商品、服务和趋势词放进同一个检索入口。
+                  热门图案、礼赠主题、品牌首发和私人定制灵感都可以直接进入结果页。
                 </p>
               </div>
               <div class="mt-4 flex flex-wrap gap-2">
@@ -714,10 +713,10 @@ onMounted(() => {
           <h2
             class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950"
           >
-            还是原来的流程结构，但升级成完整平台闭环。
+            从灵感发现到商品落地，每一步都为创作者和品牌服务。
           </h2>
           <p class="mt-4 max-w-md text-[13px] leading-7 text-stone-500">
-            用户仍然按照原先的阅读节奏理解页面，只是现在会更明确地感知到设计、AI、商品与变现的连续关系。
+            先找到视觉方向，再判断适合的商品载体，最后形成可展示、可定制、可销售的完整方案。
           </p>
         </div>
         <div class="grid gap-4 md:grid-cols-3">
@@ -745,8 +744,8 @@ onMounted(() => {
       <div class="ys-section-shell mx-auto max-w-[1560px] p-5 sm:p-6 lg:p-7">
         <BusinessSectionIntro
           kicker="Business Modules"
-          title="三个入口不变，但每个入口都能承接更强的平台能力。"
-          description="保留你原来的三栏结构，只增强里面的功能表达，让用户看到这是一个完整设计生态，而不是单点页面。"
+          title="资源、定制和创意工具，共同组成开放式设计平台。"
+          description="面向 POD 卖家、独立品牌、社媒创作者和个人用户，提供从素材发现到设计服务的完整入口。"
         />
         <div class="mt-6 grid gap-3 xl:grid-cols-3">
           <article
@@ -777,8 +776,8 @@ onMounted(() => {
         <div class="ys-section-shell p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="Personalized Studio"
-            title="左侧还是原来的服务卡，但改成更强的商业化叙事。"
-            description="适合品牌、创作者和有项目需求的人，把模糊想法一路做成设计方案、商品体系和可持续运营内容。"
+            title="私人定制与品牌企划，可以从一个图案开始。"
+            description="适合纪念礼物、品牌首发、活动周边和创作者 IP，把想法转化为可生产、可传播的商品系列。"
           />
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
             <div
@@ -815,8 +814,8 @@ onMounted(() => {
         <div class="ys-section-shell p-5 sm:p-6">
           <BusinessSectionIntro
             kicker="AI Ready"
-            title="右侧仍然是 AI 模块，但内容升级为真正可包装的产品能力。"
-            description="保留原有信息布局，只把 AI 的价值说清楚: 不只是灵感工具，而是设计生成、优化和商品化助手。"
+            title="AI 辅助灵感生成，服务于真实商品设计。"
+            description="用 AI 更快试风格、扩主题、做场景展示，再把结果交给定制服务或 POD 商品库继续完善。"
           />
           <div class="mt-6 grid gap-3">
             <div
@@ -838,7 +837,7 @@ onMounted(() => {
               size="lg"
               class="!px-6 !py-2.5 !text-[12px]"
               @click="goToAiLab"
-              >进入 AI 实验室</BaseButton
+              >进入创意工作台</BaseButton
             >
           </div>
         </div>
@@ -855,7 +854,7 @@ onMounted(() => {
             <h2
               class="mt-3 text-[28px] font-semibold leading-[1.25] text-stone-950"
             >
-              原来的作品区继续保留，用来承接平台可信度。
+              精选图案、商品样机和定制案例，让灵感更容易落地。
             </h2>
           </div>
           <NuxtLink

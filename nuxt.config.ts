@@ -8,9 +8,16 @@ import {
 } from "./utils/seo";
 
 const { resolve } = createResolver(import.meta.url);
+const localUser = process.env.USER || process.env.LOGNAME || "local";
+const localBuildDir =
+  process.env.NUXT_BUILD_DIR || `.data/${localUser}-nuxt/nuxt`;
+const localViteCacheDir =
+  process.env.NUXT_VITE_CACHE_DIR || `.data/${localUser}-nuxt/vite`;
+const localNitroOutputDir = process.env.NITRO_OUTPUT_DIR || ".output";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   srcDir: ".",
+  buildDir: localBuildDir,
 
   // 兼容日期
   compatibilityDate: "2025-12-21",
@@ -62,6 +69,10 @@ export default defineNuxtConfig({
     },
   },
 
+  routeRules: {
+    "/search": { redirect: { to: "/products", statusCode: 301 } },
+  },
+
   // typescripts
   // todo: feat/strict-type-check
   // typescript: {
@@ -87,6 +98,10 @@ export default defineNuxtConfig({
 
   build: {
     transpile: ['vuetify'],
+  },
+
+  vite: {
+    cacheDir: localViteCacheDir,
   },
 
   css: [resolve("./assets/css/main.css")],
@@ -161,10 +176,10 @@ export default defineNuxtConfig({
     disallow: [
       "/admin/",
       "/api/",
-      "/_nuxt/",
-      "/.well-known/",
       "/temp/",
       "/private/",
+      "/test-api",
+      "/test-view",
     ],
     allow: ["/"],
     sitemap: "https://1s.design/sitemap.xml",
@@ -177,11 +192,20 @@ export default defineNuxtConfig({
 
   sitemap: {
     autoLastmod: true,
-    cacheMaxAgeSeconds: 1000 * 60 * 60 * 3, // 三个小时的更新频率
-    exclude: [], // 排除路径
-    sources: [
-      // '/api/__sitemap__/urls',
+    cacheMaxAgeSeconds: 60 * 30,
+    exclude: [
+      "/admin/**",
+      "/api/**",
+      "/login",
+      "/register",
+      "/profile",
+      "/favorites",
+      "/change-password",
+      "/search",
+      "/test-api",
+      "/test-view",
     ],
+    sources: ["/api/__sitemap__/urls"],
     sitemaps: true, // sitemap多文件开关
     defaultSitemapsChunkSize: 1000,
   },
@@ -211,6 +235,9 @@ export default defineNuxtConfig({
 
   // prerender configuration
   nitro: {
+    output: {
+      dir: localNitroOutputDir,
+    },
     externals: {
       inline: [/^unhead(\/.*)?$/, /^@unhead\//],
       traceInclude: [

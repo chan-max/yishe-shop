@@ -2,11 +2,11 @@
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "免费设计中心 - 衣设",
+  title: "免费 POD 设计灵感中心 - 衣设",
   description:
-    "衣设免费设计中心以更具品牌感和场景感的方式承接品牌、电商、社媒、生活与行业设计需求，让用户从目标直接进入设计方向。",
+    "从品牌、电商、社媒、生活方式和行业场景进入，发现适合 POD 印花、定制商品、礼品周边和视觉传播的设计灵感。",
   keywords:
-    "免费设计,Logo设计,电商主图,详情页,小红书封面,礼品设计,印花设计,衣设",
+    "免费设计,POD设计灵感,印花设计,定制商品,礼品设计,电商主图,小红书封面,品牌视觉,衣设",
   url: "https://1s.design/free-design",
   type: "website",
 });
@@ -144,13 +144,13 @@ const goToPath = (path: string) => navigateTo(path);
       </div>
 
       <div class="fd-hero__headline">
-        <p>免费设计中心</p>
-        <h1>不再做“几个分类入口”。<br>而是直接给你一整种视觉立场。</h1>
+        <p>免费 POD 设计灵感</p>
+        <h1>从真实场景出发，找到适合印花和定制商品的视觉方向。</h1>
       </div>
 
       <div class="fd-hero__bottom">
         <div class="fd-hero__lead">
-          你可以把它理解成一张设计地图。先选你属于哪一种业务世界，再决定图应该长成什么样，而不是先掉进一堆模板里。
+          先选择品牌、电商、社媒、生活方式或行业项目，再把主题延展成图案、商品样机和传播画面。
         </div>
         <div class="fd-hero__aside">
           <div class="fd-hero__meta">
@@ -165,7 +165,7 @@ const goToPath = (path: string) => navigateTo(path);
           </div>
           <div class="fd-hero__actions">
             <BaseButton variant="primary" size="lg" @click="goToPath('/design')">进入定制设计</BaseButton>
-            <BaseButton variant="secondary" size="lg" @click="goToPath('/ai-lab')">进入 AI 设计</BaseButton>
+            <BaseButton variant="secondary" size="lg" @click="goToPath('/ai-lab')">进入 AI 工作台</BaseButton>
           </div>
         </div>
       </div>
@@ -261,13 +261,13 @@ const goToPath = (path: string) => navigateTo(path);
     <section class="fd-cta">
       <div class="fd-cta__copy">
         <div class="fd-section-kicker">Next Step</div>
-        <h3>选完方向以后，不要停在这里。</h3>
-        <p>继续去 AI 生成、定制设计或商品系统，把这套方向变成真的图、真的方案、真的可交付内容。</p>
+        <h3>把灵感继续延展成商品系列。</h3>
+        <p>进入 AI 创意工作台、定制设计服务或 POD 商品库，让图案、样机和交付方案继续完善。</p>
       </div>
       <div class="fd-cta__links">
-        <button type="button" class="fd-cta__link" @click="goToPath('/ai-lab')">进入 AI 设计中台</button>
+        <button type="button" class="fd-cta__link" @click="goToPath('/ai-lab')">进入 AI 创意工作台</button>
         <button type="button" class="fd-cta__link" @click="goToPath('/design')">进入定制设计服务</button>
-        <button type="button" class="fd-cta__link" @click="goToPath('/products')">进入商品系统</button>
+        <button type="button" class="fd-cta__link" @click="goToPath('/products')">进入 POD 商品库</button>
       </div>
     </section>
   </div>

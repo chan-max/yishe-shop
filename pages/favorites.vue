@@ -12,8 +12,11 @@ const publicUserStore = usePublicUserStore()
 
 useHead({
   titleTemplate: '',
-  title: '我的收藏 - 衣设服装设计',
-  meta: [{ name: 'description', content: '查看我收藏的商品' }],
+  title: '我的收藏 - 衣设 yishe',
+  meta: [
+    { name: 'description', content: '查看和管理收藏的 POD 印花、定制商品和创意设计资源。' },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
 })
 
 const currentPage = ref<number>(1)

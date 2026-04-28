@@ -12,15 +12,15 @@ definePageMeta({ layout: 'page' })
 // Page title and meta
 useHead({
   titleTemplate: '',
-  title: 'Pricing - 1s Design',
+  title: '定制设计报价 - 衣设 yishe',
   meta: [
     {
       name: 'description',
-      content: 'Choose the perfect plan for your design needs. Flexible pricing options for designers of all levels.'
+      content: '查看衣设 POD 印花设计、私人定制、品牌周边和创意设计服务报价，选择适合个人、创作者和团队的合作方式。'
     },
     {
       name: 'keywords',
-      content: 'pricing, design plans, subscription, 1s design pricing'
+      content: 'POD设计报价,定制设计价格,印花设计服务,私人定制,品牌周边设计,礼品定制,衣设'
     }
   ]
 })
@@ -29,72 +29,62 @@ useHead({
 const plans = ref([
   {
     id: 1,
-    name: '入门版',
+    name: '灵感浏览',
     price: '免费',
     period: '',
-    description: '适合初学者和爱好者',
+    description: '适合寻找 POD 方向和图案参考',
     popular: false,
     features: [
-      { text: '最多 10 个项目', available: true },
-      { text: '基础模板访问', available: true },
-      { text: '社区支持', available: true },
-      { text: '5GB 存储空间', available: true },
-      { text: '带水印导出', available: true },
-      { text: '有限的 AI 工具', available: true },
-      { text: '无限项目', available: false },
-      { text: '高级模板', available: false },
-      { text: '优先支持', available: false },
-      { text: '高分辨率无水印导出', available: false }
+      { text: '浏览 POD 商品资源库', available: true },
+      { text: '查看印花与图案灵感', available: true },
+      { text: '收藏定制商品方向', available: true },
+      { text: '基础咨询建议', available: true },
+      { text: '专属图案设计', available: false },
+      { text: '品牌周边方案', available: false },
+      { text: '打样与供应链对接', available: false }
     ],
-    buttonText: '联系购买',
+    buttonText: '开始浏览',
     buttonColor: 'outline',
-    detailContent: '入门版是我们为初学者和设计爱好者精心打造的免费方案。虽然功能相对基础，但足以满足学习和探索设计工具的需求。该方案提供最多10个项目的创建空间，5GB存储空间，以及基础模板库的访问权限。导出的作品会带有水印，但对学习和分享来说完全够用。社区支持可以帮助您解决使用过程中的问题，是开始设计之旅的完美起点。'
+    detailContent: '灵感浏览适合正在寻找 POD 商品方向的个人和创作者。你可以先从印花图案、服装载体、礼品周边和定制案例里建立风格判断，再决定是否进入专属设计或打样合作。'
   },
   {
     id: 2,
-    name: '专业版',
-    price: '¥99',
-    period: '月',
-    originalPrice: '¥149',
-    description: '为专业设计师打造',
+    name: '创作者定制',
+    price: '399起',
+    period: '项',
+    description: '适合个人礼物、店铺上新和小批量周边',
     popular: false,
     features: [
-      { text: '无限项目', available: true },
-      { text: '所有高级模板', available: true },
-      { text: '优先支持', available: true },
-      { text: '100GB 存储空间', available: true },
-      { text: '高分辨率无水印导出', available: true },
-      { text: '完整 AI 工具访问', available: true },
-      { text: '高级数据分析', available: true },
-      { text: '自定义品牌', available: true },
-      { text: '团队协作工具', available: false },
-      { text: '无限存储空间', available: false },
-      { text: '专属客户经理', available: false }
+      { text: '1 对 1 需求梳理', available: true },
+      { text: 'POD 图案与版面设计', available: true },
+      { text: '服装、包袋、杯具等载体建议', available: true },
+      { text: '商品展示图与上架素材', available: true },
+      { text: '印刷工艺建议', available: true },
+      { text: '品牌系列策划', available: false },
+      { text: '批量打样跟进', available: false }
     ],
     buttonText: '联系购买',
     buttonColor: 'outline',
-    detailContent: '专业版专为职业设计师和设计团队打造，提供了完整的设计工具套件和高级功能。该方案支持无限项目创建，100GB存储空间足以满足大部分专业项目的需求。所有高级模板和AI工具都可以无限制使用，大大提升设计效率。高分辨率无水印导出让您的作品可以直接用于商业用途。优先技术支持确保您在使用过程中遇到问题能够快速得到响应。高级数据分析和自定义品牌功能让您能够更好地管理和展示您的设计工作。'
+    detailContent: '创作者定制面向个人礼物、独立店铺、社群周边和小批量上新。衣设会围绕主题、受众、商品载体和印花工艺输出可落地的图案与展示素材，让想法更快变成可销售、可赠送、可纪念的商品。'
   },
   {
     id: 3,
-    name: '企业版',
+    name: '品牌合作',
     price: '定制',
     period: '',
-    description: '适合团队和机构',
+    description: '适合品牌活动、IP 衍生和长期内容合作',
     popular: false,
     features: [
-      { text: '专业版全部功能', available: true },
-      { text: '团队协作工具', available: true },
-      { text: '无限存储空间', available: true },
-      { text: '专属客户经理', available: true },
-      { text: '自定义集成', available: true },
-      { text: 'SLA 服务保障', available: true },
-      { text: '高级安全', available: true },
-      { text: '培训与入门指导', available: true }
+      { text: '品牌视觉与 POD 系列规划', available: true },
+      { text: '多款商品载体延展', available: true },
+      { text: '活动礼品与周边方案', available: true },
+      { text: '打样、上新与素材交付节奏', available: true },
+      { text: '长期设计内容合作', available: true },
+      { text: '专属沟通与项目管理', available: true }
     ],
     buttonText: '联系购买',
     buttonColor: 'outline',
-    detailContent: '企业版是我们为企业级用户提供的定制化解决方案，除了包含专业版的所有功能外，还增加了强大的团队协作和系统集成能力。无限存储空间让您无需担心项目规模限制。专属客户成功经理提供一对一服务，确保您的团队能够充分利用平台的所有功能。强大的团队协作工具支持多人在线协作，权限管理让团队管理更加高效。可以与企业现有系统进行深度集成，实现工作流程的无缝对接。SLA服务保障确保平台稳定性和可用性。企业级安全标准和数据保护机制，让您的数据安全无忧。我们还提供定制化培训和入门指导，帮助您的团队快速上手。对于有特殊需求的企业，我们还支持私有化部署选项。'
+    detailContent: '品牌合作适合活动礼品、IP 衍生、企业文化周边和长期上新计划。服务内容会根据品牌调性、预算、数量、交付时间和渠道场景定制，覆盖创意方向、图案系统、商品组合、展示素材和落地执行建议。'
   }
 ])
 
@@ -117,9 +107,9 @@ const goToContact = () => {
     <div class="pricing-container">
       <!-- Hero Section -->
       <section class="pricing-hero">
-        <h1 class="pricing-title">简单透明的定价</h1>
+        <h1 class="pricing-title">POD 定制设计服务</h1>
         <p class="pricing-subtitle">
-          为您的设计之旅选择最合适的方案。所有付费方案均提供 14 天免费试用。
+          从私人礼物到品牌周边，按设计深度、商品载体和交付范围匹配合作方式。
         </p>
       </section>
 
@@ -151,7 +141,7 @@ const goToContact = () => {
               </div>
               
               <div v-if="plan.originalPrice" class="price-original">
-                原价：{{ plan.originalPrice }}/月
+                原价：{{ plan.originalPrice }}
               </div>
             </div>
 
@@ -237,7 +227,7 @@ const goToContact = () => {
 
     <!-- Plan Details Section -->
     <section class="plan-details-section">
-      <h2 class="section-title">套餐详细介绍</h2>
+      <h2 class="section-title">服务说明</h2>
       <div class="plan-details-container">
         <div
           v-for="plan in plans"
@@ -266,30 +256,30 @@ const goToContact = () => {
         <h2 class="section-title">常见问题</h2>
         <div class="faq-grid">
           <div class="faq-item">
-            <h3 class="faq-question">我可以稍后更改套餐吗？</h3>
+            <h3 class="faq-question">可以只做一件私人定制吗？</h3>
             <p class="faq-answer">
-              可以，您可以随时升级或降级套餐。更改将在下个计费周期生效。
+              可以。衣设支持从单件礼物、纪念款到小批量周边的设计咨询与图案定制。
             </p>
           </div>
           
           <div class="faq-item">
-            <h3 class="faq-question">你们接受哪些支付方式？</h3>
+            <h3 class="faq-question">价格为什么是区间或定制？</h3>
             <p class="faq-answer">
-              我们接受所有主流信用卡、支付宝、微信支付，以及国际用户的 PayPal。
+              POD 项目会受到图案复杂度、商品数量、工艺、打样和交付素材影响，确认需求后会给出明确报价。
             </p>
           </div>
           
           <div class="faq-item">
-            <h3 class="faq-question">有免费试用吗？</h3>
+            <h3 class="faq-question">能直接用于上架销售吗？</h3>
             <p class="faq-answer">
-              有的！所有付费方案都提供 14 天免费试用。无需信用卡即可开始。
+              可以按上架场景交付展示图、详情页素材和基础文案建议，具体授权范围会在合作前确认。
             </p>
           </div>
           
           <div class="faq-item">
-            <h3 class="faq-question">可以退款吗？</h3>
+            <h3 class="faq-question">品牌项目需要准备什么？</h3>
             <p class="faq-answer">
-              我们提供 30 天退款保证。如果您不满意，请联系我们的支持团队。
+              建议准备品牌资料、参考风格、目标用户、商品类型、数量范围和交付时间，方便快速评估方案。
             </p>
           </div>
         </div>
@@ -790,4 +780,3 @@ const goToContact = () => {
   }
 }
 </style>
-

@@ -1,5 +1,3 @@
-import type { RouteLocationRaw } from 'vue-router'
-
 export interface NuxtAwesomeAppConfig {
   /** title name */
   name?: string
@@ -30,19 +28,6 @@ export interface NuxtAwesomeAppConfig {
       /** footer year */
       year?: number
     }
-    /** welcome component page */
-    welcome?: {
-      title?: string
-      disableInfoReplaceIndexInWelcomePage?: boolean
-      primaryActionButton?: {
-        title?: string
-        to?: RouteLocationRaw | ((nuxt:any) => RouteLocationRaw)
-      }
-      secondaryActionButton?: {
-        title?: string
-        to?: RouteLocationRaw | ((nuxt:any) => RouteLocationRaw)
-      }
-    }
   }
 
   /** author config */
@@ -59,9 +44,6 @@ export interface NuxtAwesomeAppConfig {
       website?: string
     }
   }
-
-  /** author config */
-  disableInfoReplaceIndexInWelcomePage?: boolean
 }
 
 declare module '@nuxt/schema' {
@@ -72,8 +54,8 @@ declare module '@nuxt/schema' {
 
 export default defineAppConfig({
   awesome: {
-    name: '衣设服装设计',
-    description: '专注于创意印花图案和服装设计的专业平台，汇聚全球设计师的创意灵感',
+    name: '衣设 yishe',
+    description: 'POD 印花、定制商品与创意设计开放平台',
     project: {
       links: {
         github: '',
@@ -94,18 +76,6 @@ export default defineAppConfig({
       footer: {
         year: new Date().getFullYear(),
       },
-      welcome: {
-        title: '衣设&nbsp;服装设计',
-        disableInfoReplaceIndexInWelcomePage: true,
-        primaryActionButton: {
-          title: '开始设计',
-          // to: '/design',
-        },
-        secondaryActionButton: {
-          title: '加入社区',
-          // to: '/community',
-        },
-      },
     },
     author: {
       name: '衣设设计团队',
@@ -113,7 +83,6 @@ export default defineAppConfig({
         website: 'https://1s.design',
       },
     },
-    disableInfoReplaceIndexInWelcomePage: false,
   } as NuxtAwesomeAppConfig,
   nuxtIcon: {
     aliases: {},

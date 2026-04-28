@@ -89,6 +89,12 @@ definePageMeta({
   layoutTransition: false,
 });
 
+useSeoMeta({
+  title: "登录 - 衣设 yishe",
+  description: "登录衣设账号，管理收藏的 POD 灵感、定制项目和个人设计资料。",
+  robots: "noindex, nofollow",
+});
+
 const publicUserStore = usePublicUserStore();
 const router = useRouter();
 const loading = ref(false);

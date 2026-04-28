@@ -4,13 +4,13 @@ const { awesome } = useAppConfig();
 const footerGroups = {
   discover: [
     { name: "印花图案", href: "/products/%E5%9B%BE%E6%A1%88" },
-    { name: "服饰单品", href: "/products" },
+	    { name: "POD 商品", href: "/products" },
     { name: "周边与礼物", href: "/products/%E7%A4%BC%E7%89%A9" },
     { name: "作品集", href: "/portfolio" },
   ],
   creators: [
     { name: "灵感资料", href: "/portfolio" },
-    { name: "创作方向", href: "/ai-lab" },
+	    { name: "AI 工作台", href: "/ai-lab" },
     { name: "定制服务", href: "/design" },
     { name: "关于衣设", href: "/about" },
   ],
@@ -36,10 +36,10 @@ const socialLinks = [
       <section class="footer-top">
         <div>
           <span class="footer-kicker">yishe / 1s.design</span>
-          <h2>不是买商品，是在穿自己的想法。</h2>
-          <p>
-            衣设想把设计这件事还给更多普通人。灵感可以很轻，但表达最好别太随便。
-          </p>
+	          <h2>把图案、商品和私人表达连接起来。</h2>
+	          <p>
+	            从 POD 印花灵感到定制设计服务，衣设帮助品牌和个人把视觉想法变成真实产品。
+	          </p>
         </div>
         <div class="footer-socials">
           <a
@@ -58,7 +58,7 @@ const socialLinks = [
         <div class="footer-brand">
           <img src="/logo.png" alt="衣设" class="footer-logo" />
           <strong>衣设</strong>
-          <p>给有表达欲的人留一个把想法穿出去的地方。</p>
+	          <p>POD 印花、定制商品与创意设计开放平台。</p>
         </div>
 
         <div class="footer-column">

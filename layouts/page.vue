@@ -38,7 +38,7 @@
 
         <div class="header-actions">
           <NuxtLink to="/products" class="header-chip desktop-only"
-            >探索商品</NuxtLink
+            >探索 POD</NuxtLink
           >
 
           <template v-if="isLoggedIn && currentUser">
@@ -213,10 +213,10 @@ const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
   { label: "首页", to: "/" },
-  { label: "产品", to: "/products" },
-  { label: "定制设计", to: "/design" },
-  { label: "作品集", to: "/portfolio" },
-  { label: "AI 实验室", to: "/ai-lab" },
+  { label: "POD 资源", to: "/products" },
+  { label: "定制服务", to: "/design" },
+  { label: "灵感库", to: "/portfolio" },
+  { label: "AI 工作台", to: "/ai-lab" },
 ];
 
 const isMobileMenuOpen = ref(false);

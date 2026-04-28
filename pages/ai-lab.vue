@@ -2,9 +2,9 @@
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "AI 设计实验室 - 衣设",
-  description: "衣设 AI 设计实验室聚合生成设计、优化设计、商业内容生成、趋势决策与协同改稿，让 AI 真正进入设计商品化流程。",
-  keywords: "AI设计,图生图,草图转成稿,AI排版,设计评分,营销文案,趋势分析",
+  title: "AI POD 创意工作台 - 衣设",
+  description: "用 AI 辅助生成印花图案、商品场景图、品牌周边方向和定制设计提案，帮助 POD 创作者更快验证创意。",
+  keywords: "AI设计,POD设计,AI图案生成,商品场景图,印花设计,定制商品,创意工作台",
   url: "https://1s.design/ai-lab",
   type: "website",
 });
@@ -17,10 +17,10 @@ const prompts = [
 ];
 
 const capabilities = [
-  { name: "Generate", text: "让一句话、一张参考图或一张草图，快速长成可继续工作的视觉方案。" },
-  { name: "Optimize", text: "继续辅助排版、构图、配色和整体美化，而不是出图后就结束。" },
-  { name: "Commerce", text: "把设计继续翻译成商品卖点、营销文案和传播内容。" },
-  { name: "Score", text: "在设计上线前，先做一轮评分、趋势判断和改稿建议。" },
+  { name: "Generate", text: "用文字、参考图或草图快速生成印花图案和视觉方向。" },
+  { name: "Optimize", text: "辅助调整构图、配色、层级和商品展示，让方案更适合落地。" },
+  { name: "Commerce", text: "把设计转化为商品卖点、系列命名和上架内容。" },
+  { name: "Score", text: "上线前评估风格统一度、商品适配度和传播潜力。" },
 ];
 
 const signals = [
@@ -46,10 +46,10 @@ const selectedPrompt = ref(prompts[0]);
       <div class="minimal-kicker">AI Design Lab</div>
       <div class="lab-hero__grid">
         <div class="lab-hero__copy">
-          <p class="lab-label">Console Prototype</p>
-          <h1>AI 实验室应该像控制台，不应该只是一个出图入口。</h1>
+          <p class="lab-label">Creative Console</p>
+          <h1>用 AI 更快生成 POD 图案、商品场景和定制提案。</h1>
           <p>
-            这页按产品界面去做，而不是普通介绍页。输入、生成、判断和商业化输出都放在同一张桌面上，视觉上也更接近真正的操作场景。
+            从一句主题描述进入，快速获得风格板、主视觉、商品落点和内容方向，让创作者更快判断一个想法是否值得继续开发。
           </p>
         </div>
 
@@ -83,7 +83,7 @@ const selectedPrompt = ref(prompts[0]);
         <h2>{{ selectedPrompt }}</h2>
         <div class="lab-canvas">
           <div class="lab-canvas__summary">
-            当前实验会先生成一组可继续工作的方向，再把结果拆成设计、商品和商业内容三个层面，避免只停在“出了一张图”。
+            当前主题会生成可继续深化的视觉方向，并同步给出适合延展的商品载体与传播内容。
           </div>
           <div class="lab-canvas__outputs">
             <span v-for="item in outputs" :key="item">{{ item }}</span>

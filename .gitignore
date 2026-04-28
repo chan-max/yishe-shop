@@ -5,5 +5,17 @@ node_modules
 .cache
 .output
 .env
+.data/dev
+.data/local-dev
+.data/nuxt-dev-jackie
+.data/dev-user
+.data/codex-dev
+.data/jackie-dev
+.data/local-nuxt
+.data/*-nuxt
+.data/verify-*
+.data/sitemap-build-*
+.data/last-sitemap-build-dir
+.data/verified-sitemap-*
 dist
 .DS_Store

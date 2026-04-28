@@ -2,10 +2,10 @@
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "定制设计服务 - 衣设",
+  title: "POD 定制设计服务 - 衣设",
   description:
-    "把品牌首发、个人风格、副业尝试和联名想法整理成真正能落地的设计项目。",
-  keywords: "定制设计,POD设计服务,个性化设计,服装设计服务,创作者副业",
+    "为品牌首发、私人礼物、活动周边和创作者 IP 提供 POD 印花、包装视觉、商品样机与系列化定制设计服务。",
+  keywords: "POD定制设计,私人定制,印花图案设计,周边定制,礼品定制,品牌视觉,服装印花设计",
   url: "https://1s.design/design",
   type: "website",
 });
@@ -105,9 +105,9 @@ const summaryRows = computed(() => [
       <div class="design-hero__top">
         <div class="design-hero__copy">
           <p class="design-label">Project Intake</p>
-          <h1>定制设计不是下单页，而是一张项目启动桌面。</h1>
+          <h1>从一个想法开始，定制一套可以生产的 POD 商品视觉。</h1>
           <p class="design-hero__text">
-            这次不再把内容排成几张服务卡片，而是按真实合作流程重组。先判断你是哪一种项目，再决定应该产出什么、按什么节奏推进。
+            选择品牌首发、主题企划或个人系列，明确受众、风格和交付物，让图案、包装、商品样机和传播内容沿同一套方向推进。
           </p>
         </div>
 
