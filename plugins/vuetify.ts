@@ -1,13 +1,15 @@
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { VBtn, VAvatar, VIcon } from 'vuetify/components'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 export default defineNuxtPlugin((app) => {
   const vuetify = createVuetify({
-    components,
-    directives,
+    components: {
+      VBtn,
+      VAvatar,
+      VIcon,
+    },
     theme: {
       defaultTheme: 'light',
       themes: {

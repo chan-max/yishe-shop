@@ -56,7 +56,7 @@ const socialLinks = [
 
       <section class="footer-grid">
         <div class="footer-brand">
-          <img src="/logo.svg" alt="衣设" class="footer-logo" />
+          <img src="/logo.png" alt="衣设" class="footer-logo" />
           <strong>衣设</strong>
           <p>给有表达欲的人留一个把想法穿出去的地方。</p>
         </div>

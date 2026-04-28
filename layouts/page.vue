@@ -18,7 +18,7 @@
     >
       <div class="header-inner">
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
-          <img src="/logo.svg" alt="衣设" class="brand-logo" />
+          <img src="/logo.png" alt="衣设" class="brand-logo" />
           <div class="brand-copy">
             <span class="brand-kicker">Creative POD House</span>
             <strong>衣设</strong>

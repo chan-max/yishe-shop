@@ -557,7 +557,7 @@ watch(
   (newProduct) => {
     if (newProduct) {
       const productImage =
-        productImages.value[0] || "https://1s.design/logo/logo.svg";
+        productImages.value[0] || "https://1s.design/logo.png";
       const productUrl = `https://1s.design/product/${newProduct.id}`;
       const productDescription =
         newProduct.description ||

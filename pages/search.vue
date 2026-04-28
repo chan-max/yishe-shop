@@ -639,9 +639,9 @@ const handleBlur = () => {
           <!-- Logo area - hidden when collapsed -->
           <div class="sidebar-logo" v-if="!sidebarCollapsed">
             <div class="logo-container">
-              <img 
-                :src="isDarkMode ? '/logo/logo.svg' : '/logo/logo.light.svg'" 
-                alt="Yishe Logo" 
+              <img
+                src="/logo.png"
+                alt="Yishe Logo"
                 class="logo-image"
               />
             </div>

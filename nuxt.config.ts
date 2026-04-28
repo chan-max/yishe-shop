@@ -10,10 +10,12 @@ import {
 const { resolve } = createResolver(import.meta.url);
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  srcDir: ".",
+
   // 兼容日期
   compatibilityDate: "2025-12-21",
 
-  // exp
+  // experimental
   experimental: {
     localLayerAliases: true,
     appManifest: false,
@@ -41,7 +43,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "icon", type: "image/png", href: "/favicon.png" },
         {
           rel: "preload",
           as: "font",
@@ -74,7 +76,7 @@ export default defineNuxtConfig({
     // styling & ui
     "@nuxtjs/tailwindcss",
     "nuxt-headlessui",
-    "nuxt-icon",
+    // "nuxt-icon", // 暂时禁用，不兼容 Nuxt 4
     "@nuxtjs/color-mode", // management
     "@pinia/nuxt",
     "@vueuse/nuxt", // contents
@@ -84,10 +86,10 @@ export default defineNuxtConfig({
   ],
 
   build: {
-    transpile: ["vuetify"],
+    transpile: ['vuetify'],
   },
 
-  css: ["vuetify/styles", resolve("./assets/css/main.css")],
+  css: [resolve("./assets/css/main.css")],
 
   components: [
     {
@@ -125,12 +127,6 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: "light",
     fallback: "light",
-  },
-
-  // module::icon - 配置图标在构建时本地化
-  icon: {
-    // 使用本地图标集合，避免运行时请求远程图标
-    serverBundle: "local",
   },
 
   // module::content
@@ -188,6 +184,11 @@ export default defineNuxtConfig({
     ],
     sitemaps: true, // sitemap多文件开关
     defaultSitemapsChunkSize: 1000,
+  },
+
+  // OG Image 渲染配置（禁用以提升启动速度）
+  ogImage: {
+    enabled: false, // 禁用 OG Image 生成功能
   },
 
   hooks: {},
