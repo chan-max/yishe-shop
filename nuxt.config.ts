@@ -211,6 +211,9 @@ export default defineNuxtConfig({
 
   // prerender configuration
   nitro: {
+    externals: {
+      inline: [/^unhead(\/.*)?$/, /^@unhead\//],
+    },
     prerender: {
       failOnError: false,
     },
