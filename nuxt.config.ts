@@ -75,6 +75,18 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/search": { redirect: { to: "/products", statusCode: 301 } },
+    "/sitemap.xml": {
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    },
+    "/sitemap_index.xml": {
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    },
+    "/__sitemap__/**": {
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    },
+    "/robots.txt": {
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    },
   },
 
   // typescripts
@@ -186,7 +198,7 @@ export default defineNuxtConfig({
       "/test-view",
     ],
     allow: ["/"],
-    sitemap: "https://1s.design/sitemap.xml",
+    sitemap: "https://1s.design/__sitemap__/pages.xml",
   },
 
   // Schema.org 结构化数据配置
@@ -196,7 +208,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     autoLastmod: true,
-    cacheMaxAgeSeconds: 60 * 30,
+    cacheMaxAgeSeconds: false,
     exclude: [
       "/admin/**",
       "/api/**",
