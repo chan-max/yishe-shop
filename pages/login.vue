@@ -1,29 +1,29 @@
 <template>
   <div
-    class="box-border min-h-[100dvh] overflow-y-hidden bg-[#f7f5f2] px-4 py-4 sm:px-6 lg:px-8"
+    class="box-border min-h-[100dvh] overflow-y-hidden bg-white px-4 py-4 sm:px-6 lg:px-8"
   >
     <div class="flex min-h-[calc(100dvh-2rem)] items-center justify-center">
       <div class="w-full max-w-md">
         <NuxtLink
           to="/"
-          class="mb-6 inline-flex items-center gap-2 rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-stone-950"
+          class="mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-black hover:text-stone-950"
         >
           <Icon name="heroicons:arrow-left" class="h-4 w-4" />
           <span>返回首页</span>
         </NuxtLink>
 
         <div
-          class="rounded-[1.5rem] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8"
+          class="rounded-[20px] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8"
         >
           <div>
-            <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">
+            <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">
               Account Access
             </div>
-            <h2 class="mt-3 text-[28px] font-semibold text-stone-950">
-              登录账号
+            <h2 class="mt-3 text-[32px] font-black uppercase leading-none text-stone-950">
+              Sign in
             </h2>
             <p class="mt-2 text-[13px] leading-6 text-stone-500">
-              回来接着看，或者把上次停住的那个想法继续做完。
+              登录后管理收藏的 POD 商品、定制需求和创意设计资料。
             </p>
           </div>
 
@@ -35,7 +35,7 @@
               name="username"
               type="text"
               required
-              placeholder="把你的账号填进来"
+              placeholder="Account"
             />
             <BaseInput
               id="password"
@@ -44,7 +44,7 @@
               name="password"
               type="password"
               required
-              placeholder="密码在这里"
+              placeholder="Password"
             />
 
             <div
@@ -60,15 +60,15 @@
               class="w-full !py-3 !text-[12px]"
               size="lg"
             >
-              进去看看
+              登录
             </BaseButton>
 
             <div class="text-center text-[12px] text-stone-500">
-              还没留名？
+              还没有账号？
               <NuxtLink
                 to="/register"
                 class="rounded-full px-2 py-1 text-stone-900 underline-offset-4 transition duration-200 hover:bg-stone-100 hover:underline"
-                >先注册一个</NuxtLink
+                >注册</NuxtLink
               >
             </div>
           </form>

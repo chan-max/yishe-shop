@@ -160,15 +160,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-[1560px]">
+  <div class="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-[1240px]">
       <div>
-        <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Favorites</div>
-        <h1 class="mt-3 text-[30px] font-semibold text-stone-950">我的收藏</h1>
-        <p class="mt-2 text-[13px] leading-6 text-stone-500">查看和管理你保存过的商品与设计内容。</p>
+        <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">Favorites</div>
+        <h1 class="mt-3 text-[42px] font-black uppercase leading-none text-stone-950">Saved products</h1>
+        <p class="mt-2 text-[13px] leading-6 text-stone-500">查看和管理你保存过的 POD 商品、印花图案和定制灵感。</p>
       </div>
 
-      <div class="mt-8 rounded-[1.5rem] border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
+      <div class="mt-8 rounded-[20px] border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
         <div v-if="loading" class="space-y-3">
           <div v-for="i in 6" :key="i" class="grid gap-3 rounded-[1rem] border border-stone-100 p-3 sm:grid-cols-[120px_1fr]">
             <div class="aspect-[4/3] animate-pulse rounded-[0.9rem] bg-stone-100"></div>
@@ -182,8 +182,8 @@ onMounted(() => {
         </div>
 
         <div v-else-if="favoriteList.length > 0" class="space-y-3">
-          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[1rem] border border-stone-100 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-[#fcfbf9] sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
-            <div class="cursor-pointer overflow-hidden rounded-[0.95rem] bg-stone-100" @click="goToProductDetail(favorite.productId)">
+          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-stone-50 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
+            <div class="cursor-pointer overflow-hidden rounded-[18px] bg-stone-100" @click="goToProductDetail(favorite.productId)">
               <div class="relative aspect-[4/3]">
                 <template v-if="getProductImage(favorite)">
                   <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" @error="handleImageError($event)" @load="handleImageLoad" />

@@ -36,12 +36,32 @@ const total = ref<number>(0);
 const requestSequence = ref<number>(0);
 
 const recommendedKeywords = [
-  "法式花卉",
-  "联名系列",
+  "印花",
+  "创意设计",
   "T恤",
   "礼物",
   "家居",
-  "手机壳",
+  "鼠标垫",
+];
+
+const filterCategories = ["T-shirts", "Hoodies", "Mugs", "Tote Bags", "Phone Cases", "Home Textile"];
+const colorOptions = ["#4f4631", "#315f3d", "#314d80", "#111111", "#ef4444", "#f8d84a", "#f4f4f5", "#f472b6"];
+const sizeOptions = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
+const styleOptions = ["Minimal", "Streetwear", "Vintage", "Floral", "Oriental"];
+
+const filterGroups = [
+  {
+    title: "商品方向",
+    items: ["T恤", "卫衣", "鼠标垫", "装饰画", "抱枕", "帆布包"],
+  },
+  {
+    title: "设计风格",
+    items: ["印花", "极简", "复古", "国潮", "插画", "轻奢"],
+  },
+  {
+    title: "使用场景",
+    items: ["礼物", "办公用品", "家居装饰", "情侣礼物", "节日礼物"],
+  },
 ];
 const showFilters = ref<boolean>(false);
 
@@ -267,10 +287,52 @@ const pageKeywords = computed(() => {
 const resultSummary = computed(() => {
   if (loading.value) return "正在加载当前筛选下的 POD 设计资源";
   if (routeKeyword.value) {
-    return `共找到 ${total.value} 个和“${routeKeyword.value}”相关的 POD 设计资源`;
+    return `${total.value} 个与“${routeKeyword.value}”相关的商品`;
   }
-  return `当前共有 ${total.value} 个可浏览的 POD 设计资源`;
+  return `${total.value} 个 POD 商品`;
 });
+
+const displayRange = computed(() => {
+  if (!total.value || !productList.value.length) return "0-0";
+  const start = (currentPage.value - 1) * pageSize.value + 1;
+  const end = Math.min(start + productList.value.length - 1, total.value);
+  return `${start}-${end}`;
+});
+
+const extractProductKeywords = (product: any) => {
+  const raw = [product?.type, product?.tags, product?.keywords, product?.searchKeywords]
+    .filter(Boolean)
+    .join(",");
+  return raw
+    .split(/[,，、;；\n\r\t|/]+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+};
+
+const productMetaLine = (product: any) => {
+  const tags = extractProductKeywords(product);
+  if (tags.length) return tags.join(" / ");
+  return product?.type || "POD Custom";
+};
+
+const getProductPrice = (product: any, index = 0) => {
+  const seed = Number(String(product?.id || index).replace(/\D/g, "").slice(-2)) || index + 11;
+  return 99 + (seed % 9) * 20;
+};
+
+const getProductOldPrice = (product: any, index = 0) => {
+  const price = getProductPrice(product, index);
+  return index % 3 === 0 ? price + 60 : null;
+};
+
+const getProductDiscount = (product: any, index = 0) => {
+  const oldPrice = getProductOldPrice(product, index);
+  if (!oldPrice) return "";
+  return `-${Math.round(((oldPrice - getProductPrice(product, index)) / oldPrice) * 100)}%`;
+};
+
+const getProductRating = (index = 0) => (4.2 + (index % 7) * 0.1).toFixed(1);
 
 const activeFilters = computed(() => {
   const filters: string[] = [];
@@ -356,308 +418,944 @@ watch(
     typeof route.query.end === "string" ? route.query.end : "",
     typeof route.query.page === "string" ? route.query.page : "",
   ],
-  () => {
+  async () => {
     syncStateFromRoute();
-    fetchProducts();
+    await fetchProducts();
   },
-  { immediate: true },
+  { immediate: false },
 );
+
+syncStateFromRoute();
+await fetchProducts();
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f7f5f2] px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
-    <div class="mx-auto max-w-[1560px]">
-      <h1 class="sr-only">{{ pageTitle }}</h1>
+  <div class="catalog-page">
+    <h1 class="sr-only">{{ pageTitle }}</h1>
 
-      <div
-        class="ys-section-shell sticky top-[58px] z-20 p-4 backdrop-blur-sm sm:p-5"
-      >
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div class="relative flex-1">
-            <span
-              class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
-            >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="6"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                />
-                <line
-                  x1="15"
-                  y1="15"
-                  x2="20"
-                  y2="20"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </span>
-            <input
-              v-model="searchKeyword"
-              type="text"
-              placeholder="搜索印花图案、POD 商品、礼品周边或定制主题"
-              class="ys-field w-full rounded-xl bg-[#faf8f5] py-3 pl-11 pr-4 text-[13px] outline-none transition duration-200"
-              @keyup.enter="handleSearch"
-            />
-          </div>
-          <div class="flex gap-2">
-            <button
-              class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition duration-200"
-              @click="toggleFilters"
-            >
-              {{ showFilters ? "收起筛选" : "筛选" }}
-            </button>
-            <BaseButton
-              size="lg"
-              class="!px-5 !py-3 !text-[12px]"
-              @click="handleSearch"
-              >搜索</BaseButton
-            >
-          </div>
-        </div>
+    <nav class="catalog-breadcrumb" aria-label="面包屑导航">
+      <NuxtLink to="/">Home</NuxtLink>
+      <v-icon size="15">mdi-chevron-right</v-icon>
+      <span>{{ routeKeyword || "POD Products" }}</span>
+    </nav>
 
-        <div
-          class="mt-4 flex flex-col gap-3 border-t border-white/70 pt-4 lg:flex-row lg:items-center lg:justify-between"
-        >
-          <div class="flex flex-wrap items-center gap-2">
-            <button
-              v-for="keyword in recommendedKeywords"
-              :key="keyword"
-              class="ys-chip rounded-full px-3 py-1 text-[11px]"
-              @click="handleKeywordClick(keyword)"
-            >
-              {{ keyword }}
-            </button>
-          </div>
-          <button class="ys-quiet-link text-[11px]" @click="resetFilters">
-            重置
-          </button>
-        </div>
-
-        <div
-          v-if="showFilters"
-          class="mt-4 grid gap-3 border-t border-white/70 pt-4 sm:grid-cols-[1fr_1fr_auto] sm:items-center"
-        >
-          <input
-            v-model="startDate"
-            type="date"
-            class="ys-field rounded-xl px-4 py-3 text-[12px] outline-none transition"
-            @change="handleSearch"
-          />
-          <input
-            v-model="endDate"
-            type="date"
-            class="ys-field rounded-xl px-4 py-3 text-[12px] outline-none transition"
-            @change="handleSearch"
-          />
-          <button
-            class="ys-action-btn rounded-xl px-4 py-3 text-[12px] transition"
-            @click="resetFilters"
-          >
-            重置筛选
-          </button>
-        </div>
-
-        <div
-          class="mt-4 flex flex-col gap-3 border-t border-white/70 pt-4 lg:flex-row lg:items-center lg:justify-between"
-        >
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-[12px] text-stone-500">{{ resultSummary }}</span>
-            <span
-              v-if="activeFilters.length"
-              class="ml-1 text-[10px] uppercase tracking-[0.18em] text-stone-400"
-            >
-              当前筛选
-            </span>
-            <span
-              v-for="filter in activeFilters"
-              :key="filter"
-              class="ys-chip cursor-default rounded-full px-3 py-1 text-[11px]"
-            >
-              {{ filter }}
-            </span>
-          </div>
-          <div class="text-[11px] text-stone-400">
-            {{
-              totalPages > 0
-                ? `第 ${currentPage} / ${totalPages} 页`
-                : "等待资源"
-            }}
-          </div>
-        </div>
+    <section class="catalog-toolbar" aria-label="商品搜索和结果状态">
+      <div>
+        <h2>{{ routeKeyword || "POD Products" }}</h2>
+        <span>Showing {{ displayRange }} of {{ total }} Products</span>
       </div>
+      <div class="catalog-toolbar__actions">
+        <form class="catalog-search" @submit.prevent="handleSearch">
+          <v-icon size="18">mdi-magnify</v-icon>
+          <input
+            v-model="searchKeyword"
+            type="search"
+            placeholder="Search for POD products..."
+          />
+        </form>
+        <span class="catalog-sort">Sort by: <strong>Most Popular</strong></span>
+        <button type="button" class="catalog-filter-toggle" @click="toggleFilters">
+          <v-icon size="17">mdi-tune-variant</v-icon>
+          Filters
+        </button>
+      </div>
+    </section>
 
-      <div class="mt-8">
-        <div
-          v-if="loading"
-          class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6"
-        >
-          <div
-            v-for="i in 12"
-            :key="i"
-            class="product-skeleton rounded-[0.9rem] bg-transparent p-1"
+    <section class="catalog-layout">
+      <aside class="catalog-filter catalog-filter--desktop">
+        <div class="catalog-filter__head">
+          <strong>Filters</strong>
+          <button type="button" aria-label="清空筛选" @click="resetFilters">
+            <v-icon size="18">mdi-tune-variant</v-icon>
+          </button>
+        </div>
+
+        <div class="catalog-filter__block">
+          <button
+            v-for="item in filterCategories"
+            :key="item"
+            type="button"
+            class="catalog-filter__item catalog-filter__item--category"
+            @click="handleKeywordClick(item)"
           >
-            <div
-              class="skeleton-wave skeleton-image aspect-[4/5] rounded-[0.85rem]"
-            ></div>
-            <div class="mt-3 h-3 w-24 rounded skeleton-wave"></div>
-            <div
-              class="mt-2 h-3 w-16 rounded skeleton-wave skeleton-wave-delay"
-            ></div>
+            <span>{{ item }}</span>
+            <v-icon size="16">mdi-chevron-right</v-icon>
+          </button>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>Price</label>
+          <div class="catalog-price-range">
+            <span></span>
+            <i></i>
+          </div>
+          <div class="catalog-price-labels">
+            <span>¥99</span>
+            <span>¥399</span>
           </div>
         </div>
 
         <div
-          v-else-if="productList.length > 0"
-          class="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+          v-for="group in filterGroups"
+          :key="group.title"
+          class="catalog-filter__block"
         >
-          <article
-            v-for="product in productList"
+          <label>{{ group.title }}</label>
+          <button
+            v-for="item in group.items"
+            :key="item"
+            type="button"
+            class="catalog-filter__item"
+            :class="{ active: searchKeyword === item || routeKeyword === item }"
+            @click="handleKeywordClick(item)"
+          >
+            <span>{{ item }}</span>
+            <v-icon size="15">mdi-chevron-right</v-icon>
+          </button>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>Colors</label>
+          <div class="catalog-color-list">
+            <button
+              v-for="color in colorOptions"
+              :key="color"
+              type="button"
+              :style="{ backgroundColor: color }"
+              :aria-label="`颜色 ${color}`"
+            >
+              <v-icon v-if="color === '#111111'" size="13">mdi-check</v-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>Size</label>
+          <div class="catalog-size-list">
+            <button v-for="size in sizeOptions" :key="size" type="button">
+              {{ size }}
+            </button>
+          </div>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>Dress Style</label>
+          <button
+            v-for="item in styleOptions"
+            :key="item"
+            type="button"
+            class="catalog-filter__item catalog-filter__item--category"
+            @click="handleKeywordClick(item)"
+          >
+            <span>{{ item }}</span>
+            <v-icon size="16">mdi-chevron-right</v-icon>
+          </button>
+        </div>
+
+        <button type="button" class="catalog-apply" @click="handleSearch">
+          Apply Filter
+        </button>
+      </aside>
+
+      <div class="catalog-results">
+        <div v-if="activeFilters.length" class="catalog-active-filters">
+          <span v-for="filter in activeFilters" :key="filter">{{ filter }}</span>
+        </div>
+
+        <div v-if="loading" class="catalog-grid">
+          <div v-for="i in 12" :key="i" class="product-skeleton">
+            <div class="skeleton-wave skeleton-image"></div>
+            <div class="skeleton-wave skeleton-line"></div>
+            <div class="skeleton-wave skeleton-line skeleton-line--short"></div>
+          </div>
+        </div>
+
+        <div v-else-if="productList.length > 0" class="catalog-grid">
+          <NuxtLink
+            v-for="(product, index) in productList"
             :key="product.id"
-            class="ys-flat-block group cursor-pointer rounded-[1.05rem] p-2.5 transition duration-200 hover:bg-white/92"
-            @click="goToProductDetail(product.id)"
+            :to="`/product/${product.id}`"
+            class="catalog-product"
           >
-            <div class="overflow-hidden rounded-[0.95rem] bg-stone-100">
-              <div class="relative aspect-[4/5] overflow-hidden">
-                <template v-if="getProductImage(product)">
-                  <div class="img-loading absolute inset-0 bg-stone-100"></div>
-                  <img
-                    :src="
-                      getPreviewImageUrl(getProductImage(product), {
-                        width: 500,
-                        quality: 80,
-                        format: 'webp',
-                      }) || undefined
-                    "
-                    :alt="product.name || 'POD 定制商品图片'"
-                    class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.025]"
-                    @error="handleImageError($event, product)"
-                    @load="handleImageLoad"
-                  />
-                  <div
-                    class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400"
-                  >
-                    暂无预览图
-                  </div>
-                </template>
-                <div
-                  v-else
-                  class="absolute inset-0 flex items-center justify-center bg-stone-100 text-[12px] text-stone-400"
-                >
-                  暂无预览图
-                </div>
-              </div>
+            <div class="catalog-product__media">
+              <template v-if="getProductImage(product)">
+                <div class="img-loading"></div>
+                <img
+                  :src="
+                    getPreviewImageUrl(getProductImage(product), {
+                      width: 620,
+                      quality: 82,
+                      format: 'webp',
+                    }) || undefined
+                  "
+                  :alt="product.name || 'POD 定制商品图片'"
+                  loading="lazy"
+                  @error="handleImageError($event, product)"
+                  @load="handleImageLoad"
+                />
+                <div class="image-placeholder">暂无预览图</div>
+              </template>
+              <div v-else class="catalog-product__empty">暂无预览图</div>
+              <span class="catalog-product__open" aria-hidden="true">
+                <v-icon size="17">mdi-arrow-top-right</v-icon>
+              </span>
             </div>
-            <div class="mt-3 px-1">
-              <h3
-                class="text-[13px] font-medium leading-6 text-stone-900 transition duration-200 group-hover:text-stone-700"
-              >
-                {{ product.name }}
-              </h3>
-              <p
-                v-if="product.description"
-                class="mt-1 line-clamp-2 text-[12px] leading-5 text-stone-500"
-              >
-                {{ product.description }}
-              </p>
-              <div
-                v-if="product.code"
-                class="mt-2 text-[10px] uppercase tracking-[0.16em] text-stone-400"
-              >
-                {{ product.code }}
+            <div class="catalog-product__body">
+              <h3>{{ product.name }}</h3>
+              <div class="catalog-rating-line">
+                <span>★★★★★</span>
+                <small>{{ getProductRating(index) }}/5</small>
               </div>
+              <div class="catalog-product__footer">
+                <strong>¥{{ getProductPrice(product, index) }}</strong>
+                <del v-if="getProductOldPrice(product, index)">¥{{ getProductOldPrice(product, index) }}</del>
+                <small v-if="getProductDiscount(product, index)">
+                  {{ getProductDiscount(product, index) }}
+                </small>
+              </div>
+              <p>{{ productMetaLine(product) }}</p>
             </div>
-          </article>
+          </NuxtLink>
         </div>
 
-        <div
-          v-else
-          class="ys-section-shell mx-auto max-w-xl px-6 py-16 text-center sm:px-8"
-        >
-          <p class="text-[13px] leading-7 text-stone-500">
-            暂时没有匹配的 POD 设计资源。可以换一个图案、商品品类或定制主题继续搜索。
+        <div v-else class="catalog-empty">
+          <span>NO RESULTS</span>
+          <h2>换一个关键词，可能会遇到更合适的设计。</h2>
+          <p>
+            试试“印花”“礼物”“鼠标垫”“装饰画”这类商品或场景词，系统会展示对应的 POD 商品与定制灵感。
           </p>
-          <button
-            class="ys-action-btn mt-5 rounded-xl px-5 py-3 text-[12px] transition"
-            @click="resetFilters"
-          >
-            查看全部资源
-          </button>
+          <button type="button" @click="resetFilters">查看全部商品</button>
         </div>
 
-        <div
+        <nav
           v-if="!loading && totalPages > 1 && productList.length > 0"
-          class="mt-12 flex flex-col items-center gap-4 border-t border-white/70 pt-6"
+          class="catalog-pagination"
+          aria-label="商品分页"
         >
-          <div class="flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            :disabled="currentPage === 1"
+            @click="handlePageChange(currentPage - 1)"
+          >
+            <v-icon size="16">mdi-arrow-left</v-icon>
+            上一页
+          </button>
+          <button
+            v-if="pageNumbers[0] > 1"
+            type="button"
+            @click="handlePageChange(1)"
+          >
+            1
+          </button>
+          <span v-if="pageNumbers[0] > 2">...</span>
+          <button
+            v-for="page in pageNumbers"
+            :key="page"
+            type="button"
+            :class="{ active: currentPage === page }"
+            @click="handlePageChange(page)"
+          >
+            {{ page }}
+          </button>
+          <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1"
+            >...</span
+          >
+          <button
+            v-if="pageNumbers[pageNumbers.length - 1] < totalPages"
+            type="button"
+            @click="handlePageChange(totalPages)"
+          >
+            {{ totalPages }}
+          </button>
+          <button
+            type="button"
+            :disabled="currentPage === totalPages"
+            @click="handlePageChange(currentPage + 1)"
+          >
+            下一页
+            <v-icon size="16">mdi-arrow-right</v-icon>
+          </button>
+        </nav>
+      </div>
+    </section>
+
+    <Transition name="catalog-drawer">
+      <div v-if="showFilters" class="catalog-drawer" @click="toggleFilters">
+        <aside class="catalog-drawer__panel" @click.stop>
+          <div class="catalog-filter__head">
+            <strong>Filters</strong>
+            <button type="button" @click="toggleFilters">关闭</button>
+          </div>
+          <form class="catalog-search catalog-search--drawer" @submit.prevent="handleSearch">
+            <v-icon size="18">mdi-magnify</v-icon>
+            <input v-model="searchKeyword" type="search" placeholder="Search for products..." />
+          </form>
+          <div class="catalog-filter__block">
+            <label>上新时间</label>
+            <input v-model="startDate" type="date" @change="handleSearch" />
+            <input v-model="endDate" type="date" @change="handleSearch" />
+          </div>
+          <div
+            v-for="group in filterGroups"
+            :key="group.title"
+            class="catalog-filter__block"
+          >
+            <label>{{ group.title }}</label>
             <button
-              @click="handlePageChange(currentPage - 1)"
-              :disabled="currentPage === 1"
-              class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition disabled:opacity-35"
+              v-for="item in group.items"
+              :key="item"
+              type="button"
+              class="catalog-filter__item"
+              @click="handleKeywordClick(item)"
             >
-              上一页
-            </button>
-            <button
-              v-if="pageNumbers[0] > 1"
-              @click="handlePageChange(1)"
-              class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition"
-            >
-              1
-            </button>
-            <span v-if="pageNumbers[0] > 2" class="px-1 text-stone-300"
-              >...</span
-            >
-            <button
-              v-for="page in pageNumbers"
-              :key="page"
-              @click="handlePageChange(page)"
-              :class="[
-                'rounded-xl px-4 py-2 text-[12px] transition',
-                currentPage === page ? 'ys-action-btn-active' : 'ys-action-btn',
-              ]"
-            >
-              {{ page }}
-            </button>
-            <span
-              v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1"
-              class="px-1 text-stone-300"
-              >...</span
-            >
-            <button
-              v-if="pageNumbers[pageNumbers.length - 1] < totalPages"
-              @click="handlePageChange(totalPages)"
-              class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition"
-            >
-              {{ totalPages }}
-            </button>
-            <button
-              @click="handlePageChange(currentPage + 1)"
-              :disabled="currentPage === totalPages"
-              class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition disabled:opacity-35"
-            >
-              下一页
+              <span>{{ item }}</span>
+              <v-icon size="15">mdi-chevron-right</v-icon>
             </button>
           </div>
-        </div>
+          <button type="button" class="catalog-drawer__apply" @click="toggleFilters">
+            应用筛选
+          </button>
+        </aside>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
+.catalog-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #111111;
+  padding: 1.45rem 0 5rem;
+}
+
+.catalog-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: var(--ys-container);
+  min-height: 2.6rem;
+  margin: 0 auto 1.05rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.88rem;
+}
+
+.catalog-breadcrumb a {
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+}
+
+.catalog-breadcrumb span {
+  color: #111;
+}
+
+.catalog-search {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(32vw, 360px);
+  min-height: 2.85rem;
+  padding: 0 1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #f0f0f0;
+  line-height: 1;
+}
+
+.catalog-search:focus-within {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.catalog-search input {
+  min-width: 0;
+  width: 100%;
+  height: 2.85rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111;
+  font-size: 0.9rem;
+  line-height: normal;
+  padding: 0;
+}
+
+.catalog-search input::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.catalog-search input:focus-visible {
+  box-shadow: none;
+}
+
+.catalog-search button,
+.catalog-empty button,
+.catalog-drawer__apply,
+.catalog-apply {
+  min-height: 2.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 0 1.35rem;
+}
+
+.catalog-quick,
+.catalog-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.catalog-quick button,
+.catalog-active-filters span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  border: 1px solid #ececec;
+  border-radius: 999px;
+  background: #fff;
+  color: #333;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0 0.85rem;
+}
+
+.catalog-quick button:hover {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.catalog-toolbar,
+.catalog-layout {
+  width: var(--ys-container) !important;
+  max-width: var(--ys-page-max) !important;
+  margin-inline: auto;
+}
+
+.catalog-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.45rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #efefef;
+  background: #fff;
+}
+
+.catalog-toolbar h2 {
+  margin: 0 0 0.28rem;
+  color: #000;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.catalog-toolbar span {
+  color: #777;
+  font-size: 0.78rem;
+}
+
+.catalog-toolbar strong {
+  display: block;
+  margin-top: 0.12rem;
+  color: #111;
+  font-size: 0.95rem;
+}
+
+.catalog-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.catalog-sort {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.35rem;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.catalog-sort strong {
+  display: inline;
+  color: #111;
+  font-size: inherit;
+}
+
+.catalog-filter-toggle,
+.catalog-reset,
+.catalog-filter__head button,
+.catalog-pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.35rem;
+  border: 1px solid #e9e9e9;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0 0.9rem;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 295px minmax(0, 1fr);
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.catalog-filter {
+  align-self: start;
+  position: sticky;
+  top: 150px;
+  display: grid;
+  gap: 0;
+  padding: 1.2rem;
+  border: 1px solid #ececec;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.catalog-filter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.55rem;
+  padding: 0.05rem 0.1rem 1rem;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.catalog-filter__head strong {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.catalog-filter__block {
+  display: grid;
+  gap: 0.72rem;
+  padding: 1.15rem 0;
+  border-top: 1px solid #eeeeee;
+}
+
+.catalog-filter__head + .catalog-filter__block {
+  border-top: 0;
+  padding-top: 0.85rem;
+}
+
+.catalog-filter__block label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.3rem;
+  color: #111;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.catalog-filter__block input {
+  width: 100%;
+  min-height: 2.55rem;
+  border: 1px solid #e9e9e9;
+  border-radius: 0.85rem;
+  background: #f7f7f7;
+  color: #333;
+  padding: 0 0.75rem;
+}
+
+.catalog-filter__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: #555;
+  text-align: left;
+  font-size: 0.92rem;
+  line-height: 1;
+}
+
+.catalog-filter__item span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.2rem;
+}
+
+.catalog-filter__item:hover,
+.catalog-filter__item.active {
+  background: #f4f4f4;
+  color: #000;
+}
+
+.catalog-filter__item--category {
+  padding-inline: 0.75rem;
+}
+
+.catalog-price-range {
+  position: relative;
+  height: 6px;
+  margin: 0.55rem 0 0.2rem;
+  border-radius: 999px;
+  background: #f0f0f0;
+}
+
+.catalog-price-range span {
+  position: absolute;
+  left: 22%;
+  right: 18%;
+  top: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: #000;
+}
+
+.catalog-price-range i,
+.catalog-price-range::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+.catalog-price-range::before {
+  left: 22%;
+}
+
+.catalog-price-range i {
+  right: 18%;
+}
+
+.catalog-price-labels,
+.catalog-color-list,
+.catalog-size-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.catalog-price-labels {
+  justify-content: space-between;
+  color: #111;
+  font-size: 0.82rem;
+}
+
+.catalog-color-list button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  color: #fff;
+}
+
+.catalog-size-list button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 0.82rem;
+  line-height: 1;
+  padding: 0 1rem;
+}
+
+.catalog-size-list button:hover {
+  background: #000;
+  color: #fff;
+}
+
+.catalog-apply {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.catalog-results {
+  min-width: 0;
+}
+
+.catalog-active-filters {
+  margin: 0 0 1rem;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.6vw, 1.35rem);
+}
+
+.catalog-product {
+  display: block;
+  cursor: pointer;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.catalog-product__media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 0.82;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #f0f0f0;
+}
+
+.catalog-product__media img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.catalog-product:hover .catalog-product__media img {
+  transform: scale(1.045);
+  filter: saturate(1.05);
+}
+
+.img-loading {
+  position: absolute;
+  inset: 0;
+  background: #f0f0f0;
+}
+
+.image-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.82rem;
+}
+
+.catalog-product__empty {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: #888;
+  font-size: 0.82rem;
+}
+
+.catalog-product__open {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.catalog-product:hover .catalog-product__open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.catalog-product__body {
+  padding: 0.88rem 0 0;
+}
+
+.catalog-product__body > span {
+  display: block;
+  color: #777;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.catalog-product h3 {
+  margin: 0;
+  color: #111;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.catalog-product p {
+  display: -webkit-box;
+  margin: 0.35rem 0 0;
+  color: #666;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.catalog-rating-line,
+.catalog-product__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.catalog-rating-line {
+  margin-top: 0.38rem;
+}
+
+.catalog-rating-line span {
+  color: #ffc633;
+  font-size: 0.86rem;
+  letter-spacing: 0;
+}
+
+.catalog-rating-line small {
+  color: #555;
+  font-size: 0.78rem;
+}
+
+.catalog-product__footer {
+  margin-top: 0.42rem;
+}
+
+.catalog-product__footer strong {
+  color: #111;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.catalog-product__footer del {
+  color: rgba(0, 0, 0, 0.38);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.catalog-product__footer small {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  border-radius: 999px;
+  background: rgba(255, 51, 51, 0.1);
+  color: #ff3333;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0 0.55rem;
+}
+
+.catalog-empty {
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: #f3f3f3;
+  text-align: center;
+}
+
+.catalog-empty span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #777;
+}
+
+.catalog-empty h2 {
+  max-width: 620px;
+  margin: 0.8rem 0 0;
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.catalog-empty p {
+  max-width: 520px;
+  margin: 1rem 0 0;
+  color: #666;
+  line-height: 1.8;
+}
+
+.catalog-empty button {
+  margin-top: 1.4rem;
+}
+
+.catalog-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid #eeeeee;
+}
+
+.catalog-pagination button.active {
+  background: #111;
+  color: #fff;
+}
+
+.catalog-pagination button:disabled {
+  opacity: 0.35;
+}
+
+.catalog-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.catalog-drawer__panel {
+  width: min(88vw, 380px);
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.2rem;
+  background: #fff;
+}
+
+.catalog-search--drawer {
+  width: 100%;
+  margin: 1rem 0 0;
+}
+
+.catalog-drawer__apply {
+  width: 100%;
+  margin-top: 1.2rem;
+}
+
 .product-skeleton .skeleton-wave {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #f0ece6 0%, #ebe5dd 100%);
+  background: linear-gradient(180deg, #f2f2f2 0%, #e9e9e9 100%);
 }
 
 .product-skeleton .skeleton-wave::after {
@@ -675,7 +1373,21 @@ watch(
 }
 
 .product-skeleton .skeleton-image {
-  background: linear-gradient(180deg, #eee8df 0%, #e7dfd5 100%);
+  aspect-ratio: 0.84;
+  border-radius: 1.35rem;
+  background: linear-gradient(180deg, #f1f1f1 0%, #e5e5e5 100%);
+}
+
+.product-skeleton .skeleton-line {
+  width: 72%;
+  height: 0.8rem;
+  margin-top: 0.9rem;
+  border-radius: 999px;
+}
+
+.product-skeleton .skeleton-line--short {
+  width: 46%;
+  margin-top: 0.5rem;
 }
 
 .product-skeleton .skeleton-wave-delay::after {
@@ -694,5 +1406,115 @@ watch(
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.catalog-drawer-enter-active,
+.catalog-drawer-leave-active {
+  transition: opacity 220ms ease;
+}
+
+.catalog-drawer-enter-active .catalog-drawer__panel,
+.catalog-drawer-leave-active .catalog-drawer__panel {
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.catalog-drawer-enter-from,
+.catalog-drawer-leave-to {
+  opacity: 0;
+}
+
+.catalog-drawer-enter-from .catalog-drawer__panel,
+.catalog-drawer-leave-to .catalog-drawer__panel {
+  transform: translateX(100%);
+}
+
+@keyframes catalog-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(1deg);
+  }
+}
+
+@keyframes catalog-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1280px) {
+  .catalog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filter--desktop {
+    display: none;
+  }
+
+  .catalog-search {
+    width: min(42vw, 360px);
+  }
+}
+
+@media (min-width: 1025px) {
+  .catalog-filter-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .catalog-page {
+    padding-top: 1rem;
+  }
+
+  .catalog-search {
+    width: 100%;
+  }
+
+  .catalog-toolbar {
+    position: static;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .catalog-toolbar__actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .catalog-sort {
+    order: 3;
+    width: 100%;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem 0.8rem;
+  }
+
+  .catalog-product__media {
+    border-radius: 1rem;
+  }
+
+  .catalog-product h3 {
+    font-size: 0.88rem;
+  }
+
+  .catalog-product p {
+    display: none;
+  }
+
+  .catalog-product__open {
+    opacity: 1;
+    transform: none;
+  }
 }
 </style>

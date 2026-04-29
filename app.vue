@@ -82,25 +82,32 @@ useHead({
 <style>
 :root {
   --version: "1.0.0";
-  --ys-bg: #f5f1ea;
-  --ys-surface: #fffdf9;
-  --ys-surface-soft: #f3eee6;
-  --ys-surface-hover: #faf6ef;
-  --ys-surface-active: #ede6db;
-  --ys-border: rgba(36, 49, 39, 0.07);
-  --ys-border-strong: rgba(36, 49, 39, 0.12);
-  --ys-text: #243127;
-  --ys-text-soft: #556258;
-  --ys-text-muted: #7c847d;
-  --ys-accent: #859480;
-  --ys-accent-strong: #6d7d6a;
-  --ys-accent-soft: rgba(133, 148, 128, 0.12);
-  --ys-warm: #c48a6a;
-  --ys-focus: rgba(133, 148, 128, 0.18);
-  --ys-focus-ring: rgba(133, 148, 128, 0.14);
-  --ys-shadow-sm: 0 2px 10px rgba(36, 49, 39, 0.025);
-  --ys-shadow-md: 0 8px 20px rgba(36, 49, 39, 0.04);
-  --ys-shadow-lg: 0 14px 34px rgba(36, 49, 39, 0.055);
+  --ys-bg: #ffffff;
+  --ys-surface: #ffffff;
+  --ys-surface-soft: #f3f3f3;
+  --ys-surface-hover: #f7f7f7;
+  --ys-surface-active: #eeeeee;
+  --ys-border: rgba(0, 0, 0, 0.08);
+  --ys-border-strong: rgba(0, 0, 0, 0.18);
+  --ys-text: #111111;
+  --ys-text-soft: #444444;
+  --ys-text-muted: #777777;
+  --ys-accent: #111111;
+  --ys-accent-strong: #000000;
+  --ys-accent-soft: rgba(0, 0, 0, 0.06);
+  --ys-warm: #111111;
+  --ys-focus: rgba(0, 0, 0, 0.14);
+  --ys-focus-ring: rgba(0, 0, 0, 0.1);
+  --ys-shadow-sm: none;
+  --ys-shadow-md: none;
+  --ys-shadow-lg: none;
+  --ys-page-max: 1440px;
+  --ys-page-gutter: clamp(1rem, 2vw, 6rem);
+  --ys-container: min(var(--ys-page-max), calc(100% - var(--ys-page-gutter)));
+  --ys-container-pad: max(
+    calc(var(--ys-page-gutter) / 2),
+    calc((100vw - var(--ys-page-max)) / 2)
+  );
   --ys-font-sans:
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
     "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
@@ -135,19 +142,7 @@ textarea {
 body {
   margin: 0;
   color: var(--ys-text);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 18rem),
-    radial-gradient(
-      circle at top left,
-      rgba(196, 138, 106, 0.05),
-      transparent 26rem
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(133, 148, 128, 0.08),
-      transparent 28rem
-    ),
-    var(--ys-bg);
+  background: var(--ys-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -166,13 +161,7 @@ body {
 }
 
 .ys-grain {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.012;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
+  display: none;
 }
 
 h1,
@@ -336,7 +325,7 @@ textarea {
 .ys-pill.is-active {
   border-color: var(--ys-text);
   background: var(--ys-text);
-  color: #f8f5ef;
+  color: #fff;
 }
 
 .ys-control {
@@ -392,13 +381,13 @@ textarea {
 }
 
 .ys-section-shell {
-  border: 1px solid rgba(36, 49, 39, 0.05);
+  border: 1px solid var(--ys-border);
   border-radius: 1.6rem;
-  background: rgba(255, 253, 249, 0.72);
+  background: var(--ys-surface);
 }
 
 .ys-flat-block {
-  border: 1px solid rgba(36, 49, 39, 0.05);
+  border: 1px solid var(--ys-border);
   border-radius: 1.15rem;
   background: var(--ys-surface-soft);
 }
@@ -422,6 +411,375 @@ textarea {
   border-color: rgba(16, 185, 129, 0.18);
   background: rgba(236, 253, 245, 0.92);
   color: #047857;
+}
+
+.design-page,
+.lab-page,
+.portfolio-page,
+.fd-page,
+.pricing-page,
+.founder-page,
+.knowledge-page {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+.design-page,
+.lab-page,
+.portfolio-page,
+.fd-page,
+.pricing-page,
+.founder-page {
+  padding: clamp(1.2rem, 3vw, 2rem) 0 clamp(3rem, 7vw, 6rem) !important;
+}
+
+.design-page > section,
+.lab-page > section,
+.portfolio-page > section,
+.fd-page > section,
+.pricing-container,
+.founder-container,
+.knowledge-page > div {
+  width: var(--ys-container) !important;
+  max-width: var(--ys-page-max) !important;
+  margin-inline: auto !important;
+}
+
+.max-w-\[1240px\] {
+  max-width: var(--ys-page-max) !important;
+}
+
+.catalog-toolbar,
+.catalog-layout,
+.product-detail-shell,
+.home-section,
+.home-showcase,
+.home-stats,
+.home-cta {
+  width: var(--ys-container) !important;
+  max-width: var(--ys-page-max) !important;
+}
+
+.design-hero,
+.lab-hero,
+.portfolio-hero,
+.fd-hero,
+.pricing-hero,
+.profile-header,
+.knowledge-panel {
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 20px !important;
+  background: #f2f0ed !important;
+  color: #111 !important;
+  box-shadow: none !important;
+}
+
+.design-hero,
+.lab-hero,
+.portfolio-hero,
+.fd-hero,
+.pricing-hero {
+  margin-bottom: clamp(1.4rem, 4vw, 2.5rem) !important;
+  padding: clamp(1.6rem, 5vw, 3.6rem) !important;
+}
+
+.design-hero h1,
+.lab-hero h1,
+.portfolio-hero h1,
+.fd-hero h1,
+.pricing-title,
+.founder-page .name,
+.knowledge-page h1 {
+  max-width: 12ch !important;
+  margin: 0 !important;
+  color: #050505 !important;
+  font-size: clamp(2.7rem, 6vw, 5.9rem) !important;
+  font-weight: 900 !important;
+  line-height: 0.92 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+}
+
+.design-hero p,
+.lab-hero p,
+.portfolio-hero p,
+.fd-hero__lead,
+.pricing-subtitle,
+.founder-page .bio,
+.knowledge-page p {
+  color: #5f5f5f !important;
+  line-height: 1.85 !important;
+}
+
+.minimal-kicker,
+.design-label,
+.lab-label,
+.portfolio-label,
+.fd-section-kicker,
+.fd-mini,
+.panel-title {
+  color: #777 !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.design-strip,
+.fd-ribbon {
+  width: 100% !important;
+  max-width: none !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+
+.design-strip span,
+.fd-ribbon span {
+  color: #fff !important;
+  font-size: clamp(1.25rem, 2.6vw, 2.4rem) !important;
+  font-weight: 900 !important;
+}
+
+.design-stage,
+.lab-console,
+.portfolio-stage,
+.fd-stage,
+.fd-content,
+.pricing-cards,
+.plan-details-container,
+.faq-grid,
+.content,
+.knowledge-workbench {
+  display: grid !important;
+  gap: clamp(1rem, 2.2vw, 1.4rem) !important;
+}
+
+.design-stage,
+.lab-console,
+.portfolio-stage,
+.fd-stage,
+.knowledge-workbench {
+  grid-template-columns: minmax(0, 0.86fr) minmax(320px, 1.14fr) !important;
+  align-items: stretch !important;
+}
+
+.fd-content,
+.pricing-cards,
+.plan-details-container,
+.faq-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.design-stage__lead,
+.design-stage__selector,
+.design-stage__brief,
+.design-package,
+.lab-console__left,
+.lab-console__center,
+.lab-console__right,
+.lab-capability,
+.portfolio-hero__panel,
+.portfolio-stage__lead,
+.portfolio-stage__note,
+.portfolio-card,
+.fd-selector__item,
+.fd-stage__left,
+.fd-stage__right,
+.fd-content__block,
+.fd-cta,
+.pricing-card,
+.plan-detail-item,
+.faq-item,
+.section,
+.filter-panel,
+.content-stage,
+.preview-card,
+.footer-cta,
+.story-entry,
+.skill-map article,
+.featured-strip button,
+.path-link,
+.hot-item {
+  border: 1px solid #eeeeee !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  color: #111 !important;
+  box-shadow: none !important;
+}
+
+.portfolio-card,
+.fd-selector__item,
+.pricing-card,
+.story-entry,
+.path-link,
+.hot-item {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    background-color 220ms ease !important;
+}
+
+.portfolio-card:hover,
+.fd-selector__item:hover,
+.pricing-card:hover,
+.story-entry:hover,
+.path-link:hover,
+.hot-item:hover {
+  border-color: #111 !important;
+  background: #f7f7f7 !important;
+  transform: translateY(-3px) !important;
+}
+
+.fd-selector__item.is-active,
+.portfolio-filter__item.is-active,
+.filter-token.is-active,
+.fd-output-cloud__item.is-active {
+  border-color: #000 !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+
+.design-page button,
+.lab-page button,
+.portfolio-page button,
+.fd-page button,
+.pricing-page button,
+.founder-page button,
+.knowledge-page button,
+.design-page a,
+.lab-page a,
+.portfolio-page a,
+.fd-page a,
+.pricing-page a,
+.founder-page a,
+.knowledge-page a {
+  border-radius: 999px !important;
+}
+
+.design-page input,
+.design-page textarea,
+.lab-page input,
+.lab-page textarea,
+.portfolio-page input,
+.portfolio-page textarea,
+.fd-page input,
+.fd-page textarea,
+.knowledge-page input,
+.knowledge-page textarea {
+  border: 1px solid #e9e9e9 !important;
+  border-radius: 16px !important;
+  background: #f7f7f7 !important;
+  color: #111 !important;
+  box-shadow: none !important;
+}
+
+.design-page input::placeholder,
+.design-page textarea::placeholder,
+.lab-page input::placeholder,
+.lab-page textarea::placeholder,
+.fd-page input::placeholder,
+.fd-page textarea::placeholder,
+.knowledge-page input::placeholder,
+.knowledge-page textarea::placeholder {
+  color: rgba(0, 0, 0, 0.42) !important;
+}
+
+.card-top-bar,
+.story-line {
+  background: #000 !important;
+}
+
+.cta-button,
+.details-link,
+.reset-button,
+.practice-button,
+.stream-action,
+.preview-action,
+.fd-cta__link,
+.fd-hero__switch {
+  border: 0 !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+
+.price-amount,
+.price-custom,
+.plan-detail-price,
+.section-title,
+.section-title h2,
+.design-stage h2,
+.lab-console h2,
+.portfolio-stage h2,
+.fd-stage h2,
+.fd-cta h3,
+.knowledge-page h2,
+.knowledge-page h3 {
+  color: #050505 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.preview-cover,
+[class*="bg-gradient"],
+[class*="bg-[linear-gradient"],
+[class*="bg-[radial-gradient"] {
+  background: #f0f0f0 !important;
+}
+
+.text-\[\#243127\],
+.text-\[\#223127\],
+.text-\[\#5d685d\],
+.text-\[\#5f695f\],
+.text-\[\#708072\],
+.text-\[\#617061\],
+.text-\[\#526050\] {
+  color: #111 !important;
+}
+
+.bg-\[\#f4efe6\],
+.bg-\[\#f7f3ec\],
+.bg-\[\#faf8f5\],
+.bg-\[\#f6f1ea\] {
+  background: #f3f3f3 !important;
+}
+
+@media (max-width: 1024px) {
+  .design-stage,
+  .lab-console,
+  .portfolio-stage,
+  .fd-stage,
+  .knowledge-workbench,
+  .fd-content,
+  .pricing-cards,
+  .plan-details-container,
+  .faq-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .design-page,
+  .lab-page,
+  .portfolio-page,
+  .fd-page,
+  .pricing-page,
+  .founder-page,
+  .knowledge-page {
+    padding-top: 1rem !important;
+  }
+
+  .design-hero h1,
+  .lab-hero h1,
+  .portfolio-hero h1,
+  .fd-hero h1,
+  .pricing-title,
+  .founder-page .name,
+  .knowledge-page h1 {
+    font-size: clamp(2.25rem, 12vw, 3.6rem) !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

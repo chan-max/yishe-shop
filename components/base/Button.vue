@@ -187,8 +187,8 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .ys-btn--primary:active:not(:disabled) {
-  background: #b57857;
-  border-color: #b57857;
+  background: #000;
+  border-color: #000;
 }
 
 .ys-btn--secondary,
@@ -200,19 +200,19 @@ const handleClick = (event: MouseEvent) => {
 
 .ys-btn--secondary:hover:not(:disabled),
 .ys-btn--glass:hover:not(:disabled) {
-  background: #fcfbf9;
-  border-color: rgba(36, 49, 39, 0.2);
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.18);
 }
 
 .ys-btn--secondary:active:not(:disabled),
 .ys-btn--glass:active:not(:disabled) {
-  background: #f3efe9;
+  background: #eeeeee;
 }
 
 .ys-btn--outline {
   background: rgba(255, 255, 255, 0.3);
   color: var(--ys-accent-strong);
-  border-color: rgba(139, 154, 135, 0.34);
+  border-color: rgba(0, 0, 0, 0.14);
 }
 
 .ys-btn--outline:hover:not(:disabled) {

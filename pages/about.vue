@@ -1,242 +1,189 @@
-<!--
- * @Author: chan-max jackieontheway666@gmail.com
- * @Date: 2025-01-27 11:00:00
- * @LastEditors: chan-max jackieontheway666@gmail.com
- * @LastEditTime: 2025-01-27 11:00:00
- * @FilePath: /yishe-nuxt/pages/about.vue
- * @Description: About Page - Learn more about 1s Design
--->
 <script lang="ts" setup>
 definePageMeta({ layout: "page" });
 
-// Page title and meta
 useHead({
   titleTemplate: "",
   title: "关于衣设 - POD 印花与定制设计开放平台",
   meta: [
     {
       name: "description",
-      content: "了解衣设 yishe，一个面向品牌、创作者和个人用户的 POD 印花、定制商品与创意设计开放平台。",
+      content:
+        "了解衣设 yishe，一个面向品牌、创作者和个人用户的 POD 印花、定制商品与创意设计开放平台。",
     },
     {
       name: "keywords",
-      content: "衣设,1s.design,POD平台,印花设计,定制商品,私人定制,创意设计平台",
+      content:
+        "衣设,1s.design,POD平台,印花设计,定制商品,私人定制,创意设计平台",
     },
   ],
 });
+
+const values = [
+  ["POD first", "围绕服饰、礼赠、家居和品牌周边组织商品与视觉内容。"],
+  ["Custom ready", "每个方向都保留继续定制、打样和组合成系列的空间。"],
+  ["Searchable", "页面结构面向用户浏览，也面向搜索引擎清晰理解。"],
+];
 </script>
 
 <template>
-  <div class="about-page">
-    <div class="about-container">
-      <!-- Hero Section -->
-      <section class="about-hero">
-        <h1 class="about-title">关于衣设</h1>
-        <p class="about-subtitle">一个连接图案、商品和私人表达的创意设计平台。</p>
-      </section>
+  <main class="about-page">
+    <section class="about-hero">
+      <div>
+        <span>ABOUT 1S.DESIGN</span>
+        <h1>关于衣设</h1>
+      </div>
+      <p>
+        衣设连接 POD 印花、定制商品、创意图案和品牌周边。我们把商品展示、设计灵感和可收录内容组织在同一个平台里，让创意更快变成真实产品。
+      </p>
+    </section>
 
-      <!-- Mission Section -->
-      <section class="about-section">
-        <h2 class="section-title">我们的使命</h2>
-        <p class="section-content">
-          我们相信好的设计应该从灵感走向真实产品。衣设把 POD 印花、定制商品、
-          视觉素材和设计师服务连接起来，让创作者和品牌更快完成表达。
-        </p>
-      </section>
+    <section class="about-band">
+      <strong>POD PRINT</strong>
+      <strong>CUSTOM GOODS</strong>
+      <strong>PRIVATE DESIGN</strong>
+      <strong>BRAND MERCH</strong>
+    </section>
 
-      <!-- Vision Section -->
-      <section class="about-section">
-        <h2 class="section-title">我们的愿景</h2>
-        <p class="section-content">
-          让一张图案、一句主题或一份纪念心意，延展成可以穿出去、送出去、摆出来的定制商品。
-        </p>
-      </section>
+    <section class="about-grid">
+      <article v-for="item in values" :key="item[0]">
+        <span>{{ item[0] }}</span>
+        <p>{{ item[1] }}</p>
+      </article>
+    </section>
 
-      <!-- Values Section -->
-      <section class="about-section">
-        <h2 class="section-title">我们的价值观</h2>
-        <div class="values-grid">
-          <div class="value-card">
-            <div class="value-icon">
-              <v-icon size="32" color="primary">mdi-lightbulb</v-icon>
-            </div>
-            <h3 class="value-title">表达优先</h3>
-            <p class="value-description">
-              我们先关心这件东西有没有态度，再关心它有没有被解释清楚。
-            </p>
-          </div>
-
-          <div class="value-card">
-            <div class="value-icon">
-              <v-icon size="32" color="primary">mdi-account-group</v-icon>
-            </div>
-            <h3 class="value-title">门槛要低</h3>
-            <p class="value-description">
-              不会画图、没学过设计，也不该妨碍你做一件像自己的东西。
-            </p>
-          </div>
-
-          <div class="value-card">
-            <div class="value-icon">
-              <v-icon size="32" color="primary">mdi-star</v-icon>
-            </div>
-            <h3 class="value-title">审美要真</h3>
-            <p class="value-description">
-              衣设不会什么都迎合。我们更在意留下来的内容，是不是值得被穿、被留、被记住。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Team Section -->
-      <section class="about-section">
-        <h2 class="section-title">我们的团队</h2>
-        <p class="section-content">
-          我们由设计、产品和技术共同构建衣设，让图案资源、商品展示、定制服务和内容发布保持同一套审美标准。
-        </p>
-      </section>
-    </div>
-  </div>
+    <section class="about-story">
+      <h2>从一个图案，延展到一组商品。</h2>
+      <p>
+        适合独立品牌、内容创作者、活动企划和私人礼物。衣设关注图案如何落到具体商品、材质、场景和展示页面，让每个入口都能服务浏览、转化和 SEO。
+      </p>
+      <NuxtLink to="/products">浏览 POD 商品</NuxtLink>
+    </section>
+  </main>
 </template>
 
-<style lang="scss" scoped>
-// CSS Variables - Pure Black Theme
-:root {
-  --primary-color: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --bg-primary: #000000;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --border-color: #333333;
-}
-
+<style scoped>
 .about-page {
-  min-height: 100vh;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  padding: 2rem 0;
-}
-
-.about-container {
-  max-width: 800px;
+  width: var(--ys-container);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(3rem, 7vw, 6rem);
+  color: #111;
 }
 
 .about-hero {
-  text-align: center;
-  margin-bottom: 4rem;
-  padding: 2rem 0;
-}
-
-.about-title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-}
-
-.about-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
-}
-
-.about-section {
-  margin-bottom: 4rem;
-}
-
-.section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-}
-
-.section-content {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 1rem;
-}
-
-.values-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: end;
 }
 
-.value-card {
-  background: var(--bg-secondary);
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+.about-hero span,
+.about-grid span {
+  color: #777;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-hero h1 {
+  margin: 0.8rem 0 0;
+  color: #000;
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  line-height: 0.9;
+  font-weight: 900;
+}
+
+.about-hero p,
+.about-story p,
+.about-grid p {
+  margin: 0;
+  color: #555;
+  line-height: 1.85;
+}
+
+.about-band {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  margin-top: clamp(2rem, 5vw, 4rem);
+  border-radius: 20px;
+  background: #222;
+}
+
+.about-band strong {
+  display: grid;
+  place-items: center;
+  min-height: 5.6rem;
+  background: #000;
+  color: #fff;
+  font-size: clamp(1rem, 2vw, 1.5rem);
   text-align: center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  }
 }
 
-.value-icon {
-  margin-bottom: 1rem;
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.value-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
+.about-grid article,
+.about-story {
+  border-radius: 20px;
+  background: #f0f0f0;
+  padding: clamp(1.2rem, 3vw, 2rem);
 }
 
-.value-description {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.about-grid p {
+  margin-top: 1.4rem;
+  color: #111;
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  font-weight: 800;
 }
 
-// Responsive Design
-@media (max-width: 768px) {
-  .about-container {
-    padding: 0 1rem;
-  }
+.about-story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 1rem;
+  background: #000;
+  color: #fff;
+}
 
-  .about-hero {
-    margin-bottom: 2rem;
-    padding: 1rem 0;
-  }
+.about-story h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.98;
+}
 
-  .about-section {
-    margin-bottom: 2rem;
-  }
+.about-story p {
+  color: rgba(255, 255, 255, 0.68);
+}
 
-  .values-grid {
+.about-story a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-weight: 900;
+  padding: 0 1.2rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .about-hero,
+  .about-story,
+  .about-grid,
+  .about-band {
     grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .value-card {
-    padding: 1.5rem;
   }
 }
 </style>

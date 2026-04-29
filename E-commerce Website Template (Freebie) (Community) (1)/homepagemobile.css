@@ -1,0 +1,3081 @@
+/* Homepage */
+
+position: relative;
+width: 390px;
+height: 4461px;
+
+background: #FFFFFF;
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 392px;
+height: 846px;
+left: calc(50% - 392px/2);
+top: 3615px;
+
+background: #F0F0F0;
+
+
+/* Frame 1 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 9px 544px;
+gap: 10px;
+
+position: absolute;
+width: 390px;
+height: 34px;
+left: calc(50% - 390px/2);
+top: 0px;
+
+background: #000000;
+
+
+/* Sign up and get 20% off to your first order. Sign Up Now */
+
+width: 301px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* SHOP.CO */
+
+position: absolute;
+width: 126px;
+height: 18px;
+left: 56px;
+top: 57px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 25.2px;
+line-height: 30px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 54px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 10.94%;
+right: 10.94%;
+top: 20.31%;
+bottom: 20.31%;
+
+background: #000000;
+
+
+/* Frame 5 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 96px;
+height: 24px;
+left: 278px;
+top: 54px;
+
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.73%;
+right: 7.79%;
+top: 7.73%;
+bottom: 7.79%;
+
+background: #000000;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 7.81%;
+top: 7.81%;
+bottom: 7.81%;
+
+background: #000000;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 7.81%;
+bottom: 7.81%;
+
+background: #000000;
+
+
+/* Rectangle 6 */
+
+position: absolute;
+width: 390px;
+height: 853px;
+left: 0px;
+top: 98px;
+
+background: #F2F0F1;
+
+
+/* FIND CLOTHES THAT MATCHES YOUR STYLE */
+
+position: absolute;
+width: 315px;
+height: 93px;
+left: 16px;
+top: 138px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 34px;
+/* or 94% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style. */
+
+position: absolute;
+width: 358px;
+height: 50px;
+left: 16px;
+top: 251px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Frame 14 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 54px;
+gap: 12px;
+
+position: absolute;
+width: 358px;
+height: 52px;
+left: 16px;
+top: 325px;
+
+background: #000000;
+border-radius: 62px;
+
+
+/* Shop Now */
+
+width: 75px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 57 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+align-content: flex-start;
+padding: 0px;
+gap: 32px;
+
+position: absolute;
+width: 278px;
+height: 52px;
+left: calc(50% - 278px/2);
+top: 397px;
+
+
+
+/* Frame 55 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 106px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 200+ */
+
+width: 64px;
+height: 32px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+margin: -6px 0px;
+
+
+/* International Brands */
+
+width: 106px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 22px;
+/* identical to box height, or 183% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Line 9 */
+
+width: 52px;
+height: 0px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+transform: rotate(90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 54 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 117px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* 2,000+ */
+
+width: 88px;
+height: 32px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+margin: -6px 0px;
+
+
+/* High-Quality Products */
+
+width: 117px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 22px;
+/* identical to box height, or 183% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Rectangle 2 */
+
+position: absolute;
+width: 390px;
+height: 448px;
+left: calc(50% - 390px/2);
+top: 503px;
+
+background: url(trendy-fashionable-couple-posing.jpg), #F2F0F1;
+
+
+/* Frame 56 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 103px;
+height: 48px;
+left: calc(50% - 103px/2 + 0.5px);
+top: 461px;
+
+
+
+/* 30,000+ */
+
+width: 103px;
+height: 32px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+margin: -6px 0px;
+
+
+/* Happy Customers */
+
+width: 95px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 22px;
+/* identical to box height, or 183% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 6.92%;
+right: 81.79%;
+top: 14.35%;
+bottom: 84.67%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 75.13%;
+right: 5.38%;
+top: 12.17%;
+bottom: 86.12%;
+
+background: #000000;
+
+
+/* Rectangle 3 */
+
+position: absolute;
+width: 390px;
+height: 146px;
+left: 0px;
+top: 951px;
+
+background: #000000;
+
+
+/* Group */
+
+position: absolute;
+height: 23.25px;
+left: 4.1%;
+right: 65.97%;
+top: calc(50% - 23.25px/2 - 1227.47px);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 4.1%;
+right: 65.97%;
+top: 22.22%;
+bottom: 77.25%;
+
+background: #FFFFFF;
+
+
+/* zara-logo-1 1 */
+
+position: absolute;
+width: 63.81px;
+height: 26.65px;
+left: 166.74px;
+top: 990px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0.02%;
+bottom: 0.02%;
+
+background: #FFFFFF;
+
+
+/* gucci-logo-1 1 */
+
+position: absolute;
+width: 109.39px;
+height: 25.24px;
+left: 264.55px;
+top: 990.7px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 5.16%;
+bottom: 5.16%;
+
+background: #FFFFFF;
+
+
+/* prada-logo-1 1 */
+
+position: absolute;
+width: 127px;
+height: 21px;
+left: 48px;
+top: 1037px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 1.26%;
+bottom: 1.26%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 1.26%;
+bottom: 1.26%;
+
+background: #FFFFFF;
+border: 0.718154px solid #FFFFFF;
+
+
+/* Group */
+
+position: absolute;
+left: 52.86%;
+right: 12.56%;
+top: 23.24%;
+bottom: 76.27%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 52.86%;
+right: 12.56%;
+top: 23.24%;
+bottom: 76.27%;
+
+background: #FFFFFF;
+
+
+/* NEW ARRIVALS */
+
+position: absolute;
+width: 269px;
+height: 38px;
+left: calc(50% - 269px/2 + 0.5px);
+top: 1147px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* top selling */
+
+position: absolute;
+width: 231px;
+height: 38px;
+left: calc(50% - 231px/2 + 0.5px);
+top: 1650px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* OUR HAPPY CUSTOMERS */
+
+position: absolute;
+width: 286px;
+height: 72px;
+left: calc(50% - 286px/2 - 36px);
+top: 3148px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 36px;
+/* or 112% */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame 32 */
+
+position: absolute;
+width: 198px;
+height: 200.01px;
+left: 16px;
+top: 1217px;
+
+background: #F0EEED;
+border-radius: 13.4237px;
+
+
+/* image 7 */
+
+position: absolute;
+width: 198.67px;
+height: 298.01px;
+left: -0.67px;
+top: -49px;
+
+background: url(image.png);
+
+
+/* Frame 60 */
+
+position: absolute;
+width: 198px;
+height: 200.01px;
+left: 16px;
+top: 1720px;
+
+background: #F0EEED;
+border-radius: 13.4237px;
+
+
+/* image 7 */
+
+position: absolute;
+width: 198.67px;
+height: 298.01px;
+left: -0.67px;
+top: -49px;
+
+background: url(image.png), url(image.png);
+
+
+/* Frame 58 */
+
+position: absolute;
+width: 198px;
+height: 200.01px;
+left: 230px;
+top: 1217px;
+
+background: #F0EEED;
+border-radius: 13.4237px;
+
+
+/* image 7 */
+
+position: absolute;
+width: 171px;
+height: 256px;
+left: 13px;
+top: -28px;
+
+background: url(image.png), url(image.png);
+
+
+/* Frame 61 */
+
+position: absolute;
+width: 198px;
+height: 200.01px;
+left: 230px;
+top: 1720px;
+
+background: #F0EEED;
+border-radius: 13.4237px;
+
+
+/* image 7 */
+
+position: absolute;
+width: 197px;
+height: 294px;
+left: 0px;
+top: -47px;
+
+background: url(image.png), url(image.png), url(image.png);
+
+
+/* Frame 35 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 11px;
+
+position: absolute;
+width: 127px;
+height: 16px;
+left: 16px;
+top: 1453.01px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 4.44px;
+
+width: 87px;
+height: 15.47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 7.36px;
+height: 13.99px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* 4.5/5 */
+
+width: 29px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 62 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 11px;
+
+position: absolute;
+width: 136.11px;
+height: 16px;
+left: 16px;
+top: 1956.01px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 4.44px;
+
+width: 95.11px;
+height: 15.47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 6 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* 5.0/5 */
+
+width: 30px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 59 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 11px;
+
+position: absolute;
+width: 106.09px;
+height: 16px;
+left: 230px;
+top: 1453.01px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 4.44px;
+
+width: 67.09px;
+height: 15.47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 7.36px;
+height: 13.99px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 3.5/5 */
+
+width: 28px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 63 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 11px;
+
+position: absolute;
+width: 116.2px;
+height: 16px;
+left: 230px;
+top: 1956.01px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 4.44px;
+
+width: 75.2px;
+height: 15.47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 6 */
+
+width: 15.47px;
+height: 15.47px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 4.0/5 */
+
+width: 30px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* T-SHIRT WITH TAPE DETAILS */
+
+position: absolute;
+width: 180px;
+height: 22px;
+left: 16px;
+top: 1427.01px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Vertical Striped Shirt */
+
+position: absolute;
+width: 154px;
+height: 22px;
+left: 16px;
+top: 1930.01px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* SKINNY FIT JEANS */
+
+position: absolute;
+width: 120px;
+height: 22px;
+left: 230px;
+top: 1427.01px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Courage Graphic T-short */
+
+position: absolute;
+width: 186px;
+height: 22px;
+left: 230px;
+top: 1930.01px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $120 */
+
+position: absolute;
+width: 46px;
+height: 27px;
+left: 16px;
+top: 1473px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $240 */
+
+position: absolute;
+width: 51px;
+height: 27px;
+left: 230px;
+top: 1473px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $145 */
+
+position: absolute;
+width: 45px;
+height: 27px;
+left: 230px;
+top: 1976px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $260 */
+
+position: absolute;
+width: 51px;
+height: 27px;
+left: 286px;
+top: 1473px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-decoration-line: line-through;
+
+color: rgba(0, 0, 0, 0.4);
+
+
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 12px;
+
+position: absolute;
+width: 42px;
+height: 20px;
+left: 342px;
+top: 1476px;
+
+background: rgba(255, 51, 51, 0.1);
+border-radius: 62px;
+
+
+/* -20% */
+
+width: 26px;
+height: 14px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 14px;
+/* identical to box height */
+
+color: #FF3333;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 103 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 5px;
+
+position: absolute;
+width: 144px;
+height: 27px;
+left: 16px;
+top: 1976px;
+
+
+
+/* $212 */
+
+width: 44px;
+height: 27px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* $235 */
+
+width: 48px;
+height: 27px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-decoration-line: line-through;
+
+color: rgba(0, 0, 0, 0.4);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 66 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 12px;
+
+width: 42px;
+height: 20px;
+
+background: rgba(255, 51, 51, 0.1);
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* -20% */
+
+width: 26px;
+height: 14px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 14px;
+/* identical to box height */
+
+color: #FF3333;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 54px;
+gap: 12px;
+
+position: absolute;
+width: 358px;
+height: 46px;
+left: calc(50% - 358px/2);
+top: 1524px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 62px;
+
+
+/* View All */
+
+width: 51px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 65 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 54px;
+gap: 12px;
+
+position: absolute;
+width: 358px;
+height: 46px;
+left: calc(50% - 358px/2);
+top: 2027px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 62px;
+
+
+/* View All */
+
+width: 51px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Line 4 */
+
+position: absolute;
+width: 358px;
+height: 0px;
+left: calc(50% - 358px/2);
+top: 1610px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Frame 104 */
+
+position: absolute;
+width: 358px;
+height: 975px;
+left: 16px;
+top: 2123px;
+
+background: #F0F0F0;
+border-radius: 20px;
+
+
+/* BROWSE BY dress STYLE */
+
+position: absolute;
+width: 246px;
+height: 72px;
+left: calc(50% - 246px/2);
+top: 40px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 36px;
+/* or 112% */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Frame 105 */
+
+position: absolute;
+width: 310px;
+height: 190px;
+left: calc(50% - 310px/2);
+top: 140px;
+
+background: #FFFFFF;
+border-radius: 20px;
+
+
+/* image 11 */
+
+position: absolute;
+width: 572px;
+height: 383px;
+left: -171px;
+top: -75px;
+
+background: url(image.png);
+transform: matrix(-1, 0, 0, 1, 0, 0);
+
+
+/* Casual */
+
+position: absolute;
+width: 76px;
+height: 32px;
+left: 24px;
+top: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame 106 */
+
+position: absolute;
+width: 310px;
+height: 190px;
+left: calc(50% - 310px/2);
+top: 346px;
+
+background: #FFFFFF;
+border-radius: 20px;
+
+
+/* image 13 */
+
+position: absolute;
+width: 709px;
+height: 472px;
+left: -17px;
+top: -88px;
+
+background: url(image.png);
+
+
+/* Formal */
+
+position: absolute;
+width: 77px;
+height: 32px;
+left: 24px;
+top: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame 107 */
+
+position: absolute;
+width: 310px;
+height: 190px;
+left: calc(50% - 310px/2);
+top: 552px;
+
+background: #FFFFFF;
+border-radius: 20px;
+
+
+/* image 12 */
+
+position: absolute;
+width: 389px;
+height: 311px;
+left: 0px;
+top: -82px;
+
+background: url(image.png);
+
+
+/* Party */
+
+position: absolute;
+width: 59px;
+height: 32px;
+left: 24px;
+top: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame 108 */
+
+position: absolute;
+width: 310px;
+height: 190px;
+left: calc(50% - 310px/2);
+top: 758px;
+
+background: #FFFFFF;
+border-radius: 20px;
+
+
+/* image 14 */
+
+position: absolute;
+width: 285px;
+height: 425px;
+left: 70px;
+top: -90px;
+
+background: url(image.png);
+
+
+/* Gym */
+
+position: absolute;
+width: 53px;
+height: 32px;
+left: 24px;
+top: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* arrow-down-bold 1 */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 350px;
+top: 3196px;
+
+transform: rotate(-90deg);
+
+
+/* Vector */
+
+position: absolute;
+left: 10.94%;
+right: 23.41%;
+top: 17.18%;
+bottom: 4.69%;
+
+background: #000000;
+transform: rotate(-90deg);
+
+
+/* arrow-down-bold 2 */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 310px;
+top: 3196px;
+
+transform: matrix(0, -1, -1, 0, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+left: 10.93%;
+right: 23.42%;
+top: 17.18%;
+bottom: 4.69%;
+
+background: #000000;
+transform: matrix(0, -1, -1, 0, 0, 0);
+
+
+/* Frame 22 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 24px;
+gap: 24px 342px;
+
+position: absolute;
+width: 358px;
+height: 186.19px;
+left: 16px;
+top: 3244px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 22px;
+
+width: 310px;
+height: 138.19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 310px;
+height: 138.19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 5.51px;
+
+width: 118px;
+height: 19.19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 19.19px;
+height: 19.19px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 19.19px;
+height: 19.19px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 19.19px;
+height: 19.19px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 19.19px;
+height: 19.19px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 19.19px;
+height: 19.19px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 310px;
+height: 107px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 89px;
+height: 19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Sarah M. */
+
+width: 66px;
+height: 12px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 19px;
+height: 19px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.” */
+
+width: 310px;
+height: 80px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 109 */
+
+position: absolute;
+width: 358px;
+height: 293px;
+left: 16px;
+top: 3480px;
+
+background: #000000;
+border-radius: 20px;
+
+
+/* Frame 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 16px;
+gap: 12px;
+
+position: absolute;
+width: 311px;
+height: 42px;
+left: calc(50% - 311px/2 + 0.5px);
+top: 169px;
+
+background: #FFFFFF;
+border-radius: 62px;
+
+
+/* Frame */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 17.19%;
+bottom: 17.19%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Enter your email address */
+
+width: 151px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.4);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 4 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 16px;
+gap: 12px;
+
+position: absolute;
+width: 311px;
+height: 42px;
+left: 24px;
+top: 223px;
+
+background: #FFFFFF;
+border-radius: 62px;
+
+
+/* Subscribe to Newsletter */
+
+width: 150px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* STAY UPTO DATE ABOUT OUR LATEST OFFERS */
+
+position: absolute;
+width: 297px;
+height: 105px;
+left: 24px;
+top: 32px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 35px;
+/* or 109% */
+
+color: #FFFFFF;
+
+
+
+/* SHOP.CO */
+
+position: absolute;
+width: 144px;
+height: 20px;
+left: 16px;
+top: 3804.58px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 28.847px;
+line-height: 35px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* We have clothes that suits your style and which you’re proud to wear. From women to men. */
+
+position: absolute;
+width: 357px;
+height: 40px;
+left: 17px;
+top: 3838.58px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Social */
+
+position: absolute;
+width: 148px;
+height: 28px;
+left: 16px;
+top: 3898.58px;
+
+
+
+/* 1 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 16px;
+top: 3898.58px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 16px;
+top: 3898.58px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-twitter 2 */
+
+position: absolute;
+width: 11.17px;
+height: 9.03px;
+left: 25.03px;
+top: 3908.52px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 6.42%;
+right: 90.72%;
+top: 87.62%;
+bottom: 12.18%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 11.17px;
+height: 9.03px;
+left: 25.03px;
+top: 3908.52px;
+
+background: #000000;
+
+
+/* 2 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 56px;
+top: 3898.58px;
+
+
+
+/* BG */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 56px;
+top: 3898.58px;
+
+background: #000000;
+
+
+/* logo-fb-simple 2 */
+
+position: absolute;
+width: 6.32px;
+height: 12.17px;
+left: 66.84px;
+top: 3906.71px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 17.14%;
+right: 81.24%;
+top: 87.57%;
+bottom: 12.15%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 6.32px;
+height: 12.17px;
+left: 66.84px;
+top: 3906.71px;
+
+/* base/white */
+background: #FFFFFF;
+
+
+/* 3 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 96px;
+top: 3898.58px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 96px;
+top: 3898.58px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-instagram 1 */
+
+position: absolute;
+width: 13.55px;
+height: 13.55px;
+left: 103.23px;
+top: 3905.81px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 26.47%;
+right: 70.06%;
+top: 87.55%;
+bottom: 12.14%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 13.55px;
+height: 13.55px;
+left: 103.23px;
+top: 3905.81px;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+width: 6.96px;
+height: 6.96px;
+left: 106.52px;
+top: 3909.11px;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+width: 1.63px;
+height: 1.63px;
+left: 112.8px;
+top: 3908.16px;
+
+background: #000000;
+
+
+/* 4 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 136px;
+top: 3898.58px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 136px;
+top: 3898.58px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-github 1 */
+
+position: absolute;
+width: 12.96px;
+height: 12.65px;
+left: 144.13px;
+top: 3905.81px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 36.96%;
+right: 59.72%;
+top: 87.55%;
+bottom: 12.16%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 12.96px;
+height: 12.65px;
+left: 144.13px;
+top: 3905.81px;
+
+background: #000000;
+
+
+/* Frame 47 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 91px;
+height: 146px;
+left: 16px;
+top: 3951px;
+
+
+
+/* HELP MENU */
+
+width: 88px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+/* identical to box height, or 129% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 91px;
+height: 112px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+/* or 114% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 113 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 121px;
+height: 146px;
+left: 16px;
+top: 4121px;
+
+
+
+/* HELP MENU */
+
+width: 33px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+/* identical to box height, or 129% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 121px;
+height: 112px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+/* or 114% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 110 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 121px;
+height: 146px;
+left: 196px;
+top: 3951px;
+
+
+
+/* HELP MENU */
+
+width: 44px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+/* identical to box height, or 129% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 121px;
+height: 112px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+/* or 114% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 112 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 159px;
+height: 146px;
+left: 196px;
+top: 4121px;
+
+
+
+/* HELP MENU */
+
+width: 107px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+/* identical to box height, or 129% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 159px;
+height: 112px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+/* or 114% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Line 5 */
+
+position: absolute;
+width: 358px;
+height: 0px;
+left: calc(50% - 358px/2);
+top: 4307px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* © 2000-2021, All rights reserved */
+
+position: absolute;
+width: 269px;
+height: 19px;
+left: calc(50% - 269px/2 + 0.5px);
+top: 4323px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+text-align: right;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Frame 53 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-end;
+padding: 0px;
+gap: 10.29px;
+
+position: absolute;
+width: 240.93px;
+height: 25.74px;
+left: calc(50% - 240.93px/2 - 0.54px);
+top: 4358px;
+
+
+
+/* Badge */
+
+width: 39.96px;
+height: 25.74px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.1921px solid #D6DCE5;
+box-shadow: 0px 3.842px 7.684px rgba(183, 183, 183, 0.08), 0px 0.3842px 3.842px rgba(183, 183, 183, 0.08);
+border-radius: 4.6104px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Visa */
+
+position: absolute;
+left: 14.83%;
+right: 15.37%;
+top: 33.08%;
+bottom: 31.92%;
+
+/* Payments/Visa/Blue */
+background: #1434CB;
+
+
+/* Badge */
+
+width: 39.96px;
+height: 25.74px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.1921px solid #D6DCE5;
+box-shadow: 0px 3.842px 7.684px rgba(183, 183, 183, 0.08), 0px 0.3842px 3.842px rgba(183, 183, 183, 0.08);
+border-radius: 4.6104px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Mastercard */
+
+position: absolute;
+left: 22.6%;
+right: 22.95%;
+top: 23.88%;
+bottom: 23.88%;
+
+/* Payments/Mastercard/Yellow */
+background: #F79E1B;
+
+
+/* Badge */
+
+width: 39.96px;
+height: 25.74px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.1921px solid #D6DCE5;
+box-shadow: 0px 3.842px 7.684px rgba(183, 183, 183, 0.08), 0px 0.3842px 3.842px rgba(183, 183, 183, 0.08);
+border-radius: 4.6104px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Paypal */
+
+position: absolute;
+left: 12.98%;
+right: 12.9%;
+top: 35.45%;
+bottom: 33.89%;
+
+/* Payments/Paypal/Blue 1 */
+background: #179BD7;
+
+
+/* Badge */
+
+width: 39.96px;
+height: 25.74px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.1921px solid #D6DCE5;
+box-shadow: 0px 3.842px 7.684px rgba(183, 183, 183, 0.08), 0px 0.3842px 3.842px rgba(183, 183, 183, 0.08);
+border-radius: 4.6104px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/*  Pay */
+
+position: absolute;
+left: 21.63%;
+right: 21.7%;
+top: 32.09%;
+bottom: 30.6%;
+
+/* Neutral Colors/Black */
+background: #000008;
+
+
+/* Badge */
+
+width: 39.96px;
+height: 25.74px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.1921px solid #D6DCE5;
+box-shadow: 0px 3.842px 7.684px rgba(183, 183, 183, 0.08), 0px 0.3842px 3.842px rgba(183, 183, 183, 0.08);
+border-radius: 4.6104px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* G Pay */
+
+position: absolute;
+left: 19.23%;
+right: 19.5%;
+top: 32.84%;
+bottom: 29.85%;
+
+/* Payments/G Pay/Orange */
+background: #E94235;

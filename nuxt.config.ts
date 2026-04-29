@@ -18,6 +18,10 @@ const localNitroOutputDir = process.env.NITRO_OUTPUT_DIR || ".output";
 export default defineNuxtConfig({
   srcDir: ".",
   buildDir: localBuildDir,
+  sourcemap: {
+    client: false,
+    server: false,
+  },
 
   // 兼容日期
   compatibilityDate: "2025-12-21",

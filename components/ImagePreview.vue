@@ -13,7 +13,7 @@
         class="image-preview-close"
         aria-label="关闭预览"
       >
-        <Icon name="heroicons:x-mark" class="w-6 h-6 text-white" />
+        <v-icon size="24">mdi-close</v-icon>
       </button>
 
       <!-- 图片容器 -->
@@ -29,7 +29,7 @@
           class="image-preview-nav image-preview-nav-left"
           aria-label="上一张"
         >
-          <Icon name="heroicons:chevron-left" class="w-6 h-6 text-white" />
+          <v-icon size="24">mdi-chevron-left</v-icon>
         </button>
 
         <!-- 预览图片 -->
@@ -64,7 +64,7 @@
           class="image-preview-nav image-preview-nav-right"
           aria-label="下一张"
         >
-          <Icon name="heroicons:chevron-right" class="w-6 h-6 text-white" />
+          <v-icon size="24">mdi-chevron-right</v-icon>
         </button>
 
         <!-- 图片索引指示器 -->
@@ -665,4 +665,3 @@ onUnmounted(() => {
   }
 }
 </style>
-

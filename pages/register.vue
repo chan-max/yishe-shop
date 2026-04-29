@@ -1,29 +1,29 @@
 <template>
   <div
-    class="box-border min-h-[100dvh] overflow-y-hidden bg-[#f7f5f2] px-4 py-4 sm:px-6 lg:px-8"
+    class="box-border min-h-[100dvh] overflow-y-hidden bg-white px-4 py-4 sm:px-6 lg:px-8"
   >
     <div class="flex min-h-[calc(100dvh-2rem)] items-center justify-center">
       <div class="w-full max-w-md">
         <NuxtLink
           to="/"
-          class="mb-6 inline-flex items-center gap-2 rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-stone-950"
+          class="mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-black hover:text-stone-950"
         >
           <Icon name="heroicons:arrow-left" class="h-4 w-4" />
           <span>返回首页</span>
         </NuxtLink>
 
         <div
-          class="rounded-[1.5rem] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8"
+          class="rounded-[20px] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8"
         >
           <div>
-            <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">
+            <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">
               Create Account
             </div>
-            <h2 class="mt-3 text-[28px] font-semibold text-stone-950">
-              注册账号
+            <h2 class="mt-3 text-[32px] font-black uppercase leading-none text-stone-950">
+              Create account
             </h2>
             <p class="mt-2 text-[13px] leading-6 text-stone-500">
-              先留下一个名字。喜欢的东西、做过的东西，之后都能慢慢放进来。
+              创建账号后收藏 POD 灵感、定制商品方向和创意设计资源。
             </p>
           </div>
 
@@ -35,7 +35,7 @@
               name="account"
               type="text"
               required
-              placeholder="想用哪个名字登录"
+              placeholder="Account"
             />
             <BaseInput
               id="password"
@@ -44,7 +44,7 @@
               name="password"
               type="password"
               required
-              placeholder="至少 6 位，自己记得住就行"
+              placeholder="Password"
             />
             <BaseInput
               id="name"
@@ -52,7 +52,7 @@
               label="昵称"
               name="name"
               type="text"
-              placeholder="别人会看到你叫什么"
+              placeholder="Display name"
             />
             <BaseInput
               id="email"
@@ -60,7 +60,7 @@
               label="邮箱"
               name="email"
               type="email"
-              placeholder="留一个常用邮箱"
+              placeholder="Email"
             />
 
             <div
@@ -76,15 +76,15 @@
               class="w-full !py-3 !text-[12px]"
               size="lg"
             >
-              {{ loading ? "正在留名..." : "把名字留在这里" }}
+              {{ loading ? "注册中..." : "注册" }}
             </BaseButton>
 
             <div class="text-center text-[12px] text-stone-500">
-              已经来过？
+              已经有账号？
               <NuxtLink
                 to="/login"
                 class="rounded-full px-2 py-1 text-stone-900 underline-offset-4 transition duration-200 hover:bg-stone-100 hover:underline"
-                >直接登录</NuxtLink
+                >登录</NuxtLink
               >
             </div>
           </form>

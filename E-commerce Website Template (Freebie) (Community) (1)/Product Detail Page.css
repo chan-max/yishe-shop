@@ -1,0 +1,5568 @@
+/* Product Detail Page */
+
+position: relative;
+width: 1440px;
+height: 3066px;
+
+background: #FFFFFF;
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 1441px;
+height: 499px;
+left: calc(50% - 1441px/2 - 0.5px);
+top: 2567px;
+
+background: #F0F0F0;
+
+
+/* Frame 1 */
+
+position: absolute;
+width: 1440px;
+height: 38px;
+left: 0px;
+top: 0px;
+
+background: #000000;
+
+
+/* Sign up and get 20% off to your first order. Sign Up Now */
+
+position: absolute;
+width: 351px;
+height: 19px;
+left: calc(50% - 351px/2 - 0.5px);
+top: calc(50% - 19px/2 - 0.5px);
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+
+/* Frame */
+
+position: absolute;
+width: 20px;
+height: 20px;
+left: 1320px;
+top: calc(50% - 20px/2);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 17.18%;
+right: 17.18%;
+top: 17.17%;
+bottom: 17.18%;
+
+background: #FFFFFF;
+
+
+/* Frame 6 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 40px;
+
+position: absolute;
+width: 1240px;
+height: 48px;
+left: 100px;
+top: 62px;
+
+
+
+/* SHOP.CO */
+
+width: 160px;
+height: 22px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 2 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+width: 321px;
+height: 22px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 4 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 57px;
+height: 22px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Shop */
+
+width: 37px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 14.05%;
+right: 14.05%;
+top: 32.8%;
+bottom: 26.55%;
+
+background: #000000;
+
+
+/* On Sale */
+
+width: 56px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* New Arrivals */
+
+width: 87px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Brands */
+
+width: 49px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 12px 16px;
+gap: 12px;
+
+width: 577px;
+height: 48px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 1;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.73%;
+right: 7.79%;
+top: 7.73%;
+bottom: 7.79%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Search for products... */
+
+width: 151px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.4);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 5 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+width: 62px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 7.81%;
+top: 7.81%;
+bottom: 7.81%;
+
+background: #000000;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 7.81%;
+bottom: 7.81%;
+
+background: #000000;
+
+
+/* Frame 16 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 420px;
+height: 46px;
+left: 750px;
+top: 600px;
+
+
+
+/* Frame 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 24px;
+gap: 12px;
+
+width: 86px;
+height: 46px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Small */
+
+width: 38px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 13 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 24px;
+gap: 12px;
+
+width: 105px;
+height: 46px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Medium */
+
+width: 57px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 14 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 24px;
+gap: 12px;
+
+width: 89px;
+height: 46px;
+
+background: #000000;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Large */
+
+width: 41px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 15 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 24px;
+gap: 12px;
+
+width: 104px;
+height: 46px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* X-Large */
+
+width: 56px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 14 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 54px;
+gap: 12px;
+
+position: absolute;
+width: 400px;
+height: 52px;
+left: 940px;
+top: 694px;
+
+background: #000000;
+border-radius: 62px;
+
+
+/* Add to Cart */
+
+width: 85px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 16px 54px;
+gap: 12px;
+
+position: absolute;
+width: 230px;
+height: 52px;
+left: calc(50% - 230px/2);
+top: 1762px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 62px;
+
+
+/* Load More Reviews */
+
+width: 140px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 17 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 20px;
+gap: 12px;
+
+position: absolute;
+width: 170px;
+height: 52px;
+left: 750px;
+top: 694px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+
+/* Frame */
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 10.94%;
+right: 10.94%;
+top: 45.31%;
+bottom: 45.31%;
+
+background: #000000;
+
+
+/* 1 */
+
+margin: 0 auto;
+width: 6px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 10.94%;
+right: 10.94%;
+top: 10.94%;
+bottom: 10.94%;
+
+background: #000000;
+
+
+/* Frame 21 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+position: absolute;
+width: 354px;
+height: 48px;
+left: 986px;
+top: 888px;
+
+
+
+/* Frame 19 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 20px;
+gap: 12px;
+
+width: 48px;
+height: 48px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 10.94%;
+bottom: 10.94%;
+
+background: #000000;
+
+
+/* Frame 18 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 20px;
+gap: 12px;
+
+width: 120px;
+height: 48px;
+
+background: #F0F0F0;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Latest */
+
+margin: 0 auto;
+width: 43px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+margin: 0 auto;
+width: 16px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 14.05%;
+right: 14.05%;
+top: 32.8%;
+bottom: 26.55%;
+
+background: #000000;
+
+
+/* Frame 20 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 20px;
+gap: 12px;
+
+width: 166px;
+height: 48px;
+
+background: #000000;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Write a Review */
+
+margin: 0 auto;
+width: 107px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 12px;
+
+position: absolute;
+width: 72px;
+height: 34px;
+left: 938px;
+top: 321px;
+
+background: rgba(255, 51, 51, 0.1);
+border-radius: 62px;
+
+
+/* -40% */
+
+width: 44px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #FF3333;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 42 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 12px;
+
+position: absolute;
+width: 58px;
+height: 28px;
+left: 231px;
+top: 2369px;
+
+background: rgba(255, 51, 51, 0.1);
+border-radius: 62px;
+
+
+/* -20% */
+
+width: 31px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+
+color: #FF3333;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* One Life Graphic T-shirt */
+
+position: absolute;
+width: 600px;
+height: 48px;
+left: 750px;
+top: 216px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* You might also like */
+
+position: absolute;
+width: 579px;
+height: 58px;
+left: calc(50% - 579px/2 + 0.5px);
+top: 1878px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 58px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Frame 12 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 176px;
+height: 43px;
+left: 750px;
+top: 317px;
+
+
+
+/* $260 */
+
+width: 81px;
+height: 43px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* $300 */
+
+width: 83px;
+height: 43px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 43px;
+display: flex;
+align-items: center;
+text-decoration-line: line-through;
+
+color: rgba(0, 0, 0, 0.3);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 9 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 259px;
+height: 22px;
+left: 100px;
+top: 158px;
+
+
+
+/* Frame 7 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 63px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Home */
+
+width: 43px;
+height: 11px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(-90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 32.8%;
+right: -4.7%;
+top: 14.05%;
+bottom: 45.3%;
+
+background: rgba(0, 0, 0, 0.6);
+transform: rotate(-90deg);
+
+
+/* Frame 9 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 57px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Shop */
+
+width: 37px;
+height: 11px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(-90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 32.8%;
+right: -4.7%;
+top: 14.05%;
+bottom: 45.3%;
+
+background: rgba(0, 0, 0, 0.6);
+transform: rotate(-90deg);
+
+
+/* Frame 8 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 51px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Men */
+
+width: 31px;
+height: 11px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16px;
+height: 16px;
+
+transform: rotate(-90deg);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 32.8%;
+right: -4.7%;
+top: 14.05%;
+bottom: 45.3%;
+
+background: rgba(0, 0, 0, 0.6);
+transform: rotate(-90deg);
+
+
+/* T-shirts */
+
+width: 52px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Select Colors */
+
+position: absolute;
+width: 93px;
+height: 11px;
+left: 750px;
+top: 461px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style. */
+
+position: absolute;
+width: 590px;
+height: 33px;
+left: 750px;
+top: 380px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* All Reviews */
+
+position: absolute;
+width: 125px;
+height: 32px;
+left: 100px;
+top: 896px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* (451) */
+
+position: absolute;
+width: 33px;
+height: 11px;
+left: 233px;
+top: 910px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Product Details */
+
+position: absolute;
+width: 133px;
+height: 14px;
+left: 240px;
+top: 826px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Rating & Reviews */
+
+position: absolute;
+width: 154px;
+height: 14px;
+left: calc(50% - 154px/2 - 1px);
+top: 826px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+text-align: center;
+
+color: #000000;
+
+
+
+/* FAQs */
+
+position: absolute;
+width: 47px;
+height: 14px;
+left: calc(50% - 47px/2 + 413.5px);
+top: 826px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+text-align: right;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* Choose Size */
+
+position: absolute;
+width: 87px;
+height: 11px;
+left: 750px;
+top: 573px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: rgba(0, 0, 0, 0.6);
+
+
+
+/* image 1 */
+
+position: absolute;
+width: 444px;
+height: 530px;
+left: 266px;
+top: 216px;
+
+background: url(image.png), #F0EEED;
+border-radius: 20px;
+
+
+/* image 2 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 152px;
+height: 167px;
+left: 100px;
+top: 216px;
+
+background: url(image.png);
+border: 1px solid #000000;
+border-radius: 20px;
+
+
+/* image 5 */
+
+position: absolute;
+width: 152px;
+height: 168px;
+left: 100px;
+top: 397px;
+
+background: url(image.png);
+border-radius: 20px;
+
+
+/* image 6 */
+
+position: absolute;
+width: 152px;
+height: 167px;
+left: 100px;
+top: 579px;
+
+background: url(image.png);
+border-radius: 20px;
+
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 193px;
+height: 24.71px;
+left: 750px;
+top: 278px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 7.1px;
+
+width: 139px;
+height: 24.71px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 24.71px;
+height: 24.71px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 24.71px;
+height: 24.71px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 24.71px;
+height: 24.71px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 24.71px;
+height: 24.71px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 11.75px;
+height: 22.35px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* 4.5/5 */
+
+width: 38px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 35 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 13px;
+
+position: absolute;
+width: 137.9px;
+height: 19px;
+left: 100px;
+top: 2340px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 5.31px;
+
+width: 89.9px;
+height: 18.49px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 4.0/5 */
+
+width: 35px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 39 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 13px;
+
+position: absolute;
+width: 126.2px;
+height: 19px;
+left: 415px;
+top: 2340px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 5.31px;
+
+width: 80.2px;
+height: 18.49px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 8.79px;
+height: 16.72px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 3.5/5 */
+
+width: 33px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 13px;
+
+position: absolute;
+width: 150px;
+height: 19px;
+left: 730px;
+top: 2340px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 5.31px;
+
+width: 104px;
+height: 18.49px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 8.79px;
+height: 16.72px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* 4.5/5 */
+
+width: 33px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 41 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 13px;
+
+position: absolute;
+width: 160.7px;
+height: 19px;
+left: 1045px;
+top: 2340px;
+
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 5.31px;
+
+width: 113.7px;
+height: 18.49px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 18.49px;
+height: 18.49px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* 5.0/5 */
+
+width: 34px;
+height: 19px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Line 1 */
+
+position: absolute;
+width: 590px;
+height: 0px;
+left: 750px;
+top: 437px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Line 5 */
+
+position: absolute;
+width: 1240px;
+height: 0px;
+left: 100px;
+top: 864px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Line 7 */
+
+position: absolute;
+width: 414px;
+height: 0px;
+left: 513px;
+top: 864px;
+
+border: 2px solid #000000;
+
+
+/* Line 4 */
+
+position: absolute;
+width: 1240px;
+height: 0px;
+left: 100px;
+top: 134px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Line 8 */
+
+position: absolute;
+width: 1240px;
+height: 0px;
+left: calc(50% - 1240px/2);
+top: 2934px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Line 2 */
+
+position: absolute;
+width: 590px;
+height: 0px;
+left: 750px;
+top: 549px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Line 3 */
+
+position: absolute;
+width: 590px;
+height: 0px;
+left: 750px;
+top: 670px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+
+
+/* Frame 77 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 143px;
+height: 37px;
+left: 750px;
+top: 488px;
+
+
+
+/* Group 8 */
+
+width: 37px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse 1 */
+
+position: absolute;
+width: 37px;
+height: 37px;
+left: 0px;
+top: 0px;
+
+background: #4F4631;
+
+
+/* Frame */
+
+position: absolute;
+width: 16px;
+height: 16px;
+left: 10px;
+top: 10px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 10.93%;
+right: 7.8%;
+top: 23.43%;
+bottom: 17.18%;
+
+background: #FFFFFF;
+
+
+/* Ellipse 2 */
+
+width: 37px;
+height: 37px;
+
+background: #314F4A;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Ellipse 3 */
+
+width: 37px;
+height: 37px;
+
+background: #31344F;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 22 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 100px;
+top: 960px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 127px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 10.74px;
+height: 20.42px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 146px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Samantha D. */
+
+width: 118px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to shirt." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 14, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 24 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 100px;
+top: 1222px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 97.93px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 6 */
+
+width: 10.74px;
+height: 20.42px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 106px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ethan R. */
+
+width: 78px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 16, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 100px;
+top: 1484px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 109.78px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 98px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Liam K. */
+
+width: 70px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the designer's skill. It's like wearing a piece of art that reflects my passion for both design and fashion." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 18, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 23 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 730px;
+top: 960px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 109.78px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 97px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Alex M. */
+
+width: 69px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "The t-shirt exceeded my expectations! The colors are vibrant and the print quality is top-notch. Being a UI/UX designer myself, I'm quite picky about aesthetics, and this t-shirt definitely gets a thumbs up from me." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 15, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 25 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 730px;
+top: 1222px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 109.78px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 103px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Olivia P. */
+
+width: 75px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but also feels great to wear. It's evident that the designer poured their creativity into making this t-shirt stand out." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 17, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 28px 32px;
+gap: 24px 342px;
+
+position: absolute;
+width: 610px;
+height: 241.58px;
+left: 730px;
+top: 1484px;
+
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+
+
+/* Frame 30 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 546px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 29 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 15px;
+
+margin: 0 auto;
+width: 522px;
+height: 139.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame 10 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 6.49px;
+
+width: 127px;
+height: 22.58px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 1 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Star 2 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Star 3 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Star 4 */
+
+width: 22.58px;
+height: 22.58px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Star 5 */
+
+width: 10.74px;
+height: 20.42px;
+
+background: #FFC633;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 12px;
+
+width: 522px;
+height: 102px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 89px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ava H. */
+
+width: 61px;
+height: 15px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 22px;
+/* or 110% */
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 9.38%;
+right: 9.37%;
+top: 9.38%;
+bottom: 9.37%;
+
+background: #01AB31;
+
+
+/* "I'm not just wearing a t-shirt; I'm wearing a piece of design philosophy. The intricate details and thoughtful layout of the design make this shirt a conversation starter." */
+
+width: 522px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 39.06%;
+bottom: 39.06%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Posted on August 19, 2023 */
+
+width: 546px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 32 */
+
+position: absolute;
+width: 295px;
+height: 298px;
+left: 100px;
+top: 1991px;
+
+background: #F0EEED;
+border-radius: 20px;
+
+
+/* image 7 */
+
+position: absolute;
+width: 296px;
+height: 444px;
+left: -1px;
+top: -73px;
+
+background: url(image.png);
+
+
+/* Frame 33 */
+
+position: absolute;
+width: 295px;
+height: 298px;
+left: 415px;
+top: 1991px;
+
+background: #F0EEED;
+border-radius: 20px;
+
+
+/* image 8 */
+
+position: absolute;
+width: 294px;
+height: 441px;
+left: 1px;
+top: -71px;
+
+background: url(image.png);
+
+
+/* Frame 34 */
+
+position: absolute;
+width: 295px;
+height: 298px;
+left: 730px;
+top: 1991px;
+
+background: #F0EEED;
+border-radius: 20px;
+
+
+/* image 9 */
+
+position: absolute;
+width: 296px;
+height: 444px;
+left: 0px;
+top: -73px;
+
+background: url(image.png);
+
+
+/* Frame 38 */
+
+position: absolute;
+width: 295px;
+height: 298px;
+left: 1045px;
+top: 1991px;
+
+background: #F0EEED;
+border-radius: 20px;
+
+
+/* image 10 */
+
+position: absolute;
+width: 296px;
+height: 444px;
+left: 0px;
+top: -73px;
+
+background: url(image.png);
+
+
+/* Polo with Contrast Trims */
+
+position: absolute;
+width: 228px;
+height: 27px;
+left: 100px;
+top: 2305px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Gradient Graphic T-shirt */
+
+position: absolute;
+width: 227px;
+height: 27px;
+left: 415px;
+top: 2305px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Polo with Tipping Details */
+
+position: absolute;
+width: 231px;
+height: 27px;
+left: 730px;
+top: 2305px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Black Striped T-shirt */
+
+position: absolute;
+width: 190px;
+height: 27px;
+left: 1045px;
+top: 2305px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 27px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $212 */
+
+position: absolute;
+width: 53px;
+height: 32px;
+left: 100px;
+top: 2367px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $242 */
+
+position: absolute;
+width: 58px;
+height: 32px;
+left: 163px;
+top: 2367px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+text-decoration-line: line-through;
+
+color: rgba(0, 0, 0, 0.4);
+
+
+
+/* Frame 44 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+position: absolute;
+width: 188px;
+height: 32px;
+left: 1045px;
+top: 2367px;
+
+
+
+/* $120 */
+
+width: 55px;
+height: 32px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* $150 */
+
+width: 55px;
+height: 32px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+text-decoration-line: line-through;
+
+color: rgba(0, 0, 0, 0.4);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 43 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 12px;
+
+width: 58px;
+height: 28px;
+
+background: rgba(255, 51, 51, 0.1);
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* -30% */
+
+width: 32px;
+height: 16px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+
+color: #FF3333;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* $145 */
+
+position: absolute;
+width: 54px;
+height: 32px;
+left: 415px;
+top: 2367px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* $180 */
+
+position: absolute;
+width: 56px;
+height: 32px;
+left: 730px;
+top: 2367px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+
+/* Frame 45 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 36px 64px;
+gap: 153px;
+
+position: absolute;
+width: 1240px;
+height: 180px;
+left: 100px;
+top: 2477px;
+
+background: #000000;
+border-radius: 20px;
+
+
+/* STAY UPTO DATE ABOUT OUR LATEST OFFERS */
+
+margin: 0 auto;
+width: 551px;
+height: 94px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 45px;
+/* or 112% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 46 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+margin: 0 auto;
+width: 349px;
+height: 108px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 12px 16px;
+gap: 12px;
+
+width: 349px;
+height: 48px;
+
+background: #FFFFFF;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 7.81%;
+right: 7.81%;
+top: 17.19%;
+bottom: 17.19%;
+
+background: rgba(0, 0, 0, 0.4);
+
+
+/* Enter your email address */
+
+width: 173px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: rgba(0, 0, 0, 0.4);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 4 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 16px;
+gap: 12px;
+
+width: 349px;
+height: 46px;
+
+background: #FFFFFF;
+border-radius: 62px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Subscribe to Newsletter */
+
+width: 172px;
+height: 22px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 52 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 207px;
+
+position: absolute;
+width: 1240px;
+height: 177px;
+left: 100px;
+top: 2707px;
+
+
+
+/* Frame 51 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 35px;
+
+margin: 0 auto;
+width: 248px;
+height: 177px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 50 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 25px;
+
+width: 248px;
+height: 114px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* SHOP.CO */
+
+width: 167px;
+height: 23px;
+
+font-family: 'Integral CF';
+font-style: normal;
+font-weight: 700;
+font-size: 33.4545px;
+line-height: 40px;
+/* leading-trim and text-edge are draft CSS properties.
+
+Read more: https://drafts.csswg.org/css-inline-3/#leading-trim
+*/
+leading-trim: both;
+text-edge: cap;
+display: flex;
+align-items: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* We have clothes that suits your style and which you’re proud to wear. From women to men. */
+
+width: 248px;
+height: 66px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 22px;
+/* or 157% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Social */
+
+width: 148px;
+height: 28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* 1 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 0px;
+top: 149px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 0px;
+top: 149px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-twitter 2 */
+
+position: absolute;
+width: 11.17px;
+height: 9.03px;
+left: 9.03px;
+top: 158.94px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 3.64%;
+right: 91.85%;
+top: 89.79%;
+bottom: 5.1%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 11.17px;
+height: 9.03px;
+left: 9.03px;
+top: 158.94px;
+
+background: #000000;
+
+
+/* 2 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 40px;
+top: 149px;
+
+
+
+/* BG */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 40px;
+top: 149px;
+
+background: #000000;
+
+
+/* logo-fb-simple 2 */
+
+position: absolute;
+width: 6.32px;
+height: 12.17px;
+left: 50.84px;
+top: 157.13px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 20.5%;
+right: 76.95%;
+top: 88.77%;
+bottom: 4.35%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 6.32px;
+height: 12.17px;
+left: 50.84px;
+top: 157.13px;
+
+/* base/white */
+background: #FFFFFF;
+
+
+/* 3 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 80px;
+top: 149px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 80px;
+top: 149px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-instagram 1 */
+
+position: absolute;
+width: 13.55px;
+height: 13.55px;
+left: 87.23px;
+top: 156.23px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 35.17%;
+right: 59.36%;
+top: 88.26%;
+bottom: 4.08%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 13.55px;
+height: 13.55px;
+left: 87.23px;
+top: 156.23px;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+width: 6.96px;
+height: 6.96px;
+left: 90.52px;
+top: 159.52px;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+width: 1.63px;
+height: 1.63px;
+left: 96.8px;
+top: 158.57px;
+
+background: #000000;
+
+
+/* 4 */
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 120px;
+top: 149px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 28px;
+height: 28px;
+left: 120px;
+top: 149px;
+
+background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+/* logo-github 1 */
+
+position: absolute;
+width: 12.96px;
+height: 12.65px;
+left: 128.13px;
+top: 156.23px;
+
+
+
+/* Group */
+
+position: absolute;
+left: 51.66%;
+right: 43.11%;
+top: 88.26%;
+bottom: 4.59%;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 12.96px;
+height: 12.65px;
+left: 128.13px;
+top: 156.23px;
+
+background: #000000;
+
+
+/* Frame 47 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 26px;
+
+margin: 0 auto;
+width: 104px;
+height: 177px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* HELP MENU */
+
+width: 98px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 18px;
+/* identical to box height, or 112% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 104px;
+height: 133px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+/* or 119% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 48 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 26px;
+
+margin: 0 auto;
+width: 136px;
+height: 177px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* HELP MENU */
+
+width: 49px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 18px;
+/* identical to box height, or 112% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 136px;
+height: 133px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+/* or 119% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 52 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 26px;
+
+margin: 0 auto;
+width: 149px;
+height: 177px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* HELP MENU */
+
+width: 37px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 18px;
+/* identical to box height, or 112% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 149px;
+height: 133px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+/* or 119% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 49 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 26px;
+
+margin: 0 auto;
+width: 149px;
+height: 177px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* HELP MENU */
+
+width: 118px;
+height: 18px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 18px;
+/* identical to box height, or 112% */
+letter-spacing: 3px;
+text-transform: uppercase;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Features Works */
+
+width: 149px;
+height: 133px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+/* or 119% */
+
+color: rgba(0, 0, 0, 0.6);
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 53 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-end;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 281.07px;
+height: 30.03px;
+left: 1059px;
+top: 2954px;
+
+
+
+/* Badge */
+
+width: 46.61px;
+height: 30.03px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.224107px solid #D6DCE5;
+box-shadow: 0px 4.48214px 8.96429px rgba(183, 183, 183, 0.08), 0px 0.448214px 4.48214px rgba(183, 183, 183, 0.08);
+border-radius: 5.37857px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Visa */
+
+position: absolute;
+left: 14.83%;
+right: 15.37%;
+top: 33.08%;
+bottom: 31.92%;
+
+/* Payments/Visa/Blue */
+background: #1434CB;
+
+
+/* Badge */
+
+width: 46.61px;
+height: 30.03px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.224107px solid #D6DCE5;
+box-shadow: 0px 4.48214px 8.96429px rgba(183, 183, 183, 0.08), 0px 0.448214px 4.48214px rgba(183, 183, 183, 0.08);
+border-radius: 5.37857px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Mastercard */
+
+position: absolute;
+left: 22.6%;
+right: 22.95%;
+top: 23.88%;
+bottom: 23.88%;
+
+/* Payments/Mastercard/Yellow */
+background: #F79E1B;
+
+
+/* Badge */
+
+width: 46.61px;
+height: 30.03px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.224107px solid #D6DCE5;
+box-shadow: 0px 4.48214px 8.96429px rgba(183, 183, 183, 0.08), 0px 0.448214px 4.48214px rgba(183, 183, 183, 0.08);
+border-radius: 5.37857px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Paypal */
+
+position: absolute;
+left: 12.98%;
+right: 12.9%;
+top: 35.45%;
+bottom: 33.89%;
+
+/* Payments/Paypal/Blue 1 */
+background: #179BD7;
+
+
+/* Badge */
+
+width: 46.61px;
+height: 30.03px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.224107px solid #D6DCE5;
+box-shadow: 0px 4.48214px 8.96429px rgba(183, 183, 183, 0.08), 0px 0.448214px 4.48214px rgba(183, 183, 183, 0.08);
+border-radius: 5.37857px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/*  Pay */
+
+position: absolute;
+left: 21.63%;
+right: 21.7%;
+top: 32.09%;
+bottom: 30.6%;
+
+/* Neutral Colors/Black */
+background: #000008;
+
+
+/* Badge */
+
+width: 46.61px;
+height: 30.03px;
+
+/* Neutral Colors/White */
+background: #FFFFFF;
+/* Neutral Colors/400 */
+border: 0.224107px solid #D6DCE5;
+box-shadow: 0px 4.48214px 8.96429px rgba(183, 183, 183, 0.08), 0px 0.448214px 4.48214px rgba(183, 183, 183, 0.08);
+border-radius: 5.37857px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* G Pay */
+
+position: absolute;
+left: 19.23%;
+right: 19.5%;
+top: 32.84%;
+bottom: 29.85%;
+
+/* Payments/G Pay/Orange */
+background: #E94235;
+
+
+/* © 2000-2021, All rights reserved */
+
+position: absolute;
+width: 269px;
+height: 19px;
+left: 100px;
+top: 2959px;
+
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+text-align: right;
+
+color: rgba(0, 0, 0, 0.6);
+

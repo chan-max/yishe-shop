@@ -1,5 +1,13 @@
 <template>
   <div class="page-shell">
+    <div v-if="showAnnouncement" class="site-announcement">
+      <span>Sign up and get curated POD drops for your next custom product.</span>
+      <NuxtLink to="/products">Explore Now</NuxtLink>
+      <button type="button" aria-label="关闭顶部通知" @click="showAnnouncement = false">
+        <v-icon size="18">mdi-close</v-icon>
+      </button>
+    </div>
+
     <div
       v-if="showStickyHeader"
       class="site-header-spacer"
@@ -17,12 +25,19 @@
       }"
     >
       <div class="header-inner">
+        <button
+          class="mobile-menu-btn mobile-menu-btn--left"
+          :class="{ active: isMobileMenuOpen }"
+          :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
+          @click="toggleMobileMenu"
+        >
+          <v-icon size="22">{{
+            isMobileMenuOpen ? "mdi-close" : "mdi-menu"
+          }}</v-icon>
+        </button>
+
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
-          <img src="/logo.png" alt="衣设" class="brand-logo" />
-          <div class="brand-copy">
-            <span class="brand-kicker">Creative POD House</span>
-            <strong>衣设</strong>
-          </div>
+          <img src="/logo/logo.light.svg" alt="衣设 yishe" />
         </NuxtLink>
 
         <nav class="desktop-nav" aria-label="主导航">
@@ -37,9 +52,19 @@
         </nav>
 
         <div class="header-actions">
-          <NuxtLink to="/products" class="header-chip desktop-only"
-            >探索 POD</NuxtLink
-          >
+          <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
+            <v-icon size="17">mdi-magnify</v-icon>
+            <input
+              v-model="headerSearch"
+              type="search"
+              aria-label="搜索 POD 商品"
+              placeholder="Search for products..."
+            />
+          </form>
+
+          <NuxtLink to="/products" class="header-icon-link" aria-label="商品库">
+            <v-icon size="24">mdi-cart-outline</v-icon>
+          </NuxtLink>
 
           <template v-if="isLoggedIn && currentUser">
             <div class="user-menu-wrapper">
@@ -97,11 +122,13 @@
           </template>
 
           <template v-else>
-            <NuxtLink to="/login" class="login-button">登录</NuxtLink>
+            <NuxtLink to="/login" class="header-icon-link" aria-label="登录">
+              <v-icon size="24">mdi-account-circle-outline</v-icon>
+            </NuxtLink>
           </template>
 
           <button
-            class="mobile-menu-btn"
+            class="mobile-menu-btn mobile-menu-btn--right"
             :class="{ active: isMobileMenuOpen }"
             :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
             @click="toggleMobileMenu"
@@ -123,8 +150,8 @@
         <aside class="mobile-panel" @click.stop>
           <div class="mobile-panel-head">
             <div>
-              <span class="brand-kicker">Creative POD House</span>
-              <h2>衣设导航</h2>
+              <span class="brand-kicker">1s.design</span>
+              <h2>Shop Menu</h2>
             </div>
             <button class="mobile-close-btn" @click="closeMobileMenu">
               <v-icon>mdi-close</v-icon>
@@ -212,13 +239,11 @@ const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
 const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
-  { label: "首页", to: "/" },
-  { label: "POD 资源", to: "/products" },
-  { label: "定制服务", to: "/design" },
-  { label: "灵感库", to: "/portfolio" },
-  { label: "AI 工作台", to: "/ai-lab" },
+  { label: "Shop", to: "/products" },
 ];
 
+const showAnnouncement = ref(true);
+const headerSearch = ref("");
 const isMobileMenuOpen = ref(false);
 const isScrolled = ref(false);
 const isUserMenuOpen = ref(false);
@@ -299,6 +324,13 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false;
 };
 
+const handleHeaderSearch = async () => {
+  const keyword = headerSearch.value.trim();
+  await navigateTo(
+    keyword ? `/products/${encodeURIComponent(keyword)}` : "/products",
+  );
+};
+
 const syncHeaderHeight = () => {
   if (!process.client) return;
   headerHeight.value = headerRef.value?.offsetHeight || 0;
@@ -365,9 +397,44 @@ useEventListener(
 <style lang="scss" scoped>
 .page-shell {
   min-height: 100vh;
-  background: #f7f5f2;
-  color: #1c1917;
+  background: #fff;
+  color: #111;
   font-family: var(--ys-font-sans);
+}
+
+.site-announcement {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 38px;
+  padding: 0.35rem 1rem;
+  background: #000;
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.site-announcement a {
+  color: #fff;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-announcement button {
+  position: absolute;
+  right: var(--ys-container-pad);
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
 }
 
 .site-header-spacer {
@@ -377,9 +444,9 @@ useEventListener(
 .site-header {
   position: relative;
   top: 0;
-  padding: 0.75rem 0;
-  background: transparent;
-  border-bottom: 1px solid transparent;
+  padding: 1.5rem 0;
+  background: #fff;
+  border-bottom: 1px solid #efefef;
   transition:
     background-color 240ms ease,
     border-color 240ms ease,
@@ -388,8 +455,8 @@ useEventListener(
 }
 
 .site-header-scrolled {
-  background: rgba(247, 245, 242, 0.95);
-  border-bottom-color: rgba(28, 25, 23, 0.035);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom-color: #e9e9e9;
   backdrop-filter: blur(14px);
 }
 
@@ -401,8 +468,8 @@ useEventListener(
   z-index: 100;
   transform: translateY(-120%);
   opacity: 0;
-  background: rgba(247, 245, 242, 0.88);
-  border-bottom-color: rgba(28, 25, 23, 0.045);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom-color: #e9e9e9;
   backdrop-filter: blur(18px) saturate(110%);
 }
 
@@ -415,69 +482,46 @@ useEventListener(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  width: min(1560px, calc(100% - 2rem));
+  gap: 2.25rem;
+  width: var(--ys-container);
   margin: 0 auto;
-  padding: 0.35rem 0;
+  min-height: 48px;
+  padding: 0;
 }
 
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  color: #1c1917;
+  color: #000;
   text-decoration: none;
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.brand-mark:hover .brand-logo {
-  transform: scale(1.03);
-}
-
-.brand-logo {
-  width: 2.25rem;
-  height: 2.25rem;
-  object-fit: contain;
-  transition: transform 0.18s ease;
-}
-
-.brand-copy {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.05;
-}
-
-.brand-copy strong {
-  font-family: var(--ys-font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.brand-kicker {
-  font-size: 0.56rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #78716c;
+.brand-mark img {
+  display: block;
+  width: 162px;
+  height: auto;
 }
 
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 1.75rem;
+  flex: 0 0 auto;
 }
 
 .nav-item,
-.header-chip,
-.login-button {
+.header-search,
+.login-button,
+.header-icon-link {
   position: relative;
-  padding: 0.55rem 0.85rem;
+  padding: 0.55rem 0;
   border: 1px solid transparent;
-  border-radius: 999px;
   background: transparent;
-  color: #57534e;
+  color: #111;
   text-decoration: none;
-  font-size: 0.74rem;
+  font-size: 0.9rem;
   line-height: 1;
   white-space: nowrap;
   transition:
@@ -501,11 +545,9 @@ useEventListener(
 }
 
 .nav-item:hover,
-.header-chip:hover,
+.header-search:hover,
 .login-button:hover {
-  color: #1c1917;
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(28, 25, 23, 0.05);
+  color: #000;
 }
 
 .nav-item:hover::after,
@@ -516,21 +558,86 @@ useEventListener(
 
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
-  color: #1c1917;
-  background: rgba(255, 255, 255, 0.78);
-  border-color: rgba(28, 25, 23, 0.055);
+  color: #000;
 }
 
-.header-chip,
+.header-search,
 .login-button {
-  border-color: rgba(28, 25, 23, 0.065);
-  background: rgba(255, 255, 255, 0.84);
+  border-radius: 999px;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  min-width: min(40vw, 577px);
+  min-height: 48px;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0 1rem 0 1.1rem;
+  border: 1px solid transparent;
+  background: #f0f0f0;
+  color: rgba(0, 0, 0, 0.46);
+  font-size: 1rem;
+}
+
+.header-search:focus-within {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.header-search input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111;
+  font-size: 1rem;
+  line-height: normal;
+  padding: 0;
+}
+
+.header-search input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.header-search input:focus-visible {
+  box-shadow: none;
+}
+
+.login-button {
+  min-height: 2.55rem;
+  padding: 0 1rem;
+  border-color: #ececec;
+  background: #fff;
+  font-weight: 800;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.9rem;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: #111;
+  text-decoration: none;
+}
+
+.header-icon-link:hover {
+  color: #000;
+  transform: translateY(-1px);
 }
 
 .user-menu-wrapper {
@@ -542,10 +649,10 @@ useEventListener(
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.55rem 0.3rem 0.3rem;
-  border: 1px solid rgba(28, 25, 23, 0.065);
+  border: 1px solid #ececec;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.86);
-  color: #1c1917;
+  background: #fff;
+  color: #111;
   cursor: pointer;
   transition:
     border-color 0.16s ease,
@@ -553,8 +660,8 @@ useEventListener(
 }
 
 .user-menu-button:hover {
-  border-color: rgba(28, 25, 23, 0.1);
-  background: rgba(255, 255, 255, 0.96);
+  border-color: #d9d9d9;
+  background: #f7f7f7;
 }
 
 .user-menu-button:hover .user-menu-caret {
@@ -581,9 +688,9 @@ useEventListener(
   display: grid;
   gap: 0.25rem;
   padding: 0.35rem;
-  border: 1px solid rgba(28, 25, 23, 0.06);
+  border: 1px solid #ececec;
   border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
 }
 
@@ -594,7 +701,7 @@ useEventListener(
   border: 0;
   border-radius: 0.7rem;
   background: transparent;
-  color: #44403c;
+  color: #333;
   text-align: left;
   text-decoration: none;
   font-size: 0.74rem;
@@ -605,8 +712,8 @@ useEventListener(
 }
 
 .user-menu-item:hover {
-  background: rgba(28, 25, 23, 0.045);
-  color: #1c1917;
+  background: #f4f4f4;
+  color: #111;
 }
 
 .logout-item {
@@ -619,13 +726,21 @@ useEventListener(
   justify-content: center;
   width: 2.2rem;
   height: 2.2rem;
-  border: 1px solid rgba(28, 25, 23, 0.07);
+  border: 1px solid #ececec;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #1c1917;
+  background: #fff;
+  color: #111;
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
+}
+
+.mobile-menu-btn--left {
+  margin-right: -0.4rem;
+}
+
+.mobile-menu-btn--right {
+  display: none;
 }
 
 .mobile-menu-btn:hover,
@@ -634,13 +749,13 @@ useEventListener(
 .mobile-secondary-link:hover,
 .mobile-login-button:hover {
   border-color: rgba(28, 25, 23, 0.11);
-  background: rgba(255, 255, 255, 0.94);
+  background: #f5f5f5;
 }
 
 .mobile-menu-btn.active {
-  background: #1c1917;
-  color: #f7f5f2;
-  border-color: #1c1917;
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
 
 .page-content {
@@ -651,7 +766,7 @@ useEventListener(
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgba(28, 25, 23, 0.14);
+  background: rgba(0, 0, 0, 0.36);
 }
 
 .mobile-panel {
@@ -659,9 +774,9 @@ useEventListener(
   height: calc(100vh - 1rem);
   margin: 0.5rem 0.5rem 0.5rem auto;
   padding: 1rem;
-  border: 1px solid rgba(28, 25, 23, 0.055);
+  border: 1px solid #ececec;
   border-radius: 1.4rem;
-  background: rgba(248, 245, 239, 0.96);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(18px);
 }
 
@@ -676,15 +791,15 @@ useEventListener(
 .mobile-panel-head h2 {
   margin-top: 0.25rem;
   font-family: var(--ys-font-display);
-  font-size: 1.05rem;
+  font-size: 1.35rem;
 }
 
 .mobile-close-btn {
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid rgba(28, 25, 23, 0.07);
+  border: 1px solid #ececec;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.84);
+  background: #fff;
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
@@ -702,10 +817,10 @@ useEventListener(
   display: block;
   width: 100%;
   padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(28, 25, 23, 0.055);
+  border: 1px solid #ececec;
   border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.78);
-  color: #1c1917;
+  background: #fff;
+  color: #111;
   text-decoration: none;
   font-size: 0.8rem;
   transition:
@@ -717,14 +832,14 @@ useEventListener(
 .mobile-user-card {
   margin-top: 1rem;
   padding: 0.9rem;
-  border: 1px solid rgba(28, 25, 23, 0.055);
+  border: 1px solid #ececec;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.78);
+  background: #fff;
 }
 
 .mobile-user-meta p {
   margin-top: 0.25rem;
-  color: #78716c;
+  color: #777;
   font-size: 0.74rem;
 }
 
@@ -769,12 +884,36 @@ useEventListener(
     display: none;
   }
 
-  .mobile-menu-btn {
+  .mobile-menu-btn--left {
     display: inline-flex;
   }
 
+  .mobile-menu-btn--right {
+    display: none;
+  }
+
   .header-inner {
-    width: min(100%, calc(100% - 1rem));
+    width: var(--ys-container);
+    gap: 1rem;
+  }
+
+  .header-actions {
+    flex: 0 0 auto;
+    gap: 0.75rem;
+  }
+
+  .brand-mark {
+    flex: 1 1 auto;
+  }
+
+  .brand-mark img {
+    width: 160px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .mobile-menu-btn--left {
+    display: none;
   }
 }
 </style>
