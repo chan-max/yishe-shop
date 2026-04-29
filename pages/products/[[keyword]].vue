@@ -853,8 +853,8 @@ await fetchProducts();
 .catalog-toolbar h2 {
   margin: 0 0 0.28rem;
   color: #000;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  line-height: 1.1;
   text-transform: uppercase;
 }
 
@@ -920,9 +920,9 @@ await fetchProducts();
   top: 150px;
   display: grid;
   gap: 0;
-  padding: 1.2rem;
-  border: 1px solid #ececec;
-  border-radius: 20px;
+  padding: 1rem;
+  border: 1px solid #e9e9e9;
+  border-radius: 16px;
   background: #fff;
 }
 
@@ -930,71 +930,72 @@ await fetchProducts();
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  min-height: 2.55rem;
-  padding: 0.05rem 0.1rem 1rem;
+  gap: 0.75rem;
+  min-height: 2.2rem;
+  padding: 0.05rem 0.1rem 0.75rem;
   border-bottom: 1px solid #eeeeee;
 }
 
 .catalog-filter__head strong {
   display: inline-flex;
   align-items: center;
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   line-height: 1;
 }
 
 .catalog-filter__block {
   display: grid;
-  gap: 0.72rem;
-  padding: 1.15rem 0;
+  gap: 0.55rem;
+  padding: 0.85rem 0;
   border-top: 1px solid #eeeeee;
 }
 
 .catalog-filter__head + .catalog-filter__block {
   border-top: 0;
-  padding-top: 0.85rem;
+  padding-top: 0.65rem;
 }
 
 .catalog-filter__block label {
   display: inline-flex;
   align-items: center;
-  min-height: 1.3rem;
+  min-height: 1.1rem;
   color: #111;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 800;
   line-height: 1;
 }
 
 .catalog-filter__block input {
   width: 100%;
-  min-height: 2.55rem;
+  min-height: 2.2rem;
   border: 1px solid #e9e9e9;
-  border-radius: 0.85rem;
+  border-radius: 0.65rem;
   background: #f7f7f7;
   color: #333;
-  padding: 0 0.75rem;
+  padding: 0 0.6rem;
+  font-size: 0.82rem;
 }
 
 .catalog-filter__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  min-height: 2.25rem;
-  padding: 0 0.75rem;
+  gap: 0.55rem;
+  min-height: 1.95rem;
+  padding: 0 0.55rem;
   border: 0;
-  border-radius: 0.7rem;
+  border-radius: 0.55rem;
   background: transparent;
   color: #555;
   text-align: left;
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   line-height: 1;
 }
 
 .catalog-filter__item span {
   display: inline-flex;
   align-items: center;
-  min-height: 1.2rem;
+  min-height: 1.1rem;
 }
 
 .catalog-filter__item:hover,
@@ -1004,13 +1005,13 @@ await fetchProducts();
 }
 
 .catalog-filter__item--category {
-  padding-inline: 0.75rem;
+  padding-inline: 0.55rem;
 }
 
 .catalog-price-range {
   position: relative;
-  height: 6px;
-  margin: 0.55rem 0 0.2rem;
+  height: 5px;
+  margin: 0.45rem 0 0.15rem;
   border-radius: 999px;
   background: #f0f0f0;
 }
@@ -1030,8 +1031,8 @@ await fetchProducts();
   content: "";
   position: absolute;
   top: 50%;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #000;
   transform: translateY(-50%);
@@ -1050,20 +1051,20 @@ await fetchProducts();
 .catalog-size-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
 .catalog-price-labels {
   justify-content: space-between;
   color: #111;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
 }
 
 .catalog-color-list button {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   color: #fff;
@@ -1073,14 +1074,14 @@ await fetchProducts();
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.4rem;
+  min-height: 2rem;
   border: 0;
   border-radius: 999px;
   background: #f0f0f0;
   color: rgba(0, 0, 0, 0.62);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   line-height: 1;
-  padding: 0 1rem;
+  padding: 0 0.75rem;
 }
 
 .catalog-size-list button:hover {
@@ -1090,7 +1091,9 @@ await fetchProducts();
 
 .catalog-apply {
   width: 100%;
-  margin-top: 0.35rem;
+  margin-top: 0.25rem;
+  min-height: 2.5rem;
+  font-size: 0.78rem;
 }
 
 .catalog-results {
@@ -1103,7 +1106,7 @@ await fetchProducts();
 
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: clamp(0.9rem, 1.6vw, 1.35rem);
 }
 

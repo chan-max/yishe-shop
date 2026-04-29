@@ -209,8 +209,12 @@ export default defineNuxtConfig({
       "/test-api",
       "/test-view",
     ],
-    sources: ["/api/__sitemap__/urls"],
-    sitemaps: true, // sitemap多文件开关
+    sitemaps: {
+      pages: {
+        includeAppSources: false,
+        sources: ["/api/__sitemap__/urls"],
+      },
+    },
     defaultSitemapsChunkSize: 1000,
   },
 

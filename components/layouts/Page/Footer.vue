@@ -2,45 +2,64 @@
 const { awesome } = useAppConfig();
 
 const footerGroups = {
+  help: [
+    { name: "FAQ", href: "/faq" },
+    { name: "Shipping", href: "/shipping" },
+    { name: "Returns", href: "/returns" },
+    { name: "Order Status", href: "/orders" },
+  ],
+  company: [
+    { name: "About Us", href: "/about" },
+    { name: "Careers", href: "/careers" },
+    { name: "Press", href: "/press" },
+    { name: "Blog", href: "/blog" },
+  ],
   discover: [
-    { name: "POD 商品", href: "/products" },
-    { name: "印花图案", href: "/products/%E5%8D%B0%E8%8A%B1" },
-    { name: "定制礼物", href: "/products/%E7%A4%BC%E7%89%A9" },
-    { name: "作品案例", href: "/portfolio" },
-  ],
-  platform: [
-    { name: "品牌定制", href: "/design" },
-    { name: "AI 创意工作台", href: "/ai-lab" },
-    { name: "免费设计", href: "/free-design" },
-    { name: "关于衣设", href: "/about" },
-  ],
-  service: [
-    { name: "联系我们", href: "/contact" },
-    { name: "登录", href: "/login" },
-    { name: "注册", href: "/register" },
-    { name: "商品地图", href: "/sitemap.xml" },
+    { name: "New Arrivals", href: "/products" },
+    { name: "Best Sellers", href: "/products/best" },
+    { name: "Sale", href: "/products/sale" },
+    { name: "Gift Cards", href: "/gift-cards" },
   ],
 };
 
 const socialLinks = [
+  { name: "Twitter", icon: "mdi-twitter", href: "#" },
+  { name: "Facebook", icon: "mdi-facebook", href: "#" },
   { name: "Instagram", icon: "mdi-instagram", href: "#" },
-  { name: "Pinterest", icon: "mdi-pinterest", href: "#" },
-  { name: "Behance", icon: "mdi-behance", href: "#" },
-  { name: "Dribbble", icon: "mdi-dribbble", href: "#" },
+  { name: "GitHub", icon: "mdi-github", href: "#" },
 ];
+
+const newsletterEmail = ref("");
+
+const handleNewsletterSubmit = async () => {
+  if (!newsletterEmail.value || !newsletterEmail.value.includes("@")) {
+    return;
+  }
+  // TODO: 调用 newsletter 订阅 API
+  newsletterEmail.value = "";
+};
 </script>
 
 <template>
   <footer class="footer-shell">
-    <section class="footer-cta">
+    <section class="footer-newsletter">
       <div>
-        <span>1s.design / POD creative platform</span>
-        <h2>从一个图案开始，生成一整套商品可能性。</h2>
+        <span>NEWSLETTER</span>
+        <h2>STAY UP TO DATE ABOUT OUR LATEST OFFERS</h2>
       </div>
-      <NuxtLink to="/design" class="footer-cta__link">
-        发起定制
-        <v-icon size="18">mdi-arrow-right</v-icon>
-      </NuxtLink>
+      <form class="footer-newsletter__form" @submit.prevent="handleNewsletterSubmit">
+        <div class="footer-newsletter__input">
+          <v-icon size="20">mdi-email-outline</v-icon>
+          <input
+            v-model="newsletterEmail"
+            type="email"
+            placeholder="Enter your email address"
+          />
+        </div>
+        <button type="submit" class="footer-newsletter__btn">
+          Subscribe to Newsletter
+        </button>
+      </form>
     </section>
 
     <div class="footer-inner">
@@ -50,7 +69,7 @@ const socialLinks = [
             <img src="/logo/logo.light.svg" alt="衣设 yishe" />
           </NuxtLink>
           <p>
-            POD 印花、私人定制、品牌周边与创意设计开放平台。为创作者和品牌提供可浏览、可收录、可继续落地的商品灵感。
+            We have clothes that suits your style and which you're proud to wear. From women to men.
           </p>
           <div class="footer-socials">
             <a
@@ -66,31 +85,31 @@ const socialLinks = [
         </div>
 
         <div class="footer-column">
-          <h3>发现</h3>
+          <h3>HELP</h3>
+          <NuxtLink
+            v-for="link in footerGroups.help"
+            :key="link.name"
+            :to="link.href"
+            class="footer-link"
+          >
+            {{ link.name }}
+          </NuxtLink>
+        </div>
+        <div class="footer-column">
+          <h3>COMPANY</h3>
+          <NuxtLink
+            v-for="link in footerGroups.company"
+            :key="link.name"
+            :to="link.href"
+            class="footer-link"
+          >
+            {{ link.name }}
+          </NuxtLink>
+        </div>
+        <div class="footer-column">
+          <h3>DISCOVER</h3>
           <NuxtLink
             v-for="link in footerGroups.discover"
-            :key="link.name"
-            :to="link.href"
-            class="footer-link"
-          >
-            {{ link.name }}
-          </NuxtLink>
-        </div>
-        <div class="footer-column">
-          <h3>平台</h3>
-          <NuxtLink
-            v-for="link in footerGroups.platform"
-            :key="link.name"
-            :to="link.href"
-            class="footer-link"
-          >
-            {{ link.name }}
-          </NuxtLink>
-        </div>
-        <div class="footer-column">
-          <h3>服务</h3>
-          <NuxtLink
-            v-for="link in footerGroups.service"
             :key="link.name"
             :to="link.href"
             class="footer-link"
@@ -107,9 +126,9 @@ const socialLinks = [
           {{ awesome?.author?.name || "衣设" }}. All rights reserved.
         </p>
         <div class="footer-legal">
-          <NuxtLink to="/privacy">隐私政策</NuxtLink>
-          <NuxtLink to="/terms">服务条款</NuxtLink>
-          <NuxtLink to="/cookies">Cookie 政策</NuxtLink>
+          <NuxtLink to="/privacy">Privacy Policy</NuxtLink>
+          <NuxtLink to="/terms">Terms of Use</NuxtLink>
+          <NuxtLink to="/cookies">Cookie Policy</NuxtLink>
         </div>
       </section>
     </div>
@@ -123,53 +142,87 @@ const socialLinks = [
   font-family: var(--ys-font-sans);
 }
 
-.footer-cta,
+.footer-newsletter,
 .footer-inner {
   width: var(--ys-container);
   margin: 0 auto;
 }
 
-.footer-cta {
+.footer-newsletter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
   margin-top: 1rem;
-  border-radius: 1.6rem;
-  background: #050505;
+  border-radius: 1.25rem;
+  background: #000;
   color: #fff;
-  padding: clamp(1.3rem, 4vw, 2.6rem);
+  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.5rem, 4vw, 3.5rem);
 }
 
-.footer-cta span {
+.footer-newsletter span {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.footer-cta h2 {
-  max-width: 780px;
-  margin-top: 0.65rem;
-  font-size: clamp(1.8rem, 4vw, 3.7rem);
-  line-height: 0.98;
+.footer-newsletter h2 {
+  max-width: 550px;
+  margin-top: 0.5rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  color: #fff;
 }
 
-.footer-cta__link {
-  display: inline-flex;
+.footer-newsletter__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 320px;
+}
+
+.footer-newsletter__input {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 3.1rem;
-  flex: 0 0 auto;
-  border-radius: 999px;
+  gap: 0.75rem;
+  min-height: 3rem;
+  border-radius: var(--ys-pill-radius);
+  background: #fff;
+  padding: 0 1rem;
+}
+
+.footer-newsletter__input input {
+  flex: 1;
+  min-width: 0;
+  height: 3rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111;
+  font-size: 0.9rem;
+}
+
+.footer-newsletter__input input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.footer-newsletter__btn {
+  min-height: 3rem;
+  border: 0;
+  border-radius: var(--ys-pill-radius);
   background: #fff;
   color: #111;
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 700;
   padding: 0 1.25rem;
-  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.16s ease;
+}
+
+.footer-newsletter__btn:hover {
+  opacity: 0.85;
 }
 
 .footer-inner {
@@ -202,29 +255,30 @@ const socialLinks = [
 }
 
 .footer-brand p {
-  max-width: 420px;
-  color: #666;
+  max-width: 280px;
+  color: rgba(0, 0, 0, 0.6);
   font-size: 0.82rem;
-  line-height: 1.9;
+  line-height: 1.6;
 }
 
 .footer-socials {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.75rem;
 }
 
 .social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 1px solid #e9e9e9;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 999px;
   background: #fff;
   color: #111;
   text-decoration: none;
+  transition: all 0.16s ease;
 }
 
 .social-link:hover {
@@ -247,17 +301,15 @@ const socialLinks = [
   text-transform: uppercase;
 }
 
-.footer-link,
-.footer-bottom,
-.footer-legal a {
-  color: #666;
-  font-size: 0.8rem;
-  line-height: 1.9;
+.footer-link {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.82rem;
+  line-height: 1.8;
   text-decoration: none;
+  transition: color 0.16s ease;
 }
 
-.footer-link:hover,
-.footer-legal a:hover {
+.footer-link:hover {
   color: #111;
 }
 
@@ -266,8 +318,13 @@ const socialLinks = [
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 1rem;
+}
+
+.footer-bottom p {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
 }
 
 .footer-legal {
@@ -276,11 +333,26 @@ const socialLinks = [
   gap: 1rem;
 }
 
+.footer-legal a {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.16s ease;
+}
+
+.footer-legal a:hover {
+  color: #111;
+}
+
 @media (max-width: 960px) {
-  .footer-cta,
-  .footer-bottom {
-    align-items: flex-start;
+  .footer-newsletter {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-newsletter__form {
+    width: 100%;
+    min-width: unset;
   }
 
   .footer-grid {
@@ -293,8 +365,9 @@ const socialLinks = [
     grid-template-columns: 1fr;
   }
 
-  .footer-cta__link {
-    width: 100%;
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>

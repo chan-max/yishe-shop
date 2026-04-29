@@ -101,8 +101,8 @@ useHead({
   --ys-shadow-sm: none;
   --ys-shadow-md: none;
   --ys-shadow-lg: none;
-  --ys-page-max: 1440px;
-  --ys-page-gutter: clamp(1rem, 2vw, 6rem);
+  --ys-page-max: 1600px;
+  --ys-page-gutter: clamp(1.5rem, 4vw, 3rem);
   --ys-container: min(var(--ys-page-max), calc(100% - var(--ys-page-gutter)));
   --ys-container-pad: max(
     calc(var(--ys-page-gutter) / 2),

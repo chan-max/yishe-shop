@@ -1,6 +1,6 @@
 {
     "name": "yishe-shop",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "Platform for fashion design, POD products, and custom design services",
     "author": "jackie c",
     "private": false,
@@ -36,7 +36,7 @@
         "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .eslintignore .",
         "release": "release-it",
-        "build:prod": "NODE_ENV=production nuxt generate",
+        "build:prod": "NODE_ENV=production nuxt build",
         "build:dev": "NODE_ENV=development nuxt generate",
         "build:locales": "node scripts/build-locales.js",
         "build:en": "NUXT_PUBLIC_LOCALE=en nuxt generate",

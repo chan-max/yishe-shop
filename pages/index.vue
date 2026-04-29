@@ -455,9 +455,9 @@ await fetchFeaturedProducts();
 .home-hero h2 {
   max-width: 760px;
   margin-top: 1.1rem;
-  font-size: clamp(3.35rem, 7.2vw, 6.45rem);
-  line-height: 0.9;
-  font-weight: 900;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 800;
 }
 
 .home-hero p,
@@ -688,8 +688,8 @@ await fetchFeaturedProducts();
 .home-showcase h2,
 .home-cta h2 {
   margin-top: 0.9rem;
-  font-size: clamp(2.15rem, 4.5vw, 4.7rem);
-  line-height: 0.98;
+  font-size: clamp(1.55rem, 3.2vw, 2.6rem);
+  line-height: 1.15;
 }
 
 .home-text-link {
@@ -700,7 +700,7 @@ await fetchFeaturedProducts();
 
 .home-category-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
 
@@ -738,7 +738,7 @@ await fetchFeaturedProducts();
 
 .home-product-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: clamp(0.9rem, 1.8vw, 1.3rem);
 }
 
@@ -846,7 +846,7 @@ await fetchFeaturedProducts();
 
 .home-style-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
 
