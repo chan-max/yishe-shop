@@ -1,5 +1,4 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "strict": true,
     "skipLibCheck": true,
@@ -7,7 +6,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "types": [
       "@pinia/nuxt",
-      "@nuxtjs/tailwindcss",
+      "@nuxtjs/tailwindcss"
     ]
   }
 }
