@@ -66,7 +66,11 @@ const handleNewsletterSubmit = async () => {
       <section class="footer-grid">
         <div class="footer-brand">
           <NuxtLink to="/" class="footer-logo" aria-label="衣设首页">
-            <img src="/logo/logo.light.svg" alt="衣设 yishe" />
+            <img src="/logo.png" alt="1s.design 衣设" class="footer-logo-img" />
+            <div class="footer-logo-text">
+              <span class="footer-logo-en">1s.design</span>
+              <span class="footer-logo-zh">衣设</span>
+            </div>
           </NuxtLink>
           <p>
             We have clothes that suits your style and which you're proud to wear. From women to men.
@@ -245,13 +249,36 @@ const handleNewsletterSubmit = async () => {
 .footer-logo {
   display: inline-flex;
   align-items: center;
-  width: 156px;
+  gap: 0.6rem;
+  text-decoration: none;
 }
 
-.footer-logo img {
+.footer-logo-img {
   display: block;
-  width: 100%;
-  height: auto;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.footer-logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.footer-logo-en {
+  font-family: var(--ys-font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #000;
+}
+
+.footer-logo-zh {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 0.12rem;
 }
 
 .footer-brand p {

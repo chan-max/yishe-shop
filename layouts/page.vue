@@ -37,7 +37,11 @@
         </button>
 
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
-          <img src="/logo/logo.light.svg" alt="衣设 yishe" />
+          <img src="/logo.png" alt="1s.design 衣设" class="brand-logo-img" />
+          <div class="brand-text">
+            <span class="brand-name-en">1s.design</span>
+            <span class="brand-name-zh">衣设</span>
+          </div>
         </NuxtLink>
 
         <nav class="desktop-nav" aria-label="主导航">
@@ -492,16 +496,41 @@ useEventListener(
 .brand-mark {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   color: #000;
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
 }
 
-.brand-mark img {
+.brand-logo-img {
   display: block;
-  width: 162px;
-  height: auto;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  line-height: 1;
+}
+
+.brand-name-en {
+  font-family: var(--ys-font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.brand-name-zh {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: 0.15rem;
 }
 
 .desktop-nav {
