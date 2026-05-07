@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { api } from "../utils/api";
 import { getPreviewImageUrl } from "../utils/image";
+import { getProductPath } from "~/utils/product-url";
 
 definePageMeta({ layout: "page" });
 
@@ -24,6 +25,7 @@ type FeaturedProduct = {
   imageUrl?: string;
   type?: string;
   code?: string;
+  slug?: string;
 };
 
 const featuredProducts = ref<FeaturedProduct[]>([]);
@@ -143,7 +145,7 @@ const getProductHref = (product: FeaturedProduct) =>
   product.id.startsWith("home-") ||
   product.id.startsWith("streetwear-")
     ? "/products"
-    : `/product/${product.id}`;
+    : getProductPath(product);
 
 const getProductImageUrl = (product: FeaturedProduct, width = 780) => {
   if (!product.imageUrl) return "";
@@ -184,6 +186,7 @@ const fetchFeaturedProducts = async () => {
           imageUrl: firstImage,
           type: product.type || "POD",
           code: product.code || "",
+          slug: product.slug || "",
         };
       });
     }

@@ -2,12 +2,14 @@
 import { ref, computed, watch } from "vue";
 import { api } from "../../utils/api";
 import { getPreviewImageUrl } from "../../utils/image";
+import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
 import {
   SITE_DEFAULT_IMAGE,
   SITE_KEYWORDS,
   SITE_ORGANIZATION_NAME,
   SITE_URL,
 } from "../../utils/seo";
+import { useBreadcrumbStructuredData, useItemListStructuredData } from "~/composables/use-seo";
 
 definePageMeta({ layout: "page" });
 
@@ -195,7 +197,7 @@ const toggleFilters = () => {
 };
 
 const goToProductDetail = (productId: string) => {
-  navigateTo(`/product/${productId}`);
+  navigateTo(getProductPath({ id: productId }));
 };
 
 const getProductImage = (product: any) => {
@@ -343,7 +345,10 @@ const activeFilters = computed(() => {
 });
 
 const robotsValue = computed(() =>
-  startDate.value || endDate.value || currentPage.value > 1
+  startDate.value ||
+  endDate.value ||
+  currentPage.value > 1 ||
+  routeKeyword.value
     ? "noindex, follow, max-image-preview:large"
     : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 );
@@ -362,21 +367,58 @@ const canonicalUrl = computed(() => {
   return `${SITE_URL}${path}${queryString ? `?${queryString}` : ""}`;
 });
 
-const collectionStructuredData = computed(() => ({
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: pageTitle.value,
-  description: pageDescription.value,
-  url: canonicalUrl.value,
-  inLanguage: "zh-CN",
-  isPartOf: {
-    "@type": "WebSite",
-    name: SITE_ORGANIZATION_NAME,
-    url: SITE_URL,
-  },
-  about: routeKeyword.value || "衣设商品与设计内容",
-  numberOfItems: total.value,
-}));
+const collectionStructuredData = computed(() => {
+  const breadcrumbItems = [
+    { name: "首页", url: SITE_URL },
+    { name: "POD 商品", url: `${SITE_URL}/products` },
+  ];
+  if (routeKeyword.value) {
+    breadcrumbItems.push({
+      name: routeKeyword.value,
+      url: `${SITE_URL}/products/${encodeURIComponent(routeKeyword.value)}`,
+    });
+  }
+  const breadcrumb = useBreadcrumbStructuredData(breadcrumbItems);
+
+  const itemList = productList.value.length > 0
+    ? useItemListStructuredData(
+        productList.value.map((product: any, index: number) => ({
+          name: product.name || "POD 定制商品",
+          url: getProductAbsoluteUrl(product, SITE_URL),
+          image: Array.isArray(product.images) && product.images.length > 0
+            ? product.images.find((img: any) => img && typeof img === "string" && img.startsWith("http"))
+            : undefined,
+          position: (currentPage.value - 1) * pageSize.value + index + 1,
+        })),
+      )
+    : null;
+
+  const collection = {
+    "@type": "CollectionPage",
+    name: pageTitle.value,
+    description: pageDescription.value,
+    url: canonicalUrl.value,
+    inLanguage: "zh-CN",
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_ORGANIZATION_NAME,
+      url: SITE_URL,
+    },
+    about: routeKeyword.value || "衣设商品与设计内容",
+    numberOfItems: total.value,
+  };
+
+  const graph = [
+    { ...breadcrumb },
+    collection,
+    ...(itemList ? [{ ...itemList }] : []),
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+});
 const collectionStructuredDataJson = computed(() =>
   JSON.stringify(collectionStructuredData.value),
 );
@@ -574,7 +616,7 @@ await fetchProducts();
           <NuxtLink
             v-for="(product, index) in productList"
             :key="product.id"
-            :to="`/product/${product.id}`"
+            :to="getProductPath(product)"
             class="catalog-product"
           >
             <div class="catalog-product__media">

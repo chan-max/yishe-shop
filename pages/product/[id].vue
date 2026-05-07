@@ -184,7 +184,7 @@
           <NuxtLink
             v-for="(item, index) in relatedProducts"
             :key="item.id"
-            :to="item.href || `/product/${item.id}`"
+            :to="item.href || getProductPath(item)"
             class="product-related-card"
           >
             <div>
@@ -229,7 +229,8 @@ import ImagePreview from "../components/ImagePreview.vue";
 import FavoriteButton from "~/components/FavoriteButton.vue";
 import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
-import { useProductStructuredData } from "~/composables/use-seo";
+import { useProductStructuredData, useBreadcrumbStructuredData } from "~/composables/use-seo";
+import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
 import {
   SITE_DEFAULT_IMAGE,
   SITE_OG_NAME,
@@ -242,6 +243,7 @@ const toast = useToast();
 definePageMeta({
   layout: "page",
   middleware: "product-or-search",
+  alias: ["/product/:id/:slug"],
 });
 
 const route = useRoute();
@@ -376,25 +378,39 @@ const hasPreviousProduct = computed(() => false);
 const hasNextProduct = computed(() => false);
 const isLoggedIn = computed(() => publicUserStore.isLoggedIn);
 
-const productSeoTitle = computed(() =>
-  product.value?.name
-    ? `${product.value.name} - POD 定制商品与印花设计灵感 - 衣设`
-    : "POD 商品详情 - 衣设 yishe",
-);
+const normalizeSeoText = (value?: string | null) => String(value || "").trim();
 
-const productSeoDescription = computed(
-  () =>
-    product.value?.description ||
-    productLead.value ||
-    "查看 POD 定制商品的图案、场景、灵感说明和设计方向。",
-);
+const productSeoTitle = computed(() => {
+  const explicitTitle = normalizeSeoText(product.value?.seoTitle);
+  if (explicitTitle) return explicitTitle;
+
+  if (product.value?.name) {
+    const keywordSuffix = keywordLine.value ? `｜${keywordLine.value}` : "";
+    return `${product.value.name}${keywordSuffix} - POD 定制商品与印花设计灵感 - 衣设`;
+  }
+
+  return "POD 商品详情 - 衣设 yishe";
+});
+
+const productSeoDescription = computed(() => {
+  const explicitDescription = normalizeSeoText(product.value?.seoDescription);
+  if (explicitDescription) return explicitDescription;
+
+  if (product.value?.description) return product.value.description;
+  if (keywordLine.value) {
+    return `查看「${product.value?.name || "POD 定制商品"}」的图案展示、关键词方向和商品化灵感，适合围绕 ${keywordLine.value} 延展为印花、礼品、家居或品牌周边。`;
+  }
+  return productLead.value || "查看 POD 定制商品的图案、场景、灵感说明和设计方向。";
+});
 
 const productSeoImage = computed(
   () => productImages.value[0] || SITE_DEFAULT_IMAGE,
 );
 
-const productSeoUrl = computed(
-  () => `${SITE_URL}/product/${route.params.id || ""}`,
+const productSeoUrl = computed(() =>
+  product.value
+    ? getProductAbsoluteUrl(product.value, SITE_URL)
+    : `${SITE_URL}/product/${route.params.id || ""}`,
 );
 
 const productSeoKeywords = computed(
@@ -405,15 +421,29 @@ const productSeoKeywords = computed(
 
 const productStructuredDataJson = computed(() => {
   if (!product.value) return "";
-  return JSON.stringify(
-    useProductStructuredData({
-      name: product.value.name || "POD 定制商品",
-      description: productSeoDescription.value,
-      image: productSeoImage.value,
-      url: productSeoUrl.value,
-      category: product.value.type || "POD 定制商品",
-    }),
-  );
+  const breadcrumb = useBreadcrumbStructuredData([
+    { name: "首页", url: SITE_URL },
+    { name: "POD 商品", url: `${SITE_URL}/products` },
+    ...(product.value.type
+      ? [{ name: product.value.type, url: `${SITE_URL}/products/${encodeURIComponent(product.value.type)}` }]
+      : []),
+    { name: product.value.name || "商品详情", url: productSeoUrl.value },
+  ]);
+  const productSchema = useProductStructuredData({
+    name: product.value.name || "POD 定制商品",
+    description: productSeoDescription.value,
+    image: productSeoImage.value,
+    url: productSeoUrl.value,
+    category: product.value.type || "POD 定制商品",
+    price: productPrice.value,
+  });
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { ...breadcrumb, "@context": undefined },
+      { ...productSchema, "@context": undefined },
+    ],
+  });
 });
 
 useSeoMeta({
@@ -449,7 +479,8 @@ useHead(() => ({
 const fetchProductDetail = async () => {
   loading.value = true;
   try {
-    const response = await api.productList.getById(route.params.id, false);
+    const rawId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
+    const response = await api.productList.getById(String(rawId || ""), false);
     if (
       response.code === 0 ||
       response.status === true ||

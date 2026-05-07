@@ -174,6 +174,48 @@ export function useProductStructuredData(product: {
 }
 
 /**
+ * 生成面包屑结构化数据
+ */
+export function useBreadcrumbStructuredData(
+  items: Array<{ name: string; url: string }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/**
+ * 生成 ItemList 结构化数据（用于列表页，指向详情页）
+ */
+export function useItemListStructuredData(items: Array<{
+  name: string;
+  url: string;
+  image?: string;
+  position?: number;
+}>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: item.position || index + 1,
+      url: item.url,
+      name: item.name,
+      ...(item.image && {
+        image: item.image,
+      }),
+    })),
+  };
+}
+
+/**
  * 生成文章结构化数据
  */
 export function useArticleStructuredData(article: {

@@ -1,7 +1,8 @@
 import type { ProductSitemapItem, SitemapUrl } from "./types";
 import { toIsoDate } from "./url-utils";
 
-const SEARCH_KEYWORD_LIMIT = 120;
+const SEARCH_KEYWORD_LIMIT = 40;
+const MIN_KEYWORD_PRODUCT_COUNT = 3;
 const MIN_KEYWORD_LENGTH = 2;
 const MAX_KEYWORD_LENGTH = 32;
 
@@ -61,12 +62,13 @@ export const buildSearchSitemapUrls = (
   }
 
   return Array.from(keywordMap.entries())
+    .filter(([, meta]) => meta.count >= MIN_KEYWORD_PRODUCT_COUNT)
     .sort((a, b) => b[1].count - a[1].count || a[0].localeCompare(b[0]))
     .slice(0, SEARCH_KEYWORD_LIMIT)
     .map<SitemapUrl>(([keyword, meta]) => ({
       loc: `/products/${keyword}`,
       lastmod: meta.lastmod,
       changefreq: "weekly",
-      priority: meta.count >= 3 ? 0.76 : 0.68,
+      priority: 0.55,
     }));
 };

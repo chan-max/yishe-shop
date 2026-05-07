@@ -1,5 +1,6 @@
 import type { ProductSitemapItem, SitemapUrl } from "./types";
 import { toAbsoluteUrl, toIsoDate } from "./url-utils";
+import { getProductPath } from "~/utils/product-url";
 
 export const buildProductSitemapUrls = (
   products: ProductSitemapItem[],
@@ -21,10 +22,10 @@ export const buildProductSitemapUrls = (
         }));
 
       return {
-        loc: `/product/${product.id}`,
+        loc: getProductPath(product),
         lastmod: toIsoDate(product.updateTime || product.createTime) || now,
         changefreq: "weekly",
-        priority: 0.82,
+        priority: 0.9,
         ...(images.length ? { images } : {}),
       };
     });
