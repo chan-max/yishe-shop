@@ -713,6 +713,12 @@ await fetchFeaturedProducts();
   color: #111;
   text-decoration: none;
   padding: 1rem;
+  transition: background 200ms ease, box-shadow 220ms ease;
+}
+
+.home-category-card:hover {
+  background: #e8e8e8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .home-category-card strong {
@@ -748,12 +754,22 @@ await fetchFeaturedProducts();
   overflow: hidden;
   border-radius: 10px;
   background: #f0f0f0;
+  transition: box-shadow 220ms ease;
+}
+
+.home-product-card:hover .home-product-card__media {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .home-product-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 300ms ease;
+}
+
+.home-product-card:hover .home-product-card__media img {
+  transform: scale(1.03);
 }
 
 .home-product-card__arrow {
@@ -766,6 +782,12 @@ await fetchFeaturedProducts();
   height: 2rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.home-product-card:hover .home-product-card__arrow {
+  opacity: 1;
 }
 
 .home-product-card__body {
@@ -840,6 +862,12 @@ await fetchFeaturedProducts();
   color: #111;
   text-decoration: none;
   padding: 1rem;
+  transition: background 200ms ease, box-shadow 220ms ease;
+}
+
+.home-style-card:hover {
+  background: #e8e8e8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .home-style-card span {
@@ -852,10 +880,6 @@ await fetchFeaturedProducts();
   max-width: 260px;
   font-size: clamp(1rem, 1.8vw, 1.5rem);
   line-height: 1.1;
-}
-
-.home-style-card:hover {
-  background: #e8e8e8;
 }
 
 .home-section--split {
@@ -881,6 +905,12 @@ await fetchFeaturedProducts();
   color: #111;
   text-decoration: none;
   padding: 0.5rem;
+  transition: border-color 200ms ease, box-shadow 220ms ease;
+}
+
+.home-mini-product:hover {
+  border-color: #111;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .home-mini-product > div {
@@ -897,6 +927,11 @@ await fetchFeaturedProducts();
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 300ms ease;
+}
+
+.home-mini-product:hover img {
+  transform: scale(1.05);
 }
 
 .home-mini-product strong {
@@ -904,10 +939,6 @@ await fetchFeaturedProducts();
   margin-top: 0.15rem;
   font-size: 0.85rem;
   line-height: 1.35;
-}
-
-.home-mini-product:hover {
-  border-color: #111;
 }
 
 .home-cta {

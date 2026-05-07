@@ -317,6 +317,12 @@ const toggleSave = (id: string) => {
   border-radius: 0.98rem;
   background: rgba(255, 255, 255, 0.34);
   min-height: 12rem;
+  transition: background 200ms ease, box-shadow 220ms ease;
+}
+
+.portfolio-card:hover {
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .portfolio-card__head {

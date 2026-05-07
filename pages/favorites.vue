@@ -182,11 +182,11 @@ onMounted(() => {
         </div>
 
         <div v-else-if="favoriteList.length > 0" class="space-y-3">
-          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:border-stone-300 hover:bg-stone-50 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
+          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:border-stone-300 hover:bg-stone-50 hover:shadow-sm sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
             <div class="cursor-pointer overflow-hidden rounded-[18px] bg-stone-100" @click="goToProductDetail(favorite.productId)">
               <div class="relative aspect-[4/3]">
                 <template v-if="getProductImage(favorite)">
-                  <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover" @error="handleImageError($event)" @load="handleImageLoad" />
+                  <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" @error="handleImageError($event)" @load="handleImageLoad" />
                   <div class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400">暂无图片</div>
                 </template>
                 <div v-else class="absolute inset-0 flex items-center justify-center text-[12px] text-stone-400">暂无图片</div>

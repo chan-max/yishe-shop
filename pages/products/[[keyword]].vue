@@ -1126,6 +1126,19 @@ await fetchProducts();
   overflow: hidden;
   border-radius: 10px;
   background: #f0f0f0;
+  transition: box-shadow 220ms ease;
+}
+
+.catalog-product:hover .catalog-product__media {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.catalog-product__media img {
+  transition: transform 300ms ease;
+}
+
+.catalog-product:hover .catalog-product__media img {
+  transform: scale(1.03);
 }
 
 .catalog-product__media img {
