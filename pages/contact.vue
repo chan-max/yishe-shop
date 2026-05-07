@@ -51,7 +51,7 @@ const closeQRDialog = () => {
   <main class="contact-page">
     <section class="contact-hero">
       <div>
-        <span>CONTACT 1S.DESIGN</span>
+        <span>联系 1S.DESIGN</span>
         <h1>发起 POD 定制合作</h1>
       </div>
       <p>
@@ -61,16 +61,16 @@ const closeQRDialog = () => {
 
     <section class="contact-grid">
       <article class="contact-card contact-card--dark">
-        <span>Email</span>
+        <span>邮箱</span>
         <a :href="`mailto:${founderInfo.email}`">{{ founderInfo.email }}</a>
       </article>
       <article class="contact-card">
-        <span>Phone</span>
+        <span>电话</span>
         <a :href="`tel:${founderInfo.phones[0]}`">{{ founderInfo.phones[0] }}</a>
         <a :href="`tel:${founderInfo.phones[1]}`">{{ founderInfo.phones[1] }}</a>
       </article>
       <article class="contact-card">
-        <span>Website</span>
+        <span>网站</span>
         <a :href="founderInfo.website" target="_blank">{{ founderInfo.website }}</a>
       </article>
       <article class="contact-card">
@@ -81,7 +81,7 @@ const closeQRDialog = () => {
 
     <section class="contact-socials">
       <div>
-        <span>Social</span>
+        <span>社交平台</span>
         <h2>选择一个平台继续沟通</h2>
       </div>
       <div class="social-links">
@@ -126,14 +126,14 @@ const closeQRDialog = () => {
 .contact-page {
   width: var(--ys-container);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(3rem, 7vw, 6rem);
+  padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 4rem);
   color: #111;
 }
 
 .contact-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
   align-items: end;
 }
 
@@ -141,44 +141,45 @@ const closeQRDialog = () => {
 .contact-card span,
 .contact-socials span {
   color: #777;
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .contact-hero h1 {
-  margin: 0.8rem 0 0;
+  margin: 0.5rem 0 0;
   color: #000;
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  line-height: 0.9;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 0.95;
   font-weight: 900;
 }
 
 .contact-hero p {
   margin: 0;
   color: #555;
-  line-height: 1.85;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .contact-grid {
   display: grid;
   grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: clamp(2rem, 5vw, 4rem);
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .contact-card,
 .contact-socials {
-  border-radius: 20px;
+  border-radius: 10px;
   background: #f0f0f0;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .contact-card {
   display: grid;
   align-content: space-between;
-  min-height: 190px;
+  min-height: 140px;
 }
 
 .contact-card--dark {
@@ -188,8 +189,8 @@ const closeQRDialog = () => {
 
 .contact-card a {
   color: inherit;
-  font-size: clamp(1rem, 1.7vw, 1.35rem);
-  font-weight: 900;
+  font-size: clamp(0.82rem, 1.3vw, 1rem);
+  font-weight: 700;
   overflow-wrap: anywhere;
   text-decoration: none;
 }
@@ -200,36 +201,37 @@ const closeQRDialog = () => {
 
 .contact-socials {
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1fr);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 0.8fr) minmax(280px, 1fr);
+  gap: 0.75rem;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .contact-socials h2 {
-  margin: 0.6rem 0 0;
+  margin: 0.4rem 0 0;
   color: #000;
-  font-size: clamp(1.8rem, 4vw, 3.6rem);
-  line-height: 0.98;
+  font-size: clamp(1.1rem, 3vw, 2rem);
+  line-height: 1.15;
 }
 
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .social-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  min-height: 3rem;
+  gap: 0.35rem;
+  min-height: 2.2rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #fff;
   color: #111;
-  font-weight: 900;
-  padding: 0 1rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0 0.8rem;
 }
 
 .qr-dialog-overlay {
@@ -239,38 +241,38 @@ const closeQRDialog = () => {
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.55);
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .qr-dialog {
   position: relative;
-  width: min(92vw, 420px);
-  border-radius: 24px;
+  width: min(92vw, 360px);
+  border-radius: 14px;
   background: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .qr-close {
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 0.75rem;
+  top: 0.75rem;
   border: 0;
   border-radius: 50%;
   background: #f0f0f0;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
 }
 
 .qr-content {
   display: grid;
   justify-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   text-align: center;
 }
 
 .qr-content img {
-  width: min(100%, 260px);
-  border-radius: 18px;
+  width: min(100%, 220px);
+  border-radius: 10px;
 }
 
 .dialog-enter-active,

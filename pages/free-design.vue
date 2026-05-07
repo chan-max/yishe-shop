@@ -139,7 +139,7 @@ const goToPath = (path: string) => navigateTo(path);
   <div class="fd-page">
     <section class="fd-hero">
       <div class="fd-hero__top">
-        <div class="minimal-kicker">Free Design Center</div>
+        <div class="minimal-kicker">免费设计中心</div>
         <button class="fd-hero__switch" type="button" @click="fillBrief">把当前方向写进 brief</button>
       </div>
 
@@ -187,7 +187,7 @@ const goToPath = (path: string) => navigateTo(path);
 
     <section class="fd-stage">
       <div class="fd-stage__left">
-        <div class="fd-stage__label">Current World</div>
+        <div class="fd-stage__label">当前方向</div>
         <h2>{{ activeWorld.name }}</h2>
         <div class="fd-stage__manifesto">{{ activeWorld.manifesto }}</div>
         <p class="fd-stage__summary">{{ activeWorld.summary }}</p>
@@ -202,7 +202,7 @@ const goToPath = (path: string) => navigateTo(path);
           <strong>{{ activeWorld.mood }}</strong>
         </div>
         <div class="fd-stage__column">
-          <span class="fd-mini">Route</span>
+          <span class="fd-mini">路径</span>
           <div class="fd-route">
             <div v-for="(item, index) in activeWorld.route" :key="item" class="fd-route__item">
               <em>{{ `0${index + 1}` }}</em>
@@ -260,7 +260,7 @@ const goToPath = (path: string) => navigateTo(path);
 
     <section class="fd-cta">
       <div class="fd-cta__copy">
-        <div class="fd-section-kicker">Next Step</div>
+        <div class="fd-section-kicker">下一步</div>
         <h3>把灵感继续延展成商品系列。</h3>
         <p>进入 AI 创意工作台、定制设计服务或 POD 商品库，让图案、样机和交付方案继续完善。</p>
       </div>

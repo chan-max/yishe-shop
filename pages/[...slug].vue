@@ -132,7 +132,6 @@ useHead({
   
   &:hover {
     background: #1f2937;
-    transform: translateY(-2px);
   }
   
   &.secondary {

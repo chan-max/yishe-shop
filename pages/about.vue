@@ -19,9 +19,9 @@ useHead({
 });
 
 const values = [
-  ["POD first", "围绕服饰、礼赠、家居和品牌周边组织商品与视觉内容。"],
-  ["Custom ready", "每个方向都保留继续定制、打样和组合成系列的空间。"],
-  ["Searchable", "页面结构面向用户浏览，也面向搜索引擎清晰理解。"],
+  ["POD 优先", "围绕服饰、礼赠、家居和品牌周边组织商品与视觉内容。"],
+  ["可定制", "每个方向都保留继续定制、打样和组合成系列的空间。"],
+  ["可搜索", "页面结构面向用户浏览，也面向搜索引擎清晰理解。"],
 ];
 </script>
 
@@ -29,7 +29,7 @@ const values = [
   <main class="about-page">
     <section class="about-hero">
       <div>
-        <span>ABOUT 1S.DESIGN</span>
+        <span>关于 1S.DESIGN</span>
         <h1>关于衣设</h1>
       </div>
       <p>
@@ -38,10 +38,10 @@ const values = [
     </section>
 
     <section class="about-band">
-      <strong>POD PRINT</strong>
-      <strong>CUSTOM GOODS</strong>
-      <strong>PRIVATE DESIGN</strong>
-      <strong>BRAND MERCH</strong>
+      <strong>POD 印花</strong>
+      <strong>定制商品</strong>
+      <strong>私人设计</strong>
+      <strong>品牌周边</strong>
     </section>
 
     <section class="about-grid">
@@ -65,31 +65,31 @@ const values = [
 .about-page {
   width: var(--ys-container);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(3rem, 7vw, 6rem);
+  padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 4rem);
   color: #111;
 }
 
 .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
   align-items: end;
 }
 
 .about-hero span,
 .about-grid span {
   color: #777;
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .about-hero h1 {
-  margin: 0.8rem 0 0;
+  margin: 0.5rem 0 0;
   color: #000;
-  font-size: clamp(3.2rem, 9vw, 7rem);
-  line-height: 0.9;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 0.95;
   font-weight: 900;
 }
 
@@ -98,7 +98,8 @@ const values = [
 .about-grid p {
   margin: 0;
   color: #555;
-  line-height: 1.85;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .about-band {
@@ -106,49 +107,49 @@ const values = [
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
-  margin-top: clamp(2rem, 5vw, 4rem);
-  border-radius: 20px;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: 10px;
   background: #222;
 }
 
 .about-band strong {
   display: grid;
   place-items: center;
-  min-height: 5.6rem;
+  min-height: 3.6rem;
   background: #000;
   color: #fff;
-  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-size: 0.82rem;
   text-align: center;
 }
 
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .about-grid article,
 .about-story {
-  border-radius: 20px;
+  border-radius: 10px;
   background: #f0f0f0;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .about-grid p {
-  margin-top: 1.4rem;
+  margin-top: 1rem;
   color: #111;
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
-  line-height: 1.25;
-  font-weight: 800;
+  font-size: clamp(0.82rem, 1.5vw, 1.1rem);
+  line-height: 1.35;
+  font-weight: 700;
 }
 
 .about-story {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr) auto;
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1fr) auto;
+  gap: 1rem;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   background: #000;
   color: #fff;
 }
@@ -156,8 +157,8 @@ const values = [
 .about-story h2 {
   margin: 0;
   color: #fff;
-  font-size: clamp(2rem, 4vw, 3.8rem);
-  line-height: 0.98;
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+  line-height: 1.15;
 }
 
 .about-story p {
@@ -168,12 +169,13 @@ const values = [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 3rem;
-  border-radius: 999px;
+  min-height: 2.4rem;
+  border-radius: 8px;
   background: #fff;
   color: #111;
-  font-weight: 900;
-  padding: 0 1.2rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0 1rem;
   text-decoration: none;
   white-space: nowrap;
 }

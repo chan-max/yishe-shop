@@ -106,19 +106,19 @@ const styleDirections = [
 ];
 
 const platformStats = [
-  { value: "POD", label: "按需定制商品方向" },
-  { value: "30min", label: "动态站点地图刷新" },
-  { value: "SSR", label: "搜索引擎友好渲染" },
-  { value: "SEO", label: "关键词落地页结构" },
+  { value: "POD", label: "按需定制商品" },
+  { value: "30min", label: "站点地图刷新" },
+  { value: "SSR", label: "搜索引擎友好" },
+  { value: "SEO", label: "关键词落地页" },
 ];
 
 const marqueeWords = [
-  "POD PRINT",
-  "CUSTOM DESIGN",
-  "PRIVATE LABEL",
-  "CREATIVE GOODS",
-  "BRAND MERCH",
-  "ON DEMAND",
+  "POD 印花",
+  "定制设计",
+  "品牌周边",
+  "创意商品",
+  "按需定制",
+  "私人订制",
 ];
 
 const heroProduct = computed(
@@ -202,10 +202,10 @@ await fetchFeaturedProducts();
 
     <section class="home-hero">
       <div class="home-hero__copy">
-        <span class="home-eyebrow">1s.design / POD marketplace</span>
-        <h2>FIND POD PRODUCTS THAT MATCH YOUR IDEA</h2>
+        <span class="home-eyebrow">1s.design / POD 定制平台</span>
+        <h2>找到匹配你创意的 POD 商品</h2>
         <p>
-          探索印花图案、定制周边、品牌礼赠和私人定义商品。为创作者、品牌和个人定制需求提供可浏览、可延展、可落地的商品灵感。
+          探索印花图案、定制周边、品牌礼赠和私人定义商品。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感。
         </p>
         <div class="home-hero__actions">
           <NuxtLink to="/products" class="home-primary-btn">
@@ -219,7 +219,7 @@ await fetchFeaturedProducts();
       </div>
 
       <div class="home-hero__visual">
-        <div class="home-hero__badge">NEW DROP</div>
+        <div class="home-hero__badge">新品</div>
         <span class="home-star home-star--one">✦</span>
         <span class="home-star home-star--two">✦</span>
         <NuxtLink :to="getProductHref(heroProduct)" class="home-feature-card">
@@ -258,7 +258,7 @@ await fetchFeaturedProducts();
     <section class="home-section">
       <div class="home-section__head">
         <div>
-          <span class="home-eyebrow">Categories</span>
+          <span class="home-eyebrow">商品分类</span>
           <h2>按商品载体发现设计灵感</h2>
         </div>
         <NuxtLink to="/products" class="home-text-link">
@@ -286,7 +286,7 @@ await fetchFeaturedProducts();
     <section class="home-section">
       <div class="home-section__head">
         <div>
-          <span class="home-eyebrow">New arrivals</span>
+          <span class="home-eyebrow">最新上架</span>
           <h2>最新发布的 POD 商品与图案</h2>
         </div>
         <NuxtLink to="/products" class="home-text-link">
@@ -327,7 +327,7 @@ await fetchFeaturedProducts();
 
     <section class="home-showcase">
       <div class="home-showcase__copy">
-        <span class="home-eyebrow">Design system for goods</span>
+        <span class="home-eyebrow">商品系统</span>
         <h2>从一个图案，延展出一整套商品表达。</h2>
         <p>
           适合独立品牌、内容创作者、活动企划和私人礼物。你可以从关键词进入，也可以按商品类别浏览，让每个页面都成为可被搜索引擎理解的内容入口。
@@ -352,7 +352,7 @@ await fetchFeaturedProducts();
 
     <section class="home-section home-section--split">
       <div>
-        <span class="home-eyebrow">Top selling mood</span>
+        <span class="home-eyebrow">热门方向</span>
         <h2>更适合商业化的设计方向</h2>
       </div>
       <div class="home-mini-list">
@@ -432,15 +432,14 @@ await fetchFeaturedProducts();
 .home-eyebrow {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
+  min-height: 1.6rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 6px;
   color: #555;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  padding: 0 0.85rem;
-  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0 0.65rem;
 }
 
 .home-hero h2,
@@ -453,29 +452,29 @@ await fetchFeaturedProducts();
 }
 
 .home-hero h2 {
-  max-width: 760px;
-  margin-top: 1.1rem;
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
-  line-height: 1.1;
+  max-width: 640px;
+  margin-top: 0.75rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  line-height: 1.12;
   font-weight: 800;
 }
 
 .home-hero p,
 .home-showcase p,
 .home-cta p {
-  max-width: 620px;
-  margin: 1.35rem 0 0;
+  max-width: 520px;
+  margin: 0.85rem 0 0;
   color: #5f5f5f;
-  font-size: 1rem;
-  line-height: 1.9;
+  font-size: 0.85rem;
+  line-height: 1.75;
 }
 
 .home-hero__actions,
 .home-cta > div {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 1.8rem;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
 }
 
 .home-primary-btn,
@@ -484,13 +483,13 @@ await fetchFeaturedProducts();
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  min-height: 3.25rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 800;
+  gap: 0.4rem;
+  min-height: 2.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-decoration: none;
-  padding: 0 1.35rem;
+  padding: 0 1rem;
 }
 
 .home-primary-btn {
@@ -500,7 +499,7 @@ await fetchFeaturedProducts();
 
 .home-primary-btn:hover {
   color: #fff;
-  transform: translateY(-2px);
+  opacity: 0.88;
 }
 
 .home-secondary-btn {
@@ -512,12 +511,11 @@ await fetchFeaturedProducts();
 .home-secondary-btn:hover,
 .home-text-link:hover {
   border-color: #111;
-  transform: translateY(-2px);
 }
 
 .home-hero__visual {
   position: relative;
-  min-height: clamp(420px, 45vw, 620px);
+  min-height: clamp(320px, 35vw, 480px);
   border-radius: 0;
   background: transparent;
   overflow: hidden;
@@ -525,15 +523,15 @@ await fetchFeaturedProducts();
 
 .home-hero__badge {
   position: absolute;
-  left: 1.2rem;
-  top: 1.2rem;
+  left: 0.85rem;
+  top: 0.85rem;
   z-index: 3;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #000;
   color: #fff;
-  font-size: 0.72rem;
-  font-weight: 900;
-  padding: 0.55rem 0.85rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.4rem 0.65rem;
 }
 
 .home-feature-card {
@@ -563,11 +561,11 @@ await fetchFeaturedProducts();
 .home-feature-card__body {
   align-self: end;
   display: grid;
-  gap: 0.4rem;
-  margin: 0 1.2rem 1.2rem;
-  border-radius: 1.45rem;
+  gap: 0.3rem;
+  margin: 0 0.85rem 0.85rem;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.88);
-  padding: 1.1rem;
+  padding: 0.75rem;
 }
 
 .home-star {
@@ -580,13 +578,13 @@ await fetchFeaturedProducts();
 .home-star--one {
   right: 4%;
   top: 14%;
-  font-size: clamp(2.4rem, 6vw, 5.8rem);
+  font-size: clamp(1.8rem, 4.5vw, 4rem);
 }
 
 .home-star--two {
   left: 5%;
   top: 38%;
-  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-size: clamp(1.2rem, 2.5vw, 2.2rem);
 }
 
 .home-feature-card__body span,
@@ -595,16 +593,15 @@ await fetchFeaturedProducts();
 .home-mini-product small,
 .home-cta span {
   color: #777;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .home-feature-card__body strong {
   color: #111;
-  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
-  line-height: 1.05;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  line-height: 1.1;
 }
 
 .home-product-fallback {
@@ -623,33 +620,33 @@ await fetchFeaturedProducts();
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
-  border-radius: 1.35rem;
+  border-radius: 10px;
   background: #202020;
 }
 
 .home-stats div {
-  min-height: 5.6rem;
+  min-height: 4.2rem;
   background: #050505;
   color: #fff;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .home-stats strong {
   display: block;
-  font-size: clamp(1.4rem, 2.6vw, 2.35rem);
+  font-size: clamp(1.1rem, 2vw, 1.75rem);
   line-height: 1;
 }
 
 .home-stats span {
   display: block;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   color: rgba(255, 255, 255, 0.64);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
 }
 
 .home-marquee {
   width: 100%;
-  margin: clamp(2.4rem, 6vw, 5rem) 0;
+  margin: clamp(1.5rem, 4vw, 3rem) 0;
   overflow: hidden;
   border-block: 0;
   background: #000;
@@ -664,16 +661,16 @@ await fetchFeaturedProducts();
 .home-marquee span {
   display: inline-flex;
   align-items: center;
-  min-height: 4.6rem;
-  padding: 0 2rem;
+  min-height: 3.2rem;
+  padding: 0 1.5rem;
   color: #fff;
-  font-size: clamp(1.4rem, 3vw, 2.8rem);
-  font-weight: 900;
+  font-size: clamp(1rem, 2.2vw, 1.8rem);
+  font-weight: 800;
   white-space: nowrap;
 }
 
 .home-section {
-  padding: clamp(1rem, 3vw, 2rem) 0 clamp(3rem, 7vw, 6rem);
+  padding: clamp(0.75rem, 2vw, 1.5rem) 0 clamp(2rem, 5vw, 4rem);
 }
 
 .home-section__head {
@@ -681,47 +678,47 @@ await fetchFeaturedProducts();
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .home-section h2,
 .home-showcase h2,
 .home-cta h2 {
-  margin-top: 0.9rem;
-  font-size: clamp(1.55rem, 3.2vw, 2.6rem);
+  margin-top: 0.6rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
   line-height: 1.15;
 }
 
 .home-text-link {
-  min-height: 2.7rem;
+  min-height: 2.2rem;
   border: 1px solid #e6e6e6;
   color: #111;
 }
 
 .home-category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
 }
 
 .home-category-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  min-height: 190px;
+  gap: 0.75rem;
+  min-height: 140px;
   overflow: hidden;
-  border-radius: 1.45rem;
+  border-radius: 10px;
   background: #f0f0f0;
   color: #111;
   text-decoration: none;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .home-category-card strong {
   display: block;
-  margin-top: 0.45rem;
-  font-size: clamp(1.45rem, 2.5vw, 2.3rem);
+  margin-top: 0.3rem;
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
   line-height: 1;
 }
 
@@ -729,17 +726,12 @@ await fetchFeaturedProducts();
   width: min(38%, 130px);
   aspect-ratio: 1;
   object-fit: contain;
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.home-category-card:hover img {
-  transform: translateY(-6px) rotate(-2deg) scale(1.05);
 }
 
 .home-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: clamp(0.9rem, 1.8vw, 1.3rem);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: clamp(0.6rem, 1.5vw, 1rem);
 }
 
 .home-product-card {
@@ -754,7 +746,7 @@ await fetchFeaturedProducts();
   place-items: center;
   aspect-ratio: 0.86;
   overflow: hidden;
-  border-radius: 1.35rem;
+  border-radius: 10px;
   background: #f0f0f0;
 }
 
@@ -762,11 +754,6 @@ await fetchFeaturedProducts();
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.home-product-card:hover img {
-  transform: scale(1.045);
 }
 
 .home-product-card__arrow {
@@ -775,28 +762,21 @@ await fetchFeaturedProducts();
   top: 0.8rem;
   display: grid;
   place-items: center;
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: 999px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
-  opacity: 0;
-  transform: translateY(6px);
-}
-
-.home-product-card:hover .home-product-card__arrow {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .home-product-card__body {
   display: grid;
-  gap: 0.3rem;
-  padding: 0.85rem 0.15rem 0;
+  gap: 0.2rem;
+  padding: 0.6rem 0.15rem 0;
 }
 
 .home-product-card__body strong {
   color: #111;
-  font-size: 1rem;
+  font-size: 0.85rem;
   line-height: 1.4;
 }
 
@@ -804,8 +784,8 @@ await fetchFeaturedProducts();
   display: -webkit-box;
   margin: 0;
   color: #666;
-  font-size: 0.8rem;
-  line-height: 1.65;
+  font-size: 0.72rem;
+  line-height: 1.6;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -814,10 +794,10 @@ await fetchFeaturedProducts();
 
 .home-showcase {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(320px, 1.12fr);
-  gap: clamp(1rem, 3vw, 2rem);
+  grid-template-columns: minmax(0, 0.88fr) minmax(280px, 1.12fr);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   align-items: stretch;
-  margin-bottom: clamp(3rem, 7vw, 6rem);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
 }
 
 .home-showcase__copy {
@@ -846,72 +826,70 @@ await fetchFeaturedProducts();
 
 .home-style-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
 }
 
 .home-style-card {
   display: flex;
-  min-height: 250px;
+  min-height: 180px;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 1.45rem;
+  border-radius: 10px;
   background: #f0f0f0;
   color: #111;
   text-decoration: none;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .home-style-card span {
   color: #777;
-  font-size: 0.78rem;
-  font-weight: 900;
-  text-transform: uppercase;
+  font-size: 0.68rem;
+  font-weight: 700;
 }
 
 .home-style-card strong {
-  max-width: 320px;
-  font-size: clamp(1.35rem, 2.2vw, 2rem);
-  line-height: 1.05;
+  max-width: 260px;
+  font-size: clamp(1rem, 1.8vw, 1.5rem);
+  line-height: 1.1;
 }
 
 .home-style-card:hover {
   background: #e8e8e8;
-  transform: translateY(-4px);
 }
 
 .home-section--split {
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(360px, 1.22fr);
-  gap: clamp(1rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 0.78fr) minmax(300px, 1.22fr);
+  gap: clamp(0.75rem, 3vw, 2rem);
   align-items: start;
 }
 
 .home-mini-list {
   display: grid;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .home-mini-product {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr) auto;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 1rem;
-  min-height: 6.5rem;
+  gap: 0.75rem;
+  min-height: 4.8rem;
   border: 1px solid #ededed;
-  border-radius: 1.1rem;
+  border-radius: 8px;
   color: #111;
   text-decoration: none;
-  padding: 0.7rem;
+  padding: 0.5rem;
 }
 
 .home-mini-product > div {
   display: grid;
   place-items: center;
-  width: 84px;
+  width: 64px;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 0.95rem;
+  border-radius: 6px;
   background: #f0f0f0;
 }
 
@@ -923,22 +901,21 @@ await fetchFeaturedProducts();
 
 .home-mini-product strong {
   display: block;
-  margin-top: 0.25rem;
-  font-size: 1rem;
+  margin-top: 0.15rem;
+  font-size: 0.85rem;
   line-height: 1.35;
 }
 
 .home-mini-product:hover {
   border-color: #111;
-  transform: translateX(4px);
 }
 
 .home-cta {
-  margin-bottom: clamp(3rem, 7vw, 5.5rem);
-  border-radius: 1.7rem;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  border-radius: 12px;
   background: #050505;
   color: #fff;
-  padding: clamp(1.5rem, 5vw, 4rem);
+  padding: clamp(1.2rem, 4vw, 3rem);
   text-align: center;
 }
 
@@ -1022,18 +999,18 @@ await fetchFeaturedProducts();
   }
 
   .home-hero h2 {
-    font-size: clamp(3rem, 15vw, 4.9rem);
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
   }
 
   .home-hero p,
   .home-showcase p,
   .home-cta p {
-    font-size: 0.92rem;
+    font-size: 0.82rem;
   }
 
   .home-hero__visual {
-    min-height: 380px;
-    border-radius: 1.35rem;
+    min-height: 260px;
+    border-radius: 10px;
   }
 
   .home-stats,
@@ -1044,7 +1021,7 @@ await fetchFeaturedProducts();
   }
 
   .home-stats {
-    border-radius: 1.1rem;
+    border-radius: 8px;
   }
 
   .home-section__head {
@@ -1053,39 +1030,34 @@ await fetchFeaturedProducts();
   }
 
   .home-category-card {
-    min-height: 164px;
+    min-height: 120px;
     flex-direction: column;
     align-items: flex-start;
   }
 
   .home-category-card img {
-    width: 56px;
+    width: 44px;
   }
 
   .home-product-card__media,
   .home-style-card {
-    border-radius: 1rem;
+    border-radius: 8px;
   }
 
   .home-style-card {
-    min-height: 180px;
+    min-height: 150px;
   }
 
   .home-product-card__body p {
     display: none;
   }
 
-  .home-product-card__arrow {
-    opacity: 1;
-    transform: none;
-  }
-
   .home-mini-product {
-    grid-template-columns: 64px minmax(0, 1fr) auto;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
   }
 
   .home-mini-product > div {
-    width: 64px;
+    width: 52px;
   }
 }
 

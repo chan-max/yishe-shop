@@ -82,22 +82,6 @@ useHead({
 <style>
 :root {
   --version: "1.0.0";
-  --ys-bg: #ffffff;
-  --ys-surface: #ffffff;
-  --ys-surface-soft: #f3f3f3;
-  --ys-surface-hover: #f7f7f7;
-  --ys-surface-active: #eeeeee;
-  --ys-border: rgba(0, 0, 0, 0.08);
-  --ys-border-strong: rgba(0, 0, 0, 0.18);
-  --ys-text: #111111;
-  --ys-text-soft: #444444;
-  --ys-text-muted: #777777;
-  --ys-accent: #111111;
-  --ys-accent-strong: #000000;
-  --ys-accent-soft: rgba(0, 0, 0, 0.06);
-  --ys-warm: #111111;
-  --ys-focus: rgba(0, 0, 0, 0.14);
-  --ys-focus-ring: rgba(0, 0, 0, 0.1);
   --ys-shadow-sm: none;
   --ys-shadow-md: none;
   --ys-shadow-lg: none;

@@ -101,10 +101,10 @@ const summaryRows = computed(() => [
 <template>
   <div class="design-page">
     <section class="design-hero">
-      <div class="minimal-kicker">Custom Design Studio</div>
+      <div class="minimal-kicker">定制设计工作室</div>
       <div class="design-hero__top">
         <div class="design-hero__copy">
-          <p class="design-label">Project Intake</p>
+          <p class="design-label">项目对接</p>
           <h1>从一个想法开始，定制一套可以生产的 POD 商品视觉。</h1>
           <p class="design-hero__text">
             选择品牌首发、主题企划或个人系列，明确受众、风格和交付物，让图案、包装、商品样机和传播内容沿同一套方向推进。
@@ -153,8 +153,8 @@ const summaryRows = computed(() => [
     <section class="design-layout">
       <div class="design-panel design-panel--tracks">
         <div class="design-panel__head">
-          <span class="design-label">Tracks</span>
-          <strong>项目类型</strong>
+          <span class="design-label">项目类型</span>
+          <strong>选择项目方向</strong>
         </div>
         <button
           v-for="item in tracks"
@@ -173,8 +173,8 @@ const summaryRows = computed(() => [
 
       <div class="design-panel design-panel--brief">
         <div class="design-panel__head">
-          <span class="design-label">Brief</span>
-          <strong>项目简报</strong>
+          <span class="design-label">项目简报</span>
+          <strong>填写需求</strong>
         </div>
 
         <div class="design-brief__fields">
@@ -203,8 +203,8 @@ const summaryRows = computed(() => [
 
       <div class="design-panel design-panel--side">
         <div class="design-panel__head">
-          <span class="design-label">Flow</span>
-          <strong>合作节奏</strong>
+          <span class="design-label">合作流程</span>
+          <strong>节奏安排</strong>
         </div>
 
         <div class="design-checkpoints">

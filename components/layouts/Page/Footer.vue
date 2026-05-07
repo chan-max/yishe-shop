@@ -2,32 +2,18 @@
 const { awesome } = useAppConfig();
 
 const footerGroups = {
-  help: [
-    { name: "FAQ", href: "/faq" },
-    { name: "Shipping", href: "/shipping" },
-    { name: "Returns", href: "/returns" },
-    { name: "Order Status", href: "/orders" },
+  商品: [
+    { name: "全部商品", href: "/products" },
+    { name: "定制设计", href: "/design" },
+    { name: "设计灵感", href: "/products/印花" },
+    { name: "收藏夹", href: "/favorites" },
   ],
-  company: [
-    { name: "About Us", href: "/about" },
-    { name: "Careers", href: "/careers" },
-    { name: "Press", href: "/press" },
-    { name: "Blog", href: "/blog" },
-  ],
-  discover: [
-    { name: "New Arrivals", href: "/products" },
-    { name: "Best Sellers", href: "/products/best" },
-    { name: "Sale", href: "/products/sale" },
-    { name: "Gift Cards", href: "/gift-cards" },
+  了解: [
+    { name: "关于我们", href: "/about" },
+    { name: "创始人", href: "/founder" },
+    { name: "联系我们", href: "/contact" },
   ],
 };
-
-const socialLinks = [
-  { name: "Twitter", icon: "mdi-twitter", href: "#" },
-  { name: "Facebook", icon: "mdi-facebook", href: "#" },
-  { name: "Instagram", icon: "mdi-instagram", href: "#" },
-  { name: "GitHub", icon: "mdi-github", href: "#" },
-];
 
 const newsletterEmail = ref("");
 
@@ -35,7 +21,6 @@ const handleNewsletterSubmit = async () => {
   if (!newsletterEmail.value || !newsletterEmail.value.includes("@")) {
     return;
   }
-  // TODO: 调用 newsletter 订阅 API
   newsletterEmail.value = "";
 };
 </script>
@@ -44,20 +29,20 @@ const handleNewsletterSubmit = async () => {
   <footer class="footer-shell">
     <section class="footer-newsletter">
       <div>
-        <span>NEWSLETTER</span>
-        <h2>STAY UP TO DATE ABOUT OUR LATEST OFFERS</h2>
+        <span>订阅更新</span>
+        <h2>获取最新 POD 商品与设计灵感</h2>
       </div>
       <form class="footer-newsletter__form" @submit.prevent="handleNewsletterSubmit">
         <div class="footer-newsletter__input">
-          <v-icon size="20">mdi-email-outline</v-icon>
+          <v-icon size="18">mdi-email-outline</v-icon>
           <input
             v-model="newsletterEmail"
             type="email"
-            placeholder="Enter your email address"
+            placeholder="输入邮箱地址"
           />
         </div>
         <button type="submit" class="footer-newsletter__btn">
-          Subscribe to Newsletter
+          订阅
         </button>
       </form>
     </section>
@@ -73,47 +58,18 @@ const handleNewsletterSubmit = async () => {
             </div>
           </NuxtLink>
           <p>
-            We have clothes that suits your style and which you're proud to wear. From women to men.
+            POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感。
           </p>
-          <div class="footer-socials">
-            <a
-              v-for="social in socialLinks"
-              :key="social.name"
-              :href="social.href"
-              :title="social.name"
-              class="social-link"
-            >
-              <v-icon size="16">{{ social.icon }}</v-icon>
-            </a>
-          </div>
         </div>
 
-        <div class="footer-column">
-          <h3>HELP</h3>
+        <div
+          v-for="(links, title) in footerGroups"
+          :key="title"
+          class="footer-column"
+        >
+          <h3>{{ title }}</h3>
           <NuxtLink
-            v-for="link in footerGroups.help"
-            :key="link.name"
-            :to="link.href"
-            class="footer-link"
-          >
-            {{ link.name }}
-          </NuxtLink>
-        </div>
-        <div class="footer-column">
-          <h3>COMPANY</h3>
-          <NuxtLink
-            v-for="link in footerGroups.company"
-            :key="link.name"
-            :to="link.href"
-            class="footer-link"
-          >
-            {{ link.name }}
-          </NuxtLink>
-        </div>
-        <div class="footer-column">
-          <h3>DISCOVER</h3>
-          <NuxtLink
-            v-for="link in footerGroups.discover"
+            v-for="link in links"
             :key="link.name"
             :to="link.href"
             class="footer-link"
@@ -130,9 +86,8 @@ const handleNewsletterSubmit = async () => {
           {{ awesome?.author?.name || "衣设" }}. All rights reserved.
         </p>
         <div class="footer-legal">
-          <NuxtLink to="/privacy">Privacy Policy</NuxtLink>
-          <NuxtLink to="/terms">Terms of Use</NuxtLink>
-          <NuxtLink to="/cookies">Cookie Policy</NuxtLink>
+          <NuxtLink to="/">首页</NuxtLink>
+          <a href="mailto:jackieontheway666@gmail.com">联系邮箱</a>
         </div>
       </section>
     </div>
@@ -156,71 +111,71 @@ const handleNewsletterSubmit = async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  border-radius: 1.25rem;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  border-radius: 12px;
   background: #000;
   color: #fff;
-  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.2rem, 3vw, 2rem) clamp(1.2rem, 3vw, 2.5rem);
 }
 
 .footer-newsletter span {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .footer-newsletter h2 {
-  max-width: 550px;
-  margin-top: 0.5rem;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  line-height: 1.1;
+  max-width: 400px;
+  margin-top: 0.35rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  line-height: 1.15;
   color: #fff;
 }
 
 .footer-newsletter__form {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  min-width: 320px;
+  gap: 0.65rem;
+  min-width: 280px;
 }
 
 .footer-newsletter__input {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 3rem;
-  border-radius: var(--ys-pill-radius);
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  border-radius: 8px;
   background: #fff;
-  padding: 0 1rem;
+  padding: 0 0.75rem;
 }
 
 .footer-newsletter__input input {
   flex: 1;
   min-width: 0;
-  height: 3rem;
+  height: 2.6rem;
   border: 0;
   outline: 0;
   background: transparent;
   color: #111;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .footer-newsletter__input input::placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .footer-newsletter__btn {
-  min-height: 3rem;
+  min-height: 2.6rem;
   border: 0;
-  border-radius: var(--ys-pill-radius);
+  border-radius: 8px;
   background: #fff;
   color: #111;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0 1.25rem;
+  padding: 0 1rem;
   cursor: pointer;
   transition: opacity 0.16s ease;
 }
@@ -230,14 +185,14 @@ const handleNewsletterSubmit = async () => {
 }
 
 .footer-inner {
-  padding: 2.2rem 0 1.2rem;
+  padding: 1.5rem 0 0.85rem;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.35fr repeat(3, 1fr);
+  grid-template-columns: 1.5fr repeat(2, 1fr);
   gap: clamp(1rem, 3vw, 2.5rem);
-  padding-bottom: 1.8rem;
+  padding-bottom: 1.2rem;
 }
 
 .footer-brand {
@@ -255,8 +210,8 @@ const handleNewsletterSubmit = async () => {
 
 .footer-logo-img {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
 }
 
@@ -269,22 +224,22 @@ const handleNewsletterSubmit = async () => {
 
 .footer-logo-en {
   font-family: var(--ys-font-display);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #000;
 }
 
 .footer-logo-zh {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.5);
-  margin-top: 0.12rem;
+  margin-top: 0.08rem;
 }
 
 .footer-brand p {
-  max-width: 280px;
+  max-width: 260px;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   line-height: 1.6;
 }
 
@@ -321,16 +276,16 @@ const handleNewsletterSubmit = async () => {
 }
 
 .footer-column h3 {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
   color: #111;
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .footer-link {
   color: rgba(0, 0, 0, 0.6);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   line-height: 1.8;
   text-decoration: none;
   transition: color 0.16s ease;
@@ -345,24 +300,24 @@ const handleNewsletterSubmit = async () => {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 0.75rem;
 }
 
 .footer-bottom p {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.72rem;
 }
 
 .footer-legal {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .footer-legal a {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.72rem;
   text-decoration: none;
   transition: color 0.16s ease;
 }

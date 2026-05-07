@@ -39,7 +39,7 @@ const boards = [
   {
     id: "004",
     category: "AI 实验",
-    title: "AI Moodboard to SKU Demo",
+    title: "AI 情绪板到商品示例",
     desc: "从一句模糊描述开始，慢慢看到风格、色板和商品方向浮出来。",
     stats: ["Prompt 驱动", "多风格切换", "未来能力"],
   },
@@ -68,10 +68,10 @@ const toggleSave = (id: string) => {
 <template>
   <div class="portfolio-page">
     <section class="portfolio-hero">
-      <div class="minimal-kicker">Portfolio & Discovery</div>
+      <div class="minimal-kicker">作品集与灵感</div>
       <div class="portfolio-hero__grid">
         <div class="portfolio-hero__copy">
-          <p class="portfolio-label">Curated Selection</p>
+          <p class="portfolio-label">精选内容</p>
           <h1>像逛创意素材库一样，浏览可延展成商品的作品系列。</h1>
           <p>
             从 POD 系列、品牌视觉、包装周边到艺术家联名，观察一组图案如何延伸为服饰、礼品、家居和内容资产。
@@ -101,7 +101,7 @@ const toggleSave = (id: string) => {
     <section class="portfolio-stage">
       <div class="portfolio-stage__lead">
         <div class="portfolio-stage__meta">
-          <span class="portfolio-label">Lead Board</span>
+          <span class="portfolio-label">主推系列</span>
           <h2>{{ leadBoard.title }}</h2>
           <p>{{ leadBoard.desc }}</p>
         </div>

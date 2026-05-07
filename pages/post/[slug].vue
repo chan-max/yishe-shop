@@ -14,6 +14,6 @@ usePageSEO({
 
 <template>
   <LayoutPageWrapper>
-    <AwesomeContentDoc empty-tip="Post im empty" />
+    <AwesomeContentDoc empty-tip="暂无文章内容" />
   </LayoutPageWrapper>
 </template>

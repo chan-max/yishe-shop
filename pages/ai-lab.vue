@@ -17,10 +17,10 @@ const prompts = [
 ];
 
 const capabilities = [
-  { name: "Generate", text: "用文字、参考图或草图快速生成印花图案和视觉方向。" },
-  { name: "Optimize", text: "辅助调整构图、配色、层级和商品展示，让方案更适合落地。" },
-  { name: "Commerce", text: "把设计转化为商品卖点、系列命名和上架内容。" },
-  { name: "Score", text: "上线前评估风格统一度、商品适配度和传播潜力。" },
+  { name: "生成", text: "用文字、参考图或草图快速生成印花图案和视觉方向。" },
+  { name: "优化", text: "辅助调整构图、配色、层级和商品展示，让方案更适合落地。" },
+  { name: "转化", text: "把设计转化为商品卖点、系列命名和上架内容。" },
+  { name: "评分", text: "上线前评估风格统一度、商品适配度和传播潜力。" },
 ];
 
 const signals = [
@@ -43,10 +43,10 @@ const selectedPrompt = ref(prompts[0]);
 <template>
   <div class="lab-page">
     <section class="lab-hero">
-      <div class="minimal-kicker">AI Design Lab</div>
+      <div class="minimal-kicker">AI 创意实验室</div>
       <div class="lab-hero__grid">
         <div class="lab-hero__copy">
-          <p class="lab-label">Creative Console</p>
+          <p class="lab-label">创意控制台</p>
           <h1>用 AI 更快生成 POD 图案、商品场景和定制提案。</h1>
           <p>
             从一句主题描述进入，快速获得风格板、主视觉、商品落点和内容方向，让创作者更快判断一个想法是否值得继续开发。
@@ -66,7 +66,7 @@ const selectedPrompt = ref(prompts[0]);
 
     <section class="lab-console">
       <div class="lab-console__left">
-        <div class="lab-kicker">Prompt Queue</div>
+        <div class="lab-kicker">提示词队列</div>
         <button
           v-for="item in prompts"
           :key="item"

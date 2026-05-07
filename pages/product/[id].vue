@@ -2,16 +2,16 @@
   <div class="product-detail-page">
     <div v-if="loading" class="product-loading">
       <div></div>
-      <p>Loading product concept</p>
+      <p>加载商品信息</p>
     </div>
 
     <div v-else-if="product" class="product-detail-shell">
       <nav class="product-breadcrumb" aria-label="面包屑导航">
-        <NuxtLink to="/">Home</NuxtLink>
-        <v-icon size="15">mdi-chevron-right</v-icon>
+        <NuxtLink to="/">首页</NuxtLink>
+        <v-icon size="14">mdi-chevron-right</v-icon>
         <NuxtLink to="/products">POD 商品</NuxtLink>
-        <v-icon size="15">mdi-chevron-right</v-icon>
-        <span>{{ product.type || "Product Detail" }}</span>
+        <v-icon size="14">mdi-chevron-right</v-icon>
+        <span>{{ product.type || "商品详情" }}</span>
       </nav>
 
       <section class="product-detail-grid">
@@ -52,7 +52,7 @@
                 @click="openImagePreview"
               />
               <div v-else key="no-image" class="product-no-image">
-                Preview coming soon
+                预览图即将上线
               </div>
             </transition>
             <button
@@ -69,7 +69,7 @@
 
         <aside class="product-buy-panel">
           <div class="product-detail-kicker">
-            {{ product.type || "POD Custom Product" }}
+            {{ product.type || "POD 定制商品" }}
           </div>
           <div class="product-title-row">
             <h1>{{ product.name }}</h1>
@@ -106,7 +106,7 @@
           </div>
 
           <div class="product-choice-block">
-            <span>Select Colors</span>
+            <span>选择颜色</span>
             <div class="product-color-options">
               <button
                 v-for="color in optionColors"
@@ -121,7 +121,7 @@
           </div>
 
           <div class="product-choice-block">
-            <span>Choose Size</span>
+            <span>选择尺码</span>
             <div class="product-size-options">
               <button v-for="size in optionSizes" :key="size" type="button">
                 {{ size }}
@@ -136,7 +136,7 @@
               <button type="button" aria-label="增加数量">+</button>
             </div>
             <NuxtLink to="/contact" class="product-primary-action">
-              Add to Cart
+              咨询购买
             </NuxtLink>
             <button type="button" class="product-secondary-action" @click="copyLink">
               <v-icon size="18">mdi-link-variant</v-icon>
@@ -152,14 +152,14 @@
 
       <section class="product-tabs">
         <nav aria-label="商品详情标签">
-          <button type="button" class="active">Product Details</button>
-          <button type="button">Rating & Reviews</button>
-          <button type="button">FAQs</button>
+          <button type="button" class="active">商品详情</button>
+          <button type="button">评价</button>
+          <button type="button">常见问题</button>
         </nav>
 
         <div class="product-review-head">
-          <h2>All Reviews <span>({{ reviewCards.length }})</span></h2>
-          <button type="button">Write a Review</button>
+          <h2>全部评价 <span>({{ reviewCards.length }})</span></h2>
+          <button type="button">写评价</button>
         </div>
 
         <div class="product-review-grid">
@@ -179,7 +179,7 @@
       </section>
 
       <section v-if="relatedProducts.length" class="product-related">
-        <h2>You might also like</h2>
+        <h2>你可能还喜欢</h2>
         <div class="product-related-grid">
           <NuxtLink
             v-for="(item, index) in relatedProducts"
@@ -318,7 +318,7 @@ const productPrice = computed(() => {
 const productOldPrice = computed(() => productPrice.value + 80);
 
 const optionColors = ["#4f4631", "#314d80", "#111111"];
-const optionSizes = ["Small", "Medium", "Large", "X-Large"];
+const optionSizes = ["S", "M", "L", "XL"];
 const reviewCards = [
   {
     name: "M. Studio",
@@ -340,29 +340,29 @@ const fallbackRelatedProducts = computed(() => {
     {
       id: "fallback-pod-print",
       href: `/products/${encodeURIComponent(fallbackKeywords[0] || "印花")}`,
-      name: "POD Print Capsule",
-      type: "POD PRINT",
+      name: "印花胶囊系列",
+      type: "POD 印花",
       images: baseImage ? [baseImage] : [],
     },
     {
       id: "fallback-custom-gift",
       href: "/products/礼物",
-      name: "Custom Gift Series",
-      type: "CUSTOM GIFT",
+      name: "定制礼物系列",
+      type: "定制礼物",
       images: [],
     },
     {
       id: "fallback-home-goods",
       href: "/products/家居",
-      name: "Home Goods Direction",
-      type: "HOME DECOR",
+      name: "家居方向",
+      type: "家居装饰",
       images: [],
     },
     {
       id: "fallback-apparel",
       href: "/products/T恤",
-      name: "Apparel Print Mood",
-      type: "APPAREL",
+      name: "服饰印花方向",
+      type: "服饰",
       images: [],
     },
   ];
@@ -723,7 +723,7 @@ onMounted(() => {
   min-height: 100vh;
   background: #fff;
   color: #111;
-  padding: 1.35rem 0 clamp(3rem, 6vw, 5rem);
+  padding: 1rem 0 clamp(2rem, 4vw, 3.5rem);
 }
 
 .product-detail-shell {
@@ -735,16 +735,16 @@ onMounted(() => {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.55rem;
-  min-height: 3rem;
+  gap: 0.4rem;
+  min-height: 2.2rem;
   color: #777;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
 }
 
 .product-breadcrumb a {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.2rem;
   border: 0;
   background: transparent;
   color: #555;
@@ -754,17 +754,17 @@ onMounted(() => {
 
 .product-detail-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
-  gap: clamp(1.3rem, 3vw, 2.6rem);
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
   align-items: start;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .product-gallery {
   display: grid;
-  grid-template-columns: 152px minmax(0, 1fr);
+  grid-template-columns: 110px minmax(0, 1fr);
   align-items: start;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .product-gallery--single {
@@ -773,15 +773,15 @@ onMounted(() => {
 
 .product-thumbs {
   display: grid;
-  grid-template-columns: minmax(0, calc(100% - 0.68rem));
+  grid-template-columns: minmax(0, calc(100% - 0.5rem));
   align-content: start;
   justify-content: start;
-  gap: 0.85rem;
-  max-height: clamp(440px, 42vw, 620px);
+  gap: 0.6rem;
+  max-height: clamp(380px, 38vw, 540px);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
-  padding: 0 0.68rem 0 0;
+  padding: 0 0.5rem 0 0;
   scrollbar-gutter: stable;
   scrollbar-width: none;
 }
@@ -796,7 +796,7 @@ onMounted(() => {
 }
 
 .product-thumbs::-webkit-scrollbar-thumb {
-  border-radius: 999px;
+  border-radius: 4px;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -813,7 +813,7 @@ onMounted(() => {
   overflow: hidden;
   border: 1px solid transparent;
   min-height: auto;
-  border-radius: 20px;
+  border-radius: 8px;
   background: #f0f0f0;
   padding: 0;
 }
@@ -835,9 +835,9 @@ onMounted(() => {
   place-items: center;
   align-self: start;
   width: 100%;
-  min-height: clamp(440px, 42vw, 620px);
+  min-height: clamp(360px, 36vw, 520px);
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 10px;
   background: #f1f1f1;
 }
 
@@ -847,31 +847,26 @@ onMounted(() => {
 
 .product-main-image {
   width: min(82%, 720px);
-  max-height: min(68vh, 620px);
+  max-height: min(68vh, 520px);
   object-fit: contain;
   cursor: zoom-in;
-  filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.12));
-  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.1));
 }
 
 .product-gallery--single .product-main-frame {
-  min-height: clamp(390px, 38vw, 560px);
+  min-height: clamp(320px, 32vw, 480px);
 }
 
 .product-gallery--single .product-main-image {
   width: min(92%, 760px);
-  max-height: min(58vh, 520px);
-}
-
-.product-main-frame:hover .product-main-image {
-  transform: scale(1.025);
+  max-height: min(58vh, 480px);
 }
 
 .product-no-image {
   display: grid;
   place-items: center;
   color: #777;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
 }
 
 .product-gallery-arrow {
@@ -879,48 +874,48 @@ onMounted(() => {
   z-index: 4;
   display: grid;
   place-items: center;
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2rem;
+  height: 2rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   color: #111;
 }
 
 .product-gallery-arrow--left {
-  left: 1rem;
+  left: 0.75rem;
 }
 
 .product-gallery-arrow--right {
-  right: 1rem;
+  right: 0.75rem;
 }
 
 .product-buy-panel {
   position: sticky;
-  top: 104px;
+  top: 80px;
   display: grid;
-  gap: 1.15rem;
+  gap: 0.85rem;
 }
 
 .product-detail-kicker {
   color: #666;
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
 .product-title-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: start;
 }
 
 .product-title-row h1 {
   margin: 0;
   color: #050505;
-  font-size: clamp(2.2rem, 4vw, 3.25rem);
-  line-height: 0.96;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.15;
   text-transform: uppercase;
 }
 
@@ -928,35 +923,35 @@ onMounted(() => {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.3rem;
   color: #f5b301;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
 }
 
 .product-rating-line strong,
 .product-rating-line small {
   color: #555;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
 }
 
 .product-lead {
   margin: 0;
   color: #555;
-  font-size: 0.98rem;
-  line-height: 1.9;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .product-price-line {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .product-price-line strong,
 .product-price-line del {
-  font-size: clamp(1.65rem, 3vw, 2rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   line-height: 1;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .product-price-line del {
@@ -966,34 +961,34 @@ onMounted(() => {
 .product-price-line span {
   display: inline-flex;
   align-items: center;
-  min-height: 1.75rem;
-  border-radius: 999px;
+  min-height: 1.4rem;
+  border-radius: 4px;
   background: rgba(255, 51, 51, 0.1);
   color: #ff3333;
-  font-size: 0.78rem;
-  font-weight: 900;
-  padding: 0 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0 0.5rem;
 }
 
 .product-tags,
 .product-next-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.35rem;
 }
 
 .product-tags a,
 .product-next-links a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.15rem;
+  min-height: 1.65rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #f7f7f7;
   color: #333;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0 0.85rem;
+  padding: 0 0.6rem;
   text-decoration: none;
 }
 
@@ -1005,40 +1000,41 @@ onMounted(() => {
 
 .product-choice-block {
   display: grid;
-  gap: 0.85rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eeeeee;
+  gap: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
 }
 
 .product-choice-block > span {
   color: #777;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
 }
 
 .product-color-options,
 .product-size-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .product-color-options button {
   display: grid;
   place-items: center;
-  width: 37px;
-  height: 37px;
+  width: 28px;
+  height: 28px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   color: #fff;
 }
 
 .product-size-options button {
-  min-height: 2.9rem;
+  min-height: 2rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #f0f0f0;
   color: rgba(0, 0, 0, 0.62);
-  padding: 0 1.45rem;
+  font-size: 0.72rem;
+  padding: 0 0.9rem;
 }
 
 .product-size-options button:hover,
@@ -1049,10 +1045,10 @@ onMounted(() => {
 
 .product-actions {
   display: grid;
-  grid-template-columns: 170px minmax(0, 1fr);
-  gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eeeeee;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
 }
 
 .product-primary-action {
@@ -1065,11 +1061,11 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  min-height: 3.35rem;
-  border-radius: 999px;
-  font-size: 0.88rem;
-  font-weight: 800;
+  gap: 0.35rem;
+  min-height: 2.6rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -1087,100 +1083,101 @@ onMounted(() => {
 
 .product-quantity {
   justify-content: space-between;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #f0f0f0;
-  padding: 0 0.9rem;
+  padding: 0 0.6rem;
 }
 
 .product-quantity button {
   display: grid;
   place-items: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border: 0;
   background: transparent;
   color: #111;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .product-tabs,
 .product-related {
-  margin-top: clamp(2.5rem, 6vw, 5rem);
+  margin-top: clamp(1.5rem, 4vw, 3rem);
 }
 
 .product-tabs nav {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eee;
 }
 
 .product-tabs nav button {
-  min-height: 3.6rem;
+  min-height: 2.6rem;
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1rem;
+  font-size: 0.82rem;
 }
 
 .product-tabs nav button.active {
   border-color: #000;
   color: #111;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .product-review-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.55rem;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
 }
 
 .product-review-head h2,
 .product-related h2 {
   margin: 0;
   color: #000;
-  font-size: clamp(1.7rem, 4vw, 3rem);
-  line-height: 1;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  line-height: 1.15;
   text-transform: uppercase;
 }
 
 .product-review-head h2 span {
   color: rgba(0, 0, 0, 0.5);
-  font-size: 1rem;
+  font-size: 0.82rem;
 }
 
 .product-review-head button {
-  min-height: 3rem;
+  min-height: 2.2rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #000;
   color: #fff;
-  font-weight: 800;
-  padding: 0 1.2rem;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0 0.9rem;
 }
 
 .product-review-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.25rem;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .product-review-grid article {
-  min-height: 220px;
-  border: 1px solid #eeeeee;
-  border-radius: 20px;
-  padding: 1.35rem;
+  min-height: 160px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 1rem;
 }
 
 .product-review-grid h3 {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  margin: 0.7rem 0 0;
-  font-size: 1.05rem;
+  gap: 0.25rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
 }
 
 .product-review-grid h3 .v-icon {
@@ -1190,23 +1187,24 @@ onMounted(() => {
 .product-review-grid p,
 .product-detail-copy p {
   color: #555;
-  line-height: 1.8;
+  font-size: 0.78rem;
+  line-height: 1.7;
 }
 
 .product-detail-copy {
   display: grid;
-  gap: 0.45rem;
-  margin-top: 1.2rem;
-  border-radius: 20px;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  border-radius: 10px;
   background: #f7f7f7;
-  padding: 1.35rem;
+  padding: 1rem;
 }
 
 .product-related-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.6rem;
+  gap: 0.85rem;
+  margin-top: 1.2rem;
 }
 
 .product-related-card {
@@ -1219,7 +1217,7 @@ onMounted(() => {
   place-items: center;
   aspect-ratio: 0.82;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 10px;
   background: #f0f0f0;
 }
 
@@ -1227,23 +1225,18 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.product-related-card:hover img {
-  transform: scale(1.045);
 }
 
 .product-related-card h3 {
-  margin: 0.85rem 0 0;
-  font-size: 1rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
   line-height: 1.35;
 }
 
 .product-related-card p {
-  margin: 0.35rem 0 0;
+  margin: 0.2rem 0 0;
   color: #ffc633;
-  font-size: 0.88rem;
+  font-size: 0.72rem;
 }
 
 .product-related-card p small {
@@ -1252,8 +1245,8 @@ onMounted(() => {
 
 .product-related-card strong {
   display: block;
-  margin-top: 0.35rem;
-  font-size: 1.25rem;
+  margin-top: 0.2rem;
+  font-size: 1rem;
 }
 
 .product-loading,
@@ -1265,54 +1258,56 @@ onMounted(() => {
 }
 
 .product-loading div {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   border: 2px solid #ececec;
   border-top-color: #111;
-  border-radius: 999px;
+  border-radius: 50%;
   animation: product-spin 760ms linear infinite;
 }
 
 .product-loading p {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   color: #777;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
 }
 
 .product-empty {
-  max-width: 680px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
 .product-empty span {
   color: #999;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .product-empty h2 {
-  margin: 0.8rem 0 0;
-  font-size: clamp(2rem, 5vw, 4rem);
-  line-height: 1;
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  line-height: 1.15;
 }
 
 .product-empty p {
   color: #666;
-  line-height: 1.8;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .product-empty a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 3rem;
-  margin-top: 1rem;
-  border-radius: 999px;
+  min-height: 2.4rem;
+  margin-top: 0.75rem;
+  border-radius: 8px;
   background: #000;
   color: #fff;
-  font-weight: 800;
-  padding: 0 1.4rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0 1.1rem;
   text-decoration: none;
 }
 
@@ -1381,7 +1376,7 @@ onMounted(() => {
 
 @media (max-width: 720px) {
   .product-detail-page {
-    padding-top: 1rem;
+    padding-top: 0.75rem;
   }
 
   .product-gallery {
@@ -1401,8 +1396,8 @@ onMounted(() => {
   }
 
   .product-main-frame {
-    min-height: 420px;
-    border-radius: 1.2rem;
+    min-height: 320px;
+    border-radius: 8px;
   }
 
   .product-title-row {
@@ -1420,7 +1415,7 @@ onMounted(() => {
 
   .product-related-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.9rem;
+    gap: 0.6rem;
   }
 
   .product-review-head {

@@ -1,16 +1,16 @@
 <template>
   <div class="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1240px]">
-      <NuxtLink to="/" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-black hover:text-stone-950">
-        <Icon name="heroicons:arrow-left" class="h-4 w-4" />
+      <NuxtLink to="/" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:border-black hover:text-stone-950">
+        <v-icon size="16">mdi-arrow-left</v-icon>
         <span>返回首页</span>
       </NuxtLink>
     </div>
 
-    <div class="mx-auto mt-8 max-w-4xl rounded-[20px] border border-stone-200 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:p-8">
+    <div class="mx-auto mt-8 max-w-4xl rounded-[20px] border border-stone-200 bg-white p-6 transition duration-200 hover:border-stone-300 sm:p-8">
       <div>
-        <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">Profile</div>
-        <h2 class="mt-3 text-[34px] font-black uppercase leading-none text-stone-950">Account profile</h2>
+        <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">个人资料</div>
+        <h2 class="mt-3 text-[28px] font-black uppercase leading-none text-stone-950">账号信息</h2>
         <p class="mt-2 text-[13px] leading-6 text-stone-500">管理账号资料、POD 灵感收藏和定制设计信息。</p>
       </div>
 
@@ -43,9 +43,9 @@
         <div v-if="updateSuccessMessage" class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[12px] text-emerald-700 shadow-[0_0_0_4px_rgba(16,185,129,0.06)]">{{ updateSuccessMessage }}</div>
 
         <div class="flex flex-col gap-3 border-t border-stone-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <NuxtLink to="/change-password" class="inline-flex w-fit rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:bg-stone-100 hover:text-stone-950">修改密码</NuxtLink>
+          <NuxtLink to="/change-password" class="inline-flex w-fit rounded-full px-3 py-2 text-[12px] text-stone-500 transition duration-200 hover:bg-stone-100 hover:text-stone-950">修改密码</NuxtLink>
           <div class="flex flex-col gap-3 sm:flex-row">
-            <button type="button" class="rounded-xl border border-stone-200 px-5 py-3 text-[12px] text-red-500 transition duration-200 hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 active:translate-y-0" @click="handleLogout">
+            <button type="button" class="rounded-xl border border-stone-200 px-5 py-3 text-[12px] text-red-500 transition duration-200 hover:border-red-300 hover:bg-red-50" @click="handleLogout">
               退出登录
             </button>
             <BaseButton type="submit" :loading="updating" size="lg" class="!px-6 !py-3 !text-[12px]">

@@ -6,28 +6,27 @@
       <div class="w-full max-w-md">
         <NuxtLink
           to="/"
-          class="mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:-translate-y-0.5 hover:border-black hover:text-stone-950"
+          class="mb-6 inline-block rounded-lg border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition-colors hover:border-black hover:text-stone-950"
         >
-          <Icon name="heroicons:arrow-left" class="h-4 w-4" />
-          <span>返回首页</span>
+          返回首页
         </NuxtLink>
 
         <div
-          class="rounded-[20px] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8"
+          class="rounded-xl border border-stone-200 bg-white px-6 py-7 sm:px-8"
         >
           <div>
-            <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">
-              Account Access
+            <div class="text-[10px] font-bold tracking-[0.12em] text-stone-400">
+              登录账号
             </div>
-            <h2 class="mt-3 text-[32px] font-black uppercase leading-none text-stone-950">
-              Sign in
+            <h2 class="mt-2 text-[24px] font-black leading-none text-stone-950">
+              登录
             </h2>
-            <p class="mt-2 text-[13px] leading-6 text-stone-500">
+            <p class="mt-1.5 text-[12px] leading-5 text-stone-500">
               登录后管理收藏的 POD 商品、定制需求和创意设计资料。
             </p>
           </div>
 
-          <form class="mt-8 space-y-5" @submit.prevent="handleSubmit">
+          <form class="mt-6 space-y-4" @submit.prevent="handleSubmit">
             <BaseInput
               id="username"
               v-model="form.username"
@@ -35,7 +34,7 @@
               name="username"
               type="text"
               required
-              placeholder="Account"
+              placeholder="请输入账号"
             />
             <BaseInput
               id="password"
@@ -44,12 +43,12 @@
               name="password"
               type="password"
               required
-              placeholder="Password"
+              placeholder="请输入密码"
             />
 
             <div
               v-if="errorMessage"
-              class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[12px] text-red-600 shadow-[0_0_0_4px_rgba(239,68,68,0.06)]"
+              class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[11px] text-red-600"
             >
               {{ errorMessage }}
             </div>
@@ -57,17 +56,17 @@
             <BaseButton
               type="submit"
               :loading="loading"
-              class="w-full !py-3 !text-[12px]"
+              class="w-full !py-2.5 !text-[11px]"
               size="lg"
             >
               登录
             </BaseButton>
 
-            <div class="text-center text-[12px] text-stone-500">
+            <div class="text-center text-[11px] text-stone-500">
               还没有账号？
               <NuxtLink
                 to="/register"
-                class="rounded-full px-2 py-1 text-stone-900 underline-offset-4 transition duration-200 hover:bg-stone-100 hover:underline"
+                class="rounded px-1.5 py-0.5 text-stone-900 underline-offset-4 hover:underline"
                 >注册</NuxtLink
               >
             </div>

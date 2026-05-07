@@ -116,7 +116,7 @@ const knowledgeItems: KnowledgeItem[] = [
     likes: "5.6k",
     minutes: "10 min",
     coverTone: "from-[#f1ddd5] via-[#fff7f2] to-[#e4e7dc]",
-    coverLabel: "Cover Rhythm",
+    coverLabel: "封面节奏",
     featured: true,
     practicePath: "/free-design",
     practiceText: "去社媒设计场景里直接试封面系统",
@@ -172,7 +172,7 @@ const knowledgeItems: KnowledgeItem[] = [
     likes: "4.4k",
     minutes: "6 min",
     coverTone: "from-[#ece4da] via-[#ffffff] to-[#dce3d8]",
-    coverLabel: "Type System",
+    coverLabel: "排版系统",
     practicePath: "/free-design",
     practiceText: "去免费设计里尝试排版方向",
   },
@@ -350,7 +350,7 @@ const goToPath = (path: string) => navigateTo(path);
 
         <div class="knowledge-panel bg-[linear-gradient(160deg,#ebe0d1,#dde5dc)] p-4">
           <div class="min-h-[20rem] rounded-[1.7rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.68),transparent_50%),linear-gradient(135deg,#f8f3eb,#dfe5db)] p-6 flex flex-col justify-end">
-            <div class="w-fit rounded-full bg-white/80 px-3 py-2 text-[0.72rem] uppercase tracking-[0.18em] text-[#677467]">Issue 03</div>
+            <div class="w-fit rounded-full bg-white/80 px-3 py-2 text-[0.72rem] uppercase tracking-[0.18em] text-[#677467]">精选 03</div>
             <strong class="mt-4 block max-w-[14ch] font-[var(--ys-font-display),Georgia,serif] text-[clamp(1.9rem,4vw,3rem)] leading-[1.02] text-[#223127]">
               {{ featuredList[0]?.title }}
             </strong>
@@ -452,7 +452,7 @@ const goToPath = (path: string) => navigateTo(path);
           <section class="featured-strip">
             <div class="section-head">
               <div>
-                <div class="minimal-kicker">Editorial Dossier</div>
+                <div class="minimal-kicker">编辑精选</div>
                 <h2>精选知识专题</h2>
               </div>
               <span>优先读这些，能最快建立页面价值感和专业感</span>
@@ -460,7 +460,7 @@ const goToPath = (path: string) => navigateTo(path);
             <div class="mt-5 grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
               <button
                 type="button"
-                class="overflow-hidden rounded-[1.7rem] border border-[#2d3a3114] bg-white/90 text-left transition duration-300 hover:-translate-y-0.5"
+                class="overflow-hidden rounded-[1.7rem] border border-[#2d3a3114] bg-white/90 text-left transition duration-300"
                 @click="activePreviewId = featuredList[0]?.id || knowledgeItems[0].id"
               >
                 <div :class="['min-h-[20rem] rounded-b-[4rem] bg-gradient-to-br px-4 py-4', featuredList[0]?.coverTone]">
@@ -577,7 +577,7 @@ const goToPath = (path: string) => navigateTo(path);
           <section class="skill-map">
             <div class="section-head">
               <div>
-                <div class="minimal-kicker">Skill Map</div>
+                <div class="minimal-kicker">技能地图</div>
                 <h2>技能地图</h2>
               </div>
               <span>让知识从孤立文章，变成可导航的学习版图</span>
@@ -597,7 +597,7 @@ const goToPath = (path: string) => navigateTo(path);
                     type="button"
                     :class="[
                       'rounded-full px-4 py-3 text-[0.75rem] transition duration-300',
-                      activeTags.includes(tag) ? 'bg-[linear-gradient(135deg,#243127,#60705e)] text-white' : 'bg-[#f7f3ec] text-[#526050] hover:-translate-y-0.5',
+                      activeTags.includes(tag) ? 'bg-[linear-gradient(135deg,#243127,#60705e)] text-white' : 'bg-[#f7f3ec] text-[#526050]',
                     ]"
                     @click="toggleTag(tag)"
                   >
@@ -725,7 +725,6 @@ const goToPath = (path: string) => navigateTo(path);
 
 .story-entry:hover,
 .story-node.is-highlight .story-entry {
-  transform: translateY(-2px);
   box-shadow: 0 24px 34px -24px rgba(45, 58, 49, 0.24);
 }
 

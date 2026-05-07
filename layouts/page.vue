@@ -1,10 +1,10 @@
 <template>
   <div class="page-shell">
     <div v-if="showAnnouncement" class="site-announcement">
-      <span>Sign up and get curated POD drops for your next custom product.</span>
-      <NuxtLink to="/products">Explore Now</NuxtLink>
+      <span>注册衣设，探索 POD 印花定制与创意设计商品。</span>
+      <NuxtLink to="/products">立即探索</NuxtLink>
       <button type="button" aria-label="关闭顶部通知" @click="showAnnouncement = false">
-        <v-icon size="18">mdi-close</v-icon>
+        <v-icon size="16">mdi-close</v-icon>
       </button>
     </div>
 
@@ -57,17 +57,17 @@
 
         <div class="header-actions">
           <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
-            <v-icon size="17">mdi-magnify</v-icon>
+            <v-icon size="15">mdi-magnify</v-icon>
             <input
               v-model="headerSearch"
               type="search"
-              aria-label="搜索 POD 商品"
-              placeholder="Search for products..."
+              aria-label="搜索商品"
+              placeholder="搜索商品…"
             />
           </form>
 
-          <NuxtLink to="/products" class="header-icon-link" aria-label="商品库">
-            <v-icon size="24">mdi-cart-outline</v-icon>
+          <NuxtLink to="/favorites" class="header-icon-link" aria-label="收藏">
+            <v-icon size="20">mdi-heart-outline</v-icon>
           </NuxtLink>
 
           <template v-if="isLoggedIn && currentUser">
@@ -155,11 +155,22 @@
           <div class="mobile-panel-head">
             <div>
               <span class="brand-kicker">1s.design</span>
-              <h2>Shop Menu</h2>
+              <h2>导航</h2>
             </div>
             <button class="mobile-close-btn" @click="closeMobileMenu">
-              <v-icon>mdi-close</v-icon>
+              <v-icon size="18">mdi-close</v-icon>
             </button>
+          </div>
+
+          <div class="mobile-search-form">
+            <form @submit.prevent="handleMobileSearch">
+              <v-icon size="15">mdi-magnify</v-icon>
+              <input
+                v-model="mobileSearchKeyword"
+                type="search"
+                placeholder="搜索商品…"
+              />
+            </form>
           </div>
 
           <nav class="mobile-nav" aria-label="移动端导航">
@@ -170,14 +181,8 @@
               class="mobile-nav-link"
               @click="closeMobileMenu"
             >
+              <v-icon size="16">{{ item.icon }}</v-icon>
               {{ item.label }}
-            </NuxtLink>
-            <NuxtLink
-              to="/contact"
-              class="mobile-nav-link mobile-nav-link-accent"
-              @click="closeMobileMenu"
-            >
-              联系我们
             </NuxtLink>
           </nav>
 
@@ -243,11 +248,15 @@ const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
 const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
-  { label: "Shop", to: "/products" },
+  { label: "商品", to: "/products", icon: "mdi-shopping-outline" },
+  { label: "定制设计", to: "/design", icon: "mdi-palette-outline" },
+  { label: "关于我们", to: "/about", icon: "mdi-information-outline" },
+  { label: "联系我们", to: "/contact", icon: "mdi-email-outline" },
 ];
 
 const showAnnouncement = ref(true);
 const headerSearch = ref("");
+const mobileSearchKeyword = ref("");
 const isMobileMenuOpen = ref(false);
 const isScrolled = ref(false);
 const isUserMenuOpen = ref(false);
@@ -335,6 +344,14 @@ const handleHeaderSearch = async () => {
   );
 };
 
+const handleMobileSearch = async () => {
+  const keyword = mobileSearchKeyword.value.trim();
+  closeMobileMenu();
+  await navigateTo(
+    keyword ? `/products/${encodeURIComponent(keyword)}` : "/products",
+  );
+};
+
 const syncHeaderHeight = () => {
   if (!process.client) return;
   headerHeight.value = headerRef.value?.offsetHeight || 0;
@@ -412,11 +429,11 @@ useEventListener(
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  min-height: 38px;
-  padding: 0.35rem 1rem;
+  min-height: 32px;
+  padding: 0.25rem 1rem;
   background: #000;
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   line-height: 1.3;
   text-align: center;
 }
@@ -433,8 +450,8 @@ useEventListener(
   right: var(--ys-container-pad);
   display: grid;
   place-items: center;
-  width: 1.9rem;
-  height: 1.9rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -448,7 +465,7 @@ useEventListener(
 .site-header {
   position: relative;
   top: 0;
-  padding: 1.5rem 0;
+  padding: 0.75rem 0;
   background: #fff;
   border-bottom: 1px solid #efefef;
   transition:
@@ -486,10 +503,10 @@ useEventListener(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2.25rem;
+  gap: 1.5rem;
   width: var(--ys-container);
   margin: 0 auto;
-  min-height: 48px;
+  min-height: 40px;
   padding: 0;
 }
 
@@ -505,8 +522,8 @@ useEventListener(
 
 .brand-logo-img {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
 }
 
@@ -520,23 +537,23 @@ useEventListener(
 
 .brand-name-en {
   font-family: var(--ys-font-display);
-  font-size: 1.05rem;
+  font-size: 0.92rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: #000;
 }
 
 .brand-name-zh {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.55);
-  margin-top: 0.15rem;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 0.08rem;
 }
 
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 0.25rem;
   flex: 0 0 auto;
 }
 
@@ -545,91 +562,73 @@ useEventListener(
 .login-button,
 .header-icon-link {
   position: relative;
-  padding: 0.55rem 0;
+  padding: 0.4rem 0.65rem;
   border: 1px solid transparent;
   background: transparent;
-  color: #111;
+  color: #555;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   line-height: 1;
   white-space: nowrap;
+  border-radius: 8px;
   transition:
     color 0.16s ease,
     background-color 0.16s ease,
     border-color 0.16s ease;
 }
 
-.nav-item::after {
-  content: "";
-  position: absolute;
-  left: 0.7rem;
-  right: 0.7rem;
-  bottom: 0.2rem;
-  height: 2px;
-  background: #1c1917;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.16s ease;
-  opacity: 0.75;
-}
-
-.nav-item:hover,
-.header-search:hover,
-.login-button:hover {
+.nav-item:hover {
   color: #000;
-}
-
-.nav-item:hover::after,
-.nav-item.router-link-active::after,
-.nav-item.router-link-exact-active::after {
-  transform: scaleX(1);
+  background: #f5f5f5;
 }
 
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
   color: #000;
+  background: #f0f0f0;
+  font-weight: 700;
 }
 
 .header-search,
 .login-button {
-  border-radius: 999px;
+  border-radius: 8px;
 }
 
 .header-search {
   display: flex;
   align-items: center;
-  min-width: min(40vw, 577px);
-  min-height: 48px;
+  min-width: min(30vw, 360px);
+  min-height: 36px;
   justify-content: flex-start;
-  gap: 0.75rem;
-  padding: 0 1rem 0 1.1rem;
-  border: 1px solid transparent;
-  background: #f0f0f0;
-  color: rgba(0, 0, 0, 0.46);
-  font-size: 1rem;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.82rem;
 }
 
 .header-search:focus-within {
   border-color: rgba(0, 0, 0, 0.2);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
 }
 
 .header-search input {
   width: 100%;
   min-width: 0;
-  height: 48px;
+  height: 36px;
   border: 0;
   outline: 0;
   background: transparent;
   color: #111;
-  font-size: 1rem;
+  font-size: 0.82rem;
   line-height: normal;
   padding: 0;
 }
 
 .header-search input::placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .header-search input:focus-visible {
@@ -657,16 +656,16 @@ useEventListener(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   padding: 0;
-  color: #111;
+  color: #555;
   text-decoration: none;
 }
 
 .header-icon-link:hover {
   color: #000;
-  transform: translateY(-1px);
+  background: #f5f5f5;
 }
 
 .user-menu-wrapper {
@@ -676,10 +675,10 @@ useEventListener(
 .user-menu-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.55rem 0.3rem 0.3rem;
+  gap: 0.35rem;
+  padding: 0.2rem 0.45rem 0.2rem 0.2rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: #111;
   cursor: pointer;
@@ -753,10 +752,10 @@ useEventListener(
   display: none;
   align-items: center;
   justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2rem;
+  height: 2rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: #111;
   transition:
@@ -799,14 +798,15 @@ useEventListener(
 }
 
 .mobile-panel {
-  width: min(22rem, calc(100vw - 1rem));
+  width: min(20rem, calc(100vw - 1rem));
   height: calc(100vh - 1rem);
   margin: 0.5rem 0.5rem 0.5rem auto;
-  padding: 1rem;
+  padding: 0.85rem;
   border: 1px solid #ececec;
-  border-radius: 1.4rem;
+  border-radius: 1rem;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(18px);
+  overflow-y: auto;
 }
 
 .mobile-panel-head,
@@ -818,16 +818,46 @@ useEventListener(
 }
 
 .mobile-panel-head h2 {
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
   font-family: var(--ys-font-display);
-  font-size: 1.35rem;
+  font-size: 1.1rem;
+}
+
+.mobile-search-form {
+  margin-top: 0.75rem;
+}
+
+.mobile-search-form form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.65rem;
+  height: 36px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.mobile-search-form input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111;
+  font-size: 0.82rem;
+}
+
+.mobile-search-form input::placeholder {
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .mobile-close-btn {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2rem;
+  height: 2rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   transition:
     border-color 0.16s ease,
@@ -836,19 +866,21 @@ useEventListener(
 
 .mobile-nav {
   display: grid;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
+  gap: 0.25rem;
+  margin-top: 1rem;
 }
 
 .mobile-nav-link,
 .mobile-login-button,
 .mobile-secondary-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid #ececec;
-  border-radius: 0.9rem;
-  background: #fff;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
   color: #111;
   text-decoration: none;
   font-size: 0.8rem;
@@ -858,11 +890,17 @@ useEventListener(
     color 0.16s ease;
 }
 
+.mobile-nav-link:hover,
+.mobile-nav-link.router-link-active {
+  background: #f5f5f5;
+  color: #000;
+}
+
 .mobile-user-card {
-  margin-top: 1rem;
-  padding: 0.9rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
   border: 1px solid #ececec;
-  border-radius: 1rem;
+  border-radius: 8px;
   background: #fff;
 }
 

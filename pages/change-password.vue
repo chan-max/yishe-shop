@@ -2,14 +2,14 @@
   <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1480px]">
       <NuxtLink to="/" class="ys-quiet-link text-[12px]">
-        <Icon name="heroicons:arrow-left" class="h-4 w-4" />
+        <v-icon size="16">mdi-arrow-left</v-icon>
         <span>返回首页</span>
       </NuxtLink>
     </div>
 
-    <div class="mx-auto mt-10 max-w-md rounded-[1.5rem] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 sm:px-8">
+    <div class="mx-auto mt-10 max-w-md rounded-[1.5rem] border border-stone-200 bg-white px-6 py-7 transition duration-200 hover:border-stone-300 sm:px-8">
       <div>
-        <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">Security</div>
+        <div class="text-[10px] uppercase tracking-[0.24em] text-stone-400">安全</div>
         <h2 class="mt-3 text-[28px] font-semibold text-stone-950">修改密码</h2>
         <p class="mt-2 text-[13px] leading-6 text-stone-500">更新你的账户密码，保存后需要重新登录。</p>
       </div>

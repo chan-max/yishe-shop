@@ -434,29 +434,29 @@ await fetchProducts();
     <h1 class="sr-only">{{ pageTitle }}</h1>
 
     <nav class="catalog-breadcrumb" aria-label="面包屑导航">
-      <NuxtLink to="/">Home</NuxtLink>
-      <v-icon size="15">mdi-chevron-right</v-icon>
-      <span>{{ routeKeyword || "POD Products" }}</span>
+      <NuxtLink to="/">首页</NuxtLink>
+      <v-icon size="14">mdi-chevron-right</v-icon>
+      <span>{{ routeKeyword || "POD 商品" }}</span>
     </nav>
 
     <section class="catalog-toolbar" aria-label="商品搜索和结果状态">
       <div>
-        <h2>{{ routeKeyword || "POD Products" }}</h2>
-        <span>Showing {{ displayRange }} of {{ total }} Products</span>
+        <h2>{{ routeKeyword || "POD 商品" }}</h2>
+        <span>显示 {{ displayRange }} / 共 {{ total }} 个商品</span>
       </div>
       <div class="catalog-toolbar__actions">
         <form class="catalog-search" @submit.prevent="handleSearch">
-          <v-icon size="18">mdi-magnify</v-icon>
+          <v-icon size="16">mdi-magnify</v-icon>
           <input
             v-model="searchKeyword"
             type="search"
-            placeholder="Search for POD products..."
+            placeholder="搜索 POD 商品…"
           />
         </form>
-        <span class="catalog-sort">Sort by: <strong>Most Popular</strong></span>
+        <span class="catalog-sort">排序：<strong>最热门</strong></span>
         <button type="button" class="catalog-filter-toggle" @click="toggleFilters">
-          <v-icon size="17">mdi-tune-variant</v-icon>
-          Filters
+          <v-icon size="15">mdi-tune-variant</v-icon>
+          筛选
         </button>
       </div>
     </section>
@@ -464,9 +464,9 @@ await fetchProducts();
     <section class="catalog-layout">
       <aside class="catalog-filter catalog-filter--desktop">
         <div class="catalog-filter__head">
-          <strong>Filters</strong>
+          <strong>筛选</strong>
           <button type="button" aria-label="清空筛选" @click="resetFilters">
-            <v-icon size="18">mdi-tune-variant</v-icon>
+            <v-icon size="16">mdi-tune-variant</v-icon>
           </button>
         </div>
 
@@ -479,12 +479,12 @@ await fetchProducts();
             @click="handleKeywordClick(item)"
           >
             <span>{{ item }}</span>
-            <v-icon size="16">mdi-chevron-right</v-icon>
+            <v-icon size="14">mdi-chevron-right</v-icon>
           </button>
         </div>
 
         <div class="catalog-filter__block">
-          <label>Price</label>
+          <label>价格</label>
           <div class="catalog-price-range">
             <span></span>
             <i></i>
@@ -510,12 +510,12 @@ await fetchProducts();
             @click="handleKeywordClick(item)"
           >
             <span>{{ item }}</span>
-            <v-icon size="15">mdi-chevron-right</v-icon>
+            <v-icon size="14">mdi-chevron-right</v-icon>
           </button>
         </div>
 
         <div class="catalog-filter__block">
-          <label>Colors</label>
+          <label>颜色</label>
           <div class="catalog-color-list">
             <button
               v-for="color in colorOptions"
@@ -524,13 +524,13 @@ await fetchProducts();
               :style="{ backgroundColor: color }"
               :aria-label="`颜色 ${color}`"
             >
-              <v-icon v-if="color === '#111111'" size="13">mdi-check</v-icon>
+              <v-icon v-if="color === '#111111'" size="12">mdi-check</v-icon>
             </button>
           </div>
         </div>
 
         <div class="catalog-filter__block">
-          <label>Size</label>
+          <label>尺码</label>
           <div class="catalog-size-list">
             <button v-for="size in sizeOptions" :key="size" type="button">
               {{ size }}
@@ -539,7 +539,7 @@ await fetchProducts();
         </div>
 
         <div class="catalog-filter__block">
-          <label>Dress Style</label>
+          <label>风格</label>
           <button
             v-for="item in styleOptions"
             :key="item"
@@ -548,12 +548,12 @@ await fetchProducts();
             @click="handleKeywordClick(item)"
           >
             <span>{{ item }}</span>
-            <v-icon size="16">mdi-chevron-right</v-icon>
+            <v-icon size="14">mdi-chevron-right</v-icon>
           </button>
         </div>
 
         <button type="button" class="catalog-apply" @click="handleSearch">
-          Apply Filter
+          应用筛选
         </button>
       </aside>
 
@@ -619,7 +619,7 @@ await fetchProducts();
         </div>
 
         <div v-else class="catalog-empty">
-          <span>NO RESULTS</span>
+          <span>暂无结果</span>
           <h2>换一个关键词，可能会遇到更合适的设计。</h2>
           <p>
             试试“印花”“礼物”“鼠标垫”“装饰画”这类商品或场景词，系统会展示对应的 POD 商品与定制灵感。
@@ -683,12 +683,12 @@ await fetchProducts();
       <div v-if="showFilters" class="catalog-drawer" @click="toggleFilters">
         <aside class="catalog-drawer__panel" @click.stop>
           <div class="catalog-filter__head">
-            <strong>Filters</strong>
+            <strong>筛选</strong>
             <button type="button" @click="toggleFilters">关闭</button>
           </div>
           <form class="catalog-search catalog-search--drawer" @submit.prevent="handleSearch">
-            <v-icon size="18">mdi-magnify</v-icon>
-            <input v-model="searchKeyword" type="search" placeholder="Search for products..." />
+            <v-icon size="16">mdi-magnify</v-icon>
+            <input v-model="searchKeyword" type="search" placeholder="搜索商品…" />
           </form>
           <div class="catalog-filter__block">
             <label>上新时间</label>
@@ -726,18 +726,18 @@ await fetchProducts();
   min-height: 100vh;
   background: #ffffff;
   color: #111111;
-  padding: 1.45rem 0 5rem;
+  padding: 1rem 0 3.5rem;
 }
 
 .catalog-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   width: var(--ys-container);
-  min-height: 2.6rem;
-  margin: 0 auto 1.05rem;
+  min-height: 2rem;
+  margin: 0 auto 0.75rem;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
 }
 
 .catalog-breadcrumb a {
@@ -752,37 +752,37 @@ await fetchProducts();
 .catalog-search {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  width: min(32vw, 360px);
-  min-height: 2.85rem;
-  padding: 0 1rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: #f0f0f0;
+  gap: 0.5rem;
+  width: min(28vw, 300px);
+  min-height: 2.4rem;
+  padding: 0 0.75rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
   line-height: 1;
 }
 
 .catalog-search:focus-within {
   border-color: rgba(0, 0, 0, 0.2);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
 }
 
 .catalog-search input {
   min-width: 0;
   width: 100%;
-  height: 2.85rem;
+  height: 2.4rem;
   border: 0;
   outline: 0;
   background: transparent;
   color: #111;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: normal;
   padding: 0;
 }
 
 .catalog-search input::placeholder {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .catalog-search input:focus-visible {
@@ -793,14 +793,14 @@ await fetchProducts();
 .catalog-empty button,
 .catalog-drawer__apply,
 .catalog-apply {
-  min-height: 2.8rem;
+  min-height: 2.4rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #000;
   color: #fff;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 0 1.35rem;
+  padding: 0 1rem;
 }
 
 .catalog-quick,
@@ -816,14 +816,14 @@ await fetchProducts();
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2rem;
+  min-height: 1.6rem;
   border: 1px solid #ececec;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #fff;
   color: #333;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   line-height: 1;
-  padding: 0 0.85rem;
+  padding: 0 0.65rem;
 }
 
 .catalog-quick button:hover {
@@ -843,45 +843,45 @@ await fetchProducts();
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.45rem;
-  padding-bottom: 1.25rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
   border-bottom: 1px solid #efefef;
   background: #fff;
 }
 
 .catalog-toolbar h2 {
-  margin: 0 0 0.28rem;
+  margin: 0 0 0.2rem;
   color: #000;
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
   line-height: 1.1;
-  text-transform: uppercase;
 }
 
 .catalog-toolbar span {
   color: #777;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
 }
 
 .catalog-toolbar strong {
   display: block;
-  margin-top: 0.12rem;
+  margin-top: 0.08rem;
   color: #111;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
 }
 
 .catalog-toolbar__actions {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4rem;
 }
 
 .catalog-sort {
   display: inline-flex;
   align-items: center;
-  min-height: 2.35rem;
+  min-height: 2rem;
   white-space: nowrap;
   line-height: 1;
+  font-size: 0.75rem;
 }
 
 .catalog-sort strong {
@@ -897,32 +897,32 @@ await fetchProducts();
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  min-height: 2.35rem;
+  gap: 0.3rem;
+  min-height: 2rem;
   border: 1px solid #e9e9e9;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: #111;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0 0.9rem;
+  padding: 0 0.65rem;
 }
 
 .catalog-layout {
   display: grid;
-  grid-template-columns: 295px minmax(0, 1fr);
-  gap: clamp(1rem, 2.4vw, 2rem);
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .catalog-filter {
   align-self: start;
   position: sticky;
-  top: 150px;
+  top: 130px;
   display: grid;
   gap: 0;
-  padding: 1rem;
+  padding: 0.85rem;
   border: 1px solid #e9e9e9;
-  border-radius: 16px;
+  border-radius: 10px;
   background: #fff;
 }
 
@@ -930,65 +930,65 @@ await fetchProducts();
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  min-height: 2.2rem;
-  padding: 0.05rem 0.1rem 0.75rem;
-  border-bottom: 1px solid #eeeeee;
+  gap: 0.5rem;
+  min-height: 1.8rem;
+  padding: 0 0.05rem 0.55rem;
+  border-bottom: 1px solid #eee;
 }
 
 .catalog-filter__head strong {
   display: inline-flex;
   align-items: center;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   line-height: 1;
 }
 
 .catalog-filter__block {
   display: grid;
-  gap: 0.55rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid #eeeeee;
+  gap: 0.4rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid #eee;
 }
 
 .catalog-filter__head + .catalog-filter__block {
   border-top: 0;
-  padding-top: 0.65rem;
+  padding-top: 0.5rem;
 }
 
 .catalog-filter__block label {
   display: inline-flex;
   align-items: center;
-  min-height: 1.1rem;
+  min-height: 1rem;
   color: #111;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   line-height: 1;
 }
 
 .catalog-filter__block input {
   width: 100%;
-  min-height: 2.2rem;
+  min-height: 2rem;
   border: 1px solid #e9e9e9;
-  border-radius: 0.65rem;
+  border-radius: 6px;
   background: #f7f7f7;
   color: #333;
-  padding: 0 0.6rem;
-  font-size: 0.82rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
 }
 
 .catalog-filter__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.55rem;
-  min-height: 1.95rem;
-  padding: 0 0.55rem;
+  gap: 0.4rem;
+  min-height: 1.7rem;
+  padding: 0 0.4rem;
   border: 0;
-  border-radius: 0.55rem;
+  border-radius: 6px;
   background: transparent;
   color: #555;
   text-align: left;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   line-height: 1;
 }
 
@@ -1063,8 +1063,8 @@ await fetchProducts();
 .catalog-color-list button {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   color: #fff;
@@ -1074,14 +1074,14 @@ await fetchProducts();
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2rem;
+  min-height: 1.7rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 6px;
   background: #f0f0f0;
   color: rgba(0, 0, 0, 0.62);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   line-height: 1;
-  padding: 0 0.75rem;
+  padding: 0 0.6rem;
 }
 
 .catalog-size-list button:hover {
@@ -1091,9 +1091,9 @@ await fetchProducts();
 
 .catalog-apply {
   width: 100%;
-  margin-top: 0.25rem;
-  min-height: 2.5rem;
-  font-size: 0.78rem;
+  margin-top: 0.2rem;
+  min-height: 2.2rem;
+  font-size: 0.72rem;
 }
 
 .catalog-results {
@@ -1106,8 +1106,8 @@ await fetchProducts();
 
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: clamp(0.9rem, 1.6vw, 1.35rem);
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: clamp(0.6rem, 1.2vw, 1rem);
 }
 
 .catalog-product {
@@ -1124,7 +1124,7 @@ await fetchProducts();
   place-items: center;
   aspect-ratio: 0.82;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 10px;
   background: #f0f0f0;
 }
 
@@ -1134,14 +1134,6 @@ await fetchProducts();
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition:
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.catalog-product:hover .catalog-product__media img {
-  transform: scale(1.045);
-  filter: saturate(1.05);
 }
 
 .img-loading {
@@ -1159,7 +1151,7 @@ await fetchProducts();
   align-items: center;
   justify-content: center;
   color: #888;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
 }
 
 .catalog-product__empty {
@@ -1169,56 +1161,54 @@ await fetchProducts();
   display: grid;
   place-items: center;
   color: #888;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
 }
 
 .catalog-product__open {
   position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
+  right: 0.6rem;
+  top: 0.6rem;
   z-index: 4;
   display: grid;
   place-items: center;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   color: #111;
   opacity: 0;
-  transform: translateY(6px);
 }
 
 .catalog-product:hover .catalog-product__open {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .catalog-product__body {
-  padding: 0.88rem 0 0;
+  padding: 0.55rem 0 0;
 }
 
 .catalog-product__body > span {
   display: block;
   color: #777;
-  font-size: 0.72rem;
-  line-height: 1.45;
+  font-size: 0.65rem;
+  line-height: 1.4;
 }
 
 .catalog-product h3 {
   margin: 0;
   color: #111;
-  font-size: 1.05rem;
+  font-size: 0.88rem;
   line-height: 1.35;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .catalog-product p {
   display: -webkit-box;
-  margin: 0.35rem 0 0;
+  margin: 0.2rem 0 0;
   color: #666;
-  font-size: 0.78rem;
-  line-height: 1.7;
+  font-size: 0.7rem;
+  line-height: 1.6;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1229,94 +1219,95 @@ await fetchProducts();
 .catalog-product__footer {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .catalog-rating-line {
-  margin-top: 0.38rem;
+  margin-top: 0.25rem;
 }
 
 .catalog-rating-line span {
   color: #ffc633;
-  font-size: 0.86rem;
+  font-size: 0.72rem;
   letter-spacing: 0;
 }
 
 .catalog-rating-line small {
   color: #555;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
 }
 
 .catalog-product__footer {
-  margin-top: 0.42rem;
+  margin-top: 0.3rem;
 }
 
 .catalog-product__footer strong {
   color: #111;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
 .catalog-product__footer del {
   color: rgba(0, 0, 0, 0.38);
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .catalog-product__footer small {
   display: inline-flex;
   align-items: center;
-  min-height: 1.35rem;
-  border-radius: 999px;
+  min-height: 1.2rem;
+  border-radius: 4px;
   background: rgba(255, 51, 51, 0.1);
   color: #ff3333;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 0 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0 0.4rem;
 }
 
 .catalog-empty {
   display: grid;
   place-items: center;
-  min-height: 420px;
-  padding: 2rem;
-  border-radius: 1.5rem;
+  min-height: 300px;
+  padding: 1.5rem;
+  border-radius: 10px;
   background: #f3f3f3;
   text-align: center;
 }
 
 .catalog-empty span {
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   color: #777;
 }
 
 .catalog-empty h2 {
-  max-width: 620px;
-  margin: 0.8rem 0 0;
-  font-size: clamp(1.8rem, 4vw, 3.4rem);
-  line-height: 1;
+  max-width: 480px;
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  line-height: 1.15;
 }
 
 .catalog-empty p {
-  max-width: 520px;
-  margin: 1rem 0 0;
+  max-width: 420px;
+  margin: 0.65rem 0 0;
   color: #666;
-  line-height: 1.8;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .catalog-empty button {
-  margin-top: 1.4rem;
+  margin-top: 1rem;
 }
 
 .catalog-pagination {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 2.5rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid #eeeeee;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
 }
 
 .catalog-pagination button.active {
@@ -1338,21 +1329,21 @@ await fetchProducts();
 }
 
 .catalog-drawer__panel {
-  width: min(88vw, 380px);
+  width: min(88vw, 340px);
   height: 100%;
   overflow-y: auto;
-  padding: 1.2rem;
+  padding: 1rem;
   background: #fff;
 }
 
 .catalog-search--drawer {
   width: 100%;
-  margin: 1rem 0 0;
+  margin: 0.75rem 0 0;
 }
 
 .catalog-drawer__apply {
   width: 100%;
-  margin-top: 1.2rem;
+  margin-top: 0.85rem;
 }
 
 .product-skeleton .skeleton-wave {
@@ -1377,15 +1368,15 @@ await fetchProducts();
 
 .product-skeleton .skeleton-image {
   aspect-ratio: 0.84;
-  border-radius: 1.35rem;
+  border-radius: 10px;
   background: linear-gradient(180deg, #f1f1f1 0%, #e5e5e5 100%);
 }
 
 .product-skeleton .skeleton-line {
   width: 72%;
-  height: 0.8rem;
-  margin-top: 0.9rem;
-  border-radius: 999px;
+  height: 0.6rem;
+  margin-top: 0.6rem;
+  border-radius: 4px;
 }
 
 .product-skeleton .skeleton-line--short {

@@ -163,8 +163,8 @@ onMounted(() => {
   <div class="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1240px]">
       <div>
-        <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">Favorites</div>
-        <h1 class="mt-3 text-[42px] font-black uppercase leading-none text-stone-950">Saved products</h1>
+        <div class="text-[10px] font-black uppercase tracking-[0.18em] text-stone-400">收藏夹</div>
+        <h1 class="mt-3 text-[28px] font-black uppercase leading-none text-stone-950">已收藏商品</h1>
         <p class="mt-2 text-[13px] leading-6 text-stone-500">查看和管理你保存过的 POD 商品、印花图案和定制灵感。</p>
       </div>
 
@@ -182,11 +182,11 @@ onMounted(() => {
         </div>
 
         <div v-else-if="favoriteList.length > 0" class="space-y-3">
-          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-stone-300 hover:bg-stone-50 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
+          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:border-stone-300 hover:bg-stone-50 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
             <div class="cursor-pointer overflow-hidden rounded-[18px] bg-stone-100" @click="goToProductDetail(favorite.productId)">
               <div class="relative aspect-[4/3]">
                 <template v-if="getProductImage(favorite)">
-                  <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" @error="handleImageError($event)" @load="handleImageLoad" />
+                  <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover" @error="handleImageError($event)" @load="handleImageLoad" />
                   <div class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400">暂无图片</div>
                 </template>
                 <div v-else class="absolute inset-0 flex items-center justify-center text-[12px] text-stone-400">暂无图片</div>
@@ -206,10 +206,10 @@ onMounted(() => {
               <div class="mt-4 flex flex-col gap-3 border-t border-stone-100 pt-3 sm:flex-row sm:items-center sm:justify-between">
                 <span class="text-[11px] text-stone-400">收藏于 {{ new Date(favorite.createTime).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
                 <div class="flex gap-2">
-                  <button class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:-translate-y-0.5 hover:border-red-300 hover:bg-red-50 hover:text-red-600 active:translate-y-0" @click="removeFavorite(favorite.productId, favorite.id)">
+                  <button class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:border-red-300 hover:bg-red-50 hover:text-red-600" @click="removeFavorite(favorite.productId, favorite.id)">
                     取消收藏
                   </button>
-                  <button class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 active:translate-y-0" @click="goToProductDetail(favorite.productId)">
+                  <button class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200" @click="goToProductDetail(favorite.productId)">
                     查看详情
                   </button>
                 </div>
@@ -221,7 +221,7 @@ onMounted(() => {
         <div v-else class="py-20 text-center">
           <Icon name="heroicons:heart" class="mx-auto h-12 w-12 text-stone-300" />
           <p class="mt-4 text-[13px] text-stone-500">暂无收藏</p>
-          <NuxtLink to="/products" class="ys-action-btn mt-5 inline-flex rounded-xl px-5 py-3 text-[12px] transition duration-200 hover:-translate-y-0.5">
+          <NuxtLink to="/products" class="ys-action-btn mt-5 inline-flex rounded-xl px-5 py-3 text-[12px] transition duration-200">
             去逛逛
           </NuxtLink>
         </div>
@@ -229,17 +229,17 @@ onMounted(() => {
         <div v-if="!loading && favoriteList.length > 0" class="mt-8 flex flex-col items-center gap-4 border-t border-stone-100 pt-6">
           <div class="text-[11px] text-stone-400">共 {{ total }} 件收藏，第 {{ currentPage }} / {{ totalPages }} 页</div>
           <div class="flex flex-wrap items-center justify-center gap-2">
-            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
+            <button @click="handlePageChange(currentPage - 1)" :disabled="currentPage === 1" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 disabled:opacity-35 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
               上一页
             </button>
-            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5">1</button>
+            <button v-if="pageNumbers[0] > 1" @click="handlePageChange(1)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200">1</button>
             <span v-if="pageNumbers[0] > 2" class="px-1 text-stone-300">...</span>
-            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl px-4 py-2 text-[12px] transition duration-200', currentPage === page ? 'ys-action-btn-active' : 'ys-action-btn hover:-translate-y-0.5']">
+            <button v-for="page in pageNumbers" :key="page" @click="handlePageChange(page)" :class="['rounded-xl px-4 py-2 text-[12px] transition duration-200', currentPage === page ? 'ys-action-btn-active' : 'ys-action-btn']">
               {{ page }}
             </button>
             <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="px-1 text-stone-300">...</span>
-            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5">{{ totalPages }}</button>
-            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 hover:-translate-y-0.5 disabled:opacity-35 disabled:hover:translate-y-0 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
+            <button v-if="pageNumbers[pageNumbers.length - 1] < totalPages" @click="handlePageChange(totalPages)" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200">{{ totalPages }}</button>
+            <button @click="handlePageChange(currentPage + 1)" :disabled="currentPage === totalPages" class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200 disabled:opacity-35 disabled:hover:border-stone-200 disabled:hover:bg-transparent disabled:hover:text-stone-600">
               下一页
             </button>
           </div>

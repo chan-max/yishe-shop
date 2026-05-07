@@ -267,38 +267,38 @@ const experiences = ref([
 .founder-page {
   min-height: 100vh;
   background: #ffffff;
-  padding: 4rem 0;
+  padding: 2.5rem 0;
   
   @media (max-width: 768px) {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
   }
 }
 
 .founder-container {
-  max-width: 900px;
+  max-width: 780px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 
 // 顶部信息区
 .profile-header {
   display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 3rem;
-  margin-bottom: 4rem;
-  padding-bottom: 3rem;
+  grid-template-columns: 52px 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid #e5e7eb;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.25rem;
     text-align: center;
   }
 }
 
 .profile-avatar {
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   
   @media (max-width: 768px) {
     margin: 0 auto;
@@ -319,46 +319,46 @@ const experiences = ref([
 }
 
 .name {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
   color: #111827;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.35rem 0;
   line-height: 1.2;
   
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 
 .english-name {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 400;
   color: #6b7280;
   
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
   }
 }
 
 .role {
-  font-size: 1rem;
+  font-size: 0.82rem;
   color: #6b7280;
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.5rem 0;
   line-height: 1.6;
 }
 
 .basic-info {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
   flex-wrap: wrap;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 0.35rem;
+  font-size: 0.78rem;
   color: #6b7280;
   
   svg {
@@ -367,33 +367,33 @@ const experiences = ref([
 }
 
 .bio {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #4b5563;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  max-width: 90%;
+  line-height: 1.7;
+  margin: 0 0 1rem 0;
+  max-width: 95%;
 }
 
 // 联系方式
 .profile-contact {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .phones-group {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   color: #4b5563;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   transition: color 0.2s;
   
   &:hover {
@@ -409,17 +409,17 @@ const experiences = ref([
 .content {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: #111827;
   margin: 0;
@@ -429,29 +429,29 @@ const experiences = ref([
 .about-me {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .about-text {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #4b5563;
-  line-height: 1.8;
+  line-height: 1.7;
   margin: 0;
 }
 
 // 技能
 .skills-text {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #4b5563;
-  line-height: 1.8;
+  line-height: 1.7;
   margin: 0;
 }
 
 // 爱好
 .hobbies-text {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #4b5563;
-  line-height: 1.8;
+  line-height: 1.7;
   margin: 0;
 }
 
@@ -459,17 +459,17 @@ const experiences = ref([
 .experiences {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .experience-item {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .experience-title {
-  font-size: 1.125rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #111827;
   margin: 0;
@@ -477,16 +477,16 @@ const experiences = ref([
 }
 
 .experience-company {
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 400;
   color: #6b7280;
-  margin-left: 0.5rem;
+  margin-left: 0.35rem;
 }
 
 .experience-description {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #4b5563;
-  line-height: 1.8;
+  line-height: 1.7;
   margin: 0;
   text-indent: 2em;
 }
