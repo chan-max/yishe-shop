@@ -36,7 +36,7 @@ export const buildSearchSitemapUrls = (
   const keywordMap = new Map<string, { count: number; lastmod: string }>();
 
   for (const product of products) {
-    if (!product.id || product.isPublish === false || product.isActive === false) {
+    if (!product.id || product.isPublish === false) {
       continue;
     }
 

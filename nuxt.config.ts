@@ -75,6 +75,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/search": { redirect: { to: "/products", statusCode: 301 } },
+    "/founder": { redirect: { to: "/", statusCode: 301 } },
     "/sitemap.xml": {
       headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
     },

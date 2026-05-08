@@ -7,10 +7,7 @@ export const buildProductSitemapUrls = (
   now = new Date().toISOString(),
 ) =>
   products
-    .filter(
-      (product) =>
-        product.id && product.isPublish !== false && product.isActive !== false,
-    )
+    .filter((product) => product.id && product.isPublish !== false)
     .map<SitemapUrl>((product) => {
       const images = (product.images || [])
         .map((image) => toAbsoluteUrl(image))

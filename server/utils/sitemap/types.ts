@@ -22,7 +22,6 @@ export type ProductSitemapItem = {
   keywords?: string;
   searchKeywords?: string;
   slug?: string;
-  isActive?: boolean;
   isPublish?: boolean;
   createTime?: string;
   updateTime?: string;

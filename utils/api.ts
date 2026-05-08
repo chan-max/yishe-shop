@@ -141,7 +141,6 @@ interface ProductResponse {
   seoTitle?: string
   seoDescription?: string
   meta?: Record<string, any>
-  isActive: boolean
   isPublish: boolean
   isLimitedEdition: number
   createTime: string

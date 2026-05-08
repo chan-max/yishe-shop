@@ -10,7 +10,6 @@ const footerGroups = {
   ],
   了解: [
     { name: "关于我们", href: "/about" },
-    { name: "创始人", href: "/founder" },
     { name: "联系我们", href: "/contact" },
   ],
 };
