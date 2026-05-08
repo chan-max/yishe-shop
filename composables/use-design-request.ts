@@ -1,31 +1,20 @@
-import { useNuxtApp } from '#app'
-
-interface DesignRequest {
-  name: string
-  phone: string
-  description: string
-}
-
-interface ApiResponse<T = any> {
-  code: number
-  data: T
-  message: string
-}
+import { api } from "~/utils/api"
 
 export const useDesignRequest = () => {
-  const { $customFetch } = useNuxtApp()
   const loading = ref(false)
 
-  const submitDesignRequest = async (data: DesignRequest) => {
+  const submitDesignRequest = async (data: {
+    name: string
+    description?: string
+    phoneNumber?: string
+    email?: string
+  }) => {
     loading.value = true
     try {
-      const response = await $customFetch<ApiResponse<DesignRequest>>('/design-request', {
-        method: 'POST',
-        body: data
-      })
+      const response = await api.design.submit(data)
       return response
     } catch (error) {
-      console.error('提交设计需求失败:', error)
+      console.error("提交设计需求失败:", error)
       throw error
     } finally {
       loading.value = false
@@ -34,6 +23,6 @@ export const useDesignRequest = () => {
 
   return {
     submitDesignRequest,
-    loading
+    loading,
   }
-} 
+}

@@ -30,10 +30,22 @@ const getDecodedKeyword = () => {
 const searchKeyword = ref<string>("");
 const startDate = ref<string>("");
 const endDate = ref<string>("");
+const selectedType = ref<string>("");
+const selectedCategoryId = ref<string>("");
+const selectedBrand = ref<string>("");
+const selectedStatus = ref<string>("active");
+const selectedInventoryStatus = ref<string>("");
+const selectedFlag = ref<string>("");
+const selectedStockMode = ref<string>("");
+const priceMin = ref<number | null>(null);
+const priceMax = ref<number | null>(null);
+const skuKeyword = ref<string>("");
+const sortMode = ref<string>("sort_desc");
 const currentPage = ref<number>(1);
 const pageSize = ref<number>(24);
 const loading = ref<boolean>(false);
 const productList = ref<any[]>([]);
+const categoryList = ref<any[]>([]);
 const total = ref<number>(0);
 const requestSequence = ref<number>(0);
 
@@ -47,9 +59,35 @@ const recommendedKeywords = [
 ];
 
 const filterCategories = ["T-shirts", "Hoodies", "Mugs", "Tote Bags", "Phone Cases", "Home Textile"];
-const colorOptions = ["#4f4631", "#315f3d", "#314d80", "#111111", "#ef4444", "#f8d84a", "#f4f4f5", "#f472b6"];
-const sizeOptions = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
-const styleOptions = ["Minimal", "Streetwear", "Vintage", "Floral", "Oriental"];
+const statusOptions = [
+  { label: "在售商品", value: "active" },
+  { label: "草稿商品", value: "draft" },
+  { label: "归档商品", value: "archived" },
+];
+const inventoryOptions = [
+  { label: "全部库存", value: "" },
+  { label: "有库存", value: "in_stock" },
+  { label: "无库存", value: "out_of_stock" },
+  { label: "预售", value: "preorder" },
+];
+const flagOptions = [
+  { label: "精选", value: "featured" },
+  { label: "新品", value: "new" },
+  { label: "热销", value: "hot" },
+  { label: "促销", value: "sale" },
+];
+const stockModeOptions = [
+  { label: "仅看有库存", value: "in_stock" },
+  { label: "低库存优先", value: "low_stock" },
+];
+const sortOptions = [
+  { label: "推荐排序", value: "sort_desc", sortBy: "sort", sortDir: "DESC" },
+  { label: "最新上架", value: "newest", sortBy: "createTime", sortDir: "DESC" },
+  { label: "价格从低到高", value: "price_asc", sortBy: "salePrice", sortDir: "ASC" },
+  { label: "价格从高到低", value: "price_desc", sortBy: "salePrice", sortDir: "DESC" },
+  { label: "销量优先", value: "sales_desc", sortBy: "salesCount", sortDir: "DESC" },
+  { label: "评分优先", value: "rating_desc", sortBy: "rating", sortDir: "DESC" },
+];
 
 const filterGroups = [
   {
@@ -68,12 +106,52 @@ const filterGroups = [
 const showFilters = ref<boolean>(false);
 
 const routeKeyword = computed(() => getDecodedKeyword());
+const currentSort = computed(() => sortOptions.find((item) => item.value === sortMode.value) || sortOptions[0]);
+
+const toNumberOrNull = (value: unknown) => {
+  if (value === undefined || value === null || value === "") return null;
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? numberValue : null;
+};
+
+const setBooleanFlagParams = (params: Record<string, any>) => {
+  if (selectedFlag.value === "featured") params.isFeatured = true;
+  if (selectedFlag.value === "new") params.isNew = true;
+  if (selectedFlag.value === "hot") params.isHot = true;
+  if (selectedFlag.value === "sale") params.isOnSale = true;
+};
+
+const cleanQueryString = (value: unknown) => String(value || "").trim();
+
+const loadCategories = async () => {
+  try {
+    const response = await api.productCategory.getAll();
+    if (response.code === 0 || response.status === true || response.code === 200) {
+      const data = Array.isArray(response.data) ? response.data : [];
+      categoryList.value = data.filter((item: any) => item?.isActive !== false);
+    }
+  } catch (error) {
+    console.warn("获取商品分类失败:", error);
+    categoryList.value = [];
+  }
+};
 
 const syncStateFromRoute = () => {
   searchKeyword.value = routeKeyword.value || "";
   const query = route.query;
   startDate.value = typeof query.start === "string" ? query.start : "";
   endDate.value = typeof query.end === "string" ? query.end : "";
+  selectedType.value = typeof query.type === "string" ? query.type : "";
+  selectedCategoryId.value = typeof query.categoryId === "string" ? query.categoryId : "";
+  selectedBrand.value = typeof query.brand === "string" ? query.brand : "";
+  selectedStatus.value = typeof query.status === "string" ? query.status : "active";
+  selectedInventoryStatus.value = typeof query.inventoryStatus === "string" ? query.inventoryStatus : "";
+  selectedFlag.value = typeof query.flag === "string" ? query.flag : "";
+  selectedStockMode.value = typeof query.stock === "string" ? query.stock : "";
+  priceMin.value = toNumberOrNull(query.priceMin);
+  priceMax.value = toNumberOrNull(query.priceMax);
+  skuKeyword.value = typeof query.sku === "string" ? query.sku : "";
+  sortMode.value = typeof query.sort === "string" ? query.sort : "sort_desc";
   currentPage.value =
     typeof query.page === "string" ? Number(query.page) || 1 : 1;
 };
@@ -84,7 +162,7 @@ const fetchProducts = async () => {
   loading.value = true;
 
   try {
-    const response = await api.productList.getPage({
+    const params: Record<string, any> = {
       page: currentPage.value,
       pageSize: pageSize.value,
       isPublish: true,
@@ -92,7 +170,22 @@ const fetchProducts = async () => {
       searchText: searchKeyword.value || undefined,
       startTime: startDate.value || undefined,
       endTime: endDate.value || undefined,
-    });
+      type: selectedType.value || undefined,
+      categoryId: selectedCategoryId.value || undefined,
+      brand: cleanQueryString(selectedBrand.value) || undefined,
+      status: selectedStatus.value || undefined,
+      sku: cleanQueryString(skuKeyword.value) || undefined,
+      inventoryStatus: selectedInventoryStatus.value || undefined,
+      priceMin: priceMin.value ?? undefined,
+      priceMax: priceMax.value ?? undefined,
+      sortBy: currentSort.value.sortBy,
+      sortDir: currentSort.value.sortDir,
+    };
+    if (selectedStockMode.value === "in_stock") params.hasStock = true;
+    if (selectedStockMode.value === "low_stock") params.stockMax = 10;
+    setBooleanFlagParams(params);
+
+    const response = await api.productList.getPage(params);
 
     if (requestId !== requestSequence.value) return;
 
@@ -123,6 +216,17 @@ const buildRouteQuery = () => {
   const query: Record<string, string> = {};
   if (startDate.value) query.start = startDate.value;
   if (endDate.value) query.end = endDate.value;
+  if (selectedType.value) query.type = selectedType.value;
+  if (selectedCategoryId.value) query.categoryId = selectedCategoryId.value;
+  if (cleanQueryString(selectedBrand.value)) query.brand = cleanQueryString(selectedBrand.value);
+  if (selectedStatus.value && selectedStatus.value !== "active") query.status = selectedStatus.value;
+  if (selectedInventoryStatus.value) query.inventoryStatus = selectedInventoryStatus.value;
+  if (selectedFlag.value) query.flag = selectedFlag.value;
+  if (selectedStockMode.value) query.stock = selectedStockMode.value;
+  if (priceMin.value !== null) query.priceMin = String(priceMin.value);
+  if (priceMax.value !== null) query.priceMax = String(priceMax.value);
+  if (cleanQueryString(skuKeyword.value)) query.sku = cleanQueryString(skuKeyword.value);
+  if (sortMode.value && sortMode.value !== "sort_desc") query.sort = sortMode.value;
   if (currentPage.value > 1) query.page = String(currentPage.value);
   return query;
 };
@@ -135,6 +239,22 @@ const hasSameQuery = (nextQuery: Record<string, string>) => {
   if (typeof route.query.end === "string" && route.query.end) {
     currentQuery.end = route.query.end;
   }
+  [
+    "type",
+    "categoryId",
+    "brand",
+    "status",
+    "inventoryStatus",
+    "flag",
+    "stock",
+    "priceMin",
+    "priceMax",
+    "sku",
+    "sort",
+  ].forEach((key) => {
+    const value = route.query[key];
+    if (typeof value === "string" && value) currentQuery[key] = value;
+  });
   if (typeof route.query.page === "string" && Number(route.query.page) > 1) {
     currentQuery.page = route.query.page;
   }
@@ -166,13 +286,22 @@ const resetFilters = async () => {
   searchKeyword.value = "";
   startDate.value = "";
   endDate.value = "";
+  selectedType.value = "";
+  selectedCategoryId.value = "";
+  selectedBrand.value = "";
+  selectedStatus.value = "active";
+  selectedInventoryStatus.value = "";
+  selectedFlag.value = "";
+  selectedStockMode.value = "";
+  priceMin.value = null;
+  priceMax.value = null;
+  skuKeyword.value = "";
+  sortMode.value = "sort_desc";
   currentPage.value = 1;
 
   if (
     route.path === "/products" &&
-    typeof route.query.start !== "string" &&
-    typeof route.query.end !== "string" &&
-    typeof route.query.page !== "string"
+    !Object.keys(route.query).length
   ) {
     await fetchProducts();
     return;
@@ -194,6 +323,11 @@ const handleKeywordClick = (keyword: string) => {
 
 const toggleFilters = () => {
   showFilters.value = !showFilters.value;
+};
+
+const applyDrawerFilters = async () => {
+  showFilters.value = false;
+  await handleSearch();
 };
 
 const goToProductDetail = (productId: string) => {
@@ -319,11 +453,18 @@ const productMetaLine = (product: any) => {
 };
 
 const getProductPrice = (product: any, index = 0) => {
+  const price = Number(product?.salePrice || product?.price || 0);
+  if (price > 0) return Number(price.toFixed(2));
   const seed = Number(String(product?.id || index).replace(/\D/g, "").slice(-2)) || index + 11;
   return 99 + (seed % 9) * 20;
 };
 
 const getProductOldPrice = (product: any, index = 0) => {
+  const compareAtPrice = Number(product?.compareAtPrice || 0);
+  if (compareAtPrice > 0) return Number(compareAtPrice.toFixed(2));
+  const originalPrice = Number(product?.price || 0);
+  const salePrice = Number(product?.salePrice || 0);
+  if (originalPrice > salePrice && salePrice > 0) return Number(originalPrice.toFixed(2));
   const price = getProductPrice(product, index);
   return index % 3 === 0 ? price + 60 : null;
 };
@@ -334,11 +475,32 @@ const getProductDiscount = (product: any, index = 0) => {
   return `-${Math.round(((oldPrice - getProductPrice(product, index)) / oldPrice) * 100)}%`;
 };
 
-const getProductRating = (index = 0) => (4.2 + (index % 7) * 0.1).toFixed(1);
+const getProductRating = (product: any, index = 0) => {
+  const rating = Number(product?.rating || 0);
+  if (rating > 0) return rating.toFixed(1);
+  return (4.2 + (index % 7) * 0.1).toFixed(1);
+};
 
 const activeFilters = computed(() => {
   const filters: string[] = [];
   if (routeKeyword.value) filters.push(`关键词 ${routeKeyword.value}`);
+  if (selectedType.value) filters.push(`类型 ${selectedType.value}`);
+  const categoryName = categoryList.value.find((item: any) => item.id === selectedCategoryId.value)?.name;
+  if (categoryName) filters.push(`分类 ${categoryName}`);
+  if (selectedBrand.value) filters.push(`品牌 ${selectedBrand.value}`);
+  if (selectedInventoryStatus.value) {
+    filters.push(inventoryOptions.find((item) => item.value === selectedInventoryStatus.value)?.label || selectedInventoryStatus.value);
+  }
+  if (selectedFlag.value) {
+    filters.push(flagOptions.find((item) => item.value === selectedFlag.value)?.label || selectedFlag.value);
+  }
+  if (selectedStockMode.value) {
+    filters.push(stockModeOptions.find((item) => item.value === selectedStockMode.value)?.label || selectedStockMode.value);
+  }
+  if (priceMin.value !== null || priceMax.value !== null) {
+    filters.push(`价格 ${priceMin.value ?? 0}-${priceMax.value ?? "不限"}`);
+  }
+  if (skuKeyword.value) filters.push(`SKU ${skuKeyword.value}`);
   if (startDate.value) filters.push(`开始 ${startDate.value}`);
   if (endDate.value) filters.push(`结束 ${endDate.value}`);
   return filters;
@@ -361,6 +523,9 @@ const canonicalUrl = computed(() => {
 
   if (startDate.value) query.set("start", startDate.value);
   if (endDate.value) query.set("end", endDate.value);
+  Object.entries(buildRouteQuery()).forEach(([key, value]) => {
+    if (!["start", "end", "page"].includes(key)) query.set(key, value);
+  });
   if (currentPage.value > 1) query.set("page", String(currentPage.value));
 
   const queryString = query.toString();
@@ -459,6 +624,17 @@ watch(
     typeof route.query.start === "string" ? route.query.start : "",
     typeof route.query.end === "string" ? route.query.end : "",
     typeof route.query.page === "string" ? route.query.page : "",
+    typeof route.query.type === "string" ? route.query.type : "",
+    typeof route.query.categoryId === "string" ? route.query.categoryId : "",
+    typeof route.query.brand === "string" ? route.query.brand : "",
+    typeof route.query.status === "string" ? route.query.status : "",
+    typeof route.query.inventoryStatus === "string" ? route.query.inventoryStatus : "",
+    typeof route.query.flag === "string" ? route.query.flag : "",
+    typeof route.query.stock === "string" ? route.query.stock : "",
+    typeof route.query.priceMin === "string" ? route.query.priceMin : "",
+    typeof route.query.priceMax === "string" ? route.query.priceMax : "",
+    typeof route.query.sku === "string" ? route.query.sku : "",
+    typeof route.query.sort === "string" ? route.query.sort : "",
   ],
   async () => {
     syncStateFromRoute();
@@ -468,6 +644,7 @@ watch(
 );
 
 syncStateFromRoute();
+await loadCategories();
 await fetchProducts();
 </script>
 
@@ -495,7 +672,14 @@ await fetchProducts();
             placeholder="搜索 POD 商品…"
           />
         </form>
-        <span class="catalog-sort">排序：<strong>最热门</strong></span>
+        <label class="catalog-sort">
+          <span>排序</span>
+          <select v-model="sortMode" @change="handleSearch">
+            <option v-for="item in sortOptions" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
+        </label>
         <button type="button" class="catalog-filter-toggle" @click="toggleFilters">
           <v-icon size="15">mdi-tune-variant</v-icon>
           筛选
@@ -513,12 +697,30 @@ await fetchProducts();
         </div>
 
         <div class="catalog-filter__block">
+          <label>关键词 / SKU</label>
+          <input v-model="searchKeyword" type="search" placeholder="搜索名称、关键词、品牌" @keyup.enter="handleSearch" />
+          <input v-model="skuKeyword" type="search" placeholder="SKU 精确查询" @keyup.enter="handleSearch" />
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>商品分类</label>
+          <select v-model="selectedCategoryId" @change="handleSearch">
+            <option value="">全部分类</option>
+            <option v-for="item in categoryList" :key="item.id" :value="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>商品类型</label>
           <button
             v-for="item in filterCategories"
             :key="item"
             type="button"
             class="catalog-filter__item catalog-filter__item--category"
-            @click="handleKeywordClick(item)"
+            :class="{ active: selectedType === item }"
+            @click="selectedType = selectedType === item ? '' : item; handleSearch()"
           >
             <span>{{ item }}</span>
             <v-icon size="14">mdi-chevron-right</v-icon>
@@ -526,15 +728,57 @@ await fetchProducts();
         </div>
 
         <div class="catalog-filter__block">
-          <label>价格</label>
-          <div class="catalog-price-range">
-            <span></span>
-            <i></i>
+          <label>品牌</label>
+          <input v-model="selectedBrand" type="search" placeholder="输入品牌" @keyup.enter="handleSearch" />
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>价格区间</label>
+          <div class="catalog-number-row">
+            <input v-model.number="priceMin" type="number" min="0" placeholder="最低价" @keyup.enter="handleSearch" />
+            <input v-model.number="priceMax" type="number" min="0" placeholder="最高价" @keyup.enter="handleSearch" />
           </div>
-          <div class="catalog-price-labels">
-            <span>¥99</span>
-            <span>¥399</span>
-          </div>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>库存</label>
+          <select v-model="selectedInventoryStatus" @change="handleSearch">
+            <option v-for="item in inventoryOptions" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
+          <button
+            v-for="item in stockModeOptions"
+            :key="item.value"
+            type="button"
+            class="catalog-filter__item catalog-filter__item--category"
+            :class="{ active: selectedStockMode === item.value }"
+            @click="selectedStockMode = selectedStockMode === item.value ? '' : item.value; handleSearch()"
+          >
+            <span>{{ item.label }}</span>
+            <v-icon size="14">mdi-chevron-right</v-icon>
+          </button>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>商品标签</label>
+          <button
+            v-for="item in flagOptions"
+            :key="item.value"
+            type="button"
+            class="catalog-filter__item"
+            :class="{ active: selectedFlag === item.value }"
+            @click="selectedFlag = selectedFlag === item.value ? '' : item.value; handleSearch()"
+          >
+            <span>{{ item.label }}</span>
+            <v-icon size="14">mdi-chevron-right</v-icon>
+          </button>
+        </div>
+
+        <div class="catalog-filter__block">
+          <label>上新时间</label>
+          <input v-model="startDate" type="date" @change="handleSearch" />
+          <input v-model="endDate" type="date" @change="handleSearch" />
         </div>
 
         <div
@@ -549,44 +793,6 @@ await fetchProducts();
             type="button"
             class="catalog-filter__item"
             :class="{ active: searchKeyword === item || routeKeyword === item }"
-            @click="handleKeywordClick(item)"
-          >
-            <span>{{ item }}</span>
-            <v-icon size="14">mdi-chevron-right</v-icon>
-          </button>
-        </div>
-
-        <div class="catalog-filter__block">
-          <label>颜色</label>
-          <div class="catalog-color-list">
-            <button
-              v-for="color in colorOptions"
-              :key="color"
-              type="button"
-              :style="{ backgroundColor: color }"
-              :aria-label="`颜色 ${color}`"
-            >
-              <v-icon v-if="color === '#111111'" size="12">mdi-check</v-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="catalog-filter__block">
-          <label>尺码</label>
-          <div class="catalog-size-list">
-            <button v-for="size in sizeOptions" :key="size" type="button">
-              {{ size }}
-            </button>
-          </div>
-        </div>
-
-        <div class="catalog-filter__block">
-          <label>风格</label>
-          <button
-            v-for="item in styleOptions"
-            :key="item"
-            type="button"
-            class="catalog-filter__item catalog-filter__item--category"
             @click="handleKeywordClick(item)"
           >
             <span>{{ item }}</span>
@@ -646,7 +852,7 @@ await fetchProducts();
               <h3>{{ product.name }}</h3>
               <div class="catalog-rating-line">
                 <span>★★★★★</span>
-                <small>{{ getProductRating(index) }}/5</small>
+                <small>{{ getProductRating(product, index) }}/5</small>
               </div>
               <div class="catalog-product__footer">
                 <strong>¥{{ getProductPrice(product, index) }}</strong>
@@ -733,9 +939,52 @@ await fetchProducts();
             <input v-model="searchKeyword" type="search" placeholder="搜索商品…" />
           </form>
           <div class="catalog-filter__block">
+            <label>商品分类</label>
+            <select v-model="selectedCategoryId">
+              <option value="">全部分类</option>
+              <option v-for="item in categoryList" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+          <div class="catalog-filter__block">
+            <label>品牌 / SKU</label>
+            <input v-model="selectedBrand" type="search" placeholder="品牌" />
+            <input v-model="skuKeyword" type="search" placeholder="SKU" />
+          </div>
+          <div class="catalog-filter__block">
+            <label>价格区间</label>
+            <div class="catalog-number-row">
+              <input v-model.number="priceMin" type="number" min="0" placeholder="最低价" />
+              <input v-model.number="priceMax" type="number" min="0" placeholder="最高价" />
+            </div>
+          </div>
+          <div class="catalog-filter__block">
+            <label>库存状态</label>
+            <select v-model="selectedInventoryStatus">
+              <option v-for="item in inventoryOptions" :key="item.value" :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
+          <div class="catalog-filter__block">
+            <label>商品标签</label>
+            <button
+              v-for="item in flagOptions"
+              :key="item.value"
+              type="button"
+              class="catalog-filter__item"
+              :class="{ active: selectedFlag === item.value }"
+              @click="selectedFlag = selectedFlag === item.value ? '' : item.value"
+            >
+              <span>{{ item.label }}</span>
+              <v-icon size="15">mdi-chevron-right</v-icon>
+            </button>
+          </div>
+          <div class="catalog-filter__block">
             <label>上新时间</label>
-            <input v-model="startDate" type="date" @change="handleSearch" />
-            <input v-model="endDate" type="date" @change="handleSearch" />
+            <input v-model="startDate" type="date" />
+            <input v-model="endDate" type="date" />
           </div>
           <div
             v-for="group in filterGroups"
@@ -754,7 +1003,7 @@ await fetchProducts();
               <v-icon size="15">mdi-chevron-right</v-icon>
             </button>
           </div>
-          <button type="button" class="catalog-drawer__apply" @click="toggleFilters">
+          <button type="button" class="catalog-drawer__apply" @click="applyDrawerFilters">
             应用筛选
           </button>
         </aside>
@@ -918,18 +1167,26 @@ await fetchProducts();
 }
 
 .catalog-sort {
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: auto minmax(120px, 150px);
   align-items: center;
+  gap: 0.4rem;
   min-height: 2rem;
   white-space: nowrap;
   line-height: 1;
   font-size: 0.75rem;
 }
 
-.catalog-sort strong {
-  display: inline;
+.catalog-sort select {
+  width: 100%;
+  min-height: 2rem;
+  border: 1px solid #e9e9e9;
+  border-radius: 8px;
+  background: #fff;
   color: #111;
-  font-size: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0 0.55rem;
 }
 
 .catalog-filter-toggle,
@@ -959,13 +1216,27 @@ await fetchProducts();
 .catalog-filter {
   align-self: start;
   position: sticky;
-  top: 130px;
+  top: 86px;
   display: grid;
   gap: 0;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 0.85rem;
   border: 1px solid #e9e9e9;
   border-radius: 10px;
   background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  scrollbar-width: thin;
+}
+
+.catalog-filter::-webkit-scrollbar {
+  width: 6px;
+}
+
+.catalog-filter::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #d6d6d6;
 }
 
 .catalog-filter__head {
@@ -1007,7 +1278,8 @@ await fetchProducts();
   line-height: 1;
 }
 
-.catalog-filter__block input {
+.catalog-filter__block input,
+.catalog-filter__block select {
   width: 100%;
   min-height: 2rem;
   border: 1px solid #e9e9e9;
@@ -1016,6 +1288,16 @@ await fetchProducts();
   color: #333;
   padding: 0 0.5rem;
   font-size: 0.75rem;
+}
+
+.catalog-filter__block select {
+  appearance: auto;
+}
+
+.catalog-number-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.45rem;
 }
 
 .catalog-filter__item {

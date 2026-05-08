@@ -83,15 +83,19 @@ interface UpdatePublicUserPasswordParams {
 // 设计请求的请求参数类型
 interface DesignRequestParams {
   name: string
-  phone: string
-  description: string
+  description?: string
+  phoneNumber?: string
+  email?: string
 }
 
 // 设计请求的返回数据类型
 interface DesignRequestResponse {
+  id: string
   name: string
-  phone: string
-  description: string
+  description?: string
+  phoneNumber?: string
+  email?: string
+  createTime: string
 }
 
 // 商品详情接口的返回数据类型 - 已暂时注释，不再使用 2d 商品相关逻辑
@@ -126,23 +130,69 @@ interface ProductResponse {
   id: string
   code?: string
   name: string
+  enName?: string
   description?: string
+  enDescription?: string
   type?: string
+  status?: string
+  sku?: string
+  spu?: string
+  categoryId?: string
+  brand?: string
+  material?: string
+  weight?: number
+  dimensions?: string
+  unit?: string
+  barcode?: string
+  origin?: string
   images?: string[]
   videos?: string[]
+  detailImages?: string[]
   price: number
   salePrice?: number
+  compareAtPrice?: number
+  costPrice?: number
+  currency?: string
   stock: number
-  specifications?: string
+  inventoryStatus?: string
+  lowStockThreshold?: number
+  minOrderQuantity?: number
+  specifications?: any
+  attributes?: any
   tags?: string
   keywords?: string
+  enKeywords?: string
   searchKeywords?: string
+  enSearchKeywords?: string
   slug?: string
   seoTitle?: string
   seoDescription?: string
+  sourceType?: string
   meta?: Record<string, any>
   isPublish: boolean
+  isFeatured?: boolean
+  isNew?: boolean
+  isHot?: boolean
+  isOnSale?: boolean
+  sort?: number
+  salesCount?: number
+  viewCount?: number
+  rating?: number
+  reviewCount?: number
   isLimitedEdition: number
+  createTime: string
+  updateTime: string
+}
+
+// 商品分类接口的返回数据类型
+interface ProductCategoryResponse {
+  id: string
+  name: string
+  enName?: string
+  features?: string
+  description?: string
+  image?: string
+  isActive: boolean
   createTime: string
   updateTime: string
 }
@@ -226,7 +276,7 @@ export const api = {
   // 商品（Product）相关接口
   productList: {
     // 分页获取商品列表（不包含关联信息）
-    getPage: (params: { 
+    getPage: (params: {
       page?: number
       pageSize?: number
       isPublish?: boolean
@@ -238,18 +288,47 @@ export const api = {
       startTime?: string
       endTime?: string
       includeRelations?: boolean
+      categoryId?: string
+      brand?: string
+      material?: string
+      status?: string
+      sku?: string
+      spu?: string
+      inventoryStatus?: string
+      hasStock?: boolean
+      priceMin?: number
+      priceMax?: number
+      isFeatured?: boolean
+      isNew?: boolean
+      isHot?: boolean
+      isOnSale?: boolean
+      stockMin?: number
+      stockMax?: number
+      ratingMin?: number
+      salesMin?: number
+      sortBy?: string
+      sortDir?: string
     }) =>
       request<ApiResponse<{ list: ProductResponse[]; total: number; page: number; pageSize: number }>>('/product/page', {
         method: 'POST',
         body: {
           ...params,
-          includeRelations: params.includeRelations ?? false, // 默认不包含关联信息
+          includeRelations: params.includeRelations ?? false,
         },
         authMode: 'openApiKey',
       }),
     // 根据ID获取商品详情（不包含关联信息）
     getById: (id: string, includeRelations: boolean = false) =>
       request<ApiResponse<ProductResponse>>(`/product/${id}?includeRelations=${includeRelations}`, {
+        method: 'GET',
+        authMode: 'openApiKey',
+      }),
+  },
+  // 商品分类相关接口
+  productCategory: {
+    // 获取所有商品分类
+    getAll: () =>
+      request<ApiResponse<ProductCategoryResponse[]>>('/product-category', {
         method: 'GET',
         authMode: 'openApiKey',
       }),

@@ -19,8 +19,6 @@ useHead({
 });
 
 const founderInfo = {
-  email: "jackieontheway666@gmail.com",
-  github: "https://github.com/chan-max",
   website: "https://1s.design",
 };
 
@@ -60,16 +58,8 @@ const closeQRDialog = () => {
 
     <section class="contact-grid">
       <article class="contact-card contact-card--dark">
-        <span>邮箱</span>
-        <a :href="`mailto:${founderInfo.email}`">{{ founderInfo.email }}</a>
-      </article>
-      <article class="contact-card">
         <span>网站</span>
         <a :href="founderInfo.website" target="_blank">{{ founderInfo.website }}</a>
-      </article>
-      <article class="contact-card">
-        <span>GitHub</span>
-        <a :href="founderInfo.github" target="_blank">chan-max</a>
       </article>
     </section>
 
@@ -158,7 +148,7 @@ const closeQRDialog = () => {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1.1fr repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
