@@ -32,6 +32,13 @@
           </div>
 
           <div class="product-main-frame">
+            <div class="product-frame-mark" aria-hidden="true">
+              <span>{{ product.type || "YISHE POD" }}</span>
+              <small v-if="productImages.length">
+                {{ String(currentImageIndex + 1).padStart(2, "0") }} /
+                {{ String(productImages.length).padStart(2, "0") }}
+              </small>
+            </div>
             <button
               v-if="productImages.length > 1"
               type="button"
@@ -68,6 +75,10 @@
         </div>
 
         <aside class="product-buy-panel">
+          <div class="product-panel-index" aria-hidden="true">
+            <span>YISHE PRODUCT FILE</span>
+            <strong>{{ product.code || product.sku || product.id }}</strong>
+          </div>
           <div class="product-detail-kicker">
             {{ product.type || "POD 定制商品" }}
           </div>
@@ -81,16 +92,15 @@
             />
           </div>
 
-          <div class="product-rating-line" aria-label="商品状态">
-            <span v-for="i in 5" :key="i">★</span>
-            <strong>4.5/5</strong>
-            <small v-if="favoriteCount !== null">{{ favoriteCount }} 收藏</small>
+          <div class="product-status-line" aria-label="商品状态">
+            <span v-if="product.inventoryStatus">{{ product.inventoryStatus }}</span>
+            <span v-if="product.stock !== undefined">库存 {{ product.stock }}</span>
+            <span v-if="favoriteCount !== null">{{ favoriteCount }} 收藏</span>
           </div>
 
-          <div class="product-price-line">
+          <div v-if="hasProductPrice" class="product-price-line">
             <strong>¥{{ productPrice }}</strong>
-            <del>¥{{ productOldPrice }}</del>
-            <span>-20%</span>
+            <del v-if="productOldPrice">¥{{ productOldPrice }}</del>
           </div>
 
           <p class="product-lead">{{ productLead }}</p>
@@ -105,36 +115,35 @@
             </NuxtLink>
           </div>
 
-          <div class="product-choice-block">
-            <span>选择颜色</span>
-            <div class="product-color-options">
-              <button
-                v-for="color in optionColors"
-                :key="color"
-                type="button"
-                :style="{ backgroundColor: color }"
-                :aria-label="`颜色 ${color}`"
-              >
-                <v-icon v-if="color === '#314d80'" size="14">mdi-check</v-icon>
-              </button>
-            </div>
+          <div v-if="productMetaItems.length" class="product-meta-panel">
+            <dl>
+              <template v-for="item in productMetaItems" :key="item.label">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </template>
+            </dl>
           </div>
 
-          <div class="product-choice-block">
-            <span>选择尺码</span>
-            <div class="product-size-options">
-              <button v-for="size in optionSizes" :key="size" type="button">
-                {{ size }}
-              </button>
+          <div v-if="productSignalItems.length" class="product-signal-grid">
+            <article v-for="item in productSignalItems" :key="item.label">
+              <span>{{ item.label }}</span>
+              <strong>{{ item.value }}</strong>
+            </article>
+          </div>
+
+          <div class="product-design-remix">
+            <div>
+              <span>Design Remix</span>
+              <strong>设计同款，做成你的版本</strong>
+              <p>基于这个商品的风格、图案或载体，发起私人定制需求。</p>
             </div>
+            <NuxtLink :to="designSameHref" class="product-design-action">
+              <v-icon size="18">mdi-creation</v-icon>
+              设计同款
+            </NuxtLink>
           </div>
 
           <div class="product-actions">
-            <div class="product-quantity">
-              <button type="button" aria-label="减少数量">-</button>
-              <strong>1</strong>
-              <button type="button" aria-label="增加数量">+</button>
-            </div>
             <NuxtLink to="/contact" class="product-primary-action">
               咨询购买
             </NuxtLink>
@@ -153,28 +162,33 @@
       <section class="product-tabs">
         <nav aria-label="商品详情标签">
           <button type="button" class="active">商品详情</button>
-          <button type="button">评价</button>
-          <button type="button">常见问题</button>
+          <button v-if="productSpecItems.length" type="button">规格参数</button>
+          <button v-if="productAttributeItems.length" type="button">属性</button>
         </nav>
-
-        <div class="product-review-head">
-          <h2>全部评价 <span>({{ reviewCards.length }})</span></h2>
-          <button type="button">写评价</button>
-        </div>
-
-        <div class="product-review-grid">
-          <article v-for="review in reviewCards" :key="review.name">
-            <div class="product-rating-line">
-              <span v-for="i in 5" :key="i">★</span>
-            </div>
-            <h3>{{ review.name }} <v-icon size="16">mdi-check-decagram</v-icon></h3>
-            <p>{{ review.text }}</p>
-          </article>
-        </div>
 
         <div class="product-detail-copy">
           <p>{{ productStory }}</p>
-          <p>{{ productUsage }}</p>
+          <p v-if="productUsage">{{ productUsage }}</p>
+        </div>
+
+        <div v-if="productSpecItems.length" class="product-data-table">
+          <h2>规格参数</h2>
+          <dl>
+            <template v-for="item in productSpecItems" :key="item.label">
+              <dt>{{ item.label }}</dt>
+              <dd>{{ item.value }}</dd>
+            </template>
+          </dl>
+        </div>
+
+        <div v-if="productAttributeItems.length" class="product-data-table">
+          <h2>商品属性</h2>
+          <dl>
+            <template v-for="item in productAttributeItems" :key="item.label">
+              <dt>{{ item.label }}</dt>
+              <dd>{{ item.value }}</dd>
+            </template>
+          </dl>
         </div>
       </section>
 
@@ -182,7 +196,7 @@
         <h2>你可能还喜欢</h2>
         <div class="product-related-grid">
           <NuxtLink
-            v-for="(item, index) in relatedProducts"
+            v-for="item in relatedProducts"
             :key="item.id"
             :to="item.href || getProductPath(item)"
             class="product-related-card"
@@ -197,8 +211,8 @@
               <span v-else>{{ item.type || "POD" }}</span>
             </div>
             <h3>{{ item.name }}</h3>
-            <p>★★★★★ <small>4.5/5</small></p>
-            <strong>¥{{ getRelatedPrice(item, index) }}</strong>
+            <p v-if="item.type">{{ item.type }}</p>
+            <strong v-if="getRelatedPrice(item)">¥{{ getRelatedPrice(item) }}</strong>
           </NuxtLink>
         </div>
       </section>
@@ -308,74 +322,131 @@ const productStory = computed(() => {
 
 const productUsage = computed(() => {
   if (!product.value) return "";
-  return "适合用于私人定制、品牌企划、节日礼赠、创作者周边和按需生产商品的视觉起点。";
+  const values = [
+    product.value.type,
+    product.value.brand,
+    product.value.material,
+    keywordLine.value,
+  ].filter(Boolean);
+  if (!values.length) return "";
+  return `已收录信息：${values.join(" / ")}。`;
 });
 
-const productPrice = computed(() => {
-  const seed =
-    Number(String(product.value?.id || "").replace(/\D/g, "").slice(-2)) || 8;
-  return 129 + (seed % 8) * 30;
-});
-
-const productOldPrice = computed(() => productPrice.value + 80);
-
-const optionColors = ["#4f4631", "#314d80", "#111111"];
-const optionSizes = ["S", "M", "L", "XL"];
-const reviewCards = [
-  {
-    name: "M. Studio",
-    text: "图案细节和商品展示都很完整，适合继续做品牌周边延展。",
-  },
-  {
-    name: "Y. Creator",
-    text: "配色干净，落在 T 恤、帆布包和礼赠套装上都比较稳。",
-  },
-];
-
-const fallbackRelatedProducts = computed(() => {
-  const baseImage = productImages.value[0] || "";
-  const fallbackKeywords = productKeywords.value.length
-    ? productKeywords.value
-    : ["印花", "礼物", "家居", "T恤"];
-
-  return [
-    {
-      id: "fallback-pod-print",
-      href: `/products/${encodeURIComponent(fallbackKeywords[0] || "印花")}`,
-      name: "印花胶囊系列",
-      type: "POD 印花",
-      images: baseImage ? [baseImage] : [],
-    },
-    {
-      id: "fallback-custom-gift",
-      href: "/products/礼物",
-      name: "定制礼物系列",
-      type: "定制礼物",
-      images: [],
-    },
-    {
-      id: "fallback-home-goods",
-      href: "/products/家居",
-      name: "家居方向",
-      type: "家居装饰",
-      images: [],
-    },
-    {
-      id: "fallback-apparel",
-      href: "/products/T恤",
-      name: "服饰印花方向",
-      type: "服饰",
-      images: [],
-    },
-  ];
-});
-
-const setFallbackRelatedProducts = () => {
-  relatedProducts.value = fallbackRelatedProducts.value;
+const formatPrice = (value: unknown) => {
+  const price = Number(value || 0);
+  if (!Number.isFinite(price) || price <= 0) return "";
+  return Number(price.toFixed(2)).toString();
 };
 
-const hasPreviousProduct = computed(() => false);
-const hasNextProduct = computed(() => false);
+const hasProductPrice = computed(
+  () => Boolean(formatPrice(product.value?.salePrice || product.value?.price)),
+);
+
+const productPrice = computed(() => {
+  return formatPrice(product.value?.salePrice || product.value?.price);
+});
+
+const productOldPrice = computed(() => {
+  const compareAtPrice = formatPrice(product.value?.compareAtPrice);
+  if (compareAtPrice) return compareAtPrice;
+  const price = Number(product.value?.price || 0);
+  const salePrice = Number(product.value?.salePrice || 0);
+  if (price > salePrice && salePrice > 0) return formatPrice(price);
+  return "";
+});
+
+const formatMetaValue = (value: unknown) => {
+  if (value === null || value === undefined || value === "") return "";
+  if (Array.isArray(value)) return value.map(formatMetaValue).filter(Boolean).join("、");
+  if (typeof value === "object") {
+    return Object.entries(value as Record<string, unknown>)
+      .map(([key, entryValue]) => `${key}: ${formatMetaValue(entryValue)}`)
+      .filter((item) => !item.endsWith(": "))
+      .join("；");
+  }
+  return String(value);
+};
+
+const toDisplayItems = (source: unknown) => {
+  if (!source) return [];
+  let data = source;
+  if (typeof source === "string") {
+    try {
+      data = JSON.parse(source);
+    } catch {
+      return source
+        .split(/[,，;；\n]/)
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .map((value) => ({ label: "参数", value }));
+    }
+  }
+  if (Array.isArray(data)) {
+    return data
+      .map((item, index) => {
+        if (typeof item === "object" && item !== null) {
+          const record = item as Record<string, unknown>;
+          return {
+            label: formatMetaValue(record.name || record.label || `参数 ${index + 1}`),
+            value: formatMetaValue(record.value || record.content || record.text),
+          };
+        }
+        return { label: `参数 ${index + 1}`, value: formatMetaValue(item) };
+      })
+      .filter((item) => item.value);
+  }
+  if (typeof data === "object") {
+    return Object.entries(data as Record<string, unknown>)
+      .map(([label, value]) => ({ label, value: formatMetaValue(value) }))
+      .filter((item) => item.value);
+  }
+  return [];
+};
+
+const productMetaItems = computed(() =>
+  [
+    { label: "品牌", value: product.value?.brand },
+    { label: "材质", value: product.value?.material },
+    { label: "尺寸", value: product.value?.dimensions },
+    { label: "单位", value: product.value?.unit },
+    { label: "SKU", value: product.value?.sku },
+    { label: "SPU", value: product.value?.spu },
+    { label: "条码", value: product.value?.barcode },
+    { label: "产地", value: product.value?.origin },
+    { label: "重量", value: product.value?.weight ? `${product.value.weight}` : "" },
+  ]
+    .map((item) => ({ ...item, value: formatMetaValue(item.value) }))
+    .filter((item) => item.value),
+);
+
+const productSignalItems = computed(() =>
+  [
+    { label: "类型", value: product.value?.type },
+    { label: "品牌", value: product.value?.brand },
+    { label: "材质", value: product.value?.material },
+    { label: "更新", value: formatDate(product.value?.updateTime) },
+  ]
+    .map((item) => ({ ...item, value: formatMetaValue(item.value) }))
+    .filter((item) => item.value)
+    .slice(0, 4),
+);
+
+const productSpecItems = computed(() => toDisplayItems(product.value?.specifications));
+const productAttributeItems = computed(() => toDisplayItems(product.value?.attributes));
+
+const designSameHref = computed(() => ({
+  path: "/design",
+  query: {
+    source: "product",
+    productId: product.value?.id || "",
+    productName: product.value?.name || "",
+    productType: product.value?.type || "",
+    keywords: productKeywords.value.slice(0, 6).join(","),
+    image: currentImage.value || "",
+    from: productSeoUrl.value,
+  },
+}));
+
 const isLoggedIn = computed(() => publicUserStore.isLoggedIn);
 
 const normalizeSeoText = (value?: string | null) => String(value || "").trim();
@@ -435,7 +506,7 @@ const productStructuredDataJson = computed(() => {
     image: productSeoImage.value,
     url: productSeoUrl.value,
     category: product.value.type || "POD 定制商品",
-    price: productPrice.value,
+    price: Number(productPrice.value) || undefined,
   });
   return JSON.stringify({
     "@context": "https://schema.org",
@@ -488,7 +559,7 @@ const fetchProductDetail = async () => {
     ) {
       product.value = response.data;
       currentImageIndex.value = 0;
-      setFallbackRelatedProducts();
+      relatedProducts.value = [];
       await Promise.all([checkFavoriteStatus(), fetchFavoriteCount()]);
     } else {
       product.value = null;
@@ -571,13 +642,10 @@ const fetchRelatedProducts = async () => {
       }
 
       relatedProducts.value = list.slice(0, 4);
-      if (relatedProducts.value.length === 0) {
-        relatedProducts.value = fallbackRelatedProducts.value;
-      }
     }
   } catch (error) {
     console.error("获取相关推荐失败:", error);
-    relatedProducts.value = fallbackRelatedProducts.value;
+    relatedProducts.value = [];
   }
 };
 
@@ -586,11 +654,8 @@ const getRelatedImage = (item: any) => {
   return item.images.find((url: string) => url && url.startsWith("http")) || "";
 };
 
-const getRelatedPrice = (item: any, index = 0) => {
-  const seed =
-    Number(String(item?.id || index).replace(/\D/g, "").slice(-2)) ||
-    index + 7;
-  return 99 + (seed % 8) * 20;
+const getRelatedPrice = (item: any) => {
+  return formatPrice(item?.salePrice || item?.price);
 };
 
 const toggleFavorite = async () => {
@@ -720,9 +785,6 @@ const shareProduct = async () => {
   }
 };
 
-const navigateToPrevious = () => {};
-const navigateToNext = () => {};
-
 const openImagePreview = () => {
   if (productImages.value.length === 0) return;
   isPreviewOpen.value = true;
@@ -752,14 +814,15 @@ onMounted(() => {
 <style scoped>
 .product-detail-page {
   min-height: 100vh;
-  background: #fff;
+  background: #faf8f3;
   color: #111;
-  padding: 1rem 0 clamp(2rem, 4vw, 3.5rem);
+  padding: clamp(0.8rem, 2vw, 1.25rem) 0 clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .product-detail-shell {
   width: var(--ys-container);
   margin: 0 auto;
+  max-width: 1480px;
 }
 
 .product-breadcrumb {
@@ -785,10 +848,10 @@ onMounted(() => {
 
 .product-detail-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
-  gap: clamp(1rem, 2.5vw, 2rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  gap: clamp(1rem, 2.4vw, 2.4rem);
   align-items: start;
-  margin-top: 0.75rem;
+  margin-top: clamp(0.75rem, 2vw, 1.4rem);
 }
 
 .product-gallery {
@@ -818,7 +881,7 @@ onMounted(() => {
 }
 
 .product-thumbs::-webkit-scrollbar {
-  width: 1px;
+  width: 0;
   height: 0;
 }
 
@@ -827,8 +890,7 @@ onMounted(() => {
 }
 
 .product-thumbs::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
 }
 
 .product-thumbs::-webkit-scrollbar-corner {
@@ -842,15 +904,22 @@ onMounted(() => {
   min-width: 0;
   aspect-ratio: 1;
   overflow: hidden;
-  border: 1px solid transparent;
+  border: 0;
   min-height: auto;
-  border-radius: 8px;
-  background: #f0f0f0;
+  border-radius: 0;
+  background: #f0ede6;
   padding: 0;
+  transition: transform 220ms ease, opacity 220ms ease, background-color 220ms ease;
 }
 
 .product-thumbs button.active {
-  border-color: #111;
+  background: #ded6ca;
+}
+
+.product-thumbs button:hover {
+  transform: translateY(-2px);
+  opacity: 0.88;
+  background: #e6ddd0;
 }
 
 .product-thumbs img {
@@ -866,10 +935,40 @@ onMounted(() => {
   place-items: center;
   align-self: start;
   width: 100%;
-  min-height: clamp(360px, 36vw, 520px);
+  min-height: clamp(440px, 48vw, 720px);
   overflow: hidden;
-  border-radius: 10px;
-  background: #f1f1f1;
+  border: 0;
+  border-radius: 0;
+  background: #f0ede6;
+  transition: background-color 260ms ease;
+}
+
+.product-main-frame:hover {
+  background: #ebe4d8;
+}
+
+.product-frame-mark {
+  position: absolute;
+  z-index: 3;
+  inset: 1rem 1rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.product-frame-mark span,
+.product-frame-mark small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .product-main-frame > * {
@@ -877,20 +976,28 @@ onMounted(() => {
 }
 
 .product-main-image {
-  width: min(82%, 720px);
-  max-height: min(68vh, 520px);
+  position: relative;
+  z-index: 2;
+  width: min(86%, 820px);
+  max-height: min(72vh, 660px);
   object-fit: contain;
   cursor: zoom-in;
   filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.1));
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), filter 360ms ease;
+}
+
+.product-main-frame:hover .product-main-image {
+  transform: scale(1.018);
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.13));
 }
 
 .product-gallery--single .product-main-frame {
-  min-height: clamp(320px, 32vw, 480px);
+  min-height: clamp(440px, 48vw, 720px);
 }
 
 .product-gallery--single .product-main-image {
-  width: min(92%, 760px);
-  max-height: min(58vh, 480px);
+  width: min(88%, 840px);
+  max-height: min(72vh, 660px);
 }
 
 .product-no-image {
@@ -902,7 +1009,7 @@ onMounted(() => {
 
 .product-gallery-arrow {
   position: absolute;
-  z-index: 4;
+  z-index: 5;
   display: grid;
   place-items: center;
   width: 2rem;
@@ -911,6 +1018,13 @@ onMounted(() => {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   color: #111;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.product-gallery-arrow:hover {
+  transform: scale(1.06);
+  background: #111;
+  color: #fff;
 }
 
 .product-gallery-arrow--left {
@@ -925,13 +1039,43 @@ onMounted(() => {
   position: sticky;
   top: 80px;
   display: grid;
-  gap: 0.85rem;
+  gap: 1rem;
+  border-top: 0;
+  background: transparent;
+  padding: clamp(0.5rem, 1vw, 0.75rem) 0 0;
+}
+
+.product-panel-index {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 0;
+}
+
+.product-panel-index span {
+  color: #8a806c;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.product-panel-index strong {
+  color: #333;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .product-detail-kicker {
-  color: #666;
+  color: #777;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -943,62 +1087,67 @@ onMounted(() => {
 }
 
 .product-title-row h1 {
+  min-width: 0;
   margin: 0;
   color: #050505;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  line-height: 1.15;
-  text-transform: uppercase;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.75rem, 3vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.product-rating-line {
+.product-status-line {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.3rem;
-  color: #f5b301;
-  font-size: 0.78rem;
+  gap: 0.45rem;
 }
 
-.product-rating-line strong,
-.product-rating-line small {
+.product-status-line span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.65rem;
+  border: 0;
+  background: #fff;
   color: #555;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  font-weight: 750;
+  padding: 0 0.65rem;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.product-status-line span:hover {
+  background: #111;
+  color: #fff;
 }
 
 .product-lead {
   margin: 0;
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.7;
+  color: #4b4b4b;
+  font-size: 0.88rem;
+  line-height: 1.78;
+  overflow-wrap: anywhere;
 }
 
 .product-price-line {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .product-price-line strong,
 .product-price-line del {
-  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
   line-height: 1;
   font-weight: 800;
 }
 
 .product-price-line del {
   color: rgba(0, 0, 0, 0.36);
-}
-
-.product-price-line span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.4rem;
-  border-radius: 4px;
-  background: rgba(255, 51, 51, 0.1);
-  color: #ff3333;
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 0 0.5rem;
 }
 
 .product-tags,
@@ -1013,73 +1162,187 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   min-height: 1.65rem;
-  border: 1px solid #ececec;
-  border-radius: 6px;
-  background: #f7f7f7;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
   color: #333;
   font-size: 0.68rem;
   font-weight: 700;
   padding: 0 0.6rem;
   text-decoration: none;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
 .product-tags a:hover,
 .product-next-links a:hover {
+  transform: translateY(-2px);
   background: #111;
   color: #fff;
 }
 
-.product-choice-block {
+.product-meta-panel {
   display: grid;
-  gap: 0.6rem;
   padding-top: 0.75rem;
-  border-top: 1px solid #eee;
 }
 
-.product-choice-block > span {
-  color: #777;
-  font-size: 0.78rem;
-}
-
-.product-color-options,
-.product-size-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.product-color-options button {
+.product-signal-grid {
   display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 50%;
-  color: #fff;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  background: transparent;
 }
 
-.product-size-options button {
-  min-height: 2rem;
+.product-signal-grid article {
+  display: grid;
+  align-content: space-between;
+  min-height: 5rem;
+  background: #faf8f3;
+  padding: 0.75rem;
+  transition: transform 220ms ease, background-color 220ms ease;
+}
+
+.product-signal-grid article:hover {
+  transform: translateY(-3px);
+  background: #f0eadf;
+}
+
+.product-signal-grid span {
+  color: #8a806c;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.product-signal-grid strong {
+  display: -webkit-box;
+  margin-top: 0.7rem;
+  color: #111;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.12;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.product-design-remix {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+  overflow: hidden;
   border: 0;
-  border-radius: 6px;
-  background: #f0f0f0;
-  color: rgba(0, 0, 0, 0.62);
-  font-size: 0.72rem;
-  padding: 0 0.9rem;
+  background: #111;
+  color: #fff;
+  padding: 1rem;
+  transition: transform 240ms ease, background-color 240ms ease;
 }
 
-.product-size-options button:hover,
-.product-size-options button:first-child {
-  background: #000;
-  color: #fff;
+.product-design-remix:hover {
+  transform: translateY(-3px);
+  background: #1c1a17;
+}
+
+.product-design-remix div {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.product-design-remix span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.product-design-remix strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.product-design-remix p {
+  max-width: 22rem;
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+.product-design-action {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.35rem;
+  border: 0;
+  background: #fff;
+  color: #111;
+  font-size: 0.76rem;
+  font-weight: 850;
+  padding: 0 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 220ms ease, background-color 220ms ease;
+}
+
+.product-design-action:hover {
+  transform: translateY(-2px);
+  background: #f2eadf;
+}
+
+.product-meta-panel dl,
+.product-data-table dl {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 0.28fr) minmax(0, 1fr);
+  gap: 0.35rem 0.65rem;
+  margin: 0;
+  background: transparent;
+}
+
+.product-meta-panel dt,
+.product-meta-panel dd,
+.product-data-table dt,
+.product-data-table dd {
+  min-height: 2.4rem;
+  margin: 0;
+  border-bottom: 0;
+  background: rgba(255, 255, 255, 0.62);
+  color: #555;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  padding: 0.62rem 0.75rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.product-meta-panel dt,
+.product-data-table dt {
+  color: #777;
+  font-weight: 800;
 }
 
 .product-actions {
   display: grid;
-  grid-template-columns: 130px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(6.8rem, auto) minmax(5.4rem, auto);
   gap: 0.5rem;
   padding-top: 0.75rem;
-  border-top: 1px solid #eee;
+  border-top: 0;
 }
 
 .product-primary-action {
@@ -1087,47 +1350,46 @@ onMounted(() => {
 }
 
 .product-primary-action,
-.product-quantity,
 .product-secondary-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
   min-height: 2.6rem;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.78rem;
   font-weight: 700;
   text-decoration: none;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .product-primary-action {
   border: 0;
   background: #000;
   color: #fff;
+  transition: transform 180ms ease, background-color 180ms ease;
 }
 
 .product-secondary-action {
-  border: 1px solid #e9e9e9;
+  border: 0;
   background: #fff;
   color: #111;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
-.product-quantity {
-  justify-content: space-between;
-  border-radius: 8px;
-  background: #f0f0f0;
-  padding: 0 0.6rem;
+.product-primary-action:hover,
+.product-secondary-action:hover {
+  transform: translateY(-2px);
 }
 
-.product-quantity button {
-  display: grid;
-  place-items: center;
-  width: 1.6rem;
-  height: 1.6rem;
-  border: 0;
-  background: transparent;
-  color: #111;
-  font-size: 1rem;
+.product-primary-action:hover {
+  background: #27231f;
+}
+
+.product-secondary-action:hover {
+  background: #111;
+  color: #fff;
 }
 
 .product-tabs,
@@ -1136,35 +1398,33 @@ onMounted(() => {
 }
 
 .product-tabs nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  border-bottom: 0;
 }
 
 .product-tabs nav button {
   min-height: 2.6rem;
   border: 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 0;
   background: transparent;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.product-tabs nav button:hover {
+  color: #111;
 }
 
 .product-tabs nav button.active {
-  border-color: #000;
   color: #111;
   font-weight: 700;
 }
 
-.product-review-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: 1.2rem;
-}
-
-.product-review-head h2,
 .product-related h2 {
   margin: 0;
   color: #000;
@@ -1173,62 +1433,44 @@ onMounted(() => {
   text-transform: uppercase;
 }
 
-.product-review-head h2 span {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 0.82rem;
-}
-
-.product-review-head button {
-  min-height: 2.2rem;
-  border: 0;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.72rem;
-  padding: 0 0.9rem;
-}
-
-.product-review-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.product-review-grid article {
-  min-height: 160px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  padding: 1rem;
-}
-
-.product-review-grid h3 {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin: 0.5rem 0 0;
-  font-size: 0.85rem;
-}
-
-.product-review-grid h3 .v-icon {
-  color: #01ab31;
-}
-
-.product-review-grid p,
 .product-detail-copy p {
   color: #555;
   font-size: 0.78rem;
   line-height: 1.7;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .product-detail-copy {
   display: grid;
   gap: 0.35rem;
   margin-top: 1rem;
-  border-radius: 10px;
-  background: #f7f7f7;
+  border-top: 0;
+  border-bottom: 0;
+  background: rgba(255, 255, 255, 0.68);
   padding: 1rem;
+  position: relative;
+}
+
+.product-detail-copy::before {
+  content: "DETAIL";
+  position: static;
+  color: #8a806c;
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  writing-mode: initial;
+}
+
+.product-data-table {
+  margin-top: 1.2rem;
+}
+
+.product-data-table h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .product-related-grid {
@@ -1241,6 +1483,7 @@ onMounted(() => {
 .product-related-card {
   color: inherit;
   text-decoration: none;
+  transition: transform 260ms ease;
 }
 
 .product-related-card > div {
@@ -1248,26 +1491,50 @@ onMounted(() => {
   place-items: center;
   aspect-ratio: 0.82;
   overflow: hidden;
-  border-radius: 10px;
-  background: #f0f0f0;
+  border: 0;
+  border-radius: 0;
+  background: #f0ede6;
+  transition: background-color 260ms ease;
 }
 
 .product-related-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 320ms ease;
+}
+
+.product-related-card:hover {
+  transform: translateY(-3px);
+}
+
+.product-related-card:hover > div {
+  background: #e9e2d6;
+}
+
+.product-related-card:hover img {
+  transform: scale(1.035);
 }
 
 .product-related-card h3 {
   margin: 0.5rem 0 0;
   font-size: 0.82rem;
   line-height: 1.35;
+  display: -webkit-box;
+  min-height: 2.2rem;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .product-related-card p {
   margin: 0.2rem 0 0;
-  color: #ffc633;
+  color: #777;
   font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .product-related-card p small {
@@ -1277,7 +1544,7 @@ onMounted(() => {
 .product-related-card strong {
   display: block;
   margin-top: 0.2rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .product-loading,
@@ -1396,12 +1663,18 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 
+  .product-main-frame,
+  .product-gallery--single .product-main-frame {
+    min-height: clamp(360px, 58vw, 620px);
+  }
+
   .product-related-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .product-buy-panel {
     position: static;
+    border-top-color: #e5ded2;
   }
 }
 
@@ -1427,21 +1700,86 @@ onMounted(() => {
   }
 
   .product-main-frame {
-    min-height: 320px;
-    border-radius: 8px;
+    min-height: min(82vw, 380px);
+  }
+
+  .product-frame-mark {
+    inset: 0.7rem 0.7rem auto;
+    font-size: 0.56rem;
+  }
+
+  .product-buy-panel {
+    padding: 0.9rem;
   }
 
   .product-title-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+  }
+
+  .product-title-row h1 {
+    font-size: clamp(1.55rem, 8vw, 2.2rem);
+    line-height: 1.12;
   }
 
   .product-actions {
     grid-template-columns: 1fr;
   }
 
-  .product-review-grid,
-  .product-tabs nav {
+  .product-primary-action,
+  .product-secondary-action {
+    width: 100%;
+  }
+
+  .product-meta-panel dl,
+  .product-data-table dl {
     grid-template-columns: 1fr;
+  }
+
+  .product-signal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-signal-grid article {
+    min-height: 4.4rem;
+    padding: 0.65rem;
+  }
+
+  .product-signal-grid strong {
+    font-size: 0.92rem;
+  }
+
+  .product-design-remix {
+    grid-template-columns: 1fr;
+    padding: 0.9rem;
+  }
+
+  .product-design-action {
+    width: 100%;
+  }
+
+  .product-meta-panel dt,
+  .product-data-table dt {
+    min-height: auto;
+    padding-bottom: 0.2rem;
+  }
+
+  .product-meta-panel dd,
+  .product-data-table dd {
+    padding-top: 0.45rem;
+  }
+
+  .product-tabs nav {
+    gap: 0.8rem;
+  }
+
+  .product-detail-copy {
+    padding: 0.95rem 0.85rem;
+  }
+
+  .product-tabs nav button {
+    min-height: 2.2rem;
+    font-size: 0.72rem;
   }
 
   .product-related-grid {
@@ -1449,9 +1787,5 @@ onMounted(() => {
     gap: 0.6rem;
   }
 
-  .product-review-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
 }
 </style>

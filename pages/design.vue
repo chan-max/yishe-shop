@@ -16,6 +16,7 @@ usePageSEO({
 
 const toast = useToast();
 const router = useRouter();
+const route = useRoute();
 const { submitDesignRequest, loading } = useDesignRequest();
 
 const form = reactive({
@@ -124,6 +125,52 @@ const guideSections = computed<GuideSection[]>(() => [
     selected: selectedServices.value,
   },
 ]);
+
+const normalizeQueryValue = (value: unknown) =>
+  Array.isArray(value) ? String(value[0] || "") : String(value || "");
+
+const applyProductSource = () => {
+  if (normalizeQueryValue(route.query.source) !== "product") return;
+
+  const productName = normalizeQueryValue(route.query.productName);
+  const productType = normalizeQueryValue(route.query.productType);
+  const keywords = normalizeQueryValue(route.query.keywords)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const productUrl = normalizeQueryValue(route.query.from);
+
+  if (productName && !form.name) {
+    form.name = `设计同款：${productName}`;
+  }
+
+  const sourceLines = [
+    productName ? `参考商品：${productName}` : "",
+    productType ? `商品类型：${productType}` : "",
+    keywords.length ? `参考关键词：${keywords.join("、")}` : "",
+    productUrl ? `参考链接：${productUrl}` : "",
+  ].filter(Boolean);
+
+  if (sourceLines.length && !form.description) {
+    form.description = sourceLines.join("\n");
+  }
+
+  const matchedProduct = productOptions.find(
+    (item) => productType.includes(item) || keywords.some((keyword) => keyword.includes(item)),
+  );
+  if (matchedProduct && !selectedProducts.value.includes(matchedProduct)) {
+    selectedProducts.value.push(matchedProduct);
+  }
+
+  keywords.forEach((keyword) => {
+    const matchedStyle = styleOptions.find((item) => keyword.includes(item));
+    if (matchedStyle && !selectedStyles.value.includes(matchedStyle)) {
+      selectedStyles.value.push(matchedStyle);
+    }
+  });
+};
+
+applyProductSource();
 </script>
 
 <template>

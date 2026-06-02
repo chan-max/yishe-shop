@@ -81,6 +81,17 @@ const categoryTiles = [
   { label: "生活方式", keyword: "帆布包" },
 ];
 
+const productFinderGroups = [
+  { key: "mousepad", label: "鼠标垫", keyword: "鼠标垫", hint: "桌面办公 / 游戏周边" },
+  { key: "apparel", label: "T 恤", keyword: "T恤", hint: "服饰印花 / 潮流上新" },
+  { key: "hoodie", label: "卫衣", keyword: "卫衣", hint: "秋冬服饰 / 社群周边" },
+  { key: "drinkware", label: "杯子", keyword: "杯子", hint: "礼赠 / 活动纪念" },
+  { key: "digital", label: "手机壳", keyword: "手机壳", hint: "数码配件 / 日常风格" },
+  { key: "home", label: "抱枕", keyword: "抱枕", hint: "家居软装 / 空间装饰" },
+  { key: "bags", label: "帆布包", keyword: "帆布包", hint: "出行周边 / 品牌物料" },
+  { key: "poster", label: "装饰画", keyword: "装饰画", hint: "墙面陈列 / 视觉作品" },
+];
+
 const homeModules = [
   {
     key: "mousepad",
@@ -187,6 +198,14 @@ const productUniverses = computed(() =>
   homeModules.map((module, index) => ({
     ...module,
     products: getModuleProducts(module.key, module.limit, index),
+  })),
+);
+
+const productFinderItems = computed(() =>
+  productFinderGroups.map((group, index) => ({
+    ...group,
+    href: `/products/${encodeURIComponent(group.keyword)}`,
+    products: getModuleProducts(group.key, 3, index + 10),
   })),
 );
 
@@ -330,11 +349,16 @@ const fetchProductPage = async (params: {
 
 const fetchFeaturedProducts = async () => {
   try {
+    const finderOnlyGroups = productFinderGroups.filter(
+      (group) => !homeModules.some((module) => module.key === group.key),
+    );
+    const keywordGroups = [...homeModules, ...finderOnlyGroups];
+
     const [featured, ...moduleResults] = await Promise.all([
       fetchProductPage({ pageSize: 18, random: true }),
-      ...homeModules.map((module) =>
+      ...keywordGroups.map((module) =>
         fetchProductPage({
-          pageSize: module.limit + 4,
+          pageSize: ("limit" in module ? module.limit : 3) + 4,
           searchText: module.keyword,
           random: true,
         }),
@@ -342,7 +366,7 @@ const fetchFeaturedProducts = async () => {
     ]);
 
     featuredProducts.value = normalizeProducts(featured, 1);
-    moduleProducts.value = homeModules.reduce<Record<string, FeaturedProduct[]>>(
+    moduleProducts.value = keywordGroups.reduce<Record<string, FeaturedProduct[]>>(
       (result, module, index) => {
         result[module.key] = normalizeProducts(moduleResults[index] || [], index + 2);
         return result;
@@ -392,6 +416,43 @@ await fetchFeaturedProducts();
           <NuxtLink to="/products">发现创意商品</NuxtLink>
           <NuxtLink to="/design">开始私人定制</NuxtLink>
         </div>
+      </div>
+    </section>
+
+    <section class="lux-finder" aria-label="快速查找 POD 商品">
+      <div class="lux-finder__head">
+        <span>Find Your Product</span>
+        <h2>先选商品，再让创意落地。</h2>
+        <p>首页按固定关键词抓取对应商品，结构清晰，也方便后续继续维护更多品类。</p>
+      </div>
+      <div class="lux-finder__grid">
+        <NuxtLink
+          v-for="item in productFinderItems"
+          :key="item.key"
+          :to="item.href"
+          class="lux-finder-card"
+        >
+          <section>
+            <span>{{ item.keyword }}</span>
+            <strong>{{ item.label }}</strong>
+            <small>{{ item.hint }}</small>
+          </section>
+          <div class="lux-finder-card__preview">
+            <div
+              v-for="product in item.products"
+              :key="`${item.key}-${product.id}`"
+            >
+              <img
+                v-if="getProductImageUrl(product, 260)"
+                :src="getProductImageUrl(product, 260)"
+                :alt="product.title"
+                class="lux-product-image"
+                loading="lazy"
+              />
+              <div v-else class="lux-image-skeleton" aria-hidden="true"></div>
+            </div>
+          </div>
+        </NuxtLink>
       </div>
     </section>
 
@@ -647,7 +708,9 @@ await fetchFeaturedProducts();
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(circle at 50% 42%, transparent 0 36%, rgba(0, 0, 0, 0.18) 78%);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 24%, transparent 52%, rgba(0, 0, 0, 0.48)),
+    radial-gradient(circle at 50% 42%, transparent 0 32%, rgba(0, 0, 0, 0.24) 82%);
 }
 
 .lux-hero__nav {
@@ -673,6 +736,11 @@ await fetchFeaturedProducts();
   text-transform: uppercase;
 }
 
+.lux-hero__nav a,
+.lux-hero__caption a {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
 .lux-hero__brand {
   align-self: center;
   justify-self: center;
@@ -683,6 +751,9 @@ await fetchFeaturedProducts();
   letter-spacing: 0.06em;
   line-height: 0.8;
   text-align: center;
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.26),
+    0 18px 54px rgba(0, 0, 0, 0.55);
   animation: lux-brand-rise 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -693,6 +764,9 @@ await fetchFeaturedProducts();
   width: min(92vw, 760px);
   transform: translateX(-50%);
   text-align: center;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.54),
+    0 18px 44px rgba(0, 0, 0, 0.48);
   animation: lux-caption-rise 1100ms 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -714,14 +788,18 @@ await fetchFeaturedProducts();
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.05;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.42),
+    0 14px 38px rgba(0, 0, 0, 0.56);
 }
 
 .lux-hero__caption p {
   max-width: 44rem;
   margin: 0.7rem auto 0;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.9rem;
   line-height: 1.8;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.62);
 }
 
 .lux-hero__caption div {
@@ -729,6 +807,126 @@ await fetchFeaturedProducts();
   justify-content: center;
   gap: 1.4rem;
   margin-top: 1.05rem;
+}
+
+.lux-finder {
+  width: min(var(--ys-page-max), calc(100% - var(--ys-page-gutter)));
+  margin-inline: auto;
+  padding: clamp(1.8rem, 4vw, 3.2rem) 0;
+}
+
+.lux-finder__head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.58fr) minmax(280px, 0.42fr);
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: clamp(0.9rem, 2vw, 1.3rem);
+}
+
+.lux-finder__head span {
+  color: #777;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.lux-finder__head h2 {
+  margin: 0.45rem 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.9rem, 3.4vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.lux-finder__head p {
+  margin: 0;
+  color: #666;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.lux-finder__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.55rem, 1vw, 0.85rem);
+}
+
+.lux-finder-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(96px, 1fr);
+  min-height: 148px;
+  overflow: hidden;
+  background: #f4f0e8;
+  color: #111;
+  text-decoration: none;
+  transition: transform 220ms ease, background-color 220ms ease;
+}
+
+.lux-finder-card:hover {
+  transform: translateY(-4px);
+  background: #ece5d8;
+}
+
+.lux-finder-card section {
+  display: grid;
+  align-content: end;
+  min-width: 0;
+  padding: 0.85rem;
+}
+
+.lux-finder-card section span {
+  color: #777;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lux-finder-card section strong {
+  margin-top: 0.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.lux-finder-card section small {
+  display: -webkit-box;
+  margin-top: 0.45rem;
+  color: #68635b;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lux-finder-card__preview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  min-width: 0;
+  background: rgba(17, 17, 17, 0.08);
+}
+
+.lux-finder-card__preview > div {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  background: #eee9df;
+}
+
+.lux-finder-card__preview img,
+.lux-finder-card__preview .lux-image-skeleton {
+  width: 82%;
+  max-height: 90px;
+  object-fit: contain;
+  transition: transform 260ms ease;
+}
+
+.lux-finder-card:hover .lux-finder-card__preview img {
+  transform: translateY(-3px) scale(1.04);
 }
 
 .lux-showcase-strip {
@@ -1432,6 +1630,7 @@ await fetchFeaturedProducts();
   .lux-runway,
   .lux-editorials,
   .lux-journey__grid,
+  .lux-finder__head,
   .lux-universe-block,
   .lux-universe-block:nth-child(even),
   .lux-collection__grid,
@@ -1467,6 +1666,10 @@ await fetchFeaturedProducts();
 
   .lux-product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lux-finder__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .lux-feature__copy,
@@ -1512,6 +1715,8 @@ await fetchFeaturedProducts();
   .lux-runway__rail,
   .lux-editorials,
   .lux-journey__grid,
+  .lux-finder__head,
+  .lux-finder__grid,
   .lux-universe-block,
   .lux-universe-block__products,
   .lux-collection__grid,
@@ -1521,6 +1726,10 @@ await fetchFeaturedProducts();
 
   .lux-showcase-item {
     grid-template-columns: 64px 150px;
+  }
+
+  .lux-finder-card {
+    grid-template-columns: minmax(0, 0.82fr) minmax(110px, 1fr);
   }
 
   .lux-showcase-item img,
@@ -1649,6 +1858,7 @@ await fetchFeaturedProducts();
   .lux-feed,
   .lux-collection,
   .lux-universe-block,
+  .lux-finder-card,
   .lux-showcase-strip__track,
   .lux-runway-card,
   .lux-universe-product,
@@ -1668,6 +1878,7 @@ await fetchFeaturedProducts();
   .lux-editorial div,
   .lux-runway-card img,
   .lux-universe-product img,
+  .lux-finder-card__preview img,
   .lux-collection-card img,
   .lux-product-card img {
     transition: none;
