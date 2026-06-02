@@ -82,9 +82,9 @@ useHead({
 <style>
 :root {
   --version: "1.0.0";
-  --ys-shadow-sm: none;
-  --ys-shadow-md: none;
-  --ys-shadow-lg: none;
+  --ys-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ys-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --ys-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
   --ys-page-max: 1600px;
   --ys-page-gutter: clamp(1.5rem, 4vw, 3rem);
   --ys-container: min(var(--ys-page-max), calc(100% - var(--ys-page-gutter)));
