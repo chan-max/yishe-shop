@@ -25,45 +25,66 @@ jobs:
       - name: 获取事件信息
         id: event_info
         run: |
-          echo "event_name=${{ github.event_name }}" >> $GITHUB_OUTPUT
-          echo "ref=${{ github.ref }}" >> $GITHUB_OUTPUT
-          echo "ref_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          echo "sha=${{ github.sha }}" >> $GITHUB_OUTPUT
-          echo "repository=${{ github.repository }}" >> $GITHUB_OUTPUT
-          echo "actor=${{ github.actor }}" >> $GITHUB_OUTPUT
-          echo "workflow=${{ github.workflow }}" >> $GITHUB_OUTPUT
-          
-          # 获取提交信息 - 使用GitHub环境变量
-          if [ "${{ github.event_name }}" = "push" ]; then
-            echo "commit_message=${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
-            echo "commit_author=${{ github.event.head_commit.author.name }}" >> $GITHUB_OUTPUT
-            echo "commit_date=${{ github.event.head_commit.timestamp }}" >> $GITHUB_OUTPUT
-          fi
-          
-          # 获取PR信息
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "pr_title=${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
-            echo "pr_body=${{ github.event.pull_request.body }}" >> $GITHUB_OUTPUT
-            echo "pr_author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
-          fi
+          python3 - <<'PY'
+          import json
+          import os
+          import time
+
+          with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as file:
+              event = json.load(file)
+
+          def write_output(name, value):
+              delimiter = f"EOF_{name}_{time.time_ns()}"
+              with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+                  output.write(f"{name}<<{delimiter}\n")
+                  output.write(f"{'' if value is None else value}\n")
+                  output.write(f"{delimiter}\n")
+
+          write_output("event_name", os.environ.get("GITHUB_EVENT_NAME", ""))
+          write_output("ref", os.environ.get("GITHUB_REF", ""))
+          write_output("ref_name", os.environ.get("GITHUB_REF_NAME", ""))
+          write_output("sha", os.environ.get("GITHUB_SHA", ""))
+          write_output("repository", os.environ.get("GITHUB_REPOSITORY", ""))
+          write_output("actor", os.environ.get("GITHUB_ACTOR", ""))
+          write_output("workflow", os.environ.get("GITHUB_WORKFLOW", ""))
+
+          if os.environ.get("GITHUB_EVENT_NAME") == "push":
+              head_commit = event.get("head_commit") or {}
+              author = head_commit.get("author") or {}
+              write_output("commit_message", head_commit.get("message", ""))
+              write_output("commit_author", author.get("name", ""))
+              write_output("commit_date", head_commit.get("timestamp", ""))
+
+          if os.environ.get("GITHUB_EVENT_NAME") == "pull_request":
+              pull_request = event.get("pull_request") or {}
+              user = pull_request.get("user") or {}
+              write_output("pr_title", pull_request.get("title", ""))
+              write_output("pr_body", pull_request.get("body", ""))
+              write_output("pr_author", user.get("login", ""))
+              write_output("pr_url", pull_request.get("html_url", ""))
+          PY
 
       - name: 发送飞书通知
+        env:
+          EVENT_NAME: ${{ steps.event_info.outputs.event_name }}
+          BRANCH: ${{ steps.event_info.outputs.ref_name }}
+          REPOSITORY: ${{ steps.event_info.outputs.repository }}
+          ACTOR: ${{ steps.event_info.outputs.actor }}
+          SHA: ${{ steps.event_info.outputs.sha }}
+          COMMIT_MSG: ${{ steps.event_info.outputs.commit_message }}
+          COMMIT_AUTHOR: ${{ steps.event_info.outputs.commit_author }}
+          COMMIT_DATE: ${{ steps.event_info.outputs.commit_date }}
+          PR_TITLE: ${{ steps.event_info.outputs.pr_title }}
+          PR_BODY: ${{ steps.event_info.outputs.pr_body }}
+          PR_AUTHOR: ${{ steps.event_info.outputs.pr_author }}
+          PR_URL: ${{ steps.event_info.outputs.pr_url }}
         run: |
           # 构建消息内容
           PROJECT_NAME="yishe-nuxt"
-          EVENT_NAME="${{ steps.event_info.outputs.event_name }}"
-          BRANCH="${{ steps.event_info.outputs.ref_name }}"
-          REPOSITORY="${{ steps.event_info.outputs.repository }}"
-          ACTOR="${{ steps.event_info.outputs.actor }}"
-          SHA="${{ steps.event_info.outputs.sha }}"
           
           # 根据事件类型构建不同的消息
           case $EVENT_NAME in
             "push")
-              COMMIT_MSG="${{ steps.event_info.outputs.commit_message }}"
-              COMMIT_AUTHOR="${{ steps.event_info.outputs.commit_author }}"
-              COMMIT_DATE="${{ steps.event_info.outputs.commit_date }}"
-              
               # 如果提交信息为空，使用备用方案
               if [ -z "$COMMIT_MSG" ]; then
                 COMMIT_MSG="无提交信息"
@@ -79,11 +100,7 @@ jobs:
               ;;
               
             "pull_request")
-              PR_TITLE="${{ steps.event_info.outputs.pr_title }}"
-              PR_BODY="${{ steps.event_info.outputs.pr_body }}"
-              PR_AUTHOR="${{ steps.event_info.outputs.pr_author }}"
-              
-              MESSAGE="🔀 Pull Request 通知\n\n📁 项目: $PROJECT_NAME\n🌿 分支: $BRANCH\n👤 创建者: $PR_AUTHOR\n📝 PR标题: $PR_TITLE\n📄 PR描述: $PR_BODY\n🔗 仓库: https://github.com/$REPOSITORY\n🔗 PR链接: ${{ github.event.pull_request.html_url }}"
+              MESSAGE="🔀 Pull Request 通知\n\n📁 项目: $PROJECT_NAME\n🌿 分支: $BRANCH\n👤 创建者: $PR_AUTHOR\n📝 PR标题: $PR_TITLE\n📄 PR描述: $PR_BODY\n🔗 仓库: https://github.com/$REPOSITORY\n🔗 PR链接: $PR_URL"
               ;;
               
             "create")
@@ -99,15 +116,23 @@ jobs:
               ;;
           esac
           
-          # 发送到飞书机器人 - 使用text格式
+          # 发送到飞书机器人 - 使用text格式。用 Python 生成 JSON，避免提交信息里的换行/引号破坏 payload。
+          PAYLOAD=$(MESSAGE="$MESSAGE" python3 - <<'PY'
+          import json
+          import os
+
+          print(json.dumps({
+              "msg_type": "text",
+              "content": {
+                  "text": os.environ.get("MESSAGE", "")
+              }
+          }, ensure_ascii=False))
+          PY
+          )
+
           RESPONSE=$(curl -s -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
-            -d "{
-              \"msg_type\": \"text\",
-              \"content\": {
-                \"text\": \"$MESSAGE\"
-              }
-            }" \
+            -d "$PAYLOAD" \
             "https://open.feishu.cn/open-apis/bot/v2/hook/143ed889-eace-42df-ba97-d8b2bac28e6d")
           
           # 检查响应

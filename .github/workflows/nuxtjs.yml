@@ -3,8 +3,6 @@ name: Deploy Nuxt site to Tencent Cloud
 on:
   push:
     branches: ["main"]
-    paths:
-      - "package.json"
   workflow_dispatch:
 
 concurrency:
@@ -20,38 +18,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Check package version changed
-        id: version_check
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "current_version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          PREVIOUS_CONTENT=$(git show HEAD^:package.json 2>/dev/null || true)
-
-          if [ -z "$PREVIOUS_CONTENT" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          PREVIOUS_VERSION=$(printf '%s' "$PREVIOUS_CONTENT" | node -e "let data=''; process.stdin.on('data', c => data += c); process.stdin.on('end', () => console.log(JSON.parse(data).version || ''))")
-
-          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
-
-          echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-          echo "previous_version=$PREVIOUS_VERSION" >> "$GITHUB_OUTPUT"
-
       - name: Setup Node
-        if: steps.version_check.outputs.changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -59,15 +26,12 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        if: steps.version_check.outputs.changed == 'true'
         run: npm ci --prefer-offline --no-audit
 
       - name: Build Nuxt SSR app
-        if: steps.version_check.outputs.changed == 'true'
         run: npm run build
 
       - name: Include unhead runtime files
-        if: steps.version_check.outputs.changed == 'true'
         shell: bash
         run: |
           if grep -R "from 'unhead/\|from \"unhead/" .output/server/chunks >/dev/null 2>&1; then
@@ -77,7 +41,6 @@ jobs:
           fi
 
       - name: Verify build output
-        if: steps.version_check.outputs.changed == 'true'
         run: |
           echo "Checking build output..."
           ls -la .output/ || echo ".output directory not found"
@@ -89,11 +52,9 @@ jobs:
           fi
 
       - name: Package build artifacts
-        if: steps.version_check.outputs.changed == 'true'
         run: tar -czf nuxt-output.tar.gz .output
 
       - name: Upload package to Tencent Cloud
-        if: steps.version_check.outputs.changed == 'true'
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -107,7 +68,6 @@ jobs:
           debug: true
 
       - name: Deploy SSR app on Tencent Cloud
-        if: steps.version_check.outputs.changed == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -136,7 +96,3 @@ jobs:
           command_timeout: "10m"
           timeout: "10m"
           debug: true
-
-      - name: Skip deploy when package version is unchanged
-        if: steps.version_check.outputs.changed != 'true'
-        run: echo "package.json version unchanged, skipping build and deploy."
