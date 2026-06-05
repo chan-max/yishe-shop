@@ -1,11 +1,11 @@
 <template>
   <div class="flex justify-center items-center py-12">
     <div class="text-center">
-      <v-progress-circular
-        indeterminate
-        :color="color"
-        :size="size"
-      ></v-progress-circular>
+      <span
+        class="inline-block animate-spin rounded-full border-2 border-current border-r-transparent"
+        :style="{ width: normalizedSize, height: normalizedSize, color }"
+        aria-hidden="true"
+      ></span>
       <p v-if="text" class="mt-4 text-gray-600 text-sm">{{ text }}</p>
     </div>
   </div>
@@ -18,7 +18,7 @@
  * 使用示例：
  * <Loading /> - 默认样式
  * <Loading text="加载中..." /> - 带文字提示
- * <Loading :size="32" color="success" text="正在处理..." /> - 自定义大小和颜色
+ * <Loading :size="32" color="#111" text="正在处理..." /> - 自定义大小和颜色
  * 
  * Props:
  * - size: loading圆圈大小，默认64
@@ -31,9 +31,13 @@ interface Props {
   text?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   size: 64,
   color: 'primary',
   text: ''
 })
-</script> 
+
+const normalizedSize = computed(() =>
+  typeof props.size === 'number' ? `${props.size}px` : props.size || '64px'
+)
+</script>

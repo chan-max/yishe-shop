@@ -113,10 +113,6 @@ export default defineNuxtConfig({
     "@nuxtjs/seo", // SEO 模块
   ],
 
-  build: {
-    transpile: ['vuetify'],
-  },
-
   vite: {
     cacheDir: localViteCacheDir,
   },

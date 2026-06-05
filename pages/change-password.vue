@@ -1,8 +1,8 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-[#f7f5f2] px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1480px]">
       <NuxtLink to="/" class="ys-quiet-link text-[12px]">
-        <v-icon size="16">mdi-arrow-left</v-icon>
+        <span class="ui-icon" aria-hidden="true">←</span>
         <span>返回首页</span>
       </NuxtLink>
     </div>

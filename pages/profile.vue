@@ -1,8 +1,8 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-[1240px]">
       <NuxtLink to="/" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-[12px] font-bold text-stone-500 transition duration-200 hover:border-black hover:text-stone-950">
-        <v-icon size="16">mdi-arrow-left</v-icon>
+        <span class="ui-icon" aria-hidden="true">←</span>
         <span>返回首页</span>
       </NuxtLink>
     </div>

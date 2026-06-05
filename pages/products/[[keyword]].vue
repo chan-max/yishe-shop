@@ -58,7 +58,7 @@ const recommendedKeywords = [
   "鼠标垫",
 ];
 
-const filterCategories = ["T-shirts", "Hoodies", "Mugs", "Tote Bags", "Phone Cases", "Home Textile"];
+const filterCategories = ["T恤", "卫衣", "鼠标垫", "杯子", "手机壳", "抱枕", "帆布包", "装饰画"];
 const statusOptions = [
   { label: "在售商品", value: "active" },
   { label: "草稿商品", value: "draft" },
@@ -81,12 +81,11 @@ const stockModeOptions = [
   { label: "低库存优先", value: "low_stock" },
 ];
 const sortOptions = [
-  { label: "推荐排序", value: "sort_desc", sortBy: "sort", sortDir: "DESC" },
-  { label: "最新上架", value: "newest", sortBy: "createTime", sortDir: "DESC" },
-  { label: "价格从低到高", value: "price_asc", sortBy: "salePrice", sortDir: "ASC" },
-  { label: "价格从高到低", value: "price_desc", sortBy: "salePrice", sortDir: "DESC" },
-  { label: "销量优先", value: "sales_desc", sortBy: "salesCount", sortDir: "DESC" },
-  { label: "评分优先", value: "rating_desc", sortBy: "rating", sortDir: "DESC" },
+  { label: "推荐", value: "sort_desc", sortBy: "sort", sortDir: "DESC" },
+  { label: "最新", value: "newest", sortBy: "createTime", sortDir: "DESC" },
+  { label: "价格↑", value: "price_asc", sortBy: "salePrice", sortDir: "ASC" },
+  { label: "价格↓", value: "price_desc", sortBy: "salePrice", sortDir: "DESC" },
+  { label: "销量", value: "sales_desc", sortBy: "salesCount", sortDir: "DESC" },
 ];
 
 const filterGroups = [
@@ -107,6 +106,13 @@ const showFilters = ref<boolean>(false);
 
 const routeKeyword = computed(() => getDecodedKeyword());
 const currentSort = computed(() => sortOptions.find((item) => item.value === sortMode.value) || sortOptions[0]);
+const categorySelectOptions = computed(() => [
+  { label: "全部分类", value: "" },
+  ...categoryList.value.map((item: any) => ({
+    label: item.name,
+    value: item.id,
+  })),
+]);
 
 const toNumberOrNull = (value: unknown) => {
   if (value === undefined || value === null || value === "") return null;
@@ -428,13 +434,6 @@ const resultSummary = computed(() => {
   return `${total.value} 个 POD 商品`;
 });
 
-const displayRange = computed(() => {
-  if (!total.value || !productList.value.length) return "0-0";
-  const start = (currentPage.value - 1) * pageSize.value + 1;
-  const end = Math.min(start + productList.value.length - 1, total.value);
-  return `${start}-${end}`;
-});
-
 const extractProductKeywords = (product: any) => {
   const raw = [product?.type, product?.tags, product?.keywords, product?.searchKeywords]
     .filter(Boolean)
@@ -482,29 +481,68 @@ const getProductRating = (product: any, index = 0) => {
 };
 
 const activeFilters = computed(() => {
-  const filters: string[] = [];
-  if (routeKeyword.value) filters.push(`关键词 ${routeKeyword.value}`);
-  if (selectedType.value) filters.push(`类型 ${selectedType.value}`);
+  const filters: Array<{ label: string; key: string }> = [];
+  if (routeKeyword.value) filters.push({ label: `关键词: ${routeKeyword.value}`, key: "keyword" });
+  if (selectedType.value) filters.push({ label: selectedType.value, key: "type" });
   const categoryName = categoryList.value.find((item: any) => item.id === selectedCategoryId.value)?.name;
-  if (categoryName) filters.push(`分类 ${categoryName}`);
-  if (selectedBrand.value) filters.push(`品牌 ${selectedBrand.value}`);
+  if (categoryName) filters.push({ label: `分类: ${categoryName}`, key: "category" });
+  if (selectedBrand.value) filters.push({ label: `品牌: ${selectedBrand.value}`, key: "brand" });
   if (selectedInventoryStatus.value) {
-    filters.push(inventoryOptions.find((item) => item.value === selectedInventoryStatus.value)?.label || selectedInventoryStatus.value);
+    filters.push({ label: inventoryOptions.find((item) => item.value === selectedInventoryStatus.value)?.label || "", key: "inventory" });
   }
   if (selectedFlag.value) {
-    filters.push(flagOptions.find((item) => item.value === selectedFlag.value)?.label || selectedFlag.value);
+    filters.push({ label: flagOptions.find((item) => item.value === selectedFlag.value)?.label || "", key: "flag" });
   }
   if (selectedStockMode.value) {
-    filters.push(stockModeOptions.find((item) => item.value === selectedStockMode.value)?.label || selectedStockMode.value);
+    filters.push({ label: stockModeOptions.find((item) => item.value === selectedStockMode.value)?.label || "", key: "stockMode" });
   }
   if (priceMin.value !== null || priceMax.value !== null) {
-    filters.push(`价格 ${priceMin.value ?? 0}-${priceMax.value ?? "不限"}`);
+    filters.push({ label: `¥${priceMin.value ?? 0} - ${priceMax.value ?? "∞"}`, key: "price" });
   }
-  if (skuKeyword.value) filters.push(`SKU ${skuKeyword.value}`);
-  if (startDate.value) filters.push(`开始 ${startDate.value}`);
-  if (endDate.value) filters.push(`结束 ${endDate.value}`);
+  if (skuKeyword.value) filters.push({ label: `SKU: ${skuKeyword.value}`, key: "sku" });
+  if (startDate.value || endDate.value) {
+    filters.push({ label: `${startDate.value || "开始"} ~ ${endDate.value || "结束"}`, key: "date" });
+  }
   return filters;
 });
+
+const clearFilter = (key: string) => {
+  switch (key) {
+    case "keyword":
+      searchKeyword.value = "";
+      break;
+    case "type":
+      selectedType.value = "";
+      break;
+    case "category":
+      selectedCategoryId.value = "";
+      break;
+    case "brand":
+      selectedBrand.value = "";
+      break;
+    case "inventory":
+      selectedInventoryStatus.value = "";
+      break;
+    case "flag":
+      selectedFlag.value = "";
+      break;
+    case "stockMode":
+      selectedStockMode.value = "";
+      break;
+    case "price":
+      priceMin.value = null;
+      priceMax.value = null;
+      break;
+    case "sku":
+      skuKeyword.value = "";
+      break;
+    case "date":
+      startDate.value = "";
+      endDate.value = "";
+      break;
+  }
+  handleSearch();
+};
 
 const robotsValue = computed(() =>
   startDate.value ||
@@ -654,162 +692,191 @@ await fetchProducts();
 
     <nav class="catalog-breadcrumb" aria-label="面包屑导航">
       <NuxtLink to="/">首页</NuxtLink>
-      <v-icon size="14">mdi-chevron-right</v-icon>
+      <span class="ui-icon" aria-hidden="true">/</span>
       <span>{{ routeKeyword || "POD 商品" }}</span>
     </nav>
 
-    <section class="catalog-toolbar" aria-label="商品搜索和结果状态">
-      <div>
-        <h2>{{ routeKeyword || "POD 商品" }}</h2>
-        <span>显示 {{ displayRange }} / 共 {{ total }} 个商品</span>
+    <section class="product-filter-head">
+      <div class="product-filter-title">
+        <div>
+          <span>Products</span>
+          <h2>{{ routeKeyword || "全部商品" }}</h2>
+          <p>{{ resultSummary }}</p>
+        </div>
+        <div class="product-filter-metrics">
+          <strong>{{ total }}</strong>
+          <span>件商品</span>
+        </div>
       </div>
-      <div class="catalog-toolbar__actions">
-        <form class="catalog-search" @submit.prevent="handleSearch">
-          <v-icon size="16">mdi-magnify</v-icon>
-          <input
-            v-model="searchKeyword"
-            type="search"
-            placeholder="搜索 POD 商品…"
-          />
+
+      <div class="product-filter-searchrow">
+        <form class="product-filter-search" @submit.prevent="handleSearch">
+          <span class="ui-icon" aria-hidden="true">⌕</span>
+          <input v-model="searchKeyword" type="search" placeholder="搜索名称、关键词、品牌" />
+          <button type="submit">搜索</button>
         </form>
-        <label class="catalog-sort">
-          <span>排序</span>
-          <select v-model="sortMode" @change="handleSearch">
-            <option v-for="item in sortOptions" :key="item.value" :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
-        </label>
-        <button type="button" class="catalog-filter-toggle" @click="toggleFilters">
-          <v-icon size="15">mdi-tune-variant</v-icon>
+        <select v-model="sortMode" class="product-filter-select" @change="handleSearch">
+          <option v-for="item in sortOptions" :key="item.value" :value="item.value">
+            {{ item.label }}
+          </option>
+        </select>
+        <button type="button" class="product-filter-mobile" @click="toggleFilters">
+          <span class="ui-icon" aria-hidden="true">≡</span>
           筛选
+        </button>
+      </div>
+
+      <div class="product-filter-quick">
+        <div>
+          <span>类型</span>
+          <button
+            v-for="item in filterCategories"
+            :key="item"
+            type="button"
+            :class="{ active: selectedType === item }"
+            @click="selectedType = selectedType === item ? '' : item; handleSearch()"
+          >
+            {{ item }}
+          </button>
+        </div>
+        <div>
+          <span>标签</span>
+          <button
+            v-for="item in flagOptions"
+            :key="item.value"
+            type="button"
+            :class="{ active: selectedFlag === item.value }"
+            @click="selectedFlag = selectedFlag === item.value ? '' : item.value; handleSearch()"
+          >
+            {{ item.label }}
+          </button>
+        </div>
+      </div>
+
+      <div v-if="activeFilters.length" class="product-filter-chips">
+        <button
+          v-for="filter in activeFilters"
+          :key="filter.key"
+          type="button"
+          @click="clearFilter(filter.key)"
+        >
+          {{ filter.label }}
+          <span class="ui-icon" aria-hidden="true">×</span>
+        </button>
+        <button type="button" class="product-filter-clear" @click="resetFilters">
+          清除全部
         </button>
       </div>
     </section>
 
     <section class="catalog-layout">
-      <aside class="catalog-filter catalog-filter--desktop">
-        <div class="catalog-filter__head">
-          <strong>筛选</strong>
+      <aside class="product-filter-panel catalog-filter--desktop">
+        <div class="product-filter-panel__head">
+          <div>
+            <strong>筛选</strong>
+            <span>按商品数据快速缩小范围</span>
+          </div>
           <button type="button" aria-label="清空筛选" @click="resetFilters">
-            <v-icon size="16">mdi-tune-variant</v-icon>
+            <span class="ui-icon" aria-hidden="true">↻</span>
           </button>
         </div>
 
-        <div class="catalog-filter__block">
-          <label>关键词 / SKU</label>
-          <input v-model="searchKeyword" type="search" placeholder="搜索名称、关键词、品牌" @keyup.enter="handleSearch" />
-          <input v-model="skuKeyword" type="search" placeholder="SKU 精确查询" @keyup.enter="handleSearch" />
-        </div>
-
-        <div class="catalog-filter__block">
-          <label>商品分类</label>
+        <div class="product-filter-section">
+          <label>商品范围</label>
           <select v-model="selectedCategoryId" @change="handleSearch">
-            <option value="">全部分类</option>
-            <option v-for="item in categoryList" :key="item.id" :value="item.id">
-              {{ item.name }}
+            <option v-for="item in categorySelectOptions" :key="item.value" :value="item.value">
+              {{ item.label }}
             </option>
           </select>
+          <div class="product-filter-pills">
+            <button
+              v-for="item in filterCategories"
+              :key="item"
+              type="button"
+              :class="{ active: selectedType === item }"
+              @click="selectedType = selectedType === item ? '' : item; handleSearch()"
+            >
+              {{ item }}
+            </button>
+          </div>
         </div>
 
-        <div class="catalog-filter__block">
-          <label>商品类型</label>
-          <button
-            v-for="item in filterCategories"
-            :key="item"
-            type="button"
-            class="catalog-filter__item catalog-filter__item--category"
-            :class="{ active: selectedType === item }"
-            @click="selectedType = selectedType === item ? '' : item; handleSearch()"
-          >
-            <span>{{ item }}</span>
-            <v-icon size="14">mdi-chevron-right</v-icon>
-          </button>
+        <div class="product-filter-section">
+          <label>关键词</label>
+          <input v-model="selectedBrand" type="search" placeholder="品牌" @keyup.enter="handleSearch" />
+          <input v-model="skuKeyword" type="search" placeholder="SKU" @keyup.enter="handleSearch" />
         </div>
 
-        <div class="catalog-filter__block">
-          <label>品牌</label>
-          <input v-model="selectedBrand" type="search" placeholder="输入品牌" @keyup.enter="handleSearch" />
-        </div>
-
-        <div class="catalog-filter__block">
+        <div class="product-filter-section">
           <label>价格区间</label>
-          <div class="catalog-number-row">
+          <div class="product-filter-range">
             <input v-model.number="priceMin" type="number" min="0" placeholder="最低价" @keyup.enter="handleSearch" />
+            <span></span>
             <input v-model.number="priceMax" type="number" min="0" placeholder="最高价" @keyup.enter="handleSearch" />
           </div>
         </div>
 
-        <div class="catalog-filter__block">
-          <label>库存</label>
+        <div class="product-filter-section">
+          <label>库存状态</label>
           <select v-model="selectedInventoryStatus" @change="handleSearch">
             <option v-for="item in inventoryOptions" :key="item.value" :value="item.value">
               {{ item.label }}
             </option>
           </select>
-          <button
-            v-for="item in stockModeOptions"
-            :key="item.value"
-            type="button"
-            class="catalog-filter__item catalog-filter__item--category"
-            :class="{ active: selectedStockMode === item.value }"
-            @click="selectedStockMode = selectedStockMode === item.value ? '' : item.value; handleSearch()"
-          >
-            <span>{{ item.label }}</span>
-            <v-icon size="14">mdi-chevron-right</v-icon>
-          </button>
+          <div class="product-filter-pills">
+            <button
+              v-for="item in stockModeOptions"
+              :key="item.value"
+              type="button"
+              :class="{ active: selectedStockMode === item.value }"
+              @click="selectedStockMode = selectedStockMode === item.value ? '' : item.value; handleSearch()"
+            >
+              {{ item.label }}
+            </button>
+          </div>
         </div>
 
-        <div class="catalog-filter__block">
-          <label>商品标签</label>
-          <button
-            v-for="item in flagOptions"
-            :key="item.value"
-            type="button"
-            class="catalog-filter__item"
-            :class="{ active: selectedFlag === item.value }"
-            @click="selectedFlag = selectedFlag === item.value ? '' : item.value; handleSearch()"
-          >
-            <span>{{ item.label }}</span>
-            <v-icon size="14">mdi-chevron-right</v-icon>
-          </button>
-        </div>
-
-        <div class="catalog-filter__block">
+        <div class="product-filter-section">
           <label>上新时间</label>
-          <input v-model="startDate" type="date" @change="handleSearch" />
-          <input v-model="endDate" type="date" @change="handleSearch" />
+          <div class="product-filter-datepair">
+            <input v-model="startDate" type="date" @change="handleSearch" />
+            <span></span>
+            <input v-model="endDate" type="date" @change="handleSearch" />
+          </div>
         </div>
 
-        <div
-          v-for="group in filterGroups"
-          :key="group.title"
-          class="catalog-filter__block"
-        >
+        <div class="product-filter-section">
+          <label>商品标签</label>
+          <div class="product-filter-pills">
+            <button
+              v-for="item in flagOptions"
+              :key="item.value"
+              type="button"
+              :class="{ active: selectedFlag === item.value }"
+              @click="selectedFlag = selectedFlag === item.value ? '' : item.value; handleSearch()"
+            >
+              {{ item.label }}
+            </button>
+          </div>
+        </div>
+
+        <div v-for="group in filterGroups" :key="group.title" class="product-filter-section">
           <label>{{ group.title }}</label>
-          <button
-            v-for="item in group.items"
-            :key="item"
-            type="button"
-            class="catalog-filter__item"
-            :class="{ active: searchKeyword === item || routeKeyword === item }"
-            @click="handleKeywordClick(item)"
-          >
-            <span>{{ item }}</span>
-            <v-icon size="14">mdi-chevron-right</v-icon>
-          </button>
+          <div class="product-filter-pills">
+            <button
+              v-for="item in group.items"
+              :key="item"
+              type="button"
+              :class="{ active: searchKeyword === item || routeKeyword === item }"
+              @click="handleKeywordClick(item)"
+            >
+              {{ item }}
+            </button>
+          </div>
         </div>
-
-        <button type="button" class="catalog-apply" @click="handleSearch">
-          应用筛选
-        </button>
       </aside>
 
       <div class="catalog-results">
-        <div v-if="activeFilters.length" class="catalog-active-filters">
-          <span v-for="filter in activeFilters" :key="filter">{{ filter }}</span>
-        </div>
-
         <div v-if="loading" class="catalog-grid">
           <div v-for="i in 12" :key="i" class="product-skeleton">
             <div class="skeleton-wave skeleton-image"></div>
@@ -845,7 +912,7 @@ await fetchProducts();
               </template>
               <div v-else class="catalog-product__empty">暂无预览图</div>
               <span class="catalog-product__open" aria-hidden="true">
-                <v-icon size="17">mdi-arrow-top-right</v-icon>
+                <span class="ui-icon" aria-hidden="true">↗</span>
               </span>
             </div>
             <div class="catalog-product__body">
@@ -885,7 +952,7 @@ await fetchProducts();
             :disabled="currentPage === 1"
             @click="handlePageChange(currentPage - 1)"
           >
-            <v-icon size="16">mdi-arrow-left</v-icon>
+            <span class="ui-icon" aria-hidden="true">←</span>
             上一页
           </button>
           <button
@@ -921,7 +988,7 @@ await fetchProducts();
             @click="handlePageChange(currentPage + 1)"
           >
             下一页
-            <v-icon size="16">mdi-arrow-right</v-icon>
+            <span class="ui-icon" aria-hidden="true">→</span>
           </button>
         </nav>
       </div>
@@ -935,15 +1002,14 @@ await fetchProducts();
             <button type="button" @click="toggleFilters">关闭</button>
           </div>
           <form class="catalog-search catalog-search--drawer" @submit.prevent="handleSearch">
-            <v-icon size="16">mdi-magnify</v-icon>
+            <span class="ui-icon" aria-hidden="true">⌕</span>
             <input v-model="searchKeyword" type="search" placeholder="搜索商品…" />
           </form>
           <div class="catalog-filter__block">
             <label>商品分类</label>
             <select v-model="selectedCategoryId">
-              <option value="">全部分类</option>
-              <option v-for="item in categoryList" :key="item.id" :value="item.id">
-                {{ item.name }}
+              <option v-for="item in categorySelectOptions" :key="item.value" :value="item.value">
+                {{ item.label }}
               </option>
             </select>
           </div>
@@ -978,13 +1044,16 @@ await fetchProducts();
               @click="selectedFlag = selectedFlag === item.value ? '' : item.value"
             >
               <span>{{ item.label }}</span>
-              <v-icon size="15">mdi-chevron-right</v-icon>
+              <span class="ui-icon" aria-hidden="true">›</span>
             </button>
           </div>
           <div class="catalog-filter__block">
             <label>上新时间</label>
-            <input v-model="startDate" type="date" />
-            <input v-model="endDate" type="date" />
+            <div class="product-filter-datepair">
+              <input v-model="startDate" type="date" />
+              <span></span>
+              <input v-model="endDate" type="date" />
+            </div>
           </div>
           <div
             v-for="group in filterGroups"
@@ -1000,7 +1069,7 @@ await fetchProducts();
               @click="handleKeywordClick(item)"
             >
               <span>{{ item }}</span>
-              <v-icon size="15">mdi-chevron-right</v-icon>
+              <span class="ui-icon" aria-hidden="true">›</span>
             </button>
           </div>
           <button type="button" class="catalog-drawer__apply" @click="applyDrawerFilters">
@@ -1040,23 +1109,386 @@ await fetchProducts();
   color: #111;
 }
 
+.ui-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.product-filter-head,
+.catalog-layout {
+  width: var(--ys-container) !important;
+  max-width: var(--ys-page-max) !important;
+  margin-inline: auto;
+}
+
+.product-filter-head {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #eceef1;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.product-filter-title,
+.product-filter-searchrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem;
+}
+
+.product-filter-title {
+  margin-bottom: 1.1rem;
+}
+
+.product-filter-title span,
+.product-filter-panel label {
+  color: #6f7378;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.product-filter-title h2 {
+  margin: 0.1rem 0 0;
+  color: #17191c;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.product-filter-title p {
+  margin: 0.35rem 0 0;
+  color: #6f7378;
+  font-size: 0.82rem;
+}
+
+.product-filter-metrics {
+  min-width: 96px;
+  text-align: right;
+}
+
+.product-filter-metrics strong {
+  display: block;
+  color: #17191c;
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.product-filter-metrics span {
+  color: #86868b;
+  font-size: 0.72rem;
+  text-transform: none;
+}
+
+.product-filter-searchrow {
+  grid-template-columns: minmax(320px, 1fr) 172px auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.product-filter-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  height: 3.25rem;
+  padding: 0 0.55rem 0 1rem;
+  border-radius: 14px;
+  border: 1px solid #eceef1;
+  background: #fff;
+}
+
+.product-filter-search input {
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1d1d1f;
+  font-size: 0.88rem;
+}
+
+.product-filter-search input::placeholder,
+.product-filter-panel input::placeholder {
+  color: #86868b;
+}
+
+.product-filter-search button,
+.product-filter-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 10px;
+  background: #17191c;
+  color: #fff;
+  font-size: 0.76rem;
+  padding: 0 0.85rem;
+}
+
+.product-filter-select {
+  width: 100%;
+  height: 3.25rem;
+  border: 1px solid #eceef1;
+  border-radius: 14px;
+  outline: 0;
+  background: #fff;
+  color: #17191c;
+  font-size: 0.8rem;
+  padding: 0 0.85rem;
+}
+
+.product-filter-mobile {
+  display: none;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #17191c;
+}
+
+.product-filter-quick {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.product-filter-quick > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.product-filter-quick span {
+  min-width: 2.4rem;
+  color: #6f7378;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.product-filter-quick button {
+  height: 1.9rem;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #34373d;
+  font-size: 0.74rem;
+  padding: 0 0.75rem;
+}
+
+.product-filter-quick button:hover,
+.product-filter-pills button:hover,
+.product-filter-chips button:hover,
+.product-filter-panel__head button:hover {
+  background: #fafafa;
+}
+
+.product-filter-quick button.active {
+  background: #17191c;
+  color: #fff;
+}
+
+.product-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.product-filter-chips button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.65rem;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #34373d;
+  font-size: 0.72rem;
+  padding: 0 0.6rem;
+}
+
+.product-filter-chips .product-filter-clear {
+  background: transparent;
+  color: #86868b;
+}
+
+.product-filter-panel {
+  align-self: start;
+  position: sticky;
+  top: 86px;
+  display: grid;
+  gap: 1rem;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+  padding: 1rem;
+  border: 1px solid #eceef1;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.product-filter-panel::-webkit-scrollbar {
+  width: 2px;
+}
+
+.product-filter-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.product-filter-panel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.product-filter-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.product-filter-panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.2rem;
+}
+
+.product-filter-panel__head strong {
+  display: block;
+  color: #1d1d1f;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.product-filter-panel__head span {
+  display: block;
+  margin-top: 0.2rem;
+  color: #86868b;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.product-filter-panel__head button {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #17191c;
+}
+
+.product-filter-section {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.product-filter-section input {
+  width: 100%;
+  height: 2.35rem;
+  border: 0;
+  border-radius: 10px;
+  outline: 0;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #17191c;
+  font-size: 0.78rem;
+  padding: 0 0.7rem;
+}
+
+.product-filter-section input:focus {
+  box-shadow: inset 0 0 0 1px #17191c;
+}
+
+.product-filter-range {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.product-filter-range span {
+  width: 10px;
+  height: 1px;
+  background: #86868b;
+}
+
+.product-filter-datepair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.product-filter-datepair > span {
+  width: 10px;
+  height: 1px;
+  background: #86868b;
+}
+
+.product-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.product-filter-pills button {
+  min-height: 1.75rem;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eceef1;
+  color: #34373d;
+  font-size: 0.72rem;
+  padding: 0 0.65rem;
+}
+
+.product-filter-pills button.active {
+  background: #17191c;
+  color: #fff;
+}
+
+.product-filter-panel select {
+  width: 100%;
+  height: 2.35rem;
+  border: 1px solid #eceef1;
+  border-radius: 10px;
+  outline: 0;
+  background: #fff;
+  color: #17191c;
+  font-size: 0.78rem;
+  padding: 0 0.7rem;
+}
+
 .catalog-search {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   width: min(28vw, 300px);
-  min-height: 2.4rem;
-  padding: 0 0.75rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  background: #fafafa;
+  min-height: 2rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 0;
+  background: transparent;
   line-height: 1;
 }
 
 .catalog-search:focus-within {
-  border-color: rgba(0, 0, 0, 0.2);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+  border-color: #111;
+  background: transparent;
+  box-shadow: none;
 }
 
 .catalog-search input {
@@ -1094,31 +1526,266 @@ await fetchProducts();
   padding: 0 1rem;
 }
 
-.catalog-quick,
-.catalog-active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin-top: 1rem;
+.catalog-toolbar {
+  width: var(--ys-container);
+  margin: 0 auto 2.5rem;
 }
 
-.catalog-quick button,
-.catalog-active-filters span {
+.catalog-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.catalog-header h2 {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.catalog-header p {
+  margin: 0.25rem 0 0;
+  color: #86868b;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.catalog-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.catalog-stats span {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 1.6rem;
-  border: 1px solid #ececec;
-  border-radius: 6px;
-  background: #fff;
-  color: #333;
-  font-size: 0.7rem;
-  line-height: 1;
-  padding: 0 0.65rem;
+  height: 1.55rem;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-size: 0.72rem;
 }
 
-.catalog-quick button:hover {
+.catalog-bar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.4fr) minmax(0, 3fr);
+  align-items: end;
+  gap: clamp(1rem, 2.2vw, 1.8rem);
+  margin-bottom: 1.05rem;
+}
+
+.catalog-search {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  min-height: 44px;
+}
+
+.catalog-search input {
+  width: 100%;
+  height: 44px;
+  padding: 0 0.25rem 0 1.55rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #111;
+  font-size: 0.8rem;
+}
+
+.catalog-search input:focus {
+  outline: none;
+  background: transparent;
+}
+
+.catalog-search input::placeholder {
+  color: #86868b;
+}
+
+.catalog-controls {
+  display: grid;
+  grid-template-columns:
+    minmax(120px, 1fr)
+    minmax(104px, 0.9fr)
+    minmax(108px, 0.95fr)
+    minmax(168px, 1.35fr)
+    minmax(120px, 1fr)
+    minmax(120px, 1fr)
+    minmax(120px, 1fr)
+    minmax(104px, 0.9fr)
+    minmax(124px, 1fr)
+    minmax(124px, 1fr)
+    auto;
+  align-items: end;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.catalog-range-field {
+  display: grid;
+  align-content: end;
+  min-width: 0;
+  height: 44px;
+  border-bottom: 1px solid #d2d2d7;
+}
+
+.catalog-range-field:focus-within {
+  border-color: #1d1d1f;
+}
+
+.catalog-range-field > span {
+  color: #86868b;
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.catalog-range-field > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+  height: 29px;
+}
+
+.catalog-range-field input {
+  width: 100%;
+  min-width: 0;
+  height: 26px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1d1d1f;
+  font-size: 0.78rem;
+  padding: 0;
+}
+
+.catalog-range-field input::placeholder {
+  color: #86868b;
+}
+
+.catalog-range-field i {
+  width: 8px;
+  height: 1px;
+  background: #86868b;
+}
+
+.catalog-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 44px;
+  padding: 0 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #1d1d1f;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalog-filter-btn:hover {
+  background: #f5f5f7;
+}
+
+.catalog-filter-btn:active,
+.catalog-filter-btn[aria-expanded="true"] {
   border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.catalog-active {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+
+.catalog-active-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  height: 1.5rem;
+  padding: 0 0.5rem 0 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.catalog-active-tag:hover {
+  background: #e8e8ed;
+  color: #111;
+}
+
+.catalog-clear-all {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  border: none;
+  background: transparent;
+  color: #86868b;
+  font-size: 0.72rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.catalog-clear-all:hover {
+  color: #111;
+}
+
+.catalog-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.catalog-quick-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.catalog-quick-label {
+  color: #86868b;
+  font-size: 0.72rem;
+  font-weight: 500;
+  min-width: 2.5rem;
+}
+
+.catalog-quick-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.catalog-quick-btn {
+  height: 1.65rem;
+  padding: 0 0.65rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #1d1d1f;
+  font-size: 0.73rem;
+  cursor: pointer;
+}
+
+.catalog-quick-btn:hover {
+  background: #f5f5f7;
+  color: #111;
+}
+
+.catalog-quick-btn.active {
   background: #111;
   color: #fff;
 }
@@ -1131,25 +1798,22 @@ await fetchProducts();
 }
 
 .catalog-toolbar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid #efefef;
+  display: block;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.05rem;
+  border-bottom: 1px solid #d2d2d7;
   background: #fff;
 }
 
 .catalog-toolbar h2 {
   margin: 0 0 0.2rem;
   color: #000;
-  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  font-size: clamp(1.2rem, 2.2vw, 1.65rem);
   line-height: 1.1;
 }
 
-.catalog-toolbar span {
-  color: #777;
+.catalog-toolbar span:not(.catalog-quick-label) {
+  color: #86868b;
   font-size: 0.7rem;
 }
 
@@ -1166,29 +1830,6 @@ await fetchProducts();
   gap: 0.4rem;
 }
 
-.catalog-sort {
-  display: inline-grid;
-  grid-template-columns: auto minmax(120px, 150px);
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 2rem;
-  white-space: nowrap;
-  line-height: 1;
-  font-size: 0.75rem;
-}
-
-.catalog-sort select {
-  width: 100%;
-  min-height: 2rem;
-  border: 1px solid #e9e9e9;
-  border-radius: 8px;
-  background: #fff;
-  color: #111;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0 0.55rem;
-}
-
 .catalog-filter-toggle,
 .catalog-reset,
 .catalog-filter__head button,
@@ -1198,8 +1839,8 @@ await fetchProducts();
   justify-content: center;
   gap: 0.3rem;
   min-height: 2rem;
-  border: 1px solid #e9e9e9;
-  border-radius: 8px;
+  border: 0;
+  border-radius: 6px;
   background: #fff;
   color: #111;
   font-size: 0.72rem;
@@ -1209,8 +1850,8 @@ await fetchProducts();
 
 .catalog-layout {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  gap: clamp(0.75rem, 2vw, 1.5rem);
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
 }
 
 .catalog-filter {
@@ -1222,21 +1863,29 @@ await fetchProducts();
   max-height: calc(100vh - 104px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0.85rem;
-  border: 1px solid #e9e9e9;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+  padding: 0 1.35rem 0 0;
+  background: #fff;
+  border-right: 1px solid #d2d2d7;
+  border-radius: 0;
 }
 
 .catalog-filter::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
+}
+
+.catalog-filter::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .catalog-filter::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: #d6d6d6;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.catalog-filter::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.28);
 }
 
 .catalog-filter__head {
@@ -1244,76 +1893,120 @@ await fetchProducts();
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  min-height: 1.8rem;
-  padding: 0 0.05rem 0.55rem;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .catalog-filter__head strong {
   display: inline-flex;
   align-items: center;
-  font-size: 0.82rem;
-  line-height: 1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.catalog-filter__head button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.catalog-filter__head button:hover {
+  background: #f5f5f7;
+  color: #111;
 }
 
 .catalog-filter__block {
-  display: grid;
-  gap: 0.4rem;
-  padding: 0.65rem 0;
-  border-top: 1px solid #eee;
+  margin-bottom: 1.15rem;
 }
 
-.catalog-filter__head + .catalog-filter__block {
-  border-top: 0;
-  padding-top: 0.5rem;
+.catalog-filter__block:last-child {
+  margin-bottom: 0;
 }
 
 .catalog-filter__block label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1rem;
-  color: #111;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #86868b;
   font-size: 0.68rem;
-  font-weight: 700;
-  line-height: 1;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .catalog-filter__block input,
 .catalog-filter__block select {
   width: 100%;
-  min-height: 2rem;
-  border: 1px solid #e9e9e9;
-  border-radius: 6px;
-  background: #f7f7f7;
-  color: #333;
-  padding: 0 0.5rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 0;
+  background: #fff;
+  color: #111;
   font-size: 0.75rem;
+  transition: all 150ms ease;
 }
 
-.catalog-filter__block select {
-  appearance: auto;
+.catalog-filter__block input:focus,
+.catalog-filter__block select:focus {
+  outline: none;
+  border-color: #111;
+}
+
+.catalog-filter__block input::placeholder {
+  color: #ccc;
+}
+
+.catalog-filter__block input + input {
+  margin-top: 0.4rem;
 }
 
 .catalog-number-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 0.45rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
 }
 
 .catalog-filter__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.4rem;
-  min-height: 1.7rem;
-  padding: 0 0.4rem;
-  border: 0;
-  border-radius: 6px;
+  width: 100%;
+  min-height: 1.85rem;
+  padding: 0 0.55rem;
+  border: none;
+  border-radius: 999px;
   background: transparent;
-  color: #555;
-  text-align: left;
-  font-size: 0.75rem;
-  line-height: 1;
+  color: #1d1d1f;
+  font-size: 0.73rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+  margin-top: 0.3rem;
+}
+
+.catalog-filter__item:hover {
+  background: #f5f5f7;
+  color: #111;
+}
+
+.catalog-filter__item.active {
+  background: #111;
+  color: #fff;
+}
+
+.catalog-filter__item--category {
+  justify-content: flex-start;
+  gap: 0.4rem;
 }
 
 .catalog-filter__item span {
@@ -1322,10 +2015,14 @@ await fetchProducts();
   min-height: 1.1rem;
 }
 
-.catalog-filter__item:hover,
+.catalog-filter__item:hover {
+  background: #f5f5f7;
+  color: #111;
+}
+
 .catalog-filter__item.active {
-  background: #f4f4f4;
-  color: #000;
+  background: #111;
+  color: #fff;
 }
 
 .catalog-filter__item--category {
@@ -1424,14 +2121,10 @@ await fetchProducts();
   min-width: 0;
 }
 
-.catalog-active-filters {
-  margin: 0 0 1rem;
-}
-
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  gap: clamp(0.6rem, 1.2vw, 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: clamp(0.8rem, 1.4vw, 1.15rem);
 }
 
 .catalog-product {
@@ -1448,13 +2141,13 @@ await fetchProducts();
   place-items: center;
   aspect-ratio: 0.82;
   overflow: hidden;
-  border-radius: 10px;
-  background: #f0f0f0;
-  transition: box-shadow 220ms ease;
+  border-radius: 14px;
+  background: #f4f4f5;
+  transition: background 180ms ease;
 }
 
 .catalog-product:hover .catalog-product__media {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: #eceef1;
 }
 
 .catalog-product__media img {
@@ -1662,7 +2355,7 @@ await fetchProducts();
   z-index: 80;
   display: flex;
   justify-content: flex-end;
-  background: rgba(0, 0, 0, 0.42);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 .catalog-drawer__panel {
@@ -1790,40 +2483,183 @@ await fetchProducts();
     display: none;
   }
 
+  .product-filter-searchrow {
+    grid-template-columns: minmax(0, 1fr) 150px auto;
+  }
+
+  .product-filter-mobile {
+    display: inline-flex;
+  }
+
   .catalog-search {
     width: min(42vw, 360px);
+  }
+
+  .catalog-bar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .catalog-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .catalog-filter-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
 @media (min-width: 1025px) {
-  .catalog-filter-toggle {
+  .catalog-filter-btn {
     display: none;
   }
 }
 
 @media (max-width: 760px) {
+  .product-filter-title,
+  .product-filter-searchrow {
+    grid-template-columns: 1fr;
+  }
+
+  .product-filter-metrics {
+    text-align: left;
+  }
+
+  .product-filter-searchrow {
+    gap: 0.65rem;
+  }
+
+  .product-filter-head {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .product-filter-quick {
+    overflow-x: auto;
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .product-filter-quick::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-filter-quick > div {
+    flex-wrap: nowrap;
+    min-width: max-content;
+  }
+
+  .product-filter-select,
+  .product-filter-mobile {
+    width: 100%;
+  }
+
+  .product-filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .product-filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-filter-chips button {
+    flex: 0 0 auto;
+  }
+
   .catalog-page {
     padding-top: 1rem;
   }
 
+  .catalog-header {
+    display: grid;
+    align-items: start;
+    margin-bottom: 0.75rem;
+  }
+
+  .catalog-header h2 {
+    font-size: 1.35rem;
+  }
+
+  .catalog-bar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin-bottom: 0.85rem;
+  }
+
   .catalog-search {
     width: 100%;
+    max-width: none;
+    flex: none;
   }
 
-  .catalog-toolbar {
-    position: static;
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .catalog-toolbar__actions {
+  .catalog-controls {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(118px, 38vw);
+    grid-template-columns: none;
     width: 100%;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .catalog-sort {
-    order: 3;
-    width: 100%;
+  .catalog-controls::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catalog-filter-btn {
+    min-width: 86px;
+  }
+
+  .catalog-range-field {
+    min-width: 168px;
+  }
+
+  .catalog-active {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .catalog-active::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catalog-active-tag,
+  .catalog-clear-all {
+    flex: 0 0 auto;
+  }
+
+  .catalog-quick {
+    flex-wrap: nowrap;
+    gap: 0.65rem;
+    overflow-x: auto;
+    margin-inline: calc((100vw - var(--ys-container)) / -2);
+    padding-inline: calc((100vw - var(--ys-container)) / 2);
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .catalog-quick::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catalog-quick-group,
+  .catalog-quick-items {
+    flex-wrap: nowrap;
+  }
+
+  .catalog-quick-group,
+  .catalog-quick-btn {
+    flex: 0 0 auto;
   }
 
   .catalog-grid {

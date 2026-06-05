@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="error-page">
     <div class="error-container">
       <!-- 404 数字 -->
@@ -13,11 +13,11 @@
       <!-- 操作按钮 -->
       <div class="error-actions">
         <NuxtLink to="/" class="back-btn">
-          <v-icon size="16">mdi-home</v-icon>
+          <span class="ui-icon" aria-hidden="true">⌂</span>
           <span>返回首页</span>
         </NuxtLink>
         <button @click="$router.back()" class="back-btn secondary">
-          <v-icon size="16">mdi-arrow-left</v-icon>
+          <span class="ui-icon" aria-hidden="true">←</span>
           <span>返回上一页</span>
         </button>
       </div>

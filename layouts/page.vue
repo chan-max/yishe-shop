@@ -4,7 +4,7 @@
       <span>注册衣设，探索 POD 印花定制与创意设计商品。</span>
       <NuxtLink to="/products">立即探索</NuxtLink>
       <button type="button" aria-label="关闭顶部通知" @click="showAnnouncement = false">
-        <v-icon size="16">mdi-close</v-icon>
+        <span class="ui-icon" aria-hidden="true">×</span>
       </button>
     </div>
 
@@ -31,9 +31,7 @@
           :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
           @click="toggleMobileMenu"
         >
-          <v-icon size="22">{{
-            isMobileMenuOpen ? "mdi-close" : "mdi-menu"
-          }}</v-icon>
+          <span class="ui-icon" aria-hidden="true">{{ isMobileMenuOpen ? "×" : "☰" }}</span>
         </button>
 
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
@@ -57,7 +55,7 @@
 
         <div class="header-actions">
           <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
-            <v-icon size="15">mdi-magnify</v-icon>
+            <span class="ui-icon" aria-hidden="true">⌕</span>
             <input
               v-model="headerSearch"
               type="search"
@@ -67,7 +65,7 @@
           </form>
 
           <NuxtLink to="/favorites" class="header-icon-link" aria-label="收藏">
-            <v-icon size="20">mdi-heart-outline</v-icon>
+            <span class="ui-icon" aria-hidden="true">♡</span>
           </NuxtLink>
 
           <template v-if="isLoggedIn && currentUser">
@@ -77,22 +75,18 @@
                 class="user-menu-button"
                 @click.stop="isUserMenuOpen = !isUserMenuOpen"
               >
-                <v-avatar
-                  size="26"
-                  :color="
-                    getAvatarColor(currentUser.name || currentUser.account)
-                  "
+                <span
+                  class="user-avatar"
+                  :style="{ background: getAvatarColor(currentUser.name || currentUser.account) }"
                 >
                   {{
                     getAvatarInitial(currentUser.name || currentUser.account)
                   }}
-                </v-avatar>
+                </span>
                 <span class="user-name">{{
                   currentUser.name || currentUser.account
                 }}</span>
-                <v-icon size="16" class="user-menu-caret"
-                  >mdi-chevron-down</v-icon
-                >
+                <span class="user-menu-caret" aria-hidden="true">⌄</span>
               </button>
 
               <Transition name="user-menu">
@@ -127,7 +121,7 @@
 
           <template v-else>
             <NuxtLink to="/login" class="header-icon-link" aria-label="登录">
-              <v-icon size="24">mdi-account-circle-outline</v-icon>
+              <span class="ui-icon" aria-hidden="true">◎</span>
             </NuxtLink>
           </template>
 
@@ -137,9 +131,7 @@
             :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
             @click="toggleMobileMenu"
           >
-            <v-icon size="20">{{
-              isMobileMenuOpen ? "mdi-close" : "mdi-menu"
-            }}</v-icon>
+            <span class="ui-icon" aria-hidden="true">{{ isMobileMenuOpen ? "×" : "☰" }}</span>
           </button>
         </div>
       </div>
@@ -158,13 +150,13 @@
               <h2>导航</h2>
             </div>
             <button class="mobile-close-btn" @click="closeMobileMenu">
-              <v-icon size="18">mdi-close</v-icon>
+              <span class="ui-icon" aria-hidden="true">×</span>
             </button>
           </div>
 
           <div class="mobile-search-form">
             <form @submit.prevent="handleMobileSearch">
-              <v-icon size="15">mdi-magnify</v-icon>
+              <span class="ui-icon" aria-hidden="true">⌕</span>
               <input
                 v-model="mobileSearchKeyword"
                 type="search"
@@ -181,19 +173,19 @@
               class="mobile-nav-link"
               @click="closeMobileMenu"
             >
-              <v-icon size="16">{{ item.icon }}</v-icon>
+              <span class="ui-icon" aria-hidden="true">{{ item.icon }}</span>
               {{ item.label }}
             </NuxtLink>
           </nav>
 
           <div v-if="isLoggedIn && currentUser" class="mobile-user-card">
             <div class="mobile-user-meta">
-              <v-avatar
-                size="32"
-                :color="getAvatarColor(currentUser.name || currentUser.account)"
+              <span
+                class="user-avatar user-avatar--mobile"
+                :style="{ background: getAvatarColor(currentUser.name || currentUser.account) }"
               >
                 {{ getAvatarInitial(currentUser.name || currentUser.account) }}
-              </v-avatar>
+              </span>
               <div>
                 <strong>{{ currentUser.name || currentUser.account }}</strong>
                 <p>管理你的收藏与创作偏好</p>
@@ -248,10 +240,10 @@ const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
 const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
-  { label: "商品", to: "/products", icon: "mdi-shopping-outline" },
-  { label: "定制设计", to: "/design", icon: "mdi-palette-outline" },
-  { label: "关于我们", to: "/about", icon: "mdi-information-outline" },
-  { label: "联系我们", to: "/contact", icon: "mdi-email-outline" },
+  { label: "商品", to: "/products", icon: "□" },
+  { label: "定制设计", to: "/design", icon: "✦" },
+  { label: "关于我们", to: "/about", icon: "i" },
+  { label: "联系我们", to: "/contact", icon: "@" },
 ];
 
 const showAnnouncement = ref(true);
@@ -374,26 +366,19 @@ const getAvatarInitial = (name) => {
 };
 
 const getAvatarColor = (name) => {
-  if (!name) return "grey-lighten-2";
+  if (!name) return "#e5e7eb";
   const colors = [
-    "red-lighten-2",
-    "pink-lighten-2",
-    "purple-lighten-2",
-    "deep-purple-lighten-2",
-    "indigo-lighten-2",
-    "blue-lighten-2",
-    "light-blue-lighten-2",
-    "cyan-lighten-2",
-    "teal-lighten-2",
-    "green-lighten-2",
-    "light-green-lighten-2",
-    "lime-lighten-2",
-    "yellow-lighten-2",
-    "amber-lighten-2",
-    "orange-lighten-2",
-    "deep-orange-lighten-2",
-    "brown-lighten-2",
-    "blue-grey-lighten-2",
+    "#fecaca",
+    "#fbcfe8",
+    "#ddd6fe",
+    "#c7d2fe",
+    "#bfdbfe",
+    "#bae6fd",
+    "#a7f3d0",
+    "#bbf7d0",
+    "#fde68a",
+    "#fed7aa",
+    "#e5e7eb",
   ];
 
   let hash = 0;
@@ -524,6 +509,9 @@ useEventListener(
   display: block;
   width: 28px;
   height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
@@ -592,6 +580,13 @@ useEventListener(
 .header-search,
 .login-button {
   border-radius: 8px;
+}
+
+.ui-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .header-search {
@@ -666,6 +661,34 @@ useEventListener(
 .header-icon-link:hover {
   color: #000;
   background: #f5f5f5;
+}
+
+.ui-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  color: #111;
+  font-size: 0.72rem;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.user-avatar--mobile {
+  width: 32px;
+  height: 32px;
 }
 
 .user-menu-wrapper {
@@ -973,8 +996,11 @@ useEventListener(
     flex: 1 1 auto;
   }
 
-  .brand-mark img {
-    width: 160px;
+  .brand-logo-img {
+    width: 28px;
+    height: 28px;
+    max-width: 28px;
+    max-height: 28px;
   }
 }
 

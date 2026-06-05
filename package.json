@@ -1,6 +1,6 @@
 {
     "name": "yishe-shop",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "description": "Platform for fashion design, POD products, and custom design services",
     "author": "jackie c",
     "private": false,
@@ -43,7 +43,6 @@
         "build:zh": "NUXT_PUBLIC_LOCALE=zh nuxt generate"
     },
     "dependencies": {
-        "@mdi/font": "^7.4.47",
         "@nuxt/content": "^3.13.0",
         "@nuxt/devtools": "^4.0.0-alpha.4",
         "@nuxtjs/color-mode": "^4.0.0",
@@ -62,8 +61,7 @@
         "stringify": "^5.2.0",
         "tailwindcss": "^3.3.5",
         "ua-parser-js": "^2.0.3",
-        "unplugin-vue-components": "^0.25.2",
-        "vuetify": "^4.0.6"
+        "unplugin-vue-components": "^0.25.2"
     },
     "devDependencies": {
         "@nuxtjs/eslint-config-typescript": "^12.1.0",

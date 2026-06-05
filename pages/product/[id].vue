@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="product-detail-page">
     <div v-if="loading" class="product-loading">
       <div></div>
@@ -8,9 +8,9 @@
     <div v-else-if="product" class="product-detail-shell">
       <nav class="product-breadcrumb" aria-label="面包屑导航">
         <NuxtLink to="/">首页</NuxtLink>
-        <v-icon size="14">mdi-chevron-right</v-icon>
+        <span class="ui-icon" aria-hidden="true">/</span>
         <NuxtLink to="/products">POD 商品</NuxtLink>
-        <v-icon size="14">mdi-chevron-right</v-icon>
+        <span class="ui-icon" aria-hidden="true">/</span>
         <span>{{ product.type || "商品详情" }}</span>
       </nav>
 
@@ -46,7 +46,7 @@
               aria-label="上一张图片"
               @click="previousImage"
             >
-              <v-icon size="20">mdi-chevron-left</v-icon>
+              <span class="ui-icon" aria-hidden="true">‹</span>
             </button>
             <transition :name="`gallery-${slideDirection}`" mode="out-in">
               <img
@@ -69,7 +69,7 @@
               aria-label="下一张图片"
               @click="nextImage"
             >
-              <v-icon size="20">mdi-chevron-right</v-icon>
+              <span class="ui-icon" aria-hidden="true">›</span>
             </button>
           </div>
         </div>
@@ -138,7 +138,7 @@
               <p>基于这个商品的风格、图案或载体，发起私人定制需求。</p>
             </div>
             <NuxtLink :to="designSameHref" class="product-design-action">
-              <v-icon size="18">mdi-creation</v-icon>
+              <span class="ui-icon" aria-hidden="true">✦</span>
               设计同款
             </NuxtLink>
           </div>
@@ -148,11 +148,11 @@
               咨询购买
             </NuxtLink>
             <button type="button" class="product-secondary-action" @click="copyLink">
-              <v-icon size="18">mdi-link-variant</v-icon>
+              <span class="ui-icon" aria-hidden="true">🔗</span>
               复制链接
             </button>
             <button type="button" class="product-secondary-action" @click="shareProduct">
-              <v-icon size="18">mdi-share-variant</v-icon>
+              <span class="ui-icon" aria-hidden="true">↗</span>
               分享
             </button>
           </div>
@@ -814,7 +814,7 @@ onMounted(() => {
 <style scoped>
 .product-detail-page {
   min-height: 100vh;
-  background: #faf8f3;
+  background: #fff;
   color: #111;
   padding: clamp(0.8rem, 2vw, 1.25rem) 0 clamp(2.5rem, 5vw, 4.5rem);
 }
@@ -907,19 +907,19 @@ onMounted(() => {
   border: 0;
   min-height: auto;
   border-radius: 0;
-  background: #f0ede6;
+  background: #f5f5f7;
   padding: 0;
   transition: transform 220ms ease, opacity 220ms ease, background-color 220ms ease;
 }
 
 .product-thumbs button.active {
-  background: #ded6ca;
+  background: #e8e8ed;
 }
 
 .product-thumbs button:hover {
   transform: translateY(-2px);
   opacity: 0.88;
-  background: #e6ddd0;
+  background: #eeeeef;
 }
 
 .product-thumbs img {
@@ -939,12 +939,12 @@ onMounted(() => {
   overflow: hidden;
   border: 0;
   border-radius: 0;
-  background: #f0ede6;
+  background: #f5f5f7;
   transition: background-color 260ms ease;
 }
 
 .product-main-frame:hover {
-  background: #ebe4d8;
+  background: #f0f0f2;
 }
 
 .product-frame-mark {
@@ -1054,7 +1054,7 @@ onMounted(() => {
 }
 
 .product-panel-index span {
-  color: #8a806c;
+  color: #86868b;
   font-size: 0.62rem;
   font-weight: 850;
   letter-spacing: 0.14em;
@@ -1198,18 +1198,18 @@ onMounted(() => {
   display: grid;
   align-content: space-between;
   min-height: 5rem;
-  background: #faf8f3;
+  background: #f5f5f7;
   padding: 0.75rem;
   transition: transform 220ms ease, background-color 220ms ease;
 }
 
 .product-signal-grid article:hover {
   transform: translateY(-3px);
-  background: #f0eadf;
+  background: #eeeeef;
 }
 
 .product-signal-grid span {
-  color: #8a806c;
+  color: #86868b;
   font-size: 0.62rem;
   font-weight: 850;
   letter-spacing: 0.12em;
@@ -1246,7 +1246,7 @@ onMounted(() => {
 
 .product-design-remix:hover {
   transform: translateY(-3px);
-  background: #1c1a17;
+  background: #1d1d1f;
 }
 
 .product-design-remix div {
@@ -1302,7 +1302,7 @@ onMounted(() => {
 
 .product-design-action:hover {
   transform: translateY(-2px);
-  background: #f2eadf;
+  background: #f5f5f7;
 }
 
 .product-meta-panel dl,
@@ -1455,7 +1455,7 @@ onMounted(() => {
 .product-detail-copy::before {
   content: "DETAIL";
   position: static;
-  color: #8a806c;
+  color: #86868b;
   font-size: 0.58rem;
   font-weight: 850;
   letter-spacing: 0.12em;
@@ -1493,7 +1493,7 @@ onMounted(() => {
   overflow: hidden;
   border: 0;
   border-radius: 0;
-  background: #f0ede6;
+  background: #f5f5f7;
   transition: background-color 260ms ease;
 }
 
@@ -1509,7 +1509,7 @@ onMounted(() => {
 }
 
 .product-related-card:hover > div {
-  background: #e9e2d6;
+  background: #eeeeef;
 }
 
 .product-related-card:hover img {

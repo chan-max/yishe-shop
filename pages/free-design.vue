@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 definePageMeta({ layout: "page" });
 
 usePageSEO({
@@ -15,7 +15,6 @@ type DesignWorld = {
   id: string;
   name: string;
   short: string;
-  icon: string;
   manifesto: string;
   summary: string;
   mood: string;
@@ -30,7 +29,6 @@ const worlds: DesignWorld[] = [
     id: "brand",
     name: "企业品牌",
     short: "Brand",
-    icon: "mdi-domain",
     manifesto: "先建立品牌语气，再让所有触点说同一种语言。",
     summary: "适合从 Logo、VI、包装到招商传播的一整套品牌启动与焕新。",
     mood: "稳、干净、可信、长期",
@@ -43,7 +41,6 @@ const worlds: DesignWorld[] = [
     id: "commerce",
     name: "电商转化",
     short: "Commerce",
-    icon: "mdi-storefront-outline",
     manifesto: "不是把图做满，而是把点击、停留和成交做顺。",
     summary: "适合商品主图、详情页、活动节点和直播视觉这一类增长型场景。",
     mood: "直接、锋利、清楚、可转化",
@@ -56,7 +53,6 @@ const worlds: DesignWorld[] = [
     id: "social",
     name: "社媒内容",
     short: "Social",
-    icon: "mdi-cellphone-play",
     manifesto: "让内容不是一张张零散地发，而是像一个有记忆点的账号。",
     summary: "适合小红书、短视频、公众号和私域传播，强调封面系统和内容识别。",
     mood: "轻、快、系列化、易传播",
@@ -69,7 +65,6 @@ const worlds: DesignWorld[] = [
     id: "life",
     name: "生活方式",
     short: "Lifestyle",
-    icon: "mdi-home-heart",
     manifesto: "让设计回到关系、礼物、家和个人表达这些真实生活里。",
     summary: "适合礼物、家居、穿搭、婚礼和纪念场景，强调情绪和分享欲。",
     mood: "温柔、私人、有温度、耐看",
@@ -82,7 +77,6 @@ const worlds: DesignWorld[] = [
     id: "industry",
     name: "行业专项",
     short: "Industry",
-    icon: "mdi-briefcase-outline",
     manifesto: "先进入业务语境，再进入视觉语境。",
     summary: "面向服装、美妆、餐饮、教育和会务等垂直行业，更强调适配度和落地性。",
     mood: "专业、克制、懂业务、可执行",
@@ -181,7 +175,7 @@ const goToPath = (path: string) => navigateTo(path);
       >
         <span>{{ item.short }}</span>
         <strong>{{ item.name }}</strong>
-        <v-icon size="18">{{ item.icon }}</v-icon>
+        <span class="fd-selector__mark" aria-hidden="true">→</span>
       </button>
     </section>
 
@@ -446,7 +440,7 @@ const goToPath = (path: string) => navigateTo(path);
 
 .fd-selector__item.is-active span,
 .fd-selector__item.is-active strong,
-.fd-selector__item.is-active :deep(.v-icon) {
+.fd-selector__item.is-active .fd-selector__mark {
   color: #f4efe7;
 }
 

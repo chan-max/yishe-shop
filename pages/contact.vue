@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+﻿<script lang="ts" setup>
 definePageMeta({ layout: "page" });
 
 useHead({
@@ -23,11 +23,11 @@ const founderInfo = {
 };
 
 const socialPlatforms = ref([
-  { name: "微信", icon: "mdi-wechat", image: "/contact-img/weixin.jpg", color: "#07c160" },
-  { name: "微博", icon: "mdi-sina-weibo", image: "/contact-img/weibo.png", color: "#e6162d" },
-  { name: "小红书", icon: "mdi-book-open-page-variant", image: "/contact-img/xiaohongshu.jpg", color: "#ff2442" },
-  { name: "抖音", icon: "mdi-music-note", image: "/contact-img/douyin.webp", color: "#000000" },
-  { name: "快手", icon: "mdi-video", image: "/contact-img/kuaishou.webp", color: "#ff6600" },
+  { name: "微信", mark: "微", image: "/contact-img/weixin.jpg", color: "#07c160" },
+  { name: "微博", mark: "博", image: "/contact-img/weibo.png", color: "#e6162d" },
+  { name: "小红书", mark: "红", image: "/contact-img/xiaohongshu.jpg", color: "#ff2442" },
+  { name: "抖音", mark: "抖", image: "/contact-img/douyin.webp", color: "#000000" },
+  { name: "快手", mark: "快", image: "/contact-img/kuaishou.webp", color: "#ff6600" },
 ]);
 
 const showQRDialog = ref(false);
@@ -76,7 +76,7 @@ const closeQRDialog = () => {
           class="social-link"
           @click="openQRCode(platform)"
         >
-          <v-icon :icon="platform.icon" size="18" />
+          <span class="social-mark" :style="{ color: platform.color }">{{ platform.mark }}</span>
           <span>{{ platform.name }}</span>
         </button>
       </div>
@@ -87,14 +87,10 @@ const closeQRDialog = () => {
         <div v-if="showQRDialog" class="qr-dialog-overlay" @click="closeQRDialog">
           <div class="qr-dialog" @click.stop>
             <button class="qr-close" type="button" @click="closeQRDialog">
-              <v-icon>mdi-close</v-icon>
+              <span class="ui-icon" aria-hidden="true">×</span>
             </button>
             <div v-if="selectedPlatform" class="qr-content">
-              <v-icon
-                :icon="selectedPlatform.icon"
-                size="32"
-                :style="{ color: selectedPlatform.color }"
-              />
+              <span class="qr-mark" :style="{ color: selectedPlatform.color }">{{ selectedPlatform.mark }}</span>
               <h3>{{ selectedPlatform.name }}</h3>
               <img :src="selectedPlatform.image" :alt="`${selectedPlatform.name} 二维码`" />
               <p>使用 {{ selectedPlatform.name }} 扫描二维码</p>

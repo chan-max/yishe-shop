@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+﻿<script lang="ts" setup>
 const { awesome } = useAppConfig();
 
 const footerGroups = {
@@ -33,7 +33,7 @@ const handleNewsletterSubmit = async () => {
       </div>
       <form class="footer-newsletter__form" @submit.prevent="handleNewsletterSubmit">
         <div class="footer-newsletter__input">
-          <v-icon size="18">mdi-email-outline</v-icon>
+          <span class="ui-icon" aria-hidden="true">@</span>
           <input
             v-model="newsletterEmail"
             type="email"

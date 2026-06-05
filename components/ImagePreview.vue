@@ -13,7 +13,7 @@
         class="image-preview-close"
         aria-label="关闭预览"
       >
-        <v-icon size="24">mdi-close</v-icon>
+        <span aria-hidden="true">×</span>
       </button>
 
       <!-- 图片容器 -->
@@ -29,7 +29,7 @@
           class="image-preview-nav image-preview-nav-left"
           aria-label="上一张"
         >
-          <v-icon size="24">mdi-chevron-left</v-icon>
+          <span aria-hidden="true">‹</span>
         </button>
 
         <!-- 预览图片 -->
@@ -64,7 +64,7 @@
           class="image-preview-nav image-preview-nav-right"
           aria-label="下一张"
         >
-          <v-icon size="24">mdi-chevron-right</v-icon>
+          <span aria-hidden="true">›</span>
         </button>
 
         <!-- 图片索引指示器 -->

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { useDesignRequest } from "~/composables/use-design-request";
 import { useToast } from "~/composables/use-toast";
 
@@ -199,7 +199,7 @@ applyProductSource();
             <div
               class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100"
             >
-              <v-icon size="20" color="#44403c">mdi-check</v-icon>
+              <span aria-hidden="true">✓</span>
             </div>
             <h3 class="text-[16px] font-bold text-stone-950">需求已收到</h3>
             <p class="mt-1 text-[12px] leading-5 text-stone-500">

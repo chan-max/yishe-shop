@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 definePageMeta({ layout: "page" });
 
 usePageSEO({
@@ -122,7 +122,7 @@ const toggleSave = (id: string) => {
         <div class="portfolio-card__head">
           <span>{{ item.category }}</span>
           <button type="button" class="portfolio-card__save" @click="toggleSave(item.id)">
-            <v-icon size="15">{{ savedBoards.includes(item.id) ? "mdi-heart" : "mdi-heart-outline" }}</v-icon>
+            <span aria-hidden="true">{{ savedBoards.includes(item.id) ? "♥" : "♡" }}</span>
           </button>
         </div>
         <h3>{{ item.title }}</h3>

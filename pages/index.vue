@@ -175,6 +175,12 @@ const hasLiveProducts = computed(
   () => featuredProducts.value.length > 0 || Object.values(moduleProducts.value).some((items) => items.length > 0),
 );
 
+// 瀑布流照片墙数据
+const masonryProducts = computed(() => {
+  const pool = getProductPool();
+  return pool.slice(0, 64);
+});
+
 const newArrivals = computed(() =>
   getProductPool().slice(
     0,
@@ -390,13 +396,23 @@ await fetchFeaturedProducts();
     <h1 class="sr-only">衣设 POD 印花、定制商品与创意设计开放平台</h1>
 
     <section class="lux-hero">
-      <div class="lux-hero__bg" aria-hidden="true">
-        <img
-          v-if="hasLiveProducts && getProductImageUrl(heroProduct, 1600)"
-          :src="getProductImageUrl(heroProduct, 1600)"
-          :alt="heroProduct.title"
-          class="lux-product-image"
-        />
+      <div class="lux-hero__masonry" aria-hidden="true">
+        <div class="lux-hero__masonry-track">
+          <div
+            v-for="(product, index) in [...masonryProducts, ...masonryProducts]"
+            :key="`${product.id}-masonry-${index}`"
+            :class="['lux-masonry-item', `lux-masonry-item--${index % 4}`]"
+          >
+            <img
+              v-if="getProductImageUrl(product, 600)"
+              :src="getProductImageUrl(product, 600)"
+              :alt="product.title"
+              class="lux-product-image"
+              loading="lazy"
+            />
+            <div v-else class="lux-image-skeleton"></div>
+          </div>
+        </div>
       </div>
       <nav class="lux-hero__nav" aria-label="首页快捷入口">
         <NuxtLink
@@ -684,23 +700,49 @@ await fetchFeaturedProducts();
   isolation: isolate;
 }
 
-.lux-hero__bg {
+.lux-hero__masonry {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 9px),
-    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.16), transparent 35%),
-    linear-gradient(135deg, #0f0f0f, #1c1915 48%, #090909);
-  transform: scale(1.02);
-  animation: lux-hero-drift 18s ease-in-out infinite alternate;
+  overflow: hidden;
 }
 
-.lux-hero__bg img {
+.lux-hero__masonry-track {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  padding: 0;
+  animation: lux-masonry-scroll 80s linear infinite;
+  will-change: transform;
+}
+
+.lux-masonry-item {
+  position: relative;
+  overflow: hidden;
+  background: #1a1a1a;
+  border-radius: 0;
+  aspect-ratio: 3 / 4;
+}
+
+.lux-masonry-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.88) contrast(0.94);
+  filter: saturate(0.85) contrast(0.92) brightness(0.7);
+  transition: transform 0.6s ease;
+}
+
+.lux-masonry-item:hover img {
+  transform: scale(1.05);
+}
+
+@keyframes lux-masonry-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
 
 .lux-hero::after {
@@ -709,8 +751,9 @@ await fetchFeaturedProducts();
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 24%, transparent 52%, rgba(0, 0, 0, 0.48)),
-    radial-gradient(circle at 50% 42%, transparent 0 32%, rgba(0, 0, 0, 0.24) 82%);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 30%, rgba(0, 0, 0, 0.25) 70%, rgba(0, 0, 0, 0.65) 100%),
+    radial-gradient(circle at 50% 42%, transparent 0 35%, rgba(0, 0, 0, 0.35) 85%);
+  pointer-events: none;
 }
 
 .lux-hero__nav {
@@ -1626,6 +1669,10 @@ await fetchFeaturedProducts();
 }
 
 @media (max-width: 980px) {
+  .lux-hero__masonry-track {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
   .lux-feature,
   .lux-runway,
   .lux-editorials,
@@ -1693,6 +1740,11 @@ await fetchFeaturedProducts();
 @media (max-width: 640px) {
   .lux-hero {
     min-height: 86vh;
+  }
+
+  .lux-hero__masonry-track {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(24px, auto);
   }
 
   .lux-hero__nav {
