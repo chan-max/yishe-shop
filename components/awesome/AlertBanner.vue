@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { TransitionRoot, TransitionChild } from '@headlessui/vue'
+import { TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { CircleCheck, CircleX, CircleAlert, X } from 'lucide-vue-next'
 export type IStyles = 'primary' | 'success' | 'warning' | 'danger'
 
 // props
@@ -71,19 +72,16 @@ const close = () => {
       >
         <div class="flex items-center justify-center">
           <slot name="icon">
-            <Icon
+            <CircleCheck
               v-if="selectedType === 'success'"
-              name="mdi:check-circle"
               :class="`text-2xl ${selectedTextStyle}`"
             />
-            <Icon
+            <CircleX
               v-if="selectedType === 'danger'"
-              name="icon-clarity:times-circle-solid"
               :class="`text-2xl ${selectedTextStyle}`"
             />
-            <Icon
+            <CircleAlert
               v-if="selectedType === 'warning'"
-              name="icon-bi:exclamation-circle-fill"
               :class="`text-2xl ${selectedTextStyle}`"
             />
           </slot>
@@ -101,7 +99,7 @@ const close = () => {
             class="text-gray-600 hover:text-red-500 dark:text-gray-400 font-bold"
             @click="close"
           >
-            <Icon name="clarity:times-line" />
+            <X :size="18" />
           </button>
         </div>
       </div>

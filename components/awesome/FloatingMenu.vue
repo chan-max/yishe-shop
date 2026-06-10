@@ -13,10 +13,8 @@
       @click="isOpen = !isOpen"
       class="bg-primary-500 hover:bg-primary-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 relative"
     >
-      <Icon
-        :name="isOpen ? 'heroicons:x-mark' : 'heroicons:plus'"
-        class="w-6 h-6"
-      />
+      <X v-if="isOpen" :size="24" />
+      <Plus v-else :size="24" />
     </button>
 
     <!-- 展开的菜单项 -->
@@ -57,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+import { X, Plus } from 'lucide-vue-next'
+
 const isOpen = ref(false)
 
 const openCustomerService = () => {
@@ -77,4 +77,4 @@ const scrollToTop = () => {
   position: fixed;
   isolation: isolate;
 }
-</style> 
+</style>

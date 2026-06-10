@@ -4,7 +4,7 @@
       <span>注册衣设，探索 POD 印花定制与创意设计商品。</span>
       <NuxtLink to="/products">立即探索</NuxtLink>
       <button type="button" aria-label="关闭顶部通知" @click="showAnnouncement = false">
-        <span class="ui-icon" aria-hidden="true">×</span>
+        <X class="ui-icon" :size="14" aria-hidden="true" />
       </button>
     </div>
 
@@ -31,7 +31,8 @@
           :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
           @click="toggleMobileMenu"
         >
-          <span class="ui-icon" aria-hidden="true">{{ isMobileMenuOpen ? "×" : "☰" }}</span>
+          <X v-if="isMobileMenuOpen" class="ui-icon" :size="20" aria-hidden="true" />
+          <Menu v-else class="ui-icon" :size="20" aria-hidden="true" />
         </button>
 
         <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
@@ -55,7 +56,7 @@
 
         <div class="header-actions">
           <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
-            <span class="ui-icon" aria-hidden="true">⌕</span>
+            <Search class="ui-icon" :size="20" aria-hidden="true" />
             <input
               v-model="headerSearch"
               type="search"
@@ -65,7 +66,7 @@
           </form>
 
           <NuxtLink to="/favorites" class="header-icon-link" aria-label="收藏">
-            <span class="ui-icon" aria-hidden="true">♡</span>
+            <Heart class="ui-icon" :size="19" :stroke-width="2" aria-hidden="true" />
           </NuxtLink>
 
           <template v-if="isLoggedIn && currentUser">
@@ -86,7 +87,7 @@
                 <span class="user-name">{{
                   currentUser.name || currentUser.account
                 }}</span>
-                <span class="user-menu-caret" aria-hidden="true">⌄</span>
+                <ChevronDown class="user-menu-caret" :size="14" aria-hidden="true" />
               </button>
 
               <Transition name="user-menu">
@@ -121,7 +122,7 @@
 
           <template v-else>
             <NuxtLink to="/login" class="header-icon-link" aria-label="登录">
-              <span class="ui-icon" aria-hidden="true">◎</span>
+              <User class="ui-icon" :size="22" aria-hidden="true" />
             </NuxtLink>
           </template>
 
@@ -131,7 +132,8 @@
             :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
             @click="toggleMobileMenu"
           >
-            <span class="ui-icon" aria-hidden="true">{{ isMobileMenuOpen ? "×" : "☰" }}</span>
+            <X v-if="isMobileMenuOpen" class="ui-icon" :size="20" aria-hidden="true" />
+            <Menu v-else class="ui-icon" :size="20" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -150,13 +152,13 @@
               <h2>导航</h2>
             </div>
             <button class="mobile-close-btn" @click="closeMobileMenu">
-              <span class="ui-icon" aria-hidden="true">×</span>
+              <X class="ui-icon" :size="18" aria-hidden="true" />
             </button>
           </div>
 
           <div class="mobile-search-form">
             <form @submit.prevent="handleMobileSearch">
-              <span class="ui-icon" aria-hidden="true">⌕</span>
+              <Search class="ui-icon" :size="16" aria-hidden="true" />
               <input
                 v-model="mobileSearchKeyword"
                 type="search"
@@ -173,7 +175,7 @@
               class="mobile-nav-link"
               @click="closeMobileMenu"
             >
-              <span class="ui-icon" aria-hidden="true">{{ item.icon }}</span>
+              <component :is="item.icon" class="ui-icon" :size="18" aria-hidden="true" />
               {{ item.label }}
             </NuxtLink>
           </nav>
@@ -231,6 +233,18 @@
 </template>
 
 <script setup lang="ts">
+import {
+  Search,
+  Heart,
+  ChevronDown,
+  X,
+  Menu,
+  User,
+  Box,
+  Palette,
+  Info,
+  Mail,
+} from 'lucide-vue-next'
 import { usePublicUserStore } from "~/stores/public-user";
 import { api } from "~/utils/api";
 
@@ -240,10 +254,10 @@ const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
 const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
 const navItems = [
-  { label: "商品", to: "/products", icon: "□" },
-  { label: "定制设计", to: "/design", icon: "✦" },
-  { label: "关于我们", to: "/about", icon: "i" },
-  { label: "联系我们", to: "/contact", icon: "@" },
+  { label: "商品", to: "/products", icon: Box },
+  { label: "定制设计", to: "/design", icon: Palette },
+  { label: "关于我们", to: "/about", icon: Info },
+  { label: "联系我们", to: "/contact", icon: Mail },
 ];
 
 const showAnnouncement = ref(true);
@@ -472,6 +486,7 @@ useEventListener(
   left: 0;
   right: 0;
   z-index: 100;
+  isolation: isolate;
   transform: translateY(-120%);
   opacity: 0;
   background: rgba(255, 255, 255, 0.9);
@@ -651,9 +666,10 @@ useEventListener(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 0;
+  border-radius: 8px;
   color: #555;
   text-decoration: none;
 }
@@ -667,21 +683,19 @@ useEventListener(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1em;
-  height: 1em;
-  font-size: 1em;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .user-avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
   color: #111;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 800;
   flex: 0 0 auto;
 }
@@ -693,15 +707,16 @@ useEventListener(
 
 .user-menu-wrapper {
   position: relative;
+  z-index: 2;
 }
 
 .user-menu-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.45rem 0.2rem 0.2rem;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
   border: 1px solid #ececec;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   color: #111;
   cursor: pointer;
@@ -735,6 +750,7 @@ useEventListener(
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
+  z-index: 120;
   min-width: 11rem;
   display: grid;
   gap: 0.25rem;
@@ -743,6 +759,7 @@ useEventListener(
   border-radius: 0.9rem;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .user-menu-item {
@@ -816,7 +833,7 @@ useEventListener(
 .mobile-panel-overlay {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 50;
   background: rgba(0, 0, 0, 0.36);
 }
 

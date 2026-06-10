@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
+import { Heart } from 'lucide-vue-next'
 import { api } from '~/utils/api'
 import { usePublicUserStore } from '~/stores/public-user'
 import { useToast } from '~/composables/use-toast'
@@ -219,7 +220,7 @@ onMounted(() => {
         </div>
 
         <div v-else class="py-20 text-center">
-          <Icon name="heroicons:heart" class="mx-auto h-12 w-12 text-stone-300" />
+          <Heart :size="48" class="mx-auto text-stone-300" />
           <p class="mt-4 text-[13px] text-stone-500">暂无收藏</p>
           <NuxtLink to="/products" class="ys-action-btn mt-5 inline-flex rounded-xl px-5 py-3 text-[12px] transition duration-200">
             去逛逛
