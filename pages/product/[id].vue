@@ -245,6 +245,8 @@ import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
 import { useProductStructuredData, useBreadcrumbStructuredData } from "~/composables/use-seo";
 import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
+import { isIndexableProduct } from "~/utils/product-indexing";
+import { serializeStructuredData } from "~/utils/structured-data";
 import {
   SITE_DEFAULT_IMAGE,
   SITE_OG_NAME,
@@ -478,6 +480,16 @@ const productSeoImage = computed(
   () => productImages.value[0] || SITE_DEFAULT_IMAGE,
 );
 
+const productAvailability = computed(() => {
+  if (product.value?.inventoryStatus === "out_of_stock") {
+    return "https://schema.org/OutOfStock";
+  }
+  if (product.value?.inventoryStatus === "preorder") {
+    return "https://schema.org/PreOrder";
+  }
+  return "https://schema.org/InStock";
+});
+
 const productSeoUrl = computed(() =>
   product.value
     ? getProductAbsoluteUrl(product.value, SITE_URL)
@@ -488,6 +500,10 @@ const productSeoKeywords = computed(
   () =>
     productKeywords.value.join(",") ||
     "POD商品,印花设计,定制商品,图案设计,私人定制",
+);
+
+const productRobots = computed(() =>
+  product.value ? SITE_ROBOTS : "noindex, nofollow",
 );
 
 const productStructuredDataJson = computed(() => {
@@ -503,12 +519,18 @@ const productStructuredDataJson = computed(() => {
   const productSchema = useProductStructuredData({
     name: product.value.name || "POD 定制商品",
     description: productSeoDescription.value,
-    image: productSeoImage.value,
+    image: productImages.value.length
+      ? productImages.value
+      : productSeoImage.value,
     url: productSeoUrl.value,
     category: product.value.type || "POD 定制商品",
     price: Number(productPrice.value) || undefined,
+    currency: product.value.currency || "CNY",
+    availability: productAvailability.value,
+    sku: product.value.sku || product.value.code || undefined,
+    brand: product.value.brand || undefined,
   });
-  return JSON.stringify({
+  return serializeStructuredData({
     "@context": "https://schema.org",
     "@graph": [
       { ...breadcrumb, "@context": undefined },
@@ -532,7 +554,7 @@ useSeoMeta({
   twitterTitle: () => productSeoTitle.value,
   twitterDescription: () => productSeoDescription.value,
   twitterImage: () => productSeoImage.value,
-  robots: SITE_ROBOTS,
+  robots: () => productRobots.value,
 });
 
 useHead(() => ({
@@ -541,7 +563,7 @@ useHead(() => ({
     ? [
         {
           type: "application/ld+json",
-          children: productStructuredDataJson.value,
+          innerHTML: productStructuredDataJson.value,
         },
       ]
     : [],
@@ -557,7 +579,7 @@ const fetchProductDetail = async () => {
       response.status === true ||
       response.code === 200
     ) {
-      product.value = response.data;
+      product.value = isIndexableProduct(response.data) ? response.data : null;
       currentImageIndex.value = 0;
       relatedProducts.value = [];
       await Promise.all([checkFavoriteStatus(), fetchFavoriteCount()]);
@@ -804,6 +826,18 @@ watch(
 
 if (route.params.id) {
   await fetchProductDetail();
+  if (product.value) {
+    const canonicalPath = getProductPath(product.value);
+    if (route.path !== canonicalPath) {
+      await navigateTo(canonicalPath, {
+        redirectCode: 301,
+        replace: true,
+      });
+    }
+  } else if (import.meta.server) {
+    const event = useRequestEvent();
+    if (event) setResponseStatus(event, 404, "Product Not Found");
+  }
 }
 
 onMounted(() => {

@@ -77,13 +77,25 @@ export default defineNuxtConfig({
     "/search": { redirect: { to: "/products", statusCode: 301 } },
     "/founder": { redirect: { to: "/", statusCode: 301 } },
     "/sitemap.xml": {
-      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+      headers: {
+        "Cache-Control":
+          "public, max-age=0, s-maxage=600, stale-while-revalidate=60",
+      },
     },
     "/sitemap_index.xml": {
-      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+      redirect: { to: "/sitemap.xml", statusCode: 301 },
+    },
+    "/sitemaps/**": {
+      headers: {
+        "Cache-Control":
+          "public, max-age=0, s-maxage=600, stale-while-revalidate=60",
+      },
     },
     "/__sitemap__/**": {
-      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+      headers: {
+        "Cache-Control":
+          "public, max-age=0, s-maxage=600, stale-while-revalidate=60",
+      },
     },
     "/robots.txt": {
       headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
@@ -195,7 +207,7 @@ export default defineNuxtConfig({
       "/test-view",
     ],
     allow: ["/"],
-    sitemap: "https://1s.design/__sitemap__/pages.xml",
+    sitemap: "https://1s.design/sitemap.xml",
   },
 
   // Schema.org 结构化数据配置
@@ -205,7 +217,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     autoLastmod: true,
-    cacheMaxAgeSeconds: false,
+    cacheMaxAgeSeconds: 600,
     exclude: [
       "/admin/**",
       "/api/**",
@@ -224,7 +236,6 @@ export default defineNuxtConfig({
         sources: ["/api/__sitemap__/urls"],
       },
     },
-    defaultSitemapsChunkSize: 1000,
   },
 
   // OG Image 渲染配置（禁用以提升启动速度）

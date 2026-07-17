@@ -10,6 +10,7 @@ import {
   SITE_URL,
 } from "../../utils/seo";
 import { useBreadcrumbStructuredData, useItemListStructuredData } from "~/composables/use-seo";
+import { serializeStructuredData } from "~/utils/structured-data";
 
 definePageMeta({ layout: "page" });
 
@@ -623,7 +624,7 @@ const collectionStructuredData = computed(() => {
   };
 });
 const collectionStructuredDataJson = computed(() =>
-  JSON.stringify(collectionStructuredData.value),
+  serializeStructuredData(collectionStructuredData.value),
 );
 
 useSeoMeta({
@@ -644,15 +645,15 @@ useSeoMeta({
   robots: () => robotsValue.value,
 });
 
-useHead({
-  link: [{ rel: "canonical", href: canonicalUrl }],
+useHead(() => ({
+  link: [{ rel: "canonical", href: canonicalUrl.value }],
   script: [
     {
       type: "application/ld+json",
-      children: collectionStructuredDataJson,
+      innerHTML: collectionStructuredDataJson.value,
     },
   ],
-});
+}));
 
 watch(
   () => [

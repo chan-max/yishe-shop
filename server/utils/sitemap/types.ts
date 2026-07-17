@@ -22,16 +22,25 @@ export type ProductSitemapItem = {
   keywords?: string;
   searchKeywords?: string;
   slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   isPublish?: boolean;
   createTime?: string;
   updateTime?: string;
 };
 
-export type ProductListResponse = {
+export type ProductSitemapPageResponse = {
   code?: number;
   status?: boolean;
   data?: {
     list?: ProductSitemapItem[];
     total?: number;
+    page?: number;
+    pageSize?: number;
   };
+};
+
+export type SitemapIndexEntry = {
+  loc: string;
+  lastmod?: string;
 };

@@ -15,6 +15,7 @@ import {
   SITE_SEARCH_URL_TEMPLATE,
   SITE_URL,
 } from "~/utils/seo";
+import { serializeStructuredData } from "~/utils/structured-data";
 
 type StructuredDataNode = Record<string, any>;
 
@@ -91,7 +92,7 @@ export function usePageSEO(config: SEOConfig) {
       script: [
         {
           type: "application/ld+json",
-          children: JSON.stringify(structuredDataToUse),
+          innerHTML: serializeStructuredData(structuredDataToUse),
         },
       ],
     });
@@ -147,12 +148,14 @@ export function useOrganizationStructuredData() {
 export function useProductStructuredData(product: {
   name: string;
   description: string;
-  image: string;
+  image: string | string[];
   url: string;
   price?: number;
   currency?: string;
   availability?: string;
   category?: string;
+  sku?: string;
+  brand?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -161,12 +164,21 @@ export function useProductStructuredData(product: {
     description: product.description,
     image: product.image,
     url: product.url,
+    ...(product.sku && { sku: product.sku }),
+    ...(product.brand && {
+      brand: {
+        "@type": "Brand",
+        name: product.brand,
+      },
+    }),
     ...(product.price && {
       offers: {
         "@type": "Offer",
+        url: product.url,
         price: product.price,
         priceCurrency: product.currency || "CNY",
         availability: product.availability || "https://schema.org/InStock",
+        itemCondition: "https://schema.org/NewCondition",
       },
     }),
     ...(product.category && { category: product.category }),
