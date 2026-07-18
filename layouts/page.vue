@@ -489,7 +489,7 @@ useEventListener(
   position: relative;
   top: 0;
   padding: 0.75rem 0;
-  background: rgba(250, 248, 246, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid transparent;
   transition:
     background-color 240ms ease,

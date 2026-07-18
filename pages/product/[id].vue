@@ -1891,7 +1891,7 @@ onMounted(() => {
 }
 
 .product-design-remix:hover {
-  background: #8f4935;
+  background: #000000;
 }
 
 .product-design-action,
@@ -1904,7 +1904,7 @@ onMounted(() => {
 }
 
 .product-primary-action:hover {
-  background: #8f4935;
+  background: #000000;
 }
 
 .product-detail-copy,

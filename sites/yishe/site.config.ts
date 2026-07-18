@@ -30,7 +30,7 @@ export const yisheSiteConfig: SiteDefinition = {
       "发现可商用的 POD 图案、定制商品灵感和创意设计服务，把私人表达转化为真实产品。",
     keywords:
       "衣设,yishe,POD,Print on Demand,印花设计,定制商品,私人定制,图案素材,服装印花,创意设计,AI设计,设计师服务,品牌视觉,周边定制,礼品定制",
-    themeColor: "#faf8f6",
+    themeColor: "#ffffff",
     robots:
       "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     home: {

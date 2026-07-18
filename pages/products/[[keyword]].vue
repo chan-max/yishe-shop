@@ -2768,7 +2768,7 @@ await fetchProducts();
 .catalog-empty button:hover,
 .catalog-drawer__apply:hover,
 .catalog-apply:hover {
-  background: #8f4935;
+  background: #000000;
 }
 
 .product-filter-quick button,
