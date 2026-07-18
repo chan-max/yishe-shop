@@ -1,10 +1,12 @@
 <template>
   <div class="page-shell">
     <div v-if="showAnnouncement" class="site-announcement">
-      <span>注册衣设，探索 POD 印花定制与创意设计商品。</span>
-      <NuxtLink to="/products">立即探索</NuxtLink>
+      <span>{{ site.announcement.text }}</span>
+      <NuxtLink :to="site.announcement.actionTo">
+        {{ site.announcement.actionLabel }}
+      </NuxtLink>
       <button type="button" aria-label="关闭顶部通知" @click="showAnnouncement = false">
-        <X class="ui-icon" :size="14" aria-hidden="true" />
+        <AppIcon name="x" class="ui-icon" :size="14" aria-hidden="true" />
       </button>
     </div>
 
@@ -31,15 +33,23 @@
           :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
           @click="toggleMobileMenu"
         >
-          <X v-if="isMobileMenuOpen" class="ui-icon" :size="20" aria-hidden="true" />
-          <Menu v-else class="ui-icon" :size="20" aria-hidden="true" />
+          <AppIcon
+            :name="isMobileMenuOpen ? 'x' : 'menu'"
+            class="ui-icon"
+            :size="20"
+            aria-hidden="true"
+          />
         </button>
 
-        <NuxtLink to="/" class="brand-mark" aria-label="衣设首页">
-          <img src="/logo.png" alt="1s.design 衣设" class="brand-logo-img" />
+        <NuxtLink to="/" class="brand-mark" :aria-label="`${site.brand.name}首页`">
+          <img
+            :src="site.brand.logo"
+            :alt="site.brand.fullName"
+            class="brand-logo-img"
+          />
           <div class="brand-text">
-            <span class="brand-name-en">1s.design</span>
-            <span class="brand-name-zh">衣设</span>
+            <span class="brand-name-en">{{ site.brand.nameEn }}</span>
+            <span class="brand-name-zh">{{ site.brand.name }}</span>
           </div>
         </NuxtLink>
 
@@ -56,7 +66,7 @@
 
         <div class="header-actions">
           <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
-            <Search class="ui-icon" :size="20" aria-hidden="true" />
+            <AppIcon name="search" class="ui-icon" :size="18" aria-hidden="true" />
             <input
               v-model="headerSearch"
               type="search"
@@ -65,11 +75,16 @@
             />
           </form>
 
-          <NuxtLink to="/favorites" class="header-icon-link" aria-label="收藏">
-            <Heart class="ui-icon" :size="19" :stroke-width="2" aria-hidden="true" />
+          <NuxtLink
+            v-if="site.features.favorites"
+            to="/favorites"
+            class="header-icon-link"
+            aria-label="收藏"
+          >
+            <AppIcon name="heart" class="ui-icon" :size="18" aria-hidden="true" />
           </NuxtLink>
 
-          <template v-if="isLoggedIn && currentUser">
+          <template v-if="site.features.auth && isLoggedIn && currentUser">
             <div class="user-menu-wrapper">
               <button
                 ref="userButtonRef"
@@ -87,7 +102,7 @@
                 <span class="user-name">{{
                   currentUser.name || currentUser.account
                 }}</span>
-                <ChevronDown class="user-menu-caret" :size="14" aria-hidden="true" />
+                <AppIcon name="chevron-down" class="user-menu-caret" :size="12" aria-hidden="true" />
               </button>
 
               <Transition name="user-menu">
@@ -104,6 +119,7 @@
                     >个人信息</NuxtLink
                   >
                   <NuxtLink
+                    v-if="site.features.favorites"
                     to="/favorites"
                     class="user-menu-item"
                     @click="isUserMenuOpen = false"
@@ -120,9 +136,9 @@
             </div>
           </template>
 
-          <template v-else>
+          <template v-else-if="site.features.auth">
             <NuxtLink to="/login" class="header-icon-link" aria-label="登录">
-              <User class="ui-icon" :size="22" aria-hidden="true" />
+              <AppIcon name="user" class="ui-icon" :size="18" aria-hidden="true" />
             </NuxtLink>
           </template>
 
@@ -132,8 +148,12 @@
             :title="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
             @click="toggleMobileMenu"
           >
-            <X v-if="isMobileMenuOpen" class="ui-icon" :size="20" aria-hidden="true" />
-            <Menu v-else class="ui-icon" :size="20" aria-hidden="true" />
+            <AppIcon
+              :name="isMobileMenuOpen ? 'x' : 'menu'"
+              class="ui-icon"
+              :size="20"
+              aria-hidden="true"
+            />
           </button>
         </div>
       </div>
@@ -148,17 +168,17 @@
         <aside class="mobile-panel" @click.stop>
           <div class="mobile-panel-head">
             <div>
-              <span class="brand-kicker">1s.design</span>
+              <span class="brand-kicker">{{ site.brand.nameEn }}</span>
               <h2>导航</h2>
             </div>
             <button class="mobile-close-btn" @click="closeMobileMenu">
-              <X class="ui-icon" :size="18" aria-hidden="true" />
+              <AppIcon name="x" class="ui-icon" :size="18" aria-hidden="true" />
             </button>
           </div>
 
           <div class="mobile-search-form">
             <form @submit.prevent="handleMobileSearch">
-              <Search class="ui-icon" :size="16" aria-hidden="true" />
+              <AppIcon name="search" class="ui-icon" :size="16" aria-hidden="true" />
               <input
                 v-model="mobileSearchKeyword"
                 type="search"
@@ -175,12 +195,15 @@
               class="mobile-nav-link"
               @click="closeMobileMenu"
             >
-              <component :is="item.icon" class="ui-icon" :size="18" aria-hidden="true" />
+              <AppIcon :name="item.icon" class="ui-icon" :size="17" aria-hidden="true" />
               {{ item.label }}
             </NuxtLink>
           </nav>
 
-          <div v-if="isLoggedIn && currentUser" class="mobile-user-card">
+          <div
+            v-if="site.features.auth && isLoggedIn && currentUser"
+            class="mobile-user-card"
+          >
             <div class="mobile-user-meta">
               <span
                 class="user-avatar user-avatar--mobile"
@@ -201,6 +224,7 @@
                 >个人信息</NuxtLink
               >
               <NuxtLink
+                v-if="site.features.favorites"
                 to="/favorites"
                 class="mobile-secondary-link"
                 @click="closeMobileMenu"
@@ -213,7 +237,7 @@
           </div>
 
           <NuxtLink
-            v-else
+            v-else-if="site.features.auth"
             to="/login"
             class="mobile-login-button"
             @click="closeMobileMenu"
@@ -233,34 +257,32 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Search,
-  Heart,
-  ChevronDown,
-  X,
-  Menu,
-  User,
-  Box,
-  Palette,
-  Info,
-  Mail,
-} from 'lucide-vue-next'
 import { usePublicUserStore } from "~/stores/public-user";
 import { api } from "~/utils/api";
 
 const router = useRouter();
+const site = useStorefrontSite();
 const publicUserStore = usePublicUserStore();
 const isLoggedIn = computed(() => publicUserStore?.isLoggedIn ?? false);
 const currentUser = computed(() => publicUserStore?.currentUser ?? null);
 
-const navItems = [
-  { label: "商品", to: "/products", icon: Box },
-  { label: "定制设计", to: "/design", icon: Palette },
-  { label: "关于我们", to: "/about", icon: Info },
-  { label: "联系我们", to: "/contact", icon: Mail },
-];
+const navigationIcons = {
+  box: "cube",
+  palette: "palette",
+  info: "info",
+  mail: "envelope",
+};
 
-const showAnnouncement = ref(true);
+const navItems = computed(() =>
+  site.navigation.map((item) => ({
+    ...item,
+    icon: navigationIcons[item.icon],
+  })),
+);
+
+const showAnnouncement = ref(
+  site.features.announcement && site.announcement.enabled,
+);
 const headerSearch = ref("");
 const mobileSearchKeyword = ref("");
 const isMobileMenuOpen = ref(false);
@@ -276,19 +298,21 @@ const headerRef = ref<HTMLElement | null>(null);
 const STICKY_TRIGGER_OFFSET = 220;
 
 onMounted(async () => {
-  publicUserStore.initToken();
-  if (isLoggedIn.value) {
-    try {
-      const response = await api.publicUser.getUserInfo();
-      if (
-        response.code === 0 ||
-        response.status === true ||
-        response.code === 200
-      ) {
-        publicUserStore.setUserInfo(response.data);
+  if (site.features.auth) {
+    publicUserStore.initToken();
+    if (isLoggedIn.value) {
+      try {
+        const response = await api.publicUser.getUserInfo();
+        if (
+          response.code === 0 ||
+          response.status === true ||
+          response.code === 200
+        ) {
+          publicUserStore.setUserInfo(response.data);
+        }
+      } catch (error) {
+        console.error("获取用户信息失败:", error);
       }
-    } catch (error) {
-      console.error("获取用户信息失败:", error);
     }
   }
 
@@ -417,8 +441,8 @@ useEventListener(
 <style lang="scss" scoped>
 .page-shell {
   min-height: 100vh;
-  background: #fff;
-  color: #111;
+  background: var(--ys-bg);
+  color: var(--ys-text);
   font-family: var(--ys-font-sans);
 }
 
@@ -430,7 +454,7 @@ useEventListener(
   gap: 0.35rem;
   min-height: 32px;
   padding: 0.25rem 1rem;
-  background: #000;
+  background: var(--ys-text);
   color: #fff;
   font-size: 0.72rem;
   line-height: 1.3;
@@ -465,8 +489,8 @@ useEventListener(
   position: relative;
   top: 0;
   padding: 0.75rem 0;
-  background: #fff;
-  border-bottom: 1px solid #efefef;
+  background: rgba(250, 248, 246, 0.92);
+  border-bottom: 1px solid transparent;
   transition:
     background-color 240ms ease,
     border-color 240ms ease,
@@ -476,7 +500,7 @@ useEventListener(
 
 .site-header-scrolled {
   background: rgba(255, 255, 255, 0.94);
-  border-bottom-color: #e9e9e9;
+  border-bottom-color: transparent;
   backdrop-filter: blur(14px);
 }
 
@@ -490,7 +514,7 @@ useEventListener(
   transform: translateY(-120%);
   opacity: 0;
   background: rgba(255, 255, 255, 0.9);
-  border-bottom-color: #e9e9e9;
+  border-bottom-color: transparent;
   backdrop-filter: blur(18px) saturate(110%);
 }
 
@@ -514,7 +538,7 @@ useEventListener(
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: #000;
+  color: var(--ys-text);
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
@@ -543,13 +567,13 @@ useEventListener(
   font-size: 0.92rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #000;
+  color: var(--ys-text);
 }
 
 .brand-name-zh {
   font-size: 0.62rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--ys-text-muted);
   margin-top: 0.08rem;
 }
 
@@ -568,12 +592,12 @@ useEventListener(
   padding: 0.4rem 0.65rem;
   border: 1px solid transparent;
   background: transparent;
-  color: #555;
+  color: var(--ys-text-soft);
   text-decoration: none;
   font-size: 0.82rem;
   line-height: 1;
   white-space: nowrap;
-  border-radius: 8px;
+  border-radius: var(--ys-radius-sm);
   transition:
     color 0.16s ease,
     background-color 0.16s ease,
@@ -581,20 +605,20 @@ useEventListener(
 }
 
 .nav-item:hover {
-  color: #000;
-  background: #f5f5f5;
+  color: var(--ys-accent);
+  background: var(--ys-accent-soft);
 }
 
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
-  color: #000;
-  background: #f0f0f0;
+  color: var(--ys-accent);
+  background: var(--ys-accent-soft);
   font-weight: 700;
 }
 
 .header-search,
 .login-button {
-  border-radius: 8px;
+  border-radius: var(--ys-radius-sm);
 }
 
 .ui-icon {
@@ -612,16 +636,16 @@ useEventListener(
   justify-content: flex-start;
   gap: 0.5rem;
   padding: 0 0.75rem;
-  border: 1px solid #e5e5e5;
-  background: #fafafa;
-  color: rgba(0, 0, 0, 0.4);
+  border: 1px solid transparent;
+  background: var(--ys-surface-soft);
+  color: var(--ys-text-muted);
   font-size: 0.82rem;
 }
 
 .header-search:focus-within {
-  border-color: rgba(0, 0, 0, 0.2);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+  border-color: transparent;
+  background: var(--ys-surface);
+  box-shadow: 0 0 0 3px var(--ys-focus-ring);
 }
 
 .header-search input {
@@ -631,7 +655,7 @@ useEventListener(
   border: 0;
   outline: 0;
   background: transparent;
-  color: #111;
+  color: var(--ys-text);
   font-size: 0.82rem;
   line-height: normal;
   padding: 0;
@@ -648,8 +672,8 @@ useEventListener(
 .login-button {
   min-height: 2.55rem;
   padding: 0 1rem;
-  border-color: #ececec;
-  background: #fff;
+  border-color: transparent;
+  background: var(--ys-accent-soft);
   font-weight: 800;
 }
 
@@ -669,14 +693,14 @@ useEventListener(
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border-radius: 8px;
-  color: #555;
+  border-radius: var(--ys-radius-sm);
+  color: var(--ys-text-soft);
   text-decoration: none;
 }
 
 .header-icon-link:hover {
-  color: #000;
-  background: #f5f5f5;
+  color: var(--ys-accent);
+  background: var(--ys-accent-soft);
 }
 
 .ui-icon {
@@ -694,7 +718,7 @@ useEventListener(
   width: 30px;
   height: 30px;
   border-radius: 999px;
-  color: #111;
+  color: var(--ys-text);
   font-size: 0.78rem;
   font-weight: 800;
   flex: 0 0 auto;
@@ -715,10 +739,10 @@ useEventListener(
   align-items: center;
   gap: 0.4rem;
   padding: 0.25rem 0.5rem 0.25rem 0.25rem;
-  border: 1px solid #ececec;
-  border-radius: 10px;
-  background: #fff;
-  color: #111;
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-md);
+  background: var(--ys-surface-soft);
+  color: var(--ys-text);
   cursor: pointer;
   transition:
     border-color 0.16s ease,
@@ -726,8 +750,8 @@ useEventListener(
 }
 
 .user-menu-button:hover {
-  border-color: #d9d9d9;
-  background: #f7f7f7;
+  border-color: transparent;
+  background: var(--ys-accent-soft);
 }
 
 .user-menu-button:hover .user-menu-caret {
@@ -755,11 +779,11 @@ useEventListener(
   display: grid;
   gap: 0.25rem;
   padding: 0.35rem;
-  border: 1px solid #ececec;
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-lg);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(14px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ys-shadow-md);
 }
 
 .user-menu-item {
@@ -767,9 +791,9 @@ useEventListener(
   width: 100%;
   padding: 0.65rem 0.75rem;
   border: 0;
-  border-radius: 0.7rem;
+  border-radius: var(--ys-radius-sm);
   background: transparent;
-  color: #333;
+  color: var(--ys-text-soft);
   text-align: left;
   text-decoration: none;
   font-size: 0.74rem;
@@ -780,8 +804,8 @@ useEventListener(
 }
 
 .user-menu-item:hover {
-  background: #f4f4f4;
-  color: #111;
+  background: var(--ys-accent-soft);
+  color: var(--ys-accent);
 }
 
 .logout-item {
@@ -794,10 +818,10 @@ useEventListener(
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid #ececec;
-  border-radius: 8px;
-  background: #fff;
-  color: #111;
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface-soft);
+  color: var(--ys-text);
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
@@ -816,14 +840,14 @@ useEventListener(
 .mobile-nav-link:hover,
 .mobile-secondary-link:hover,
 .mobile-login-button:hover {
-  border-color: rgba(28, 25, 23, 0.11);
-  background: #f5f5f5;
+  border-color: transparent;
+  background: var(--ys-accent-soft);
 }
 
 .mobile-menu-btn.active {
-  background: #111;
+  background: var(--ys-accent);
   color: #fff;
-  border-color: #111;
+  border-color: transparent;
 }
 
 .page-content {
@@ -842,9 +866,9 @@ useEventListener(
   height: calc(100vh - 1rem);
   margin: 0.5rem 0.5rem 0.5rem auto;
   padding: 0.85rem;
-  border: 1px solid #ececec;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-lg);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(18px);
   overflow-y: auto;
 }
@@ -873,9 +897,9 @@ useEventListener(
   gap: 0.5rem;
   padding: 0 0.65rem;
   height: 36px;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  background: #fafafa;
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface-soft);
 }
 
 .mobile-search-form input {
@@ -896,9 +920,9 @@ useEventListener(
 .mobile-close-btn {
   width: 2rem;
   height: 2rem;
-  border: 1px solid #ececec;
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface-soft);
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
@@ -919,9 +943,9 @@ useEventListener(
   width: 100%;
   padding: 0.65rem 0.75rem;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--ys-radius-sm);
   background: transparent;
-  color: #111;
+  color: var(--ys-text);
   text-decoration: none;
   font-size: 0.8rem;
   transition:
@@ -932,16 +956,16 @@ useEventListener(
 
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
-  background: #f5f5f5;
-  color: #000;
+  background: var(--ys-accent-soft);
+  color: var(--ys-accent);
 }
 
 .mobile-user-card {
   margin-top: 0.75rem;
   padding: 0.75rem;
-  border: 1px solid #ececec;
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid transparent;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface-soft);
 }
 
 .mobile-user-meta p {

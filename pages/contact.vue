@@ -1,4 +1,6 @@
 ﻿<script lang="ts" setup>
+import { SITE_URL } from "~/utils/seo";
+
 definePageMeta({ layout: "page" });
 
 useHead({
@@ -19,7 +21,7 @@ useHead({
 });
 
 const founderInfo = {
-  website: "https://1s.design",
+  website: SITE_URL,
 };
 
 const socialPlatforms = ref([

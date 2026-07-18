@@ -4,5 +4,3 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /temp/
 Disallow: /private/
-
-Sitemap: https://1s.design/sitemap.xml

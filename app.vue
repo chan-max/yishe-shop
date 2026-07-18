@@ -5,7 +5,9 @@ import {
   SITE_DEFAULT_IMAGE,
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
+  SITE_LOCALE,
   SITE_NAME,
+  SITE_OG_LOCALE,
   SITE_OG_NAME,
   SITE_ROBOTS,
   SITE_THEME_COLOR,
@@ -31,7 +33,7 @@ useSeoMeta({
   description: SITE_DESCRIPTION,
   keywords: SITE_KEYWORDS,
   author: SITE_AUTHOR,
-  language: "zh-CN",
+  language: SITE_LOCALE,
   robots: SITE_ROBOTS,
   ogTitle: SITE_NAME,
   ogDescription: SITE_DESCRIPTION,
@@ -39,7 +41,7 @@ useSeoMeta({
   ogUrl: SITE_URL,
   ogImage: SITE_DEFAULT_IMAGE,
   ogSiteName: SITE_OG_NAME,
-  ogLocale: "zh_CN",
+  ogLocale: SITE_OG_LOCALE,
   twitterCard: "summary_large_image",
   twitterTitle: SITE_NAME,
   twitterDescription: SITE_TWITTER_DESCRIPTION,
@@ -50,7 +52,7 @@ useSeoMeta({
 });
 
 useHead({
-  htmlAttrs: { lang: "zh-CN" },
+  htmlAttrs: { lang: SITE_LOCALE },
   meta: [
     {
       name: "format-detection",
@@ -82,24 +84,6 @@ useHead({
 <style>
 :root {
   --version: "1.0.0";
-  --ys-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --ys-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
-  --ys-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
-  --ys-page-max: 1600px;
-  --ys-page-gutter: clamp(1.5rem, 4vw, 3rem);
-  --ys-container: min(var(--ys-page-max), calc(100% - var(--ys-page-gutter)));
-  --ys-container-pad: max(
-    calc(var(--ys-page-gutter) / 2),
-    calc((100vw - var(--ys-page-max)) / 2)
-  );
-  --ys-font-sans:
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
-    "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
-    "Helvetica Neue", Arial, sans-serif;
-  --ys-font-display:
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei",
-    "Noto Sans SC", "Source Han Sans SC", "Heiti SC", "STHeiti", "SimHei",
-    "Helvetica Neue", Arial, sans-serif;
   font-family: var(--ys-font-sans);
 }
 

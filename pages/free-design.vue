@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { SITE_URL } from "~/utils/seo";
+
 definePageMeta({ layout: "page" });
 
 usePageSEO({
@@ -7,7 +9,7 @@ usePageSEO({
     "从品牌、电商、社媒、生活方式和行业场景进入，发现适合 POD 印花、定制商品、礼品周边和视觉传播的设计灵感。",
   keywords:
     "免费设计,POD设计灵感,印花设计,定制商品,礼品设计,电商主图,小红书封面,品牌视觉,衣设",
-  url: "https://1s.design/free-design",
+  url: `${SITE_URL}/free-design`,
   type: "website",
 });
 

@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { useDesignRequest } from "~/composables/use-design-request";
 import { useToast } from "~/composables/use-toast";
+import { SITE_URL } from "~/utils/seo";
 
 definePageMeta({ layout: "page" });
 
@@ -10,7 +11,7 @@ usePageSEO({
     "选择你喜欢的商品类型和设计风格，衣设团队为你提供印花图案、品牌视觉、包装礼盒、社媒画面等 POD 定制设计服务。",
   keywords:
     "POD定制设计,私人定制,印花图案设计,周边定制,礼品定制,品牌视觉,服装印花设计",
-  url: "https://1s.design/design",
+  url: `${SITE_URL}/design`,
   type: "website",
 });
 

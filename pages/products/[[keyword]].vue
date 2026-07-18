@@ -6,6 +6,8 @@ import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
 import {
   SITE_DEFAULT_IMAGE,
   SITE_KEYWORDS,
+  SITE_LOCALE,
+  SITE_OG_LOCALE,
   SITE_ORGANIZATION_NAME,
   SITE_URL,
 } from "../../utils/seo";
@@ -34,7 +36,7 @@ const endDate = ref<string>("");
 const selectedType = ref<string>("");
 const selectedCategoryId = ref<string>("");
 const selectedBrand = ref<string>("");
-const selectedStatus = ref<string>("active");
+const selectedStatus = ref<string>("");
 const selectedInventoryStatus = ref<string>("");
 const selectedFlag = ref<string>("");
 const selectedStockMode = ref<string>("");
@@ -143,6 +145,36 @@ const loadCategories = async () => {
   }
 };
 
+const normalizeProductPageResponse = (response: any) => {
+  const responseData = response?.data ?? response;
+  const payload =
+    responseData?.data &&
+    (Array.isArray(responseData.data?.list) ||
+      responseData.data?.total !== undefined ||
+      responseData.data?.totalCount !== undefined)
+      ? responseData.data
+      : responseData;
+  const list = Array.isArray(payload?.list)
+    ? payload.list
+    : Array.isArray(payload)
+      ? payload
+      : [];
+  const rawTotal =
+    payload?.total ??
+    payload?.totalCount ??
+    responseData?.total ??
+    response?.total;
+  const parsedTotal = Number(rawTotal);
+
+  return {
+    list,
+    total:
+      Number.isFinite(parsedTotal) && parsedTotal >= 0
+        ? parsedTotal
+        : list.length,
+  };
+};
+
 const syncStateFromRoute = () => {
   searchKeyword.value = routeKeyword.value || "";
   const query = route.query;
@@ -151,7 +183,7 @@ const syncStateFromRoute = () => {
   selectedType.value = typeof query.type === "string" ? query.type : "";
   selectedCategoryId.value = typeof query.categoryId === "string" ? query.categoryId : "";
   selectedBrand.value = typeof query.brand === "string" ? query.brand : "";
-  selectedStatus.value = typeof query.status === "string" ? query.status : "active";
+  selectedStatus.value = typeof query.status === "string" ? query.status : "";
   selectedInventoryStatus.value = typeof query.inventoryStatus === "string" ? query.inventoryStatus : "";
   selectedFlag.value = typeof query.flag === "string" ? query.flag : "";
   selectedStockMode.value = typeof query.stock === "string" ? query.stock : "";
@@ -201,9 +233,9 @@ const fetchProducts = async () => {
       response.status === true ||
       response.code === 200
     ) {
-      const data = response.data as { list?: any[]; total?: number };
-      productList.value = data?.list || [];
-      total.value = data?.total || 0;
+      const data = normalizeProductPageResponse(response);
+      productList.value = data.list;
+      total.value = data.total;
     } else {
       productList.value = [];
       total.value = 0;
@@ -226,7 +258,7 @@ const buildRouteQuery = () => {
   if (selectedType.value) query.type = selectedType.value;
   if (selectedCategoryId.value) query.categoryId = selectedCategoryId.value;
   if (cleanQueryString(selectedBrand.value)) query.brand = cleanQueryString(selectedBrand.value);
-  if (selectedStatus.value && selectedStatus.value !== "active") query.status = selectedStatus.value;
+  if (selectedStatus.value) query.status = selectedStatus.value;
   if (selectedInventoryStatus.value) query.inventoryStatus = selectedInventoryStatus.value;
   if (selectedFlag.value) query.flag = selectedFlag.value;
   if (selectedStockMode.value) query.stock = selectedStockMode.value;
@@ -296,7 +328,7 @@ const resetFilters = async () => {
   selectedType.value = "";
   selectedCategoryId.value = "";
   selectedBrand.value = "";
-  selectedStatus.value = "active";
+  selectedStatus.value = "";
   selectedInventoryStatus.value = "";
   selectedFlag.value = "";
   selectedStockMode.value = "";
@@ -449,7 +481,7 @@ const extractProductKeywords = (product: any) => {
 const productMetaLine = (product: any) => {
   const tags = extractProductKeywords(product);
   if (tags.length) return tags.join(" / ");
-  return product?.type || "POD Custom";
+  return product?.type || "未识别";
 };
 
 const getProductPrice = (product: any, index = 0) => {
@@ -602,7 +634,7 @@ const collectionStructuredData = computed(() => {
     name: pageTitle.value,
     description: pageDescription.value,
     url: canonicalUrl.value,
-    inLanguage: "zh-CN",
+    inLanguage: SITE_LOCALE,
     isPartOf: {
       "@type": "WebSite",
       name: SITE_ORGANIZATION_NAME,
@@ -637,7 +669,7 @@ useSeoMeta({
   ogType: "website",
   ogImage: SITE_DEFAULT_IMAGE,
   ogSiteName: SITE_ORGANIZATION_NAME,
-  ogLocale: "zh_CN",
+  ogLocale: SITE_OG_LOCALE,
   twitterCard: "summary_large_image",
   twitterTitle: () => pageTitle.value,
   twitterDescription: () => pageDescription.value,
@@ -712,7 +744,7 @@ await fetchProducts();
 
       <div class="product-filter-searchrow">
         <form class="product-filter-search" @submit.prevent="handleSearch">
-          <span class="ui-icon" aria-hidden="true">⌕</span>
+          <AppIcon name="search" class="ui-icon" :size="16" aria-hidden="true" />
           <input v-model="searchKeyword" type="search" placeholder="搜索名称、关键词、品牌" />
           <button type="submit">搜索</button>
         </form>
@@ -722,7 +754,7 @@ await fetchProducts();
           </option>
         </select>
         <button type="button" class="product-filter-mobile" @click="toggleFilters">
-          <span class="ui-icon" aria-hidden="true">≡</span>
+          <AppIcon name="sliders" class="ui-icon" :size="15" aria-hidden="true" />
           筛选
         </button>
       </div>
@@ -762,7 +794,7 @@ await fetchProducts();
           @click="clearFilter(filter.key)"
         >
           {{ filter.label }}
-          <span class="ui-icon" aria-hidden="true">×</span>
+          <AppIcon name="x" class="ui-icon" :size="12" aria-hidden="true" />
         </button>
         <button type="button" class="product-filter-clear" @click="resetFilters">
           清除全部
@@ -778,7 +810,7 @@ await fetchProducts();
             <span>按商品数据快速缩小范围</span>
           </div>
           <button type="button" aria-label="清空筛选" @click="resetFilters">
-            <span class="ui-icon" aria-hidden="true">↻</span>
+            <AppIcon name="reset" class="ui-icon" :size="14" aria-hidden="true" />
           </button>
         </div>
 
@@ -913,7 +945,7 @@ await fetchProducts();
               </template>
               <div v-else class="catalog-product__empty">暂无预览图</div>
               <span class="catalog-product__open" aria-hidden="true">
-                <span class="ui-icon" aria-hidden="true">↗</span>
+                <AppIcon name="arrow-up-right" class="ui-icon" :size="13" aria-hidden="true" />
               </span>
             </div>
             <div class="catalog-product__body">
@@ -953,7 +985,7 @@ await fetchProducts();
             :disabled="currentPage === 1"
             @click="handlePageChange(currentPage - 1)"
           >
-            <span class="ui-icon" aria-hidden="true">←</span>
+            <AppIcon name="arrow-left" class="ui-icon" :size="13" aria-hidden="true" />
             上一页
           </button>
           <button
@@ -989,7 +1021,7 @@ await fetchProducts();
             @click="handlePageChange(currentPage + 1)"
           >
             下一页
-            <span class="ui-icon" aria-hidden="true">→</span>
+            <AppIcon name="arrow-right" class="ui-icon" :size="13" aria-hidden="true" />
           </button>
         </nav>
       </div>
@@ -1003,7 +1035,7 @@ await fetchProducts();
             <button type="button" @click="toggleFilters">关闭</button>
           </div>
           <form class="catalog-search catalog-search--drawer" @submit.prevent="handleSearch">
-            <span class="ui-icon" aria-hidden="true">⌕</span>
+            <AppIcon name="search" class="ui-icon" :size="16" aria-hidden="true" />
             <input v-model="searchKeyword" type="search" placeholder="搜索商品…" />
           </form>
           <div class="catalog-filter__block">
@@ -1045,7 +1077,7 @@ await fetchProducts();
               @click="selectedFlag = selectedFlag === item.value ? '' : item.value"
             >
               <span>{{ item.label }}</span>
-              <span class="ui-icon" aria-hidden="true">›</span>
+              <AppIcon name="chevron-right" class="ui-icon" :size="13" aria-hidden="true" />
             </button>
           </div>
           <div class="catalog-filter__block">
@@ -1070,7 +1102,7 @@ await fetchProducts();
               @click="handleKeywordClick(item)"
             >
               <span>{{ item }}</span>
-              <span class="ui-icon" aria-hidden="true">›</span>
+              <AppIcon name="chevron-right" class="ui-icon" :size="13" aria-hidden="true" />
             </button>
           </div>
           <button type="button" class="catalog-drawer__apply" @click="applyDrawerFilters">
@@ -2684,5 +2716,108 @@ await fetchProducts();
     opacity: 1;
     transform: none;
   }
+}
+
+/* Flat catalog surfaces */
+.catalog-page {
+  background: var(--ys-bg);
+  color: var(--ys-text);
+}
+
+.product-filter-head,
+.product-filter-panel {
+  border: 0;
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-surface);
+  box-shadow: none;
+}
+
+.product-filter-search,
+.product-filter-select,
+.product-filter-section input,
+.product-filter-panel select,
+.catalog-search,
+.catalog-range-field {
+  border-color: transparent;
+  border-radius: var(--ys-radius-md);
+  background: var(--ys-surface-soft);
+  box-shadow: none;
+}
+
+.product-filter-search:focus-within,
+.catalog-search:focus-within,
+.catalog-range-field:focus-within {
+  border-color: transparent;
+  background: var(--ys-surface);
+  box-shadow: 0 0 0 3px var(--ys-focus-ring);
+}
+
+.product-filter-search button,
+.product-filter-mobile,
+.catalog-search button,
+.catalog-empty button,
+.catalog-drawer__apply,
+.catalog-apply {
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-accent);
+}
+
+.product-filter-search button:hover,
+.product-filter-mobile:hover,
+.catalog-search button:hover,
+.catalog-empty button:hover,
+.catalog-drawer__apply:hover,
+.catalog-apply:hover {
+  background: #8f4935;
+}
+
+.product-filter-quick button,
+.product-filter-pills button,
+.product-filter-chips button,
+.catalog-active-tag,
+.catalog-quick-btn,
+.catalog-filter__item,
+.catalog-pagination button {
+  border: 0;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface-soft);
+  box-shadow: none;
+}
+
+.product-filter-quick button.active,
+.product-filter-pills button.active,
+.catalog-quick-btn.active,
+.catalog-filter__item.active,
+.catalog-pagination button.active {
+  background: var(--ys-accent);
+  color: #fff;
+}
+
+.catalog-results,
+.catalog-grid {
+  gap: clamp(0.9rem, 1.5vw, 1.35rem);
+}
+
+.catalog-product__media {
+  border: 0;
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-surface-soft);
+}
+
+.catalog-product__open {
+  border: 0;
+  border-radius: var(--ys-pill-radius);
+  background: var(--ys-accent);
+  box-shadow: none;
+}
+
+.catalog-product:hover .catalog-product__media {
+  background: var(--ys-accent-soft);
+}
+
+.catalog-drawer__panel {
+  border: 0;
+  border-radius: var(--ys-radius-lg);
+  box-shadow: var(--ys-shadow-md);
 }
 </style>

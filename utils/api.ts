@@ -313,6 +313,7 @@ export const api = {
         method: 'POST',
         body: {
           ...params,
+          isPublish: true,
           includeRelations: params.includeRelations ?? false,
         },
         authMode: 'openApiKey',

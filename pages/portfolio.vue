@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import { SITE_URL } from "~/utils/seo";
+
 definePageMeta({ layout: "page" });
 
 usePageSEO({
@@ -6,7 +8,7 @@ usePageSEO({
   description:
     "浏览衣设精选 POD 系列、印花图案、品牌视觉、包装周边和艺术家联名案例，寻找适合定制商品的创意方向。",
   keywords: "POD作品集,印花灵感,图案设计,品牌视觉,包装周边,艺术家联名,定制商品案例",
-  url: "https://1s.design/portfolio",
+  url: `${SITE_URL}/portfolio`,
   type: "website",
 });
 

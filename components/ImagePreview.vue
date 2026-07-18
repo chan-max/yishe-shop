@@ -13,7 +13,7 @@
         class="image-preview-close"
         aria-label="关闭预览"
       >
-        <span aria-hidden="true">×</span>
+        <AppIcon name="x" :size="20" aria-hidden="true" />
       </button>
 
       <!-- 图片容器 -->
@@ -29,7 +29,7 @@
           class="image-preview-nav image-preview-nav-left"
           aria-label="上一张"
         >
-          <span aria-hidden="true">‹</span>
+          <AppIcon name="chevron-left" :size="20" aria-hidden="true" />
         </button>
 
         <!-- 预览图片 -->
@@ -64,7 +64,7 @@
           class="image-preview-nav image-preview-nav-right"
           aria-label="下一张"
         >
-          <span aria-hidden="true">›</span>
+          <AppIcon name="chevron-right" :size="20" aria-hidden="true" />
         </button>
 
         <!-- 图片索引指示器 -->

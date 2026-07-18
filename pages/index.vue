@@ -3,169 +3,32 @@ import { computed, ref } from "vue";
 import { api } from "../utils/api";
 import { getPreviewImageUrl } from "../utils/image";
 import { getProductPath } from "~/utils/product-url";
+import type { SiteFeaturedProduct } from "~/sites/types";
 
 definePageMeta({ layout: "page" });
 
+const site = useStorefrontSite();
+
 usePageSEO({
-  title: "衣设 1s.design - POD 印花、定制商品与创意设计开放平台",
-  description:
-    "衣设聚合 POD 印花图案、定制商品、品牌周边、私人定制和创意设计灵感，帮助创作者与品牌把视觉想法转化为真实产品。",
-  keywords:
-    "POD,印花设计,定制商品,私人定制,创意设计,图案素材,服装印花,品牌周边,按需定制,1s.design",
-  url: "https://1s.design",
-  type: "website",
+  ...site.seo.home,
   structuredData: [useWebsiteStructuredData(), useOrganizationStructuredData()],
 });
 
-type FeaturedProduct = {
-  id: string;
-  title: string;
-  description?: string;
-  category: string;
-  imageUrl?: string;
-  type?: string;
-  code?: string;
-  slug?: string;
-  creator?: string;
-  likes?: number;
-};
+type FeaturedProduct = SiteFeaturedProduct;
+
+const {
+  copy,
+  fallbackProducts,
+  categoryTiles,
+  productFinderGroups,
+  modules: homeModules,
+  editorials,
+  journeySteps,
+} = site.home;
 
 const featuredProducts = ref<FeaturedProduct[]>([]);
 const moduleProducts = ref<Record<string, FeaturedProduct[]>>({});
 const productsLoaded = ref(false);
-
-const fallbackProducts: FeaturedProduct[] = [
-  {
-    id: "pod-print-series",
-    title: "Botanical Print Capsule",
-    description: "适合服饰、帆布包、杯具与家居布艺延展的植物印花系列。",
-    category: "POD PRINT",
-    type: "印花图案",
-    creator: "林小溪",
-    likes: 3280,
-  },
-  {
-    id: "custom-gift-set",
-    title: "Creator Gift Collection",
-    description: "面向节日礼赠、品牌活动与私人纪念的定制商品企划。",
-    category: "CUSTOM GIFT",
-    type: "定制礼物",
-    creator: "Studio W",
-    likes: 2560,
-  },
-  {
-    id: "home-textile-art",
-    title: "Home Textile Art",
-    description: "可延展到抱枕、挂毯、装饰画和软装织物的图案方向。",
-    category: "HOME DECOR",
-    type: "家居布艺",
-    creator: "Artisan Lab",
-    likes: 1890,
-  },
-  {
-    id: "streetwear-drop",
-    title: "Streetwear Drop",
-    description: "适合 T 恤、卫衣、帽衫和潮流周边上新的视觉系列。",
-    category: "APPAREL",
-    type: "服饰印花",
-    creator: "潮研所",
-    likes: 5120,
-  },
-];
-
-const categoryTiles = [
-  { label: "服饰", keyword: "T恤" },
-  { label: "礼赠", keyword: "杯子" },
-  { label: "家居", keyword: "抱枕" },
-  { label: "数码", keyword: "手机壳" },
-  { label: "生活方式", keyword: "帆布包" },
-];
-
-const productFinderGroups = [
-  { key: "mousepad", label: "鼠标垫", keyword: "鼠标垫", hint: "桌面办公 / 游戏周边" },
-  { key: "apparel", label: "T 恤", keyword: "T恤", hint: "服饰印花 / 潮流上新" },
-  { key: "hoodie", label: "卫衣", keyword: "卫衣", hint: "秋冬服饰 / 社群周边" },
-  { key: "drinkware", label: "杯子", keyword: "杯子", hint: "礼赠 / 活动纪念" },
-  { key: "digital", label: "手机壳", keyword: "手机壳", hint: "数码配件 / 日常风格" },
-  { key: "home", label: "抱枕", keyword: "抱枕", hint: "家居软装 / 空间装饰" },
-  { key: "bags", label: "帆布包", keyword: "帆布包", hint: "出行周边 / 品牌物料" },
-  { key: "poster", label: "装饰画", keyword: "装饰画", hint: "墙面陈列 / 视觉作品" },
-];
-
-const homeModules = [
-  {
-    key: "mousepad",
-    eyebrow: "DESK CULTURE",
-    title: "鼠标垫与桌面灵感",
-    keyword: "鼠标垫",
-    text: "把插画、品牌视觉、游戏梗图或个人签名做成每天都会被看见的桌面装备。",
-    href: "/products/鼠标垫",
-    limit: 6,
-  },
-  {
-    key: "apparel",
-    eyebrow: "WEARABLE IDEAS",
-    title: "服饰印花与潮流单品",
-    keyword: "T恤",
-    text: "T 恤、卫衣、帽衫和更多服饰载体，让创意成为可穿上街的个人表达。",
-    href: "/products/T恤",
-    limit: 6,
-  },
-  {
-    key: "drinkware",
-    eyebrow: "GIFT MOMENTS",
-    title: "杯具与礼赠商品",
-    keyword: "杯子",
-    text: "适合节日、活动、品牌周边与私人纪念，把一句话、一张图变成有温度的礼物。",
-    href: "/products/杯子",
-    limit: 6,
-  },
-  {
-    key: "home",
-    eyebrow: "LIVING OBJECTS",
-    title: "家居软装与生活周边",
-    keyword: "抱枕",
-    text: "抱枕、毯子、装饰画与居家小物，把空间变成作品的延展展厅。",
-    href: "/products/抱枕",
-    limit: 6,
-  },
-  {
-    key: "digital",
-    eyebrow: "DAILY TECH",
-    title: "手机壳与数码配件",
-    keyword: "手机壳",
-    text: "让手机壳、配件与随身物件承载你的风格，也承载品牌的识别度。",
-    href: "/products/手机壳",
-    limit: 6,
-  },
-  {
-    key: "bags",
-    eyebrow: "CITY GOODS",
-    title: "帆布包与出行周边",
-    keyword: "帆布包",
-    text: "把创意从屏幕带到街头，让一只包成为社群、活动和个人态度的移动媒介。",
-    href: "/products/帆布包",
-    limit: 6,
-  },
-];
-
-const editorials = [
-  {
-    title: "PRINT AS PRODUCT",
-    subtitle: "把每一种创意做成商品",
-    href: "/products/印花",
-  },
-  {
-    title: "CUSTOM ATELIER",
-    subtitle: "私人定制，从灵感开始",
-    href: "/design",
-  },
-  {
-    title: "CREATOR WORKS",
-    subtitle: "发现全球创作者的 POD 灵感",
-    href: "/products",
-  },
-];
 
 const heroProduct = computed(
   () => featuredProducts.value[0] || fallbackProducts[0],
@@ -222,21 +85,6 @@ const editorialPanels = computed(() =>
   })),
 );
 
-const journeySteps = [
-  {
-    title: "发现任何创意",
-    text: "从插画、图案、潮流字体到品牌视觉，找到能代表你态度的商品灵感。",
-  },
-  {
-    title: "匹配商品载体",
-    text: "把创意延展到服饰、杯具、家居、数码配件、礼赠和更多 POD 商品。",
-  },
-  {
-    title: "实现私人定制",
-    text: "为个人、品牌、活动或企业礼赠提交需求，让想法进入设计与交付流程。",
-  },
-];
-
 const getProductHref = (product: FeaturedProduct) =>
   product.id.startsWith("pod-") ||
   product.id.startsWith("custom-") ||
@@ -289,12 +137,12 @@ const normalizeProducts = (products: any[], seed = 0): FeaturedProduct[] =>
         id: product.id,
         title: product.name || "POD 定制商品",
         description: product.description || "",
-        category: product.type || "POD SELECTION",
+        category: product.type || "未识别",
         imageUrl: firstImage,
-        type: product.type || "POD",
+        type: product.type || "未识别",
         code: product.code || "",
         slug: product.slug || "",
-        creator: product.creator || "衣设创作者",
+        creator: product.creator || copy.creatorFallback,
         likes: Math.floor(pseudoRandom(`${product.id}-likes`) * 9000) + 800,
       };
     }),
@@ -393,7 +241,7 @@ await fetchFeaturedProducts();
 
 <template>
   <main class="lux-home">
-    <h1 class="sr-only">衣设 POD 印花、定制商品与创意设计开放平台</h1>
+    <h1 class="sr-only">{{ copy.srTitle }}</h1>
 
     <section class="lux-hero">
       <div class="lux-hero__masonry" aria-hidden="true">
@@ -423,23 +271,27 @@ await fetchFeaturedProducts();
           {{ item.label }}
         </NuxtLink>
       </nav>
-      <div class="lux-hero__brand">YISHE</div>
+      <div class="lux-hero__brand">{{ copy.hero.brand }}</div>
       <div class="lux-hero__caption">
-        <span>1s.design</span>
-        <h2>最大、最具创意的 POD 商品平台。</h2>
-        <p>在这里发现任何灵感，把它做成服饰、礼物、家居、数码周边，或一次真正属于你的私人定制。</p>
+        <span>{{ copy.hero.eyebrow }}</span>
+        <h2>{{ copy.hero.title }}</h2>
+        <p>{{ copy.hero.description }}</p>
         <div>
-          <NuxtLink to="/products">发现创意商品</NuxtLink>
-          <NuxtLink to="/design">开始私人定制</NuxtLink>
+          <NuxtLink :to="copy.hero.primaryAction.to">
+            {{ copy.hero.primaryAction.label }}
+          </NuxtLink>
+          <NuxtLink :to="copy.hero.secondaryAction.to">
+            {{ copy.hero.secondaryAction.label }}
+          </NuxtLink>
         </div>
       </div>
     </section>
 
     <section class="lux-finder" aria-label="快速查找 POD 商品">
       <div class="lux-finder__head">
-        <span>Find Your Product</span>
-        <h2>先选商品，再让创意落地。</h2>
-        <p>首页按固定关键词抓取对应商品，结构清晰，也方便后续继续维护更多品类。</p>
+        <span>{{ copy.finder.eyebrow }}</span>
+        <h2>{{ copy.finder.title }}</h2>
+        <p>{{ copy.finder.description }}</p>
       </div>
       <div class="lux-finder__grid">
         <NuxtLink
@@ -498,7 +350,7 @@ await fetchFeaturedProducts();
         <span>Selected Work</span>
         <h2>{{ heroProduct.title }}</h2>
         <p>
-          {{ heroProduct.description || "从一个作品出发，延展为服饰、礼赠、家居与品牌周边，让创意拥有可被购买、可被定制的商品生命力。" }}
+          {{ heroProduct.description || copy.featureFallbackDescription }}
         </p>
         <NuxtLink :to="getProductHref(heroProduct)">查看这个创意</NuxtLink>
       </div>
@@ -515,11 +367,9 @@ await fetchFeaturedProducts();
 
     <section class="lux-runway" aria-label="POD 商品展示">
       <div class="lux-runway__sticky">
-        <span>Product Runway</span>
-        <h2>任何创意，都能找到合适的商品形态。</h2>
-        <p>
-          衣设把创作者作品和 POD 商品载体连接起来。你可以为自己定制一件礼物，也可以为品牌策划一整套周边系列。
-        </p>
+        <span>{{ copy.runway.eyebrow }}</span>
+        <h2>{{ copy.runway.title }}</h2>
+        <p>{{ copy.runway.description }}</p>
       </div>
       <div class="lux-runway__rail">
         <NuxtLink
@@ -544,7 +394,7 @@ await fetchFeaturedProducts();
       </div>
     </section>
 
-    <section class="lux-editorials" aria-label="衣设专题">
+    <section class="lux-editorials" :aria-label="copy.editorialsAriaLabel">
       <NuxtLink
         v-for="item in editorialPanels"
         :key="item.title"
@@ -566,10 +416,10 @@ await fetchFeaturedProducts();
       </NuxtLink>
     </section>
 
-    <section class="lux-journey" aria-label="使用衣设的流程">
+    <section class="lux-journey" :aria-label="copy.journey.ariaLabel">
       <div class="lux-section-head">
-        <span>How it unfolds</span>
-        <h2>从灵感到商品，路径清晰。</h2>
+        <span>{{ copy.journey.eyebrow }}</span>
+        <h2>{{ copy.journey.title }}</h2>
       </div>
       <div class="lux-journey__grid">
         <article v-for="(step, index) in journeySteps" :key="step.title">
@@ -580,10 +430,10 @@ await fetchFeaturedProducts();
       </div>
     </section>
 
-    <section class="lux-universe" aria-label="按主题探索 POD 商品">
+    <section class="lux-universe" :aria-label="copy.universe.ariaLabel">
       <div class="lux-section-head">
-        <span>POD Universe</span>
-        <h2>每一个主题，都有自己的商品宇宙。</h2>
+        <span>{{ copy.universe.eyebrow }}</span>
+        <h2>{{ copy.universe.title }}</h2>
       </div>
       <div class="lux-universe__grid">
         <article
@@ -621,10 +471,10 @@ await fetchFeaturedProducts();
       </div>
     </section>
 
-    <section class="lux-collection" aria-label="商品系列陈列">
+    <section class="lux-collection" :aria-label="copy.collection.ariaLabel">
       <div class="lux-collection__lead">
-        <span>Product Gallery</span>
-        <h2>更多商品形态，等待被你的创意点亮。</h2>
+        <span>{{ copy.collection.eyebrow }}</span>
+        <h2>{{ copy.collection.title }}</h2>
       </div>
       <div class="lux-collection__grid">
         <NuxtLink
@@ -653,8 +503,8 @@ await fetchFeaturedProducts();
 
     <section class="lux-feed">
       <div class="lux-section-head">
-        <span>Community Selection</span>
-        <h2>来自社区的新灵感</h2>
+        <span>{{ copy.feed.eyebrow }}</span>
+        <h2>{{ copy.feed.title }}</h2>
       </div>
       <div class="lux-product-grid">
         <NuxtLink
@@ -676,7 +526,7 @@ await fetchFeaturedProducts();
           <section>
             <span>{{ product.category }}</span>
             <strong>{{ product.title }}</strong>
-            <small>{{ product.creator || "衣设创作者" }} · {{ formatLikes(product.likes || 0) }}</small>
+            <small>{{ product.creator || copy.creatorFallback }} · {{ formatLikes(product.likes || 0) }}</small>
           </section>
         </NuxtLink>
       </div>
@@ -1935,5 +1785,94 @@ await fetchFeaturedProducts();
   .lux-product-card img {
     transition: none;
   }
+}
+
+/* Flat storefront surfaces */
+.lux-home {
+  background: var(--ys-bg);
+  color: var(--ys-text);
+}
+
+.lux-finder-card,
+.lux-feature__media,
+.lux-runway-card,
+.lux-universe-block,
+.lux-collection-card > div,
+.lux-product-card > div {
+  border: 0;
+  border-radius: var(--ys-radius-lg);
+  box-shadow: none;
+}
+
+.lux-finder-card {
+  background: var(--ys-surface);
+}
+
+.lux-finder-card:hover {
+  background: var(--ys-accent-soft);
+  transform: translateY(-2px);
+}
+
+.lux-feature__media,
+.lux-runway-card,
+.lux-collection-card > div,
+.lux-product-card > div {
+  background: var(--ys-surface-soft);
+}
+
+.lux-feature__media img,
+.lux-runway-card img,
+.lux-universe-product img {
+  filter: none;
+}
+
+.lux-feature__media:hover,
+.lux-runway-card:hover,
+.lux-collection-card:hover > div,
+.lux-product-card:hover > div {
+  border-color: transparent;
+  background: var(--ys-accent-soft);
+}
+
+.lux-editorials {
+  gap: 0.75rem;
+  background: transparent;
+}
+
+.lux-editorial {
+  border-radius: var(--ys-radius-lg);
+}
+
+.lux-journey__grid {
+  gap: 0.75rem;
+  border: 0;
+  background: transparent;
+}
+
+.lux-journey article {
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-surface);
+}
+
+.lux-universe {
+  border: 0;
+  background: var(--ys-surface-soft);
+}
+
+.lux-universe-block {
+  overflow: hidden;
+}
+
+.lux-universe-block__products {
+  gap: 0.25rem;
+  background: transparent;
+}
+
+.lux-universe-product {
+  background: var(--ys-surface);
+}
+
+.lux-universe-product:hover {
+  background: var(--ys-accent-soft);
 }
 </style>

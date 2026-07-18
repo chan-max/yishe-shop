@@ -11,7 +11,7 @@
         <span class="ui-icon" aria-hidden="true">/</span>
         <NuxtLink to="/products">POD 商品</NuxtLink>
         <span class="ui-icon" aria-hidden="true">/</span>
-        <span>{{ product.type || "商品详情" }}</span>
+        <span>{{ product.type || "未识别" }}</span>
       </nav>
 
       <section class="product-detail-grid">
@@ -33,7 +33,7 @@
 
           <div class="product-main-frame">
             <div class="product-frame-mark" aria-hidden="true">
-              <span>{{ product.type || "YISHE POD" }}</span>
+              <span>{{ product.type || "未识别" }}</span>
               <small v-if="productImages.length">
                 {{ String(currentImageIndex + 1).padStart(2, "0") }} /
                 {{ String(productImages.length).padStart(2, "0") }}
@@ -46,7 +46,7 @@
               aria-label="上一张图片"
               @click="previousImage"
             >
-              <span class="ui-icon" aria-hidden="true">‹</span>
+              <AppIcon name="chevron-left" class="ui-icon" :size="17" aria-hidden="true" />
             </button>
             <transition :name="`gallery-${slideDirection}`" mode="out-in">
               <img
@@ -69,7 +69,7 @@
               aria-label="下一张图片"
               @click="nextImage"
             >
-              <span class="ui-icon" aria-hidden="true">›</span>
+              <AppIcon name="chevron-right" class="ui-icon" :size="17" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -80,7 +80,7 @@
             <strong>{{ product.code || product.sku || product.id }}</strong>
           </div>
           <div class="product-detail-kicker">
-            {{ product.type || "POD 定制商品" }}
+            {{ product.type || "未识别" }}
           </div>
           <div class="product-title-row">
             <h1>{{ product.name }}</h1>
@@ -138,7 +138,7 @@
               <p>基于这个商品的风格、图案或载体，发起私人定制需求。</p>
             </div>
             <NuxtLink :to="designSameHref" class="product-design-action">
-              <span class="ui-icon" aria-hidden="true">✦</span>
+              <AppIcon name="sparkle" class="ui-icon" :size="15" aria-hidden="true" />
               设计同款
             </NuxtLink>
           </div>
@@ -148,11 +148,11 @@
               咨询购买
             </NuxtLink>
             <button type="button" class="product-secondary-action" @click="copyLink">
-              <span class="ui-icon" aria-hidden="true">🔗</span>
+              <AppIcon name="link" class="ui-icon" :size="14" aria-hidden="true" />
               复制链接
             </button>
             <button type="button" class="product-secondary-action" @click="shareProduct">
-              <span class="ui-icon" aria-hidden="true">↗</span>
+              <AppIcon name="share" class="ui-icon" :size="14" aria-hidden="true" />
               分享
             </button>
           </div>
@@ -208,7 +208,7 @@
                 :alt="item.name"
                 loading="lazy"
               />
-              <span v-else>{{ item.type || "POD" }}</span>
+              <span v-else>{{ item.type || "未识别" }}</span>
             </div>
             <h3>{{ item.name }}</h3>
             <p v-if="item.type">{{ item.type }}</p>
@@ -245,11 +245,13 @@ import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
 import { useProductStructuredData, useBreadcrumbStructuredData } from "~/composables/use-seo";
 import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
-import { isIndexableProduct } from "~/utils/product-indexing";
+import { isPublishedProduct } from "~/utils/product-indexing";
 import { serializeStructuredData } from "~/utils/structured-data";
 import {
   SITE_DEFAULT_IMAGE,
+  SITE_LOCALE,
   SITE_OG_NAME,
+  SITE_OG_LOCALE,
   SITE_ROBOTS,
   SITE_URL,
 } from "~/utils/seo";
@@ -523,7 +525,7 @@ const productStructuredDataJson = computed(() => {
       ? productImages.value
       : productSeoImage.value,
     url: productSeoUrl.value,
-    category: product.value.type || "POD 定制商品",
+    category: product.value.type || undefined,
     price: Number(productPrice.value) || undefined,
     currency: product.value.currency || "CNY",
     availability: productAvailability.value,
@@ -549,7 +551,7 @@ useSeoMeta({
   ogUrl: () => productSeoUrl.value,
   ogType: "product",
   ogSiteName: SITE_OG_NAME,
-  ogLocale: "zh_CN",
+  ogLocale: SITE_OG_LOCALE,
   twitterCard: "summary_large_image",
   twitterTitle: () => productSeoTitle.value,
   twitterDescription: () => productSeoDescription.value,
@@ -579,7 +581,7 @@ const fetchProductDetail = async () => {
       response.status === true ||
       response.code === 200
     ) {
-      product.value = isIndexableProduct(response.data) ? response.data : null;
+      product.value = isPublishedProduct(response.data) ? response.data : null;
       currentImageIndex.value = 0;
       relatedProducts.value = [];
       await Promise.all([checkFavoriteStatus(), fetchFavoriteCount()]);
@@ -743,7 +745,7 @@ const toggleFavorite = async () => {
 const formatDate = (dateString: string) => {
   if (!dateString) return "";
   const date = new Date(dateString);
-  return date.toLocaleDateString("zh-CN", {
+  return date.toLocaleDateString(SITE_LOCALE, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -1821,5 +1823,100 @@ onMounted(() => {
     gap: 0.6rem;
   }
 
+}
+
+/* Flat product detail surfaces */
+.product-detail-page {
+  background: var(--ys-bg);
+  color: var(--ys-text);
+}
+
+.product-main-frame,
+.product-thumbs button,
+.product-signal-grid article,
+.product-related-card > div {
+  border: 0;
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-surface-soft);
+  box-shadow: none;
+}
+
+.product-main-image {
+  filter: none;
+}
+
+.product-main-frame:hover .product-main-image {
+  filter: none;
+}
+
+.product-gallery-arrow {
+  border: 0;
+  border-radius: var(--ys-pill-radius);
+  background: var(--ys-surface);
+  color: var(--ys-text);
+  box-shadow: var(--ys-shadow-sm);
+}
+
+.product-gallery-arrow:hover {
+  background: var(--ys-accent);
+  color: #fff;
+}
+
+.product-status-line span,
+.product-tags a,
+.product-next-links a,
+.product-secondary-action {
+  border: 0;
+  border-radius: var(--ys-pill-radius);
+  background: var(--ys-surface-soft);
+  color: var(--ys-text-soft);
+}
+
+.product-status-line span:hover,
+.product-tags a:hover,
+.product-next-links a:hover,
+.product-secondary-action:hover {
+  background: var(--ys-accent-soft);
+  color: var(--ys-accent);
+}
+
+.product-signal-grid article:hover,
+.product-related-card:hover > div {
+  background: var(--ys-accent-soft);
+}
+
+.product-design-remix {
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-accent);
+}
+
+.product-design-remix:hover {
+  background: #8f4935;
+}
+
+.product-design-action,
+.product-primary-action {
+  border-radius: var(--ys-radius-sm);
+}
+
+.product-primary-action {
+  background: var(--ys-accent);
+}
+
+.product-primary-action:hover {
+  background: #8f4935;
+}
+
+.product-detail-copy,
+.product-meta-panel dt,
+.product-meta-panel dd,
+.product-data-table dt,
+.product-data-table dd {
+  border: 0;
+  background: var(--ys-surface);
+}
+
+.product-related-card > div {
+  border-radius: var(--ys-radius-lg);
 }
 </style>

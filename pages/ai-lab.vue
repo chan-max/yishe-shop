@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { SITE_URL } from "~/utils/seo";
+
 definePageMeta({ layout: "page" });
 
 usePageSEO({
   title: "AI POD 创意工作台 - 衣设",
   description: "用 AI 辅助生成印花图案、商品场景图、品牌周边方向和定制设计提案，帮助 POD 创作者更快验证创意。",
   keywords: "AI设计,POD设计,AI图案生成,商品场景图,印花设计,定制商品,创意工作台",
-  url: "https://1s.design/ai-lab",
+  url: `${SITE_URL}/ai-lab`,
   type: "website",
 });
 

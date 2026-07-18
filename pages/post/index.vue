@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { SITE_URL } from "~/utils/seo";
+
 definePageMeta({ layout: "page" });
 
 usePageSEO({
@@ -7,7 +9,7 @@ usePageSEO({
     "衣设知识库聚合 POD 印花教程、图案延展方法、商品化案例、趋势资讯和 AI 设计经验，帮助创作者把灵感变成定制商品。",
   keywords:
     "POD设计知识库,印花教程,图案延展,商品化案例,AI设计,创意趋势,定制商品,衣设",
-  url: "https://1s.design/post",
+  url: `${SITE_URL}/post`,
   type: "website",
 });
 

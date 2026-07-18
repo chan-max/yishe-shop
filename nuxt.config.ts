@@ -1,11 +1,16 @@
 import { createResolver } from "@nuxt/kit";
 import {
+  SITE_API_BASE,
   SITE_DESCRIPTION,
+  SITE_FAVICON,
   SITE_KEYWORDS,
+  SITE_LOCALE,
   SITE_NAME,
   SITE_THEME_COLOR,
+  SITE_TWITTER_HANDLE,
   SITE_URL,
 } from "./utils/seo";
+import { activeSiteConfig } from "./sites";
 
 const { resolve } = createResolver(import.meta.url);
 const localUser = process.env.USER || process.env.LOGNAME || "local";
@@ -54,7 +59,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        { rel: "icon", type: "image/png", href: "/favicon.png" },
+        { rel: "icon", type: "image/png", href: SITE_FAVICON },
         {
           rel: "preload",
           as: "font",
@@ -116,7 +121,6 @@ export default defineNuxtConfig({
     // styling & ui
     "@nuxtjs/tailwindcss",
     "nuxt-headlessui",
-    // "nuxt-icon", // 暂时禁用，不兼容 Nuxt 4
     "@nuxtjs/color-mode", // management
     "@pinia/nuxt",
     "@vueuse/nuxt", // contents
@@ -129,9 +133,17 @@ export default defineNuxtConfig({
     cacheDir: localViteCacheDir,
   },
 
-  css: [resolve("./assets/css/main.css")],
+  css: [
+    resolve("./assets/css/main.css"),
+    resolve(activeSiteConfig.theme.stylesheet),
+  ],
 
   components: [
+    {
+      prefix: "Site",
+      path: resolve(activeSiteConfig.paths.components),
+      global: true,
+    },
     {
       path: "~/components",
       pathPrefix: true,
@@ -183,11 +195,11 @@ export default defineNuxtConfig({
     url: SITE_URL,
     name: SITE_NAME,
     description: SITE_DESCRIPTION,
-    defaultLocale: "zh-CN",
+    defaultLocale: SITE_LOCALE,
     identity: {
       type: "Organization",
     },
-    twitter: "@1sdesign", // 如果有 Twitter 账号
+    twitter: SITE_TWITTER_HANDLE,
     defaults: {
       lastmod: new Date().toISOString().split("T")[0],
       changefreq: "monthly",
@@ -207,7 +219,7 @@ export default defineNuxtConfig({
       "/test-view",
     ],
     allow: ["/"],
-    sitemap: "https://1s.design/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   },
 
   // Schema.org 结构化数据配置
@@ -253,7 +265,7 @@ export default defineNuxtConfig({
       apiBase:
         process.env.NUXT_PUBLIC_API_BASE ||
         (process.env.NODE_ENV === "production"
-          ? "https://1s.design:1520/api"
+          ? SITE_API_BASE
           : "http://localhost:1520/api"),
       openApiKey:
         process.env.NUXT_PUBLIC_OPEN_API_KEY ||

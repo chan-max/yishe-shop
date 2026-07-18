@@ -8,6 +8,7 @@
  */
 import { ofetch } from "ofetch";
 import { resolveOpenApiKey } from "./open-api-key";
+import { SITE_API_BASE } from "./seo";
 
 type AuthMode = "token" | "openApiKey" | "none";
 
@@ -55,7 +56,7 @@ export const request = async <T = any>(
       runtimeConfig?.public?.apiBase ||
       process.env.NUXT_PUBLIC_API_BASE ||
       (process.env.NODE_ENV === "production"
-        ? "https://1s.design:1520/api"
+        ? SITE_API_BASE
         : "http://localhost:1520/api")
     );
   };

@@ -4,24 +4,33 @@
 
 @layer base {
   :root {
-    /* 设计系统颜色 - 对齐 SHOP.CO 设计稿 */
-    --ys-bg: #ffffff;
+    /* 设计系统颜色 - 温暖陶土色主题 */
+    --ys-bg: #faf8f6;
     --ys-surface: #ffffff;
-    --ys-surface-soft: #f5f5f5;
-    --ys-surface-active: #f0f0f0;
-    --ys-border: rgba(0, 0, 0, 0.1);
-    --ys-border-strong: rgba(0, 0, 0, 0.2);
-    --ys-text: #000000;
-    --ys-text-soft: rgba(0, 0, 0, 0.6);
-    --ys-text-muted: rgba(0, 0, 0, 0.4);
-    --ys-focus-ring: rgba(0, 0, 0, 0.06);
-    --ys-focus-border: rgba(0, 0, 0, 0.2);
+    --ys-surface-soft: #f4efeb;
+    --ys-surface-hover: #f4efeb;
+    --ys-surface-active: #eee4dd;
+    --ys-border: rgba(51, 35, 28, 0.09);
+    --ys-border-strong: rgba(51, 35, 28, 0.16);
+    --ys-text: #241f1c;
+    --ys-text-soft: #625750;
+    --ys-text-muted: #92857d;
+    --ys-accent: #a8573d;
+    --ys-accent-strong: #8f4935;
+    --ys-accent-soft: #f5e5de;
+    --ys-warm: #9f4f38;
+    --ys-focus: rgba(168, 87, 61, 0.16);
+    --ys-focus-ring: rgba(168, 87, 61, 0.16);
+    --ys-focus-border: rgba(168, 87, 61, 0.48);
     --ys-danger-ring: rgba(239, 68, 68, 0.1);
-    --ys-black: #000000;
+    --ys-black: #241f1c;
     --ys-white: #ffffff;
-    --ys-gray-100: #f0f0f0;
-    --ys-gray-200: #e5e5e5;
-    --ys-pill-radius: 62px;
+    --ys-gray-100: #f4efeb;
+    --ys-gray-200: #e7ddd6;
+    --ys-radius-sm: 8px;
+    --ys-radius-md: 12px;
+    --ys-radius-lg: 16px;
+    --ys-pill-radius: 999px;
   }
 
   html {
@@ -93,7 +102,7 @@
   select:hover,
   textarea:hover {
     background: var(--ys-surface-soft);
-    border-color: var(--ys-border-strong);
+    border-color: transparent;
   }
 
   input:focus,
@@ -122,33 +131,34 @@
 
   /* Premium Card Effect */
   .premium-card {
-    @apply bg-white rounded-xl border border-gray-100 transition-all duration-300;
+    @apply bg-white rounded-xl transition-all duration-300;
+    border: 1px solid transparent;
     box-shadow: none;
   }
 
   .premium-card:hover {
     box-shadow: none;
     transform: none;
-    border-color: rgba(28, 25, 23, 0.12);
-    background: #faf6ef;
+    border-color: transparent;
+    background: var(--ys-surface-soft);
   }
 
   /* Glass Effect */
   .glass {
-    @apply bg-white/75 backdrop-blur-sm border;
-    border-color: rgba(28, 25, 23, 0.06);
+    @apply bg-white/90 backdrop-blur-sm;
+    border: 1px solid transparent;
   }
 
   .ys-surface-action {
     background: var(--ys-surface);
     color: var(--ys-text-soft);
-    border: 1px solid var(--ys-border);
+    border: 1px solid transparent;
   }
 
   .ys-surface-action:hover {
     background: var(--ys-surface-soft);
     color: var(--ys-text);
-    border-color: var(--ys-border-strong);
+    border-color: transparent;
   }
 
   .ys-surface-action:active {
@@ -157,30 +167,30 @@
   }
 
   .ys-surface-inverse {
-    background: #1c1917;
+    background: var(--ys-text);
     color: #f7f5f2;
     border: 1px solid transparent;
   }
 
   .ys-surface-inverse:hover {
-    background: #2c2827;
+    background: #8f4935;
     color: #f7f5f2;
   }
 
   .ys-surface-inverse:active {
-    background: #3a3534;
+    background: #7c3e2f;
   }
 
   .ys-chip {
     background: var(--ys-surface);
     color: var(--ys-text-soft);
-    border: 1px solid var(--ys-border);
+    border: 1px solid transparent;
   }
 
   .ys-chip:hover {
     background: var(--ys-surface-soft);
     color: var(--ys-text);
-    border-color: var(--ys-border-strong);
+    border-color: transparent;
   }
 
   .ys-chip:active {
@@ -189,15 +199,15 @@
   }
 
   .ys-chip-active {
-    background: #2f2a29;
+    background: var(--ys-accent);
     color: #f7f5f2;
-    border-color: #2f2a29;
+    border-color: var(--ys-accent);
   }
 
   .ys-action-btn {
     background: var(--ys-surface);
     color: var(--ys-text-soft);
-    border: 1px solid var(--ys-border);
+    border: 1px solid transparent;
     box-shadow: none;
   }
 
@@ -213,38 +223,38 @@
   }
 
   .ys-action-btn-active {
-    background: #2f2a29;
+    background: var(--ys-accent);
     color: #f7f5f2;
-    border-color: #2f2a29;
+    border-color: var(--ys-accent);
     box-shadow: none;
   }
 
   .ys-icon-btn {
     background: rgba(255, 255, 255, 0.88);
     color: var(--ys-text-soft);
-    border: 1px solid rgba(28, 25, 23, 0.08);
+    border: 1px solid transparent;
   }
 
   .ys-icon-btn:hover {
     background: #fcfbf9;
     color: var(--ys-text);
-    border-color: rgba(28, 25, 23, 0.2);
+    border-color: transparent;
   }
 
   .ys-icon-btn:active {
-    background: #f3efe9;
+    background: var(--ys-accent-soft);
   }
 
   .ys-field {
     background: var(--ys-surface);
     color: var(--ys-text);
-    border: 1px solid var(--ys-border);
+    border: 1px solid transparent;
     box-shadow: none;
   }
 
   .ys-field:hover {
     background: var(--ys-surface-soft);
-    border-color: var(--ys-border-strong);
+    border-color: transparent;
   }
 
   .ys-field:focus {

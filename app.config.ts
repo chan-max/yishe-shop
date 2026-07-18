@@ -1,3 +1,6 @@
+import { activeSiteConfig } from './sites'
+import type { SiteDefinition } from './sites'
+
 export interface NuxtAwesomeAppConfig {
   /** title name */
   name?: string
@@ -49,13 +52,15 @@ export interface NuxtAwesomeAppConfig {
 declare module '@nuxt/schema' {
   interface AppConfigInput {
     awesome?: NuxtAwesomeAppConfig
+    site?: SiteDefinition
   }
 }
 
 export default defineAppConfig({
+  site: activeSiteConfig,
   awesome: {
-    name: '衣设 yishe',
-    description: 'POD 印花、定制商品与创意设计开放平台',
+    name: activeSiteConfig.brand.fullName,
+    description: activeSiteConfig.seo.description,
     project: {
       links: {
         github: '',
@@ -78,9 +83,9 @@ export default defineAppConfig({
       },
     },
     author: {
-      name: '衣设设计团队',
+      name: activeSiteConfig.brand.author,
       links: {
-        website: 'https://1s.design',
+        website: activeSiteConfig.urls.site,
       },
     },
   } as NuxtAwesomeAppConfig,

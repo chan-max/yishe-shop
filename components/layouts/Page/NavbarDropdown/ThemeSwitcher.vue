@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { Sun, Moon, Laptop } from 'lucide-vue-next'
-
 const props = defineProps({
   type: {
     type: String,
@@ -13,17 +11,17 @@ const availableThemes = [
   {
     key: 'light',
     text: 'Light',
-    icon: Sun,
+    icon: 'sun',
   },
   {
     key: 'dark',
     text: 'Dark',
-    icon: Moon,
+    icon: 'moon',
   },
   {
     key: 'system',
     text: 'System',
-    icon: Laptop,
+    icon: 'laptop',
   },
 ]
 </script>
@@ -40,10 +38,10 @@ const availableThemes = [
       <HeadlessListboxButton type="template">
         <AwesomeLink class="dark:text-gray-400 text-gray-600">
           <span class="flex justify-center items-center dark:hidden">
-            <Sun :size="18" />
+            <AppIcon name="sun" :size="18" />
           </span>
           <span class="justify-center items-center hidden dark:flex">
-            <Moon :size="18" />
+            <AppIcon name="moon" :size="18" />
           </span>
         </AwesomeLink>
       </HeadlessListboxButton>
@@ -63,7 +61,7 @@ const availableThemes = [
           }"
         >
           <span class="text-sm mr-2 flex items-center">
-            <component :is="theme.icon" :size="16" />
+            <AppIcon :name="theme.icon" :size="16" />
           </span>
           {{ theme.text }}
         </HeadlessListboxOption>

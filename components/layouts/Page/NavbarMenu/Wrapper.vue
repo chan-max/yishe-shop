@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { ChevronDown } from 'lucide-vue-next'
-
 const nuxtApp = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
@@ -40,8 +38,9 @@ const isActive = computed(() => {
         <span :class="[isActive ? 'font-bold' : '']">{{
           parseMenuTitle(menu.title)
         }}</span>
-        <ChevronDown
-          :size="16"
+        <AppIcon
+          name="chevron-down"
+          :size="14"
           class="ml-1"
           :class="[open ? 'transform rotate-180' : '']"
         />

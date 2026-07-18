@@ -1,18 +1,7 @@
 ﻿<script lang="ts" setup>
 const { awesome } = useAppConfig();
-
-const footerGroups = {
-  商品: [
-    { name: "全部商品", href: "/products" },
-    { name: "定制设计", href: "/design" },
-    { name: "设计灵感", href: "/products/印花" },
-    { name: "收藏夹", href: "/favorites" },
-  ],
-  了解: [
-    { name: "关于我们", href: "/about" },
-    { name: "联系我们", href: "/contact" },
-  ],
-};
+const site = useStorefrontSite();
+const footerGroups = site.footer.groups;
 
 const newsletterEmail = ref("");
 
@@ -26,22 +15,22 @@ const handleNewsletterSubmit = async () => {
 
 <template>
   <footer class="footer-shell">
-    <section class="footer-newsletter">
+    <section v-if="site.features.newsletter" class="footer-newsletter">
       <div>
-        <span>订阅更新</span>
-        <h2>获取最新 POD 商品与设计灵感</h2>
+        <span>{{ site.footer.newsletterEyebrow }}</span>
+        <h2>{{ site.footer.newsletterTitle }}</h2>
       </div>
       <form class="footer-newsletter__form" @submit.prevent="handleNewsletterSubmit">
         <div class="footer-newsletter__input">
-          <span class="ui-icon" aria-hidden="true">@</span>
+          <AppIcon name="envelope" class="ui-icon" :size="15" aria-hidden="true" />
           <input
             v-model="newsletterEmail"
             type="email"
-            placeholder="输入邮箱地址"
+            :placeholder="site.footer.newsletterPlaceholder"
           />
         </div>
         <button type="submit" class="footer-newsletter__btn">
-          订阅
+          {{ site.footer.newsletterAction }}
         </button>
       </form>
     </section>
@@ -49,16 +38,18 @@ const handleNewsletterSubmit = async () => {
     <div class="footer-inner">
       <section class="footer-grid">
         <div class="footer-brand">
-          <NuxtLink to="/" class="footer-logo" aria-label="衣设首页">
-            <img src="/logo.png" alt="1s.design 衣设" class="footer-logo-img" />
+          <NuxtLink to="/" class="footer-logo" :aria-label="`${site.brand.name}首页`">
+            <img
+              :src="site.brand.logo"
+              :alt="site.brand.fullName"
+              class="footer-logo-img"
+            />
             <div class="footer-logo-text">
-              <span class="footer-logo-en">1s.design</span>
-              <span class="footer-logo-zh">衣设</span>
+              <span class="footer-logo-en">{{ site.brand.nameEn }}</span>
+              <span class="footer-logo-zh">{{ site.brand.name }}</span>
             </div>
           </NuxtLink>
-          <p>
-            POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感。
-          </p>
+          <p>{{ site.footer.description }}</p>
         </div>
 
         <div
@@ -82,11 +73,11 @@ const handleNewsletterSubmit = async () => {
         <p>
           Copyright ©
           {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
-          {{ awesome?.author?.name || "衣设" }}. All rights reserved.
+          {{ awesome?.author?.name || site.brand.author }}. All rights reserved.
         </p>
         <div class="footer-legal">
           <NuxtLink to="/">首页</NuxtLink>
-          <a href="mailto:jackieontheway666@gmail.com">联系邮箱</a>
+          <a :href="`mailto:${site.footer.email}`">联系邮箱</a>
         </div>
       </section>
     </div>
@@ -95,8 +86,8 @@ const handleNewsletterSubmit = async () => {
 
 <style lang="scss" scoped>
 .footer-shell {
-  background: #fff;
-  color: #111;
+  background: var(--ys-bg);
+  color: var(--ys-text);
   font-family: var(--ys-font-sans);
 }
 
@@ -112,14 +103,14 @@ const handleNewsletterSubmit = async () => {
   justify-content: space-between;
   gap: 1.25rem;
   margin-top: 0.75rem;
-  border-radius: 12px;
-  background: #000;
+  border-radius: var(--ys-radius-lg);
+  background: var(--ys-text);
   color: #fff;
   padding: clamp(1.2rem, 3vw, 2rem) clamp(1.2rem, 3vw, 2.5rem);
 }
 
 .footer-newsletter span {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.62);
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -146,8 +137,8 @@ const handleNewsletterSubmit = async () => {
   align-items: center;
   gap: 0.5rem;
   min-height: 2.6rem;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-surface);
   padding: 0 0.75rem;
 }
 
@@ -169,9 +160,9 @@ const handleNewsletterSubmit = async () => {
 .footer-newsletter__btn {
   min-height: 2.6rem;
   border: 0;
-  border-radius: 8px;
-  background: #fff;
-  color: #111;
+  border-radius: var(--ys-radius-sm);
+  background: var(--ys-accent-soft);
+  color: var(--ys-accent);
   font-size: 0.82rem;
   font-weight: 700;
   padding: 0 1rem;
@@ -225,19 +216,19 @@ const handleNewsletterSubmit = async () => {
   font-family: var(--ys-font-display);
   font-size: 0.85rem;
   font-weight: 800;
-  color: #000;
+  color: var(--ys-text);
 }
 
 .footer-logo-zh {
   font-size: 0.6rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--ys-text-muted);
   margin-top: 0.08rem;
 }
 
 .footer-brand p {
   max-width: 260px;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--ys-text-soft);
   font-size: 0.75rem;
   line-height: 1.6;
 }
@@ -254,17 +245,17 @@ const handleNewsletterSubmit = async () => {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 999px;
-  background: #fff;
-  color: #111;
+  border: 1px solid transparent;
+  border-radius: var(--ys-pill-radius);
+  background: var(--ys-surface-soft);
+  color: var(--ys-text-soft);
   text-decoration: none;
   transition: all 0.16s ease;
 }
 
 .social-link:hover {
-  border-color: #111;
-  background: #111;
+  border-color: transparent;
+  background: var(--ys-accent);
   color: #fff;
 }
 
@@ -276,14 +267,14 @@ const handleNewsletterSubmit = async () => {
 
 .footer-column h3 {
   margin-bottom: 0.25rem;
-  color: #111;
+  color: var(--ys-text);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .footer-link {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--ys-text-soft);
   font-size: 0.75rem;
   line-height: 1.8;
   text-decoration: none;
@@ -304,7 +295,7 @@ const handleNewsletterSubmit = async () => {
 }
 
 .footer-bottom p {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--ys-text-muted);
   font-size: 0.72rem;
 }
 
@@ -322,7 +313,7 @@ const handleNewsletterSubmit = async () => {
 }
 
 .footer-legal a:hover {
-  color: #111;
+  color: var(--ys-text);
 }
 
 @media (max-width: 960px) {

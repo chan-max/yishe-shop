@@ -1,14 +1,14 @@
 import type { ProductSitemapItem, SitemapUrl } from "./types";
 import { toAbsoluteUrl, toIsoDate } from "./url-utils";
 import { getProductPath } from "~/utils/product-url";
-import { isIndexableProduct } from "~/utils/product-indexing";
+import { isPublishedProduct } from "~/utils/product-indexing";
 
 export const buildProductSitemapUrls = (
   products: ProductSitemapItem[],
   now = new Date().toISOString(),
 ) =>
   products
-    .filter(isIndexableProduct)
+    .filter(isPublishedProduct)
     .map<SitemapUrl>((product) => {
       const images = (product.images || [])
         .map((image) => toAbsoluteUrl(image))

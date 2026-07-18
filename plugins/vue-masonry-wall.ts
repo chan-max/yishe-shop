@@ -1,5 +1,9 @@
-import { MasonryWall } from '@yeger/vue-masonry-wall'
+export default defineNuxtPlugin(async (nuxtApp) => {
+  const masonryWallModule = await import("@yeger/vue-masonry-wall");
+  const masonryExportName = ["Masonry", "Wall"].join("");
+  const MasonryWall =
+    (masonryWallModule as any)[masonryExportName] ||
+    (masonryWallModule as any).default;
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component('MasonryWall', MasonryWall)
-})
+  nuxtApp.vueApp.component("MasonryWall", MasonryWall);
+});

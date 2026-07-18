@@ -13,8 +13,7 @@
       @click="isOpen = !isOpen"
       class="bg-primary-500 hover:bg-primary-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 relative"
     >
-      <X v-if="isOpen" :size="24" />
-      <Plus v-else :size="24" />
+      <AppIcon :name="isOpen ? 'x' : 'plus'" :size="22" />
     </button>
 
     <!-- 展开的菜单项 -->
@@ -55,8 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { X, Plus } from 'lucide-vue-next'
-
 const isOpen = ref(false)
 
 const openCustomerService = () => {
