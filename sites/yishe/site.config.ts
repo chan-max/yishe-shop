@@ -52,6 +52,7 @@ export const yisheSiteConfig: SiteDefinition = {
   navigation: [
     { label: "商品", to: "/products", icon: "box" },
     { label: "定制设计", to: "/design", icon: "palette" },
+    { label: "开放文档", to: "/docs", icon: "book" },
     { label: "关于我们", to: "/about", icon: "info" },
     { label: "联系我们", to: "/contact", icon: "mail" },
   ],
@@ -61,7 +62,7 @@ export const yisheSiteConfig: SiteDefinition = {
     newsletterPlaceholder: "输入邮箱地址",
     newsletterAction: "订阅",
     description:
-      "POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感。",
+      "POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感与开放 API 对接机制。",
     email: "jackieontheway666@gmail.com",
     groups: {
       商品: [
@@ -69,6 +70,11 @@ export const yisheSiteConfig: SiteDefinition = {
         { name: "定制设计", href: "/design" },
         { name: "设计灵感", href: "/products/印花" },
         { name: "收藏夹", href: "/favorites" },
+      ],
+      开发者: [
+        { name: "开放接口文档", href: "/docs" },
+        { name: "密钥与认证", href: "/docs#auth" },
+        { name: "AI Agent 工具", href: "/docs#ai-agent" },
       ],
       了解: [
         { name: "关于我们", href: "/about" },

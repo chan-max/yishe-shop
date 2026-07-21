@@ -1,4 +1,4 @@
-export type SiteNavigationIcon = "box" | "palette" | "info" | "mail";
+export type SiteNavigationIcon = "box" | "palette" | "info" | "mail" | "book";
 
 export type SiteSeoPage = {
   title: string;

@@ -452,6 +452,7 @@ const navigationIcons = {
   palette: "palette",
   info: "info",
   mail: "envelope",
+  book: "book",
 };
 
 const navItems = computed(() =>
