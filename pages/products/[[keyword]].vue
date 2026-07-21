@@ -715,8 +715,15 @@ watch(
 );
 
 syncStateFromRoute();
-await loadCategories();
-await fetchProducts();
+if (import.meta.server) {
+  await loadCategories();
+  await fetchProducts();
+} else {
+  onMounted(() => {
+    loadCategories();
+    fetchProducts();
+  });
+}
 </script>
 
 <template>
@@ -1159,7 +1166,7 @@ await fetchProducts();
 .product-filter-head {
   margin-bottom: 1.5rem;
   padding: 1.25rem;
-  border: 1px solid #eceef1;
+  border: 0;
   border-radius: 18px;
   background: #fff;
 }
@@ -1232,8 +1239,8 @@ await fetchProducts();
   height: 3.25rem;
   padding: 0 0.55rem 0 1rem;
   border-radius: 14px;
-  border: 1px solid #eceef1;
-  background: #fff;
+  border: 0;
+  background: #f5f5f7;
 }
 
 .product-filter-search input {
@@ -1269,10 +1276,10 @@ await fetchProducts();
 .product-filter-select {
   width: 100%;
   height: 3.25rem;
-  border: 1px solid #eceef1;
+  border: 0;
   border-radius: 14px;
   outline: 0;
-  background: #fff;
+  background: #f5f5f7;
   color: #17191c;
   font-size: 0.8rem;
   padding: 0 0.85rem;
@@ -1281,7 +1288,7 @@ await fetchProducts();
 .product-filter-mobile {
   display: none;
   background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  border: 0;
   color: #17191c;
 }
 
@@ -1309,8 +1316,8 @@ await fetchProducts();
   height: 1.9rem;
   border: 0;
   border-radius: 10px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  background: #f5f5f7;
+  box-shadow: none;
   color: #34373d;
   font-size: 0.74rem;
   padding: 0 0.75rem;
@@ -1320,7 +1327,7 @@ await fetchProducts();
 .product-filter-pills button:hover,
 .product-filter-chips button:hover,
 .product-filter-panel__head button:hover {
-  background: #fafafa;
+  background: #eaeaea;
 }
 
 .product-filter-quick button.active {
@@ -1342,8 +1349,8 @@ await fetchProducts();
   min-height: 1.65rem;
   border: 0;
   border-radius: 10px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  background: #f5f5f7;
+  box-shadow: none;
   color: #34373d;
   font-size: 0.72rem;
   padding: 0 0.6rem;
@@ -1365,7 +1372,7 @@ await fetchProducts();
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
   padding: 1rem;
-  border: 1px solid #eceef1;
+  border: 0;
   border-radius: 16px;
   background: #fff;
 }
@@ -1417,8 +1424,8 @@ await fetchProducts();
   height: 1.8rem;
   border: 0;
   border-radius: 999px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  background: #f5f5f7;
+  box-shadow: none;
   color: #17191c;
 }
 
@@ -1433,15 +1440,15 @@ await fetchProducts();
   border: 0;
   border-radius: 10px;
   outline: 0;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  background: #f5f5f7;
+  box-shadow: none;
   color: #17191c;
   font-size: 0.78rem;
   padding: 0 0.7rem;
 }
 
 .product-filter-section input:focus {
-  box-shadow: inset 0 0 0 1px #17191c;
+  background: #ebebeb;
 }
 
 .product-filter-range {
@@ -1480,8 +1487,8 @@ await fetchProducts();
   min-height: 1.75rem;
   border: 0;
   border-radius: 10px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px #eceef1;
+  background: #f5f5f7;
+  box-shadow: none;
   color: #34373d;
   font-size: 0.72rem;
   padding: 0 0.65rem;
@@ -1495,10 +1502,10 @@ await fetchProducts();
 .product-filter-panel select {
   width: 100%;
   height: 2.35rem;
-  border: 1px solid #eceef1;
+  border: 0;
   border-radius: 10px;
   outline: 0;
-  background: #fff;
+  background: #f5f5f7;
   color: #17191c;
   font-size: 0.78rem;
   padding: 0 0.7rem;
@@ -1834,7 +1841,7 @@ await fetchProducts();
   display: block;
   margin-bottom: 1.75rem;
   padding-bottom: 1.05rem;
-  border-bottom: 1px solid #d2d2d7;
+  border-bottom: 0;
   background: #fff;
 }
 
@@ -1900,7 +1907,7 @@ await fetchProducts();
   scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
   padding: 0 1.35rem 0 0;
   background: #fff;
-  border-right: 1px solid #d2d2d7;
+  border-right: 0;
   border-radius: 0;
 }
 

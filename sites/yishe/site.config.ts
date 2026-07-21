@@ -80,7 +80,7 @@ export const yisheSiteConfig: SiteDefinition = {
     announcement: true,
     auth: true,
     favorites: true,
-    newsletter: true,
+    newsletter: false,
   },
   theme: {
     stylesheet: "./sites/yishe/theme/tokens.css",

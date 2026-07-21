@@ -571,9 +571,9 @@ textarea {
 .featured-strip button,
 .path-link,
 .hot-item {
-  border: 1px solid #eeeeee !important;
+  border: 0 !important;
   border-radius: 20px !important;
-  background: #fff !important;
+  background: #f8f8f9 !important;
   color: #111 !important;
   box-shadow: none !important;
 }
@@ -637,7 +637,7 @@ textarea {
 .fd-page textarea,
 .knowledge-page input,
 .knowledge-page textarea {
-  border: 1px solid #e9e9e9 !important;
+  border: 0 !important;
   border-radius: 16px !important;
   background: #f7f7f7 !important;
   color: #111 !important;

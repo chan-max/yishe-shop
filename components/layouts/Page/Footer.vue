@@ -1,345 +1,208 @@
-﻿<script lang="ts" setup>
+<script lang="ts" setup>
 const { awesome } = useAppConfig();
 const site = useStorefrontSite();
 const footerGroups = site.footer.groups;
-
-const newsletterEmail = ref("");
-
-const handleNewsletterSubmit = async () => {
-  if (!newsletterEmail.value || !newsletterEmail.value.includes("@")) {
-    return;
-  }
-  newsletterEmail.value = "";
-};
 </script>
 
 <template>
-  <footer class="footer-shell">
-    <section v-if="site.features.newsletter" class="footer-newsletter">
-      <div>
-        <span>{{ site.footer.newsletterEyebrow }}</span>
-        <h2>{{ site.footer.newsletterTitle }}</h2>
-      </div>
-      <form class="footer-newsletter__form" @submit.prevent="handleNewsletterSubmit">
-        <div class="footer-newsletter__input">
-          <AppIcon name="envelope" class="ui-icon" :size="15" aria-hidden="true" />
-          <input
-            v-model="newsletterEmail"
-            type="email"
-            :placeholder="site.footer.newsletterPlaceholder"
-          />
-        </div>
-        <button type="submit" class="footer-newsletter__btn">
-          {{ site.footer.newsletterAction }}
-        </button>
-      </form>
-    </section>
+  <footer class="footer">
+    <div class="footer__inner">
 
-    <div class="footer-inner">
-      <section class="footer-grid">
-        <div class="footer-brand">
-          <NuxtLink to="/" class="footer-logo" :aria-label="`${site.brand.name}首页`">
-            <img
-              :src="site.brand.logo"
-              :alt="site.brand.fullName"
-              class="footer-logo-img"
-            />
-            <div class="footer-logo-text">
-              <span class="footer-logo-en">{{ site.brand.nameEn }}</span>
-              <span class="footer-logo-zh">{{ site.brand.name }}</span>
-            </div>
-          </NuxtLink>
-          <p>{{ site.footer.description }}</p>
+      <!-- Brand mark (centered) -->
+      <NuxtLink to="/" class="footer__brand" :aria-label="`${site.brand.name}首页`">
+        <svg class="footer__logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#ff2d75" />
+          <path d="M10.5 9.5H13.5V22.5H10.5V9.5Z" fill="#ffffff" />
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5 11.5C15.5 10.4 16.4 9.5 17.5 9.5H22.5V12.5H18.5V14H21.5C22.6 14 23.5 14.9 23.5 16V20C23.5 21.1 22.6 22.5 21.5 22.5H15.5V19.5H20.5V17.5H18.5C16.8 17.5 15.5 16.2 15.5 14.5V11.5Z" fill="#ffffff" />
+        </svg>
+        <div class="footer__brand-text">
+          <span class="footer__brand-name">1s design</span>
+          <span class="footer__brand-sub">衣设 · POD按需定制</span>
         </div>
+      </NuxtLink>
 
-        <div
-          v-for="(links, title) in footerGroups"
-          :key="title"
-          class="footer-column"
-        >
-          <h3>{{ title }}</h3>
+      <!-- Tagline -->
+      <p class="footer__tagline">{{ site.footer.description }}</p>
+
+      <!-- Nav links (all groups flattened into one row) -->
+      <nav class="footer__nav">
+        <template v-for="(links, title) in footerGroups" :key="title">
           <NuxtLink
             v-for="link in links"
             :key="link.name"
             :to="link.href"
-            class="footer-link"
+            class="footer__nav-link"
           >
             {{ link.name }}
           </NuxtLink>
-        </div>
-      </section>
+        </template>
+      </nav>
 
-      <section class="footer-bottom">
-        <p>
-          Copyright ©
-          {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
-          {{ awesome?.author?.name || site.brand.author }}. All rights reserved.
+      <!-- Divider -->
+      <div class="footer__divider"></div>
+
+      <!-- Bottom bar -->
+      <div class="footer__bottom">
+        <p class="footer__copy">
+          © {{ awesome?.layout?.footer?.year || new Date().getFullYear() }}
+          {{ awesome?.author?.name || site.brand.organizationName }}.
+          All rights reserved.
         </p>
-        <div class="footer-legal">
-          <NuxtLink to="/">首页</NuxtLink>
-          <a :href="`mailto:${site.footer.email}`">联系邮箱</a>
+        <div class="footer__legal">
+          <a :href="`mailto:${site.footer.email}`" class="footer__legal-link">{{ site.footer.email }}</a>
+          <NuxtLink to="/about" class="footer__legal-link">关于我们</NuxtLink>
+          <NuxtLink to="/contact" class="footer__legal-link">联系我们</NuxtLink>
         </div>
-      </section>
+      </div>
+
     </div>
   </footer>
 </template>
 
 <style lang="scss" scoped>
-.footer-shell {
-  background: var(--ys-bg);
-  color: var(--ys-text);
+.footer {
+  background: #0a0a0c;
+  color: rgba(255, 255, 255, 0.55);
   font-family: var(--ys-font-sans);
 }
 
-.footer-newsletter,
-.footer-inner {
-  width: var(--ys-container);
-  margin: 0 auto;
-}
-
-.footer-newsletter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
-  margin-top: 0.75rem;
-  border-radius: var(--ys-radius-lg);
-  background: var(--ys-text);
-  color: #fff;
-  padding: clamp(1.2rem, 3vw, 2rem) clamp(1.2rem, 3vw, 2.5rem);
-}
-
-.footer-newsletter span {
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.footer-newsletter h2 {
-  max-width: 400px;
-  margin-top: 0.35rem;
-  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
-  line-height: 1.15;
-  color: #fff;
-}
-
-.footer-newsletter__form {
+.footer__inner {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  min-width: 280px;
-}
-
-.footer-newsletter__input {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-height: 2.6rem;
-  border-radius: var(--ys-radius-sm);
-  background: var(--ys-surface);
-  padding: 0 0.75rem;
+  text-align: center;
+  width: min(1200px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 4rem 0 2.5rem;
+  gap: 0;
 }
 
-.footer-newsletter__input input {
-  flex: 1;
-  min-width: 0;
-  height: 2.6rem;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: #111;
-  font-size: 0.82rem;
-}
-
-.footer-newsletter__input input::placeholder {
-  color: rgba(0, 0, 0, 0.35);
-}
-
-.footer-newsletter__btn {
-  min-height: 2.6rem;
-  border: 0;
-  border-radius: var(--ys-radius-sm);
-  background: var(--ys-accent-soft);
-  color: var(--ys-accent);
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 0 1rem;
-  cursor: pointer;
-  transition: opacity 0.16s ease;
-}
-
-.footer-newsletter__btn:hover {
-  opacity: 0.85;
-}
-
-.footer-inner {
-  padding: 1.5rem 0 0.85rem;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.5fr repeat(2, 1fr);
-  gap: clamp(1rem, 3vw, 2.5rem);
-  padding-bottom: 1.2rem;
-}
-
-.footer-brand {
-  display: grid;
-  align-content: start;
-  gap: 0.85rem;
-}
-
-.footer-logo {
+/* Brand */
+.footer__brand {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   text-decoration: none;
+  margin-bottom: 1.25rem;
 }
 
-.footer-logo-img {
+.footer__logo-svg {
   display: block;
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  opacity: 0.9;
 }
 
-.footer-logo-text {
+.footer__brand-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 0.12rem;
   line-height: 1;
 }
 
-.footer-logo-en {
+.footer__brand-name {
   font-family: var(--ys-font-display);
-  font-size: 0.85rem;
+  font-size: 0.96rem;
   font-weight: 800;
-  color: var(--ys-text);
-}
-
-.footer-logo-zh {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: var(--ys-text-muted);
-  margin-top: 0.08rem;
-}
-
-.footer-brand p {
-  max-width: 260px;
-  color: var(--ys-text-soft);
-  font-size: 0.75rem;
-  line-height: 1.6;
-}
-
-.footer-socials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid transparent;
-  border-radius: var(--ys-pill-radius);
-  background: var(--ys-surface-soft);
-  color: var(--ys-text-soft);
-  text-decoration: none;
-  transition: all 0.16s ease;
-}
-
-.social-link:hover {
-  border-color: transparent;
-  background: var(--ys-accent);
+  letter-spacing: -0.02em;
   color: #fff;
 }
 
-.footer-column {
-  display: grid;
-  align-content: start;
-  gap: 0.45rem;
+.footer__brand-sub {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.45);
 }
 
-.footer-column h3 {
-  margin-bottom: 0.25rem;
-  color: var(--ys-text);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+/* Tagline */
+.footer__tagline {
+  max-width: 480px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.42);
+  margin: 0 0 2.25rem;
 }
 
-.footer-link {
-  color: var(--ys-text-soft);
-  font-size: 0.75rem;
-  line-height: 1.8;
+/* Nav links row */
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.footer__nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: color 0.16s ease;
+  transition: color 0.18s ease, background 0.18s ease;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
-.footer-link:hover {
-  color: #111;
+/* Divider */
+.footer__divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.75rem;
 }
 
-.footer-bottom {
+/* Bottom bar */
+.footer__bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   gap: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  padding-top: 0.75rem;
-}
-
-.footer-bottom p {
-  color: var(--ys-text-muted);
-  font-size: 0.72rem;
-}
-
-.footer-legal {
-  display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
 }
 
-.footer-legal a {
-  color: rgba(0, 0, 0, 0.5);
+.footer__copy {
   font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}
+
+.footer__legal {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.footer__legal-link {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
   text-decoration: none;
-  transition: color 0.16s ease;
+  transition: color 0.18s ease;
+
+  &:hover { color: rgba(255, 255, 255, 0.75); }
 }
 
-.footer-legal a:hover {
-  color: var(--ys-text);
-}
-
-@media (max-width: 960px) {
-  .footer-newsletter {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-newsletter__form {
-    width: 100%;
-    min-width: unset;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
+/* Responsive */
 @media (max-width: 640px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
+  .footer__bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
   }
 
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
+  .footer__legal {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 </style>

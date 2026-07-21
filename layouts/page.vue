@@ -42,14 +42,10 @@
         </button>
 
         <NuxtLink to="/" class="brand-mark" :aria-label="`${site.brand.name}首页`">
-          <img
-            :src="site.brand.logo"
-            :alt="site.brand.fullName"
-            class="brand-logo-img"
-          />
+          <img src="/logo.png" :alt="site.brand.name" class="brand-logo-img" />
           <div class="brand-text">
-            <span class="brand-name-en">{{ site.brand.nameEn }}</span>
-            <span class="brand-name-zh">{{ site.brand.name }}</span>
+            <span class="brand-name-en">1s design</span>
+            <span class="brand-name-zh">衣设</span>
           </div>
         </NuxtLink>
 
@@ -66,43 +62,55 @@
 
         <div class="header-actions">
           <form class="header-search desktop-only" @submit.prevent="handleHeaderSearch">
-            <AppIcon name="search" class="ui-icon" :size="18" aria-hidden="true" />
+            <AppIcon name="search" class="ui-icon" :size="14" aria-hidden="true" />
             <input
               v-model="headerSearch"
               type="search"
               aria-label="搜索商品"
-              placeholder="搜索商品…"
+              placeholder="搜索商品、印花或设计需求…"
             />
-          </form>
 
+            <button type="submit" class="header-search-btn" aria-label="执行搜索">
+              <span>搜索</span>
+            </button>
+          </form>
+          
           <NuxtLink
             v-if="site.features.favorites"
             to="/favorites"
             class="header-icon-link"
-            aria-label="收藏"
+            title="我的收藏"
+            aria-label="我的收藏"
           >
             <AppIcon name="heart" class="ui-icon" :size="18" aria-hidden="true" />
           </NuxtLink>
 
-          <template v-if="site.features.auth && isLoggedIn && currentUser">
+          <template v-if="site.features.auth && isLoggedIn">
             <div class="user-menu-wrapper">
               <button
                 ref="userButtonRef"
                 class="user-menu-button"
+                :class="{ 'is-active': isUserMenuOpen }"
                 @click.stop="isUserMenuOpen = !isUserMenuOpen"
               >
                 <span
                   class="user-avatar"
-                  :style="{ background: getAvatarColor(currentUser.name || currentUser.account) }"
+                  :style="{ background: getAvatarColor(currentUser?.name || currentUser?.account || 'U') }"
                 >
                   {{
-                    getAvatarInitial(currentUser.name || currentUser.account)
+                    getAvatarInitial(currentUser?.name || currentUser?.account || 'U')
                   }}
                 </span>
                 <span class="user-name">{{
-                  currentUser.name || currentUser.account
+                  currentUser?.name || currentUser?.account || '用户'
                 }}</span>
-                <AppIcon name="chevron-down" class="user-menu-caret" :size="12" aria-hidden="true" />
+                <AppIcon
+                  name="chevron-down"
+                  class="user-menu-caret"
+                  :class="{ 'is-active': isUserMenuOpen }"
+                  :size="12"
+                  aria-hidden="true"
+                />
               </button>
 
               <Transition name="user-menu">
@@ -116,20 +124,25 @@
                     to="/profile"
                     class="user-menu-item"
                     @click="isUserMenuOpen = false"
-                    >个人信息</NuxtLink
                   >
+                    <AppIcon name="user" :size="13" class="menu-item-icon" />
+                    <span>个人信息</span>
+                  </NuxtLink>
                   <NuxtLink
                     v-if="site.features.favorites"
                     to="/favorites"
                     class="user-menu-item"
                     @click="isUserMenuOpen = false"
-                    >我的收藏</NuxtLink
                   >
+                    <AppIcon name="heart" :size="13" class="menu-item-icon" />
+                    <span>我的收藏</span>
+                  </NuxtLink>
                   <button
                     class="user-menu-item logout-item"
                     @click="handleLogout"
                   >
-                    退出登录
+                    <AppIcon name="x-circle" :size="13" class="menu-item-icon" />
+                    <span>退出登录</span>
                   </button>
                 </div>
               </Transition>
@@ -137,8 +150,11 @@
           </template>
 
           <template v-else-if="site.features.auth">
-            <NuxtLink to="/login" class="header-icon-link" aria-label="登录">
-              <AppIcon name="user" class="ui-icon" :size="18" aria-hidden="true" />
+            <NuxtLink to="/login" class="header-login-link">
+              登录
+            </NuxtLink>
+            <NuxtLink to="/products" class="header-signup-btn">
+              开始创作
             </NuxtLink>
           </template>
 
@@ -182,8 +198,9 @@
               <input
                 v-model="mobileSearchKeyword"
                 type="search"
-                placeholder="搜索商品…"
+                placeholder="搜索商品、印花或定制…"
               />
+              <button type="submit" class="mobile-search-btn">搜索</button>
             </form>
           </div>
 
@@ -201,18 +218,18 @@
           </nav>
 
           <div
-            v-if="site.features.auth && isLoggedIn && currentUser"
+            v-if="site.features.auth && isLoggedIn"
             class="mobile-user-card"
           >
             <div class="mobile-user-meta">
               <span
                 class="user-avatar user-avatar--mobile"
-                :style="{ background: getAvatarColor(currentUser.name || currentUser.account) }"
+                :style="{ background: getAvatarColor(currentUser?.name || currentUser?.account || 'U') }"
               >
-                {{ getAvatarInitial(currentUser.name || currentUser.account) }}
+                {{ getAvatarInitial(currentUser?.name || currentUser?.account || 'U') }}
               </span>
               <div>
-                <strong>{{ currentUser.name || currentUser.account }}</strong>
+                <strong>{{ currentUser?.name || currentUser?.account || '用户' }}</strong>
                 <p>管理你的收藏与创作偏好</p>
               </div>
             </div>
@@ -478,30 +495,28 @@ useEventListener(
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #fff;
-}
-
-.site-header-spacer {
-  width: 100%;
 }
 
 .site-header {
   position: relative;
   top: 0;
-  padding: 0.75rem 0;
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom: 1px solid transparent;
+  padding: 0.6rem 0;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e2e8f0;
   transition:
     background-color 240ms ease,
     border-color 240ms ease,
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 420ms ease;
+  color: #0f172a;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
 }
 
 .site-header-scrolled {
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom-color: transparent;
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: #cbd5e1;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .site-header-fixed {
@@ -513,9 +528,10 @@ useEventListener(
   isolation: isolate;
   transform: translateY(-120%);
   opacity: 0;
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom-color: transparent;
-  backdrop-filter: blur(18px) saturate(110%);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom-color: #cbd5e1;
+  backdrop-filter: blur(20px) saturate(110%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .site-header-visible {
@@ -527,54 +543,20 @@ useEventListener(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  width: var(--ys-container);
-  margin: 0 auto;
-  min-height: 40px;
-  padding: 0;
+  gap: 1.25rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 1.5rem;
 }
 
 .brand-mark {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: var(--ys-text);
+  color: #0f172a;
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
-}
-
-.brand-logo-img {
-  display: block;
-  width: 28px;
-  height: 28px;
-  max-width: 28px;
-  max-height: 28px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  line-height: 1;
-}
-
-.brand-name-en {
-  font-family: var(--ys-font-display);
-  font-size: 0.92rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--ys-text);
-}
-
-.brand-name-zh {
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--ys-text-muted);
-  margin-top: 0.08rem;
 }
 
 .desktop-nav {
@@ -582,43 +564,73 @@ useEventListener(
   align-items: center;
   gap: 0.25rem;
   flex: 0 0 auto;
+  margin-left: 0.5rem;
 }
 
-.nav-item,
-.header-search,
-.login-button,
-.header-icon-link {
+.brand-logo-img {
+  display: block;
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  line-height: 1;
+}
+
+.brand-name-en {
+  font-family: var(--ys-font-display);
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.brand-name-zh {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #475569;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex: 0 0 auto;
+}
+
+.nav-item {
   position: relative;
-  padding: 0.4rem 0.65rem;
-  border: 1px solid transparent;
+  padding: 0.38rem 0.75rem;
+  border: 0;
   background: transparent;
-  color: var(--ys-text-soft);
+  color: #475569;
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
+  font-weight: 700;
   line-height: 1;
   white-space: nowrap;
-  border-radius: var(--ys-radius-sm);
-  transition:
-    color 0.16s ease,
-    background-color 0.16s ease,
-    border-color 0.16s ease;
+  border-radius: 999px;
+  transition: all 0.16s ease;
+  letter-spacing: 0.01em;
 }
 
 .nav-item:hover {
-  color: var(--ys-accent);
-  background: var(--ys-accent-soft);
+  color: #0f172a;
+  background: #f1f5f9;
 }
 
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
-  color: var(--ys-accent);
-  background: var(--ys-accent-soft);
-  font-weight: 700;
-}
-
-.header-search,
-.login-button {
-  border-radius: var(--ys-radius-sm);
+  color: #0f172a;
+  background: #e2e8f0;
+  font-weight: 800;
 }
 
 .ui-icon {
@@ -631,56 +643,121 @@ useEventListener(
 .header-search {
   display: flex;
   align-items: center;
-  min-width: min(30vw, 360px);
-  min-height: 36px;
-  justify-content: flex-start;
   gap: 0.5rem;
-  padding: 0 0.75rem;
-  border: 1px solid transparent;
-  background: var(--ys-surface-soft);
-  color: var(--ys-text-muted);
-  font-size: 0.82rem;
+  padding: 0 0.35rem 0 0.85rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 0.76rem;
+  flex: 1 1 auto;
+  max-width: 300px;
+  min-width: 180px;
+  transition: all 0.2s ease;
 }
 
 .header-search:focus-within {
-  border-color: transparent;
-  background: var(--ys-surface);
-  box-shadow: 0 0 0 3px var(--ys-focus-ring);
+  background: #ffffff;
+  border-color: rgba(255, 45, 117, 0.6);
+  box-shadow: 0 0 12px rgba(255, 45, 117, 0.15);
 }
 
 .header-search input {
+  flex: 1;
   width: 100%;
   min-width: 0;
-  height: 36px;
+  height: 2.15rem;
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--ys-text);
-  font-size: 0.82rem;
-  line-height: normal;
-  padding: 0;
+  color: #0f172a;
+  font-size: 0.76rem;
 }
 
 .header-search input::placeholder {
-  color: rgba(0, 0, 0, 0.35);
+  color: #94a3b8;
 }
 
-.header-search input:focus-visible {
-  box-shadow: none;
+.search-kbd {
+  flex-shrink: 0;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 0.12rem 0.38rem;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
-.login-button {
-  min-height: 2.55rem;
-  padding: 0 1rem;
-  border-color: transparent;
-  background: var(--ys-accent-soft);
+.header-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.65rem;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  border: 0;
+  background: #ff2d75;
+  color: #ffffff;
+  font-size: 0.72rem;
   font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: #ff4788;
+    transform: scale(1.04);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.header-login-link {
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.38rem 0.85rem;
+  text-decoration: none;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.16s ease;
+}
+
+.header-login-link:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.header-signup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.15rem;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.18s ease, opacity 0.18s ease;
+}
+
+.header-signup-btn:hover {
+  background: #1e293b;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.75rem;
   flex: 1 1 auto;
   justify-content: flex-end;
   min-width: 0;
@@ -690,17 +767,26 @@ useEventListener(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.15rem;
+  height: 2.15rem;
   padding: 0;
-  border-radius: var(--ys-radius-sm);
-  color: var(--ys-text-soft);
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
   text-decoration: none;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
 }
 
 .header-icon-link:hover {
-  color: var(--ys-accent);
-  background: var(--ys-accent-soft);
+  color: #0f172a;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.header-icon-link:active {
+  transform: scale(0.94);
 }
 
 .ui-icon {
@@ -715,13 +801,14 @@ useEventListener(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  color: var(--ys-text);
-  font-size: 0.78rem;
+  color: #171717;
+  font-size: 0.76rem;
   font-weight: 800;
   flex: 0 0 auto;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .user-avatar--mobile {
@@ -737,75 +824,86 @@ useEventListener(
 .user-menu-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
-  border: 1px solid transparent;
-  border-radius: var(--ys-radius-md);
-  background: var(--ys-surface-soft);
-  color: var(--ys-text);
+  gap: 0.45rem;
+  padding: 0.2rem 0.65rem 0.2rem 0.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
   cursor: pointer;
-  transition:
-    border-color 0.16s ease,
-    background-color 0.16s ease;
+  transition: all 0.2s ease;
 }
 
-.user-menu-button:hover {
-  border-color: transparent;
-  background: var(--ys-accent-soft);
-}
-
-.user-menu-button:hover .user-menu-caret {
-  transform: translateY(1px);
+.user-menu-button:hover,
+.user-menu-button.is-active {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .user-menu-caret {
-  transition: transform 0.16s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-menu-caret.is-active {
+  transform: rotate(180deg);
 }
 
 .user-name {
-  max-width: 8rem;
+  max-width: 7.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
+  font-weight: 600;
 }
 
 .user-menu-dropdown {
   position: absolute;
-  top: calc(100% + 0.5rem);
+  top: calc(100% + 0.6rem);
   right: 0;
   z-index: 120;
-  min-width: 11rem;
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.35rem;
-  border: 1px solid transparent;
-  border-radius: var(--ys-radius-lg);
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(14px);
-  box-shadow: var(--ys-shadow-md);
+  min-width: 11.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.4rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .user-menu-item {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   width: 100%;
-  padding: 0.65rem 0.75rem;
+  padding: 0.55rem 0.75rem;
   border: 0;
-  border-radius: var(--ys-radius-sm);
+  border-radius: 8px;
   background: transparent;
-  color: var(--ys-text-soft);
+  color: #374151;
   text-align: left;
   text-decoration: none;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
+  font-weight: 500;
   cursor: pointer;
-  transition:
-    background-color 0.16s ease,
-    color 0.16s ease;
+  transition: all 0.16s ease;
 }
 
 .user-menu-item:hover {
-  background: var(--ys-accent-soft);
-  color: var(--ys-accent);
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.user-menu-item.logout-item:hover {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.menu-item-icon {
+  opacity: 0.7;
 }
 
 .logout-item {
@@ -915,6 +1013,27 @@ useEventListener(
 
 .mobile-search-form input::placeholder {
   color: rgba(0, 0, 0, 0.35);
+}
+
+.mobile-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.85rem;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  border: 0;
+  background: #ff2d75;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    background: #ff4788;
+  }
 }
 
 .mobile-close-btn {

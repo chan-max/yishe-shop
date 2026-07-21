@@ -50,12 +50,7 @@ export const usePublicUserStore = defineStore('publicUser', {
   }),
 
   getters: {
-    isLoggedIn(state) {
-      // 在客户端时，每次都从 localStorage 读取最新的 token
-      if (process.client) {
-        return !!getStoredToken()
-      }
-      // SSR 时使用 state 中的 token
+    isLoggedIn(state): boolean {
       return !!state.token
     },
     currentUser: (state) => state.userInfo,

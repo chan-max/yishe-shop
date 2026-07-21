@@ -10,8 +10,8 @@
     --ys-surface-soft: #f5f5f5;
     --ys-surface-hover: #f5f5f5;
     --ys-surface-active: #ececec;
-    --ys-border: rgba(0, 0, 0, 0.08);
-    --ys-border-strong: rgba(0, 0, 0, 0.16);
+    --ys-border: transparent;
+    --ys-border-strong: transparent;
     --ys-text: #171717;
     --ys-text-soft: #525252;
     --ys-text-muted: #8a8a8a;

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="product-detail-page">
     <div v-if="loading" class="product-loading">
       <div></div>
@@ -261,7 +261,7 @@ const toast = useToast();
 definePageMeta({
   layout: "page",
   middleware: "product-or-search",
-  alias: ["/product/:id/:slug"],
+  alias: ["/product/:id/:slug?"],
 });
 
 const route = useRoute();
@@ -827,18 +827,24 @@ watch(
 );
 
 if (route.params.id) {
-  await fetchProductDetail();
-  if (product.value) {
-    const canonicalPath = getProductPath(product.value);
-    if (route.path !== canonicalPath) {
-      await navigateTo(canonicalPath, {
-        redirectCode: 301,
-        replace: true,
-      });
+  if (import.meta.server) {
+    await fetchProductDetail();
+    if (product.value) {
+      const canonicalPath = getProductPath(product.value);
+      if (route.path !== canonicalPath) {
+        await navigateTo(canonicalPath, {
+          redirectCode: 301,
+          replace: true,
+        });
+      }
+    } else {
+      const event = useRequestEvent();
+      if (event) setResponseStatus(event, 404, "Product Not Found");
     }
-  } else if (import.meta.server) {
-    const event = useRequestEvent();
-    if (event) setResponseStatus(event, 404, "Product Not Found");
+  } else {
+    onMounted(async () => {
+      await fetchProductDetail();
+    });
   }
 }
 
