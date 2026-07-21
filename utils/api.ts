@@ -385,4 +385,20 @@ export const api = {
         method: 'GET',
       }),
   },
+  // 独立站开放用户行为日志上报
+  userBehaviorLog: {
+    collect: (data: {
+      publicUserId?: string;
+      publicUserName?: string;
+      action: string;
+      targetId?: string;
+      targetName?: string;
+      referrer?: string;
+      metadata?: Record<string, any>;
+    }) =>
+      request<ApiResponse<any>>('/user-behavior-log/collect', {
+        method: 'POST',
+        body: data,
+      }),
+  },
 }

@@ -243,6 +243,7 @@ import ImagePreview from "../components/ImagePreview.vue";
 import FavoriteButton from "~/components/FavoriteButton.vue";
 import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
+import { useUserBehaviorLog } from "~/composables/use-user-behavior-log";
 import { useProductStructuredData, useBreadcrumbStructuredData } from "~/composables/use-seo";
 import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
 import { isPublishedProduct } from "~/utils/product-indexing";
@@ -257,6 +258,7 @@ import {
 } from "~/utils/seo";
 
 const toast = useToast();
+const { reportBehaviorLog } = useUserBehaviorLog();
 
 definePageMeta({
   layout: "page",
@@ -584,6 +586,17 @@ const fetchProductDetail = async () => {
       product.value = isPublishedProduct(response.data) ? response.data : null;
       currentImageIndex.value = 0;
       relatedProducts.value = [];
+      if (product.value) {
+        reportBehaviorLog({
+          action: 'product_view',
+          targetId: String(product.value.id || ''),
+          targetName: String(product.value.name || ''),
+          metadata: {
+            type: product.value.type,
+            code: product.value.code,
+          },
+        });
+      }
       await Promise.all([checkFavoriteStatus(), fetchFavoriteCount()]);
     } else {
       product.value = null;
