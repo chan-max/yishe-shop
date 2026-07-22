@@ -51,6 +51,8 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   navigation: [
     { label: "商品", to: "/products", icon: "box" },
+    { label: "春联定制 🧧", to: "/springfestival", icon: "gift" },
+    { label: "杯子定制 ☕", to: "/cup", icon: "coffee" },
     { label: "定制设计", to: "/design", icon: "palette" },
     { label: "关于我们", to: "/about", icon: "info" },
     { label: "联系我们", to: "/contact", icon: "mail" },
@@ -64,6 +66,11 @@ export const yisheSiteConfig: SiteDefinition = {
       "POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感与开放 API 对接机制。",
     email: "jackieontheway666@gmail.com",
     groups: {
+      专题定制: [
+        { name: "春联年货定制 🧧", href: "/springfestival" },
+        { name: "马克杯水杯定制 ☕", href: "/cup" },
+        { name: "全部商品分类", href: "/products" },
+      ],
       商品: [
         { name: "全部商品", href: "/products" },
         { name: "定制设计", href: "/design" },

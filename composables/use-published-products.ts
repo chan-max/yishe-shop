@@ -19,6 +19,8 @@ export type StorefrontPublishedProduct = {
 type FetchPublishedProductOptions = {
   pageSize?: number;
   searchText?: string;
+  type?: string;
+  category?: string;
   random?: boolean;
 };
 
@@ -65,6 +67,7 @@ export const usePublishedProducts = () => {
       random: options.random ?? true,
       searchText: options.searchText,
       search: options.searchText,
+      type: options.type || options.category,
     });
 
     if (
