@@ -51,8 +51,6 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   navigation: [
     { label: "商品", to: "/products", icon: "box" },
-    { label: "春联定制 🧧", to: "/springfestival", icon: "gift" },
-    { label: "杯子定制 ☕", to: "/cup", icon: "coffee" },
     { label: "定制设计", to: "/design", icon: "palette" },
     { label: "关于我们", to: "/about", icon: "info" },
     { label: "联系我们", to: "/contact", icon: "mail" },
