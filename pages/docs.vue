@@ -307,6 +307,85 @@
             </div>
           </section>
 
+          <!-- 6. 用户行为日志上报 -->
+          <section id="user-behavior-log" class="docs-card">
+            <h2 class="card-title">
+              <AppIcon name="info" class="card-title-icon" />
+              <span>6. 独立站开放用户行为日志上报</span>
+            </h2>
+            <div class="card-body">
+              <p>
+                用于上报独立站开放用户的浏览、商品查看、搜索与交互行为。请求 Header 携带 <code>x-app-key</code> 可自动归属管理账号进行数据隔离。
+              </p>
+              <div class="api-meta">
+                <span class="method-badge post">POST</span>
+                <code class="endpoint-code">/api/user-behavior-log/collect</code>
+              </div>
+
+              <h3 class="sub-title">Request Body 参数</h3>
+              <div class="table-wrapper">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th>参数名</th>
+                      <th>类型</th>
+                      <th>必填</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>action</code></td>
+                      <td><code>string</code></td>
+                      <td>是</td>
+                      <td>行为动作类型 (page_view, product_view, product_search, design_request_submit)</td>
+                    </tr>
+                    <tr>
+                      <td><code>publicUserId</code></td>
+                      <td><code>string</code></td>
+                      <td>否</td>
+                      <td>独立站开放用户唯一账号或 ID</td>
+                    </tr>
+                    <tr>
+                      <td><code>publicUserName</code></td>
+                      <td><code>string</code></td>
+                      <td>否</td>
+                      <td>开放用户的显示姓名</td>
+                    </tr>
+                    <tr>
+                      <td><code>targetId</code></td>
+                      <td><code>string</code></td>
+                      <td>否</td>
+                      <td>关联目标 ID (如商品 ID、页面 Path)</td>
+                    </tr>
+                    <tr>
+                      <td><code>targetName</code></td>
+                      <td><code>string</code></td>
+                      <td>否</td>
+                      <td>关联目标名称/商品标题</td>
+                    </tr>
+                    <tr>
+                      <td><code>metadata</code></td>
+                      <td><code>object</code></td>
+                      <td>否</td>
+                      <td>扩展 JSON 属性 (如搜索词、选色参数等)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="code-example-group">
+                <h3 class="sub-title">cURL 示例</h3>
+                <div class="code-block">
+                  <button class="copy-btn" @click="copyCode(behaviorLogCurlExample)">
+                    {{ copiedCode === behaviorLogCurlExample ? '已复制 ✓' : '复制' }}
+                  </button>
+                  <pre><code>{{ behaviorLogCurlExample }}</code></pre>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- 7. 错误代码说明 -->
           <section id="errors" class="docs-card">
             <h2 class="card-title">
@@ -384,6 +463,7 @@ const navSection1 = [
 const navSection2 = [
   { id: 'products', title: '商品与分类', method: 'GET' },
   { id: 'stickers', title: '素材与贴纸', method: 'GET' },
+  { id: 'user-behavior-log', title: '用户行为上报', method: 'POST' },
   { id: 'psd-sets', title: '批量套图制作', method: 'POST' },
   { id: 'ai-agent', title: 'AI Agent 流式对话', method: 'POST' },
   { id: 'errors', title: '错误代码说明', method: 'INFO' }
@@ -405,6 +485,17 @@ const curlAuthExample = computed(() => `curl -X GET "https://design.1s.com/api/p
   -H "x-app-key: ${userKey.value || 'YOUR_APP_KEY'}" \\
   -H "x-app-secret: ${userSecret.value || 'YOUR_APP_SECRET'}" \\
   -H "Content-Type: application/json"`)
+
+const behaviorLogCurlExample = computed(() => `curl -X POST "https://design.1s.com/api/user-behavior-log/collect" \\
+  -H "x-app-key: ${userKey.value || 'YOUR_APP_KEY'}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "publicUserId": "user_10028",
+    "publicUserName": "开放测试用户",
+    "action": "product_view",
+    "targetId": "prod_1001",
+    "targetName": "印花宠物地垫 POD商品"
+  }'`)
 
 const productsResponseJson = `{
   "code": 200,
