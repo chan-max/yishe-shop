@@ -174,7 +174,6 @@
             </div>
             <div class="product-details">
               <h4 class="product-title">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '12安加厚帆布，大容量多功能暗袋，水墨高保真印花。' }}</p>
               <div class="product-bottom">
                 <span class="product-price">¥{{ item.price || '69.00' }}</span>
                 <span class="product-btn">定制此款 →</span>
@@ -247,7 +246,7 @@ onMounted(async () => {
 
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: '帆布包', searchText: '包', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: '帆布包', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)

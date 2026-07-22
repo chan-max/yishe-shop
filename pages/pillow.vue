@@ -167,7 +167,6 @@
             </div>
             <div class="product-details">
               <h4 class="product-title">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '亲肤短绒面料，高弹PP棉饱满填充，隐形拉链可拆洗。' }}</p>
               <div class="product-bottom">
                 <span class="product-price">¥{{ item.price || '59.00' }}</span>
                 <span class="product-btn">定制此款 →</span>
@@ -239,7 +238,7 @@ onMounted(async () => {
 
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: '抱枕', searchText: '枕', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: '抱枕', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)

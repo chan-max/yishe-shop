@@ -65,9 +65,9 @@ export const usePublishedProducts = () => {
       isPublish: true,
       includeRelations: false,
       random: options.random ?? true,
-      searchText: options.searchText,
-      search: options.searchText,
       type: options.type || options.category,
+      // 如果指定了精确的 type 文字类型，则不附带 searchText 模糊搜，保证只过滤该类型商品
+      ...(options.type ? {} : { searchText: options.searchText, search: options.searchText }),
     });
 
     if (

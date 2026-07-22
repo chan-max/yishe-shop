@@ -172,7 +172,6 @@
             </div>
             <div class="product-details">
               <h4 class="product-title">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '3M防水PVC材质，沿边精密模切，撕下无残留胶。' }}</p>
               <div class="product-bottom">
                 <span class="product-price">¥{{ item.price || '15.00' }}</span>
                 <span class="product-btn">定制此款 →</span>
@@ -244,7 +243,7 @@ onMounted(async () => {
 
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: '贴纸', searchText: '贴', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: '贴纸', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)

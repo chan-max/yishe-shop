@@ -172,7 +172,6 @@
             </div>
             <div class="product-details">
               <h4 class="product-title">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '400g重磅纯棉，立体双层连帽，挺括潮牌质感。' }}</p>
               <div class="product-bottom">
                 <span class="product-price">¥{{ item.price || '189.00' }}</span>
                 <span class="product-btn">定制此款 →</span>
@@ -245,7 +244,7 @@ onMounted(async () => {
 
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: '卫衣', searchText: '卫衣', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: '卫衣', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)

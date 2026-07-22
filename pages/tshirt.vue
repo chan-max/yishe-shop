@@ -1,260 +1,384 @@
 <template>
-  <div class="tshirt-page">
-    <!-- Ambient Blur Orbs -->
-    <div class="ambient-orb orb-primary" />
-    <div class="ambient-orb orb-secondary" />
+  <div class="clubi-exact-page">
+    <!-- ── 1. 顶部公告栏 (黑底白字公告) ── -->
+    <div class="clubi-top-announcement">
+      <button class="arrow-btn">‹</button>
+      <span class="announcement-text">✨ 衣设 yishe · 纯棉 T恤专属频道 | 全场 POD 定制满 ¥199 包邮 | 支持一件起订与极速发货</span>
+      <button class="arrow-btn">›</button>
+    </div>
 
-    <!-- Sticky Navbar -->
-    <header class="ts-navbar">
-      <div class="navbar-inner">
-        <NuxtLink to="/" class="navbar-brand">
-          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-          </svg>
-          <span>衣设 yishe</span>
+    <!-- ── 2. 主 Header 顶栏 (Logo + 搜索框 + 分类导航) ── -->
+    <header class="clubi-main-header">
+      <div class="header-top-row">
+        <!-- Logo -->
+        <NuxtLink to="/" class="clubi-logo-brand">
+          <span class="logo-script">衣设</span>
+          <span class="logo-sans">yishe · T-Shirt</span>
         </NuxtLink>
-        <nav class="navbar-links">
-          <a href="#features">面料工艺</a>
-          <a href="#gallery">印花灵感</a>
-          <a href="#products">专属上架</a>
-          <NuxtLink to="/design" class="navbar-cta">定制专属 T恤</NuxtLink>
+
+        <!-- Center Search Bar -->
+        <div class="header-search-bar">
+          <input type="text" placeholder="搜索 T恤 款式、印花风格或图案关键词..." class="search-input" />
+          <button class="search-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Right Utility Icons -->
+        <div class="header-user-actions">
+          <NuxtLink to="/design" class="action-item account-link" title="个人中心">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </NuxtLink>
+          <NuxtLink to="/design" class="action-item cart-link" title="设计工具">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            <span class="cart-badge-count">0</span>
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Bottom Category Bar with horizontal arrows -->
+      <div class="header-cat-bar">
+        <button class="cat-arrow left-arrow">‹</button>
+        <nav class="cat-nav-list">
+          <a href="#new" class="cat-item highlight-orange">🔥 新品首发</a>
+          <a href="#heavyweight" class="cat-item">240g 重磅纯棉</a>
+          <a href="#oversized" class="cat-item">街头 OVERSIZED</a>
+          <a href="#vintage" class="cat-item">复古洗水系列</a>
+          <a href="#bestseller" class="cat-item active-cat">经典热销 T恤</a>
+          <a href="#design-zone" class="cat-item">POD 设计中心</a>
         </nav>
+        <button class="cat-arrow right-arrow">›</button>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="ts-hero">
-      <div class="hero-container">
-        <div class="hero-content animate-up">
-          <div class="badge-tag">
-            <svg class="tag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
-            240g 重磅精梳棉 · DTG 数码直喷
-          </div>
-
-          <h1 class="hero-title">
-            表达你的态度<br>
-            <span class="title-gradient">专属纯棉 T恤定制</span>
-          </h1>
-
-          <p class="hero-subtitle">
-            高密度精梳双纱纯棉，触感细腻亲肤。结合工业级 DTG 喷墨技术，色彩透气不胶糊，经百次洗涤依旧鲜亮如初。
-          </p>
-
-          <div class="hero-features-list">
-            <div class="hero-feature-item">
-              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              <span>240g/㎡ 亲肤透气双纱</span>
-            </div>
-            <div class="hero-feature-item">
-              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              <span>0 胶感环保活性印染</span>
-            </div>
-            <div class="hero-feature-item">
-              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              <span>一件起订 · 48小时发货</span>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <NuxtLink to="/design" class="btn-primary">
-              进入 POD 设计工具
-              <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </NuxtLink>
-            <a href="#products" class="btn-secondary">浏览该分类商品 ↓</a>
-          </div>
+    <!-- ── 3. Hero Carousel Banner ── -->
+    <section class="clubi-hero-banner">
+      <button class="hero-arrow hero-prev">‹</button>
+      <div class="hero-slide-container">
+        <div class="hero-slide-content">
+          <span class="slide-badge">衣设 yishe 2026 T-Shirt Collection</span>
+          <h1>100% 精梳纯棉 · 0 胶感透气印花</h1>
+          <p>衣服讲述的故事！用极致的面料质感与独家艺术图案，记录每一个惬意日常。</p>
+          <NuxtLink to="/design?preset=tshirt" class="btn-hero-action">进入 POD 设计器自定印花</NuxtLink>
         </div>
-
-        <!-- T-Shirt Interactive SVG Mockup -->
-        <div class="hero-mockup-wrap animate-up" style="animation-delay: 0.15s">
-          <div class="mockup-card">
-            <div class="card-glow" />
-            <svg class="tshirt-svg" viewBox="0 0 400 440" fill="none">
-              <path d="M120 40 L160 70 Q200 85 240 70 L280 40 L370 110 L315 170 L285 145 V390 H115 V145 L85 170 L30 110 Z" fill="#1E293B" stroke="#475569" stroke-width="3" />
-              <path d="M160 70 Q200 85 240 70" stroke="#64748B" stroke-width="3" fill="none" />
-              <!-- Mock Printed Graphic Pattern -->
-              <rect x="150" y="150" width="100" height="120" rx="12" fill="url(#graphicGradient)" opacity="0.9" />
-              <circle cx="200" cy="210" r="30" fill="none" stroke="#6366F1" stroke-width="4" stroke-dasharray="6 6" />
-              <text x="200" y="215" font-family="sans-serif" font-size="14" font-weight="bold" fill="#F8FAFC" text-anchor="middle">YOUR ART</text>
-              <defs>
-                <linearGradient id="graphicGradient" x1="0" y1="0" x2="100" y2="120" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#6366F1" />
-                  <stop offset="1" stop-color="#A855F7" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <div class="mockup-tag tag-top">DTG 高清印花</div>
-            <div class="mockup-tag tag-bottom">领口防变形压条</div>
-          </div>
-        </div>
+      </div>
+      <button class="hero-arrow hero-next">›</button>
+      <div class="hero-dots">
+        <span class="dot active" />
+        <span class="dot" />
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="ts-features">
+    <!-- ── 4. Section 1: "新品首发 · 热门印花 T恤" ── -->
+    <section id="new" class="clubi-section-block">
       <div class="section-container">
-        <div class="section-header animate-up">
-          <span class="section-badge">匠心质感</span>
-          <h2 class="section-title">重定义一件优秀 T恤 的标准</h2>
-          <p class="section-sub">从纱线挑选到后整工艺，每一处细节皆为穿著体验而生。</p>
-        </div>
+        <h2 class="section-main-title">新品首发 · 热门印花 T恤</h2>
 
-        <div class="features-grid">
-          <div class="feature-card animate-up" style="animation-delay: 0.05s">
-            <div class="icon-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                <path d="M2 12h20" />
-              </svg>
-            </div>
-            <h3>高重磅精梳纯棉</h3>
-            <p>挑选长绒棉经精梳去杂，240g/㎡ 黄金厚度，既有挺括型格，又有天然棉质的柔软呼吸感。</p>
-          </div>
-
-          <div class="feature-card animate-up" style="animation-delay: 0.12s">
-            <div class="icon-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <h3>螺纹领口双针加固</h3>
-            <p>高弹防变形螺纹领口，内埋后领通肩压条。即使经历数十次机洗，领口依然平整紧致不上卷。</p>
-          </div>
-
-          <div class="feature-card animate-up" style="animation-delay: 0.2s">
-            <div class="icon-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                <polyline points="2 17 12 22 22 17" />
-                <polyline points="2 12 12 17 22 12" />
-              </svg>
-            </div>
-            <h3>纳米级直喷色彩</h3>
-            <p>采用环保水性墨水，墨滴深层渗入棉纤纤维。印花无硬块感、无异味，透气吸汗不黏身。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Products Grid Section -->
-    <section id="products" class="ts-products">
-      <div class="section-container">
-        <div class="section-header animate-up">
-          <span class="section-badge">专属商品</span>
-          <h2 class="section-title">【T恤 / 短袖】在售款式</h2>
-          <p class="section-sub">实时同步该分类下的已上架定制商品，点击即可直达专属创作体验。</p>
-        </div>
-
-        <div v-if="loading" class="products-grid">
-          <div v-for="i in 4" :key="i" class="product-skeleton">
-            <div class="sk-img" />
-            <div class="sk-body">
-              <div class="sk-line w-80" />
-              <div class="sk-line w-50" />
-            </div>
-          </div>
-        </div>
-
-        <div v-else-if="products.length > 0" class="products-grid">
-          <NuxtLink
-            v-for="(item, i) in products"
-            :key="item.id"
-            :to="`/product/${item.id}`"
-            class="product-card animate-up"
-            :style="`animation-delay: ${i * 0.06}s`"
-          >
-            <div class="product-img-box">
-              <img :src="item.imageUrl || ''" :alt="item.title" loading="lazy" />
-              <span class="product-cat-tag">{{ item.category }}</span>
-            </div>
-            <div class="product-details">
-              <h4 class="product-title">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '高重磅纯棉，DTG数码直喷，版型挺括舒适。' }}</p>
-              <div class="product-bottom">
-                <span class="product-price">¥{{ item.price || '99.00' }}</span>
-                <span class="product-btn">定制此款 →</span>
+        <div class="carousel-wrapper">
+          <button class="nav-arrow prev-arrow">‹</button>
+          
+          <div class="product-grid-5">
+            <div
+              v-for="(prod, i) in displayList1"
+              :key="prod.id || i"
+              class="clubi-exact-card"
+            >
+              <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="card-img-wrapper">
+                <img :src="prod.imageUrl || prod.fallbackImg" :alt="prod.title" loading="lazy" />
+              </NuxtLink>
+              <div class="card-info">
+                <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="card-title-link">
+                  <h3>{{ prod.title }}</h3>
+                </NuxtLink>
+                <div class="card-price-val">¥{{ prod.price || prod.fallbackPrice }}</div>
+                <div class="card-stock-alert">热销现货 · 仅剩 {{ prod.stockAlert || 3 }} 件库存</div>
+                <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="btn-green-buy">
+                  立即定制
+                </NuxtLink>
               </div>
             </div>
+          </div>
+
+          <button class="nav-arrow next-arrow">›</button>
+        </div>
+
+        <div class="section-dot-nav">
+          <span class="dot active" />
+          <span class="dot" />
+          <span class="dot" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. Section 2: "重磅垂感 · 经典热销款式" ── -->
+    <section id="bestseller" class="clubi-section-block">
+      <div class="section-container">
+        <h2 class="section-main-title">重磅垂感 · 经典热销款式</h2>
+
+        <div class="carousel-wrapper">
+          <button class="nav-arrow prev-arrow">‹</button>
+
+          <div class="product-grid-5">
+            <div
+              v-for="(prod, i) in displayList2"
+              :key="prod.id || i"
+              class="clubi-exact-card"
+            >
+              <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="card-img-wrapper">
+                <img :src="prod.imageUrl || prod.fallbackImg" :alt="prod.title" loading="lazy" />
+              </NuxtLink>
+              <div class="card-info">
+                <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="card-title-link">
+                  <h3>{{ prod.title }}</h3>
+                </NuxtLink>
+                <div class="card-price-val">¥{{ prod.price || prod.fallbackPrice }}</div>
+                <div class="card-installment-sub">支持一件起订 · 48h 极速印制发货</div>
+                <div class="card-stock-alert">热销现货 · 仅剩 {{ prod.stockAlert || 2 }} 件</div>
+                <NuxtLink :to="prod.id ? `/product/${prod.id}` : '/design?preset=tshirt'" class="btn-green-buy">
+                  立即定制
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <button class="nav-arrow next-arrow">›</button>
+        </div>
+
+        <div class="section-dot-nav">
+          <span class="dot active" />
+          <span class="dot" />
+          <span class="dot" />
+          <span class="dot" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. Section 3: 3 大绿色宣传横幅 ── -->
+    <section class="clubi-promo-banners">
+      <div class="section-container">
+        <div class="promo-grid-3">
+          <NuxtLink to="/design?preset=tshirt" class="btn-large-green-promo">
+            ✨ 开启在线 POD 创作
+          </NuxtLink>
+          <NuxtLink to="/design?preset=tshirt" class="btn-large-green-promo">
+            🎨 浏览热门插画印花
+          </NuxtLink>
+          <NuxtLink to="/design?preset=tshirt" class="btn-large-green-promo">
+            👕 定制团队服/情侣装
           </NuxtLink>
         </div>
+      </div>
+    </section>
 
-        <div v-else class="empty-box animate-up">
-          <div class="empty-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
-            </svg>
+    <!-- ── 7. Section 4: 社群灵感墙 ("晒图社群 @yishe_design") ── -->
+    <section class="clubi-insta-section">
+      <div class="section-container text-center">
+        <div class="insta-header">
+          <svg class="insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+          </svg>
+          <h2>晒图社群 @yishe_design</h2>
+        </div>
+
+        <div class="insta-grid-4">
+          <div class="insta-card">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80" alt="穿搭社群灵感 1" />
           </div>
-          <h3>暂无【T恤】分类在售商品</h3>
-          <p>管理员可以在后台商品模块发布分类为「T恤」的商品。您现在可以直接进入 POD 设计器自定图案！</p>
-          <NuxtLink to="/design" class="btn-primary">进入 POD 设计器</NuxtLink>
+          <div class="insta-card">
+            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&auto=format&fit=crop&q=80" alt="穿搭社群灵感 2" />
+            <div class="insta-overlay-badge">买家实拍秀 · 240g重磅</div>
+          </div>
+          <div class="insta-card">
+            <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80" alt="穿搭社群灵感 3" />
+            <div class="insta-overlay-caption">服装讲述的故事。每一件独立创作，都值得被温柔对待...</div>
+          </div>
+          <div class="insta-card quote-card">
+            <div class="quote-box">
+              <p>灵感不被定义。<br>只需尽情绽放。</p>
+              <span>@yishe_design</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Bottom Call To Action Banner -->
-    <section class="ts-cta-banner">
-      <div class="cta-container animate-up">
-        <h2>定制你的第一件专属潮流 T恤</h2>
-        <p>支持高清图案上传、文字排版与多色印制。48 小时内完成生产发货。</p>
-        <NuxtLink to="/design" class="btn-primary btn-lg">立即体验 POD 定制</NuxtLink>
+    <!-- ── 8. Section 5: 4 大服务保障 ── -->
+    <section class="clubi-props-section">
+      <div class="section-container">
+        <div class="props-grid-4">
+          <div class="prop-item">
+            <div class="prop-icon">💳</div>
+            <h4>灵活支付方式</h4>
+            <p>支持微信支付、支付宝与银联，数秒完成订单确认</p>
+          </div>
+          <div class="prop-item">
+            <div class="prop-icon">💬</div>
+            <h4>专属客户服务</h4>
+            <p>工作日 09:00 - 18:00 在线解答印花与版型问题</p>
+          </div>
+          <div class="prop-item">
+            <div class="prop-icon">🔄</div>
+            <h4>品质售后无忧</h4>
+            <p>印制瑕疵或质量问题支持无忧退换保障</p>
+          </div>
+          <div class="prop-item">
+            <div class="prop-icon">🚚</div>
+            <h4>全国满额包邮</h4>
+            <p>全场订单实付满 ¥199 元即享普通快递免费包邮</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="ts-footer">
-      <div class="footer-container">
-        <span class="footer-brand">衣设 yishe · T恤专属介绍页</span>
-        <p>© 2026 yishe. All rights reserved.</p>
-        <NuxtLink to="/" class="footer-link">← 返回主站</NuxtLink>
+    <!-- ── 9. Section 6: 周刊订阅栏 ── -->
+    <section class="clubi-newsletter-section">
+      <div class="section-container text-center">
+        <h2>订阅衣设设计周刊</h2>
+        <p>第一时间获取最新插画印花上新通知与专属优惠券！</p>
+
+        <form class="newsletter-form" @submit.prevent>
+          <input type="email" placeholder="请输入您的电子邮箱..." class="news-input" />
+          <button type="submit" class="news-btn">立即订阅</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── 10. 页脚 Footer ── -->
+    <footer class="clubi-exact-footer">
+      <div class="footer-top-container">
+        <!-- Col 1: 品牌与联系信息 -->
+        <div class="footer-col brand-col">
+          <div class="footer-logo">
+            <span class="logo-script">衣设</span>
+            <span class="logo-sans">yishe</span>
+          </div>
+          <p class="brand-desc">
+            服装讲述的故事！衣设 yishe 专注于时尚设计、POD 柔性定制与独立站设计师生态。
+          </p>
+          <div class="social-icons-row">
+            <a href="#" class="social-icon">📷</a>
+            <a href="#" class="social-icon">💬</a>
+          </div>
+          <div class="contact-details">
+            <p>客服热线：400-888-2026</p>
+            <p>商务合作：contact@yishe.com</p>
+            <p>品牌总部：中国上海市静安区衣设设计中心</p>
+          </div>
+        </div>
+
+        <!-- Col 2: 引导链接 -->
+        <div class="footer-col">
+          <h4>关于衣设</h4>
+          <ul class="footer-links-list">
+            <li><NuxtLink to="/about">品牌故事</NuxtLink></li>
+            <li><NuxtLink to="/design">POD 设计器</NuxtLink></li>
+            <li><a href="#new">新品首发</a></li>
+            <li><a href="#bestseller">热销推荐</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: 服务条款 -->
+        <div class="footer-col">
+          <h4>服务条款</h4>
+          <ul class="footer-links-list">
+            <li><a href="#">配送与发货政策</a></li>
+            <li><a href="#">支付方式说明</a></li>
+            <li><a href="#">隐私保护政策</a></li>
+            <li><a href="#">退换货与售后保障</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: 快捷订阅 -->
+        <div class="footer-col">
+          <h4>周刊订阅</h4>
+          <div class="footer-mini-form">
+            <input type="email" placeholder="输入邮箱" class="footer-input" />
+            <button class="footer-btn">提交</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Copyright & Payment Methods Line -->
+      <div class="footer-bottom-bar">
+        <div class="section-container bottom-flex">
+          <div class="payment-badges">
+            <span class="pay-chip">微信支付</span>
+            <span class="pay-chip">支付宝</span>
+            <span class="pay-chip">银联在线</span>
+          </div>
+          <div class="copyright-text">
+            Copyright 衣设 yishe - 2026. All rights reserved. 沪ICP备20260001号
+          </div>
+        </div>
       </div>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { usePublishedProducts, type StorefrontPublishedProduct } from '~/composables/use-published-products'
 
 definePageMeta({ layout: false })
 
 useSeoMeta({
-  title: '纯棉重磅T恤专属定制 · 数码直喷印花 · 衣设 yishe',
-  ogTitle: '纯棉重磅T恤专属定制 · 数码直喷印花 · 衣设 yishe',
-  description: '240g精梳纯棉重磅T恤，0胶感DTG数码直喷，领口防变形压条。支持单件起订、一件代发与自由设计。',
-  keywords: 'T恤定制, POD短袖, 纯棉T恤, 数码直喷, 自制潮牌, 服饰定制'
+  title: '纯棉 T恤专属频道 · 0 胶感透气印花定制 · 衣设 yishe',
+  ogTitle: '纯棉 T恤专属频道 · 0 胶感透气印花定制 · 衣设 yishe',
+  description: '衣设 yishe 纯棉 T恤频道，100% 精梳双纱纯棉，0 胶感 DTG 数码直喷，领口防变形压条，支持一件起订与极速发货。',
+  keywords: 'T恤定制, POD短袖, 衣设yishe, 240g重磅T恤, 纯棉T恤定制'
 })
+
+// High-fidelity fallback product data with Chinese titles & yishe system details
+const fallbackProducts1 = [
+  { id: '', title: '【纯棉重磅】日系猫咪插画短袖 T恤 #1346', fallbackPrice: 98, stockAlert: 3, fallbackImg: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【复古洗水】弗里达艺术烫画 T恤 #1347', fallbackPrice: 98, stockAlert: 2, fallbackImg: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【宽松垂感】度假风植物印花 T恤 #1345', fallbackPrice: 98, stockAlert: 5, fallbackImg: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【极简街头】抽象线条花卉 T恤 #1279', fallbackPrice: 98, stockAlert: 2, fallbackImg: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【240g双纱】飞鸟森林艺术 T恤 #1275', fallbackPrice: 98, stockAlert: 4, fallbackImg: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500&auto=format&fit=crop&q=80' }
+]
+
+const fallbackProducts2 = [
+  { id: '', title: '【Godê 垂感】绿叶诗意落叶 T恤 #1321', fallbackPrice: 139, stockAlert: 2, fallbackImg: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【Godê 垂感】现代抽象几何 T恤 #1316', fallbackPrice: 139, stockAlert: 3, fallbackImg: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【Godê 垂感】秋日暖色调艺术 T恤 #1225', fallbackPrice: 139, stockAlert: 2, fallbackImg: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【Godê 垂感】油画感山茶花 T恤 #1279', fallbackPrice: 139, stockAlert: 4, fallbackImg: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&auto=format&fit=crop&q=80' },
+  { id: '', title: '【Godê 垂感】红梅绽放金丝 T恤 #1281', fallbackPrice: 139, stockAlert: 3, fallbackImg: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=500&auto=format&fit=crop&q=80' }
+]
 
 const { fetchPublishedProducts } = usePublishedProducts()
 const loading = ref(true)
 const products = ref<StorefrontPublishedProduct[]>([])
 
+const displayList1 = computed(() => {
+  if (products.value && products.value.length >= 5) {
+    return products.value.slice(0, 5)
+  }
+  return fallbackProducts1
+})
+
+const displayList2 = computed(() => {
+  if (products.value && products.value.length >= 10) {
+    return products.value.slice(5, 10)
+  }
+  return fallbackProducts2
+})
+
 onMounted(async () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view')
-        observer.unobserve(entry.target)
-      }
-    })
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' })
-
-  document.querySelectorAll('.animate-up').forEach(el => observer.observe(el))
-
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: 'T恤', searchText: 'T恤', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: 'T恤', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)
@@ -265,290 +389,164 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;600;700;800&display=swap');
 
-.tshirt-page {
-  --bg-deep: #090D16;
-  --bg-card: #111827;
-  --bg-card-hover: #1E293B;
-  --accent-primary: #6366F1;
-  --accent-purple: #A855F7;
-  --text-main: #F8FAFC;
-  --text-muted: #94A3B8;
-  --border-color: rgba(255, 255, 255, 0.1);
+.clubi-exact-page {
+  --bg-page: #FFFFFF;
+  --bg-dark: #2E2E2E;
+  --bg-sub-dark: #3A3A3A;
+  --green-btn: #4DC247;
+  --green-btn-hover: #43A93E;
+  --red-alert: #E74C3C;
+  --text-dark: #2D2D2D;
+  --text-muted: #666666;
+  --border-light: #E5E7EB;
 
   min-height: 100vh;
-  background-color: var(--bg-deep);
-  color: var(--text-main);
-  font-family: 'Inter', -apple-system, sans-serif;
-  position: relative;
-  overflow-x: hidden;
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-family: 'Inter', sans-serif;
 }
 
-/* Ambient Orbs */
-.ambient-orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
-}
-.orb-primary {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
-  top: -100px; left: -100px;
-}
-.orb-secondary {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
-  top: 40%; right: -100px;
-}
+/* 1. Top Announcement Bar */
+.clubi-top-announcement { background: var(--bg-dark); color: #FFFFFF; font-size: 11.5px; font-weight: 700; padding: 7px 16px; display: flex; justify-content: center; align-items: center; gap: 16px; letter-spacing: 0.04em; }
+.arrow-btn { background: none; border: none; color: #FFFFFF; font-size: 14px; cursor: pointer; opacity: 0.7; }
 
-/* Navbar */
-.ts-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(9, 13, 22, 0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0 24px;
-}
-.navbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 18px;
-  color: var(--text-main);
-  text-decoration: none;
-}
-.brand-icon { width: 22px; height: 22px; stroke: var(--accent-primary); }
-.navbar-links { display: flex; align-items: center; gap: 28px; }
-.navbar-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; cursor: pointer; }
-.navbar-links a:hover { color: var(--text-main); }
-.navbar-cta {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
-  color: #fff !important;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 9999px;
-  transition: transform 0.2s, box-shadow 0.2s !important;
-}
-.navbar-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4); }
+/* 2. Main Header Navbar */
+.clubi-main-header { background: #FFFFFF; border-bottom: 1px solid var(--border-light); }
+.header-top-row { max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.clubi-logo-brand { text-decoration: none; color: var(--text-dark); display: flex; align-items: baseline; gap: 4px; }
+.logo-script { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 900; color: #111827; }
+.logo-sans { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; color: #374151; }
 
-/* Hero */
-.ts-hero { position: relative; z-index: 1; padding: 80px 24px; }
-.hero-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 48px;
-  align-items: center;
-}
-@media (max-width: 900px) { .hero-container { grid-template-columns: 1fr; } }
+.header-search-bar { flex: 1; max-width: 580px; display: flex; border: 1px solid #D1D5DB; border-radius: 6px; overflow: hidden; }
+.search-input { flex: 1; border: none; padding: 10px 16px; font-size: 13.5px; outline: none; color: var(--text-dark); }
+.search-btn { background: #E5E7EB; border: none; width: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.search-btn svg { width: 18px; height: 18px; stroke: #4B5563; }
 
-.badge-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(99, 102, 241, 0.15);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  color: #818CF8;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  font-size: 13px;
-  margin-bottom: 24px;
-}
-.tag-icon { width: 14px; height: 14px; stroke: #818CF8; }
+.header-user-actions { display: flex; align-items: center; gap: 18px; }
+.action-item svg { width: 22px; height: 22px; stroke: var(--text-dark); }
+.cart-link { position: relative; display: flex; align-items: center; text-decoration: none; color: var(--text-dark); }
+.cart-badge-count { position: absolute; top: -6px; right: -8px; font-size: 10px; font-weight: 800; background: var(--text-dark); color: #FFF; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-.hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 20px;
-}
-.title-gradient {
-  background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.hero-subtitle { font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 32px; max-width: 520px; }
+/* Bottom Category Navigation Bar */
+.header-cat-bar { border-top: 1px solid var(--border-light); padding: 10px 24px; display: flex; align-items: center; justify-content: center; gap: 12px; max-width: 1240px; margin: 0 auto; }
+.cat-arrow { background: none; border: none; font-size: 16px; color: var(--text-muted); cursor: pointer; }
+.cat-nav-list { display: flex; gap: 24px; overflow-x: auto; white-space: nowrap; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; }
+.cat-item { color: var(--text-dark); text-decoration: none; transition: color 0.2s; }
+.highlight-orange { color: #D35400 !important; }
 
-.hero-features-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
-.hero-feature-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-main); }
-.check-icon { width: 16px; height: 16px; stroke: var(--accent-primary); }
+/* 3. Hero Carousel Banner */
+.clubi-hero-banner { position: relative; background: #F3F4F6; height: 420px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border-light); }
+.hero-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 32px; color: var(--text-dark); cursor: pointer; padding: 10px 20px; z-index: 5; opacity: 0.6; }
+.hero-prev { left: 16px; }
+.hero-next { right: 16px; }
+.hero-slide-container { text-align: center; max-width: 600px; padding: 0 24px; }
+.slide-badge { font-size: 12px; font-weight: 700; color: #D35400; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: inline-block; }
+.hero-slide-container h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; color: var(--text-dark); }
+.hero-slide-container p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+.btn-hero-action { display: inline-block; background: var(--green-btn); color: #FFF; font-weight: 800; padding: 12px 28px; border-radius: 6px; text-decoration: none; transition: background 0.2s; }
+.btn-hero-action:hover { background: var(--green-btn-hover); }
+.hero-dots { position: absolute; bottom: 16px; display: flex; gap: 8px; }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
-  color: #fff;
-  font-weight: 700;
-  padding: 13px 28px;
-  border-radius: 9999px;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5); }
-.arrow-icon { width: 16px; height: 16px; }
+/* Dots indicator */
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #D1D5DB; display: inline-block; }
+.dot.active { background: var(--text-dark); }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  padding: 13px 24px;
-  border-radius: 9999px;
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 14px;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-.btn-secondary:hover { color: var(--text-main); border-color: rgba(255,255,255,0.3); }
+/* 4. Section Blocks & 5-Column Grid */
+.clubi-section-block { padding: 60px 24px; }
+.section-container { max-width: 1240px; margin: 0 auto; }
+.section-main-title { font-size: 2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 32px; text-align: left; }
 
-/* Mockup */
-.hero-mockup-wrap { display: flex; justify-content: center; }
-.mockup-card {
-  position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-.card-glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 24px;
-  background: radial-gradient(circle at center, rgba(99,102,241,0.15), transparent 70%);
-  pointer-events: none;
-}
-.tshirt-svg { width: 280px; height: 310px; }
-.mockup-tag {
-  position: absolute;
-  background: rgba(17, 24, 39, 0.9);
-  border: 1px solid var(--border-color);
-  color: #818CF8;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 9999px;
-}
-.tag-top { top: 20px; right: 20px; }
-.tag-bottom { bottom: 20px; left: 20px; }
+.carousel-wrapper { position: relative; display: flex; align-items: center; }
+.nav-arrow { position: absolute; background: none; border: none; font-size: 28px; color: var(--text-dark); cursor: pointer; z-index: 5; opacity: 0.6; padding: 10px; }
+.prev-arrow { left: -28px; }
+.next-arrow { right: -28px; }
 
-/* Features */
-.ts-features { padding: 100px 24px; background: rgba(17, 24, 39, 0.5); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
-.section-container { max-width: 1200px; margin: 0 auto; }
-.section-header { text-align: center; margin-bottom: 60px; }
-.section-badge {
-  display: inline-block;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  color: #818CF8;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 14px;
-  border-radius: 9999px;
-  margin-bottom: 14px;
-  letter-spacing: 0.05em;
-}
-.section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 12px; }
-.section-sub { color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto; }
+.product-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; width: 100%; }
+@media (max-width: 1024px) { .product-grid-5 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .product-grid-5 { grid-template-columns: repeat(2, 1fr); } }
 
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-.feature-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 32px;
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s;
-}
-.feature-card:hover { transform: translateY(-4px); border-color: rgba(99, 102, 241, 0.4); }
-.icon-box {
-  width: 48px; height: 48px;
-  background: rgba(99, 102, 241, 0.15);
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 20px;
-}
-.icon-box svg { width: 24px; height: 24px; stroke: #818CF8; }
-.feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-.feature-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+.clubi-exact-card { display: flex; flex-direction: column; background: #FFFFFF; border-radius: 4px; overflow: hidden; }
+.card-img-wrapper { width: 100%; padding-top: 125%; position: relative; background: #F9FAFB; overflow: hidden; display: block; }
+.card-img-wrapper img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.card-img-wrapper:hover img { transform: scale(1.05); }
 
-/* Products */
-.ts-products { padding: 100px 24px; }
-.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
-.product-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  overflow: hidden;
-  text-decoration: none;
-  color: var(--text-main);
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-  cursor: pointer;
-}
-.product-card:hover { transform: translateY(-6px); border-color: rgba(99,102,241,0.5); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-.product-img-box { position: relative; width: 100%; padding-top: 100%; background: #0F172A; }
-.product-img-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.product-cat-tag { position: absolute; top: 12px; left: 12px; background: rgba(99, 102, 241, 0.9); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
-.product-details { padding: 18px; }
-.product-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-.product-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.product-bottom { display: flex; justify-content: space-between; align-items: center; }
-.product-price { font-size: 18px; font-weight: 800; color: #818CF8; }
-.product-btn { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
-.product-card:hover .product-btn { color: var(--accent-primary); }
+.card-info { padding: 14px 0 0; text-align: left; display: flex; flex-direction: column; flex: 1; }
+.card-title-link { text-decoration: none; color: var(--text-dark); margin-bottom: 6px; }
+.card-info h3 { font-size: 13.5px; font-weight: 600; color: var(--text-dark); margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-price-val { font-size: 16px; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
+.card-installment-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.card-stock-alert { font-size: 11.5px; font-weight: 700; color: var(--red-alert); margin-bottom: 12px; }
 
-/* Skeleton */
-.product-skeleton { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; }
-.sk-img { width: 100%; padding-top: 100%; background: linear-gradient(90deg, #111827 25%, #1E293B 50%, #111827 75%); background-size: 400% 100%; animation: sk 1.5s infinite; }
-.sk-body { padding: 18px; }
-.sk-line { height: 12px; border-radius: 6px; background: linear-gradient(90deg, #111827 25%, #1E293B 50%, #111827 75%); background-size: 400% 100%; animation: sk 1.5s infinite; margin-bottom: 10px; }
-.w-80 { width: 80%; } .w-50 { width: 50%; }
-@keyframes sk { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.btn-green-buy { display: block; text-align: center; background: var(--green-btn); color: #FFFFFF; font-weight: 800; font-size: 13px; padding: 9px; border-radius: 6px; text-decoration: none; transition: background 0.2s; margin-top: auto; }
+.btn-green-buy:hover { background: var(--green-btn-hover); }
 
-/* Empty State */
-.empty-box { text-align: center; padding: 80px 24px; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 24px; }
-.empty-icon-wrap { width: 64px; height: 64px; background: rgba(99, 102, 241, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-.empty-icon-wrap svg { width: 32px; height: 32px; stroke: #818CF8; }
-.empty-box h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-.empty-box p { color: var(--text-muted); font-size: 14px; max-width: 460px; margin: 0 auto 24px; line-height: 1.6; }
+.section-dot-nav { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
 
-/* CTA Banner */
-.ts-cta-banner { padding: 80px 24px; background: linear-gradient(135deg, #1E1B4B 0%, #311042 100%); text-align: center; border-top: 1px solid var(--border-color); }
-.cta-container h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; margin-bottom: 14px; }
-.cta-container p { color: var(--text-muted); max-width: 500px; margin: 0 auto 28px; line-height: 1.6; }
-.btn-lg { padding: 15px 36px; font-size: 16px; }
+/* 5. 3 Green Promo CTA Banners */
+.clubi-promo-banners { padding: 20px 24px 60px; }
+.promo-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 768px) { .promo-grid-3 { grid-template-columns: 1fr; } }
+.btn-large-green-promo { display: flex; align-items: center; justify-content: center; background: var(--green-btn); color: #FFFFFF; font-weight: 800; font-size: 16px; padding: 18px; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 12px rgba(77, 194, 71, 0.2); }
+.btn-large-green-promo:hover { background: var(--green-btn-hover); transform: translateY(-2px); }
 
-/* Footer */
-.ts-footer { padding: 28px 24px; background: #05080E; border-top: 1px solid var(--border-color); }
-.footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--text-muted); }
-.footer-brand { font-family: 'Syne', sans-serif; font-weight: 700; color: #818CF8; }
-.footer-link { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-.footer-link:hover { color: var(--text-main); }
+/* 6. Instagram Section */
+.clubi-insta-section { padding: 60px 24px; background: #FFFFFF; }
+.insta-header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 32px; }
+.insta-icon { width: 28px; height: 28px; stroke: var(--text-dark); }
+.insta-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0; }
 
-/* Animation */
-.animate-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.animate-up.in-view { opacity: 1; transform: translateY(0); }
+.insta-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 768px) { .insta-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+.insta-card { position: relative; width: 100%; padding-top: 100%; border-radius: 8px; overflow: hidden; background: #F3F4F6; }
+.insta-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.insta-overlay-badge { position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #FFF; font-size: 11px; padding: 4px 8px; border-radius: 4px; }
+.insta-overlay-caption { position: absolute; bottom: 12px; left: 12px; right: 12px; background: rgba(0,0,0,0.75); color: #FFF; font-size: 11px; padding: 8px; border-radius: 4px; line-height: 1.4; }
+
+.quote-card { background: #FDE68A !important; display: flex; align-items: center; justify-content: center; }
+.quote-box { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.quote-box p { font-family: 'Ma Shan Zheng', cursive; font-size: 26px; font-weight: 700; color: var(--text-dark); line-height: 1.3; margin-bottom: 8px; }
+.quote-box span { font-size: 11px; font-weight: 700; color: #78350F; }
+
+/* 7. Value Props Section */
+.clubi-props-section { padding: 50px 24px; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); background: #FFFFFF; }
+.props-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
+@media (max-width: 768px) { .props-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+.prop-icon { font-size: 32px; margin-bottom: 10px; }
+.prop-item h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; color: var(--text-dark); }
+.prop-item p { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; margin: 0; }
+
+/* 8. Newsletter Section */
+.clubi-newsletter-section { padding: 60px 24px; background: var(--bg-sub-dark); color: #FFFFFF; }
+.clubi-newsletter-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+.clubi-newsletter-section p { font-size: 14px; opacity: 0.8; margin-bottom: 24px; }
+.newsletter-form { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; }
+.news-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 12px 16px; color: #FFF; font-size: 14px; outline: none; }
+.news-btn { background: var(--bg-dark); color: #FFF; border: 1px solid rgba(255,255,255,0.3); padding: 12px 24px; border-radius: 6px; font-weight: 800; font-size: 14px; cursor: pointer; }
+
+/* 9. Footer */
+.clubi-exact-footer { background: var(--bg-dark); color: #FFFFFF; padding-top: 60px; font-size: 13px; }
+.footer-top-container { max-width: 1240px; margin: 0 auto; padding: 0 24px 50px; display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; gap: 40px; }
+@media (max-width: 1024px) { .footer-top-container { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .footer-top-container { grid-template-columns: 1fr; } }
+
+.brand-col .footer-logo { margin-bottom: 14px; }
+.brand-desc { opacity: 0.75; line-height: 1.6; margin-bottom: 20px; font-size: 13px; }
+.social-icons-row { display: flex; gap: 12px; margin-bottom: 20px; font-size: 20px; }
+.contact-details p { opacity: 0.7; margin-bottom: 6px; font-size: 12.5px; }
+
+.footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 18px; color: #FFFFFF; }
+.footer-links-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer-links-list a { color: #FFFFFF; opacity: 0.75; text-decoration: none; transition: opacity 0.2s; }
+.footer-links-list a:hover { opacity: 1; }
+
+.footer-mini-form { display: flex; flex-direction: column; gap: 10px; }
+.footer-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 10px 14px; color: #FFF; font-size: 13px; outline: none; }
+.footer-btn { background: #444; color: #FFF; border: none; padding: 10px; border-radius: 4px; font-weight: 800; cursor: pointer; }
+
+.footer-bottom-bar { border-top: 1px solid rgba(255,255,255,0.1); padding: 24px 0; background: #222222; }
+.bottom-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12px; opacity: 0.7; }
+.payment-badges { display: flex; gap: 8px; }
+.pay-chip { background: #333; padding: 4px 8px; border-radius: 4px; font-weight: 800; font-size: 10px; }
 </style>

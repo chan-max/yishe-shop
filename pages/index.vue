@@ -102,6 +102,50 @@ const formatPrice = (product: StorefrontPublishedProduct) => {
   if (!product.price) return "可定制";
   return `¥${product.price.toFixed(product.price % 1 === 0 ? 0 : 2)}`;
 };
+
+const photoWallCategories = [
+  { id: 'tshirt', title: '纯棉 T恤', tag: '240g 精梳纯棉', num: '01', path: '/tshirt', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #1E1B4B, #311042)' },
+  { id: 'hoodie', title: '重磅卫衣', tag: '400g 挺括抓绒', num: '02', path: '/hoodie', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #1E170A, #382405)' },
+  { id: 'tote', title: '帆布托特包', tag: '12oz 密织纯棉', num: '03', path: '/tote', aspect: 'aspect-wide', bg: 'linear-gradient(135deg, #064E3B, #022C22)' },
+  { id: 'phonecase', title: '防摔手机壳', tag: '3D 浮雕气囊', num: '04', path: '/phonecase', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #052E38, #160D30)' },
+  { id: 'hat', title: '棒球帽饰', tag: '高密 3D 刺绣', num: '05', path: '/hat', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #431407, #1E293B)' },
+  { id: 'mousepad', title: '电竞桌垫', tag: '900×400mm 巨幅', num: '06', path: '/mousepad', aspect: 'aspect-wide', bg: 'linear-gradient(135deg, #1A2E05, #023652)' },
+  { id: 'pillow', title: '暖心抱枕', tag: '亲肤短绒可拆洗', num: '07', path: '/pillow', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #3B1C05, #261103)' },
+  { id: 'socks', title: '潮流袜子', tag: '200 针全景印花', num: '08', path: '/socks', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #3B0726, #1B132B)' },
+  { id: 'poster', title: '艺术海报', tag: '230g 德国无酸纸', num: '09', path: '/poster', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #1C1917, #A16207)' },
+  { id: 'sticker', title: '模切贴纸', tag: '3M 防水 PVC', num: '10', path: '/sticker', aspect: 'aspect-wide', bg: 'linear-gradient(135deg, #18181B, #BE185D)' },
+  { id: 'springfestival', title: '手书春联', tag: '万年红烫金印彩', num: '11', path: '/springfestival', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #C0392B, #78281F)' },
+  { id: 'cup', title: '马克水杯', tag: '304 双层保温', num: '12', path: '/cup', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #1B263B, #0D1B2A)' },
+  { id: 'apron', title: '防污围裙', tag: '纳米疏水双口袋', num: '13', path: '/apron', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #14532D, #064E3B)' },
+  { id: 'puzzle', title: '益智拼图', tag: '椴木蓝卡密咬合', num: '14', path: '/puzzle', aspect: 'aspect-wide', bg: 'linear-gradient(135deg, #312E81, #1E1B4B)' },
+  { id: 'blanket', title: '暖心毛毯', tag: '300g 加厚法兰绒', num: '15', path: '/blanket', aspect: 'aspect-tall', bg: 'linear-gradient(135deg, #881337, #4C0519)' },
+  { id: 'badge', title: '痛包徽章', tag: '马口铁覆膜闪粉', num: '16', path: '/badge', aspect: 'aspect-square', bg: 'linear-gradient(135deg, #581C87, #3B0764)' },
+];
+
+const getCategoryWallImage = (catId: string) => {
+  if (!products.value.length) return '';
+  const match = products.value.find(p => {
+    const text = (p.type || p.category || p.title || '').toLowerCase();
+    if (catId === 'tshirt') return text.includes('t') || text.includes('短袖');
+    if (catId === 'hoodie') return text.includes('卫衣') || text.includes('衫');
+    if (catId === 'tote') return text.includes('包') || text.includes('袋');
+    if (catId === 'phonecase') return text.includes('壳');
+    if (catId === 'hat') return text.includes('帽');
+    if (catId === 'mousepad') return text.includes('垫');
+    if (catId === 'pillow') return text.includes('枕');
+    if (catId === 'socks') return text.includes('袜');
+    if (catId === 'poster') return text.includes('画') || text.includes('海报');
+    if (catId === 'sticker') return text.includes('贴');
+    if (catId === 'springfestival') return text.includes('春联') || text.includes('福');
+    if (catId === 'cup') return text.includes('杯');
+    if (catId === 'apron') return text.includes('裙');
+    if (catId === 'puzzle') return text.includes('拼图');
+    if (catId === 'blanket') return text.includes('毯');
+    if (catId === 'badge') return text.includes('徽章') || text.includes('章');
+    return false;
+  });
+  return match ? getProductImage(match, 800) : '';
+};
 </script>
 
 <template>
@@ -197,6 +241,50 @@ const formatPrice = (product: StorefrontPublishedProduct) => {
           查看全部商品
           <AppIcon name="arrow-right" :size="13" aria-hidden="true" />
         </NuxtLink>
+      </div>
+    </section>
+
+    <!-- Minimalist Photo Wall Category Gallery -->
+    <section class="photo-wall-section">
+      <div class="photo-wall-inner">
+        <header class="photo-wall-head">
+          <div class="head-eyebrow">
+            <span>GALLERY WALL</span>
+            <i></i>
+            <span>POD 极简品类照片墙</span>
+          </div>
+          <h2>在画面与载体之间，看见成品模样。</h2>
+          <p>像浏览画廊展览一样探索 12 大热门定制载体，每一个入口均通往专属设计落地页。</p>
+        </header>
+
+        <div class="photo-wall-grid">
+          <NuxtLink
+            v-for="cat in photoWallCategories"
+            :key="cat.id"
+            :to="cat.path"
+            :class="['photo-wall-tile', cat.aspect]"
+            :style="{ background: cat.bg }"
+          >
+            <img
+              v-if="getCategoryWallImage(cat.id)"
+              :src="getCategoryWallImage(cat.id)"
+              :alt="cat.title"
+              class="tile-bg-img"
+              loading="lazy"
+            />
+            <div class="tile-shade"></div>
+
+            <div class="tile-content">
+              <div class="tile-top">
+                <span class="tile-num">{{ cat.num }}</span>
+                <span class="tile-arrow">→</span>
+              </div>
+              <div class="tile-bottom">
+                <h3 class="tile-title">{{ cat.title }}</h3>
+              </div>
+            </div>
+          </NuxtLink>
+        </div>
       </div>
     </section>
 
@@ -1200,5 +1288,191 @@ const formatPrice = (product: StorefrontPublishedProduct) => {
   .premium-marquee__track {
     animation: none;
   }
+}
+
+/* Seamless Dark Mode Photo Wall Category Gallery */
+.photo-wall-section {
+  background: #0d0d0d;
+  color: #ffffff;
+  padding: 88px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-wall-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.photo-wall-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.head-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #888888;
+  margin-bottom: 10px;
+}
+
+.head-eyebrow i {
+  width: 14px;
+  height: 1px;
+  background: #444444;
+}
+
+.photo-wall-head h2 {
+  font-size: clamp(2rem, 3.8vw, 2.6rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.photo-wall-head p {
+  font-size: 14.5px;
+  color: #888888;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* Seamless Edge-to-Edge Grid (4px dark gap between tiles inside border frame) */
+.photo-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #1a1a1a;
+}
+
+@media (max-width: 1024px) {
+  .photo-wall-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-wall-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-wall-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.photo-wall-tile {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px;
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.aspect-tall {
+  aspect-ratio: 0.85;
+}
+
+.aspect-square {
+  aspect-ratio: 1;
+}
+
+.aspect-wide {
+  aspect-ratio: 1.15;
+}
+
+.tile-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index: 0;
+}
+
+.tile-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.88) 85%);
+  z-index: 1;
+}
+
+.photo-wall-tile:hover .tile-bg-img {
+  transform: scale(1.08);
+  opacity: 0.85;
+}
+
+.tile-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tile-num {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+
+.tile-arrow {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.photo-wall-tile:hover .tile-arrow {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.tile-bottom {
+  margin-top: auto;
+}
+
+.tile-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tile-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
 }
 </style>

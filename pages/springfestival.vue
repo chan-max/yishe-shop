@@ -1,227 +1,231 @@
 <template>
-  <div class="sf-page">
-    <!-- ── Ambient Background Orbs ── -->
-    <div class="ambient-orb orb-1" />
-    <div class="ambient-orb orb-2" />
-    <div class="ambient-orb orb-3" />
+  <div class="sf-festive-page">
+    <!-- ── 1. 乙巳年味顶部通告栏 ── -->
+    <div class="sf-top-banner">
+      <span>🧧 乙巳蛇年 · 新春特惠 | 全场手书/烫金春联满 ¥199 包邮 | 支持个性化定制与快速发货 🏮</span>
+    </div>
 
-    <!-- ── Sticky Navbar ── -->
-    <header class="sf-navbar">
-      <div class="navbar-inner">
-        <NuxtLink to="/" class="navbar-brand">
-          <span class="brand-dot">●</span>
-          <span>衣设 yishe</span>
+    <!-- ── 2. 传统典雅 Header 导航 ── -->
+    <header class="sf-header">
+      <div class="header-inner">
+        <NuxtLink to="/" class="brand-link">
+          <span class="seal-icon">年</span>
+          <div class="brand-text">
+            <span class="title-main">衣设 yishe · 春联馆</span>
+            <span class="title-sub">乙巳蛇年 · 门楣生辉</span>
+          </div>
         </NuxtLink>
-        <nav class="navbar-links">
-          <a href="#features">特色工艺</a>
-          <a href="#products">专属商品</a>
-          <NuxtLink to="/design" class="navbar-cta">定制春联</NuxtLink>
+
+        <nav class="nav-menu">
+          <a href="#workshop">✍️ 门楣演练</a>
+          <a href="#presets">🧧 经典对联辑</a>
+          <a href="#craft">📜 纸墨考究</a>
+          <a href="#products">🛍️ 年货在售</a>
+          <NuxtLink to="/design?preset=springfestival" class="btn-design-entry">去 POD 设计器</NuxtLink>
         </nav>
       </div>
     </header>
 
-    <!-- ── Hero Section ── -->
-    <section class="sf-hero">
-      <div class="hero-inner">
-        <!-- Left: Text content -->
-        <div class="hero-text animate-up">
-          <div class="eyebrow-pill">
-            <span class="pill-dot" />
-            乙巳年新春专属 · 名家墨宝金墨定制
-          </div>
-
-          <h1 class="hero-title">
-            <span class="title-line">门楣生辉</span>
-            <span class="title-line gradient-gold">专属手书春联</span>
-          </h1>
-
-          <p class="hero-desc">
-            千年书法气象，遇见现代高保真烫金印花科技。专为家庭门楣、企业展台、节庆礼品量身定制，字字遒劲，岁岁流传。
-          </p>
-
-          <div class="hero-stats">
-            <div class="stat">
-              <span class="stat-num">12+</span>
-              <span class="stat-label">名家字体库</span>
-            </div>
-            <div class="stat-divider" />
-            <div class="stat">
-              <span class="stat-num">100%</span>
-              <span class="stat-label">防水防晒面料</span>
-            </div>
-            <div class="stat-divider" />
-            <div class="stat">
-              <span class="stat-num">48h</span>
-              <span class="stat-label">极速印制发货</span>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <NuxtLink to="/design" class="btn-primary">
-              ✨ 开始设计专属春联
-            </NuxtLink>
-            <a href="#products" class="btn-ghost">浏览分类商品 ↓</a>
-          </div>
-        </div>
-
-        <!-- Right: Couplet Visual -->
-        <div class="hero-visual animate-up" style="animation-delay: 0.15s">
-          <div class="couplet-stage">
-            <div class="stage-glow" />
-
-            <!-- 横批 -->
-            <div class="batch-scroll">
-              <div class="scroll-content batch-content">
-                <span class="scroll-text horizontal">吉 星 高 照</span>
-              </div>
-            </div>
-
-            <!-- 对联主体 -->
-            <div class="couplets-row">
-              <div class="single-scroll">
-                <div class="scroll-content">
-                  <span class="scroll-text vertical">迎 春 接 福 禧 盈 门</span>
-                </div>
-                <div class="scroll-tab" />
-              </div>
-
-              <!-- 福字 -->
-              <div class="fu-center">
-                <div class="fu-diamond">
-                  <span class="fu-char">福</span>
-                </div>
-                <div class="fu-label">斗方大福</div>
-              </div>
-
-              <div class="single-scroll">
-                <div class="scroll-content">
-                  <span class="scroll-text vertical">贺 岁 纳 财 吉 祥 到</span>
-                </div>
-                <div class="scroll-tab" />
-              </div>
-            </div>
-
-            <!-- 装饰小元素 -->
-            <div class="deco-tag deco-top-left">万年红云锦</div>
-            <div class="deco-tag deco-bottom-right">烫金工艺</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom wave divider -->
-      <div class="hero-wave">
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="#0d0604"/>
-        </svg>
-      </div>
-    </section>
-
-    <!-- ── Features Section ── -->
-    <section id="features" class="sf-features">
+    <!-- ── 3. Hero Section (朱红大门 · 实时手书对联演练) ── -->
+    <section id="workshop" class="sf-hero-section">
       <div class="section-container">
-        <div class="section-header animate-up">
-          <div class="section-tag">工艺解说</div>
-          <h2 class="section-title">三重匠心工艺<br><span class="gradient-gold">历久弥新</span></h2>
-          <p class="section-desc">每一副春联，都承载着千年书法底蕴与现代印花精工的完美结合。</p>
+        <div class="hero-header text-center">
+          <span class="year-badge">2026 乙巳蛇年新春限定</span>
+          <h1 class="hero-title">手书春联 · 千家万户换新符</h1>
+          <p class="hero-subtitle">万年红云锦纸 × 3D 浮雕烫金墨 · 实时演练朱红大门贴对联效果</p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card animate-up" style="animation-delay: 0.05s">
-            <div class="feature-icon-wrap">
-              <span class="feature-icon">🖌️</span>
+        <!-- 实时对联演练大堂 (Interactive Couplet Door Stage) -->
+        <div class="couplet-stage-wrapper">
+          <!-- 门楣预览画布 Stage -->
+          <div class="door-stage">
+            <div class="door-lintel">
+              <div class="horizontal-banner">
+                <span class="gold-ink">{{ bannerText || '吉星高照' }}</span>
+              </div>
             </div>
-            <h3 class="feature-title">名家集字手书库</h3>
-            <p class="feature-desc">收录颜、柳、欧、赵四大楷书，兼备行草篆隶。字字经名家精心校订，气韵生动，风骨天然。</p>
+
+            <div class="door-body">
+              <!-- 左对联 (下联) -->
+              <div class="vertical-scroll scroll-left">
+                <span class="gold-ink">{{ leftText || '贺岁纳财吉祥到' }}</span>
+              </div>
+
+              <!-- 门心斗方大福字 -->
+              <div class="fu-box">
+                <span class="fu-char">福</span>
+              </div>
+
+              <!-- 右对联 (上联) -->
+              <div class="vertical-scroll scroll-right">
+                <span class="gold-ink">{{ rightText || '迎春接福禧盈门' }}</span>
+              </div>
+            </div>
           </div>
-          <div class="feature-card animate-up" style="animation-delay: 0.12s">
-            <div class="feature-icon-wrap">
-              <span class="feature-icon">📜</span>
+
+          <!-- 对联内容实时控制面板 -->
+          <div class="stage-control-panel">
+            <div class="panel-head">
+              <h3>✍️ 实时拟真演练</h3>
+              <p>输入对联文字，或一键选择经典吉语预设：</p>
             </div>
-            <h3 class="feature-title">洒金万年红云锦</h3>
-            <p class="feature-desc">特级加厚万年红真丝云锦底料，经防晒防水工艺处理，户外风吹日晒三年不褪色、不上翘。</p>
-          </div>
-          <div class="feature-card animate-up" style="animation-delay: 0.2s">
-            <div class="feature-icon-wrap">
-              <span class="feature-icon">📦</span>
+
+            <!-- 经典吉语一键预设 -->
+            <div class="preset-pills">
+              <button
+                v-for="p in coupletPresets"
+                :key="p.name"
+                class="pill-btn"
+                @click="applyPreset(p)"
+              >
+                {{ p.name }}
+              </button>
             </div>
-            <h3 class="feature-title">尊贵礼盒全套装</h3>
-            <p class="feature-desc">含门幅双联、横批横轴、斗方大福字及无痕背胶贴条。专属烫金礼盒包装，送礼自用皆相宜。</p>
+
+            <div class="input-form-grid">
+              <div class="form-item">
+                <label>上联（贴右侧）</label>
+                <input v-model="rightText" type="text" placeholder="迎春接福禧盈门" maxlength="11" />
+              </div>
+              <div class="form-item">
+                <label>下联（贴左侧）</label>
+                <input v-model="leftText" type="text" placeholder="贺岁纳财吉祥到" maxlength="11" />
+              </div>
+              <div class="form-item">
+                <label>横批（贴上方）</label>
+                <input v-model="bannerText" type="text" placeholder="吉星高照" maxlength="6" />
+              </div>
+            </div>
+
+            <div class="panel-action">
+              <NuxtLink
+                :to="`/design?preset=springfestival&right=${encodeURIComponent(rightText)}&left=${encodeURIComponent(leftText)}&banner=${encodeURIComponent(bannerText)}`"
+                class="btn-gold-cta"
+              >
+                ✨ 带着此对联生成 POD 印刷订单
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── Products Section ── -->
-    <section id="products" class="sf-products">
+    <!-- ── 4. 经典年禧对联辑 (Presets Grid) ── -->
+    <section id="presets" class="sf-section presets-section">
       <div class="section-container">
-        <div class="section-header animate-up">
-          <div class="section-tag">精选商品</div>
-          <h2 class="section-title">【春联】分类<span class="gradient-gold">上架商品</span></h2>
-          <p class="section-desc">实时抓取商品库中「春联/年货」分类下的专属上架款式，点击即可直达专属定制。</p>
+        <div class="section-title-wrap text-center">
+          <span class="sub-title">FESTIVE SELECTION</span>
+          <h2 class="main-title">年味精选 · 喜庆对联辑</h2>
+          <p class="desc">名家书法字体，传统对偶押韵，为您呈献浓浓中国年味。</p>
         </div>
 
-        <!-- Loading skeletons -->
+        <div class="presets-cards-grid">
+          <div
+            v-for="(item, i) in coupletCollection"
+            :key="i"
+            class="preset-card"
+            @click="applyCollection(item)"
+          >
+            <div class="card-tag">{{ item.tag }}</div>
+            <h3>{{ item.banner }}</h3>
+            <div class="couplet-preview">
+              <p><span>上联：</span>{{ item.right }}</p>
+              <p><span>下联：</span>{{ item.left }}</p>
+            </div>
+            <button class="btn-use-preset">套用此对联 →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. 纸墨考究 (Craftsmanship) ── -->
+    <section id="craft" class="sf-section craft-section">
+      <div class="section-container">
+        <div class="section-title-wrap text-center">
+          <span class="sub-title">CRAFTSMANSHIP</span>
+          <h2 class="main-title">匠心品质 · 纸墨考究</h2>
+        </div>
+
+        <div class="craft-grid-3">
+          <div class="craft-card">
+            <div class="craft-icon">📜</div>
+            <h3>万年红云锦宣纸</h3>
+            <p>采用特级防晒耐候染料与加厚云锦宣纸，经风吹日晒一整年依旧鲜红如初，不掉色、不起皱。</p>
+          </div>
+          <div class="craft-card">
+            <div class="craft-icon">✨</div>
+            <h3>3D 浮雕烫金工艺</h3>
+            <p>99% 高纯度金属烫金膏，结合高精浮雕压纹，在阳光下呈现流光溢彩的名家墨宝质感。</p>
+          </div>
+          <div class="craft-card">
+            <div class="craft-icon">🖌️</div>
+            <h3>名家字库集字</h3>
+            <p>收录王羲之、颜真卿、赵孟頫等传统书法名家字体，笔力雄健，典雅端庄。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. 春联年货在售商品 (Products) ── -->
+    <section id="products" class="sf-section products-section">
+      <div class="section-container">
+        <div class="section-title-wrap text-center">
+          <span class="sub-title">STOREFRONT</span>
+          <h2 class="main-title">【春联年货】在售清单</h2>
+          <p class="desc">展示分类为「春联」的最新已上架商品。</p>
+        </div>
+
         <div v-if="loading" class="products-grid">
           <div v-for="i in 4" :key="i" class="product-skeleton">
-            <div class="skeleton-img" />
-            <div class="skeleton-body">
-              <div class="skeleton-line long" />
-              <div class="skeleton-line short" />
-              <div class="skeleton-line medium" />
-            </div>
+            <div class="sk-img" />
+            <div class="sk-body"><div class="sk-line w-80" /><div class="sk-line w-50" /></div>
           </div>
         </div>
 
-        <!-- Product grid -->
         <div v-else-if="products.length > 0" class="products-grid">
           <NuxtLink
-            v-for="(item, i) in products"
+            v-for="item in products"
             :key="item.id"
             :to="`/product/${item.id}`"
-            class="product-card animate-up"
-            :style="`animation-delay: ${i * 0.07}s`"
+            class="sf-product-card"
           >
-            <div class="product-img-wrap">
+            <div class="card-img-box">
               <img :src="item.imageUrl || ''" :alt="item.title" loading="lazy" />
-              <div class="img-overlay" />
-              <span class="product-tag">{{ item.category }}</span>
+              <span class="badge-tag">春联特惠</span>
             </div>
-            <div class="product-info">
-              <h4 class="product-name">{{ item.title }}</h4>
-              <p class="product-desc">{{ item.description || '高保真烫金印花，字迹遒劲，历久弥新。' }}</p>
-              <div class="product-footer">
-                <span v-if="item.price" class="product-price">¥{{ item.price }}</span>
-                <span class="product-cta">定制此款 →</span>
+            <div class="card-content">
+              <h4 class="card-title">{{ item.title }}</h4>
+              <div class="card-bottom">
+                <span class="card-price">¥{{ item.price || '68.00' }}</span>
+                <span class="btn-buy">立即定制</span>
               </div>
             </div>
           </NuxtLink>
         </div>
 
-        <!-- Empty state -->
-        <div v-else class="empty-state animate-up">
-          <div class="empty-icon">🧧</div>
-          <h3 class="empty-title">暂无【春联】分类商品上架</h3>
-          <p class="empty-desc">管理员可在后台【商品模块】发布分类为「春联」的商品。你也可以直接在 POD 设计工具上自由创作！</p>
-          <NuxtLink to="/design" class="btn-primary">进入 POD 设计工具</NuxtLink>
+        <div v-else class="empty-box text-center">
+          <div class="empty-seal">春</div>
+          <h3>暂无【春联】分类在售商品</h3>
+          <p>管理员可在后台发布分类为「春联」的商品。您现在可以直接进入 POD 设计器自定图案！</p>
+          <NuxtLink to="/design?preset=springfestival" class="btn-gold-cta inline-btn">进入 POD 设计器</NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- ── CTA Banner ── -->
-    <section class="sf-cta-banner">
-      <div class="cta-inner animate-up">
-        <h2 class="cta-title">🧧 让这个新年，更有你的温度</h2>
-        <p class="cta-desc">专属春联，一次定制，岁岁皆宜。现在开始设计，48小时内精工完成发货。</p>
-        <NuxtLink to="/design" class="btn-primary btn-large">立即开始定制</NuxtLink>
-      </div>
-    </section>
-
-    <!-- ── Footer ── -->
+    <!-- ── 7. 页脚 Footer ── -->
     <footer class="sf-footer">
-      <div class="footer-inner">
-        <NuxtLink to="/" class="footer-brand">衣设 yishe</NuxtLink>
-        <p class="footer-copy">© 2026 乙巳年春联专属介绍落地页 · 衣设 yishe 版权所有</p>
-        <NuxtLink to="/" class="footer-back">← 返回主站</NuxtLink>
+      <div class="section-container footer-flex">
+        <div class="footer-brand">
+          <span class="footer-seal">年</span>
+          <div class="footer-text">
+            <h4>衣设 yishe · 春联馆</h4>
+            <p>乙巳蛇年大吉 · 千家万户换新符</p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <NuxtLink to="/">← 返回主站首页</NuxtLink>
+          <NuxtLink to="/design?preset=springfestival">POD 春联定制</NuxtLink>
+        </div>
       </div>
     </footer>
   </div>
@@ -234,30 +238,50 @@ import { usePublishedProducts, type StorefrontPublishedProduct } from '~/composa
 definePageMeta({ layout: false })
 
 useSeoMeta({
-  title: '乙巳年新春专属手书春联定制 · 衣设 yishe',
-  ogTitle: '乙巳年新春专属手书春联定制 · 衣设 yishe',
-  description: '名家墨宝与现代高保真烫金印花科技结合，专为家庭门楣、企业礼品量身定制的专属春联落地页。',
+  title: '乙巳蛇年手书春联 · 万年红烫金春联定制 · 衣设 yishe',
+  ogTitle: '乙巳蛇年手书春联 · 万年红烫金春联定制 · 衣设 yishe',
+  description: '衣设 yishe 春联馆，提供乙巳蛇年新春春联在线拟真手书演练、万年红云锦纸与 3D 浮雕烫金定制。',
+  keywords: '春联定制, 蛇年春联, 烫金春联, 手书对联, 万年红对联'
 })
+
+const rightText = ref('迎春接福禧盈门')
+const leftText = ref('贺岁纳财吉祥到')
+const bannerText = ref('吉星高照')
+
+const coupletPresets = [
+  { name: '🧧 蛇年吉祥', right: '金蛇狂舞迎新春', left: '瑞气盈门送吉祥', banner: '蛇年大吉' },
+  { name: '💰 生意兴隆', right: '门迎晓日财源广', left: '户纳春风吉庆多', banner: '生意兴隆' },
+  { name: '🏡 合家平安', right: '平安二字值千金', left: '和顺满门添百福', banner: '合家欢乐' },
+  { name: '✨ 迎春接福', right: '迎春接福禧盈门', left: '贺岁纳财吉祥到', banner: '吉星高照' }
+]
+
+const coupletCollection = [
+  { tag: '蛇年爆款', name: '蛇年大吉套装', right: '金蛇狂舞迎新春', left: '瑞气盈门送吉祥', banner: '蛇年大吉' },
+  { tag: '大宅商铺', name: '生意兴隆套装', right: '门迎晓日财源广', left: '户纳春风吉庆多', banner: '生意兴隆' },
+  { tag: '平安喜乐', name: '合家欢乐套装', right: '平安二字值千金', left: '和顺满门添百福', banner: '合家欢乐' },
+  { tag: '文青经典', name: '雅致春禧套装', right: '春满人间百花吐', left: '福临小院万事顺', banner: '迎春接福' }
+]
+
+function applyPreset(p: { right: string; left: string; banner: string }) {
+  rightText.value = p.right
+  leftText.value = p.left
+  bannerText.value = p.banner
+}
+
+function applyCollection(item: { right: string; left: string; banner: string }) {
+  applyPreset(item)
+  const el = document.getElementById('workshop')
+  if (el) el.scrollIntoView({ behavior: 'smooth' })
+}
 
 const { fetchPublishedProducts } = usePublishedProducts()
 const loading = ref(true)
 const products = ref<StorefrontPublishedProduct[]>([])
 
 onMounted(async () => {
-  // Scroll animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view')
-        observer.unobserve(entry.target)
-      }
-    })
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' })
-  document.querySelectorAll('.animate-up').forEach(el => observer.observe(el))
-
   loading.value = true
   try {
-    const res = await fetchPublishedProducts({ type: '春联', searchText: '春联', pageSize: 20 })
+    const res = await fetchPublishedProducts({ type: '春联', pageSize: 20 })
     products.value = res || []
   } catch (e) {
     console.error(e)
@@ -268,673 +292,136 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* ── Google Font ── */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;600;700&display=swap');
 
-/* ── CSS Variables ── */
-.sf-page {
-  --bg-deep: #080301;
-  --bg-card: #120805;
-  --bg-feature: #0d0604;
-  --accent-red: #C0392B;
-  --accent-red-light: #E74C3C;
-  --accent-gold: #D4AF37;
-  --accent-gold-light: #F7D070;
-  --text-primary: #F5EDD8;
-  --text-muted: #A08060;
-  --text-dim: #604030;
-  --border-gold: rgba(212, 175, 55, 0.25);
-  --border-red: rgba(192, 57, 43, 0.3);
-  
-  position: relative;
+.sf-festive-page {
+  --red-primary: #991B1B;
+  --red-deep: #7F1D1D;
+  --red-accent: #C2410C;
+  --gold-primary: #F59E0B;
+  --gold-bright: #FBBF24;
+  --gold-bg: #FEF3C7;
+  --bg-page: #FAF5EF;
+  --text-dark: #27272A;
+  --text-muted: #71717A;
+  --border-color: #E4E4E7;
+
   min-height: 100vh;
-  background-color: var(--bg-deep);
-  color: var(--text-primary);
-  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  overflow-x: hidden;
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-family: 'Inter', sans-serif;
 }
 
-/* ── Ambient Orbs ── */
-.ambient-orb {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(100px);
-}
-.orb-1 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(192,57,43,0.35) 0%, transparent 70%);
-  top: -100px; left: -150px;
-}
-.orb-2 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
-  top: 30%; right: -100px;
-}
-.orb-3 {
-  width: 350px; height: 350px;
-  background: radial-gradient(circle, rgba(192,57,43,0.2) 0%, transparent 70%);
-  bottom: 0; left: 30%;
-}
+/* 1. Top Banner */
+.sf-top-banner { background: var(--red-deep); color: #FEF3C7; font-size: 12px; font-weight: 700; padding: 8px 16px; text-align: center; letter-spacing: 0.05em; border-bottom: 1px solid var(--gold-primary); }
 
-/* ── Navbar ── */
-.sf-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: 0 24px;
-  background: rgba(8, 3, 1, 0.85);
-  backdrop-filter: blur(20px) saturate(1.8);
-  border-bottom: 1px solid var(--border-gold);
-}
-.navbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--accent-gold-light);
-  text-decoration: none;
-  font-family: 'Noto Serif SC', serif;
-}
-.brand-dot { font-size: 10px; color: var(--accent-red); }
-.navbar-links {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-.navbar-links a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.2s;
-}
-.navbar-links a:hover { color: var(--accent-gold-light); }
-.navbar-cta {
-  background: linear-gradient(135deg, var(--accent-red) 0%, #8B0000 100%);
-  color: var(--accent-gold-light) !important;
-  font-weight: 700;
-  padding: 8px 20px;
-  border-radius: 9999px;
-  border: 1px solid var(--border-gold);
-  transition: transform 0.2s, box-shadow 0.2s !important;
-}
-.navbar-cta:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 16px rgba(192,57,43,0.5) !important;
-  color: var(--accent-gold-light) !important;
-}
+/* 2. Header */
+.sf-header { background: #FFFFFF; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+.brand-link { text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.seal-icon { width: 36px; height: 36px; background: var(--red-primary); color: var(--gold-bright); font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 900; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(153, 27, 27, 0.3); }
+.brand-text { display: flex; flex-direction: column; }
+.title-main { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 900; color: var(--red-primary); }
+.title-sub { font-size: 11px; color: var(--text-muted); }
 
-/* ── Hero ── */
-.sf-hero {
-  position: relative;
-  z-index: 1;
-  padding: 80px 24px 0;
-  overflow: hidden;
-}
-.hero-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-  padding-bottom: 100px;
-}
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-}
+.nav-menu { display: flex; align-items: center; gap: 24px; }
+.nav-menu a { color: var(--text-dark); text-decoration: none; font-size: 13.5px; font-weight: 600; transition: color 0.2s; }
+.nav-menu a:hover { color: var(--red-primary); }
+.btn-design-entry { background: var(--red-primary); color: #FFFFFF !important; padding: 8px 16px; border-radius: 6px; font-weight: 700; }
 
-.eyebrow-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid var(--border-gold);
-  color: var(--accent-gold-light);
-  padding: 6px 16px;
-  border-radius: 9999px;
-  font-size: 13px;
-  margin-bottom: 24px;
-}
-.pill-dot {
-  width: 6px; height: 6px;
-  background: var(--accent-gold);
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
-}
+/* 3. Hero Section & Interactive Door Stage */
+.sf-hero-section { padding: 60px 24px; background: linear-gradient(180deg, #FFF7ED 0%, var(--bg-page) 100%); }
+.section-container { max-width: 1140px; margin: 0 auto; }
+.year-badge { display: inline-block; background: var(--gold-bg); color: #9A3412; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 9999px; margin-bottom: 12px; border: 1px solid var(--gold-primary); }
+.hero-title { font-family: 'Noto Serif SC', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--red-primary); margin-bottom: 8px; }
+.hero-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 40px; }
 
-.hero-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: clamp(2.8rem, 5vw, 4.2rem);
-  font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: 0.04em;
-  margin-bottom: 20px;
-}
-.title-line { display: block; }
-.gradient-gold {
-  background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 50%, #B8860B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* Real-time Door Preview Stage */
+.couplet-stage-wrapper { display: grid; grid-template-columns: 1fr 400px; gap: 36px; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 20px; padding: 36px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+@media (max-width: 960px) { .couplet-stage-wrapper { grid-template-columns: 1fr; } }
 
-.hero-desc {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--text-muted);
-  margin-bottom: 36px;
-  max-width: 480px;
-}
+.door-stage { background: #3F3D38; border-radius: 12px; padding: 32px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; border: 4px solid #27272A; }
 
-.hero-stats {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 36px;
-}
-.stat { text-align: center; }
-.stat-num {
-  display: block;
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--accent-gold-light);
-  font-family: 'Noto Serif SC', serif;
-}
-.stat-label {
-  display: block;
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-top: 2px;
-}
-.stat-divider {
-  width: 1px;
-  height: 36px;
-  background: var(--border-gold);
-}
+.door-lintel { width: 100%; display: flex; justify-content: center; }
+.horizontal-banner { background: var(--red-primary); border: 2px solid var(--gold-bright); padding: 8px 28px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
+.door-body { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; min-height: 280px; }
 
-/* ── Couplet Visual ── */
-.hero-visual { position: relative; }
-.couplet-stage {
-  position: relative;
-  background: rgba(18, 8, 5, 0.8);
-  border: 1px solid var(--border-gold);
-  border-radius: 20px;
-  padding: 36px 28px;
-  backdrop-filter: blur(12px);
-}
-.stage-glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: radial-gradient(ellipse at center, rgba(192,57,43,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
+.vertical-scroll { background: var(--red-primary); border: 2px solid var(--gold-bright); padding: 16px 12px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-.batch-scroll {
-  margin-bottom: 24px;
-}
-.scroll-content {
-  background: linear-gradient(135deg, #8B0000 0%, #5A0000 100%);
-  border: 1px solid var(--accent-gold);
-  border-radius: 8px;
-  padding: 12px 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212,175,55,0.2);
-}
-.batch-content {
-  text-align: center;
-}
-.scroll-text {
-  font-family: 'Noto Serif SC', serif;
-  color: var(--accent-gold-light);
-  font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-}
-.scroll-text.horizontal {
-  font-size: 22px;
-  letter-spacing: 12px;
-}
-.scroll-text.vertical {
-  writing-mode: vertical-rl;
-  font-size: 18px;
-  letter-spacing: 6px;
-  line-height: 1.4;
-}
+.gold-ink { font-family: 'Ma Shan Zheng', cursive; font-size: 26px; color: var(--gold-bright); text-shadow: 0 0 4px rgba(251, 191, 36, 0.5); letter-spacing: 0.15em; writing-mode: vertical-rl; }
+.horizontal .gold-ink { writing-mode: horizontal-tb; font-size: 22px; }
 
-.couplets-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-.single-scroll {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.scroll-tab {
-  width: 32px;
-  height: 8px;
-  background: var(--accent-gold);
-  border-radius: 4px;
-  opacity: 0.6;
-}
+.fu-box { width: 72px; height: 72px; background: var(--red-primary); border: 2px solid var(--gold-bright); transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.fu-char { font-family: 'Ma Shan Zheng', cursive; font-size: 38px; color: var(--gold-bright); transform: rotate(-45deg); display: block; }
 
-.fu-center { text-align: center; }
-.fu-diamond {
-  width: 64px; height: 64px;
-  background: linear-gradient(135deg, var(--accent-red) 0%, #8B0000 100%);
-  border: 2px solid var(--accent-gold);
-  border-radius: 8px;
-  transform: rotate(45deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 8px;
-  box-shadow: 0 4px 20px rgba(192,57,43,0.4);
-}
-.fu-char {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--accent-gold-light);
-  transform: rotate(-45deg);
-  display: block;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-.fu-label {
-  font-size: 11px;
-  color: var(--text-dim);
-}
+/* Control Panel */
+.stage-control-panel { display: flex; flex-direction: column; justify-content: space-between; }
+.panel-head h3 { font-size: 18px; font-weight: 800; color: var(--red-primary); margin-bottom: 4px; }
+.panel-head p { font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; }
 
-.deco-tag {
-  position: absolute;
-  background: rgba(212,175,55,0.1);
-  border: 1px solid var(--border-gold);
-  color: var(--accent-gold-light);
-  font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 9999px;
-}
-.deco-top-left { top: -12px; left: 20px; }
-.deco-bottom-right { bottom: -12px; right: 20px; }
+.preset-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.pill-btn { background: var(--gold-bg); color: #9A3412; border: 1px solid var(--gold-primary); font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.pill-btn:hover { background: var(--gold-primary); color: #FFF; }
 
-/* ── Wave ── */
-.hero-wave {
-  position: relative;
-  margin-top: 0;
-  line-height: 0;
-}
-.hero-wave svg { display: block; width: 100%; height: 80px; }
+.input-form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+.form-item label { font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px; }
+.form-item input { width: 100%; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+.form-item input:focus { border-color: var(--red-primary); }
 
-/* ── Buttons ── */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 50%, #8B0000 100%);
-  color: var(--accent-gold-light);
-  font-size: 15px;
-  font-weight: 700;
-  padding: 13px 28px;
-  border-radius: 9999px;
-  text-decoration: none;
-  border: 1px solid rgba(212,175,55,0.4);
-  box-shadow: 0 4px 20px rgba(192,57,43,0.45);
-  transition: transform 0.22s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.22s;
-  position: relative;
-  overflow: hidden;
-}
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  top: -50%; left: -60%;
-  width: 30%; height: 200%;
-  background: rgba(255,255,255,0.15);
-  transform: skewX(-20deg);
-  animation: shimmer 3.5s infinite;
-}
-@keyframes shimmer { 0% { left: -60%; } 100% { left: 150%; } }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(192,57,43,0.6); }
+.btn-gold-cta { display: block; text-align: center; background: linear-gradient(135deg, #B91C1C, #991B1B); color: #FEF3C7; font-weight: 800; font-size: 14px; padding: 14px; border-radius: 8px; text-decoration: none; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(153, 27, 27, 0.25); }
+.btn-gold-cta:hover { transform: translateY(-2px); }
 
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 13px 24px;
-  border-radius: 9999px;
-  text-decoration: none;
-  border: 1px solid var(--border-gold);
-  transition: color 0.2s, border-color 0.2s;
-}
-.btn-ghost:hover { color: var(--accent-gold-light); border-color: rgba(212,175,55,0.5); }
+/* 4. Common Sections */
+.sf-section { padding: 60px 24px; }
+.section-title-wrap { margin-bottom: 40px; }
+.sub-title { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--red-primary); display: block; margin-bottom: 4px; }
+.main-title { font-family: 'Noto Serif SC', serif; font-size: 2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 6px; }
+.desc { font-size: 13.5px; color: var(--text-muted); }
 
-.btn-large { padding: 16px 40px; font-size: 16px; }
+/* Presets Cards */
+.presets-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.preset-card { background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+.preset-card:hover { transform: translateY(-4px); border-color: var(--red-primary); }
+.card-tag { font-size: 11px; font-weight: 700; color: var(--red-primary); background: #FEE2E2; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+.preset-card h3 { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; }
+.couplet-preview { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+.couplet-preview span { font-weight: 700; color: var(--red-primary); }
+.btn-use-preset { background: none; border: none; font-size: 12px; font-weight: 700; color: var(--red-primary); cursor: pointer; padding: 0; }
 
-/* ── Sections common ── */
-.section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.section-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-.section-tag {
-  display: inline-block;
-  background: rgba(212,175,55,0.1);
-  border: 1px solid var(--border-gold);
-  color: var(--accent-gold);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 4px 16px;
-  border-radius: 9999px;
-  margin-bottom: 16px;
-}
-.section-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 900;
-  line-height: 1.2;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-}
-.section-desc {
-  font-size: 1rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 560px;
-  margin: 0 auto;
-}
+/* 5. Craftsmanship */
+.craft-section { background: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+.craft-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.craft-card { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 14px; padding: 32px; text-align: center; }
+.craft-icon { font-size: 36px; margin-bottom: 12px; }
+.craft-card h3 { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 900; color: var(--red-primary); margin-bottom: 8px; }
+.craft-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0; }
 
-/* ── Features ── */
-.sf-features {
-  position: relative;
-  z-index: 1;
-  background: var(--bg-feature);
-  padding: 100px 24px;
-  border-top: 1px solid var(--border-gold);
-  border-bottom: 1px solid var(--border-gold);
-}
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-.feature-card {
-  background: rgba(18,8,5,0.8);
-  border: 1px solid var(--border-gold);
-  border-radius: 16px;
-  padding: 32px;
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-}
-.feature-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(212,175,55,0.5);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-}
-.feature-icon-wrap {
-  width: 56px; height: 56px;
-  background: rgba(192,57,43,0.15);
-  border: 1px solid var(--border-red);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  margin-bottom: 20px;
-}
-.feature-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--accent-gold-light);
-  margin-bottom: 10px;
-}
-.feature-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
+/* 6. Products */
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+.sf-product-card { background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s; }
+.sf-product-card:hover { transform: translateY(-4px); }
+.card-img-box { position: relative; width: 100%; padding-top: 100%; background: #F4F4F5; }
+.card-img-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.badge-tag { position: absolute; top: 10px; left: 10px; background: var(--red-primary); color: #FFF; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.card-content { padding: 16px; }
+.card-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.card-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 10px; }
+.card-price { font-size: 16px; font-weight: 800; color: var(--red-primary); }
+.btn-buy { font-size: 12px; font-weight: 700; color: var(--red-primary); }
 
-/* ── Products ── */
-.sf-products {
-  position: relative;
-  z-index: 1;
-  padding: 100px 24px;
-}
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-}
-.product-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-gold);
-  border-radius: 16px;
-  overflow: hidden;
-  text-decoration: none;
-  color: var(--text-primary);
-  display: block;
-  transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s;
-}
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-.product-img-wrap {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  background: #0d0604;
-  overflow: hidden;
-}
-.product-img-wrap img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-.product-card:hover .product-img-wrap img { transform: scale(1.06); }
-.img-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(8,3,1,0.7) 0%, transparent 50%);
-}
-.product-tag {
-  position: absolute;
-  top: 12px; left: 12px;
-  background: rgba(192,57,43,0.9);
-  color: var(--accent-gold-light);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(212,175,55,0.3);
-  z-index: 1;
-}
-.product-info { padding: 18px; }
-.product-name {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-.product-desc {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 14px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.product-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.product-price {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--accent-gold-light);
-}
-.product-cta {
-  font-size: 13px;
-  color: var(--text-muted);
-  transition: color 0.2s;
-}
-.product-card:hover .product-cta { color: var(--accent-gold-light); }
+.empty-box { background: #FFFFFF; border: 1px dashed var(--border-color); border-radius: 16px; padding: 48px 24px; }
+.empty-seal { width: 44px; height: 44px; background: var(--red-primary); color: var(--gold-bright); font-family: 'Noto Serif SC', serif; font-size: 24px; font-weight: 900; border-radius: 8px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; }
+.empty-box h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.empty-box p { font-size: 13px; color: var(--text-muted); max-width: 440px; margin: 0 auto 20px; }
+.inline-btn { display: inline-block; padding: 10px 24px; }
 
-/* Skeleton */
-.product-skeleton {
-  background: var(--bg-card);
-  border: 1px solid var(--border-gold);
-  border-radius: 16px;
-  overflow: hidden;
-}
-.skeleton-img {
-  width: 100%; padding-top: 100%;
-  background: linear-gradient(90deg, #1a0a06 25%, #2a1208 50%, #1a0a06 75%);
-  background-size: 400% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-}
-.skeleton-body { padding: 18px; }
-.skeleton-line {
-  height: 12px; border-radius: 6px;
-  background: linear-gradient(90deg, #1a0a06 25%, #2a1208 50%, #1a0a06 75%);
-  background-size: 400% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-  margin-bottom: 10px;
-}
-.skeleton-line.long { width: 80%; }
-.skeleton-line.medium { width: 60%; }
-.skeleton-line.short { width: 40%; }
-@keyframes skeleton-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: 80px 24px;
-  background: var(--bg-card);
-  border: 1px dashed var(--border-gold);
-  border-radius: 20px;
-}
-.empty-icon { font-size: 56px; margin-bottom: 16px; }
-.empty-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-.empty-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-  max-width: 480px;
-  margin: 0 auto 24px;
-  line-height: 1.7;
-}
-
-/* ── CTA Banner ── */
-.sf-cta-banner {
-  position: relative;
-  z-index: 1;
-  padding: 80px 24px;
-  background: linear-gradient(135deg, #3D0000 0%, #7A0000 50%, #3D0000 100%);
-  border-top: 1px solid var(--border-gold);
-  text-align: center;
-}
-.sf-cta-banner::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(212,175,55,0.1) 0%, transparent 70%);
-}
-.cta-inner { position: relative; z-index: 1; }
-.cta-title {
-  font-family: 'Noto Serif SC', serif;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 900;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-}
-.cta-desc {
-  font-size: 1rem;
-  color: var(--text-muted);
-  max-width: 500px;
-  margin: 0 auto 32px;
-  line-height: 1.7;
-}
-
-/* ── Footer ── */
-.sf-footer {
-  position: relative;
-  z-index: 1;
-  background: #040201;
-  border-top: 1px solid var(--border-gold);
-  padding: 28px 24px;
-}
-.footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.footer-brand {
-  font-family: 'Noto Serif SC', serif;
-  font-weight: 800;
-  color: var(--accent-gold-light);
-  text-decoration: none;
-  font-size: 16px;
-}
-.footer-copy { font-size: 13px; color: var(--text-dim); }
-.footer-back {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.footer-back:hover { color: var(--accent-gold-light); }
-
-/* ── Scroll animations ── */
-.animate-up {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.animate-up.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* 7. Footer */
+.sf-footer { background: var(--red-deep); color: #FEF3C7; padding: 36px 24px; }
+.footer-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-brand { display: flex; align-items: center; gap: 12px; }
+.footer-seal { width: 32px; height: 32px; background: var(--gold-bright); color: var(--red-deep); font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 900; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.footer-text h4 { font-size: 15px; font-weight: 800; margin: 0; }
+.footer-text p { font-size: 12px; opacity: 0.8; margin: 0; }
+.footer-links a { color: #FEF3C7; text-decoration: none; font-size: 13px; font-weight: 600; margin-left: 20px; }
 </style>
