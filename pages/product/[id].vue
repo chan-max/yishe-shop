@@ -79,10 +79,10 @@
           <div class="product-header-meta">
             <div class="product-meta-pills">
               <span v-if="product.inventoryStatus" class="product-pill product-pill--green">
-                {{ product.inventoryStatus }}
+                {{ product.inventoryStatus === 'in_stock' ? '现货在售' : product.inventoryStatus === 'out_of_stock' ? '暂时缺货' : product.inventoryStatus }}
               </span>
               <span class="product-pill product-pill--gray">
-                SKU: {{ product.code || product.sku || product.id }}
+                编码: {{ product.code || product.sku || product.id }}
               </span>
             </div>
             <FavoriteButton
