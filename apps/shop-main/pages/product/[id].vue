@@ -249,6 +249,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import { api } from "~/utils/api";
 import ImagePreview from "../components/ImagePreview.vue";
 import FavoriteButton from "~/components/FavoriteButton.vue";
+import ProductComments from "~/components/ProductComments.vue";
 import { usePublicUserStore } from "~/stores/public-user";
 import { useToast } from "~/composables/use-toast";
 import { useUserBehaviorLog } from "~/composables/use-user-behavior-log";
@@ -1173,12 +1174,12 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-/* 右侧栏商品详情与说明 */
+/* 右侧栏商品详情与说明 (扁平极简, 无边框) */
 .product-detail-box {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
+  background: #f9fafb;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
   box-shadow: none;
 }
 
@@ -1188,7 +1189,7 @@ onMounted(() => {
   color: #111827;
   padding-bottom: 0.35rem;
   margin-bottom: 0.45rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .product-detail-box-content p {
@@ -1205,7 +1206,7 @@ onMounted(() => {
   font-size: 0.78rem;
   margin: 0.5rem 0 0 0;
   padding-top: 0.5rem;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid #e5e7eb;
 
   dt {
     color: #6b7280;
@@ -1229,7 +1230,7 @@ onMounted(() => {
   font-weight: 600;
   color: #2563eb;
   background: #f0f9ff;
-  border: 1px solid #e0f2fe;
+  border: none;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
   text-decoration: none;
@@ -1238,16 +1239,14 @@ onMounted(() => {
   &:hover {
     background: #2563eb;
     color: #fff;
-    border-color: #2563eb;
   }
 }
 
-/* 右侧卡片：价格与定制入口 (无阴影, 精精致字号) */
+/* 右侧卡片：价格与定制入口 (纯粹扁平，无边框) */
 .product-action-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1rem 1.1rem;
+  background: transparent;
+  border: none;
+  padding: 0;
   box-shadow: none;
   display: flex;
   flex-direction: column;
@@ -1299,7 +1298,7 @@ onMounted(() => {
   }
 }
 
-/* 核心主按钮：设计同款 (高级黑，无阴影，适当字号) */
+/* 核心主按钮：设计同款 (高级黑，无边框，极简) */
 .product-primary-btn {
   display: flex;
   align-items: center;
@@ -1309,10 +1308,11 @@ onMounted(() => {
   color: #fff;
   font-size: 0.88rem;
   font-weight: 650;
-  padding: 0.65rem 1rem;
+  padding: 0.7rem 1rem;
   border-radius: 999px;
   text-decoration: none;
   box-shadow: none;
+  border: none;
   transition: background-color 0.15s ease;
 
   &:hover {
@@ -1320,7 +1320,7 @@ onMounted(() => {
   }
 }
 
-/* 快捷定制入口按钮组 (设计相似款 / 咨询设计师 / 复制链接) */
+/* 快捷定制入口按钮组 (扁平黑灰极简) */
 .product-secondary-actions-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1332,12 +1332,12 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  color: #374151;
+  background: #f3f4f6;
+  border: none;
+  color: #111827;
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.5rem 0.8rem;
+  padding: 0.55rem 0.8rem;
   border-radius: 999px;
   text-decoration: none;
   cursor: pointer;
@@ -1345,19 +1345,17 @@ onMounted(() => {
   transition: all 0.15s ease;
 
   &:hover {
-    background: #ffffff;
-    border-color: #111827;
-    color: #111827;
+    background: #e5e7eb;
+    color: #000000;
   }
 }
 
-/* 服务保障网格 (3-Box 扁平质感) */
+/* 服务保障网格 (扁平化无边框) */
 .product-service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.4rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #f3f4f6;
 }
 
 .product-service-box {
@@ -1365,10 +1363,10 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #f9fafb;
-  border: 1px solid #f3f4f6;
-  padding: 0.45rem 0.25rem;
-  border-radius: 6px;
+  background: #f3f4f6;
+  border: none;
+  padding: 0.5rem 0.25rem;
+  border-radius: 8px;
 
   strong {
     font-size: 0.72rem;
