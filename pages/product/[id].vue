@@ -1300,13 +1300,13 @@ onMounted(() => {
   }
 }
 
-/* 核心主按钮：设计同款 (Walmart 蓝，无阴影，适当字号) */
+/* 核心主按钮：设计同款 (高级黑，无阴影，适当字号) */
 .product-primary-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  background: #0071dc;
+  background: #111827;
   color: #fff;
   font-size: 0.88rem;
   font-weight: 650;
@@ -1317,7 +1317,7 @@ onMounted(() => {
   transition: background-color 0.15s ease;
 
   &:hover {
-    background: #005bb5;
+    background: #000000;
   }
 }
 
