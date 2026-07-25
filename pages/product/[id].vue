@@ -78,7 +78,6 @@
           <!-- 顶部 Clean Pills (无 Emoji) -->
           <div class="product-header-meta">
             <div class="product-meta-pills">
-              <span class="product-pill product-pill--blue">热门推荐</span>
               <span v-if="product.inventoryStatus" class="product-pill product-pill--green">
                 {{ product.inventoryStatus }}
               </span>
