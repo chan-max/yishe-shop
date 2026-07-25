@@ -1,16 +1,20 @@
 <template>
   <div class="page-shell">
     <div v-if="showAnnouncement" class="site-announcement">
-      <span>{{ site.announcement.text }}</span>
-      <NuxtLink :to="site.announcement.actionTo">
-        {{ site.announcement.actionLabel }}
-      </NuxtLink>
+      <div class="announcement-inner">
+        <span class="announcement-text">{{ site.announcement.text }}</span>
+        <NuxtLink :to="site.announcement.actionTo" class="announcement-action">
+          <span>{{ site.announcement.actionLabel }}</span>
+          <AppIcon name="arrow-right" class="ui-icon" :size="11" aria-hidden="true" />
+        </NuxtLink>
+      </div>
       <button
         type="button"
+        class="announcement-close"
         aria-label="关闭顶部通知"
         @click="showAnnouncement = false"
       >
-        <AppIcon name="x" class="ui-icon" :size="14" aria-hidden="true" />
+        <AppIcon name="x" class="ui-icon" :size="13" aria-hidden="true" />
       </button>
     </div>
 
@@ -746,34 +750,92 @@ useEventListener(
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  min-height: 32px;
-  padding: 0.25rem 1rem;
-  background: var(--ys-text);
-  color: #fff;
+  min-height: 36px;
+  padding: 0.35rem 2.8rem 0.35rem 1rem;
+  background: #1d1d1f;
+  color: #ffffff;
   font-size: 0.72rem;
   line-height: 1.3;
-  text-align: center;
+  overflow: hidden;
 }
 
-.site-announcement a {
-  color: #fff;
-  font-weight: 800;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.announcement-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.site-announcement button {
+.announcement-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+}
+
+.announcement-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.16s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
+}
+
+.announcement-close {
   position: absolute;
-  right: var(--ys-container-pad, 1rem);
-  display: grid;
-  place-items: center;
-  width: 1.6rem;
-  height: 1.6rem;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-announcement {
+    min-height: 32px;
+    padding: 0.25rem 2.4rem 0.25rem 0.75rem;
+  }
+
+  .announcement-inner {
+    gap: 0.35rem;
+  }
+
+  .announcement-text {
+    font-size: 0.68rem;
+  }
+
+  .announcement-action {
+    font-size: 0.64rem;
+    padding: 0.1rem 0.45rem;
+  }
 }
 
 /* === Apple-Style Ultra-Minimalist Header === */

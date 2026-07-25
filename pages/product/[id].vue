@@ -144,20 +144,31 @@
           </div>
 
           <div class="product-actions">
-            <NuxtLink to="/contact" class="product-primary-action">
-              咨询购买
+            <NuxtLink :to="designSameHref" class="product-primary-action">
+              <AppIcon name="palette" class="ui-icon" :size="15" aria-hidden="true" />
+              免费设计同款
+            </NuxtLink>
+            <NuxtLink to="/contact" class="product-secondary-action">
+              咨询按需定制
             </NuxtLink>
             <button type="button" class="product-secondary-action" @click="copyLink">
               <AppIcon name="link" class="ui-icon" :size="14" aria-hidden="true" />
               复制链接
             </button>
-            <button type="button" class="product-secondary-action" @click="shareProduct">
-              <AppIcon name="share" class="ui-icon" :size="14" aria-hidden="true" />
-              分享
-            </button>
           </div>
         </aside>
       </section>
+
+      <!-- Mobile Sticky Bottom Action Bar -->
+      <div class="product-mobile-bottom-bar">
+        <NuxtLink :to="designSameHref" class="product-mobile-action-primary">
+          <AppIcon name="palette" class="ui-icon" :size="15" aria-hidden="true" />
+          免费在线设计同款
+        </NuxtLink>
+        <NuxtLink to="/contact" class="product-mobile-action-secondary">
+          咨询按需定制
+        </NuxtLink>
+      </div>
 
       <section class="product-tabs">
         <nav aria-label="商品详情标签">
@@ -1733,9 +1744,69 @@ onMounted(() => {
   }
 }
 
+.product-mobile-bottom-bar {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .product-detail-page {
     padding-top: 0.75rem;
+    padding-bottom: 5.5rem;
+  }
+
+  .product-mobile-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 180;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem max(1rem, env(safe-area-inset-right, 0px)) max(0.75rem, calc(0.5rem + env(safe-area-inset-bottom, 0px))) max(1rem, env(safe-area-inset-left, 0px));
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid #f5f5f7;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  .product-mobile-action-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    flex: 1;
+    height: 2.5rem;
+    border-radius: 8px;
+    background: #1d1d1f;
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+
+  .product-mobile-action-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0 0.85rem;
+    height: 2.5rem;
+    border-radius: 8px;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    font-size: 0.76rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      background: #e8e8ed;
+    }
   }
 
   .product-gallery {

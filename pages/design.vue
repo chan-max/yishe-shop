@@ -1164,7 +1164,10 @@ applyProductSource();
   }
 
   .design-options {
-    padding-left: 40px;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
   }
 
   .design-fields__contact {

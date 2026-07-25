@@ -182,34 +182,34 @@ onMounted(() => {
         </div>
 
         <div v-else-if="favoriteList.length > 0" class="space-y-3">
-          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid gap-4 rounded-[20px] border border-stone-100 p-3 transition duration-200 hover:border-stone-300 hover:bg-stone-50 hover:shadow-sm sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]">
-            <div class="cursor-pointer overflow-hidden rounded-[18px] bg-stone-100" @click="goToProductDetail(favorite.productId)">
-              <div class="relative aspect-[4/3]">
+          <article v-for="favorite in favoriteList" :key="favorite.id" class="group grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] gap-3.5 rounded-[16px] border-0 bg-[#f5f5f7] p-3 transition duration-200 hover:bg-[#e8e8ed]">
+            <div class="cursor-pointer overflow-hidden rounded-[12px] bg-stone-200" @click="goToProductDetail(favorite.productId)">
+              <div class="relative aspect-square">
                 <template v-if="getProductImage(favorite)">
                   <img :src="getProductImage(favorite)" :alt="favorite.product?.name || '商品图片'" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" @error="handleImageError($event)" @load="handleImageLoad" />
-                  <div class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[12px] text-stone-400">暂无图片</div>
+                  <div class="image-placeholder absolute inset-0 hidden items-center justify-center bg-stone-100 text-[11px] text-stone-400">暂无图片</div>
                 </template>
-                <div v-else class="absolute inset-0 flex items-center justify-center text-[12px] text-stone-400">暂无图片</div>
+                <div v-else class="absolute inset-0 flex items-center justify-center text-[11px] text-stone-400">暂无图片</div>
               </div>
             </div>
 
             <div class="flex min-w-0 flex-col justify-between">
               <div>
-                <h3 class="mt-2 cursor-pointer text-[15px] font-medium leading-6 text-stone-900 transition duration-200 group-hover:text-stone-700" @click="goToProductDetail(favorite.productId)">
+                <h3 class="cursor-pointer text-[14px] font-semibold leading-5 text-[#1d1d1f] transition duration-200" @click="goToProductDetail(favorite.productId)">
                   {{ favorite.product?.name }}
                 </h3>
-                <p v-if="favorite.product?.description" class="mt-2 line-clamp-2 cursor-pointer text-[12px] leading-6 text-stone-500 transition duration-200 group-hover:text-stone-600" @click="goToProductDetail(favorite.productId)">
+                <p v-if="favorite.product?.description" class="mt-1 line-clamp-2 cursor-pointer text-[12px] leading-5 text-[#86868b]" @click="goToProductDetail(favorite.productId)">
                   {{ favorite.product.description }}
                 </p>
               </div>
 
-              <div class="mt-4 flex flex-col gap-3 border-t border-stone-100 pt-3 sm:flex-row sm:items-center sm:justify-between">
-                <span class="text-[11px] text-stone-400">收藏于 {{ new Date(favorite.createTime).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
-                <div class="flex gap-2">
-                  <button class="rounded-xl border border-stone-200 px-4 py-2 text-[12px] text-stone-600 transition duration-200 hover:border-red-300 hover:bg-red-50 hover:text-red-600" @click="removeFavorite(favorite.productId, favorite.id)">
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-stone-200/60 pt-2.5">
+                <span class="text-[10px] text-[#86868b]">收藏于 {{ new Date(favorite.createTime).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+                <div class="flex gap-1.5">
+                  <button class="rounded-lg border-0 bg-white px-3 py-1.5 text-[11px] font-medium text-red-600 transition duration-200 hover:bg-red-50" @click="removeFavorite(favorite.productId, favorite.id)">
                     取消收藏
                   </button>
-                  <button class="ys-action-btn rounded-xl px-4 py-2 text-[12px] transition duration-200" @click="goToProductDetail(favorite.productId)">
+                  <button class="rounded-lg border-0 bg-[#1d1d1f] px-3 py-1.5 text-[11px] font-medium text-white transition duration-200 hover:opacity-90" @click="goToProductDetail(favorite.productId)">
                     查看详情
                   </button>
                 </div>

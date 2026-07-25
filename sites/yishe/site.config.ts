@@ -45,8 +45,8 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   announcement: {
     enabled: true,
-    text: "✨ 探索衣设 POD 创意平台：免费在线设计，一件即享专属按需定制与灵感分享。",
-    actionLabel: "免费设计",
+    text: "✨ 免费在线设计 · 专属 POD 按需定制与灵感分享",
+    actionLabel: "立即体验",
     actionTo: "/design",
   },
   navigation: [

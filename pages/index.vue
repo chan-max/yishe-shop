@@ -1361,12 +1361,23 @@ const getCategoryWallImage = (catId: string) => {
 @media (max-width: 768px) {
   .photo-wall-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .photo-wall-tile {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+
+  .photo-wall-tile .tile-title {
+    font-size: 0.86rem;
   }
 }
 
 @media (max-width: 480px) {
   .photo-wall-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
 }
 

@@ -55,13 +55,16 @@
 import { ref, watch } from "vue";
 
 interface Props {
-  isFavorite: boolean;
+  productId?: string;
+  isFavorite?: boolean;
   count?: number | null;
   showCount?: boolean;
   size?: "small" | "medium" | "large";
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  productId: "",
+  isFavorite: false,
   count: null,
   showCount: false,
   size: "medium",

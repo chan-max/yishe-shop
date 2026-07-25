@@ -47,9 +47,9 @@ const sortMode = ref<string>("sort_desc");
 const currentPage = ref<number>(1);
 const pageSize = ref<number>(24);
 const loading = ref<boolean>(false);
-const productList = ref<any[]>([]);
-const categoryList = ref<any[]>([]);
-const total = ref<number>(0);
+const productList = useState<any[]>("catalog-product-list", () => []);
+const categoryList = useState<any[]>("catalog-category-list", () => []);
+const total = useState<number>("catalog-total", () => 0);
 const requestSequence = ref<number>(0);
 
 const recommendedKeywords = [
@@ -751,19 +751,21 @@ if (import.meta.server) {
 
       <div class="product-filter-searchrow">
         <form class="product-filter-search" @submit.prevent="handleSearch">
-          <AppIcon name="search" class="ui-icon" :size="16" aria-hidden="true" />
-          <input v-model="searchKeyword" type="search" placeholder="搜索名称、关键词、品牌" />
+          <AppIcon name="search" class="ui-icon" :size="15" aria-hidden="true" />
+          <input v-model="searchKeyword" type="search" placeholder="搜索商品、印花或定制…" />
           <button type="submit">搜索</button>
         </form>
-        <select v-model="sortMode" class="product-filter-select" @change="handleSearch">
-          <option v-for="item in sortOptions" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </option>
-        </select>
-        <button type="button" class="product-filter-mobile" @click="toggleFilters">
-          <AppIcon name="sliders" class="ui-icon" :size="15" aria-hidden="true" />
-          筛选
-        </button>
+        <div class="product-filter-subrow">
+          <select v-model="sortMode" class="product-filter-select" @change="handleSearch">
+            <option v-for="item in sortOptions" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
+          <button type="button" class="product-filter-mobile" @click="toggleFilters">
+            <AppIcon name="sliders" class="ui-icon" :size="14" aria-hidden="true" />
+            筛选
+          </button>
+        </div>
       </div>
 
       <div class="product-filter-quick">
@@ -951,9 +953,6 @@ if (import.meta.server) {
                 <div class="image-placeholder">暂无预览图</div>
               </template>
               <div v-else class="catalog-product__empty">暂无预览图</div>
-              <span class="catalog-product__open" aria-hidden="true">
-                <AppIcon name="arrow-up-right" class="ui-icon" :size="13" aria-hidden="true" />
-              </span>
             </div>
             <div class="catalog-product__body">
               <h3>{{ product.name }}</h3>
@@ -1034,87 +1033,147 @@ if (import.meta.server) {
       </div>
     </section>
 
+    <!-- iOS-Style Mobile Filter Drawer -->
     <Transition name="catalog-drawer">
       <div v-if="showFilters" class="catalog-drawer" @click="toggleFilters">
         <aside class="catalog-drawer__panel" @click.stop>
-          <div class="catalog-filter__head">
-            <strong>筛选</strong>
-            <button type="button" @click="toggleFilters">关闭</button>
-          </div>
-          <form class="catalog-search catalog-search--drawer" @submit.prevent="handleSearch">
-            <AppIcon name="search" class="ui-icon" :size="16" aria-hidden="true" />
-            <input v-model="searchKeyword" type="search" placeholder="搜索商品…" />
-          </form>
-          <div class="catalog-filter__block">
-            <label>商品分类</label>
-            <select v-model="selectedCategoryId">
-              <option v-for="item in categorySelectOptions" :key="item.value" :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
-          <div class="catalog-filter__block">
-            <label>品牌 / SKU</label>
-            <input v-model="selectedBrand" type="search" placeholder="品牌" />
-            <input v-model="skuKeyword" type="search" placeholder="SKU" />
-          </div>
-          <div class="catalog-filter__block">
-            <label>价格区间</label>
-            <div class="catalog-number-row">
-              <input v-model.number="priceMin" type="number" min="0" placeholder="最低价" />
-              <input v-model.number="priceMax" type="number" min="0" placeholder="最高价" />
+          <div class="catalog-drawer__head">
+            <strong>商品筛选</strong>
+            <div class="catalog-drawer__head-actions">
+              <button
+                v-if="activeFilters.length"
+                type="button"
+                class="catalog-drawer__reset-link"
+                @click="resetFilters"
+              >
+                重置
+              </button>
+              <button
+                type="button"
+                class="catalog-drawer__close"
+                aria-label="关闭筛选"
+                @click="toggleFilters"
+              >
+                <AppIcon name="x" class="ui-icon" :size="15" aria-hidden="true" />
+              </button>
             </div>
           </div>
-          <div class="catalog-filter__block">
-            <label>库存状态</label>
-            <select v-model="selectedInventoryStatus">
-              <option v-for="item in inventoryOptions" :key="item.value" :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
-          <div class="catalog-filter__block">
-            <label>商品标签</label>
-            <button
-              v-for="item in flagOptions"
-              :key="item.value"
-              type="button"
-              class="catalog-filter__item"
-              :class="{ active: selectedFlag === item.value }"
-              @click="selectedFlag = selectedFlag === item.value ? '' : item.value"
-            >
-              <span>{{ item.label }}</span>
-              <AppIcon name="chevron-right" class="ui-icon" :size="13" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="catalog-filter__block">
-            <label>上新时间</label>
-            <div class="product-filter-datepair">
-              <input v-model="startDate" type="date" />
-              <span></span>
-              <input v-model="endDate" type="date" />
+
+          <div class="catalog-drawer__content">
+            <!-- Classification Pills -->
+            <div class="drawer-section">
+              <label class="drawer-section-title">商品分类</label>
+              <div class="drawer-pill-grid">
+                <button
+                  type="button"
+                  class="drawer-pill-btn"
+                  :class="{ active: !selectedCategoryId }"
+                  @click="selectedCategoryId = ''; handleSearch()"
+                >
+                  全部分类
+                </button>
+                <button
+                  v-for="item in categoryList"
+                  :key="item.id"
+                  type="button"
+                  class="drawer-pill-btn"
+                  :class="{ active: selectedCategoryId === item.id }"
+                  @click="selectedCategoryId = selectedCategoryId === item.id ? '' : item.id; handleSearch()"
+                >
+                  {{ item.name }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Tags Section -->
+            <div class="drawer-section">
+              <label class="drawer-section-title">商品标签</label>
+              <div class="drawer-pill-grid">
+                <button
+                  v-for="item in flagOptions"
+                  :key="item.value"
+                  type="button"
+                  class="drawer-pill-btn"
+                  :class="{ active: selectedFlag === item.value }"
+                  @click="selectedFlag = selectedFlag === item.value ? '' : item.value; handleSearch()"
+                >
+                  {{ item.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="drawer-section">
+              <label class="drawer-section-title">价格区间 (元)</label>
+              <div class="drawer-price-inputs">
+                <input
+                  v-model.number="priceMin"
+                  type="number"
+                  min="0"
+                  placeholder="最低价"
+                />
+                <span class="drawer-price-dash">-</span>
+                <input
+                  v-model.number="priceMax"
+                  type="number"
+                  min="0"
+                  placeholder="最高价"
+                />
+              </div>
+            </div>
+
+            <!-- Stock Status -->
+            <div class="drawer-section">
+              <label class="drawer-section-title">库存状态</label>
+              <div class="drawer-pill-grid">
+                <button
+                  v-for="item in inventoryOptions"
+                  :key="item.value"
+                  type="button"
+                  class="drawer-pill-btn"
+                  :class="{ active: selectedInventoryStatus === item.value }"
+                  @click="selectedInventoryStatus = selectedInventoryStatus === item.value ? '' : item.value; handleSearch()"
+                >
+                  {{ item.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Popular Category Pills -->
+            <div class="drawer-section">
+              <label class="drawer-section-title">热门品类</label>
+              <div class="drawer-pill-grid">
+                <button
+                  v-for="item in filterCategories"
+                  :key="item"
+                  type="button"
+                  class="drawer-pill-btn"
+                  :class="{ active: selectedType === item }"
+                  @click="selectedType = selectedType === item ? '' : item; handleSearch()"
+                >
+                  {{ item }}
+                </button>
+              </div>
             </div>
           </div>
-          <div
-            v-for="group in filterGroups"
-            :key="group.title"
-            class="catalog-filter__block"
-          >
-            <label>{{ group.title }}</label>
+
+          <!-- Bottom Sticky Action Buttons -->
+          <div class="catalog-drawer__footer">
             <button
-              v-for="item in group.items"
-              :key="item"
               type="button"
-              class="catalog-filter__item"
-              @click="handleKeywordClick(item)"
+              class="drawer-footer-reset"
+              @click="resetFilters"
             >
-              <span>{{ item }}</span>
-              <AppIcon name="chevron-right" class="ui-icon" :size="13" aria-hidden="true" />
+              重置
+            </button>
+            <button
+              type="button"
+              class="drawer-footer-apply"
+              @click="applyDrawerFilters"
+            >
+              查看结果 ({{ total }})
             </button>
           </div>
-          <button type="button" class="catalog-drawer__apply" @click="applyDrawerFilters">
-            应用筛选
-          </button>
         </aside>
       </div>
     </Transition>
@@ -1171,15 +1230,10 @@ if (import.meta.server) {
   background: #fff;
 }
 
-.product-filter-title,
-.product-filter-searchrow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 1rem;
-}
-
 .product-filter-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 1.1rem;
 }
 
@@ -1190,6 +1244,7 @@ if (import.meta.server) {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .product-filter-title h2 {
@@ -1198,6 +1253,7 @@ if (import.meta.server) {
   font-size: clamp(1.45rem, 2.6vw, 2rem);
   font-weight: 600;
   line-height: 1.08;
+  white-space: nowrap;
 }
 
 .product-filter-title p {
@@ -1207,8 +1263,10 @@ if (import.meta.server) {
 }
 
 .product-filter-metrics {
-  min-width: 96px;
+  flex: 0 0 auto;
+  min-width: 80px;
   text-align: right;
+  white-space: nowrap;
 }
 
 .product-filter-metrics strong {
@@ -1223,19 +1281,22 @@ if (import.meta.server) {
   color: #86868b;
   font-size: 0.72rem;
   text-transform: none;
+  white-space: nowrap;
 }
 
 .product-filter-searchrow {
-  grid-template-columns: minmax(320px, 1fr) 172px auto;
+  display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .product-filter-search {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
   height: 3.25rem;
   padding: 0 0.55rem 0 1rem;
   border-radius: 14px;
@@ -1244,6 +1305,7 @@ if (import.meta.server) {
 }
 
 .product-filter-search input {
+  flex: 1;
   min-width: 0;
   height: 100%;
   border: 0;
@@ -1253,28 +1315,37 @@ if (import.meta.server) {
   font-size: 0.88rem;
 }
 
-.product-filter-search input::placeholder,
-.product-filter-panel input::placeholder {
-  color: #86868b;
-}
-
-.product-filter-search button,
-.product-filter-mobile {
+.product-filter-search button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  height: 2.25rem;
+  flex: 0 0 auto;
+  height: 2.35rem;
+  padding: 0 1.15rem;
   border: 0;
   border-radius: 10px;
-  background: #17191c;
-  color: #fff;
-  font-size: 0.76rem;
-  padding: 0 0.85rem;
+  background: #1d1d1f;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.16s ease;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+.product-filter-subrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 0 0 auto;
 }
 
 .product-filter-select {
-  width: 100%;
+  width: 172px;
   height: 3.25rem;
   border: 0;
   border-radius: 14px;
@@ -1282,14 +1353,14 @@ if (import.meta.server) {
   background: #f5f5f7;
   color: #17191c;
   font-size: 0.8rem;
+  font-weight: 500;
   padding: 0 0.85rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .product-filter-mobile {
-  display: none;
-  background: #fff;
-  border: 0;
-  color: #17191c;
+  display: none !important;
 }
 
 .product-filter-quick {
@@ -2392,28 +2463,194 @@ if (import.meta.server) {
 .catalog-drawer {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 220;
   display: flex;
   justify-content: flex-end;
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .catalog-drawer__panel {
+  display: flex;
+  flex-direction: column;
   width: min(88vw, 340px);
-  height: 100%;
+  height: 100dvh;
+  padding: max(1rem, calc(0.5rem + env(safe-area-inset-top, 0px))) 1.1rem max(1.2rem, calc(0.6rem + env(safe-area-inset-bottom, 0px))) 1.1rem;
+  background: #ffffff;
+  border: 0;
+  box-shadow: none;
+}
+
+.catalog-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid #f5f5f7;
+
+  strong {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #1d1d1f;
+  }
+}
+
+.catalog-drawer__head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.catalog-drawer__reset-link {
+  border: 0;
+  background: transparent;
+  color: #86868b;
+  font-size: 0.76rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    color: #1d1d1f;
+  }
+}
+
+.catalog-drawer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f5f5f7;
+  border: 0;
+  color: #86868b;
+  cursor: pointer;
+
+  &:hover {
+    background: #e8e8ed;
+    color: #1d1d1f;
+  }
+}
+
+.catalog-drawer__content {
+  flex: 1;
   overflow-y: auto;
-  padding: 1rem;
-  background: #fff;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.15rem;
 }
 
-.catalog-search--drawer {
-  width: 100%;
-  margin: 0.75rem 0 0;
+.drawer-section {
+  margin-bottom: 1.1rem;
 }
 
-.catalog-drawer__apply {
-  width: 100%;
-  margin-top: 0.85rem;
+.drawer-section-title {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 600;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.45rem;
+}
+
+.drawer-pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.drawer-pill-btn {
+  padding: 0.38rem 0.65rem;
+  border-radius: 6px;
+  background: #f5f5f7;
+  border: 0;
+  box-shadow: none;
+  color: #1d1d1f;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease;
+
+  &:hover {
+    background: #e8e8ed;
+  }
+
+  &.active {
+    background: #1d1d1f;
+    color: #ffffff;
+    font-weight: 600;
+  }
+}
+
+.drawer-price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  input {
+    flex: 1;
+    height: 2.15rem;
+    padding: 0 0.65rem;
+    border-radius: 6px;
+    background: #f5f5f7;
+    border: 0;
+    box-shadow: none;
+    color: #1d1d1f;
+    font-size: 0.76rem;
+
+    &:focus {
+      background: #e8e8ed;
+      outline: none;
+    }
+  }
+}
+
+.drawer-price-dash {
+  color: #86868b;
+  font-size: 0.76rem;
+}
+
+.catalog-drawer__footer {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: auto;
+  border-top: 1px solid #f5f5f7;
+}
+
+.drawer-footer-reset {
+  flex: 0 0 32%;
+  height: 2.35rem;
+  border-radius: 8px;
+  background: #f5f5f7;
+  border: 0;
+  color: #1d1d1f;
+  font-size: 0.76rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: #e8e8ed;
+  }
+}
+
+.drawer-footer-apply {
+  flex: 1;
+  height: 2.35rem;
+  border-radius: 8px;
+  background: #1d1d1f;
+  border: 0;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.88;
+  }
 }
 
 .product-skeleton .skeleton-wave {
@@ -2524,7 +2761,9 @@ if (import.meta.server) {
   }
 
   .product-filter-searchrow {
-    grid-template-columns: minmax(0, 1fr) 150px auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
   }
 
   .product-filter-mobile {
@@ -2557,29 +2796,76 @@ if (import.meta.server) {
 }
 
 @media (max-width: 760px) {
-  .product-filter-title,
-  .product-filter-searchrow {
-    grid-template-columns: 1fr;
+  .product-filter-head {
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+    margin-bottom: 0.85rem;
+  }
+
+  .product-filter-title {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .product-filter-title span {
+    display: none;
+  }
+
+  .product-filter-title h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .product-filter-title p {
+    display: none;
   }
 
   .product-filter-metrics {
-    text-align: left;
+    text-align: right;
+  }
+
+  .product-filter-metrics strong {
+    display: inline;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .product-filter-metrics span {
+    font-size: 0.7rem;
+    margin-left: 0.2rem;
   }
 
   .product-filter-searchrow {
-    gap: 0.65rem;
+    gap: 0.5rem;
   }
 
-  .product-filter-head {
-    padding: 1rem;
-    border-radius: 14px;
+  .product-filter-search {
+    height: 2.5rem;
+    padding: 0 0.4rem 0 0.75rem;
+    border-radius: 10px;
+  }
+
+  .product-filter-search input {
+    font-size: 0.8rem;
+  }
+
+  .product-filter-search button {
+    height: 1.95rem;
+    padding: 0 0.8rem;
+    border-radius: 8px;
+    font-size: 0.72rem;
   }
 
   .product-filter-quick {
+    margin-top: 0.6rem;
+    gap: 0.45rem;
     overflow-x: auto;
-    margin-inline: -1rem;
-    padding-inline: 1rem;
-    padding-bottom: 0.25rem;
+    margin-inline: -0.85rem;
+    padding-inline: 0.85rem;
+    padding-bottom: 0.15rem;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -2592,9 +2878,21 @@ if (import.meta.server) {
     min-width: max-content;
   }
 
+  .product-filter-subrow {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
   .product-filter-select,
   .product-filter-mobile {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+    width: 50%;
+    height: 2.25rem;
+    font-size: 0.74rem;
+    border-radius: 8px;
   }
 
   .product-filter-chips {
@@ -2613,7 +2911,7 @@ if (import.meta.server) {
   }
 
   .catalog-page {
-    padding-top: 1rem;
+    padding-top: 0.65rem;
   }
 
   .catalog-header {
@@ -2704,15 +3002,18 @@ if (import.meta.server) {
 
   .catalog-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.2rem 0.8rem;
+    gap: 0.85rem 0.6rem;
   }
 
   .catalog-product__media {
-    border-radius: 1rem;
+    aspect-ratio: 1;
+    border-radius: 10px;
   }
 
   .catalog-product h3 {
-    font-size: 0.88rem;
+    font-size: 0.82rem;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
   }
 
   .catalog-product p {
@@ -2761,7 +3062,6 @@ if (import.meta.server) {
 }
 
 .product-filter-search button,
-.product-filter-mobile,
 .catalog-search button,
 .catalog-empty button,
 .catalog-drawer__apply,
@@ -2770,8 +3070,29 @@ if (import.meta.server) {
   background: var(--ys-accent);
 }
 
+.product-filter-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 2.35rem;
+  padding: 0 0.85rem;
+  border-radius: 8px;
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-size: 0.76rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.16s ease;
+
+  &:hover {
+    background: #e8e8ed !important;
+  }
+}
+
 .product-filter-search button:hover,
-.product-filter-mobile:hover,
 .catalog-search button:hover,
 .catalog-empty button:hover,
 .catalog-drawer__apply:hover,
