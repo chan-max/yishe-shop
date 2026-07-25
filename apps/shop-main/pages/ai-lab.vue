@@ -1,0 +1,351 @@
+<script setup lang="ts">
+import { SITE_URL } from "~/utils/seo";
+
+definePageMeta({ layout: "page" });
+
+usePageSEO({
+  title: "AI POD 创意工作台 - 衣设",
+  description: "用 AI 辅助生成印花图案、商品场景图、品牌周边方向和定制设计提案，帮助 POD 创作者更快验证创意。",
+  keywords: "AI设计,POD设计,AI图案生成,商品场景图,印花设计,定制商品,创意工作台",
+  url: `${SITE_URL}/ai-lab`,
+  type: "website",
+});
+
+const prompts = [
+  "法式花园感的春季围巾与香氛礼盒系列",
+  "偏艺术家联名的餐具与桌布组合，要留白感",
+  "年轻女性向的轻运动卫衣图案，适合社媒传播",
+  "为新茶饮品牌生成一套 Logo、包装与活动海报方向",
+];
+
+const capabilities = [
+  { name: "生成", text: "用文字、参考图或草图快速生成印花图案和视觉方向。" },
+  { name: "优化", text: "辅助调整构图、配色、层级和商品展示，让方案更适合落地。" },
+  { name: "转化", text: "把设计转化为商品卖点、系列命名和上架内容。" },
+  { name: "评分", text: "上线前评估风格统一度、商品适配度和传播潜力。" },
+];
+
+const signals = [
+  ["AI 评分", "89 / 100"],
+  ["推荐风格", "法式轻奢"],
+  ["适配商品", "6 类"],
+];
+
+const steps = [
+  ["输入", "文字、参考图、草图一起进入"],
+  ["生成", "风格板、主视觉和 SKU 同步展开"],
+  ["判断", "系统给出评分、风险和优化建议"],
+];
+
+const outputs = ["主视觉方向", "配色建议", "商品落点", "营销文案", "改稿提示"];
+
+const selectedPrompt = ref(prompts[0]);
+</script>
+
+<template>
+  <div class="lab-page">
+    <section class="lab-hero">
+      <div class="minimal-kicker">AI 创意实验室</div>
+      <div class="lab-hero__grid">
+        <div class="lab-hero__copy">
+          <p class="lab-label">创意控制台</p>
+          <h1>用 AI 更快生成 POD 图案、商品场景和定制提案。</h1>
+          <p>
+            从一句主题描述进入，快速获得风格板、主视觉、商品落点和内容方向，让创作者更快判断一个想法是否值得继续开发。
+          </p>
+        </div>
+
+        <div class="lab-hero__panel">
+          <span>当前提示词</span>
+          <strong>{{ selectedPrompt }}</strong>
+          <div class="lab-hero__actions">
+            <BaseButton variant="primary" size="lg">开始实验</BaseButton>
+            <BaseButton variant="secondary" size="lg">查看能力</BaseButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab-console">
+      <div class="lab-console__left">
+        <div class="lab-kicker">提示词队列</div>
+        <button
+          v-for="item in prompts"
+          :key="item"
+          type="button"
+          :class="['lab-prompt', selectedPrompt === item ? 'is-active' : '']"
+          @click="selectedPrompt = item"
+        >
+          {{ item }}
+        </button>
+      </div>
+
+      <div class="lab-console__center">
+        <div class="lab-kicker">Canvas</div>
+        <h2>{{ selectedPrompt }}</h2>
+        <div class="lab-canvas">
+          <div class="lab-canvas__summary">
+            当前主题会生成可继续深化的视觉方向，并同步给出适合延展的商品载体与传播内容。
+          </div>
+          <div class="lab-canvas__outputs">
+            <span v-for="item in outputs" :key="item">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-console__right">
+        <div class="lab-kicker">Signals</div>
+        <div class="lab-signals">
+          <div class="lab-signal" v-for="item in signals" :key="item[0]">
+            <span>{{ item[0] }}</span>
+            <strong>{{ item[1] }}</strong>
+          </div>
+        </div>
+
+        <div class="lab-steps">
+          <div v-for="item in steps" :key="item[0]" class="lab-step">
+            <span>{{ item[0] }}</span>
+            <p>{{ item[1] }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab-capabilities">
+      <div class="lab-kicker">Capability Matrix</div>
+      <div class="lab-capabilities__grid">
+        <article v-for="item in capabilities" :key="item.name" class="lab-capability">
+          <strong>{{ item.name }}</strong>
+          <p>{{ item.text }}</p>
+        </article>
+      </div>
+    </section>
+  </div>
+</template>
+
+<style scoped>
+.lab-page {
+  padding: 0;
+  background:
+    radial-gradient(circle at top left, rgba(149, 162, 140, 0.12), transparent 24rem),
+    radial-gradient(circle at top right, rgba(201, 158, 123, 0.14), transparent 24rem),
+    linear-gradient(180deg, #f4f1ea 0%, #efede7 100%);
+}
+
+.lab-hero,
+.lab-console,
+.lab-capabilities {
+  width: min(1560px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.lab-hero {
+  padding: 0.95rem 0 0.82rem;
+}
+
+.lab-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.56fr) minmax(18.5rem, 0.44fr);
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+  align-items: stretch;
+}
+
+.lab-label,
+.lab-kicker,
+.lab-hero__panel span,
+.lab-signal span,
+.lab-step span {
+  color: rgba(34, 49, 39, 0.5);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.lab-hero__copy h1 {
+  max-width: min(100%, 15.5em);
+  margin-top: 0.55rem;
+  color: #1f2b25;
+  font-size: clamp(1.32rem, 2vw, 2.04rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.lab-hero__copy {
+  display: grid;
+  align-content: center;
+  min-height: 11.5rem;
+}
+
+.lab-hero__copy p:last-child {
+  max-width: 39rem;
+  margin-top: 0.68rem;
+  color: #59655c;
+  font-size: 0.76rem;
+  line-height: 1.68;
+}
+
+.lab-hero__panel {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-height: 11.5rem;
+  padding: 0.88rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.lab-hero__panel strong {
+  color: #223127;
+  font-size: 0.92rem;
+  line-height: 1.38;
+}
+
+.lab-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.45rem;
+}
+
+.lab-console {
+  display: grid;
+  grid-template-columns: 0.76fr 1.18fr 0.78fr;
+  gap: 0.9rem;
+  padding: 0.82rem 0 0.95rem;
+  border-top: 1px solid rgba(34, 49, 39, 0.08);
+  border-bottom: 1px solid rgba(34, 49, 39, 0.08);
+  align-items: stretch;
+}
+
+.lab-console__left,
+.lab-console__center,
+.lab-console__right,
+.lab-capabilities {
+  display: grid;
+  align-content: start;
+  gap: 0.58rem;
+  height: 100%;
+}
+
+.lab-console__left,
+.lab-console__center,
+.lab-console__right {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.lab-prompt,
+.lab-signal,
+.lab-step,
+.lab-capability {
+  padding: 0.8rem;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.lab-prompt {
+  border: 1px solid rgba(34, 49, 39, 0.08);
+  text-align: left;
+  color: #223127;
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.lab-prompt.is-active {
+  background: #223127;
+  color: #f4efe7;
+  border-color: #223127;
+}
+
+.lab-console__center h2 {
+  max-width: 23rem;
+  color: #223127;
+  font-size: 1.08rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.lab-canvas {
+  display: grid;
+  gap: 0.75rem;
+  min-height: 100%;
+  align-content: space-between;
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 0.95rem;
+}
+
+.lab-canvas__summary {
+  max-width: 31rem;
+  color: #223127;
+  font-size: 0.78rem;
+  line-height: 1.68;
+}
+
+.lab-canvas__outputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.lab-canvas__outputs span {
+  padding: 0.48rem 0.62rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  color: #223127;
+  font-size: 0.62rem;
+}
+
+.lab-signals,
+.lab-steps {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.lab-signal strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: #223127;
+  font-size: 0.78rem;
+}
+
+.lab-step p,
+.lab-capability p {
+  margin-top: 0.35rem;
+  color: #5b665d;
+  font-size: 0.7rem;
+  line-height: 1.58;
+}
+
+.lab-capabilities {
+  padding: 0.92rem 0 2rem;
+}
+
+.lab-capabilities__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  align-items: stretch;
+}
+
+.lab-capability strong {
+  color: #223127;
+  font-size: 0.84rem;
+}
+
+.lab-capability {
+  min-height: 8.6rem;
+}
+
+@media (max-width: 1100px) {
+  .lab-hero__grid,
+  .lab-console,
+  .lab-capabilities__grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
