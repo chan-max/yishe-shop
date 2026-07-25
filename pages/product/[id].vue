@@ -148,7 +148,7 @@
                 <svg class="ui-icon-check" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                 </svg>
-                <span>支持 1对1 私人定制与同款打样</span>
+                <span>支持同款复刻与私人专属设计定制</span>
               </div>
             </div>
 
@@ -174,19 +174,19 @@
               </button>
             </div>
 
-            <!-- 服务保障 -->
+            <!-- 设计与定制特色说明 -->
             <div class="product-service-grid">
               <div class="product-service-box">
-                <strong>专属设计</strong>
-                <small>同款 / 相似款</small>
+                <strong>灵感复刻</strong>
+                <small>支持同款 / 相似款</small>
               </div>
               <div class="product-service-box">
-                <strong>快速打样</strong>
-                <small>3-5天发货</small>
+                <strong>私享定制</strong>
+                <small>1对1 设计师沟通</small>
               </div>
               <div class="product-service-box">
-                <strong>品质保证</strong>
-                <small>正品印花</small>
+                <strong>自由改装</strong>
+                <small>载体图案灵活换</small>
               </div>
             </div>
           </div>
