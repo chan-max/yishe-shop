@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
-import { api } from "../../utils/api";
-import { getPreviewImageUrl } from "../../utils/image";
+import { api } from "~/utils/api";
+import { getPreviewImageUrl } from "~/utils/image";
 import { getProductAbsoluteUrl, getProductPath } from "~/utils/product-url";
 import {
   SITE_DEFAULT_IMAGE,
@@ -10,7 +10,7 @@ import {
   SITE_OG_LOCALE,
   SITE_ORGANIZATION_NAME,
   SITE_URL,
-} from "../../utils/seo";
+} from "~/utils/seo";
 import { useBreadcrumbStructuredData, useItemListStructuredData } from "~/composables/use-seo";
 import { serializeStructuredData } from "~/utils/structured-data";
 
