@@ -129,7 +129,7 @@ const handleClick = (event: MouseEvent) => {
 
 .ys-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ys-focus-ring);
+  box-shadow: none;
 }
 
 .ys-btn:disabled {

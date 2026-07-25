@@ -193,6 +193,10 @@ const footerGroups = site.footer.groups;
 
 /* Responsive */
 @media (max-width: 640px) {
+  .footer__inner {
+    padding-bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom, 0px)));
+  }
+
   .footer__bottom {
     flex-direction: column;
     align-items: center;

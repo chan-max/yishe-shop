@@ -2682,8 +2682,8 @@ if (import.meta.server) {
     flex-wrap: nowrap;
     gap: 0.65rem;
     overflow-x: auto;
-    margin-inline: calc((100vw - var(--ys-container)) / -2);
-    padding-inline: calc((100vw - var(--ys-container)) / 2);
+    margin-inline: -1rem;
+    padding-inline: 1rem;
     padding-bottom: 0.25rem;
     -webkit-overflow-scrolling: touch;
   }
@@ -2756,7 +2756,8 @@ if (import.meta.server) {
 .catalog-range-field:focus-within {
   border-color: transparent;
   background: var(--ys-surface);
-  box-shadow: 0 0 0 3px var(--ys-focus-ring);
+  box-shadow: none;
+  outline: none;
 }
 
 .product-filter-search button,

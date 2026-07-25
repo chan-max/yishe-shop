@@ -55,6 +55,10 @@ useHead({
   htmlAttrs: { lang: SITE_LOCALE },
   meta: [
     {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover",
+    },
+    {
       name: "format-detection",
       content: "telephone=no, email=no, address=no",
     },
@@ -181,9 +185,11 @@ textarea:disabled {
   cursor: not-allowed;
 }
 
-:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--ys-focus);
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 input,

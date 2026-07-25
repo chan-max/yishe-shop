@@ -82,20 +82,20 @@ const collectionProducts = computed(() => {
   return collection.length >= 4 ? collection : products.value.slice(0, 8);
 });
 const processSteps = [
-  ["01", "找到商品", "从品类、搜索或照片墙进入真实商品。"],
-  ["02", "确定方向", "选择商品、风格和使用场景，整理成清晰需求。"],
-  ["03", "完成定制", "提交项目，让一个视觉想法进入真实商品。"],
+  ["01", "挑选 POD 载体", "在丰富的品质商品库中（T恤、卫衣、帆布包等）选定灵感载体。"],
+  ["02", "免费在线设计", "免费使用画布设计器，上传图案、排版文字或 AI 创作，高精 3D 预览。"],
+  ["03", "专属按需交付", "一件起订，工业级高品质印花快速制作与快递送送，亦可分享至灵感社区。"],
 ];
 
 const platformLabels = [
+  "免费在线设计",
+  "POD 按需定制",
+  "一件即订",
+  "灵感分享社区",
   "服饰印花",
-  "数码周边",
-  "家居织物",
-  "品牌礼赠",
-  "一件起订",
-  "商品打样",
-  "图案延展",
-  "POD 定制",
+  "数码配件",
+  "家居美学",
+  "品牌周边",
 ];
 
 const formatPrice = (product: StorefrontPublishedProduct) => {
@@ -168,21 +168,20 @@ const getCategoryWallImage = (catId: string) => {
         <div class="premium-hero__eyebrow">
           <span>1S.DESIGN</span>
           <i></i>
-          <span>POD 商品与创意定制平台</span>
+          <span>POD 创意定制与灵感分享平台</span>
         </div>
-        <h1>把一个想法<br />变成一件真实商品。</h1>
+        <h1>灵感即刻具象<br />免费设计与专属 POD 定制</h1>
         <p>
-          浏览已发布的 POD
-          商品，找到适合的载体，再把图案、风格和品牌想法延展成可以被使用的物品。
+          面向创作者、品牌主理人与极简品质追求者。无需专业经验，零门槛免费在线设计，高品质一件起订，让独特创意闪耀真实生命力。
         </p>
         <div class="premium-hero__actions">
-          <NuxtLink to="/products" class="premium-button premium-button--light">
-            浏览商品
-            <AppIcon name="arrow-right" :size="13" aria-hidden="true" />
-          </NuxtLink>
-          <NuxtLink to="/design" class="premium-button premium-button--line">
-            发起定制
+          <NuxtLink to="/design" class="premium-button premium-button--light">
+            免费在线设计
             <AppIcon name="palette" :size="13" aria-hidden="true" />
+          </NuxtLink>
+          <NuxtLink to="/products" class="premium-button premium-button--line">
+            探索 POD 灵感商品
+            <AppIcon name="arrow-right" :size="13" aria-hidden="true" />
           </NuxtLink>
         </div>
       </div>
@@ -467,19 +466,19 @@ const getCategoryWallImage = (catId: string) => {
 
     <section class="premium-final-cta">
       <div>
-        <span>START WITH YISHE</span>
-        <h2>找到商品，<br />再让想法继续发生。</h2>
+        <span>START YOUR CREATIVE JOURNEY</span>
+        <h2>即刻开启你的<br />POD 创意定制之旅</h2>
       </div>
       <div>
-        <p>浏览真实 POD 商品，或者把你的定制需求交给衣设。</p>
+        <p>体验免费在线设计工具，选定专属载体，一件即享高品质定制与灵感分享。</p>
         <div>
-          <NuxtLink to="/products" class="premium-button premium-button--light">
-            浏览商品
-            <AppIcon name="arrow-right" :size="13" aria-hidden="true" />
-          </NuxtLink>
-          <NuxtLink to="/design" class="premium-button premium-button--line">
-            开始定制
+          <NuxtLink to="/design" class="premium-button premium-button--light">
+            免费在线设计
             <AppIcon name="palette" :size="13" aria-hidden="true" />
+          </NuxtLink>
+          <NuxtLink to="/products" class="premium-button premium-button--line">
+            探索商品库
+            <AppIcon name="arrow-right" :size="13" aria-hidden="true" />
           </NuxtLink>
         </div>
       </div>

@@ -25,57 +25,52 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   seo: {
     description:
-      "衣设是面向品牌、创作者和个体用户的 POD 创意设计开放平台，聚合印花图案、定制商品、视觉素材、AI 辅助创作和设计师服务。",
+      "衣设（1s.design）是面向品牌与创作者的 POD 创意定制与灵感分享平台。提供免费在线设计工具、丰富印花载体与一件起订专属按需定制服务。",
     twitterDescription:
-      "发现可商用的 POD 图案、定制商品灵感和创意设计服务，把私人表达转化为真实产品。",
+      "探索 POD 创意设计与灵感分享平台。免费在线创作，轻松把独特灵感变为专属高品质定制实物。",
     keywords:
-      "衣设,yishe,POD,Print on Demand,印花设计,定制商品,私人定制,图案素材,服装印花,创意设计,AI设计,设计师服务,品牌视觉,周边定制,礼品定制",
+      "衣设,1s.design,POD,Print on Demand,免费设计,按需定制,创意定制,印花设计,定制平台,创意分享,个性化定制,服装定制,品牌周边",
     themeColor: "#ffffff",
     robots:
       "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     home: {
-      title: "衣设 1s.design - POD 印花、定制商品与创意设计开放平台",
+      title: "衣设 1s.design · POD 创意定制与灵感分享平台 | 免费在线设计",
       description:
-        "衣设聚合 POD 印花图案、定制商品、品牌周边、私人定制和创意设计灵感，帮助创作者与品牌把视觉想法转化为真实产品。",
+        "衣设（1s.design）是领先的 POD 创意定制与灵感分享平台。支持免费在线设计、3D 效果预览与一件按需定制，让每个创意即刻品质落地。",
       keywords:
-        "POD,印花设计,定制商品,私人定制,创意设计,图案素材,服装印花,品牌周边,按需定制,1s.design",
+        "衣设,1s.design,POD,Print on Demand,免费设计,按需定制,创意定制,印花设计,定制平台,创意分享",
       url: siteUrl,
       type: "website",
     },
   },
   announcement: {
     enabled: true,
-    text: "注册衣设，探索 POD 印花定制与创意设计商品。",
-    actionLabel: "立即探索",
-    actionTo: "/products",
+    text: "✨ 探索衣设 POD 创意平台：免费在线设计，一件即享专属按需定制与灵感分享。",
+    actionLabel: "免费设计",
+    actionTo: "/design",
   },
   navigation: [
-    { label: "商品", to: "/products", icon: "box" },
-    { label: "定制设计", to: "/design", icon: "palette" },
+    { label: "商品库", to: "/products", icon: "box" },
+    { label: "免费设计", to: "/design", icon: "palette" },
     { label: "关于我们", to: "/about", icon: "info" },
     { label: "联系我们", to: "/contact", icon: "mail" },
   ],
   footer: {
     newsletterEyebrow: "订阅更新",
-    newsletterTitle: "获取最新 POD 商品与设计灵感",
+    newsletterTitle: "获取最新 POD 创意商品与设计灵感",
     newsletterPlaceholder: "输入邮箱地址",
     newsletterAction: "订阅",
     description:
-      "POD 印花、定制商品与创意设计开放平台。为创作者、品牌和个人定制需求提供可浏览、可延展的商品灵感与开放 API 对接机制。",
+      "POD 创意定制与灵感分享平台。提供免费在线设计工具、丰富的印花与周边载体，支持一件按需定制与全球交付，让创意自由表达。",
     email: "jackieontheway666@gmail.com",
     groups: {
-      专题定制: [
-        { name: "春联年货定制 🧧", href: "/springfestival" },
-        { name: "马克杯水杯定制 ☕", href: "/cup" },
-        { name: "全部商品分类", href: "/products" },
-      ],
-      商品: [
+      探索: [
         { name: "全部商品", href: "/products" },
-        { name: "定制设计", href: "/design" },
+        { name: "在线设计", href: "/design" },
         { name: "设计灵感", href: "/products/印花" },
-        { name: "收藏夹", href: "/favorites" },
+        { name: "我的收藏", href: "/favorites" },
       ],
-      了解: [
+      关于: [
         { name: "关于我们", href: "/about" },
         { name: "联系我们", href: "/contact" },
       ],

@@ -7,11 +7,11 @@ import { SITE_URL } from "~/utils/seo";
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "发起 POD 定制设计 - 衣设",
+  title: "免费在线设计 & POD 专属按需定制 - 衣设 1s.design",
   description:
-    "选择你喜欢的商品类型和设计风格，衣设团队为你提供印花图案、品牌视觉、包装礼盒、社媒画面等 POD 定制设计服务。",
+    "零门槛免费体验在线设计，选定 T恤、卫衣、帆布包、手机壳等品质载体，实时 3D 效果预览，支持一件按需定制与灵感分享。",
   keywords:
-    "POD定制设计,私人定制,印花图案设计,周边定制,礼品定制,品牌视觉,服装印花设计",
+    "免费设计,POD按需定制,在线设计工具,印花设计,专属定制,一件起订,品牌周边,衣设",
   url: `${SITE_URL}/design`,
   type: "website",
 });
@@ -294,14 +294,14 @@ applyProductSource();
       />
       <div class="custom-design-hero__shade" aria-hidden="true"></div>
       <div class="custom-design-hero__content">
-        <span>YISHE CUSTOM STUDIO</span>
-        <h1>把一个想法，<br />变成一组商品。</h1>
+        <span>YISHE FREE DESIGN & POD STUDIO</span>
+        <h1>免费在线设计，<br />专属 POD 按需定制。</h1>
         <p>
-          无需准备专业设计稿。选择商品、风格和使用场景，衣设帮助你把模糊需求整理成可以落地的定制项目。
+          零门槛体验在线设计工具，选定商品、风格与应用场景，免费创作，一件起订，衣设帮你把灵感落地为品质实物。
         </p>
         <a href="#custom-brief" class="design-button design-button--light">
-          开始填写需求
-          <AppIcon name="arrow-right" :size="14" aria-hidden="true" />
+          开启免费设计
+          <AppIcon name="palette" :size="14" aria-hidden="true" />
         </a>
       </div>
     </section>
