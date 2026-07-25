@@ -17,5 +17,8 @@ node_modules
 .data/sitemap-build-*
 .data/last-sitemap-build-dir
 .data/verified-sitemap-*
+apps/*/.data
+apps/*/.nuxt
+apps/*/.output
 dist
 .DS_Store
