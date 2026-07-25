@@ -51,13 +51,21 @@ export const buildSitemapUrls = async () => {
     console.warn("[Sitemap] Category keywords extraction skipped:", error);
   }
 
-  // 3. 构建全量动态分类/关键词 SEO 路由 (如 /products/mousepad, /products/tshirt)
-  const categoryUrls = Array.from(dynamicKeywordsSet).map((slug) => ({
-    loc: `/products/${encodeURIComponent(slug)}`,
-    lastmod: now,
-    changefreq: "weekly",
-    priority: 0.85,
-  }));
+  // 3. 构建全量动态分类/关键词 SEO 路由 (如 /products/mousepad, /products/地毯)
+  const categoryUrls = Array.from(dynamicKeywordsSet).map((slug) => {
+    let unencoded = slug;
+    try {
+      unencoded = decodeURIComponent(slug);
+    } catch {
+      unencoded = slug;
+    }
+    return {
+      loc: `/products/${unencoded}`,
+      lastmod: now,
+      changefreq: "weekly",
+      priority: 0.85,
+    };
+  });
 
   // 注：所有具体的商品详情页 (/product/:id) 均由 /sitemaps/products/[page].xml 自动分页切块分发，
   // 确保单次 XML 响应体积 < 800KB，绝不导致数据库卡顿或内存过大！
