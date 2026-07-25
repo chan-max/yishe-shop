@@ -103,18 +103,17 @@
             <h1>{{ product.name }}</h1>
           </div>
 
-          <!-- 核心亮点与参数卡片 (Clean, Bordered, No Shadow) -->
+          <!-- 设计说明与特点卡片 (纯文本内容，隐藏数量重量) -->
           <div class="product-features-card">
             <div class="product-features-header">
-              <strong>商品亮点与说明 (Key Features)</strong>
+              <strong>设计说明与特点 (Design Description)</strong>
             </div>
             <ul class="product-features-list">
-              <li>• <strong>分类类型:</strong> {{ product.type || '未指定' }}</li>
-              <li v-if="product.stock !== undefined">• <strong>库存状态:</strong> 现货 {{ product.stock }} 件</li>
-              <li>• <strong>商品描述:</strong> {{ productLead }}</li>
+              <li>• <strong>分类风格:</strong> {{ product.type || '未指定' }}</li>
+              <li>• <strong>作品简介:</strong> {{ productLead }}</li>
             </ul>
 
-            <!-- 动态参数网格 -->
+            <!-- 动态参数网格 (只展示材质、尺寸、品牌等设计相关文本) -->
             <div v-if="productMetaItems.length" class="product-specs-grid">
               <div v-for="item in productMetaItems" :key="item.label" class="product-spec-item">
                 <span class="product-spec-label">{{ item.label }}</span>
@@ -466,12 +465,7 @@ const productMetaItems = computed(() =>
     { label: "品牌", value: product.value?.brand },
     { label: "材质", value: product.value?.material },
     { label: "尺寸", value: product.value?.dimensions },
-    { label: "单位", value: product.value?.unit },
-    { label: "SKU", value: product.value?.sku },
-    { label: "SPU", value: product.value?.spu },
-    { label: "条码", value: product.value?.barcode },
     { label: "产地", value: product.value?.origin },
-    { label: "重量", value: product.value?.weight ? `${product.value.weight}` : "" },
   ]
     .map((item) => ({ ...item, value: formatMetaValue(item.value) }))
     .filter((item) => item.value),
