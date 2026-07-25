@@ -75,14 +75,16 @@
         </div>
 
         <aside class="product-buy-panel">
-          <!-- 社交发布者与文件编号标识 -->
-          <div class="product-social-author">
-            <div class="product-author-info">
-              <div class="product-author-avatar">衣</div>
-              <div>
-                <strong class="product-author-name">衣设官方工坊</strong>
-                <span class="product-code-tag">#{{ product.code || product.sku || product.id }}</span>
-              </div>
+          <!-- 顶部状态 Pill & SKU 代码（无衣头像/硬编码） -->
+          <div class="product-header-meta">
+            <div class="product-meta-pills">
+              <span class="product-pill product-pill--blue">🔥 热门推荐</span>
+              <span v-if="product.inventoryStatus" class="product-pill product-pill--green">
+                🟢 {{ product.inventoryStatus }}
+              </span>
+              <span class="product-pill product-pill--gray">
+                SKU: {{ product.code || product.sku || product.id }}
+              </span>
             </div>
             <FavoriteButton
               :is-favorite="isFavorite"
@@ -92,37 +94,34 @@
             />
           </div>
 
-          <!-- 分类 & 标题 -->
+          <!-- 分类 & 大标题 -->
           <div class="product-detail-kicker">
-            {{ product.type || "未识别" }}
+            {{ product.type || "POD 定制商品" }}
           </div>
 
           <div class="product-title-row">
             <h1>{{ product.name }}</h1>
           </div>
 
-          <!-- 价格与社交状态 Badge 标签 -->
-          <div class="product-price-status-group">
-            <div v-if="hasProductPrice" class="product-price-line">
-              <strong>¥{{ productPrice }}</strong>
-              <del v-if="productOldPrice">¥{{ productOldPrice }}</del>
+          <!-- 核心亮点与参数卡片 (参考截图 Key item features & Specs) -->
+          <div class="product-features-card">
+            <div class="product-features-header">
+              <strong>商品核心亮点 (Key item features)</strong>
             </div>
+            <ul class="product-features-list">
+              <li>• <strong>分类类型:</strong> {{ product.type || '未指定' }}</li>
+              <li v-if="product.stock !== undefined">• <strong>库存状态:</strong> 现货 {{ product.stock }} 件</li>
+              <li>• <strong>商品描述:</strong> {{ productLead }}</li>
+            </ul>
 
-            <div class="product-status-line" aria-label="商品状态">
-              <span v-if="product.inventoryStatus" class="product-badge product-badge--green">
-                🟢 {{ product.inventoryStatus }}
-              </span>
-              <span v-if="product.stock !== undefined" class="product-badge">
-                📦 库存 {{ product.stock }}
-              </span>
-              <span v-if="favoriteCount !== null" class="product-badge">
-                ❤️ {{ favoriteCount }} 收藏
-              </span>
+            <!-- 动态参数与指标网格 -->
+            <div v-if="productMetaItems.length" class="product-specs-grid">
+              <div v-for="item in productMetaItems" :key="item.label" class="product-spec-item">
+                <span class="product-spec-label">{{ item.label }}</span>
+                <strong class="product-spec-value">{{ item.value }}</strong>
+              </div>
             </div>
           </div>
-
-          <!-- 导语/描述 -->
-          <p class="product-lead">{{ productLead }}</p>
 
           <!-- 社交话题 Hashtags (#话题) -->
           <div v-if="productKeywords.length" class="product-tags">
@@ -136,46 +135,63 @@
             </NuxtLink>
           </div>
 
-          <!-- 规格属性与参数卡片组 -->
-          <div v-if="productMetaItems.length" class="product-meta-panel">
-            <dl>
-              <template v-for="item in productMetaItems" :key="item.label">
-                <dt>{{ item.label }}</dt>
-                <dd>{{ item.value }}</dd>
-              </template>
-            </dl>
-          </div>
-
-          <div v-if="productSignalItems.length" class="product-signal-grid">
-            <article v-for="item in productSignalItems" :key="item.label">
-              <span>{{ item.label }}</span>
-              <strong>{{ item.value }}</strong>
-            </article>
-          </div>
-
-          <!-- 社交二创 Design Remix 卡片 -->
-          <div class="product-design-remix">
-            <div class="product-remix-header">
-              <span class="product-remix-badge">✨ Design Remix</span>
-              <strong>设计同款，做成你的版本</strong>
-              <p>基于这个商品的风格、图案或载体，发起私人定制需求。</p>
+          <!-- 右侧卡片：价格与核心定制入口（设计同款、设计相似款、联系设计师） -->
+          <div class="product-action-card">
+            <!-- 价格展示 -->
+            <div v-if="hasProductPrice" class="product-price-section">
+              <div class="product-price-main">
+                <span class="product-price-currency">¥</span>
+                <strong class="product-price-amount">{{ productPrice }}</strong>
+                <del v-if="productOldPrice" class="product-price-del">¥{{ productOldPrice }}</del>
+              </div>
+              <div class="product-guarantee-tag">
+                <svg class="ui-icon-check" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                <span>支持 1对1 私人定制与同款打样</span>
+              </div>
             </div>
-          </div>
 
-          <!-- 交互操作按钮组 -->
-          <div class="product-actions">
-            <NuxtLink :to="designSameHref" class="product-primary-action">
-              <AppIcon name="palette" class="ui-icon" :size="15" aria-hidden="true" />
-              免费设计同款 (Remix)
+            <!-- 设计入口主按钮：设计同款 -->
+            <NuxtLink :to="designSameHref" class="product-primary-btn">
+              <AppIcon name="palette" class="ui-icon" :size="17" aria-hidden="true" />
+              设计同款 (Design Same Style)
             </NuxtLink>
-            <NuxtLink to="/contact" class="product-secondary-action">
-              <AppIcon name="sparkle" class="ui-icon" :size="14" aria-hidden="true" />
-              咨询按需定制
-            </NuxtLink>
-            <button type="button" class="product-secondary-action" @click="copyLink">
-              <AppIcon name="link" class="ui-icon" :size="14" aria-hidden="true" />
-              分享 / 复制链接
-            </button>
+
+            <!-- 核心快捷定制入口按钮组 (设计同款 / 设计相似款 / 咨询设计师) -->
+            <div class="product-secondary-actions-grid">
+              <NuxtLink :to="designSameHref" class="product-secondary-btn">
+                <AppIcon name="sparkle" class="ui-icon" :size="15" aria-hidden="true" />
+                设计相似款
+              </NuxtLink>
+              <NuxtLink to="/contact" class="product-secondary-btn">
+                <AppIcon name="chat" class="ui-icon" :size="15" aria-hidden="true" />
+                咨询设计师定制
+              </NuxtLink>
+              <button type="button" class="product-secondary-btn" @click="copyLink">
+                <AppIcon name="link" class="ui-icon" :size="15" aria-hidden="true" />
+                分享 / 复制链接
+              </button>
+            </div>
+
+            <!-- 服务与保障网格 (参考截图 Shipping / Delivery 3-Box 布局) -->
+            <div class="product-service-grid">
+              <div class="product-service-box">
+                <span class="product-service-icon">🎨</span>
+                <strong>专属设计</strong>
+                <small>同款/相似款</small>
+              </div>
+              <div class="product-service-box">
+                <span class="product-service-icon">🚚</span>
+                <strong>快速打样</strong>
+                <small>3-5天发货</small>
+              </div>
+              <div class="product-service-box">
+                <span class="product-service-icon">🛡️</span>
+                <strong>品质保证</strong>
+                <small>正品印花 guarantee</small>
+              </div>
+            </div>
           </div>
         </aside>
       </section>
@@ -1145,150 +1161,122 @@ onMounted(() => {
   top: 80px;
   display: grid;
   gap: 1.1rem;
-  border-top: 0;
   background: transparent;
-  padding: clamp(0.5rem, 1vw, 0.75rem) 0 0;
+  padding: 0;
 }
 
-/* 社交发布者工坊 Header */
-.product-social-author {
+/* 顶部 Pill 状态栏 (无衣头像硬编码) */
+.product-header-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
+  gap: 0.5rem;
 }
 
-.product-author-info {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.product-author-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff2442 0%, #ff5268 100%);
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(255, 36, 66, 0.25);
-}
-
-.product-author-name {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #111;
-  line-height: 1.2;
-}
-
-.product-code-tag {
-  font-size: 0.7rem;
-  color: #6b7280;
-  font-family: ui-monospace, SFMono-Regular, monospace;
-}
-
-.product-detail-kicker {
-  color: #ff2442;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: #fff0f2;
-  display: inline-block;
-  padding: 0.15rem 0.6rem;
-  border-radius: 999px;
-  width: fit-content;
-}
-
-.product-title-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem;
-  align-items: start;
-}
-
-.product-title-row h1 {
-  min-width: 0;
-  margin: 0;
-  color: #111;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-/* 价格与社交 Badge 状态组合卡片 */
-.product-price-status-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  background: #fafafa;
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  border: 1px solid #f0f0f0;
-}
-
-.product-status-line {
+.product-meta-pills {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem;
 }
 
-.product-badge {
+.product-pill {
   display: inline-flex;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #374151;
-  background: #fff;
-  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid #e5e7eb;
+
+  &.product-pill--blue {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+
+  &.product-pill--green {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &.product-pill--gray {
+    background: #f3f4f6;
+    color: #4b5563;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
 }
 
-.product-badge--green {
-  color: #059669;
-  background: #ecfdf5;
-  border-color: #a7f3d0;
+.product-detail-kicker {
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.product-lead {
+.product-title-row h1 {
   margin: 0;
-  color: #4b5563;
-  font-size: 0.88rem;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 750;
+  line-height: 1.25;
 }
 
-.product-price-line {
-  display: flex;
-  align-items: baseline;
+/* 核心亮点 Card (参考截图 Key item features) */
+.product-features-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+
+  .product-features-header {
+    font-size: 0.9rem;
+    font-weight: 750;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .product-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    li {
+      font-size: 0.84rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+  }
+}
+
+.product-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
+  background: #f9fafb;
+  padding: 0.65rem;
+  border-radius: 8px;
 }
 
-.product-price-line strong {
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  line-height: 1;
-  font-weight: 900;
-  color: #ff2442;
-}
+.product-spec-item {
+  display: flex;
+  flex-direction: column;
 
-.product-price-line del {
-  color: #9ca3af;
-  font-size: 0.95rem;
-  font-weight: 500;
+  .product-spec-label {
+    font-size: 0.7rem;
+    color: #6b7280;
+  }
+
+  .product-spec-value {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #111827;
+  }
 }
 
 .product-tags {
@@ -1298,81 +1286,166 @@ onMounted(() => {
 }
 
 .product-hashtag {
-  display: inline-flex;
-  align-items: center;
   font-size: 0.76rem;
   font-weight: 600;
-  color: #ff2442;
-  background: #fff0f2;
+  color: #2563eb;
+  background: #eff6ff;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   text-decoration: none;
   transition: all 0.15s ease;
 
   &:hover {
-    background: #ff2442;
+    background: #2563eb;
     color: #fff;
-    transform: translateY(-1px);
   }
 }
 
-.product-meta-panel {
-  display: grid;
-  padding-top: 0.5rem;
-}
-
-.product-signal-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-  background: transparent;
-}
-
-.product-signal-grid article {
-  display: grid;
-  align-content: space-between;
-  min-height: 4.5rem;
-  background: #fafafa;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  padding: 0.75rem;
-  transition: transform 220ms ease, background-color 220ms ease;
-}
-
-.product-signal-grid article:hover {
-  transform: translateY(-2px);
+/* 右侧卡片：价格与高转化率核心定制入口 (参照截图右侧 Panel) */
+.product-action-card {
   background: #fff;
-  border-color: #e5e7eb;
-}
-
-.product-signal-grid span {
-  color: #9ca3af;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.product-signal-grid strong {
-  display: -webkit-box;
-  margin-top: 0.4rem;
-  color: #111;
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.2;
-  overflow: hidden;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-/* 社交二创 Design Remix 卡片 */
-.product-design-remix {
-  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-  color: #fff;
-  padding: 1.1rem 1.25rem;
+  border: 1px solid #e5e7eb;
   border-radius: 16px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.product-price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.product-price-currency {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.product-price-amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.product-price-del {
+  margin-left: 0.5rem;
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+.product-guarantee-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #16a34a;
+
+  .ui-icon-check {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* 核心主按钮：设计同款 (Walmart Blue 醒目全宽圆角键) */
+.product-primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0071dc;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.85rem;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 113, 220, 0.3);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #005bb5;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 113, 220, 0.4);
+  }
+}
+
+/* 核心快捷入口网格 (设计相似款 / 咨询设计师 / 分享链接) */
+.product-secondary-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.product-secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.85rem;
+  font-weight: 650;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #fff;
+    border-color: #111827;
+    color: #111827;
+  }
+}
+
+/* 服务与保障网格 (参考截图 Shipping / Delivery 3-Box 布局) */
+.product-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.product-service-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  padding: 0.6rem 0.35rem;
+  border-radius: 8px;
+
+  .product-service-icon {
+    font-size: 1.1rem;
+    margin-bottom: 0.15rem;
+  }
+
+  strong {
+    font-size: 0.75rem;
+    color: #111827;
+    font-weight: 700;
+  }
+
+  small {
+    font-size: 0.65rem;
+    color: #6b7280;
+    margin-top: 0.1rem;
+  }
 }
 
 .product-remix-badge {
