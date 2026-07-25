@@ -105,19 +105,31 @@
 
 
 
-          <!-- 话题标签 (#话题) -->
-          <div v-if="productKeywords.length" class="product-tags">
-            <NuxtLink
-              v-for="keyword in productKeywords.slice(0, 8)"
-              :key="keyword"
-              :to="`/products/${encodeURIComponent(keyword)}`"
-              class="product-hashtag"
-            >
-              #{{ keyword }}
-            </NuxtLink>
+          <!-- 商品详情与描述块 (置于右侧面板) -->
+          <div class="product-detail-box">
+            <div class="product-detail-box-header">商品详情</div>
+            <div class="product-detail-box-content">
+              <p v-if="productLead">{{ productLead }}</p>
+              <p v-if="productStory && productStory !== productLead">{{ productStory }}</p>
+              <p v-if="productUsage">{{ productUsage }}</p>
+            </div>
+
+            <dl v-if="productSpecItems.length" class="product-detail-box-specs">
+              <template v-for="item in productSpecItems" :key="item.label">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </template>
+            </dl>
+
+            <dl v-if="productAttributeItems.length" class="product-detail-box-specs">
+              <template v-for="item in productAttributeItems" :key="item.label">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </template>
+            </dl>
           </div>
 
-          <!-- 右侧卡片：价格与核心定制入口 (无阴影、精细字号) -->
+          <!-- 右侧卡片：价格与核心定制入口 -->
           <div class="product-action-card">
             <!-- 价格展示 -->
             <div v-if="hasProductPrice" class="product-price-section">
@@ -181,39 +193,6 @@
           咨询按需定制
         </NuxtLink>
       </div>
-
-      <section class="product-tabs">
-        <nav aria-label="商品详情标签">
-          <button type="button" class="active">商品详情</button>
-          <button v-if="productSpecItems.length" type="button">规格参数</button>
-          <button v-if="productAttributeItems.length" type="button">属性</button>
-        </nav>
-
-        <div class="product-detail-copy">
-          <p>{{ productStory }}</p>
-          <p v-if="productUsage">{{ productUsage }}</p>
-        </div>
-
-        <div v-if="productSpecItems.length" class="product-data-table">
-          <h2>规格参数</h2>
-          <dl>
-            <template v-for="item in productSpecItems" :key="item.label">
-              <dt>{{ item.label }}</dt>
-              <dd>{{ item.value }}</dd>
-            </template>
-          </dl>
-        </div>
-
-        <div v-if="productAttributeItems.length" class="product-data-table">
-          <h2>商品属性</h2>
-          <dl>
-            <template v-for="item in productAttributeItems" :key="item.label">
-              <dt>{{ item.label }}</dt>
-              <dd>{{ item.value }}</dd>
-            </template>
-          </dl>
-        </div>
-      </section>
 
       <section v-if="relatedProducts.length" class="product-related">
         <h2>你可能还喜欢</h2>
@@ -1195,62 +1174,48 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-/* 核心亮点 Card (无阴影, 洁净内边框) */
-.product-features-card {
+/* 右侧栏商品详情与说明 */
+.product-detail-box {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 0.85rem 1rem;
   box-shadow: none;
-
-  .product-features-header {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.4rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid #f3f4f6;
-  }
-
-  .product-features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 0.65rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-
-    li {
-      font-size: 0.8rem;
-      color: #4b5563;
-      line-height: 1.45;
-    }
-  }
 }
 
-.product-specs-grid {
+.product-detail-box-header {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #111827;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.product-detail-box-content p {
+  font-size: 0.84rem;
+  color: #4b5563;
+  line-height: 1.55;
+  margin: 0 0 0.4rem 0;
+}
+
+.product-detail-box-specs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem;
-  background: #f9fafb;
-  border: 1px solid #f3f4f6;
-  padding: 0.55rem;
-  border-radius: 6px;
-}
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+  margin: 0.5rem 0 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f3f4f6;
 
-.product-spec-item {
-  display: flex;
-  flex-direction: column;
-
-  .product-spec-label {
-    font-size: 0.68rem;
+  dt {
     color: #6b7280;
   }
 
-  .product-spec-value {
-    font-size: 0.78rem;
-    font-weight: 600;
+  dd {
     color: #111827;
+    font-weight: 600;
+    margin: 0;
   }
 }
 
