@@ -9,6 +9,12 @@ export default defineNuxtConfig({
     port: 15201,
     host: '0.0.0.0'
   },
+  // shop-main 专属独立 SEO 配置
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:15201',
+    name: process.env.NUXT_PUBLIC_SITE_NAME || '衣设官方工坊 (Shop Main)',
+    description: '衣设官方工坊 - 提供服装设计、POD定制商品与专属设计服务'
+  },
   runtimeConfig: {
     public: {
       siteName: process.env.NUXT_PUBLIC_SITE_NAME || '衣设官方工坊 (Shop Main)',
