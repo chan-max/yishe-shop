@@ -136,22 +136,18 @@
 
             <!-- 设计入口主按钮：设计同款 -->
             <NuxtLink :to="designSameHref" class="product-primary-btn">
-              <AppIcon name="palette" class="ui-icon" :size="14" aria-hidden="true" />
               设计同款
             </NuxtLink>
 
             <!-- 快捷定制入口按钮组 (设计同款 / 设计相似款 / 咨询设计师) -->
             <div class="product-secondary-actions-grid">
               <NuxtLink :to="designSameHref" class="product-secondary-btn">
-                <AppIcon name="sparkle" class="ui-icon" :size="13" aria-hidden="true" />
                 设计相似款
               </NuxtLink>
               <NuxtLink to="/contact" class="product-secondary-btn">
-                <AppIcon name="chat" class="ui-icon" :size="13" aria-hidden="true" />
                 咨询设计师定制
               </NuxtLink>
               <button type="button" class="product-secondary-btn" @click="copyLink">
-                <AppIcon name="link" class="ui-icon" :size="13" aria-hidden="true" />
                 复制链接 / 分享
               </button>
             </div>
