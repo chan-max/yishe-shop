@@ -75,15 +75,15 @@
         </div>
 
         <aside class="product-buy-panel">
-          <div class="product-panel-index" aria-hidden="true">
-            <span>YISHE PRODUCT FILE</span>
-            <strong>{{ product.code || product.sku || product.id }}</strong>
-          </div>
-          <div class="product-detail-kicker">
-            {{ product.type || "未识别" }}
-          </div>
-          <div class="product-title-row">
-            <h1>{{ product.name }}</h1>
+          <!-- 社交发布者与文件编号标识 -->
+          <div class="product-social-author">
+            <div class="product-author-info">
+              <div class="product-author-avatar">衣</div>
+              <div>
+                <strong class="product-author-name">衣设官方工坊</strong>
+                <span class="product-code-tag">#{{ product.code || product.sku || product.id }}</span>
+              </div>
+            </div>
             <FavoriteButton
               :is-favorite="isFavorite"
               :count="favoriteCount"
@@ -92,29 +92,51 @@
             />
           </div>
 
-          <div class="product-status-line" aria-label="商品状态">
-            <span v-if="product.inventoryStatus">{{ product.inventoryStatus }}</span>
-            <span v-if="product.stock !== undefined">库存 {{ product.stock }}</span>
-            <span v-if="favoriteCount !== null">{{ favoriteCount }} 收藏</span>
+          <!-- 分类 & 标题 -->
+          <div class="product-detail-kicker">
+            {{ product.type || "未识别" }}
           </div>
 
-          <div v-if="hasProductPrice" class="product-price-line">
-            <strong>¥{{ productPrice }}</strong>
-            <del v-if="productOldPrice">¥{{ productOldPrice }}</del>
+          <div class="product-title-row">
+            <h1>{{ product.name }}</h1>
           </div>
 
+          <!-- 价格与社交状态 Badge 标签 -->
+          <div class="product-price-status-group">
+            <div v-if="hasProductPrice" class="product-price-line">
+              <strong>¥{{ productPrice }}</strong>
+              <del v-if="productOldPrice">¥{{ productOldPrice }}</del>
+            </div>
+
+            <div class="product-status-line" aria-label="商品状态">
+              <span v-if="product.inventoryStatus" class="product-badge product-badge--green">
+                🟢 {{ product.inventoryStatus }}
+              </span>
+              <span v-if="product.stock !== undefined" class="product-badge">
+                📦 库存 {{ product.stock }}
+              </span>
+              <span v-if="favoriteCount !== null" class="product-badge">
+                ❤️ {{ favoriteCount }} 收藏
+              </span>
+            </div>
+          </div>
+
+          <!-- 导语/描述 -->
           <p class="product-lead">{{ productLead }}</p>
 
+          <!-- 社交话题 Hashtags (#话题) -->
           <div v-if="productKeywords.length" class="product-tags">
             <NuxtLink
               v-for="keyword in productKeywords.slice(0, 8)"
               :key="keyword"
               :to="`/products/${encodeURIComponent(keyword)}`"
+              class="product-hashtag"
             >
-              {{ keyword }}
+              #{{ keyword }}
             </NuxtLink>
           </div>
 
+          <!-- 规格属性与参数卡片组 -->
           <div v-if="productMetaItems.length" class="product-meta-panel">
             <dl>
               <template v-for="item in productMetaItems" :key="item.label">
@@ -131,29 +153,28 @@
             </article>
           </div>
 
+          <!-- 社交二创 Design Remix 卡片 -->
           <div class="product-design-remix">
-            <div>
-              <span>Design Remix</span>
+            <div class="product-remix-header">
+              <span class="product-remix-badge">✨ Design Remix</span>
               <strong>设计同款，做成你的版本</strong>
               <p>基于这个商品的风格、图案或载体，发起私人定制需求。</p>
             </div>
-            <NuxtLink :to="designSameHref" class="product-design-action">
-              <AppIcon name="sparkle" class="ui-icon" :size="15" aria-hidden="true" />
-              设计同款
-            </NuxtLink>
           </div>
 
+          <!-- 交互操作按钮组 -->
           <div class="product-actions">
             <NuxtLink :to="designSameHref" class="product-primary-action">
               <AppIcon name="palette" class="ui-icon" :size="15" aria-hidden="true" />
-              免费设计同款
+              免费设计同款 (Remix)
             </NuxtLink>
             <NuxtLink to="/contact" class="product-secondary-action">
+              <AppIcon name="sparkle" class="ui-icon" :size="14" aria-hidden="true" />
               咨询按需定制
             </NuxtLink>
             <button type="button" class="product-secondary-action" @click="copyLink">
               <AppIcon name="link" class="ui-icon" :size="14" aria-hidden="true" />
-              复制链接
+              分享 / 复制链接
             </button>
           </div>
         </aside>
@@ -1123,49 +1144,71 @@ onMounted(() => {
   position: sticky;
   top: 80px;
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
   border-top: 0;
   background: transparent;
   padding: clamp(0.5rem, 1vw, 0.75rem) 0 0;
 }
 
-.product-panel-index {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.25rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 0;
+/* 社交发布者工坊 Header */
+.product-social-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
 }
 
-.product-panel-index span {
-  color: #86868b;
-  font-size: 0.62rem;
-  font-weight: 850;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.product-author-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
-.product-panel-index strong {
-  color: #333;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+.product-author-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff2442 0%, #ff5268 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 36, 66, 0.25);
+}
+
+.product-author-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.2;
+}
+
+.product-code-tag {
   font-size: 0.7rem;
-  font-weight: 650;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #6b7280;
+  font-family: ui-monospace, SFMono-Regular, monospace;
 }
 
 .product-detail-kicker {
-  color: #777;
-  font-size: 0.68rem;
+  color: #ff2442;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  background: #fff0f2;
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  width: fit-content;
 }
 
 .product-title-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
   align-items: start;
 }
@@ -1173,102 +1216,109 @@ onMounted(() => {
 .product-title-row h1 {
   min-width: 0;
   margin: 0;
-  color: #050505;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.75rem, 3vw, 3.2rem);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.08;
+  color: #111;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+/* 价格与社交 Badge 状态组合卡片 */
+.product-price-status-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: #fafafa;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #f0f0f0;
 }
 
 .product-status-line {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
-.product-status-line span {
+.product-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 1.65rem;
-  border: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
   background: #fff;
-  color: #555;
-  font-size: 0.68rem;
-  font-weight: 750;
-  padding: 0 0.65rem;
-  transition: background-color 180ms ease, color 180ms ease;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
 }
 
-.product-status-line span:hover {
-  background: #111;
-  color: #fff;
+.product-badge--green {
+  color: #059669;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
 }
 
 .product-lead {
   margin: 0;
-  color: #4b4b4b;
+  color: #4b5563;
   font-size: 0.88rem;
-  line-height: 1.78;
+  line-height: 1.65;
   overflow-wrap: anywhere;
 }
 
 .product-price-line {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.5rem;
 }
 
-.product-price-line strong,
-.product-price-line del {
-  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+.product-price-line strong {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
   line-height: 1;
-  font-weight: 800;
+  font-weight: 900;
+  color: #ff2442;
 }
 
 .product-price-line del {
-  color: rgba(0, 0, 0, 0.36);
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
-.product-tags,
-.product-next-links {
+.product-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
-.product-tags a,
-.product-next-links a {
+.product-hashtag {
   display: inline-flex;
   align-items: center;
-  min-height: 1.65rem;
-  border: 0;
-  border-radius: 0;
-  background: #fff;
-  color: #333;
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 0 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #ff2442;
+  background: #fff0f2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
   text-decoration: none;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
-}
+  transition: all 0.15s ease;
 
-.product-tags a:hover,
-.product-next-links a:hover {
-  transform: translateY(-2px);
-  background: #111;
-  color: #fff;
+  &:hover {
+    background: #ff2442;
+    color: #fff;
+    transform: translateY(-1px);
+  }
 }
 
 .product-meta-panel {
   display: grid;
-  padding-top: 0.75rem;
+  padding-top: 0.5rem;
 }
 
 .product-signal-grid {
@@ -1281,51 +1331,74 @@ onMounted(() => {
 .product-signal-grid article {
   display: grid;
   align-content: space-between;
-  min-height: 5rem;
-  background: #f5f5f7;
+  min-height: 4.5rem;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
   padding: 0.75rem;
   transition: transform 220ms ease, background-color 220ms ease;
 }
 
 .product-signal-grid article:hover {
-  transform: translateY(-3px);
-  background: #eeeeef;
+  transform: translateY(-2px);
+  background: #fff;
+  border-color: #e5e7eb;
 }
 
 .product-signal-grid span {
-  color: #86868b;
-  font-size: 0.62rem;
-  font-weight: 850;
-  letter-spacing: 0.12em;
+  color: #9ca3af;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .product-signal-grid strong {
   display: -webkit-box;
-  margin-top: 0.7rem;
+  margin-top: 0.4rem;
   color: #111;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  line-height: 1.12;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
   overflow: hidden;
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
+/* 社交二创 Design Remix 卡片 */
 .product-design-remix {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.9rem;
-  align-items: end;
-  overflow: hidden;
-  border: 0;
-  background: #111;
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
   color: #fff;
-  padding: 1rem;
-  transition: transform 240ms ease, background-color 240ms ease;
+  padding: 1.1rem 1.25rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+.product-remix-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #f43f5e;
+  background: rgba(244, 63, 94, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-bottom: 0.4rem;
+}
+
+.product-remix-header strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.product-remix-header p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  line-height: 1.45;
 }
 
 .product-design-remix:hover {
