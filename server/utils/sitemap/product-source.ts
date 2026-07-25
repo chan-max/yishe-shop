@@ -3,7 +3,7 @@ import type {
   ProductSitemapPageResponse,
 } from "./types";
 
-export const PRODUCT_SITEMAP_CHUNK_SIZE = 5000;
+export const PRODUCT_SITEMAP_CHUNK_SIZE = 2000;
 
 export const fetchPublishedProductSitemapPage = async (
   requestedPage = 1,

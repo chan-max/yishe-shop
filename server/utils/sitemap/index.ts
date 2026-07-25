@@ -1,5 +1,8 @@
 import { buildStaticSitemapUrls } from "./static-routes";
-import { fetchPublishedProductSitemapPage } from "./product-source";
+import {
+  PRODUCT_SITEMAP_CHUNK_SIZE,
+  fetchPublishedProductSitemapPage,
+} from "./product-source";
 import { buildProductSitemapUrls } from "./product-urls";
 
 const CATEGORY_SLUGS = [
@@ -37,7 +40,7 @@ export const buildSitemapUrls = async () => {
   let productUrls: any[] = [];
   try {
     let page = 1;
-    const pageSize = 1000;
+    const pageSize = PRODUCT_SITEMAP_CHUNK_SIZE;
     let hasMore = true;
 
     while (hasMore && page <= 50) { // 最高支持 50,000 条商品全量索引
