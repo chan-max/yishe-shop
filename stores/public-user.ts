@@ -66,17 +66,33 @@ export const usePublicUserStore = defineStore('publicUser', {
       this.token = null
       setStoredToken(null)
       this.userInfo = null
+      if (process.client) {
+        window.localStorage.removeItem('public-user-info')
+      }
     },
 
     setUserInfo(userInfo: PublicUserInfo) {
       this.userInfo = userInfo
+      if (process.client && userInfo) {
+        try {
+          window.localStorage.setItem('public-user-info', JSON.stringify(userInfo))
+        } catch {}
+      }
     },
 
-    // 初始化时从 localStorage 恢复 token
+    // 初始化时从 localStorage 恢复 token 与 userInfo
     initToken() {
       const token = getStoredToken()
       if (token) {
         this.token = token
+      }
+      if (process.client && !this.userInfo) {
+        try {
+          const raw = window.localStorage.getItem('public-user-info')
+          if (raw) {
+            this.userInfo = JSON.parse(raw)
+          }
+        } catch {}
       }
     },
   },

@@ -227,6 +227,13 @@
           </NuxtLink>
         </div>
       </section>
+
+      <!-- 独立站买家商品评价与评论社区 -->
+      <ProductComments
+        v-if="product?.id"
+        :target-id="String(product.id)"
+        target-type="product"
+      />
     </div>
 
     <div v-else class="product-empty">
@@ -597,11 +604,11 @@ const fetchProductDetail = async () => {
       product.value = isPublishedProduct(response.data) ? response.data : null;
       currentImageIndex.value = 0;
       relatedProducts.value = [];
-      if (product.value) {
+      if (product.value && process.client) {
         reportBehaviorLog({
           action: 'product_view',
-          targetId: String(product.value.id || ''),
-          targetName: String(product.value.name || ''),
+          targetId: String(product.value.id || rawId || ''),
+          targetName: String(product.value.title || product.value.name || rawId || ''),
           metadata: {
             type: product.value.type,
             code: product.value.code,
@@ -874,6 +881,17 @@ if (route.params.id) {
 
 onMounted(() => {
   if (product.value?.id) fetchRelatedProducts();
+  if (product.value) {
+    reportBehaviorLog({
+      action: 'product_view',
+      targetId: String(product.value.id || route.params.id || ''),
+      targetName: String(product.value.title || product.value.name || route.params.id || ''),
+      metadata: {
+        type: product.value.type,
+        code: product.value.code,
+      },
+    });
+  }
 });
 </script>
 

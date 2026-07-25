@@ -168,11 +168,11 @@ const getCategoryWallImage = (catId: string) => {
         <div class="premium-hero__eyebrow">
           <span>1S.DESIGN</span>
           <i></i>
-          <span>POD 创意定制与灵感分享平台</span>
+          <span>印花商品开放平台</span>
         </div>
-        <h1>灵感即刻具象<br />免费设计与专属 POD 定制</h1>
+        <h1>最大的 最具创意的<br />印花商品开放平台</h1>
         <p>
-          面向创作者、品牌主理人与极简品质追求者。无需专业经验，零门槛免费在线设计，高品质一件起订，让独特创意闪耀真实生命力。
+          汇聚海量品质印花载体与全球创意灵感。免费使用强大的在线设计工具，零门槛创作属于你的专属印花商品，支持一件起订与按需定制。
         </p>
         <div class="premium-hero__actions">
           <NuxtLink to="/design" class="premium-button premium-button--light">
@@ -466,11 +466,11 @@ const getCategoryWallImage = (catId: string) => {
 
     <section class="premium-final-cta">
       <div>
-        <span>START YOUR CREATIVE JOURNEY</span>
-        <h2>即刻开启你的<br />POD 创意定制之旅</h2>
+        <span>YISHE MERCHANDISE OPEN PLATFORM</span>
+        <h2>打造你的专属印花商品<br />探索最大的最具创意的开放平台</h2>
       </div>
       <div>
-        <p>体验免费在线设计工具，选定专属载体，一件即享高品质定制与灵感分享。</p>
+        <p>免费体验强大的在线设计工具，挑选丰富品质载体，零门槛让创意即刻落地。</p>
         <div>
           <NuxtLink to="/design" class="premium-button premium-button--light">
             免费在线设计

@@ -57,10 +57,7 @@
           :aria-label="`${site.brand.name}首页`"
         >
           <img src="/logo.png" :alt="site.brand.name" class="brand-logo-img" />
-          <div class="brand-text">
-            <span class="brand-name-en">1s design</span>
-            <span class="brand-name-zh">衣设</span>
-          </div>
+          <span class="brand-name">衣设</span>
         </NuxtLink>
 
         <nav class="desktop-nav" aria-label="主导航">
@@ -929,33 +926,18 @@ useEventListener(
 
 .brand-logo-img {
   display: block;
-  height: 26px;
+  height: 28px;
   width: auto;
   flex-shrink: 0;
   object-fit: contain;
 }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.1rem;
-  line-height: 1;
-}
-
-.brand-name-en {
-  font-family: var(--ys-font-display);
-  font-size: 0.92rem;
-  font-weight: 800;
+.brand-name {
+  font-size: 1.28rem;
+  font-weight: 900;
   letter-spacing: -0.02em;
   color: #1d1d1f;
-}
-
-.brand-name-zh {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #86868b;
+  line-height: 1;
 }
 
 .desktop-nav {

@@ -25,27 +25,27 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   seo: {
     description:
-      "衣设（1s.design）是面向品牌与创作者的 POD 创意定制与灵感分享平台。提供免费在线设计工具、丰富印花载体与一件起订专属按需定制服务。",
+      "衣设（1s.design）是最大的最具创意的印花商品开放平台。提供免费在线设计工具、丰富印花载体、社区灵感分享与一件起订专属按需定制服务。",
     twitterDescription:
-      "探索 POD 创意设计与灵感分享平台。免费在线创作，轻松把独特灵感变为专属高品质定制实物。",
+      "探索最大的最具创意的印花商品开放平台。免费在线创作，轻松把独特灵感变为专属高品质印花商品。",
     keywords:
-      "衣设,1s.design,POD,Print on Demand,免费设计,按需定制,创意定制,印花设计,定制平台,创意分享,个性化定制,服装定制,品牌周边",
+      "衣设,1s.design,印花商品,印花开放平台,印花定制,免费设计,按需定制,POD,Print on Demand,创意定制,个性化定制,服装定制",
     themeColor: "#ffffff",
     robots:
       "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     home: {
-      title: "衣设 1s.design · POD 创意定制与灵感分享平台 | 免费在线设计",
+      title: "衣设 1s.design · 最大的最具创意的印花商品开放平台 | 免费在线设计",
       description:
-        "衣设（1s.design）是领先的 POD 创意定制与灵感分享平台。支持免费在线设计、3D 效果预览与一件按需定制，让每个创意即刻品质落地。",
+        "衣设（1s.design）是最大的最具创意的印花商品开放平台。支持免费在线设计、效果预览与一件按需定制，让每个创意即刻品质落地。",
       keywords:
-        "衣设,1s.design,POD,Print on Demand,免费设计,按需定制,创意定制,印花设计,定制平台,创意分享",
+        "衣设,1s.design,印花商品,印花开放平台,印花定制,免费设计,按需定制,POD,创意定制",
       url: siteUrl,
       type: "website",
     },
   },
   announcement: {
     enabled: true,
-    text: "✨ 免费在线设计 · 专属 POD 按需定制与灵感分享",
+    text: "✨ 最大的最具创意的印花商品开放平台 · 免费在线设计",
     actionLabel: "立即体验",
     actionTo: "/design",
   },

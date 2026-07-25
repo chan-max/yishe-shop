@@ -401,4 +401,52 @@ export const api = {
         body: data,
       }),
   },
+  // 独立站商品评论与评价 API
+  productComment: {
+    create: (data: {
+      targetId: string;
+      targetType?: string;
+      rating?: number;
+      content: string;
+      images?: string[];
+      rootId?: string;
+      parentId?: string;
+      replyToUserId?: number;
+      replyToUserName?: string;
+      publicUserId?: string;
+      publicUserName?: string;
+    }) =>
+      request<ApiResponse<any>>('/product-comment/create', {
+        method: 'POST',
+        body: data,
+      }),
+    getList: (data: {
+      targetId?: string;
+      targetType?: string;
+      rating?: number;
+      onlyImages?: boolean;
+      currentPage?: number;
+      pageSize?: number;
+    }) =>
+      request<ApiResponse<{
+        list: any[];
+        total: number;
+        currentPage: number;
+        pageSize: number;
+        stats: {
+          totalCount: number;
+          avgRating: number;
+          positiveRate: string;
+          starBreakdown: { star5: number; star4: number; star3: number; star2: number; star1: number };
+        };
+      }>>('/product-comment/list', {
+        method: 'POST',
+        body: data,
+      }),
+    like: (id: string) =>
+      request<ApiResponse<{ success: boolean; likeCount: number }>>('/product-comment/like', {
+        method: 'POST',
+        body: { id },
+      }),
+  },
 }

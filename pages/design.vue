@@ -7,17 +7,18 @@ import { SITE_URL } from "~/utils/seo";
 definePageMeta({ layout: "page" });
 
 usePageSEO({
-  title: "免费在线设计 & POD 专属按需定制 - 衣设 1s.design",
+  title: "最大的最具创意的印花商品开放平台 - 免费在线设计 - 衣设 1s.design",
   description:
-    "零门槛免费体验在线设计，选定 T恤、卫衣、帆布包、手机壳等品质载体，实时 3D 效果预览，支持一件按需定制与灵感分享。",
+    "最大的最具创意的印花商品开放平台。提供海量品质载体与免费在线设计工具，零门槛创作专属印花商品，支持一件起订与按需定制。",
   keywords:
-    "免费设计,POD按需定制,在线设计工具,印花设计,专属定制,一件起订,品牌周边,衣设",
+    "印花商品,印花开放平台,印花定制,免费设计,POD,按需定制,创意定制,一件起订,衣设",
   url: `${SITE_URL}/design`,
   type: "website",
 });
 
 const toast = useToast();
 const route = useRoute();
+const { reportBehaviorLog } = useUserBehaviorLog();
 const { submitDesignRequest, loading } = useDesignRequest();
 const { fetchPublishedProducts, getPublishedProductImage } =
   usePublishedProducts();
@@ -136,6 +137,16 @@ const handleSubmit = async () => {
       email: form.email.trim() || undefined,
     });
     submitted.value = true;
+    reportBehaviorLog({
+      action: 'design_request_submit',
+      targetName: form.name.trim(),
+      metadata: {
+        products: selectedProducts.value,
+        styles: selectedStyles.value,
+        scenes: selectedScenes.value,
+        services: selectedServices.value,
+      },
+    });
     toast.success("提交成功", "我们会尽快联系你。");
   } catch {
     toast.error("提交失败", "请稍后再试一次。");
@@ -294,10 +305,10 @@ applyProductSource();
       />
       <div class="custom-design-hero__shade" aria-hidden="true"></div>
       <div class="custom-design-hero__content">
-        <span>YISHE FREE DESIGN & POD STUDIO</span>
-        <h1>免费在线设计，<br />专属 POD 按需定制。</h1>
+        <span>YISHE PRINT & MERCHANDISE OPEN PLATFORM</span>
+        <h1>最大的 最具创意的<br />印花商品开放平台</h1>
         <p>
-          零门槛体验在线设计工具，选定商品、风格与应用场景，免费创作，一件起订，衣设帮你把灵感落地为品质实物。
+          海量品质印花载体，免费体验强大的在线设计工具。零门槛创作属于你的专属印花商品，支持一件起订与按需定制。
         </p>
         <a href="#custom-brief" class="design-button design-button--light">
           开启免费设计

@@ -3,29 +3,29 @@ import type { SiteHomeContent } from "../../types";
 export const homeContent: SiteHomeContent = {
   copy: {
     creatorFallback: "衣设创作者",
-    srTitle: "衣设 1s.design - POD 创意定制与灵感分享开放平台",
+    srTitle: "衣设 1s.design - 最大的最具创意的印花商品开放平台",
     hero: {
       brand: "YISHE",
-      eyebrow: "1s.design · POD CREATIVE PLATFORM",
-      title: "灵感即刻具象 · 免费设计与专属 POD 定制",
+      eyebrow: "1s.design · 印花商品开放平台",
+      title: "最大的 最具创意的 印花商品开放平台",
       description:
-        "面向全球创作者与品牌主理人的 POD 创意定制与分享平台。无需专业门槛，免费体验在线设计工具与海量灵感素材，支持一件按需定制，让独特想法蜕变为高品质实物。",
+        "汇聚海量高品质印花载体与全球创意灵感。免费使用强大的在线设计工具，零门槛创作属于你的专属印花商品，支持一件起订与按需定制，让每个创意自由绽放。",
       primaryAction: { label: "免费在线设计", to: "/design" },
-      secondaryAction: { label: "探索 POD 创意商品", to: "/products" },
+      secondaryAction: { label: "探索创意印花商品", to: "/products" },
     },
     finder: {
       eyebrow: "FREE DESIGN & CUSTOMIZATION",
-      title: "选定品质载体，开启免费定制创作。",
+      title: "挑选丰富印花载体，开启免费创作",
       description:
-        "精选潮流服饰、家居软装、数码配件与生活用品等多元 POD 载体，支持免费在线创作与 3D 实时效果预览。",
+        "涵盖潮流服饰、家居生活、数码配件、文创周边等海量品质商品形态，支持免费在线可视化创作与即时预览。",
     },
     featureFallbackDescription:
       "从一个创意想法出发，免费延伸为服饰印花、高档礼赠与品牌周边，赋予灵感可触可感的品质生活方式。",
     runway: {
-      eyebrow: "CREATIVE SHARING & POD",
-      title: "分享独特灵感，让每一个想法闪耀生命力。",
+      eyebrow: "CREATIVE SHARING & MERCHANDISE",
+      title: "释放无限创意，赋能专属印花商品",
       description:
-        "不仅是按需定制工具，更是创意汇聚与分享的社区平台。支持私人纪念、品牌周边与创作成果自由展示与交流。",
+        "不仅是印花定制工具，更是全球创作者与品牌主理人的开放社区。让灵感无缝商品化，共享无限创作乐趣。",
     },
     editorialsAriaLabel: "衣设专题",
     journey: {
