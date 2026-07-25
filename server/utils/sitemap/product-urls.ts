@@ -1,7 +1,7 @@
 import type { ProductSitemapItem, SitemapUrl } from "./types";
 import { toAbsoluteUrl, toIsoDate } from "./url-utils";
-import { getProductPath } from "~/utils/product-url";
-import { isPublishedProduct } from "~/utils/product-indexing";
+import { getProductPath } from "~/utils/product-url.ts";
+import { isPublishedProduct } from "~/utils/product-indexing.ts";
 
 export const buildProductSitemapUrls = (
   products: ProductSitemapItem[],

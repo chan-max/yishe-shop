@@ -1,4 +1,4 @@
-import { SITE_URL } from "~/utils/seo";
+import { SITE_URL } from "~/utils/seo.ts";
 import type { SitemapIndexEntry, SitemapUrl } from "./types";
 import { toAbsoluteUrl } from "./url-utils";
 
