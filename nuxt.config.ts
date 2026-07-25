@@ -31,6 +31,21 @@ export default defineNuxtConfig({
   // 兼容日期
   compatibilityDate: "2025-12-21",
 
+  alias: {
+    "~/utils": resolve("./utils"),
+    "~/server": resolve("./server"),
+    "~~/utils": resolve("./utils"),
+    "~~/server": resolve("./server"),
+  },
+  nitro: {
+    alias: {
+      "~/utils": resolve("./utils"),
+      "~/server": resolve("./server"),
+      "~~/utils": resolve("./utils"),
+      "~~/server": resolve("./server"),
+    },
+  },
+
   // experimental
   experimental: {
     localLayerAliases: true,
