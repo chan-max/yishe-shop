@@ -67,7 +67,7 @@ const iconPaths = {
 </script>
 
 <template>
-  <div class="fixed left-1/2 top-5 z-[10000] -translate-x-1/2">
+  <div class="fixed left-1/2 top-5 z-[10000] -translate-x-1/2 pointer-events-none">
     <Transition
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="-translate-y-3 scale-[0.98] opacity-0"
@@ -76,18 +76,18 @@ const iconPaths = {
       leave-from-class="translate-y-0 opacity-100"
       leave-to-class="-translate-y-2 scale-[0.99] opacity-0"
     >
-      <div v-if="showToast" class="relative">
-        <div role="alert" :class="`relative overflow-hidden flex min-w-[300px] max-w-[460px] items-start gap-3 rounded-[1rem] border bg-white px-4 py-3 shadow-[0_18px_32px_rgba(28,25,23,0.08)] ${currentStyle.border}`">
+      <div v-if="showToast" class="relative pointer-events-auto">
+        <div role="alert" :class="`relative overflow-hidden flex min-w-[280px] max-w-[460px] items-center gap-3 rounded-[1rem] border bg-white px-4 py-3 shadow-[0_18px_32px_rgba(28,25,23,0.08)] ${currentStyle.border}`">
           <div class="absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,rgba(28,25,23,0.06),rgba(28,25,23,0.18),rgba(28,25,23,0.06))]"></div>
-          <div :class="`mt-0.5 inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${currentStyle.iconWrap}`">
+          <div :class="`inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${currentStyle.iconWrap}`">
             <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" class="h-4 w-4" xmlns="http://www.w3.org/2000/svg">
               <path :d="iconPaths[props.type]" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
             </svg>
           </div>
 
-          <div class="min-w-0 flex-1">
-            <p v-if="props.title" :class="`text-[12px] font-semibold ${currentStyle.title}`">{{ props.title }}</p>
-            <p v-if="props.text" class="mt-1 text-[12px] leading-5 text-stone-500">{{ props.text }}</p>
+          <div class="min-w-0 flex-1 flex flex-col justify-center">
+            <p v-if="props.title" :class="`text-[13px] font-semibold leading-tight ${currentStyle.title}`">{{ props.title }}</p>
+            <p v-if="props.text" class="mt-0.5 text-[12px] leading-relaxed text-stone-500">{{ props.text }}</p>
           </div>
         </div>
       </div>
