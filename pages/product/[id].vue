@@ -88,7 +88,7 @@
             <FavoriteButton
               :is-favorite="isFavorite"
               :count="favoriteCount"
-              :show-count="true"
+              :show-count="false"
               @click="toggleFavorite"
             />
           </div>

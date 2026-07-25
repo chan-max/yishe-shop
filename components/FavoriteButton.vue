@@ -103,8 +103,8 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &.is-animating {
@@ -113,8 +113,8 @@ const handleClick = () => {
 }
 
 .svg-heart {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   fill: #9ca3af;
   transition: fill 0.2s ease, transform 0.2s ease;
 
@@ -124,9 +124,9 @@ const handleClick = () => {
 }
 
 .favorite-text {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 650;
-  color: #6b7280;
+  color: #4b5563;
   line-height: 1;
 
   &.is-favorite {
