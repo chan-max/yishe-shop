@@ -4,7 +4,7 @@
     class="favorite-button-container"
     :class="{ 'is-favorite': isFavorite }"
     :aria-pressed="isFavorite"
-    :title="isFavorite ? '已收藏' : '先留一些'"
+    :title="isFavorite ? '已收藏' : '收藏'"
     @click="handleClick"
   >
     <div class="heart-icon-wrapper" :class="{ 'is-favorite': isFavorite, 'is-animating': isAnimating }">
@@ -21,7 +21,7 @@
     </div>
 
     <span class="favorite-text" :class="{ 'is-favorite': isFavorite }">
-      {{ isFavorite ? "已收藏" : "先留一些" }}
+      {{ isFavorite ? "已收藏" : "收藏" }}
     </span>
 
     <span v-if="showCount && count !== null" class="favorite-count">
@@ -75,11 +75,12 @@ const handleClick = () => {
 </script>
 
 <style scoped>
-/* 无外边框，无阴影，纯粹的爱心与文字组 */
+/* 无外边框，无阴影，纯粹的上下列排版 (爱心在上，文字在下) */
 .favorite-button-container {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.15rem;
   cursor: pointer;
   border: none;
   background: transparent;
@@ -102,8 +103,8 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &.is-animating {
@@ -112,8 +113,8 @@ const handleClick = () => {
 }
 
 .svg-heart {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   fill: #9ca3af;
   transition: fill 0.2s ease, transform 0.2s ease;
 
@@ -123,9 +124,10 @@ const handleClick = () => {
 }
 
 .favorite-text {
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: #4b5563;
+  font-size: 0.72rem;
+  font-weight: 650;
+  color: #6b7280;
+  line-height: 1;
 
   &.is-favorite {
     color: #ff2442;
@@ -133,8 +135,9 @@ const handleClick = () => {
 }
 
 .favorite-count {
-  font-size: 0.78rem;
-  color: #6b7280;
+  font-size: 0.68rem;
+  color: #9ca3af;
+  line-height: 1;
 }
 
 @keyframes heart-bounce {
