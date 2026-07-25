@@ -103,24 +103,7 @@
             <h1>{{ product.name }}</h1>
           </div>
 
-          <!-- 设计说明与特点卡片 (纯文本内容，隐藏数量重量) -->
-          <div class="product-features-card">
-            <div class="product-features-header">
-              <strong>设计说明与特点 (Design Description)</strong>
-            </div>
-            <ul class="product-features-list">
-              <li>• <strong>分类风格:</strong> {{ product.type || '未指定' }}</li>
-              <li>• <strong>作品简介:</strong> {{ productLead }}</li>
-            </ul>
 
-            <!-- 动态参数网格 (只展示材质、尺寸、品牌等设计相关文本) -->
-            <div v-if="productMetaItems.length" class="product-specs-grid">
-              <div v-for="item in productMetaItems" :key="item.label" class="product-spec-item">
-                <span class="product-spec-label">{{ item.label }}</span>
-                <strong class="product-spec-value">{{ item.value }}</strong>
-              </div>
-            </div>
-          </div>
 
           <!-- 话题标签 (#话题) -->
           <div v-if="productKeywords.length" class="product-tags">
