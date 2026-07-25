@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   },
   // shop-a 专属独立 SEO 配置
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:15202',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://shop-a.1s.design',
     name: process.env.NUXT_PUBLIC_SITE_NAME || 'Shop-A 潮流工作室',
     description: 'Shop-A 潮流灵感设计工作室 - 灵感碰撞与私人专属定制'
   },

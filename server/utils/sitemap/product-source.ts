@@ -11,8 +11,16 @@ export const fetchPublishedProductSitemapPage = async (
   includeTotal = false,
 ) => {
   const config = useRuntimeConfig();
-  const apiBase = String(config.public.apiBase || "").replace(/\/$/, "");
-  const openApiKey = String(config.public.openApiKey || "");
+  const apiBase = String(
+    config.public.apiBase ||
+      process.env.NUXT_PUBLIC_API_BASE ||
+      "http://localhost:1520/api"
+  ).replace(/\/$/, "");
+  const openApiKey = String(
+    config.public.openApiKey ||
+      process.env.NUXT_PUBLIC_OPEN_API_KEY ||
+      "698fa3584d6d4dda04c7a3d2513fb9d076fc7a894f9ef27c"
+  );
   const page = Math.max(1, Math.trunc(Number(requestedPage) || 1));
   const pageSize = Math.min(
     PRODUCT_SITEMAP_CHUNK_SIZE,
@@ -21,10 +29,6 @@ export const fetchPublishedProductSitemapPage = async (
       Math.trunc(Number(requestedPageSize) || PRODUCT_SITEMAP_CHUNK_SIZE),
     ),
   );
-
-  if (!apiBase || !openApiKey) {
-    throw new Error("[Sitemap] Missing apiBase or openApiKey");
-  }
 
   const response = await $fetch<ProductSitemapPageResponse>(
     `${apiBase}/product/sitemap-page`,

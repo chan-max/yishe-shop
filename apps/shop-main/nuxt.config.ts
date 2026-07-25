@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   },
   // shop-main 专属独立 SEO 配置
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:15201',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://shop-main.1s.design',
     name: process.env.NUXT_PUBLIC_SITE_NAME || '衣设官方工坊 (Shop Main)',
     description: '衣设官方工坊 - 提供服装设计、POD定制商品与专属设计服务'
   },
