@@ -33,15 +33,32 @@ export const buildSitemapUrls = async () => {
     priority: 0.85,
   }));
 
-  // 3. 动态商品详情页 SEO 路由 (如 /product/123)
+  // 3. 动态全量商品详情页 SEO 路由 (覆盖数据库所有已上架商品)
   let productUrls: any[] = [];
   try {
-    const { products } = await fetchPublishedProductSitemapPage(1, 1000);
-    if (Array.isArray(products) && products.length > 0) {
-      productUrls = buildProductSitemapUrls(products, now);
+    let page = 1;
+    const pageSize = 1000;
+    let hasMore = true;
+
+    while (hasMore && page <= 50) { // 最高支持 50,000 条商品全量索引
+      const { products, total } = await fetchPublishedProductSitemapPage(page, pageSize, true);
+      if (Array.isArray(products) && products.length > 0) {
+        const mapped = buildProductSitemapUrls(products, now);
+        productUrls.push(...mapped);
+        
+        if (total && productUrls.length >= total) {
+          hasMore = false;
+        } else if (products.length < pageSize) {
+          hasMore = false;
+        } else {
+          page++;
+        }
+      } else {
+        hasMore = false;
+      }
     }
   } catch (error) {
-    console.warn("[Sitemap] Product fetch skipped:", error);
+    console.warn("[Sitemap] Product fetch error:", error);
   }
 
   return [...staticUrls, ...categoryUrls, ...productUrls];
