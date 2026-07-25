@@ -193,6 +193,13 @@
         </NuxtLink>
       </div>
 
+      <!-- 独立站买家商品评价与评论社区 -->
+      <ProductComments
+        v-if="product?.id"
+        :target-id="String(product.id)"
+        target-type="product"
+      />
+
       <section v-if="relatedProducts.length" class="product-related">
         <h2>你可能还喜欢</h2>
         <div class="product-related-grid">
@@ -217,13 +224,6 @@
           </NuxtLink>
         </div>
       </section>
-
-      <!-- 独立站买家商品评价与评论社区 -->
-      <ProductComments
-        v-if="product?.id"
-        :target-id="String(product.id)"
-        target-type="product"
-      />
     </div>
 
     <div v-else class="product-empty">
