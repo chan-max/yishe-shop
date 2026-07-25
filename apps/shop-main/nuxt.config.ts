@@ -9,6 +9,12 @@ export default defineNuxtConfig({
     port: 15201,
     host: '0.0.0.0'
   },
+  // 设置打包输出路径到根目录的 .output，兼容原有 GitHub Actions CI 自动部署脚本
+  nitro: {
+    output: {
+      dir: process.env.NITRO_OUTPUT_DIR || resolve(currentDir, '../../.output')
+    }
+  },
   // shop-main 专属独立 SEO 配置
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://shop-main.1s.design',
