@@ -1,12 +1,12 @@
-import { SITE_URL } from "~/utils/seo.ts";
+import { SITE_URL } from "../../utils/seo";
 import {
   PRODUCT_SITEMAP_CHUNK_SIZE,
   fetchPublishedProductSitemapPage,
-} from "~/server/utils/sitemap/product-source";
+} from "../utils/sitemap/product-source";
 import {
   getProductSitemapUrl,
   renderSitemapIndexXml,
-} from "~/server/utils/sitemap/xml";
+} from "../utils/sitemap/xml";
 
 const SITEMAP_CACHE_SECONDS = 600;
 

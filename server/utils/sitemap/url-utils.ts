@@ -1,4 +1,4 @@
-import { SITE_URL } from "~/utils/seo.ts";
+import { SITE_URL } from "../../../utils/seo";
 
 export const toIsoDate = (value?: string) => {
   if (!value) return undefined;

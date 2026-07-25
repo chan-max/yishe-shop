@@ -1,9 +1,9 @@
 import {
   PRODUCT_SITEMAP_CHUNK_SIZE,
   fetchPublishedProductSitemapPage,
-} from "~/server/utils/sitemap/product-source";
-import { buildProductSitemapUrls } from "~/server/utils/sitemap/product-urls";
-import { renderSitemapUrlSetXml } from "~/server/utils/sitemap/xml";
+} from "../../../utils/sitemap/product-source";
+import { buildProductSitemapUrls } from "../../../utils/sitemap/product-urls";
+import { renderSitemapUrlSetXml } from "../../../utils/sitemap/xml";
 
 const SITEMAP_CACHE_SECONDS = 600;
 

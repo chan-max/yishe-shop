@@ -1,3 +1,3 @@
-import { buildSitemapUrls } from "~/server/utils/sitemap";
+import { buildSitemapUrls } from "../../utils/sitemap";
 
 export default defineSitemapEventHandler(() => buildSitemapUrls());
