@@ -1298,33 +1298,35 @@ onMounted(() => {
   }
 }
 
-/* 核心主按钮：设计同款 (高级黑，无边框，极简) */
+/* 核心主按钮：设计同款 (小字号、加粗、高级黑) */
 .product-primary-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  background: #111827;
-  color: #fff;
-  font-size: 0.88rem;
-  font-weight: 650;
-  padding: 0.7rem 1rem;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 0.62rem 1rem;
   border-radius: 999px;
   text-decoration: none;
   box-shadow: none;
   border: none;
-  transition: background-color 0.15s ease;
+  transition: all 0.15s ease;
 
   &:hover {
     background: #000000;
+    transform: translateY(-1px);
   }
 }
 
-/* 快捷定制入口按钮组 (扁平黑灰极简) */
+/* 快捷定制入口按钮组 (小字号、加粗、极简灰) */
 .product-secondary-actions-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .product-secondary-btn {
@@ -1332,12 +1334,13 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  background: #f3f4f6;
+  background: #f1f5f9;
   border: none;
-  color: #111827;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.55rem 0.8rem;
+  color: #0f172a;
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  padding: 0.5rem 0.8rem;
   border-radius: 999px;
   text-decoration: none;
   cursor: pointer;
@@ -1345,7 +1348,7 @@ onMounted(() => {
   transition: all 0.15s ease;
 
   &:hover {
-    background: #e5e7eb;
+    background: #e2e8f0;
     color: #000000;
   }
 }
