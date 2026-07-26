@@ -3,14 +3,13 @@
     <div class="email">
       <!-- HEADER -->
       <div class="header">
-        <div class="top-info">
-          <NuxtLink to="/" class="top-link">www.1s.design</NuxtLink>
-          <NuxtLink to="/search" class="top-link">View in browser</NuxtLink>
+        <div class="top-info-bar">
+          <NuxtLink to="/" class="top-link">www.1s.design</NuxtLink>          <NuxtLink to="/search" class="top-link">搜春联 / 楹联专区</NuxtLink>
         </div>
 
         <div class="logo">
           <NuxtLink to="/" class="logo-link">
-            <span class="logo-text">🏮 衣设 · 春联工坊</span>
+            <span class="logo-text">🏮 衣设 · 春联定制工坊</span>
           </NuxtLink>
         </div>
 
@@ -37,7 +36,7 @@
         </div>
       </div>
 
-      <!-- CONTENT -->
+      <!-- CONTENT CONTAINER -->
       <div class="content">
         <p class="desc">
           衣设春联工坊专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。
@@ -45,7 +44,7 @@
           采用特级万年红宣纸与耐候金墨，让每一副春联都承载吉祥安康。
         </p>
 
-        <h2 class="section-title">New Arrival</h2>
+        <h2 class="section-title">New Arrival / 新品楹联</h2>
 
         <!-- PRODUCTS GRID -->
         <div v-if="loading" class="loading-box">
@@ -86,10 +85,10 @@
         </div>
 
         <div class="view">
-          <span @click="openAllProducts">View all</span>
+          <span @click="openAllProducts">View all / 查看全部</span>
         </div>
 
-        <!-- COUPON -->
+        <!-- COUPON BANNER -->
         <div class="coupon">
           <div>
             Get Up to
@@ -107,7 +106,7 @@
         </div>
 
         <!-- REVIEWS -->
-        <h2 class="review-title">Customer is our Priority</h2>
+        <h2 class="review-title">Customer is our Priority / 客户口碑</h2>
 
         <div class="reviews">
           <div class="review">
@@ -115,7 +114,10 @@
             纸质非常厚重，烫金字在阳光下熠熠生辉！贴在公司大门上气场十足。
             <br /><br />
             <div class="avatar-box">👨‍💼</div>
-            Benjamin Han
+            <div class="reviewer-meta">
+              <strong>Benjamin Han</strong>
+              <small>企业创始人</small>
+            </div>
           </div>
 
           <div class="review">
@@ -123,7 +125,10 @@
             名家手写体韵味十足，万年红宣纸连续几年都不褪色。
             <br /><br />
             <div class="avatar-box">👩‍🎨</div>
-            Lauren Duo
+            <div class="reviewer-meta">
+              <strong>Lauren Duo</strong>
+              <small>独立设计师</small>
+            </div>
           </div>
 
           <div class="review">
@@ -131,7 +136,10 @@
             包装非常精美完好，送给长辈和客户都非常有档次！
             <br /><br />
             <div class="avatar-box">👨‍👩‍👧</div>
-            Patricia Leo
+            <div class="reviewer-meta">
+              <strong>Patricia Leo</strong>
+              <small>资深收藏家</small>
+            </div>
           </div>
         </div>
       </div>
@@ -147,7 +155,7 @@
         <br /><br />
         © 2026 Company. All rights reserved.
         <br /><br />
-        <div class="footer-logo">🏮 衣设 · 春联工坊</div>
+        <div class="footer-logo">🏮 衣设 · 春联定制工坊</div>
       </div>
     </div>
   </div>
@@ -183,7 +191,7 @@ const openAllProducts = () => {
 onMounted(async () => {
   try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 4 });
+    const res = await fetchPublishedProducts({ page: 1, limit: 8 });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -198,98 +206,97 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* 全屏通栏网页布局（不留任何多余背景框） */
 .email-page-wrapper {
   margin: 0;
-  background: #ededed;
+  padding: 0;
+  background: #f8e8d0;
   font-family: Arial, "Helvetica Neue", sans-serif;
   min-height: 100vh;
-  padding: 20px 0 60px;
+  width: 100%;
 }
 
 .email {
-  width: 640px;
-  margin: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   background: #f8e8d0;
   color: #820017;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-@media (max-width: 680px) {
-  .email {
-    width: 100%;
-  }
+  box-shadow: none;
 }
 
 /* =====================
-   HEADER
+   HEADER (通栏弧形 Header)
 ===================== */
 .header {
-  height: 320px;
+  width: 100%;
+  min-height: 380px;
   background: #870018;
   position: relative;
   border-radius: 0 0 65px 65px;
+  padding-bottom: 50px;
 }
 
-.top-info {
-  position: absolute;
-  top: 32px;
-  left: 55px;
-  right: 55px;
+.top-info-bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px 40px 0;
   display: flex;
   justify-content: space-between;
   color: #dca532;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
 }
 
 .top-link {
   color: #dca532;
   text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.top-link:hover {
+  opacity: 0.8;
 }
 
 .logo {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+  padding-top: 15px;
 }
 
 .logo-text {
   color: #f5c34b;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .logo-link {
   text-decoration: none;
 }
 
-/* hero */
+/* HERO BOX */
 .hero {
-  position: absolute;
-  top: 82px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 340px;
-  height: 410px;
-  border-radius: 18px;
+  max-width: 780px;
+  width: 90%;
+  margin: 25px auto 0;
+  height: 360px;
+  border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #7a0c16 0%, #4a030b 100%);
   border: 3px solid #dca532;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 25px;
+  justify-content: center;
+  position: relative;
 }
 
 .hero-scroll-display {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .hero-scroll-left,
@@ -297,43 +304,43 @@ onMounted(async () => {
   background: #b81424;
   border: 2px solid #f5c34b;
   color: #f5c34b;
-  padding: 12px 6px;
+  padding: 14px 8px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .hero-scroll-center {
   background: #b81424;
   border: 2px solid #f5c34b;
   color: #f5c34b;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .scroll-tag {
-  font-size: 9px;
-  opacity: 0.8;
-  margin-bottom: 3px;
+  font-size: 10px;
+  opacity: 0.85;
+  margin-bottom: 4px;
 }
 
 .scroll-font {
   writing-mode: vertical-rl;
   font-family: "KaiTi", "STKaiti", serif;
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 900;
   letter-spacing: 4px;
 }
 
 .scroll-font-center {
   font-family: "KaiTi", "STKaiti", serif;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 900;
   letter-spacing: 3px;
 }
@@ -344,60 +351,65 @@ onMounted(async () => {
   width: 100%;
   text-align: center;
   color: #e6a52b;
-  text-shadow: 2px 3px 2px #7d4500;
+  text-shadow: 2px 3px 3px #7d4500;
 }
 
 .hero-text h1 {
   margin: 0;
-  font-size: 43px;
+  font-size: 44px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .hero-text h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 /* =====================
-   CONTENT
+   CONTENT (全局网页响应式容器)
 ===================== */
 .content {
-  padding: 210px 55px 40px;
-}
-
-@media (max-width: 640px) {
-  .content {
-    padding: 210px 20px 30px;
-  }
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 30px;
 }
 
 .desc {
   text-align: center;
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 15px;
+  line-height: 24px;
   font-weight: bold;
   color: #850018;
+  max-width: 800px;
+  margin: 0 auto 40px;
 }
 
 .section-title {
   text-align: center;
-  margin: 50px 0 30px;
-  font-size: 25px;
+  margin: 50px 0 35px;
+  font-size: 28px;
   font-weight: 900;
 }
 
-/* products */
+/* PRODUCTS GRID (4列响应式网格) */
 .products {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px 45px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 992px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 }
 
 @media (max-width: 580px) {
   .products {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
   }
 }
 
@@ -405,17 +417,19 @@ onMounted(async () => {
   overflow: hidden;
   border-radius: 18px;
   background: #fff;
-  border: 1px solid #d8a02b;
+  border: 1.5px solid #d8a02b;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
 }
 
 .product:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(135, 0, 24, 0.15);
 }
 
 .product-image {
-  height: 220px;
+  height: 230px;
   background: #ccc;
   overflow: hidden;
 }
@@ -438,12 +452,12 @@ onMounted(async () => {
 }
 
 .fallback-icon {
-  font-size: 40px;
-  margin-bottom: 5px;
+  font-size: 42px;
+  margin-bottom: 6px;
 }
 
 .fallback-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   font-family: "KaiTi", serif;
 }
@@ -451,46 +465,53 @@ onMounted(async () => {
 .product-info {
   background: #870018;
   color: #f1b536;
-  padding: 10px 14px;
-  font-size: 12px;
-  line-height: 16px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 18px;
 }
 
 .product-name {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .view {
   text-align: center;
-  margin: 35px;
+  margin: 45px 0 60px;
 }
 
 .view span {
   display: inline-block;
   background: #870018;
   color: #f5c34b;
-  padding: 8px 28px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 10px 36px;
+  border-radius: 999px;
+  font-size: 14px;
   cursor: pointer;
   font-weight: bold;
+  box-shadow: 0 4px 12px rgba(135, 0, 24, 0.2);
+  transition: all 0.2s ease;
 }
 
 .view span:hover {
   background: #6b0013;
+  transform: scale(1.04);
 }
 
-/* coupon */
+/* COUPON (大网格居中通栏) */
 .coupon {
-  height: 135px;
+  max-width: 900px;
+  margin: 50px auto;
+  height: 145px;
   background: #870018;
   border: 2px solid #dca532;
   display: flex;
   position: relative;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(135, 0, 24, 0.15);
 }
 
 .coupon:before,
@@ -527,82 +548,105 @@ onMounted(async () => {
 }
 
 .discount {
-  font-size: 62px;
+  font-size: 64px;
   font-weight: 900;
   line-height: 1;
 }
 
 .coupon h2 {
-  margin: 5px 0 0;
-  font-size: 22px;
+  margin: 6px 0 0;
+  font-size: 24px;
+  letter-spacing: 1px;
 }
 
-/* reviews */
+/* REVIEWS (3列网格) */
 .review-title {
-  margin-top: 55px;
-  margin-bottom: 30px;
+  margin-top: 60px;
+  margin-bottom: 35px;
   font-size: 28px;
   text-align: center;
+  font-weight: 900;
 }
 
 .reviews {
-  display: flex;
-  gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 768px) {
   .reviews {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 }
 
 .review {
-  width: 33%;
-  font-size: 12px;
-  line-height: 17px;
-}
-
-@media (max-width: 580px) {
-  .review {
-    width: 100%;
-  }
+  background: #ffffff;
+  border: 1px solid rgba(216, 160, 43, 0.4);
+  border-radius: 12px;
+  padding: 20px 24px;
+  font-size: 13px;
+  line-height: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .review h1 {
   font-size: 40px;
-  margin: 0;
+  color: #dca532;
+  margin: 0 0 5px;
   line-height: 1;
 }
 
 .avatar-box {
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: #ccc;
+  background: #fdf5ea;
+  border: 1px solid #dca532;
   float: left;
-  margin-right: 10px;
+  margin-right: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
 }
 
-/* footer */
+.reviewer-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewer-meta strong {
+  color: #870018;
+  font-size: 14px;
+}
+
+.reviewer-meta small {
+  color: #850018;
+  opacity: 0.75;
+}
+
+/* FOOTER */
 .footer {
+  width: 100%;
   background: #870018;
-  padding: 30px 50px;
+  padding: 40px 20px;
   text-align: center;
   color: #dca532;
-  font-size: 12px;
+  font-size: 13px;
+  border-top: 3px solid #dca532;
 }
 
 .social {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  font-weight: bold;
 }
 
 .footer-logo {
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 24px;
+  font-size: 18px;
   font-weight: bold;
   color: #f5c34b;
 }
@@ -610,7 +654,7 @@ onMounted(async () => {
 .loading-box,
 .empty-box {
   text-align: center;
-  padding: 40px 0;
+  padding: 50px 0;
   color: #870018;
   font-weight: bold;
 }
