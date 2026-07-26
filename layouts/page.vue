@@ -90,18 +90,15 @@
           </button>
 
           <NuxtLink
-            v-if="site.features.favorites"
+            v-if="site?.features?.favorites !== false"
             to="/favorites"
             class="header-icon-link"
             title="我的收藏"
             aria-label="我的收藏"
           >
-            <AppIcon
-              name="heart"
-              class="ui-icon"
-              :size="18"
-              aria-hidden="true"
-            />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-heart-svg">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
           </NuxtLink>
 
           <template v-if="site.features.auth && isLoggedIn">
@@ -1092,6 +1089,15 @@ useEventListener(
 
 .header-icon-link:active {
   transform: scale(0.94);
+}
+
+.header-heart-svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2px;
 }
 
 .ui-icon {
