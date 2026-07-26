@@ -1,0 +1,455 @@
+<template>
+  <div class="gucci-page-wrapper">
+    <!-- Header Navigation -->
+    <header class="gucci-header">
+      <div class="gucci-header-inner">
+        <div class="header-left">
+          <NuxtLink to="/" class="back-link">
+            ‹ Back to Collection
+          </NuxtLink>
+        </div>
+        <div class="header-center">
+          <NuxtLink to="/" class="gucci-brand-logo">
+            B U S I N E S S  C A R D
+          </NuxtLink>
+        </div>
+        <div class="header-right">
+          <NuxtLink to="/" class="header-icon-link">Home</NuxtLink>
+        </div>
+      </div>
+    </header>
+
+    <main class="gucci-main-container">
+      <!-- Search Banner & Filter Bar -->
+      <section class="search-hero-banner">
+        <h1 class="search-title">SEARCH THE COLLECTION</h1>
+        <p class="search-sub">Explore executive business cards, specialty paper crafts, and gold foil embossed editions.</p>
+
+        <!-- Search Input Bar -->
+        <div class="search-bar-wrapper">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search by keywords (e.g. Letterpress, Gold Foil, Metal Steel)..."
+            class="search-input"
+            @keyup.enter="handleSearch"
+          />
+          <button type="button" class="search-btn" @click="handleSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="category-tags-row">
+          <button
+            v-for="cat in categories"
+            :key="cat.key"
+            type="button"
+            class="tag-btn"
+            :class="{ active: selectedCategory === cat.key }"
+            @click="selectCategory(cat.key)"
+          >
+            {{ cat.label }}
+          </button>
+        </div>
+      </section>
+
+      <!-- Products Grid Section -->
+      <section class="products-grid-section">
+        <div v-if="loading" class="gucci-loading">
+          <div class="loading-spinner"></div>
+          <span>Loading collection...</span>
+        </div>
+
+        <div v-else-if="filteredProducts.length === 0" class="gucci-empty">
+          <p>No business cards found matching your criteria.</p>
+          <button type="button" class="reset-btn" @click="resetFilters">Reset Filters</button>
+        </div>
+
+        <div v-else class="gucci-products-grid">
+          <div
+            v-for="item in filteredProducts"
+            :key="item.id"
+            class="gucci-product-card"
+            @click="navigateToProduct(item)"
+          >
+            <div class="product-photo-wrapper">
+              <img
+                v-if="getProductImage(item)"
+                :src="getProductImage(item)"
+                :alt="item.name"
+                class="product-photo"
+              />
+              <div v-else class="product-fallback-photo">
+                <span class="fallback-icon">📇</span>
+                <span class="fallback-tag">BUSINESS CARD</span>
+              </div>
+              <span class="luxury-badge">NEW</span>
+            </div>
+
+            <div class="product-details">
+              <h3 class="product-name">{{ item.name }}</h3>
+              <div class="product-price">${{ item.price || '88.00' }}</div>
+              <p class="product-desc">{{ item.description || 'Specialty paper business card with premium gold foil embossing.' }}</p>
+              <div class="card-action-link">
+                <span>View Details</span>
+                <span class="arrow">›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gucci-mini-footer">
+      <div class="footer-logo-small">B U S I N E S S  C A R D</div>
+      <p>© 2026 Business Card Workshop S.p.A. All rights reserved.</p>
+    </footer>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+
+definePageMeta({
+  layout: 'default'
+});
+
+useSeoMeta({
+  title: '搜索名片库 · 墨宝与特种纸名片 | BUSINESS CARD',
+  ogTitle: '搜索名片库 · BUSINESS CARD',
+  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片系列。',
+  ogDescription: '搜索并挑选专属的高端商务名片系列。'
+});
+
+useHead({
+  title: '搜索名片库 · 墨宝与特种纸名片 | BUSINESS CARD',
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
+  ]
+});
+
+const route = useRoute();
+const router = useRouter();
+const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
+
+const loading = ref(true);
+const products = ref<any[]>([]);
+const searchQuery = ref((route.query.q as string) || '');
+const selectedCategory = ref((route.query.category as string) || 'all');
+
+const categories = [
+  { key: 'all', label: 'All Collections' },
+  { key: 'letterpress', label: 'Executive Letterpress' },
+  { key: 'gold-foil', label: 'Gold Foil Embossed' },
+  { key: 'steel', label: 'Metal Steel Edition' },
+  { key: 'specialty', label: 'Specialty Paper' }
+];
+
+const getProductImage = (item: any) => {
+  if (item.images && item.images.length > 0) return item.images[0];
+  return getPublishedProductImage(item);
+};
+
+const handleSearch = () => {
+  router.replace({ query: { ...route.query, q: searchQuery.value || undefined } });
+};
+
+const selectCategory = (key: string) => {
+  selectedCategory.value = key;
+  router.replace({ query: { ...route.query, category: key === 'all' ? undefined : key } });
+};
+
+const resetFilters = () => {
+  searchQuery.value = '';
+  selectedCategory.value = 'all';
+  router.replace({ query: {} });
+};
+
+const filteredProducts = computed(() => {
+  return products.value.filter((item) => {
+    const matchesQuery = !searchQuery.value || item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || (item.description && item.description.toLowerCase().includes(searchQuery.value.toLowerCase()));
+    const matchesCategory = selectedCategory.value === 'all' || item.category === selectedCategory.value || (item.name && item.name.toLowerCase().includes(selectedCategory.value));
+    return matchesQuery && matchesCategory;
+  });
+});
+
+const navigateToProduct = (item: any) => {
+  router.push(`/product/${item.id}`);
+};
+
+onMounted(async () => {
+  try {
+    loading.value = true;
+    const res = await fetchPublishedProducts({ page: 1, limit: 16 });
+    if (res && Array.isArray(res)) {
+      products.value = res;
+    } else if (res && Array.isArray(res.items)) {
+      products.value = res.items;
+    }
+  } catch (e) {
+    console.error('Failed to fetch search products:', e);
+  } finally {
+    loading.value = false;
+  }
+});
+</script>
+
+<style scoped>
+.gucci-page-wrapper {
+  background: #ffffff;
+  color: #000000;
+  min-height: 100vh;
+  font-family: Didot, "Times New Roman", serif;
+}
+
+.gucci-header {
+  border-bottom: 1px solid #e5e5e5;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.gucci-header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-link, .header-icon-link {
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.gucci-brand-logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #000000;
+  text-decoration: none;
+}
+
+.gucci-main-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.search-hero-banner {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.search-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin: 0 0 0.5rem;
+}
+
+.search-sub {
+  font-size: 0.88rem;
+  color: #666666;
+  margin: 0 0 2rem;
+}
+
+.search-bar-wrapper {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  position: relative;
+
+  .search-input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #000000;
+    padding: 0.85rem 3rem 0.85rem 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      stroke: #000000;
+    }
+  }
+}
+
+.category-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.tag-btn {
+  background: none;
+  border: 1px solid #cccccc;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-btn.active, .tag-btn:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.gucci-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+
+@media (max-width: 1024px) {
+  .gucci-products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .gucci-products-grid { grid-template-columns: 1fr; }
+}
+
+.gucci-product-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-photo-wrapper {
+  height: 320px;
+  background: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gucci-product-card:hover .product-photo {
+  transform: scale(1.05);
+}
+
+.product-fallback-photo {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+  color: #d4a337;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.fallback-icon { font-size: 3rem; }
+.fallback-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; color: #ffffff; }
+
+.luxury-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.product-details {
+  padding: 1rem 0;
+}
+
+.product-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.product-price {
+  font-size: 0.85rem;
+  color: #666666;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.product-desc {
+  font-size: 0.78rem;
+  color: #888888;
+  margin: 0 0 0.85rem;
+  line-height: 1.4;
+}
+
+.card-action-link {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.gucci-loading, .gucci-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #666666;
+}
+
+.reset-btn {
+  margin-top: 1rem;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.gucci-mini-footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.footer-logo-small {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #000000;
+  margin-bottom: 0.5rem;
+}
+</style>

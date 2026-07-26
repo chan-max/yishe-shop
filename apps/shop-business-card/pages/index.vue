@@ -4,10 +4,10 @@
     <header class="gucci-header">
       <div class="gucci-header-inner">
         <div class="header-left">
-          <button type="button" class="header-contact-btn" @click="openContact">
+          <NuxtLink to="/contact" class="header-contact-btn">
             <span class="plus-icon">+</span>
             <span>Contact Us</span>
-          </button>
+          </NuxtLink>
         </div>
 
         <div class="header-center">
@@ -17,33 +17,33 @@
         </div>
 
         <div class="header-right">
-          <button type="button" class="header-icon-btn" title="Search" @click="openSearch">
+          <NuxtLink to="/search" class="header-icon-btn" title="Search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-          </button>
-          <button type="button" class="header-icon-btn" title="Account">
+          </NuxtLink>
+          <NuxtLink to="/contact" class="header-icon-btn" title="Account">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-          </button>
-          <button type="button" class="header-icon-btn" title="Shopping Bag">
+          </NuxtLink>
+          <NuxtLink to="/search" class="header-icon-btn" title="Shopping Bag">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-          </button>
-          <button type="button" class="header-menu-btn">
+          </NuxtLink>
+          <NuxtLink to="/about" class="header-menu-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
             <span class="menu-label">MENU</span>
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </header>
@@ -74,58 +74,35 @@
         </div>
       </section>
 
-      <!-- 2. 4-Column Color-Tone Product Collection Grid (Matching Gucci Screenshot 1:1) -->
+      <!-- 2. Dynamic Published Products Grid (Matching Gucci Screenshot 1:1) -->
       <section class="gucci-collection-section">
-        <div class="collection-4col-grid">
-          <!-- Item 1: Burgundy Pink Tone -->
-          <div class="collection-card tone-pink" @click="openCollection('letterpress')">
-            <div class="card-photo-container">
-              <div class="photo-product-mockup pink-mockup">
-                <div class="card-shadow-3d">📇</div>
-                <span class="mockup-label">LETTERPRESS</span>
-              </div>
-            </div>
-            <div class="card-caption">
-              <span class="caption-title">Executive Letterpress</span>
-            </div>
-          </div>
+        <div v-if="loading" class="collection-loading">
+          Loading published business card collection...
+        </div>
 
-          <!-- Item 2: Monogram Gold Canvas Tone -->
-          <div class="collection-card tone-canvas" @click="openCollection('gold-foil')">
+        <div v-else class="collection-4col-grid">
+          <!-- Live Dynamic Products or Fallback Cards -->
+          <div
+            v-for="(item, idx) in displayProducts"
+            :key="item.id || idx"
+            class="collection-card"
+            :class="getCardToneClass(idx)"
+            @click="navigateToProduct(item)"
+          >
             <div class="card-photo-container">
-              <div class="photo-product-mockup canvas-mockup">
-                <div class="card-shadow-3d">✨</div>
-                <span class="mockup-label">GOLD FOIL</span>
+              <img
+                v-if="getProductImage(item)"
+                :src="getProductImage(item)"
+                :alt="item.name"
+                class="photo-img-cover"
+              />
+              <div v-else class="photo-product-mockup" :class="getMockupBgClass(idx)">
+                <div class="card-shadow-3d">{{ getCardEmoji(idx) }}</div>
+                <span class="mockup-label">{{ getCardLabel(idx) }}</span>
               </div>
             </div>
             <div class="card-caption">
-              <span class="caption-title">Gold Foil Embossed</span>
-            </div>
-          </div>
-
-          <!-- Item 3: Navy Slate Tone -->
-          <div class="collection-card tone-navy" @click="openCollection('steel')">
-            <div class="card-photo-container">
-              <div class="photo-product-mockup navy-mockup">
-                <div class="card-shadow-3d">💳</div>
-                <span class="mockup-label">METAL STEEL</span>
-              </div>
-            </div>
-            <div class="card-caption">
-              <span class="caption-title">Metal Steel Edition</span>
-            </div>
-          </div>
-
-          <!-- Item 4: Sky Blue Tone -->
-          <div class="collection-card tone-blue" @click="openCollection('specialty')">
-            <div class="card-photo-container">
-              <div class="photo-product-mockup blue-mockup">
-                <div class="card-shadow-3d">📜</div>
-                <span class="mockup-label">SPECIALTY PAPER</span>
-              </div>
-            </div>
-            <div class="card-caption">
-              <span class="caption-title">Specialty Paper Crafts</span>
+              <span class="caption-title">{{ item.name || getCardTitle(idx) }}</span>
             </div>
           </div>
         </div>
@@ -209,8 +186,8 @@
               <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
               <li><NuxtLink to="/orders">My Order</NuxtLink></li>
               <li><NuxtLink to="/faq">FAQs</NuxtLink></li>
-              <li><NuxtLink to="/unsubscribe">Email Unsubscribe</NuxtLink></li>
-              <li><NuxtLink to="/sitemap">Sitemap</NuxtLink></li>
+              <li><NuxtLink to="/about">About Us</NuxtLink></li>
+              <li><NuxtLink to="/search">Search Collection</NuxtLink></li>
             </ul>
           </div>
 
@@ -218,11 +195,9 @@
             <h4 class="col-title">THE COMPANY</h4>
             <ul>
               <li><NuxtLink to="/about">About Business Card</NuxtLink></li>
-              <li><NuxtLink to="/crafts">Craftsmanship & Ethics</NuxtLink></li>
-              <li><NuxtLink to="/careers">Careers</NuxtLink></li>
-              <li><NuxtLink to="/legal">Legal</NuxtLink></li>
-              <li><NuxtLink to="/privacy">Privacy Policy</NuxtLink></li>
-              <li><NuxtLink to="/cookies">Cookie Policy</NuxtLink></li>
+              <li><NuxtLink to="/about">Craftsmanship & Ethics</NuxtLink></li>
+              <li><NuxtLink to="/contact">Careers & VIP</NuxtLink></li>
+              <li><NuxtLink to="/legal">Legal & Terms</NuxtLink></li>
             </ul>
           </div>
 
@@ -250,9 +225,9 @@
         <div class="footer-secondary-links">
           <h4 class="col-title">BUSINESS CARD SERVICES</h4>
           <div class="link-inline-row">
-            <NuxtLink to="/services">Discover Our Services</NuxtLink>
-            <NuxtLink to="/appointment">Book an Appointment</NuxtLink>
-            <NuxtLink to="/store">Collect in Store</NuxtLink>
+            <NuxtLink to="/about">Discover Our Services</NuxtLink>
+            <NuxtLink to="/contact">Book an Appointment</NuxtLink>
+            <NuxtLink to="/contact">Collect in Store</NuxtLink>
           </div>
         </div>
 
@@ -270,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 definePageMeta({
   layout: 'default'
@@ -290,21 +265,63 @@ useHead({
   ]
 });
 
+const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
+
+const loading = ref(true);
+const products = ref<any[]>([]);
 const emailInput = ref('');
 
-const openContact = () => {
-  const router = useRouter();
-  router.push('/contact');
+const fallbackPreset = [
+  { id: 'pres-1', name: 'Executive Letterpress', key: 'letterpress' },
+  { id: 'pres-2', name: 'Gold Foil Embossed', key: 'gold-foil' },
+  { id: 'pres-3', name: 'Metal Steel Edition', key: 'steel' },
+  { id: 'pres-4', name: 'Specialty Paper Crafts', key: 'specialty' }
+];
+
+const displayProducts = computed(() => {
+  if (products.value.length > 0) {
+    return products.value.slice(0, 4);
+  }
+  return fallbackPreset;
+});
+
+const getProductImage = (item: any) => {
+  if (item.images && item.images.length > 0) return item.images[0];
+  return getPublishedProductImage(item);
 };
 
-const openSearch = () => {
+const navigateToProduct = (item: any) => {
   const router = useRouter();
-  router.push('/search');
+  if (item.id && !item.id.startsWith('pres-')) {
+    router.push(`/product/${item.id}`);
+  } else {
+    router.push(`/search?category=${item.key || 'all'}`);
+  }
 };
 
-const openCollection = (type: string) => {
-  const router = useRouter();
-  router.push(`/search?category=${type}`);
+const getCardToneClass = (idx: number) => {
+  const tones = ['tone-pink', 'tone-canvas', 'tone-navy', 'tone-blue'];
+  return tones[idx % tones.length];
+};
+
+const getMockupBgClass = (idx: number) => {
+  const mockups = ['pink-mockup', 'canvas-mockup', 'navy-mockup', 'blue-mockup'];
+  return mockups[idx % mockups.length];
+};
+
+const getCardEmoji = (idx: number) => {
+  const emojis = ['📇', '✨', '💳', '📜'];
+  return emojis[idx % emojis.length];
+};
+
+const getCardLabel = (idx: number) => {
+  const labels = ['LETTERPRESS', 'GOLD FOIL', 'METAL STEEL', 'SPECIALTY PAPER'];
+  return labels[idx % labels.length];
+};
+
+const getCardTitle = (idx: number) => {
+  const titles = ['Executive Letterpress', 'Gold Foil Embossed', 'Metal Steel Edition', 'Specialty Paper Crafts'];
+  return titles[idx % titles.length];
 };
 
 const subscribeEmail = () => {
@@ -317,6 +334,22 @@ const submitEmail = () => {
     emailInput.value = '';
   }
 };
+
+onMounted(async () => {
+  try {
+    loading.value = true;
+    const res = await fetchPublishedProducts({ page: 1, limit: 4 });
+    if (res && Array.isArray(res)) {
+      products.value = res;
+    } else if (res && Array.isArray(res.items)) {
+      products.value = res.items;
+    }
+  } catch (e) {
+    console.error('Failed to fetch card products:', e);
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <style scoped>
@@ -331,7 +364,6 @@ const submitEmail = () => {
   width: 100%;
 }
 
-/* 1. Header Navigation */
 .gucci-header {
   width: 100%;
   background: #ffffff;
@@ -350,10 +382,7 @@ const submitEmail = () => {
   justify-content: space-between;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-}
+.header-left { display: flex; align-items: center; }
 
 .header-contact-btn {
   background: none;
@@ -366,11 +395,10 @@ const submitEmail = () => {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  text-decoration: none;
 }
 
-.plus-icon {
-  font-size: 0.95rem;
-}
+.plus-icon { font-size: 0.95rem; }
 
 .gucci-brand-logo {
   font-family: Didot, "Bodoni MT", Cinzel, "Times New Roman", serif;
@@ -387,7 +415,7 @@ const submitEmail = () => {
   gap: 1.25rem;
 }
 
-.header-icon-btn {
+.header-icon-btn, .header-menu-btn {
   background: none;
   border: none;
   color: #000000;
@@ -395,35 +423,19 @@ const submitEmail = () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
-.header-icon-btn svg {
-  width: 19px;
-  height: 19px;
-}
-
-.header-menu-btn {
-  background: none;
-  border: none;
-  color: #000000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.header-menu-btn svg {
-  width: 18px;
-  height: 18px;
-}
+.header-icon-btn svg { width: 19px; height: 19px; }
+.header-menu-btn svg { width: 18px; height: 18px; }
 
 .menu-label {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.1em;
+  margin-left: 0.3rem;
 }
 
-/* 2. Hero Campaign Showcase */
 .gucci-hero-section {
   position: relative;
   width: 100%;
@@ -452,15 +464,7 @@ const submitEmail = () => {
   justify-content: center;
 }
 
-.hero-model-silhouette {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-display-floating {
-  perspective: 1000px;
-}
+.card-display-floating { perspective: 1000px; }
 
 .gold-embossed-card {
   width: 320px;
@@ -477,9 +481,7 @@ const submitEmail = () => {
   transition: transform 0.5s ease;
 }
 
-.gold-embossed-card:hover {
-  transform: rotateY(0deg) rotateX(0deg);
-}
+.gold-embossed-card:hover { transform: rotateY(0deg) rotateX(0deg); }
 
 .card-monogram {
   font-family: Didot, serif;
@@ -530,19 +532,18 @@ const submitEmail = () => {
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
-  border-radius: 0;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
 }
 
-.gucci-btn-white:hover {
-  background: #f0f0f0;
-}
+.gucci-btn-white:hover { background: #f0f0f0; }
 
-/* 3. 4-Column Product Grid (1:1 Gucci Layout) */
-.gucci-collection-section {
-  padding: 0;
-  background: #ffffff;
+.gucci-collection-section { background: #ffffff; }
+
+.collection-loading {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #666666;
 }
 
 .collection-4col-grid {
@@ -551,17 +552,8 @@ const submitEmail = () => {
   width: 100%;
 }
 
-@media (max-width: 1024px) {
-  .collection-4col-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .collection-4col-grid {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 1024px) { .collection-4col-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .collection-4col-grid { grid-template-columns: 1fr; } }
 
 .collection-card {
   cursor: pointer;
@@ -576,21 +568,19 @@ const submitEmail = () => {
   overflow: hidden;
 }
 
-.tone-pink .card-photo-container {
-  background: linear-gradient(180deg, #993344 0%, #661122 100%);
+.photo-img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
-.tone-canvas .card-photo-container {
-  background: linear-gradient(180deg, #bb9966 0%, #886633 100%);
-}
+.collection-card:hover .photo-img-cover { transform: scale(1.04); }
 
-.tone-navy .card-photo-container {
-  background: linear-gradient(180deg, #223344 0%, #111122 100%);
-}
-
-.tone-blue .card-photo-container {
-  background: linear-gradient(180deg, #5588aa 0%, #335577 100%);
-}
+.tone-pink .card-photo-container { background: linear-gradient(180deg, #993344 0%, #661122 100%); }
+.tone-canvas .card-photo-container { background: linear-gradient(180deg, #bb9966 0%, #886633 100%); }
+.tone-navy .card-photo-container { background: linear-gradient(180deg, #223344 0%, #111122 100%); }
+.tone-blue .card-photo-container { background: linear-gradient(180deg, #5588aa 0%, #335577 100%); }
 
 .photo-product-mockup {
   width: 100%;
@@ -604,9 +594,7 @@ const submitEmail = () => {
   transition: transform 0.4s ease;
 }
 
-.collection-card:hover .photo-product-mockup {
-  transform: scale(1.04);
-}
+.collection-card:hover .photo-product-mockup { transform: scale(1.04); }
 
 .card-shadow-3d {
   font-size: 4rem;
@@ -651,11 +639,8 @@ const submitEmail = () => {
   transition: all 0.2s ease;
 }
 
-.gucci-btn-gray:hover {
-  background: #d0d0d0;
-}
+.gucci-btn-gray:hover { background: #d0d0d0; }
 
-/* 4. Services Section (Gucci Services 3-Grid) */
 .gucci-services-section {
   padding: 5rem 2rem 4rem;
   background: #ffffff;
@@ -678,17 +663,9 @@ const submitEmail = () => {
   gap: 2.5rem;
 }
 
-@media (max-width: 860px) {
-  .services-3col-grid {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 860px) { .services-3col-grid { grid-template-columns: 1fr; } }
 
-.service-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.service-card { display: flex; flex-direction: column; align-items: center; }
 
 .service-photo-wrapper {
   width: 100%;
@@ -707,17 +684,13 @@ const submitEmail = () => {
   transition: transform 0.4s ease;
 }
 
-.service-card:hover .service-photo {
-  transform: scale(1.03);
-}
+.service-card:hover .service-photo { transform: scale(1.03); }
 
 .photo-boutique { background: #e5e5e5; }
 .photo-types { background: #1a1a1a; color: #d4a337; }
 .photo-collect { background: #d9d9d9; }
 
-.photo-overlay-icon {
-  font-size: 3.5rem;
-}
+.photo-overlay-icon { font-size: 3.5rem; }
 
 .service-title {
   font-size: 0.82rem;
@@ -731,14 +704,8 @@ const submitEmail = () => {
   font-size: 0.78rem;
   color: #666666;
   text-decoration: underline;
-  transition: color 0.2s ease;
 }
 
-.service-link:hover {
-  color: #000000;
-}
-
-/* 5. Black Subscription Section */
 .gucci-subscribe-section {
   background: #000000;
   color: #ffffff;
@@ -782,11 +749,8 @@ const submitEmail = () => {
   gap: 0.4rem;
 }
 
-.plus-symbol {
-  font-size: 1rem;
-}
+.plus-symbol { font-size: 1rem; }
 
-/* 6. Luxury Black Multi-Column Footer */
 .gucci-footer {
   background: #000000;
   color: #ffffff;
@@ -794,10 +758,7 @@ const submitEmail = () => {
   border-top: 1px solid #222222;
 }
 
-.footer-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-}
+.footer-inner { max-width: 1400px; margin: 0 auto; }
 
 .footer-columns {
   display: grid;
@@ -806,11 +767,7 @@ const submitEmail = () => {
   margin-bottom: 4rem;
 }
 
-@media (max-width: 860px) {
-  .footer-columns {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 860px) { .footer-columns { grid-template-columns: 1fr; } }
 
 .col-title {
   font-size: 0.75rem;
@@ -820,30 +777,18 @@ const submitEmail = () => {
   margin-bottom: 1.25rem;
 }
 
-.sub-form-title {
-  margin-top: 2rem;
-}
+.sub-form-title { margin-top: 2rem; }
 
-.footer-col ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-col li {
-  margin-bottom: 0.75rem;
-}
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col li { margin-bottom: 0.75rem; }
 
 .footer-col a {
   color: #aaaaaa;
   font-size: 0.78rem;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
-.footer-col a:hover {
-  color: #ffffff;
-}
+.footer-col a:hover { color: #ffffff; }
 
 .input-with-arrow {
   position: relative;
@@ -860,10 +805,6 @@ const submitEmail = () => {
   padding: 0.5rem 2rem 0.5rem 0;
   font-size: 0.82rem;
   outline: none;
-}
-
-.input-with-arrow input:focus {
-  border-bottom-color: #ffffff;
 }
 
 .arrow-right {
@@ -890,17 +831,8 @@ const submitEmail = () => {
   gap: 0.25rem;
 }
 
-.region-label {
-  font-size: 0.65rem;
-  color: #666666;
-  letter-spacing: 0.1em;
-}
-
-.selected-country {
-  font-size: 0.78rem;
-  color: #ffffff;
-  text-decoration: underline;
-}
+.region-label { font-size: 0.65rem; color: #666666; letter-spacing: 0.1em; }
+.selected-country { font-size: 0.78rem; color: #ffffff; text-decoration: underline; }
 
 .footer-secondary-links {
   border-top: 1px solid #222222;
@@ -908,16 +840,8 @@ const submitEmail = () => {
   margin-bottom: 3rem;
 }
 
-.link-inline-row {
-  display: flex;
-  gap: 2rem;
-}
-
-.link-inline-row a {
-  color: #aaaaaa;
-  font-size: 0.78rem;
-  text-decoration: none;
-}
+.link-inline-row { display: flex; gap: 2rem; }
+.link-inline-row a { color: #aaaaaa; font-size: 0.78rem; text-decoration: none; }
 
 .footer-copyright-line {
   font-size: 0.7rem;
