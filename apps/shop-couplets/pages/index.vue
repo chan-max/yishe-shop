@@ -10,7 +10,7 @@
 
         <div class="logo">
           <NuxtLink to="/" class="logo-link">
-            <span class="logo-text">🏮 衣设 · 春联定制工坊</span>
+            <span class="logo-text">🏮 墨韵阁 · 传世楹联</span>
           </NuxtLink>
         </div>
 
@@ -40,7 +40,7 @@
       <!-- CONTENT CONTAINER -->
       <div class="content">
         <p class="desc">
-          衣设春联工坊专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。
+          墨韵阁专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。
           <br />
           采用特级万年红宣纸与耐候金墨，让每一副春联都承载吉祥安康。
         </p>
@@ -154,9 +154,9 @@
         <br /><br />
         If you believe this has been sent to you in error, please safely unsubscribe.
         <br /><br />
-        © 2026 Company. All rights reserved.
+        © 2026 MoYun Pavilion. All rights reserved.
         <br /><br />
-        <div class="footer-logo">🏮 衣设 · 春联定制工坊</div>
+        <div class="footer-logo">🏮 墨韵阁 · 传世楹联</div>
       </div>
     </div>
   </div>
