@@ -76,9 +76,19 @@
 <script setup lang="ts">
 import { useToast } from '~/composables/use-toast'
 
+useSeoMeta({
+  title: '名片 · 高端商务名片与特种纸名片定制平台',
+  ogTitle: '名片 · 高端商务名片与特种纸名片定制平台',
+  description: '衣设名片工坊专注于高端商务名片定制、特种纸工艺名片与极简创意名片设计服务。',
+  ogDescription: '专为企业精英与设计师打造的高端商务名片定制平台。'
+});
+
 useHead({
-  title: 'Shop-A 潮流灵感设计工作室'
-})
+  title: '名片 · 高端商务名片与特种纸名片定制平台',
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
+  ]
+});
 
 const toast = useToast()
 

@@ -169,6 +169,20 @@ definePageMeta({
   layout: 'default'
 });
 
+useSeoMeta({
+  title: '春联 · 传世名家手写与烫金春联定制平台',
+  ogTitle: '春联 · 传世名家手写与烫金春联定制平台',
+  description: '春联网专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。',
+  ogDescription: '春联网专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。'
+});
+
+useHead({
+  title: '春联 · 传世名家手写与烫金春联定制平台',
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏮</text></svg>' }
+  ]
+});
+
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
 
 const loading = ref(true);
