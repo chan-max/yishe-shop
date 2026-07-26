@@ -1,4 +1,4 @@
-name: Deploy Nuxt site to Tencent Cloud
+name: Deploy Nuxt Storefronts to Tencent Cloud
 
 on:
   push:
@@ -28,10 +28,13 @@ jobs:
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit
 
-      - name: Build Nuxt SSR app
-        run: npm run build
+      - name: Build Main Storefront (shop-main)
+        run: npm run build:main
 
-      - name: Include unhead runtime files
+      - name: Build Business Card Storefront (shop-business-card)
+        run: npm run build:card
+
+      - name: Include unhead runtime files for main storefront
         shell: bash
         run: |
           if grep -R "from 'unhead/\|from \"unhead/" .output/server/chunks >/dev/null 2>&1; then
@@ -40,34 +43,41 @@ jobs:
             cp -R node_modules/@unhead/vue/node_modules/unhead/. .output/server/node_modules/unhead/
           fi
 
-      - name: Verify build output
+      - name: Include unhead runtime files for business card storefront
+        shell: bash
         run: |
-          echo "Checking build output..."
-          ls -la .output/ || echo ".output directory not found"
-          ls -la .output/server/ || echo ".output/server directory not found"
-          ls -la .output/public/ || echo ".output/public directory not found"
-          test -f .output/server/index.mjs
-          if grep -R "from 'unhead/\|from \"unhead/" .output/server/chunks >/dev/null 2>&1; then
-            test -f .output/server/node_modules/unhead/dist/server.mjs
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-business-card/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-business-card/.output/server/node_modules/unhead
+            mkdir -p apps/shop-business-card/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-business-card/.output/server/node_modules/unhead/
           fi
 
-      - name: Package build artifacts
-        run: tar -czf nuxt-output.tar.gz .output
+      - name: Verify build outputs
+        run: |
+          echo "Checking shop-main build output..."
+          test -f .output/server/index.mjs
+          echo "Checking shop-business-card build output..."
+          test -f apps/shop-business-card/.output/server/index.mjs
 
-      - name: Upload package to Tencent Cloud
+      - name: Package build artifacts
+        run: |
+          tar -czf nuxt-output-main.tar.gz .output
+          tar -czf nuxt-output-card.tar.gz -C apps/shop-business-card .output
+
+      - name: Upload packages to Tencent Cloud
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
-          source: "nuxt-output.tar.gz"
+          source: "nuxt-output-main.tar.gz,nuxt-output-card.tar.gz"
           target: "/tmp"
           command_timeout: "10m"
           timeout: "10m"
           debug: true
 
-      - name: Deploy SSR app on Tencent Cloud
+      - name: Deploy SSR apps on Tencent Cloud
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -75,23 +85,40 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
-            mkdir -p /www/wwwroot/1s.design
-            tar -xzf /tmp/nuxt-output.tar.gz -C /tmp
-            rm -rf /www/wwwroot/1s.design/.output
-            cp -r /tmp/.output /www/wwwroot/1s.design/.output
-            rm -rf /tmp/.output
-            rm -f /tmp/nuxt-output.tar.gz
-
             if ! command -v pm2 >/dev/null 2>&1; then
               npm install -g pm2
             fi
 
+            # 1. 部署主独立站 (shop-main -> 1s.design, 端口 15201)
+            mkdir -p /www/wwwroot/1s.design
+            mkdir -p /tmp/main-unpack
+            tar -xzf /tmp/nuxt-output-main.tar.gz -C /tmp/main-unpack
+            rm -rf /www/wwwroot/1s.design/.output
+            cp -r /tmp/main-unpack/.output /www/wwwroot/1s.design/.output
+            rm -rf /tmp/main-unpack /tmp/nuxt-output-main.tar.gz
+
             cd /www/wwwroot/1s.design
             if pm2 describe yishe-shop >/dev/null 2>&1; then
-              NODE_ENV=production PORT=3000 HOST=0.0.0.0 pm2 restart yishe-shop --update-env
+              NODE_ENV=production PORT=15201 HOST=0.0.0.0 pm2 restart yishe-shop --update-env
             else
-              NODE_ENV=production PORT=3000 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop
+              NODE_ENV=production PORT=15201 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop
             fi
+
+            # 2. 部署名片独立站 (shop-business-card -> shop-business-card.1s.design, 端口 15202)
+            mkdir -p /www/wwwroot/shop-business-card.1s.design
+            mkdir -p /tmp/card-unpack
+            tar -xzf /tmp/nuxt-output-card.tar.gz -C /tmp/card-unpack
+            rm -rf /www/wwwroot/shop-business-card.1s.design/.output
+            cp -r /tmp/card-unpack/.output /www/wwwroot/shop-business-card.1s.design/.output
+            rm -rf /tmp/card-unpack /tmp/nuxt-output-card.tar.gz
+
+            cd /www/wwwroot/shop-business-card.1s.design
+            if pm2 describe yishe-shop-business-card >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15202 HOST=0.0.0.0 pm2 restart yishe-shop-business-card --update-env
+            else
+              NODE_ENV=production PORT=15202 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-business-card
+            fi
+
             pm2 save
           command_timeout: "10m"
           timeout: "10m"
