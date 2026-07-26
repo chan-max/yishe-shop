@@ -14,59 +14,59 @@
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">搜索名片</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link">搜索设计灵感</NuxtLink>
         </div>
       </div>
     </header>
 
     <main class="gucci-contact-container">
       <section class="contact-hero">
-        <span class="sub-tag">ATELIER SERVICES · 定制服务</span>
-        <h1 class="main-heading">预约 1对1 资深名片设计师</h1>
+        <span class="sub-tag">FREE DESIGN FOR INDIVIDUALS & STARTUPS</span>
+        <h1 class="main-heading">个人与小微企业 0 元免费名片设计申请</h1>
         <p class="heading-lead">
-          提交您的品牌视觉规范或名片文字需求，资深名片大师将为您提供专业的特种纸张搭配、活字排字与 24K 烫金试样指导。
+          无隐形消费、无门槛限制。资深名片设计师免费为您调整文字排版、Logo 矢量适配与 24K 烫金工艺打样建议。
         </p>
       </section>
 
       <div class="contact-grid">
-        <!-- VIP Appointment Form -->
+        <!-- VIP Free Design Form -->
         <div class="form-card">
-          <h2 class="card-title">预约设计师沟通与打样</h2>
-          <p class="form-sub font-serif">填写您的联系方式与名片需求，我们将于 24 小时内为您出具免费矢量排版方案。</p>
+          <h2 class="card-title">0 元免费名片设计申请表</h2>
+          <p class="form-sub font-serif">填写真实联系方式与文字需求，资深设计师将于 24 小时内为您出具免费矢量设计方案。</p>
 
           <form @submit.prevent="submitForm" class="appointment-form">
             <div class="field-group">
-              <label>您的姓名 (FULL NAME)</label>
-              <input v-model="form.name" type="text" placeholder="例如：张总 / Alexander" required />
+              <label>您的姓名 / 称呼 (FULL NAME)</label>
+              <input v-model="form.name" type="text" placeholder="例如：张总 / Alexander / 个人创作者" required />
             </div>
 
             <div class="field-group">
-              <label>公司名称 / 职务 (COMPANY & TITLE)</label>
-              <input v-model="form.company" type="text" placeholder="例如：极客风尚科技 · 创始人兼 CEO" required />
+              <label>团队 / 公司名称 / 品牌 (COMPANY & BRAND)</label>
+              <input v-model="form.company" type="text" placeholder="例如：个人独立工作室 / 极客风尚科技" required />
             </div>
 
             <div class="field-group">
-              <label>联系电话 / 电子邮箱 (CONTACT)</label>
-              <input v-model="form.email" type="text" placeholder="手机号或邮箱，方便发送矢量试样稿" required />
+              <label>联系电话 / 电子邮箱 (CONTACT FOR PROOF)</label>
+              <input v-model="form.email" type="text" placeholder="手机号或邮箱，用于接收 24小时免费矢量稿" required />
             </div>
 
             <div class="field-group">
-              <label>意向工艺与纸张 (PREFERRED CRAFT)</label>
+              <label>期望的名片设计风格 (PREFERRED STYLE)</label>
               <select v-model="form.craft">
-                <option value="letterpress">600g 棉纸活字凹版压印 (Letterpress)</option>
-                <option value="gold-foil">24K 浮雕烫金/烫银工艺 (Gold Foil)</option>
-                <option value="metal-steel">钛钢/金属拉丝极客名片 (Metal Steel)</option>
-                <option value="custom">申请全套特种纸纸样盒 (Sample Kit)</option>
+                <option value="letterpress">600g 棉纸活字凹版风格 (Letterpress)</option>
+                <option value="gold-foil">24K 浮雕烫金/黑金高定风格 (Gold Foil)</option>
+                <option value="metal-steel">钛钢拉丝极客精印风格 (Metal Steel)</option>
+                <option value="custom">莫兰迪色系 / 触感特种纸风格 (Specialty Paper)</option>
               </select>
             </div>
 
             <div class="field-group">
-              <label>详细排版要求或品牌 Logo 说明</label>
-              <textarea v-model="form.notes" rows="4" placeholder="请简述名片文字内容、期望的风格（如极简双色、黑金高定）或 Logo 矢量文件情况…"></textarea>
+              <label>详细文字排版要求或 Logo 文件说明</label>
+              <textarea v-model="form.notes" rows="4" placeholder="请填写真实的名片文字（姓名、职务、电话、地址、网址）或对排版风格的具体想法…"></textarea>
             </div>
 
             <button type="submit" class="submit-btn-black">
-              提交预约打样需求
+              立即提交 0 元免费设计申请
             </button>
           </form>
         </div>
@@ -74,8 +74,14 @@
         <!-- Atelier Information -->
         <div class="info-card">
           <div class="info-block">
-            <h3 class="info-title">名片工坊工匠工坊地址</h3>
-            <p>名片工坊高定艺术中心<br />上海 / 北京 / 深圳 专属打样中心</p>
+            <h3 class="info-title">免费设计承诺与保障</h3>
+            <p>1. <strong>0 元免费出稿</strong>：为个人创作者与初创团队免费提供 1对1 矢量排版稿。</p>
+            <p>2. <strong>24 小时极速交付</strong>：提交需求后 24 小时内免费交付 PDF / SVG 高清试样。</p>
+            <p>3. <strong>全网风格设计同款</strong>：支持发送全网任意喜欢的名片参考图，免费为您设计同款。</p>
+          </div>
+
+          <div class="info-block">
+            <h3 class="info-title">设计师热线与服务邮箱</h3>
             <p class="contact-line">
               <svg class="info-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -87,19 +93,8 @@
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
               </svg>
-              <span>设计邮箱：concierge@businesscard.1s.design</span>
+              <span>设计邮箱：freedesign@businesscard.1s.design</span>
             </p>
-          </div>
-
-          <div class="info-block">
-            <h3 class="info-title">工作与打样时间</h3>
-            <p>周一至周五: 09:00 – 19:00</p>
-            <p>周六至周日: 10:00 – 18:00 (设计师 1对1 专场预约)</p>
-          </div>
-
-          <div class="info-block">
-            <h3 class="info-title">24小时矢量初稿承诺</h3>
-            <p>所有提交的设计打样需求，名片工坊资深设计师均会在 24 小时内免费出具高清 PDF / SVG 矢量初稿供您审核确认。</p>
           </div>
         </div>
       </div>
@@ -121,14 +116,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '预约高定服务 · 1对1设计师 | BUSINESS CARD',
-  ogTitle: '预约高定服务 · BUSINESS CARD',
-  description: '预约 1对1 名片设计师，探讨特种纸冲压与 24K 烫金工艺。',
-  ogDescription: '预约 1对1 名片设计师服务。'
+  title: '个人与小微企业 0 元免费名片设计申请 | 名片设计工坊',
+  ogTitle: '0 元免费名片设计申请 | BUSINESS CARD',
+  description: '名片设计工坊专为个人与小微企业提供 0 元免费名片设计申请，24 小时免费交付矢量排版与同款设计稿。',
+  ogDescription: '专为个人与小微企业提供 0 元免费名片设计申请。'
 });
 
 useHead({
-  title: '预约高定服务 · 1对1设计师 | BUSINESS CARD',
+  title: '个人与小微企业 0 元免费名片设计申请 | 名片设计工坊',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -143,7 +138,7 @@ const form = ref({
 });
 
 const submitForm = () => {
-  alert(`感谢您，${form.value.name}！您的名片打样与设计预约（${form.value.company}）已成功提交。资深设计师将在 24 小时内联系您并发送矢量初稿。`);
+  alert(`申请成功！感谢您，${form.value.name}（${form.value.company}）。名片工坊资深设计师已收到您的 0 元免费设计申请，将在 24 小时内把高清矢量试样图发送至您的联系方式。`);
   form.value = { name: '', company: '', email: '', craft: 'letterpress', notes: '' };
 };
 </script>
@@ -169,7 +164,7 @@ input, select, textarea, button, .submit-btn-black {
 }
 
 .gucci-header-inner {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 1rem 2rem;
   display: flex;
@@ -188,7 +183,7 @@ input, select, textarea, button, .submit-btn-black {
 .gucci-brand-logo {
   font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #000000;
   text-decoration: none;
 }
@@ -329,7 +324,7 @@ input, select, textarea, button, .submit-btn-black {
   font-size: 0.88rem;
   color: #555555;
   line-height: 1.6;
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.5rem;
 }
 
 .contact-line {

@@ -6,7 +6,7 @@
         <div class="header-left">
           <NuxtLink to="/contact" class="header-contact-btn">
             <span class="plus-icon">+</span>
-            <span>1对1 设计师灵感定制</span>
+            <span>个人与小微企业 · 0元免费名片设计</span>
           </NuxtLink>
         </div>
 
@@ -23,13 +23,13 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/contact" class="header-icon-btn" title="预约灵感">
+          <NuxtLink to="/contact" class="header-icon-btn" title="免费预约设计">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/search" class="header-icon-btn" title="设计画板">
+          <NuxtLink to="/search" class="header-icon-btn" title="免费设计库">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -42,7 +42,7 @@
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
-            <span class="menu-label">设计菜单</span>
+            <span class="menu-label">免费设计菜单</span>
           </NuxtLink>
         </div>
       </div>
@@ -50,32 +50,32 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Dynamic Hero Campaign Showcase (Displays Real Product Designs, NO simulated cards) -->
+      <!-- 1. Dynamic Hero Campaign Showcase (Free Design Focus) -->
       <section class="gucci-hero-section">
         <div class="hero-bg-light-effects"></div>
 
         <div class="hero-center-stage">
           <div class="hero-headline-group">
-            <span class="hero-top-badge">DESIGN GALLERY · 全量真实名片设计库</span>
-            <h1 class="hero-main-title">全风格名片设计 · 一键设计同款</h1>
-            <p class="hero-sub-text">极简黑金 · 活字凹版 · 24K 浮雕烫金 · 钛钢精印 — 喜欢哪款，即刻为您设计同款</p>
+            <span class="hero-top-badge">FREE DESIGN & INSPIRATION ATELIER · 0元免费名片设计</span>
+            <h1 class="hero-main-title">名片免费设计 · 汇聚全网灵感库</h1>
+            <p class="hero-sub-text">专为个人创作者与初创小微企业提供 0 元免费名片设计服务 — 喜欢任意风格，即刻免费设计同款</p>
           </div>
 
-          <!-- Dynamic Real Product Showcase Stage (NO simulated cards) -->
+          <!-- Dynamic Real Product Showcase Stage -->
           <div class="hero-dynamic-stage">
             <div v-if="heroProducts.length === 0" class="hero-placeholder-grid">
               <div class="hero-photo-card card-1">
-                <div class="card-editorial-tag">FEATURED DESIGN</div>
+                <div class="card-editorial-tag">FREE DESIGN FOR STARTUPS</div>
                 <div class="card-info-overlay">
                   <span class="c-title">24K 浮雕热压金名片设计</span>
-                  <span class="c-sub">可一键设计同款</span>
+                  <span class="c-sub">个人与小微企业 0元免费设计</span>
                 </div>
               </div>
               <div class="hero-photo-card card-2">
-                <div class="card-editorial-tag">NEW COLLECTION</div>
+                <div class="card-editorial-tag">INDIVIDUAL & SMALL BIZ</div>
                 <div class="card-info-overlay">
                   <span class="c-title">600g 活字凹版棉纸设计</span>
-                  <span class="c-sub">可一键设计同款</span>
+                  <span class="c-sub">个人与小微企业 0元免费设计</span>
                 </div>
               </div>
             </div>
@@ -98,34 +98,68 @@
                     <svg class="fallback-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                       <rect x="3" y="4" width="18" height="16" rx="0"></rect>
                       <line x1="7" y1="8" x2="17" y2="8"></line>
-                      <line x1="7" y1="12" x2="13" y2="12"></line>
+                      <line x1="7" y1="12" x2="13" y2="13"></line>
                     </svg>
                   </div>
                 </div>
                 <div class="hero-product-meta">
                   <span class="h-name">{{ item.name }}</span>
-                  <span class="h-btn">设计同款 ›</span>
+                  <span class="h-btn">免费设计同款 ›</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="hero-action-row">
-            <NuxtLink to="/search" class="gucci-btn-gold">
-              探索全量名片设计库 (DESIGN GALLERY)
+            <NuxtLink to="/contact" class="gucci-btn-gold">
+              申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
-            <NuxtLink to="/contact" class="gucci-btn-outline">
-              预约 1对1 灵感定制
+            <NuxtLink to="/search" class="gucci-btn-outline">
+              探索名片设计灵感库
             </NuxtLink>
           </div>
         </div>
       </section>
 
-      <!-- 2. Dynamic 4-Column High-Fashion Color-Tone Showcase -->
+      <!-- 2. Free Design Service Banner for Individuals & Small Businesses -->
+      <section class="gucci-free-design-banner">
+        <div class="free-design-inner">
+          <div class="free-badge">FOR INDIVIDUALS & STARTUPS</div>
+          <h2 class="free-title">为个人与小微企业提供 0 元免费名片设计</h2>
+          <p class="free-desc">
+            无隐形费用，无门槛限制。无论您是独立自由职业者、个人创业者、还是初创小微团队，名片工坊资深设计师免费为您提供专业版面排字、Logo 矢量微调与 24 小时电子稿输出。
+          </p>
+          <div class="free-features-row">
+            <div class="free-feature-item">
+              <svg class="f-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>0 元免费出设计矢量稿</span>
+            </div>
+            <div class="free-feature-item">
+              <svg class="f-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>24小时快速交付初稿</span>
+            </div>
+            <div class="free-feature-item">
+              <svg class="f-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>支持全量设计风格同款</span>
+            </div>
+          </div>
+          <NuxtLink to="/contact" class="free-cta-btn">
+            立即申请 0元免费设计 ›
+          </NuxtLink>
+        </div>
+      </section>
+
+      <!-- 3. Dynamic 4-Column High-Fashion Color-Tone Showcase -->
       <section class="gucci-collection-section">
         <div class="section-title-bar">
-          <span class="section-badge">DESIGN COLLECTIONS</span>
-          <h2 class="section-main-heading">热门名片设计流派 · 点击设计同款</h2>
+          <span class="section-badge">INSPIRATION GALLERY</span>
+          <h2 class="section-main-heading">热门名片设计灵感 · 点击免费设计同款</h2>
         </div>
 
         <div v-if="loading" class="collection-loading">
@@ -162,27 +196,27 @@
                 </div>
               </div>
               <div class="card-hover-overlay">
-                <span>设计同款风格 ›</span>
+                <span>免费设计同款风格 ›</span>
               </div>
             </div>
             <div class="card-caption">
               <span class="caption-title">{{ item.name || getCardTitle(idx) }}</span>
-              <span class="caption-price">设计同款指导价 ${{ item.price || '88.00' }}</span>
+              <span class="caption-price">设计服务：0元免费设计 (同款印制参考 ${{ item.price || '88.00' }})</span>
             </div>
           </div>
         </div>
 
         <div class="collection-action-center">
           <NuxtLink to="/search" class="gucci-btn-gray">
-            查看更多设计作品 (BROWSE ALL DESIGNS)
+            探索更多设计灵感 (BROWSE ALL INSPIRATIONS)
           </NuxtLink>
         </div>
       </section>
 
-      <!-- 3. Business Card Atelier Services Section (SVG Vector Icons, NO Emojis) -->
+      <!-- 4. Business Card Atelier Services Section -->
       <section class="gucci-services-section">
-        <span class="section-badge">DESIGN SERVICES</span>
-        <h2 class="services-main-title">名片工坊 专属设计服务</h2>
+        <span class="section-badge">FREE ATELIER SERVICES</span>
+        <h2 class="services-main-title">名片工坊 免费设计与灵感服务</h2>
 
         <div class="services-3col-grid">
           <!-- Service 1 -->
@@ -198,10 +232,10 @@
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">1对1 专属排版与字体定制</h3>
-            <p class="service-desc">资深字体设计师为你微调版式、行距与矢量 Logo 适配</p>
+            <h3 class="service-title">个人与小微企业 0元免费设计</h3>
+            <p class="service-desc">专为独立创作者与初创小微团队提供 0 元免费版面排字与 Logo 适配</p>
             <NuxtLink to="/contact" class="service-link">
-              预约设计师灵感沟通 ›
+              立即免费申请设计 ›
             </NuxtLink>
           </div>
 
@@ -218,10 +252,10 @@
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">任意名片排版 · 设计同款</h3>
-            <p class="service-desc">挑选喜欢的名片风格，设计师全量替换文字与专属视觉</p>
+            <h3 class="service-title">全网名片灵感 · 免费设计同款</h3>
+            <p class="service-desc">挑选喜欢的名片设计风格，设计师免费全量替换文字与专属视觉</p>
             <NuxtLink to="/search" class="service-link">
-              挑选同款灵感模板 ›
+              探索同款灵感模板 ›
             </NuxtLink>
           </div>
 
@@ -237,21 +271,21 @@
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">24 小时矢量文件打样预览</h3>
-            <p class="service-desc">提交设计需求后 24 小时出具电子版高清 PDF/SVG 矢量稿</p>
+            <h3 class="service-title">24 小时免费矢量打样交付</h3>
+            <p class="service-desc">提交需求后 24 小时出具电子版高清 PDF/SVG 矢量稿供审核</p>
             <NuxtLink to="/contact" class="service-link">
-              申请打样预览 ›
+              申请免费矢量打样 ›
             </NuxtLink>
           </div>
         </div>
       </section>
 
-      <!-- 4. Subscription Section -->
+      <!-- 5. Subscription Section -->
       <section class="gucci-subscribe-section">
         <div class="subscribe-container">
-          <span class="subscribe-tag">SUBSCRIBE TO DESIGN INSIGHTS</span>
+          <span class="subscribe-tag">SUBSCRIBE TO FREE DESIGN INSIGHTS</span>
           <h2 class="subscribe-headline">
-            订阅设计工坊，获取全球最新名片设计趋势、排版灵感与特种纸搭配指南。
+            订阅设计工坊，免费获取全球最新名片设计趋势、排版灵感与特种纸搭配指南。
           </h2>
           <div class="subscribe-action">
             <button type="button" class="subscribe-plus-btn" @click="subscribeEmail">
@@ -262,25 +296,25 @@
       </section>
     </main>
 
-    <!-- 5. Luxury Black Multi-Column Footer -->
+    <!-- 6. Luxury Black Multi-Column Footer -->
     <footer class="gucci-footer">
       <div class="footer-inner">
         <div class="footer-columns">
           <div class="footer-col">
-            <h4 class="col-title">设计服务与支持</h4>
+            <h4 class="col-title">免费设计服务与支持</h4>
             <ul>
-              <li><NuxtLink to="/contact">预约设计师沟通</NuxtLink></li>
-              <li><NuxtLink to="/search">搜索设计灵感</NuxtLink></li>
+              <li><NuxtLink to="/contact">个人与小微企业免费设计</NuxtLink></li>
+              <li><NuxtLink to="/search">搜索名片设计灵感</NuxtLink></li>
               <li><NuxtLink to="/about">名片排版与字体指南</NuxtLink></li>
-              <li><NuxtLink to="/contact">Logo 矢量文件上传说明</NuxtLink></li>
-              <li><NuxtLink to="/search">名片设计作品库</NuxtLink></li>
+              <li><NuxtLink to="/contact">Logo 矢量文件免费调整</NuxtLink></li>
+              <li><NuxtLink to="/search">名片免费设计灵感库</NuxtLink></li>
             </ul>
           </div>
 
           <div class="footer-col">
             <h4 class="col-title">关于设计工坊</h4>
             <ul>
-              <li><NuxtLink to="/about">工坊设计理念</NuxtLink></li>
+              <li><NuxtLink to="/about">工坊 0元免费设计理念</NuxtLink></li>
               <li><NuxtLink to="/about">活字凹版排字工艺</NuxtLink></li>
               <li><NuxtLink to="/about">24K 烫金与设计艺术</NuxtLink></li>
               <li><NuxtLink to="/about">FSC 环保特种纸搭配</NuxtLink></li>
@@ -288,9 +322,9 @@
           </div>
 
           <div class="footer-col col-form">
-            <h4 class="col-title">打样与设计方案查询</h4>
+            <h4 class="col-title">免费打样方案查询</h4>
             <div class="input-with-arrow">
-              <input type="text" placeholder="输入城市名称（查询设计师打样时效）" />
+              <input type="text" placeholder="输入城市名称（查询设计师交付时效）" />
               <span class="arrow-right">›</span>
             </div>
 
@@ -309,16 +343,16 @@
         </div>
 
         <div class="footer-secondary-links">
-          <h4 class="col-title">名片设计快捷通道</h4>
+          <h4 class="col-title">名片免费设计快捷通道</h4>
           <div class="link-inline-row">
-            <NuxtLink to="/search">探索设计作品</NuxtLink>
-            <NuxtLink to="/contact">设计同款方案</NuxtLink>
-            <NuxtLink to="/contact">预约 1对1 沟通</NuxtLink>
+            <NuxtLink to="/contact">0元申请免费设计</NuxtLink>
+            <NuxtLink to="/search">免费设计同款</NuxtLink>
+            <NuxtLink to="/contact">预约设计师 1对1 沟通</NuxtLink>
           </div>
         </div>
 
         <div class="footer-copyright-line">
-          © 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。汇聚全网名片设计灵感，支持一键设计同款。
+          © 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。专为个人与小微企业提供 0 元免费名片设计服务。
         </div>
 
         <!-- Giant Serif Logo -->
@@ -338,14 +372,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '名片设计工坊 · 汇聚全量名片设计灵感 | 设计同款 | BUSINESS CARD',
-  ogTitle: '名片设计工坊 · 全量名片设计灵感库 | 设计同款',
-  description: '名片设计工坊汇聚全网高端商务名片设计灵感，提供极简黑金、活字凹版压印与 24K 烫金样式，支持一键设计同款与 1对1 设计师定制。',
-  ogDescription: '汇聚全网高端商务名片设计灵感，支持一键设计同款与 1对1 设计师定制。'
+  title: '名片免费设计 · 个人与小微企业 0 元免费定制 | 名片设计工坊',
+  ogTitle: '名片免费设计 · 个人与小微企业 0 元免费定制 | BUSINESS CARD',
+  description: '名片设计工坊专为个人与小微企业提供 0 元免费名片设计服务，汇聚全网名片灵感库，支持免费设计同款与 24 小时矢量出稿。',
+  ogDescription: '专为个人与小微企业提供 0 元免费名片设计服务，汇聚全网名片灵感库。'
 });
 
 useHead({
-  title: '名片设计工坊 · 汇聚全量名片设计灵感 | 设计同款 | BUSINESS CARD',
+  title: '名片免费设计 · 个人与小微企业 0 元免费定制 | 名片设计工坊',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -412,7 +446,7 @@ const getCardLabel = (idx: number) => {
 };
 
 const getCardSublabel = (idx: number) => {
-  const sublabels = ['600g 活字棉纸设计', '24K 热压金箔设计', '拉丝钛钢精印设计', '触感绒面特种纸设计'];
+  const sublabels = ['600g 活字棉纸免费设计', '24K 热压金箔免费设计', '拉丝钛钢精印免费设计', '触感绒面特种纸免费设计'];
   return sublabels[idx % sublabels.length];
 };
 
@@ -455,7 +489,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI High-Fashion Luxury Design System - Zero Border-Radius Inputs & SVG Vector Icons */
+/* GUCCI High-Fashion Luxury Design System - Free Design for Individuals & Small Businesses */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -466,8 +500,7 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* ALL INPUTS, BUTTONS, SELECTS NO BORDER RADIUS */
-input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn {
+input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
   border-radius: 0 !important;
 }
 
@@ -543,7 +576,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. Dynamic Hero Section (Displays Real Product Designs, NO simulated cards) */
+/* 1. Dynamic Hero Section */
 .gucci-hero-section {
   position: relative;
   width: 100%;
@@ -605,7 +638,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   letter-spacing: 0.05em;
 }
 
-/* Dynamic Real Product Showcase Stage (NO simulated cards) */
 .hero-dynamic-stage {
   width: 100%;
   margin-bottom: 3.5rem;
@@ -784,6 +816,90 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
+/* 2. Free Design Banner for Individuals & Small Businesses */
+.gucci-free-design-banner {
+  background: #f7f5f0;
+  border-bottom: 1px solid #e8e4da;
+  padding: 4.5rem 2rem;
+  text-align: center;
+}
+
+.free-design-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.free-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: #b38218;
+  margin-bottom: 0.75rem;
+}
+
+.free-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #111111;
+  margin: 0 0 1rem;
+}
+
+.free-desc {
+  font-size: 0.95rem;
+  color: #555555;
+  line-height: 1.7;
+  max-width: 760px;
+  margin-bottom: 2rem;
+}
+
+.free-features-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .free-features-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.free-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.f-svg {
+  width: 18px;
+  height: 18px;
+  stroke: #b38218;
+}
+
+.free-cta-btn {
+  background: #111111;
+  color: #ffffff;
+  padding: 1rem 3rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: background 0.25s ease;
+}
+
+.free-cta-btn:hover {
+  background: #333333;
+}
+
 .gucci-collection-section {
   padding: 4rem 0 0;
   background: #ffffff;
@@ -952,7 +1068,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
-/* 3. Services Section (SVG Vector Icons, NO Emojis) */
 .gucci-services-section {
   padding: 5rem 2rem 4rem;
   background: #fcfcfc;
