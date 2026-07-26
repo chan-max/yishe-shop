@@ -1012,13 +1012,13 @@ onMounted(() => {
   min-height: clamp(440px, 48vw, 720px);
   overflow: hidden;
   border: 0;
-  border-radius: 0;
-  background: #f5f5f7;
+  border-radius: 4px;
+  background: #fbfbfd;
   transition: background-color 260ms ease;
 }
 
 .product-main-frame:hover {
-  background: #f0f0f2;
+  background: #f5f5f8;
 }
 
 .product-frame-mark {
@@ -2039,7 +2039,13 @@ onMounted(() => {
   color: var(--ys-text);
 }
 
-.product-main-frame,
+.product-main-frame {
+  border: 0;
+  border-radius: 4px;
+  background: #fbfbfd;
+  box-shadow: none;
+}
+
 .product-thumbs button,
 .product-signal-grid article,
 .product-related-card > div {
