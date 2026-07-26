@@ -52,90 +52,45 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. GUCCI Dual 2-Column Split Hero Stage (经典双色块 Hero 舞台 - 左柔和暖白/象牙色块，右深邃黑金/钛钢色块) -->
-      <section class="gucci-split-hero-stage">
-        <div class="split-hero-grid">
-          <!-- Left Column (Ivory Warm Color Block) -->
-          <div
-            class="split-hero-column left-color-block interactive-split-card"
-            @click="navigateToHeroProduct(0)"
-          >
-            <div class="color-block-inner">
-              <span class="editorial-badge">COLLECTION I · 活字凹版工艺</span>
-              <h2 class="split-card-title">
-                {{ heroLeftProduct ? heroLeftProduct.name : '600g 活字凹版纯棉纸名片设计' }}
-              </h2>
-              <p class="split-card-desc">
-                {{ heroLeftProduct ? heroLeftProduct.description : '600g 进口纯棉纸搭配传统活字凹版压印，呈现触感极佳的立体字痕。' }}
-              </p>
+      <!-- 1. Single Unified Color Stage Hero (单一高定象牙暖背景色，去双栏分割) -->
+      <section class="gucci-unified-hero-section">
+        <div class="hero-center-stage">
+          <div class="hero-headline-group">
+            <span class="hero-top-badge">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
+            <h1 class="hero-main-title">名片免费设计 · 汇聚全网灵感库</h1>
+            <p class="hero-sub-text">
+              专为个人创作者、独立创业者与初创小微团队提供 0 元免费名片设计服务 — 喜欢任意风格，即刻免费设计同款
+            </p>
+          </div>
 
-              <!-- Card Mockup inside Color Block -->
-              <div class="block-card-mockup light-card-mockup">
-                <div class="m-row-top">
-                  <span>LETTERPRESS</span>
-                  <span>600GSM</span>
-                </div>
-                <div class="m-row-center">
-                  <span class="m-name">ALEXANDER SMITH</span>
-                  <span class="m-sub">CHIEF DESIGN OFFICER</span>
-                </div>
-                <div class="m-row-bottom">
-                  <span>0元免费排字</span>
-                  <span>支持设计同款</span>
+          <!-- Featured Products Showcase Grid (Horizontal Row) -->
+          <div class="hero-showcase-row">
+            <div
+              v-for="(item, idx) in heroProducts.slice(0, 3)"
+              :key="item.id || idx"
+              class="hero-showcase-card interactive-hero-card"
+              @click="navigateToProduct(item)"
+            >
+              <div class="hero-card-img-box">
+                <img
+                  v-if="getProductImage(item)"
+                  :src="getProductImage(item)"
+                  :alt="item.name"
+                  class="hero-card-img zoom-on-hover"
+                />
+                <div v-else class="hero-card-fallback" :class="'fallback-bg-' + (idx + 1)">
+                  <span class="fallback-tag-text">{{ getCardLabel(idx) }}</span>
+                  <span class="fallback-title-text">{{ getCardTitle(idx) }}</span>
                 </div>
               </div>
-
-              <div class="split-action-link shine-arrow">
-                <span>免费设计同款 ➔</span>
+              <div class="hero-card-meta">
+                <span class="meta-title">{{ item.name || getCardTitle(idx) }}</span>
+                <span class="meta-action">免费设计同款 ➔</span>
               </div>
             </div>
           </div>
 
-          <!-- Right Column (Ebony Gold Dark Color Block) -->
-          <div
-            class="split-hero-column right-color-block interactive-split-card"
-            @click="navigateToHeroProduct(1)"
-          >
-            <div class="color-block-inner">
-              <span class="editorial-badge gold-badge">COLLECTION II · 24K 浮雕烫金</span>
-              <h2 class="split-card-title gold-text">
-                {{ heroRightProduct ? heroRightProduct.name : '24K 浮雕热压金黑卡名片设计' }}
-              </h2>
-              <p class="split-card-desc light-desc">
-                {{ heroRightProduct ? heroRightProduct.description : '500g 哑光黑卡配合 24K 浮雕热压金箔，展现极致黑金奢华质感。' }}
-              </p>
-
-              <!-- Card Mockup inside Color Block -->
-              <div class="block-card-mockup dark-gold-card-mockup">
-                <div class="m-row-top gold-text">
-                  <span>24K GOLD FOIL</span>
-                  <span>MATTE BLACK</span>
-                </div>
-                <div class="m-row-center">
-                  <span class="m-name gold-text">VICTORIA CHEN</span>
-                  <span class="m-sub">FOUNDER & CEO</span>
-                </div>
-                <div class="m-row-bottom gold-text">
-                  <span>小微企业 0元免费设计</span>
-                  <span>即刻预约排版</span>
-                </div>
-              </div>
-
-              <div class="split-action-link shine-arrow gold-text">
-                <span>免费设计同款 ➔</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Center Editorial Banner Text Below Split Stage -->
-        <div class="split-hero-caption-bar">
-          <span class="caption-tag">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
-          <h1 class="caption-headline">名片免费设计 · 汇聚全网灵感库</h1>
-          <p class="caption-lead">
-            专为独立创作者、个人创业者与初创小微团队提供 0 元免费名片排字、矢量 Logo 适配与 24 小时电子稿输出。
-          </p>
-          <div class="caption-btn-row">
+          <div class="hero-action-row">
             <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
               申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
@@ -419,12 +374,11 @@ const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
 
-const heroLeftProduct = computed(() => {
-  return products.value[0] || null;
-});
-
-const heroRightProduct = computed(() => {
-  return products.value[1] || null;
+const heroProducts = computed(() => {
+  if (products.value.length > 0) {
+    return products.value;
+  }
+  return [];
 });
 
 const fallbackPreset = [
@@ -450,20 +404,11 @@ const goTo = (path: string) => {
   router.push(path);
 };
 
-const navigateToHeroProduct = (index: number) => {
-  const item = index === 0 ? heroLeftProduct.value : heroRightProduct.value;
+const navigateToProduct = (item: any) => {
   if (item && item.id && !item.id.startsWith('pres-')) {
     router.push(`/product/${item.id}`);
   } else {
-    router.push(`/search`);
-  }
-};
-
-const navigateToProduct = (item: any) => {
-  if (item.id && !item.id.startsWith('pres-')) {
-    router.push(`/product/${item.id}`);
-  } else {
-    router.push(`/search?category=${item.key || 'all'}`);
+    router.push(`/search?category=${item?.key || 'all'}`);
   }
 };
 
@@ -533,7 +478,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Solid Color Block Hero Banner (Left Ivory, Right Dark Gold) */
+/* GUCCI Luxury Design System - Single Unified Color Hero Stage (象牙暖白统一色调，去除双栏) */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -584,6 +529,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.interactive-hero-card:hover .zoom-on-hover,
 .interactive-collection-card:hover .zoom-on-hover {
   transform: scale(1.06);
 }
@@ -689,172 +635,32 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. GUCCI Dual Solid Color-Block Hero Stage (左柔和暖白/象牙色块，右深邃黑金/钛钢色块) */
-.gucci-split-hero-stage {
+/* 1. GUCCI Single Unified Color Hero Section (统一象牙暖色背景 #f5f2eb，无双栏) */
+.gucci-unified-hero-section {
   width: 100%;
-  background: #f7f5f0;
-  border-bottom: 1px solid #e5e0d8;
-}
-
-.split-hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  min-height: 520px;
-}
-
-@media (max-width: 860px) {
-  .split-hero-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.split-hero-column {
-  padding: 4rem 3rem;
+  background: #f5f2eb;
+  border-bottom: 1px solid #e5e0d5;
+  padding: 5rem 2rem 4rem;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* Left Ivory Warm Color Block */
-.left-color-block {
-  background: #f3f0e8;
-  color: #000000;
-  border-right: 1px solid #e2ddd3;
-}
-
-/* Right Ebony Dark Color Block */
-.right-color-block {
-  background: #111419;
-  color: #ffffff;
-}
-
-.interactive-split-card:hover {
-  transform: scale(1.01);
-  z-index: 5;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.color-block-inner {
-  max-width: 480px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.editorial-badge {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  color: #888888;
-}
-
-.gold-badge {
-  color: #d4a337 !important;
-}
-
-.split-card-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin: 0;
-  line-height: 1.3;
-}
-
-.split-card-desc {
-  font-size: 0.88rem;
-  color: #555555;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.light-desc {
-  color: #aaaaaa !important;
-}
-
-/* Block Card Mockup Box */
-.block-card-mockup {
+.hero-center-stage {
+  max-width: 1200px;
   width: 100%;
-  height: 160px;
-  border: 1px solid #d8d3c7;
-  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin: 0.5rem 0;
-  transition: transform 0.3s ease;
-}
-
-.light-card-mockup {
-  background: #ffffff;
-  color: #000000;
-}
-
-.dark-gold-card-mockup {
-  background: #000000;
-  border-color: rgba(212, 163, 55, 0.6);
-  color: #ffffff;
-}
-
-.interactive-split-card:hover .block-card-mockup {
-  transform: translateY(-4px);
-}
-
-.m-row-top, .m-row-bottom {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  color: #888888;
-}
-
-.m-row-center {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.m-name {
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-
-.m-sub {
-  font-size: 0.68rem;
-  color: #666666;
-}
-
-.gold-text {
-  color: #d4a337 !important;
-}
-
-.split-action-link {
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #000000;
-  display: flex;
   align-items: center;
-  gap: 0.3rem;
-}
-
-/* Center Hero Caption Bar Below Split Stage */
-.split-hero-caption-bar {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 3.5rem 2rem;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.caption-tag {
+.hero-headline-group {
+  margin-bottom: 3.5rem;
+  max-width: 860px;
+}
+
+.hero-top-badge {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.25em;
@@ -863,23 +669,116 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-bottom: 0.75rem;
 }
 
-.caption-headline {
-  font-size: 2.2rem;
+.hero-main-title {
+  font-size: 2.6rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #000000;
   margin: 0 0 1rem;
+  line-height: 1.25;
 }
 
-.caption-lead {
-  font-size: 1rem;
+.hero-sub-text {
+  font-size: 1.05rem;
   color: #555555;
   line-height: 1.7;
-  max-width: 720px;
-  margin-bottom: 2rem;
 }
 
-.caption-btn-row {
+/* Horizontal Showcase Row */
+.hero-showcase-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 3.5rem;
+}
+
+@media (max-width: 860px) {
+  .hero-showcase-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero-showcase-card {
+  background: #ffffff;
+  border: 1px solid #e2ddd2;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.interactive-hero-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: #d4a337;
+}
+
+.hero-card-img-box {
+  height: 240px;
+  width: 100%;
+  overflow: hidden;
+  background: #eae6dd;
+  position: relative;
+}
+
+.hero-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-card-fallback {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.fallback-bg-1 { background: linear-gradient(135deg, #f0eae0 0%, #dcd4c6 100%); color: #000; }
+.fallback-bg-2 { background: linear-gradient(135deg, #181c24 0%, #0a0d12 100%); color: #fff; }
+.fallback-bg-3 { background: linear-gradient(135deg, #3d2c30 0%, #201316 100%); color: #fff; }
+
+.fallback-tag-text {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  opacity: 0.8;
+}
+
+.fallback-title-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.hero-card-meta {
+  padding: 1.1rem 1.25rem;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0ebe0;
+}
+
+.meta-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.meta-action {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #b38218;
+}
+
+.hero-action-row {
   display: flex;
   gap: 1.25rem;
 }
