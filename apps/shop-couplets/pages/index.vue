@@ -10,7 +10,7 @@
 
         <div class="logo">
           <NuxtLink to="/" class="logo-link">
-            <span class="logo-text">🏮 墨韵阁 · 传世楹联</span>
+            <span class="logo-text">🏮 春联 · 传世楹联定制</span>
           </NuxtLink>
         </div>
 
@@ -40,7 +40,7 @@
       <!-- CONTENT CONTAINER -->
       <div class="content">
         <p class="desc">
-          墨韵阁专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。
+          春联网专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。
           <br />
           采用特级万年红宣纸与耐候金墨，让每一副春联都承载吉祥安康。
         </p>
@@ -148,15 +148,15 @@
       <!-- FOOTER -->
       <div class="footer">
         <div class="social">
-          facebook　instagram　linkedin　X
+          facebook　instagram{...}　X
         </div>
         Manage Email Settings
         <br /><br />
         If you believe this has been sent to you in error, please safely unsubscribe.
         <br /><br />
-        © 2026 MoYun Pavilion. All rights reserved.
+        © 2026 春联. All rights reserved.
         <br /><br />
-        <div class="footer-logo">🏮 墨韵阁 · 传世楹联</div>
+        <div class="footer-logo">🏮 春联 · 传世楹联定制</div>
       </div>
     </div>
   </div>
