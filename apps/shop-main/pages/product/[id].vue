@@ -1174,47 +1174,49 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-/* 右侧栏商品详情与说明 (扁平极简, 无边框) */
+/* 右侧栏商品详情与说明 (Gucci 奢品无边框极简风) */
 .product-detail-box {
-  background: #f9fafb;
+  background: transparent;
   border: none;
-  border-radius: 12px;
-  padding: 1rem 1.15rem;
+  padding: 0;
   box-shadow: none;
 }
 
 .product-detail-box-header {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #111827;
-  padding-bottom: 0.35rem;
-  margin-bottom: 0.45rem;
-  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #111111;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .product-detail-box-content p {
   font-size: 0.84rem;
-  color: #4b5563;
-  line-height: 1.55;
+  color: #333333;
+  line-height: 1.6;
   margin: 0 0 0.4rem 0;
 }
 
 .product-detail-box-specs {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.25rem 0.75rem;
-  font-size: 0.78rem;
-  margin: 0.5rem 0 0 0;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5e7eb;
+  gap: 0.3rem 0.85rem;
+  font-size: 0.76rem;
+  margin: 0.6rem 0 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid #f0f0f0;
 
   dt {
-    color: #6b7280;
+    color: #777777;
+    font-weight: 500;
   }
 
   dd {
-    color: #111827;
-    font-weight: 600;
+    color: #111111;
+    font-weight: 700;
     margin: 0;
   }
 }
@@ -1226,23 +1228,21 @@ onMounted(() => {
 }
 
 .product-hashtag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #2563eb;
-  background: #f0f9ff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #111111;
+  background: transparent;
   border: none;
-  padding: 0.2rem 0.65rem;
-  border-radius: 999px;
+  padding: 0.15rem 0.4rem;
   text-decoration: none;
   transition: all 0.15s ease;
 
   &:hover {
-    background: #2563eb;
-    color: #fff;
+    text-decoration: underline;
   }
 }
 
-/* 右侧卡片：价格与定制入口 (纯粹扁平，无边框) */
+/* 右侧卡片：价格与定制入口 (Gucci 极简透明无填色) */
 .product-action-card {
   background: transparent;
   border: none;
@@ -1250,7 +1250,7 @@ onMounted(() => {
   box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.9rem;
 }
 
 .product-price-section {
@@ -1268,29 +1268,29 @@ onMounted(() => {
 .product-price-currency {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
 }
 
 .product-price-amount {
-  font-size: 1.75rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  color: #111827;
+  color: #111111;
   line-height: 1;
 }
 
 .product-price-del {
   margin-left: 0.4rem;
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #999999;
 }
 
 .product-guarantee-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #16a34a;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #111111;
 
   .ui-icon-check {
     width: 14px;
@@ -1298,35 +1298,35 @@ onMounted(() => {
   }
 }
 
-/* 核心主按钮：设计同款 (小字号、加粗、高级黑) */
+/* 核心主按钮：Gucci 线框按钮 (无实体背景色，黑细框，粗字体，悬浮反转) */
 .product-primary-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  background: #0f172a;
-  color: #ffffff;
-  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid #111111;
+  color: #111111;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  padding: 0.62rem 1rem;
-  border-radius: 999px;
+  letter-spacing: 0.08em;
+  padding: 0.75rem 1.2rem;
+  border-radius: 0px;
   text-decoration: none;
   box-shadow: none;
-  border: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: #000000;
-    transform: translateY(-1px);
+    background: #111111;
+    color: #ffffff;
   }
 }
 
-/* 快捷定制入口按钮组 (小字号、加粗、极简灰) */
+/* 快捷定制入口按钮组 (Gucci 纯无背景文字按扭) */
 .product-secondary-actions-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .product-secondary-btn {
@@ -1334,31 +1334,32 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  background: #f1f5f9;
+  background: transparent;
   border: none;
-  color: #0f172a;
-  font-size: 0.75rem;
+  color: #111111;
+  font-size: 0.74rem;
   font-weight: 750;
-  letter-spacing: 0.01em;
-  padding: 0.5rem 0.8rem;
-  border-radius: 999px;
+  letter-spacing: 0.05em;
+  padding: 0.45rem 0.5rem;
   text-decoration: none;
   cursor: pointer;
   box-shadow: none;
   transition: all 0.15s ease;
 
   &:hover {
-    background: #e2e8f0;
+    background: transparent;
     color: #000000;
+    text-decoration: underline;
   }
 }
 
-/* 服务保障网格 (扁平化无边框) */
+/* 服务保障网格 (Gucci 纯文本极简分割) */
 .product-service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.4rem;
-  padding-top: 0.5rem;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #e5e5e5;
 }
 
 .product-service-box {
@@ -1366,10 +1367,10 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #f3f4f6;
+  background: transparent;
   border: none;
-  padding: 0.5rem 0.25rem;
-  border-radius: 8px;
+  padding: 0.2rem;
+  border-radius: 0;
 
   strong {
     font-size: 0.72rem;
