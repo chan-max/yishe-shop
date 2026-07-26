@@ -5,12 +5,12 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <NuxtLink to="/" class="back-link">
-            ‹ 返回名片工坊首页
+            ‹ 返回工坊首页
           </NuxtLink>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            名 片 工 坊 · B U S I N E S S  C A R D
+            名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
@@ -22,15 +22,15 @@
     <main class="gucci-main-container">
       <!-- Search Banner & Filter Bar -->
       <section class="search-hero-banner">
-        <h1 class="search-title">搜索高定名片灵感库</h1>
-        <p class="search-sub">探寻 600g 触感棉纸、活字凹版压印、24K 浮雕烫金与极客钛钢名片作品。</p>
+        <h1 class="search-title">全量名片设计库 · 点击设计同款</h1>
+        <p class="search-sub">探寻 600g 触感棉纸、活字凹版压印、24K 浮雕烫金与极客钛钢名片设计灵感。</p>
 
         <!-- Search Input Bar -->
         <div class="search-bar-wrapper">
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="请输入名片关键词或工艺（如：活字压印、烫金、钛钢、棉纸）…"
+            placeholder="搜索设计风格（如：极简黑金、活字压印、钛钢、莫兰迪色系）…"
             class="search-input"
             @keyup.enter="handleSearch"
           />
@@ -61,11 +61,11 @@
       <section class="products-grid-section">
         <div v-if="loading" class="gucci-loading">
           <div class="loading-spinner"></div>
-          <span>正在搜索名片工坊数据库…</span>
+          <span>正在检索名片设计灵感库…</span>
         </div>
 
         <div v-else-if="filteredProducts.length === 0" class="gucci-empty">
-          <p>暂无符合条件的名片样式，请输入其他关键字搜索。</p>
+          <p>暂无符合条件的名片设计样式，请输入其他关键字搜索，或直接预约设计师定制。</p>
           <button type="button" class="reset-btn" @click="resetFilters">重置搜索条件</button>
         </div>
 
@@ -85,17 +85,17 @@
               />
               <div v-else class="product-fallback-photo">
                 <span class="fallback-icon">📇</span>
-                <span class="fallback-tag">BUSINESS CARD</span>
+                <span class="fallback-tag">DESIGN PORTFOLIO</span>
               </div>
-              <span class="luxury-badge">NEW</span>
+              <span class="luxury-badge">可设计同款</span>
             </div>
 
             <div class="product-details">
               <h3 class="product-name">{{ item.name }}</h3>
-              <div class="product-price">${{ item.price || '88.00' }} / 盒</div>
-              <p class="product-desc">{{ item.description || '特种纸结合 24K 浮雕烫金与活字凹版压印工艺。' }}</p>
+              <div class="product-price">设计同款指导价 ${{ item.price || '88.00' }}</div>
+              <p class="product-desc">{{ item.description || '特种纸结合 24K 浮雕烫金与活字凹版压印设计。' }}</p>
               <div class="card-action-link">
-                <span>查看名片工艺详情</span>
+                <span>设计同款风格</span>
                 <span class="arrow">›</span>
               </div>
             </div>
@@ -106,8 +106,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
-      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
+      <div class="footer-logo-small">名 片 设 计 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -120,14 +120,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '搜索名片库 · 活字压印与特种纸名片 | BUSINESS CARD',
-  ogTitle: '搜索名片库 · BUSINESS CARD',
-  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片系列。',
-  ogDescription: '搜索并挑选专属的高端商务名片系列。'
+  title: '全量名片设计库 · 设计同款 | 名片设计工坊 | BUSINESS CARD',
+  ogTitle: '全量名片设计库 · BUSINESS CARD',
+  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片设计，支持一键设计同款。',
+  ogDescription: '搜索并挑选专属的高端商务名片设计，支持一键设计同款。'
 });
 
 useHead({
-  title: '搜索名片库 · 活字压印与特种纸名片 | BUSINESS CARD',
+  title: '全量名片设计库 · 设计同款 | 名片设计工坊 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -143,7 +143,7 @@ const searchQuery = ref((route.query.q as string) || '');
 const selectedCategory = ref((route.query.category as string) || 'all');
 
 const categories = [
-  { key: 'all', label: '全部分类 (All)' },
+  { key: 'all', label: '全部分类 (All Designs)' },
   { key: 'letterpress', label: '凹版活字压印 (Letterpress)' },
   { key: 'gold-foil', label: '24K 浮雕烫金 (Gold Foil)' },
   { key: 'steel', label: '钛钢极客精印 (Metal Steel)' },
@@ -235,7 +235,7 @@ onMounted(async () => {
 .gucci-brand-logo {
   font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #000000;
   text-decoration: none;
 }

@@ -5,16 +5,16 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <button type="button" class="back-link-btn" @click="goBack">
-            ‹ 返回名片工坊灵感库
+            ‹ 返回全量名片设计库
           </button>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            名 片 工 坊 · B U S I N E S S  C A R D
+            名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">搜索名片</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link">搜索设计灵感</NuxtLink>
         </div>
       </div>
     </header>
@@ -22,13 +22,13 @@
     <main class="gucci-detail-container">
       <div v-if="loading" class="detail-loading">
         <div class="loading-spinner"></div>
-        <span>正在读取名片高定工艺参数…</span>
+        <span>正在读取名片设计方案与排版参数…</span>
       </div>
 
       <div v-else-if="!product" class="detail-not-found">
-        <h2>名片样式不存在或已下架</h2>
-        <p>抱歉，您查看的名片定制样式暂不可用。</p>
-        <NuxtLink to="/search" class="gucci-btn-black">查看全系列名片库</NuxtLink>
+        <h2>名片设计方案不存在或已更新</h2>
+        <p>抱歉，您查看的名片设计样稿暂不可用。</p>
+        <NuxtLink to="/search" class="gucci-btn-black">查看全量名片设计库</NuxtLink>
       </div>
 
       <div v-else class="detail-content-grid">
@@ -43,7 +43,7 @@
             />
             <div v-else class="main-img-placeholder">
               <span class="placeholder-emoji">📇</span>
-              <span class="placeholder-text">HIGH-END BUSINESS CARD</span>
+              <span class="placeholder-text">DESIGN PORTFOLIO SAMPLE</span>
             </div>
           </div>
 
@@ -62,18 +62,18 @@
         <!-- Product Specs & Purchase Options -->
         <div class="specs-section">
           <div class="specs-header">
-            <span class="collection-tag">EXECUTIVE COLLECTION · 商务高定</span>
+            <span class="collection-tag">DESIGN STYLE · 热门名片设计作品</span>
             <h1 class="product-title">{{ product.name }}</h1>
             <div class="product-price-line">
-              <span class="price-val">${{ product.price || '88.00' }}</span>
-              <span class="tax-note">含基础打样与设计微调费</span>
+              <span class="price-val">设计同款指导价 ${{ product.price || '88.00' }}</span>
+              <span class="tax-note">包含设计师 1对1 文字与 Logo 适配服务</span>
             </div>
           </div>
 
           <div class="divider"></div>
 
           <p class="product-full-desc">
-            {{ product.description || '精选 600g 进口纯棉触感纸，结合传统活字压印与 24K 浮雕烫金工艺，触感沉稳大气，彰显商务精英气度。' }}
+            {{ product.description || '支持一键设计同款。挑选此设计风格，资深设计师将为您替换姓名、职务、公司 Logo 与联系信息，并出具高清 24 小时矢量打印方案。' }}
           </p>
 
           <!-- Craftsmanship Options -->
@@ -110,7 +110,7 @@
           </div>
 
           <div class="craft-option-group">
-            <label class="option-label">定制数量 (100张/盒)</label>
+            <label class="option-label">定制印制盒数 (100张/盒)</label>
             <div class="quantity-selector">
               <button type="button" @click="qty > 1 && qty--">-</button>
               <span>{{ qty }} 盒 (共 {{ qty * 100 }} 张)</span>
@@ -118,25 +118,25 @@
             </div>
           </div>
 
-          <!-- Purchase Action Button -->
+          <!-- Action Button Focus on Design Same Style -->
           <div class="action-btn-row">
             <button type="button" class="btn-checkout-black" @click="handleOrder">
-              立即定制名片 - ${{ ((product.price || 88) * qty).toFixed(2) }}
+              ✨ 立即设计同款 - 指导价 ${{ ((product.price || 88) * qty).toFixed(2) }}
             </button>
             <button type="button" class="btn-inquire-border" @click="inquireDesigner">
-              预约 1对1 名片设计师
+              预约 1对1 灵感沟通与定制
             </button>
           </div>
 
           <!-- Guarantee Icons -->
           <div class="guarantee-row">
             <div class="g-item">
-              <span class="g-icon">✈️</span>
-              <span>顺丰特快 免费送达</span>
+              <span class="g-icon">🎨</span>
+              <span>资深设计师 1对1 排版</span>
             </div>
             <div class="g-item">
               <span class="g-icon">📐</span>
-              <span>24小时 免费矢量打样</span>
+              <span>24小时 免费矢量试样</span>
             </div>
           </div>
         </div>
@@ -145,8 +145,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
-      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
+      <div class="footer-logo-small">名 片 设 计 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -178,7 +178,7 @@ const goBack = () => {
 };
 
 const handleOrder = () => {
-  alert(`感谢定制 ${product.value?.name}！共 ${qty.value} 盒（${selectedPaper.value} / ${selectedFoil.value}）。资深名片大师将在 24 小时内联系您并提供矢量排版稿。`);
+  alert(`为您开启 ${product.value?.name} 的【设计同款】排版流程！资深设计师将在 24 小时内为您出具专属姓名、职务与 Logo 的矢量试样稿。`);
 };
 
 const inquireDesigner = () => {
@@ -195,10 +195,10 @@ onMounted(async () => {
       currentImage.value = (res.images && res.images[0]) || getPublishedProductImage(res);
 
       useSeoMeta({
-        title: `${res.name} - 高端商务名片定制 | BUSINESS CARD`,
-        ogTitle: `${res.name} - BUSINESS CARD`,
-        description: res.description || '特种纸与烫金名片定制',
-        ogDescription: res.description || '特种纸与烫金名片定制'
+        title: `${res.name} - 设计同款 | 名片设计工坊 | BUSINESS CARD`,
+        ogTitle: `${res.name} - 设计同款 | BUSINESS CARD`,
+        description: res.description || '挑选名片设计风格，一键设计同款。',
+        ogDescription: res.description || '挑选名片设计风格，一键设计同款。'
       });
     }
   } catch (e) {
@@ -247,7 +247,7 @@ onMounted(async () => {
 .gucci-brand-logo {
   font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #000000;
   text-decoration: none;
 }
@@ -331,7 +331,7 @@ onMounted(async () => {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.15em;
-  color: #888888;
+  color: #d4a337;
   display: block;
   margin-bottom: 0.35rem;
 }
@@ -351,7 +351,7 @@ onMounted(async () => {
 }
 
 .price-val {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 700;
 }
 
@@ -441,7 +441,7 @@ onMounted(async () => {
   color: #ffffff;
   border: none;
   padding: 1.1rem;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   cursor: pointer;

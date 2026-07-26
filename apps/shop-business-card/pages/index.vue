@@ -6,30 +6,30 @@
         <div class="header-left">
           <NuxtLink to="/contact" class="header-contact-btn">
             <span class="plus-icon">+</span>
-            <span>预约设计师 1对1 打样</span>
+            <span>1对1 设计师灵感定制</span>
           </NuxtLink>
         </div>
 
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            名 片 工 坊 · B U S I N E S S  C A R D
+            名 片 设计 工 坊 · B U S I N E S S  C A R D  D E S I G N
           </NuxtLink>
         </div>
 
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-btn" title="搜索名片库">
+          <NuxtLink to="/search" class="header-icon-btn" title="搜索设计灵感">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/contact" class="header-icon-btn" title="个人中心">
+          <NuxtLink to="/contact" class="header-icon-btn" title="预约灵感">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/search" class="header-icon-btn" title="名片盒">
+          <NuxtLink to="/search" class="header-icon-btn" title="设计画板">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -42,7 +42,7 @@
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
-            <span class="menu-label">工艺菜单</span>
+            <span class="menu-label">设计菜单</span>
           </NuxtLink>
         </div>
       </div>
@@ -56,9 +56,9 @@
 
         <div class="hero-center-stage">
           <div class="hero-headline-group">
-            <span class="hero-top-badge">CRAFTSMANSHIP ATELIER · 商务高定名片</span>
-            <h1 class="hero-main-title">彰显尊贵身份 · 触感活字印刷</h1>
-            <p class="hero-sub-text">600g 进口纯棉纸 · 24K 浮雕热压金 · 德国古典活字凹版压印</p>
+            <span class="hero-top-badge">DESIGN ATELIER · 汇聚全网名片设计灵感库</span>
+            <h1 class="hero-main-title">全风格名片设计 · 一键设计同款</h1>
+            <p class="hero-sub-text">极简黑金 · 活字凹版 · 24K 浮雕烫金 · 钛钢精印 — 喜欢哪款，即刻为你设计同款</p>
           </div>
 
           <!-- Dual 3D Floating Realistic Business Cards Showcase -->
@@ -68,15 +68,15 @@
               <div class="card-inner-content">
                 <div class="card-header-row">
                   <span class="card-brand-initials">BC</span>
-                  <span class="card-serial">NO. 008824</span>
+                  <span class="card-serial">DESIGN NO. 008824</span>
                 </div>
                 <div class="card-center-body">
                   <span class="card-person-name">ALEXANDER SMITH</span>
-                  <span class="card-person-title">FOUNDER & CEO · 首席执行官</span>
+                  <span class="card-person-title">DESIGNED BY ATELIER · 资深设计师作品</span>
                 </div>
                 <div class="card-footer-row">
-                  <span>ATELIER 1S DESIGN</span>
-                  <span>24K EMBOSSED GOLD</span>
+                  <span>DESIGN ATELIER</span>
+                  <span>可一键设计同款</span>
                 </div>
               </div>
             </div>
@@ -86,15 +86,15 @@
               <div class="card-inner-content">
                 <div class="card-header-row">
                   <span class="card-brand-initials silver-text">1S</span>
-                  <span class="card-serial">SILVER FOIL</span>
+                  <span class="card-serial">SAME STYLE</span>
                 </div>
                 <div class="card-center-body">
                   <span class="card-person-name">VICTORIA CHEN</span>
-                  <span class="card-person-title">CHIEF CREATIVE OFFICER · 设计总监</span>
+                  <span class="card-person-title">CHIEF CREATIVE OFFICER · 品牌高定</span>
                 </div>
                 <div class="card-footer-row">
-                  <span>600GSM COTTON STOCK</span>
-                  <span>LETTERPRESS</span>
+                  <span>600GSM COTTON</span>
+                  <span>支持专属排字</span>
                 </div>
               </div>
             </div>
@@ -102,10 +102,10 @@
 
           <div class="hero-action-row">
             <NuxtLink to="/search" class="gucci-btn-gold">
-              探索高定名片灵感库
+              探索全量名片设计库 (DESIGN GALLERY)
             </NuxtLink>
             <NuxtLink to="/contact" class="gucci-btn-outline">
-              预约 1对1 矢量打样
+              预约 1对1 灵感定制
             </NuxtLink>
           </div>
         </div>
@@ -114,12 +114,12 @@
       <!-- 2. Dynamic 4-Column High-Fashion Color-Tone Showcase -->
       <section class="gucci-collection-section">
         <div class="section-title-bar">
-          <span class="section-badge">COLLECTION HIGHLIGHTS</span>
-          <h2 class="section-main-heading">高定工艺名片系列</h2>
+          <span class="section-badge">DESIGN COLLECTIONS</span>
+          <h2 class="section-main-heading">热门名片设计流派 · 点击设计同款</h2>
         </div>
 
         <div v-if="loading" class="collection-loading">
-          正在读取名片工坊在线名片款式…
+          正在加载名片设计灵感库…
         </div>
 
         <div v-else class="collection-4col-grid">
@@ -146,27 +146,27 @@
                 </div>
               </div>
               <div class="card-hover-overlay">
-                <span>查看高定细节 ›</span>
+                <span>设计同款风格 ›</span>
               </div>
             </div>
             <div class="card-caption">
               <span class="caption-title">{{ item.name || getCardTitle(idx) }}</span>
-              <span class="caption-price">${{ item.price || '88.00' }} / 盒</span>
+              <span class="caption-price">设计同款指导价 ${{ item.price || '88.00' }}</span>
             </div>
           </div>
         </div>
 
         <div class="collection-action-center">
           <NuxtLink to="/search" class="gucci-btn-gray">
-            浏览全系列名片款式 (ALL COLLECTIONS)
+            查看更多设计作品 (BROWSE ALL DESIGNS)
           </NuxtLink>
         </div>
       </section>
 
       <!-- 3. Business Card Atelier Services Section -->
       <section class="gucci-services-section">
-        <span class="section-badge">ATELIER SERVICES</span>
-        <h2 class="services-main-title">名片工坊 专属高定服务</h2>
+        <span class="section-badge">DESIGN SERVICES</span>
+        <h2 class="services-main-title">名片工坊 专属设计服务</h2>
 
         <div class="services-3col-grid">
           <!-- Service 1 -->
@@ -177,25 +177,25 @@
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">1对1 字体与排板设计</h3>
-            <p class="service-desc">资深字体大师亲自把关行距、字距与版面发丝级对齐</p>
+            <h3 class="service-title">1对1 专属排版与字体定制</h3>
+            <p class="service-desc">资深字体设计师为你微调版式、行距与矢量 Logo 适配</p>
             <NuxtLink to="/contact" class="service-link">
-              预约设计师沟通 ›
+              预约设计师灵感沟通 ›
             </NuxtLink>
           </div>
 
           <!-- Service 2 -->
-          <div class="service-card" @click="goTo('/contact')">
+          <div class="service-card" @click="goTo('/search')">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-types">
-                <div class="photo-overlay-icon">📇</div>
+                <div class="photo-overlay-icon">🎨</div>
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">特种纸质感与烫金纸样盒</h3>
-            <p class="service-desc">免费寄送 600g 棉纸、绒面卡纸与 12 种烫金试样卡盒</p>
-            <NuxtLink to="/contact" class="service-link">
-              免费申请纸样盒 ›
+            <h3 class="service-title">任意名片排版 · 设计同款</h3>
+            <p class="service-desc">挑选喜欢的名片风格，设计师全量替换文字与专属视觉</p>
+            <NuxtLink to="/search" class="service-link">
+              挑选同款灵感模板 ›
             </NuxtLink>
           </div>
 
@@ -207,10 +207,10 @@
                 <div class="service-hover-shine"></div>
               </div>
             </div>
-            <h3 class="service-title">加急打样与顺丰次日达</h3>
-            <p class="service-desc">24 小时矢量文件加急打样，全国顺丰特快保价直达</p>
+            <h3 class="service-title">24 小时矢量文件打样预览</h3>
+            <p class="service-desc">提交设计需求后 24 小时出具电子版高清 PDF/SVG 矢量稿</p>
             <NuxtLink to="/contact" class="service-link">
-              了解加急打样服务 ›
+              申请打样预览 ›
             </NuxtLink>
           </div>
         </div>
@@ -219,13 +219,13 @@
       <!-- 4. Subscription Section -->
       <section class="gucci-subscribe-section">
         <div class="subscribe-container">
-          <span class="subscribe-tag">SUBSCRIBE TO BUSINESS CARD INSIGHTS</span>
+          <span class="subscribe-tag">SUBSCRIBE TO DESIGN INSIGHTS</span>
           <h2 class="subscribe-headline">
-            订阅名片工坊资讯，免费获取《商务精英名片材质与烫金工艺搭配指南》。
+            订阅设计工坊，获取全球最新名片设计趋势、排版灵感与特种纸搭配指南。
           </h2>
           <div class="subscribe-action">
             <button type="button" class="subscribe-plus-btn" @click="subscribeEmail">
-              <span class="plus-symbol">+</span> 立即免费订阅
+              <span class="plus-symbol">+</span> 免费订阅设计灵感
             </button>
           </div>
         </div>
@@ -237,35 +237,35 @@
       <div class="footer-inner">
         <div class="footer-columns">
           <div class="footer-col">
-            <h4 class="col-title">客户服务与支持</h4>
+            <h4 class="col-title">设计服务与支持</h4>
             <ul>
-              <li><NuxtLink to="/contact">联系设计师</NuxtLink></li>
-              <li><NuxtLink to="/search">查询名片订单</NuxtLink></li>
-              <li><NuxtLink to="/about">特种纸材质说明</NuxtLink></li>
-              <li><NuxtLink to="/contact">矢量文件上传规范</NuxtLink></li>
-              <li><NuxtLink to="/search">搜索名片灵感库</NuxtLink></li>
+              <li><NuxtLink to="/contact">预约设计师沟通</NuxtLink></li>
+              <li><NuxtLink to="/search">搜索设计灵感</NuxtLink></li>
+              <li><NuxtLink to="/about">名片排版与字体指南</NuxtLink></li>
+              <li><NuxtLink to="/contact">Logo 矢量文件上传说明</NuxtLink></li>
+              <li><NuxtLink to="/search">名片设计作品库</NuxtLink></li>
             </ul>
           </div>
 
           <div class="footer-col">
-            <h4 class="col-title">关于名片工坊</h4>
+            <h4 class="col-title">关于设计工坊</h4>
             <ul>
-              <li><NuxtLink to="/about">工坊品牌故事</NuxtLink></li>
-              <li><NuxtLink to="/about">活字印刷与凹版压印</NuxtLink></li>
-              <li><NuxtLink to="/about">24K 浮雕烫金技术</NuxtLink></li>
-              <li><NuxtLink to="/about">FSC 环保无酸棉纸</NuxtLink></li>
+              <li><NuxtLink to="/about">工坊设计理念</NuxtLink></li>
+              <li><NuxtLink to="/about">活字凹版排字工艺</NuxtLink></li>
+              <li><NuxtLink to="/about">24K 烫金与设计艺术</NuxtLink></li>
+              <li><NuxtLink to="/about">FSC 环保特种纸搭配</NuxtLink></li>
             </ul>
           </div>
 
           <div class="footer-col col-form">
-            <h4 class="col-title">加急打样与寄送查询</h4>
+            <h4 class="col-title">打样与设计方案查询</h4>
             <div class="input-with-arrow">
-              <input type="text" placeholder="输入城市名称（查询顺丰时效）" />
+              <input type="text" placeholder="输入城市名称（查询设计师打样时效）" />
               <span class="arrow-right">›</span>
             </div>
 
-            <h4 class="col-title sub-form-title">订阅工艺资讯</h4>
-            <p class="form-desc">订阅即可电子版《商务名片材质与烫金工艺搭配指南》。</p>
+            <h4 class="col-title sub-form-title">订阅设计灵感</h4>
+            <p class="form-desc">免费获取电子版《商务精英名片排版与设计灵感手册》。</p>
             <div class="input-with-arrow">
               <input type="email" placeholder="输入您的电子邮箱" v-model="emailInput" />
               <span class="arrow-right" @click="submitEmail">›</span>
@@ -279,16 +279,16 @@
         </div>
 
         <div class="footer-secondary-links">
-          <h4 class="col-title">名片定制快捷通道</h4>
+          <h4 class="col-title">名片设计快捷通道</h4>
           <div class="link-inline-row">
-            <NuxtLink to="/about">探索活字工艺</NuxtLink>
-            <NuxtLink to="/contact">预约设计师</NuxtLink>
-            <NuxtLink to="/search">免费申请纸样盒</NuxtLink>
+            <NuxtLink to="/search">探索设计作品</NuxtLink>
+            <NuxtLink to="/contact">设计同款方案</NuxtLink>
+            <NuxtLink to="/contact">预约 1对1 沟通</NuxtLink>
           </div>
         </div>
 
         <div class="footer-copyright-line">
-          © 2026 名片工坊 Business Card Atelier. 保留所有权利。专为商务精英与设计大师打造。
+          © 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。汇聚全网名片设计灵感，支持一键设计同款。
         </div>
 
         <!-- Giant Serif Logo -->
@@ -308,14 +308,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '名片工坊 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
-  ogTitle: '名片工坊 · 高端商务名片与特种纸名片定制平台',
-  description: '名片工坊专注于高端商务名片定制、特种纸工艺名片、24K烫金与极简活字印刷设计服务。',
-  ogDescription: '专为企业精英与设计师打造的高端商务名片定制平台。'
+  title: '名片设计工坊 · 汇聚全量名片设计灵感 | 设计同款 | BUSINESS CARD',
+  ogTitle: '名片设计工坊 · 全量名片设计灵感库 | 设计同款',
+  description: '名片设计工坊汇聚全网高端商务名片设计灵感，提供极简黑金、活字凹版压印与 24K 烫金样式，支持一键设计同款与 1对1 设计师定制。',
+  ogDescription: '汇聚全网高端商务名片设计灵感，支持一键设计同款与 1对1 设计师定制。'
 });
 
 useHead({
-  title: '名片工坊 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
+  title: '名片设计工坊 · 汇聚全量名片设计灵感 | 设计同款 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -329,10 +329,10 @@ const products = ref<any[]>([]);
 const emailInput = ref('');
 
 const fallbackPreset = [
-  { id: 'pres-1', name: '凹版活字压印名片 (Executive Letterpress)', key: 'letterpress' },
-  { id: 'pres-2', name: '24K 浮雕烫金名片 (Gold Foil Embossed)', key: 'gold-foil' },
-  { id: 'pres-3', name: '钛钢极客精印名片 (Metal Steel Edition)', key: 'steel' },
-  { id: 'pres-4', name: '触感特种纸艺名片 (Specialty Paper Crafts)', key: 'specialty' }
+  { id: 'pres-1', name: '凹版活字压印设计 (Executive Letterpress)', key: 'letterpress' },
+  { id: 'pres-2', name: '24K 浮雕烫金设计 (Gold Foil Embossed)', key: 'gold-foil' },
+  { id: 'pres-3', name: '钛钢极客精印设计 (Metal Steel Edition)', key: 'steel' },
+  { id: 'pres-4', name: '触感特种纸艺设计 (Specialty Paper Crafts)', key: 'specialty' }
 ];
 
 const displayProducts = computed(() => {
@@ -380,27 +380,27 @@ const getCardLabel = (idx: number) => {
 };
 
 const getCardSublabel = (idx: number) => {
-  const sublabels = ['600g 活字棉纸', '24K 热压金箔', '拉丝钛钢精印', '触感绒面特种纸'];
+  const sublabels = ['600g 活字棉纸设计', '24K 热压金箔设计', '拉丝钛钢精印设计', '触感绒面特种纸设计'];
   return sublabels[idx % sublabels.length];
 };
 
 const getCardTitle = (idx: number) => {
   const titles = [
-    '凹版活字压印名片 (Executive Letterpress)',
-    '24K 浮雕烫金名片 (Gold Foil Embossed)',
-    '钛钢极客精印名片 (Metal Steel Edition)',
-    '触感特种纸艺名片 (Specialty Paper Crafts)'
+    '凹版活字压印设计 (Executive Letterpress)',
+    '24K 浮雕烫金设计 (Gold Foil Embossed)',
+    '钛钢极客精印设计 (Metal Steel Edition)',
+    '触感特种纸艺设计 (Specialty Paper Crafts)'
   ];
   return titles[idx % titles.length];
 };
 
 const subscribeEmail = () => {
-  alert('感谢订阅名片工坊！我们已将《商务名片材质与烫印指南》发送至您的邮箱。');
+  alert('感谢订阅名片设计工坊！电子版《商务精英名片排版与设计灵感手册》已发至您的邮箱。');
 };
 
 const submitEmail = () => {
   if (emailInput.value) {
-    alert(`感谢订阅！${emailInput.value} 已成功加入名片工坊资讯列表。`);
+    alert(`感谢订阅！${emailInput.value} 已成功加入名片设计灵感推送列表。`);
     emailInput.value = '';
   }
 };
@@ -423,7 +423,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI High-Fashion Luxury Design System - Fully Polished Visual Details */
+/* GUCCI High-Fashion Luxury Design System - Pure Design & Creative Atelier Focus */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -434,7 +434,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* 1. Header Navigation */
 .gucci-header {
   width: 100%;
   background: #ffffff;
@@ -473,9 +472,9 @@ onMounted(async () => {
 
 .gucci-brand-logo {
   font-family: Didot, "Bodoni MT", Cinzel, "Times New Roman", serif;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #000000;
   text-decoration: none;
 }
@@ -507,7 +506,6 @@ onMounted(async () => {
   margin-left: 0.3rem;
 }
 
-/* 2. Enhanced Hero Campaign Showcase */
 .gucci-hero-section {
   position: relative;
   width: 100%;
@@ -569,7 +567,6 @@ onMounted(async () => {
   letter-spacing: 0.05em;
 }
 
-/* Dual Floating 3D Cards Stage */
 .hero-cards-stage {
   display: flex;
   justify-content: center;
@@ -726,7 +723,6 @@ onMounted(async () => {
   transform: translateY(-2px);
 }
 
-/* 3. Section Title Bar & 4-Column Showcase */
 .gucci-collection-section {
   padding: 4rem 0 0;
   background: #ffffff;
@@ -894,7 +890,6 @@ onMounted(async () => {
   transform: translateY(-2px);
 }
 
-/* 4. Services Section */
 .gucci-services-section {
   padding: 5rem 2rem 4rem;
   background: #fcfcfc;
@@ -977,7 +972,6 @@ onMounted(async () => {
   text-decoration: underline;
 }
 
-/* 5. Subscription Section */
 .gucci-subscribe-section {
   background: #000000;
   color: #ffffff;
@@ -1030,7 +1024,6 @@ onMounted(async () => {
 
 .plus-symbol { font-size: 1rem; }
 
-/* 6. Footer */
 .gucci-footer {
   background: #000000;
   color: #ffffff;
