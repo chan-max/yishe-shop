@@ -34,7 +34,7 @@ jobs:
       - name: Build Business Card Storefront (shop-business-card)
         run: npm run build:card
 
-      - name: Build Couplet Storefront (shop-couplet)
+      - name: Build Couplet Storefront (shop-couplets)
         run: npm run build:couplet
 
       - name: Include unhead runtime files for main storefront
@@ -58,10 +58,10 @@ jobs:
       - name: Include unhead runtime files for couplet storefront
         shell: bash
         run: |
-          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-couplet/.output/server/chunks >/dev/null 2>&1; then
-            rm -rf apps/shop-couplet/.output/server/node_modules/unhead
-            mkdir -p apps/shop-couplet/.output/server/node_modules/unhead
-            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-couplet/.output/server/node_modules/unhead/
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-couplets/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-couplets/.output/server/node_modules/unhead
+            mkdir -p apps/shop-couplets/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-couplets/.output/server/node_modules/unhead/
           fi
 
       - name: Verify build outputs
@@ -70,14 +70,14 @@ jobs:
           test -f .output/server/index.mjs
           echo "Checking shop-business-card build output..."
           test -f apps/shop-business-card/.output/server/index.mjs
-          echo "Checking shop-couplet build output..."
-          test -f apps/shop-couplet/.output/server/index.mjs
+          echo "Checking shop-couplets build output..."
+          test -f apps/shop-couplets/.output/server/index.mjs
 
       - name: Package build artifacts
         run: |
           tar -czf nuxt-output-main.tar.gz .output
           tar -czf nuxt-output-card.tar.gz -C apps/shop-business-card .output
-          tar -czf nuxt-output-couplet.tar.gz -C apps/shop-couplet .output
+          tar -czf nuxt-output-couplet.tar.gz -C apps/shop-couplets .output
 
       - name: Upload packages to Tencent Cloud
         uses: appleboy/scp-action@v0.1.7
@@ -134,7 +134,7 @@ jobs:
               NODE_ENV=production PORT=15203 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-business-card
             fi
 
-            # 3. 部署春联独立站 (shop-couplet -> shop-couplet.1s.design, 端口 15204/15205)
+            # 3. 部署春联独立站 (shop-couplets -> shop-couplet.1s.design, 端口 15204/15205)
             mkdir -p /www/wwwroot/shop-couplet.1s.design
             mkdir -p /tmp/couplet-unpack
             tar -xzf /tmp/nuxt-output-couplet.tar.gz -C /tmp/couplet-unpack

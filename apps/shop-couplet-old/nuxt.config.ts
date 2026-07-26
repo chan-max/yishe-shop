@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     port: 15204,
     host: '0.0.0.0'
   },
+  dataDir: resolve(currentDir, './.data-couplet'),
   nitro: {
     output: {
       dir: process.env.NITRO_OUTPUT_DIR || resolve(currentDir, './.output')
