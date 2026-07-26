@@ -9,20 +9,33 @@ export default defineNuxtConfig({
     port: 15202,
     host: '0.0.0.0'
   },
+  app: {
+    head: {
+      title: '衣设名片工坊 · 高端商务名片与特种纸名片定制平台',
+      meta: [
+        { name: 'keywords', content: '名片定制, 商务名片, 烫金名片, 特种纸名片, 创意名片设计, 金属名片' },
+        { name: 'description', content: '衣设名片工坊专注于高端商务名片定制、特种纸工艺名片与极简创意名片设计服务。' },
+        { property: 'og:title', content: '衣设名片工坊 · 高端商务名片定制' },
+        { property: 'og:description', content: '专为企业精英与设计师打造的高端商务名片定制平台。' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
+      ]
+    }
+  },
   nitro: {
     output: {
       dir: process.env.NITRO_OUTPUT_DIR || resolve(currentDir, './.output')
     }
   },
-  // shop-business-card 专属独立 SEO 配置 (名片专属独立站)
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://card.1s.design',
-    name: process.env.NUXT_PUBLIC_SITE_NAME || '衣设名片工坊 (Shop Business Card)',
+    name: '衣设名片工坊 (Shop Business Card)',
     description: '衣设名片工坊 - 专注于高端商务名片、创意名片设计与专属定制服务'
   },
   runtimeConfig: {
     public: {
-      siteName: process.env.NUXT_PUBLIC_SITE_NAME || '衣设名片工坊 (Shop Business Card)',
+      siteName: '衣设名片工坊 (Shop Business Card)',
       openApiKey: process.env.NUXT_PUBLIC_OPEN_API_KEY || '698fa3584d6d4dda04c7a3d2513fb9d076fc7a894f9ef27c',
       adminId: process.env.NUXT_PUBLIC_ADMIN_ID || 'admin_card'
     }
