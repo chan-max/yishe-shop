@@ -52,71 +52,98 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Dynamic Hero Campaign Showcase -->
-      <section class="gucci-hero-section">
-        <div class="hero-bg-light-effects"></div>
-
-        <div class="hero-center-stage">
-          <div class="hero-headline-group">
-            <span class="hero-top-badge badge-pulse">FREE DESIGN & INSPIRATION ATELIER · 0元免费名片设计</span>
-            <h1 class="hero-main-title animated-fade-up">名片免费设计 · 汇聚全网灵感库</h1>
-            <p class="hero-sub-text animated-fade-up-delay">专为个人创作者与初创小微企业提供 0 元免费名片设计服务 — 喜欢任意风格，即刻免费设计同款</p>
-          </div>
-
-          <!-- Dynamic Real Product Showcase Stage -->
-          <div class="hero-dynamic-stage">
-            <div v-if="heroProducts.length === 0" class="hero-placeholder-grid">
-              <div class="hero-photo-card card-1 interactive-card">
-                <div class="card-editorial-tag">FREE DESIGN FOR STARTUPS</div>
-                <div class="card-info-overlay">
-                  <span class="c-title">24K 浮雕热压金名片设计</span>
-                  <span class="c-sub">个人与小微企业 0元免费设计 ›</span>
-                </div>
-              </div>
-              <div class="hero-photo-card card-2 interactive-card">
-                <div class="card-editorial-tag">INDIVIDUAL & SMALL BIZ</div>
-                <div class="card-info-overlay">
-                  <span class="c-title">600g 活字凹版棉纸设计</span>
-                  <span class="c-sub">个人与小微企业 0元免费设计 ›</span>
-                </div>
-              </div>
-            </div>
-
-            <div v-else class="hero-products-showcase">
-              <div
-                v-for="item in heroProducts"
-                :key="item.id"
-                class="hero-real-product-card interactive-card"
-                @click="navigateToProduct(item)"
-              >
-                <div class="hero-product-img-box">
-                  <img
-                    v-if="getProductImage(item)"
-                    :src="getProductImage(item)"
-                    :alt="item.name"
-                    class="hero-product-img zoom-on-hover"
-                  />
-                  <div v-else class="hero-img-fallback">
-                    <svg class="fallback-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <rect x="3" y="4" width="18" height="16" rx="0"></rect>
-                      <line x1="7" y1="8" x2="17" y2="8"></line>
-                      <line x1="7" y1="12" x2="13" y2="13"></line>
-                    </svg>
+      <!-- 1. GUCCI Dual 2-Column Split Hero Stage (参考 GUCCI 最新大牌左右 50/50 分割布局与高定灰度色彩) -->
+      <section class="gucci-split-hero-stage">
+        <div class="split-hero-grid">
+          <!-- Left Column (Featured Design 1) -->
+          <div
+            class="split-hero-column left-column interactive-split-card"
+            @click="navigateToHeroProduct(0)"
+          >
+            <div class="split-photo-container">
+              <img
+                v-if="heroLeftProduct && getProductImage(heroLeftProduct)"
+                :src="getProductImage(heroLeftProduct)"
+                :alt="heroLeftProduct.name"
+                class="split-img zoom-on-hover"
+              />
+              <div v-else class="split-photo-fallback fallback-studio-1">
+                <div class="studio-card-mockup">
+                  <div class="mockup-header-row">
+                    <span class="m-brand">LETTERPRESS</span>
+                    <span class="m-code">600GSM COTTON</span>
+                  </div>
+                  <div class="mockup-body">
+                    <span class="m-title">活字凹版压印名片设计</span>
+                    <span class="m-subtitle">0元免费排版 · 支持设计同款</span>
                   </div>
                 </div>
-                <div class="hero-product-meta">
-                  <span class="h-name">{{ item.name }}</span>
-                  <span class="h-btn shine-arrow">免费设计同款 ➔</span>
+              </div>
+
+              <!-- Floating Editorial Overlay Badge -->
+              <div class="split-overlay-content">
+                <span class="editorial-badge">COLLECTION I · 活字凹版工艺</span>
+                <h3 class="split-card-title">
+                  {{ heroLeftProduct ? heroLeftProduct.name : '600g 活字凹版纯棉纸名片设计' }}
+                </h3>
+                <div class="split-action-link shine-arrow">
+                  <span>免费设计同款 ➔</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="hero-action-row">
+          <!-- Right Column (Featured Design 2) -->
+          <div
+            class="split-hero-column right-column interactive-split-card"
+            @click="navigateToHeroProduct(1)"
+          >
+            <div class="split-photo-container">
+              <img
+                v-if="heroRightProduct && getProductImage(heroRightProduct)"
+                :src="getProductImage(heroRightProduct)"
+                :alt="heroRightProduct.name"
+                class="split-img zoom-on-hover"
+              />
+              <div v-else class="split-photo-fallback fallback-studio-2">
+                <div class="studio-card-mockup dark-gold-theme">
+                  <div class="mockup-header-row">
+                    <span class="m-brand gold-text">24K GOLD FOIL</span>
+                    <span class="m-code">MATTE BLACK</span>
+                  </div>
+                  <div class="mockup-body">
+                    <span class="m-title gold-text">24K 浮雕烫金名片设计</span>
+                    <span class="m-subtitle">个人与小微企业 0元免费设计</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Editorial Overlay Badge -->
+              <div class="split-overlay-content">
+                <span class="editorial-badge gold-badge">COLLECTION II · 24K 浮雕烫金</span>
+                <h3 class="split-card-title">
+                  {{ heroRightProduct ? heroRightProduct.name : '24K 浮雕热压金黑卡名片设计' }}
+                </h3>
+                <div class="split-action-link shine-arrow">
+                  <span>免费设计同款 ➔</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Editorial Banner Text Below Split Stage -->
+        <div class="split-hero-caption-bar">
+          <span class="caption-tag">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
+          <h1 class="caption-headline">名片免费设计 · 汇聚全网灵感库</h1>
+          <p class="caption-lead">
+            专为独立创作者、个人创业者与初创小微团队提供 0 元免费名片排字、矢量 Logo 适配与 24 小时电子稿输出。
+          </p>
+          <div class="caption-btn-row">
             <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
               申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
-            <NuxtLink to="/search" class="gucci-btn-outline ripple-btn">
+            <NuxtLink to="/search" class="gucci-btn-outline-dark ripple-btn">
               探索名片设计灵感库
             </NuxtLink>
           </div>
@@ -391,15 +418,17 @@ useHead({
 const router = useRouter();
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
 
+const user = ref<any>(null);
 const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
 
-const heroProducts = computed(() => {
-  if (products.value.length > 0) {
-    return products.value.slice(0, 3);
-  }
-  return [];
+const heroLeftProduct = computed(() => {
+  return products.value[0] || null;
+});
+
+const heroRightProduct = computed(() => {
+  return products.value[1] || null;
 });
 
 const fallbackPreset = [
@@ -417,12 +446,21 @@ const displayProducts = computed(() => {
 });
 
 const getProductImage = (item: any) => {
-  if (item.images && item.images.length > 0) return item.images[0];
+  if (item && item.images && item.images.length > 0) return item.images[0];
   return getPublishedProductImage(item);
 };
 
 const goTo = (path: string) => {
   router.push(path);
+};
+
+const navigateToHeroProduct = (index: number) => {
+  const item = index === 0 ? heroLeftProduct.value : heroRightProduct.value;
+  if (item && item.id && !item.id.startsWith('pres-')) {
+    router.push(`/product/${item.id}`);
+  } else {
+    router.push(`/search`);
+  }
 };
 
 const navigateToProduct = (item: any) => {
@@ -474,8 +512,6 @@ const submitEmail = () => {
   }
 };
 
-const user = ref<any>(null);
-
 onMounted(async () => {
   try {
     const publicUserStore = usePublicUserStore();
@@ -501,7 +537,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Complete Micro-Interactions & Animation Suite */
+/* GUCCI Luxury Design System - Reference Gucci Stroller Combo 50/50 Dual Column Split Hero */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -512,12 +548,11 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* ZERO BORDER RADIUS */
-input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
+input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-outline-dark, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
   border-radius: 0 !important;
 }
 
-/* 1. BUTTON SHIMMER & RIPPLE ANIMATION */
+/* Micro-Interactions */
 .ripple-btn {
   position: relative;
   overflow: hidden;
@@ -549,81 +584,15 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: scale(0.96) !important;
 }
 
-/* 2. CARD HOVER ZOOOM & LIFT */
 .zoom-on-hover {
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.interactive-card:hover .zoom-on-hover,
+.interactive-split-card:hover .zoom-on-hover,
 .interactive-collection-card:hover .zoom-on-hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
-.interactive-card {
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.interactive-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(212, 163, 55, 0.25);
-  border-color: #d4a337 !important;
-}
-
-.interactive-card:active, .interactive-collection-card:active {
-  transform: scale(0.98);
-}
-
-/* 3. SLIDE-UP OVERLAY ANIMATION */
-.slide-up-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-
-.interactive-collection-card:hover .slide-up-overlay {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 4. HOVER BOUNCE FOR ICONS & ARROWS */
-.icon-hover-bounce svg {
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.icon-hover-bounce:hover svg {
-  transform: translateY(-3px) scale(1.12);
-  stroke: #d4a337;
-}
-
-.icon-bounce-on-hover svg {
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.interactive-service-card:hover .icon-bounce-on-hover svg {
-  transform: scale(1.15) rotate(4deg);
-}
-
-.hover-bounce {
-  transition: transform 0.25s ease;
-}
-
-.hover-bounce:hover {
-  transform: translateY(-50%) translateX(3px);
-  color: #d4a337;
-}
-
-/* 5. LINK UNDERLINE SLIDE EFFECT */
 .underline-slide {
   position: relative;
   text-decoration: none !important;
@@ -644,17 +613,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   width: 100%;
 }
 
-.footer-hover-link {
-  transition: all 0.2s ease;
-  display: inline-block;
-}
-
-.footer-hover-link:hover {
-  color: #ffffff !important;
-  transform: translateX(4px);
-}
-
-/* 6. INPUT SHARP FOCUS GLOW */
 .sharp-input {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -696,10 +654,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   align-items: center;
   gap: 0.35rem;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
-
-.header-contact-btn:hover { color: #d4a337; }
 
 .plus-icon { font-size: 0.95rem; }
 
@@ -710,13 +665,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   letter-spacing: 0.12em;
   color: #000000;
   text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  display: inline-block;
-}
-
-.logo-hover-effect:hover {
-  opacity: 0.85;
-  transform: scale(1.01);
 }
 
 .header-right {
@@ -746,197 +694,207 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* Hero Section */
-.gucci-hero-section {
-  position: relative;
+/* 1. GUCCI Dual 2-Column Split Hero Stage (50% / 50% Photographic Campaign Layout) */
+.gucci-split-hero-stage {
   width: 100%;
-  min-height: 640px;
-  background: #0d1117;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
+  background: #e8e6e1;
+  border-bottom: 1px solid #dcd8cf;
 }
 
-.hero-bg-light-effects {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(212, 163, 55, 0.18) 0%, transparent 60%),
-    radial-gradient(circle at 80% 80%, rgba(53, 92, 125, 0.25) 0%, transparent 50%),
-    radial-gradient(circle at 10% 20%, rgba(107, 43, 62, 0.2) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.hero-center-stage {
-  position: relative;
-  z-index: 2;
-  max-width: 1100px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-headline-group {
-  margin-bottom: 3.5rem;
-}
-
-.hero-top-badge {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  color: #d4a337;
-  display: block;
-  margin-bottom: 0.75rem;
-}
-
-.hero-main-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #ffffff;
-  margin: 0 0 1rem;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-}
-
-.hero-sub-text {
-  font-size: 1.05rem;
-  color: #cccccc;
-  letter-spacing: 0.05em;
-}
-
-.hero-dynamic-stage {
-  width: 100%;
-  margin-bottom: 3.5rem;
-}
-
-.hero-placeholder-grid {
+.split-hero-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  max-width: 840px;
-  margin: 0 auto;
-}
-
-@media (max-width: 640px) {
-  .hero-placeholder-grid { grid-template-columns: 1fr; }
-}
-
-.hero-photo-card {
-  height: 240px;
-  border: 1px solid rgba(212, 163, 55, 0.5);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.5rem;
-}
-
-.card-1 {
-  background: linear-gradient(135deg, #1f1a14 0%, #0d0b08 100%);
-}
-
-.card-2 {
-  background: linear-gradient(135deg, #18222a 0%, #0a0e12 100%);
-}
-
-.card-editorial-tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  color: #d4a337;
-  text-align: left;
-}
-
-.card-info-overlay {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.c-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.c-sub {
-  font-size: 0.75rem;
-  color: #d4a337;
-  letter-spacing: 0.1em;
-}
-
-.hero-products-showcase {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: 560px;
 }
 
 @media (max-width: 860px) {
-  .hero-products-showcase { grid-template-columns: 1fr; }
+  .split-hero-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.hero-real-product-card {
-  background: #11141a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.split-hero-column {
+  position: relative;
+  background: #dedcd5;
   cursor: pointer;
   overflow: hidden;
+  border-right: 1px solid #d6d3c8;
 }
 
-.hero-product-img-box {
-  height: 220px;
+.split-hero-column:last-child {
+  border-right: none;
+}
+
+.split-photo-container {
   width: 100%;
-  background: #000;
-  overflow: hidden;
+  height: 560px;
+  position: relative;
 }
 
-.hero-product-img {
+.split-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.hero-img-fallback {
+.split-photo-fallback {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d4a337;
+  padding: 2rem;
 }
 
-.fallback-svg {
-  width: 48px;
-  height: 48px;
+.fallback-studio-1 {
+  background: linear-gradient(135deg, #e6e3da 0%, #d4cfc3 100%);
 }
 
-.hero-product-meta {
-  padding: 1rem;
+.fallback-studio-2 {
+  background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 100%);
+}
+
+.studio-card-mockup {
+  width: 320px;
+  height: 190px;
+  background: #ffffff;
+  border: 1px solid #dcd8cf;
+  padding: 1.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dark-gold-theme {
+  background: #000000;
+  border-color: #d4a337;
+  color: #ffffff;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.mockup-header-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background: #0d1117;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #888888;
+}
+
+.mockup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.m-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #000000;
+}
+
+.m-subtitle {
+  font-size: 0.72rem;
+  color: #777777;
+}
+
+.gold-text {
+  color: #d4a337 !important;
+}
+
+.split-overlay-content {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.dark-gold-theme .split-overlay-content,
+.right-column .split-overlay-content {
+  background: rgba(13, 17, 23, 0.88);
+  border-color: rgba(212, 163, 55, 0.4);
   color: #ffffff;
 }
 
-.h-name {
-  font-size: 0.85rem;
-  font-weight: 700;
+.interactive-split-card:hover .split-overlay-content {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
 
-.h-btn {
-  font-size: 0.75rem;
-  color: #d4a337;
+.editorial-badge {
+  font-size: 0.65rem;
   font-weight: 800;
+  letter-spacing: 0.25em;
+  color: #888888;
 }
 
-.hero-action-row {
+.gold-badge {
+  color: #d4a337 !important;
+}
+
+.split-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.split-action-link {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #d4a337;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+/* Center Hero Caption Bar Below Split Stage */
+.split-hero-caption-bar {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caption-tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: #b38218;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.caption-headline {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #000000;
+  margin: 0 0 1rem;
+}
+
+.caption-lead {
+  font-size: 1rem;
+  color: #555555;
+  line-height: 1.7;
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+
+.caption-btn-row {
   display: flex;
   gap: 1.25rem;
 }
@@ -950,6 +908,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   letter-spacing: 0.15em;
   text-decoration: none;
   box-shadow: 0 4px 15px rgba(212, 163, 55, 0.3);
+  transition: all 0.2s ease;
 }
 
 .gucci-btn-gold:hover {
@@ -957,19 +916,21 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
-.gucci-btn-outline {
+.gucci-btn-outline-dark {
   background: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
   padding: 0.85rem 2.5rem;
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.gucci-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
+.gucci-btn-outline-dark:hover {
+  background: #000000;
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -1223,7 +1184,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
-/* Services Section */
 .gucci-services-section {
   padding: 5rem 2rem 4rem;
   background: #fcfcfc;
