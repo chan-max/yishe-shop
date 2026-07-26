@@ -1,0 +1,11 @@
+{
+  "name": "shop-couplet",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 15204 --host",
+    "build": "nuxt build",
+    "preview": "nuxt preview"
+  }
+}
