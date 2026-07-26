@@ -46,7 +46,9 @@
               aria-label="上一张图片"
               @click="previousImage"
             >
-              <AppIcon name="chevron-left" class="ui-icon" :size="17" aria-hidden="true" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow-svg">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
             </button>
             <transition :name="`gallery-${slideDirection}`" mode="out-in">
               <img
@@ -69,7 +71,9 @@
               aria-label="下一张图片"
               @click="nextImage"
             >
-              <AppIcon name="chevron-right" class="ui-icon" :size="17" aria-hidden="true" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow-svg">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
             </button>
           </div>
         </div>
@@ -1100,6 +1104,14 @@ onMounted(() => {
     color: #ffffff;
     border-color: #111111;
     transform: translateY(-50%) scale(1.08);
+  }
+
+  .arrow-svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    stroke-width: 2.5px;
   }
 }
 
