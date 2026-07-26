@@ -4,7 +4,8 @@
       <!-- HEADER -->
       <div class="header">
         <div class="top-info-bar">
-          <NuxtLink to="/" class="top-link">www.1s.design</NuxtLink>          <NuxtLink to="/search" class="top-link">搜春联 / 楹联专区</NuxtLink>
+          <NuxtLink to="/" class="top-link">www.1s.design</NuxtLink>
+          <NuxtLink to="/search" class="top-link">搜春联 / 楹联专区</NuxtLink>
         </div>
 
         <div class="logo">
@@ -14,17 +15,17 @@
         </div>
 
         <!-- HERO DISPLAY -->
-        <div class="hero">
+        <div class="hero squircle-box">
           <div class="hero-scroll-display">
-            <div class="hero-scroll-left">
+            <div class="hero-scroll-left squircle-scroll">
               <span class="scroll-tag">上联</span>
               <span class="scroll-font">迎喜迎春迎富贵</span>
             </div>
-            <div class="hero-scroll-center">
+            <div class="hero-scroll-center squircle-scroll">
               <span class="scroll-tag">横批</span>
               <span class="scroll-font-center">吉星高照</span>
             </div>
-            <div class="hero-scroll-right">
+            <div class="hero-scroll-right squircle-scroll">
               <span class="scroll-tag">下联</span>
               <span class="scroll-font">接财接福接平安</span>
             </div>
@@ -59,7 +60,7 @@
           <div
             v-for="item in products"
             :key="item.id"
-            class="product"
+            class="product squircle-card"
             @click="navigateToProduct(item)"
           >
             <div class="product-image">
@@ -85,11 +86,11 @@
         </div>
 
         <div class="view">
-          <span @click="openAllProducts">View all / 查看全部</span>
+          <span class="squircle-btn" @click="openAllProducts">View all / 查看全部</span>
         </div>
 
         <!-- COUPON BANNER -->
-        <div class="coupon">
+        <div class="coupon squircle-banner">
           <div>
             Get Up to
             <br />
@@ -109,7 +110,7 @@
         <h2 class="review-title">Customer is our Priority / 客户口碑</h2>
 
         <div class="reviews">
-          <div class="review">
+          <div class="review squircle-card">
             <h1>“</h1>
             纸质非常厚重，烫金字在阳光下熠熠生辉！贴在公司大门上气场十足。
             <br /><br />
@@ -120,7 +121,7 @@
             </div>
           </div>
 
-          <div class="review">
+          <div class="review squircle-card">
             <h1>“</h1>
             名家手写体韵味十足，万年红宣纸连续几年都不褪色。
             <br /><br />
@@ -131,7 +132,7 @@
             </div>
           </div>
 
-          <div class="review">
+          <div class="review squircle-card">
             <h1>“</h1>
             包装非常精美完好，送给长辈和客户都非常有档次！
             <br /><br />
@@ -206,7 +207,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 全屏通栏网页布局（不留任何多余背景框） */
+/* 全屏通栏网页布局（基于 corner-shape: squircle 仿生平滑超椭圆圆角系统） */
 .email-page-wrapper {
   margin: 0;
   padding: 0;
@@ -226,7 +227,7 @@ onMounted(async () => {
 }
 
 /* =====================
-   HEADER (通栏弧形 Header)
+   HEADER (通栏 Squircle 弧形 Header)
 ===================== */
 .header {
   width: 100%;
@@ -234,6 +235,7 @@ onMounted(async () => {
   background: #870018;
   position: relative;
   border-radius: 0 0 65px 65px;
+  corner-shape: squircle;
   padding-bottom: 50px;
 }
 
@@ -274,13 +276,14 @@ onMounted(async () => {
   text-decoration: none;
 }
 
-/* HERO BOX */
-.hero {
+/* HERO SQUIRCLE BOX */
+.hero.squircle-box {
   max-width: 780px;
   width: 90%;
   margin: 25px auto 0;
   height: 360px;
-  border-radius: 20px;
+  border-radius: 24px;
+  corner-shape: squircle;
   overflow: hidden;
   background: linear-gradient(135deg, #7a0c16 0%, #4a030b 100%);
   border: 3px solid #dca532;
@@ -299,13 +302,17 @@ onMounted(async () => {
   gap: 24px;
 }
 
+.squircle-scroll {
+  border-radius: 8px;
+  corner-shape: squircle;
+}
+
 .hero-scroll-left,
 .hero-scroll-right {
   background: #b81424;
   border: 2px solid #f5c34b;
   color: #f5c34b;
   padding: 14px 8px;
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -317,7 +324,6 @@ onMounted(async () => {
   border: 2px solid #f5c34b;
   color: #f5c34b;
   padding: 8px 16px;
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -392,7 +398,7 @@ onMounted(async () => {
   font-weight: 900;
 }
 
-/* PRODUCTS GRID (4列响应式网格) */
+/* PRODUCTS GRID */
 .products {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -413,19 +419,20 @@ onMounted(async () => {
   }
 }
 
-.product {
+.product.squircle-card {
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 20px;
+  corner-shape: squircle;
   background: #fff;
   border: 1.5px solid #d8a02b;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
 }
 
-.product:hover {
+.product.squircle-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(135, 0, 24, 0.15);
+  box-shadow: 0 12px 28px rgba(135, 0, 24, 0.18);
 }
 
 .product-image {
@@ -483,26 +490,27 @@ onMounted(async () => {
   margin: 45px 0 60px;
 }
 
-.view span {
+.view .squircle-btn {
   display: inline-block;
   background: #870018;
   color: #f5c34b;
   padding: 10px 36px;
   border-radius: 999px;
+  corner-shape: squircle;
   font-size: 14px;
   cursor: pointer;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(135, 0, 24, 0.2);
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.view span:hover {
+.view .squircle-btn:hover {
   background: #6b0013;
   transform: scale(1.04);
 }
 
-/* COUPON (大网格居中通栏) */
-.coupon {
+/* COUPON SQUIRCLE BANNER */
+.coupon.squircle-banner {
   max-width: 900px;
   margin: 50px auto;
   height: 145px;
@@ -510,7 +518,8 @@ onMounted(async () => {
   border: 2px solid #dca532;
   display: flex;
   position: relative;
-  border-radius: 8px;
+  border-radius: 16px;
+  corner-shape: squircle;
   box-shadow: 0 8px 24px rgba(135, 0, 24, 0.15);
 }
 
@@ -521,6 +530,8 @@ onMounted(async () => {
   width: 35px;
   height: 35px;
   border: 2px solid #dca532;
+  border-radius: 6px;
+  corner-shape: squircle;
 }
 
 .coupon:before {
@@ -559,7 +570,7 @@ onMounted(async () => {
   letter-spacing: 1px;
 }
 
-/* REVIEWS (3列网格) */
+/* REVIEWS SQUIRCLE CARDS */
 .review-title {
   margin-top: 60px;
   margin-bottom: 35px;
@@ -582,10 +593,11 @@ onMounted(async () => {
   }
 }
 
-.review {
+.review.squircle-card {
   background: #ffffff;
   border: 1px solid rgba(216, 160, 43, 0.4);
-  border-radius: 12px;
+  border-radius: 18px;
+  corner-shape: squircle;
   padding: 20px 24px;
   font-size: 13px;
   line-height: 20px;
