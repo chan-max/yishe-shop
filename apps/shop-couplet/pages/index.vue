@@ -119,7 +119,7 @@
           <div class="lattice-border">
             <div class="promo-col">
               <span class="promo-label">企业与家庭量大定制专享</span>
-              <div class="promo-highlight">70% <span>Discount</span></div>
+              <div class="promo-highlight">70% <span class="promo-unit">Discount</span></div>
               <div class="promo-sub">满 3 副即享专属立减福利</div>
             </div>
             <div class="promo-col code-col">
@@ -244,7 +244,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Traditional Crimson & Gold Color Palette Variables */
 .couplet-theme-wrapper {
   --cp-crimson: #6b0512;
   --cp-crimson-dark: #4a030b;
@@ -261,7 +260,6 @@ onMounted(async () => {
   min-height: 100vh;
 }
 
-/* Header */
 .couplet-header {
   position: relative;
   background-color: var(--cp-crimson);
@@ -329,7 +327,6 @@ onMounted(async () => {
   line-height: 0;
 }
 
-/* Main Body & Container */
 .couplet-body {
   position: relative;
   padding: 2rem 1.5rem 4rem;
@@ -357,7 +354,6 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
-/* Hero Showcase Card */
 .couplet-hero-section {
   text-align: center;
   margin-bottom: 3.5rem;
@@ -383,8 +379,10 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   gap: 2rem;
+}
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
+  .couplet-mockup-display {
     gap: 0.75rem;
   }
 }
@@ -455,7 +453,6 @@ onMounted(async () => {
   line-height: 1.7;
 }
 
-/* Products Section */
 .couplet-products-section {
   margin-bottom: 4rem;
 }
@@ -483,8 +480,10 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.75rem;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .couplet-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -513,8 +512,10 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
+  .card-image-wrapper {
     height: 200px;
   }
 }
@@ -601,14 +602,13 @@ onMounted(async () => {
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--cp-crimson-dark);
-    transform: scale(1.04);
-  }
 }
 
-/* Traditional Lattice Promotion Banner */
+.btn-view-all:hover {
+  background: var(--cp-crimson-dark);
+  transform: scale(1.04);
+}
+
 .couplet-promo-banner {
   margin-bottom: 4rem;
 }
@@ -623,8 +623,10 @@ onMounted(async () => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   align-items: center;
+}
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
+  .lattice-border {
     grid-template-columns: 1fr;
     text-align: center;
   }
@@ -643,11 +645,11 @@ onMounted(async () => {
   color: #ffffff;
   line-height: 1.1;
   margin: 0.2rem 0;
+}
 
-  span {
-    font-size: 1.1rem;
-    font-weight: 700;
-  }
+.promo-unit {
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .promo-sub {
@@ -663,7 +665,6 @@ onMounted(async () => {
   margin: 0.2rem 0;
 }
 
-/* Reviews Section */
 .couplet-reviews-section {
   margin-bottom: 2rem;
 }
@@ -672,8 +673,10 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
+}
 
-  @media (max-width: 860px) {
+@media (max-width: 860px) {
+  .reviews-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -728,7 +731,6 @@ onMounted(async () => {
   color: var(--cp-text-muted);
 }
 
-/* Footer */
 .couplet-footer {
   background: var(--cp-crimson-dark);
   color: rgba(255, 255, 255, 0.85);
