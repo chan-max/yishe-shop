@@ -5,81 +5,81 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <NuxtLink to="/" class="back-link">
-            ‹ Back to Collection
+            ‹ 返回名片工坊首页
           </NuxtLink>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            B U S I N E S S  C A R D
+            名 片 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">Search</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link">搜索名片</NuxtLink>
         </div>
       </div>
     </header>
 
     <main class="gucci-about-container">
       <section class="about-hero">
-        <span class="sub-tag">THE HOUSE OF BUSINESS CARD</span>
-        <h1 class="main-heading">CRAFTSMANSHIP & HERITAGE</h1>
+        <span class="sub-tag">THE HOUSE OF BUSINESS CARD ATELIER</span>
+        <h1 class="main-heading">工坊品牌故事与名片工艺</h1>
         <p class="heading-lead">
-          Combining centuries-old Florentine letterpress traditions with contemporary luxury design.
+          将百年活字压印传统、24K 烫金工艺与现代极简商务美学完美融合。
         </p>
       </section>
 
       <section class="story-section">
         <div class="story-row">
           <div class="story-photo photo-1">
-            <div class="art-badge">1895 FLORENCE TRADITION</div>
+            <div class="art-badge">百年活字印迹</div>
           </div>
           <div class="story-text">
-            <h2>01 / THE ART OF LETTERPRESS</h2>
+            <h2>01 / 凹版活字压印艺术 (LETTERPRESS)</h2>
             <p>
-              Each executive business card is impression-printed on antique Heidelberg machines using hand-mixed vegetable inks and 100% pure cotton paper stock. The deep tactile debossing creates an indelible impression of executive authority.
+              每一张活字凹版名片，均采用德国古典海德堡机沉金压印。植物油墨浸润 100% 纯棉纸纤维，触感凹凸有致，透着沉稳自信的商务气场。
             </p>
           </div>
         </div>
 
         <div class="story-row reverse">
           <div class="story-photo photo-2">
-            <div class="art-badge">24K GOLD LEAF</div>
+            <div class="art-badge">24K 浮雕烫金</div>
           </div>
           <div class="story-text">
-            <h2>02 / HOT FOIL STAMPING</h2>
+            <h2>02 / 24K 浮雕热压金 (HOT FOIL STAMPING)</h2>
             <p>
-              Our master gilders apply heat and high pressure to stamp genuine 24-karat gold and silver leaf onto thick specialty stock, illuminating every letterform with brilliant metallic radiance.
+              资深烫金大师通过精准温控与高压冲压，将 24K 哑光金箔、镜面亮银与璀璨黑金精准附着于特种纸表面，在光线折射下熠熠生辉。
             </p>
           </div>
         </div>
 
         <div class="story-row">
           <div class="story-photo photo-3">
-            <div class="art-badge">ECO-SUSTAINABLE</div>
+            <div class="art-badge">FSC 环保特种纸</div>
           </div>
           <div class="story-text">
-            <h2>03 / SUSTAINABLE SPECIALTY PAPERS</h2>
+            <h2>03 / 甄选环保特种纸艺 (SUSTAINABLE PAPERS)</h2>
             <p>
-              We source exclusively FSC-certified, acid-free cotton fibers and recycled velvet papers, ensuring that every business card embodies environmental stewardship alongside timeless elegance.
+              名片工坊严格甄选符合 FSC 认证的无酸长纤维棉纸与绒面触感卡纸，不干裂、不褪色，让每一张名片都成为可以传世的艺术微型画卷。
             </p>
           </div>
         </div>
       </section>
 
       <section class="call-to-action">
-        <h2>EXPERIENCE THE COLLECTION</h2>
-        <p>Browse our executive collections or schedule a 1-on-1 consultation with our master typographers.</p>
+        <h2>探索名片工坊全系作品</h2>
+        <p>浏览商务高定名片作品集，或预约资深设计师为您提供 1对1 矢量排字打样服务。</p>
         <div class="cta-btn-row">
-          <NuxtLink to="/search" class="btn-black">EXPLORE COLLECTION</NuxtLink>
-          <NuxtLink to="/contact" class="btn-border">BOOK APPOINTMENT</NuxtLink>
+          <NuxtLink to="/search" class="btn-black">浏览名片作品集</NuxtLink>
+          <NuxtLink to="/contact" class="btn-border">预约设计师打样</NuxtLink>
         </div>
       </section>
     </main>
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">B U S I N E S S  C A R D</div>
-      <p>© 2026 Business Card Workshop S.p.A. All rights reserved.</p>
+      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -109,7 +109,7 @@ useHead({
   background: #ffffff;
   color: #000000;
   min-height: 100vh;
-  font-family: Didot, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
 .gucci-header {
@@ -132,15 +132,15 @@ useHead({
 .back-link, .header-icon-link {
   color: #000000;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.05em;
 }
 
 .gucci-brand-logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #000000;
   text-decoration: none;
 }
@@ -168,7 +168,7 @@ useHead({
 .main-heading {
   font-size: 2.2rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.05em;
   margin: 0 0 1rem;
 }
 
@@ -226,20 +226,19 @@ useHead({
 .art-badge {
   border: 1px solid rgba(255,255,255,0.4);
   padding: 0.5rem 1rem;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
 }
 
 .story-text h2 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
   margin: 0 0 1rem;
 }
 
 .story-text p {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: #555555;
   line-height: 1.7;
 }
@@ -253,12 +252,11 @@ useHead({
   h2 {
     font-size: 1.4rem;
     font-weight: 800;
-    letter-spacing: 0.15em;
     margin: 0 0 0.5rem;
   }
 
   p {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: #666666;
     margin-bottom: 2rem;
   }
@@ -275,9 +273,8 @@ useHead({
   color: #ffffff;
   padding: 0.85rem 2rem;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
 }
 
 .btn-border {
@@ -286,23 +283,22 @@ useHead({
   border: 1px solid #000000;
   padding: 0.85rem 2rem;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
 }
 
 .gucci-mini-footer {
   border-top: 1px solid #e5e5e5;
   padding: 2.5rem 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #888888;
 }
 
 .footer-logo-small {
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
 }

@@ -6,30 +6,30 @@
         <div class="header-left">
           <NuxtLink to="/contact" class="header-contact-btn">
             <span class="plus-icon">+</span>
-            <span>Contact Us</span>
+            <span>联系设计师 / 预约打样</span>
           </NuxtLink>
         </div>
 
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            B U S I N E S S  C A R D
+            名 片 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
 
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-btn" title="Search">
+          <NuxtLink to="/search" class="header-icon-btn" title="搜索名片">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/contact" class="header-icon-btn" title="Account">
+          <NuxtLink to="/contact" class="header-icon-btn" title="个人中心">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </NuxtLink>
-          <NuxtLink to="/search" class="header-icon-btn" title="Shopping Bag">
+          <NuxtLink to="/search" class="header-icon-btn" title="名片盒">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -42,7 +42,7 @@
               <line x1="3" y1="12" x2="21" y2="12"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
-            <span class="menu-label">MENU</span>
+            <span class="menu-label">工艺菜单</span>
           </NuxtLink>
         </div>
       </div>
@@ -57,9 +57,9 @@
             <div class="hero-model-silhouette">
               <div class="card-display-floating">
                 <div class="gold-embossed-card">
-                  <div class="card-monogram">GC</div>
+                  <div class="card-monogram">BC</div>
                   <div class="card-holder-name">EXECUTIVE EDITION</div>
-                  <div class="card-line">BUSINESS CARD WORKSHOP</div>
+                  <div class="card-line">600G COTTON · 24K GOLD FOIL</div>
                 </div>
               </div>
             </div>
@@ -67,17 +67,17 @@
         </div>
 
         <div class="hero-overlay-center">
-          <span class="hero-subtitle">New Arrivals</span>
+          <span class="hero-subtitle">尊享商务名片定制 · 彰显卓然身份</span>
           <NuxtLink to="/search" class="gucci-btn-white">
-            SHOP NOW
+            浏览全系列名片
           </NuxtLink>
         </div>
       </section>
 
-      <!-- 2. Dynamic Published Products Grid (Matching Gucci Screenshot 1:1) -->
+      <!-- 2. Dynamic Published Products Grid -->
       <section class="gucci-collection-section">
         <div v-if="loading" class="collection-loading">
-          Loading published business card collection...
+          正在加载名片工坊高定作品集…
         </div>
 
         <div v-else class="collection-4col-grid">
@@ -109,26 +109,26 @@
 
         <div class="collection-action-center">
           <NuxtLink to="/search" class="gucci-btn-gray">
-            SHOP NOW
+            查看更多工艺名片
           </NuxtLink>
         </div>
       </section>
 
-      <!-- 3. Gucci Services 3-Column Square Grid (Matching Gucci Screenshot Services) -->
+      <!-- 3. Business Card Atelier Services Section -->
       <section class="gucci-services-section">
-        <h2 class="services-main-title">BUSINESS CARD SERVICES</h2>
+        <h2 class="services-main-title">名片工坊 专属定制服务</h2>
 
         <div class="services-3col-grid">
           <!-- Service 1 -->
           <div class="service-card">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-boutique">
-                <div class="photo-overlay-icon">🏛️</div>
+                <div class="photo-overlay-icon">✍️</div>
               </div>
             </div>
-            <h3 class="service-title">BOOK AN APPOINTMENT</h3>
+            <h3 class="service-title">1对1 排版与文字排字</h3>
             <NuxtLink to="/contact" class="service-link">
-              Choose your Experience
+              预约设计师沟通
             </NuxtLink>
           </div>
 
@@ -136,12 +136,12 @@
           <div class="service-card">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-types">
-                <div class="photo-overlay-icon">🔠</div>
+                <div class="photo-overlay-icon">📇</div>
               </div>
             </div>
-            <h3 class="service-title">PERSONALIZATION</h3>
+            <h3 class="service-title">特种纸质感与烫金纸样盒</h3>
             <NuxtLink to="/contact" class="service-link">
-              Explore Options
+              免费申请纸样盒
             </NuxtLink>
           </div>
 
@@ -149,93 +149,93 @@
           <div class="service-card">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-collect">
-                <div class="photo-overlay-icon">📦</div>
+                <div class="photo-overlay-icon">⚡</div>
               </div>
             </div>
-            <h3 class="service-title">COLLECT IN STORE</h3>
+            <h3 class="service-title">加急打样与顺丰次日达</h3>
             <NuxtLink to="/contact" class="service-link">
-              Discover How
+              了解加急服务
             </NuxtLink>
           </div>
         </div>
       </section>
 
-      <!-- 4. Gucci Black Subscription Section ("SIGN UP FOR UPDATES") -->
+      <!-- 4. Subscription Section -->
       <section class="gucci-subscribe-section">
         <div class="subscribe-container">
-          <span class="subscribe-tag">SIGN UP FOR BUSINESS CARD UPDATES</span>
+          <span class="subscribe-tag">订阅名片工坊工艺资讯</span>
           <h2 class="subscribe-headline">
-            Get exclusive updates on the collection's launch, personalized communication and the House's latest news.
+            获取最新特种纸材质、24K 烫金色系与商务精英名片设计灵感。
           </h2>
           <div class="subscribe-action">
             <button type="button" class="subscribe-plus-btn" @click="subscribeEmail">
-              <span class="plus-symbol">+</span> Subscribe
+              <span class="plus-symbol">+</span> 立即订阅
             </button>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- 5. Luxury Black Multi-Column Footer with Giant Serif Brand Logo -->
+    <!-- 5. Luxury Black Multi-Column Footer -->
     <footer class="gucci-footer">
       <div class="footer-inner">
         <div class="footer-columns">
           <div class="footer-col">
-            <h4 class="col-title">MAY WE HELP YOU?</h4>
+            <h4 class="col-title">客户服务与支持</h4>
             <ul>
-              <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
-              <li><NuxtLink to="/orders">My Order</NuxtLink></li>
-              <li><NuxtLink to="/faq">FAQs</NuxtLink></li>
-              <li><NuxtLink to="/about">About Us</NuxtLink></li>
-              <li><NuxtLink to="/search">Search Collection</NuxtLink></li>
+              <li><NuxtLink to="/contact">联系设计师</NuxtLink></li>
+              <li><NuxtLink to="/search">查询订单状态</NuxtLink></li>
+              <li><NuxtLink to="/about">特种纸材质说明</NuxtLink></li>
+              <li><NuxtLink to="/contact">矢量文件规范说明</NuxtLink></li>
+              <li><NuxtLink to="/search">搜索名片灵感库</NuxtLink></li>
             </ul>
           </div>
 
           <div class="footer-col">
-            <h4 class="col-title">THE COMPANY</h4>
+            <h4 class="col-title">关于名片工坊</h4>
             <ul>
-              <li><NuxtLink to="/about">About Business Card</NuxtLink></li>
-              <li><NuxtLink to="/about">Craftsmanship & Ethics</NuxtLink></li>
-              <li><NuxtLink to="/contact">Careers & VIP</NuxtLink></li>
-              <li><NuxtLink to="/legal">Legal & Terms</NuxtLink></li>
+              <li><NuxtLink to="/about">工坊品牌故事</NuxtLink></li>
+              <li><NuxtLink to="/about">活字印刷与凹版工艺</NuxtLink></li>
+              <li><NuxtLink to="/about">24K 烫金与浮雕技术</NuxtLink></li>
+              <li><NuxtLink to="/about">FSC 环保无酸棉纸</NuxtLink></li>
             </ul>
           </div>
 
           <div class="footer-col col-form">
-            <h4 class="col-title">STORE LOCATOR</h4>
+            <h4 class="col-title">加急打样与寄送</h4>
             <div class="input-with-arrow">
-              <input type="text" placeholder="Country/Region, City" />
+              <input type="text" placeholder="输入城市名称（查询顺丰时效）" />
               <span class="arrow-right">›</span>
             </div>
 
-            <h4 class="col-title sub-form-title">SIGN UP FOR UPDATES</h4>
-            <p class="form-desc">Get exclusive updates on the collection's launch, personalized communication and the House's latest news.</p>
+            <h4 class="col-title sub-form-title">订阅工艺资讯</h4>
+            <p class="form-desc">订阅即可免费获取电子版《商务名片材质与烫金工艺搭配指南》。</p>
             <div class="input-with-arrow">
-              <input type="email" placeholder="Email" v-model="emailInput" />
+              <input type="email" placeholder="输入您的电子邮箱" v-model="emailInput" />
               <span class="arrow-right" @click="submitEmail">›</span>
             </div>
 
             <div class="country-region-selector">
-              <span class="region-label">COUNTRY / REGION</span>
-              <span class="selected-country">United States</span>
+              <span class="region-label">服务地区 / REGION</span>
+              <span class="selected-country">中国 Mainland China / Global Express</span>
             </div>
           </div>
         </div>
 
         <div class="footer-secondary-links">
-          <h4 class="col-title">BUSINESS CARD SERVICES</h4>
+          <h4 class="col-title">名片定制快捷入口</h4>
           <div class="link-inline-row">
-            <NuxtLink to="/about">Discover Our Services</NuxtLink>
-            <NuxtLink to="/contact">Book an Appointment</NuxtLink>
-            <NuxtLink to="/contact">Collect in Store</NuxtLink>
+            <NuxtLink to="/about">探索活字工艺</NuxtLink>
+            <NuxtLink to="/contact">预约设计师</NuxtLink>
+            <NuxtLink to="/search">申请纸样盒</NuxtLink>
           </div>
         </div>
 
         <div class="footer-copyright-line">
-          © 2026 Business Card Workshop S.p.A. - All rights reserved. SIAE LICENCE # 2294/I/1936
+          © 2026 名片工坊 Business Card Atelier. 保留所有权利。专为商务精英与设计大师打造。
         </div>
 
-        <!-- Giant Serif Logo Spanning Across Bottom (Matching Gucci Screenshot) -->
+        <!-- Giant Serif Logo -->
         <div class="footer-giant-brand">
           B U S I N E S S  C A R D
         </div>
@@ -252,14 +252,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '名片 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
-  ogTitle: '名片 · 高端商务名片与特种纸名片定制平台',
-  description: '衣设名片工坊专注于高端商务名片定制、特种纸工艺名片与极简创意名片设计服务。',
+  title: '名片工坊 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
+  ogTitle: '名片工坊 · 高端商务名片与特种纸名片定制平台',
+  description: '名片工坊专注于高端商务名片定制、特种纸工艺名片、24K烫金与极简活字印刷设计服务。',
   ogDescription: '专为企业精英与设计师打造的高端商务名片定制平台。'
 });
 
 useHead({
-  title: '名片 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
+  title: '名片工坊 · 高端商务名片与特种纸名片定制平台 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -272,10 +272,10 @@ const products = ref<any[]>([]);
 const emailInput = ref('');
 
 const fallbackPreset = [
-  { id: 'pres-1', name: 'Executive Letterpress', key: 'letterpress' },
-  { id: 'pres-2', name: 'Gold Foil Embossed', key: 'gold-foil' },
-  { id: 'pres-3', name: 'Metal Steel Edition', key: 'steel' },
-  { id: 'pres-4', name: 'Specialty Paper Crafts', key: 'specialty' }
+  { id: 'pres-1', name: '凹版活字压印名片 (Executive Letterpress)', key: 'letterpress' },
+  { id: 'pres-2', name: '24K 浮雕烫金名片 (Gold Foil Embossed)', key: 'gold-foil' },
+  { id: 'pres-3', name: '钛钢极客精印名片 (Metal Steel Edition)', key: 'steel' },
+  { id: 'pres-4', name: '触感特种纸艺名片 (Specialty Paper Crafts)', key: 'specialty' }
 ];
 
 const displayProducts = computed(() => {
@@ -320,17 +320,22 @@ const getCardLabel = (idx: number) => {
 };
 
 const getCardTitle = (idx: number) => {
-  const titles = ['Executive Letterpress', 'Gold Foil Embossed', 'Metal Steel Edition', 'Specialty Paper Crafts'];
+  const titles = [
+    '凹版活字压印名片 (Executive Letterpress)',
+    '24K 浮雕烫金名片 (Gold Foil Embossed)',
+    '钛钢极客精印名片 (Metal Steel Edition)',
+    '触感特种纸艺名片 (Specialty Paper Crafts)'
+  ];
   return titles[idx % titles.length];
 };
 
 const subscribeEmail = () => {
-  alert('Thank you for subscribing to Business Card updates.');
+  alert('感谢订阅名片工坊！我们已将《商务名片材质与烫印指南》发送至您的邮箱。');
 };
 
 const submitEmail = () => {
   if (emailInput.value) {
-    alert(`Thank you! ${emailInput.value} has been subscribed.`);
+    alert(`感谢订阅！${emailInput.value} 已成功加入名片工坊资讯列表。`);
     emailInput.value = '';
   }
 };
@@ -353,13 +358,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI High-Fashion Luxury Design System */
+/* GUCCI High-Fashion Luxury Design System - Pure Business Card Atelier Copy */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
   background: #ffffff;
   color: #000000;
-  font-family: -apple-system, BlinkMacSystemFont, "Times New Roman", Didot, Bodoni MT, "Cinzel", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Didot, "Times New Roman", serif;
   min-height: 100vh;
   width: 100%;
 }
@@ -402,9 +407,9 @@ onMounted(async () => {
 
 .gucci-brand-logo {
   font-family: Didot, "Bodoni MT", Cinzel, "Times New Roman", serif;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #000000;
   text-decoration: none;
 }
@@ -440,7 +445,7 @@ onMounted(async () => {
   position: relative;
   width: 100%;
   height: 600px;
-  background: linear-gradient(135deg, #a4c639 0%, #6b8e23 40%, #556b2f 100%);
+  background: linear-gradient(135deg, #2b3a42 0%, #0f171e 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -458,7 +463,7 @@ onMounted(async () => {
 .hero-editorial-art {
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.25) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(212, 163, 55, 0.15) 0%, rgba(0, 0, 0, 0.4) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -467,17 +472,17 @@ onMounted(async () => {
 .card-display-floating { perspective: 1000px; }
 
 .gold-embossed-card {
-  width: 320px;
-  height: 190px;
-  background: #111111;
-  border: 1px solid rgba(212, 163, 55, 0.6);
-  border-radius: 8px;
+  width: 330px;
+  height: 195px;
+  background: #0d0d0d;
+  border: 1.5px solid rgba(212, 163, 55, 0.8);
+  border-radius: 6px;
   padding: 1.5rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transform: rotateY(-12deg) rotateX(8deg);
+  transform: rotateY(-10deg) rotateX(6deg);
   transition: transform 0.5s ease;
 }
 
@@ -518,17 +523,17 @@ onMounted(async () => {
 
 .hero-subtitle {
   color: #ffffff;
-  font-size: 0.95rem;
-  font-family: Didot, serif;
-  letter-spacing: 0.1em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 .gucci-btn-white {
   background: #ffffff;
   color: #000000;
   padding: 0.75rem 2.5rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
@@ -577,10 +582,10 @@ onMounted(async () => {
 
 .collection-card:hover .photo-img-cover { transform: scale(1.04); }
 
-.tone-pink .card-photo-container { background: linear-gradient(180deg, #993344 0%, #661122 100%); }
-.tone-canvas .card-photo-container { background: linear-gradient(180deg, #bb9966 0%, #886633 100%); }
-.tone-navy .card-photo-container { background: linear-gradient(180deg, #223344 0%, #111122 100%); }
-.tone-blue .card-photo-container { background: linear-gradient(180deg, #5588aa 0%, #335577 100%); }
+.tone-pink .card-photo-container { background: linear-gradient(180deg, #3a2228 0%, #1f1115 100%); }
+.tone-canvas .card-photo-container { background: linear-gradient(180deg, #4a3e2e 0%, #2b2216 100%); }
+.tone-navy .card-photo-container { background: linear-gradient(180deg, #1b2631 0%, #0d131a 100%); }
+.tone-blue .card-photo-container { background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%); }
 
 .photo-product-mockup {
   width: 100%;
@@ -609,15 +614,15 @@ onMounted(async () => {
 }
 
 .card-caption {
-  padding: 1rem;
+  padding: 1.25rem 1rem;
   text-align: center;
   background: #ffffff;
 }
 
 .caption-title {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #000000;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
 }
 
@@ -631,7 +636,7 @@ onMounted(async () => {
   background: #e0e0e0;
   color: #000000;
   padding: 0.85rem 3rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
@@ -648,9 +653,9 @@ onMounted(async () => {
 }
 
 .services-main-title {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   color: #000000;
   margin-bottom: 3.5rem;
 }
@@ -686,22 +691,22 @@ onMounted(async () => {
 
 .service-card:hover .service-photo { transform: scale(1.03); }
 
-.photo-boutique { background: #e5e5e5; }
+.photo-boutique { background: #e8e8e8; }
 .photo-types { background: #1a1a1a; color: #d4a337; }
-.photo-collect { background: #d9d9d9; }
+.photo-collect { background: #dcdcdc; }
 
 .photo-overlay-icon { font-size: 3.5rem; }
 
 .service-title {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: #000000;
   margin: 0 0 0.5rem;
 }
 
 .service-link {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #666666;
   text-decoration: underline;
 }
@@ -723,17 +728,16 @@ onMounted(async () => {
 }
 
 .subscribe-tag {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.2em;
   color: #ffffff;
 }
 
 .subscribe-headline {
-  font-family: Didot, "Times New Roman", serif;
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #ffffff;
 }
 
@@ -741,7 +745,7 @@ onMounted(async () => {
   background: none;
   border: none;
   color: #ffffff;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -770,7 +774,7 @@ onMounted(async () => {
 @media (max-width: 860px) { .footer-columns { grid-template-columns: 1fr; } }
 
 .col-title {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   color: #ffffff;
@@ -784,7 +788,7 @@ onMounted(async () => {
 
 .footer-col a {
   color: #aaaaaa;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   text-decoration: none;
 }
 
@@ -818,9 +822,9 @@ onMounted(async () => {
 }
 
 .form-desc {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: #888888;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-bottom: 1rem;
 }
 
@@ -832,7 +836,7 @@ onMounted(async () => {
 }
 
 .region-label { font-size: 0.65rem; color: #666666; letter-spacing: 0.1em; }
-.selected-country { font-size: 0.78rem; color: #ffffff; text-decoration: underline; }
+.selected-country { font-size: 0.8rem; color: #ffffff; text-decoration: underline; }
 
 .footer-secondary-links {
   border-top: 1px solid #222222;
@@ -841,11 +845,11 @@ onMounted(async () => {
 }
 
 .link-inline-row { display: flex; gap: 2rem; }
-.link-inline-row a { color: #aaaaaa; font-size: 0.78rem; text-decoration: none; }
+.link-inline-row a { color: #aaaaaa; font-size: 0.8rem; text-decoration: none; }
 
 .footer-copyright-line {
-  font-size: 0.7rem;
-  color: #555555;
+  font-size: 0.75rem;
+  color: #666666;
   margin-bottom: 3rem;
 }
 

@@ -5,16 +5,16 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <NuxtLink to="/" class="back-link">
-            ‹ Back to Collection
+            ‹ 返回名片工坊首页
           </NuxtLink>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            B U S I N E S S  C A R D
+            名 片 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/" class="header-icon-link">Home</NuxtLink>
+          <NuxtLink to="/" class="header-icon-link">首页</NuxtLink>
         </div>
       </div>
     </header>
@@ -22,15 +22,15 @@
     <main class="gucci-main-container">
       <!-- Search Banner & Filter Bar -->
       <section class="search-hero-banner">
-        <h1 class="search-title">SEARCH THE COLLECTION</h1>
-        <p class="search-sub">Explore executive business cards, specialty paper crafts, and gold foil embossed editions.</p>
+        <h1 class="search-title">搜索高定名片灵感库</h1>
+        <p class="search-sub">探寻 600g 触感棉纸、活字凹版压印、24K 浮雕烫金与极客钛钢名片作品。</p>
 
         <!-- Search Input Bar -->
         <div class="search-bar-wrapper">
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search by keywords (e.g. Letterpress, Gold Foil, Metal Steel)..."
+            placeholder="请输入名片关键词或工艺（如：活字压印、烫金、钛钢、棉纸）…"
             class="search-input"
             @keyup.enter="handleSearch"
           />
@@ -61,12 +61,12 @@
       <section class="products-grid-section">
         <div v-if="loading" class="gucci-loading">
           <div class="loading-spinner"></div>
-          <span>Loading collection...</span>
+          <span>正在搜索名片工坊数据库…</span>
         </div>
 
         <div v-else-if="filteredProducts.length === 0" class="gucci-empty">
-          <p>No business cards found matching your criteria.</p>
-          <button type="button" class="reset-btn" @click="resetFilters">Reset Filters</button>
+          <p>暂无符合条件的名片样式，请输入其他关键字搜索。</p>
+          <button type="button" class="reset-btn" @click="resetFilters">重置搜索条件</button>
         </div>
 
         <div v-else class="gucci-products-grid">
@@ -92,10 +92,10 @@
 
             <div class="product-details">
               <h3 class="product-name">{{ item.name }}</h3>
-              <div class="product-price">${{ item.price || '88.00' }}</div>
-              <p class="product-desc">{{ item.description || 'Specialty paper business card with premium gold foil embossing.' }}</p>
+              <div class="product-price">${{ item.price || '88.00' }} / 盒</div>
+              <p class="product-desc">{{ item.description || '特种纸结合 24K 浮雕烫金与活字凹版压印工艺。' }}</p>
               <div class="card-action-link">
-                <span>View Details</span>
+                <span>查看名片工艺详情</span>
                 <span class="arrow">›</span>
               </div>
             </div>
@@ -106,8 +106,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">B U S I N E S S  C A R D</div>
-      <p>© 2026 Business Card Workshop S.p.A. All rights reserved.</p>
+      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -120,14 +120,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '搜索名片库 · 墨宝与特种纸名片 | BUSINESS CARD',
+  title: '搜索名片库 · 活字压印与特种纸名片 | BUSINESS CARD',
   ogTitle: '搜索名片库 · BUSINESS CARD',
   description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片系列。',
   ogDescription: '搜索并挑选专属的高端商务名片系列。'
 });
 
 useHead({
-  title: '搜索名片库 · 墨宝与特种纸名片 | BUSINESS CARD',
+  title: '搜索名片库 · 活字压印与特种纸名片 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -143,11 +143,11 @@ const searchQuery = ref((route.query.q as string) || '');
 const selectedCategory = ref((route.query.category as string) || 'all');
 
 const categories = [
-  { key: 'all', label: 'All Collections' },
-  { key: 'letterpress', label: 'Executive Letterpress' },
-  { key: 'gold-foil', label: 'Gold Foil Embossed' },
-  { key: 'steel', label: 'Metal Steel Edition' },
-  { key: 'specialty', label: 'Specialty Paper' }
+  { key: 'all', label: '全部分类 (All)' },
+  { key: 'letterpress', label: '凹版活字压印 (Letterpress)' },
+  { key: 'gold-foil', label: '24K 浮雕烫金 (Gold Foil)' },
+  { key: 'steel', label: '钛钢极客精印 (Metal Steel)' },
+  { key: 'specialty', label: '触感特种纸艺 (Specialty Paper)' }
 ];
 
 const getProductImage = (item: any) => {
@@ -204,7 +204,7 @@ onMounted(async () => {
   background: #ffffff;
   color: #000000;
   min-height: 100vh;
-  font-family: Didot, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
 .gucci-header {
@@ -227,15 +227,15 @@ onMounted(async () => {
 .back-link, .header-icon-link {
   color: #000000;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.05em;
 }
 
 .gucci-brand-logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #000000;
   text-decoration: none;
 }
@@ -254,12 +254,12 @@ onMounted(async () => {
 .search-title {
   font-size: 1.8rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   margin: 0 0 0.5rem;
 }
 
 .search-sub {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #666666;
   margin: 0 0 2rem;
 }
@@ -306,10 +306,9 @@ onMounted(async () => {
 .tag-btn {
   background: none;
   border: 1px solid #cccccc;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.75rem;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -390,7 +389,7 @@ onMounted(async () => {
 }
 
 .product-name {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 700;
   margin: 0 0 0.25rem;
 }
@@ -403,16 +402,15 @@ onMounted(async () => {
 }
 
 .product-desc {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #888888;
   margin: 0 0 0.85rem;
   line-height: 1.4;
 }
 
 .card-action-link {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
   text-decoration: underline;
   display: flex;
   align-items: center;
@@ -431,9 +429,8 @@ onMounted(async () => {
   color: #ffffff;
   border: none;
   padding: 0.65rem 1.75rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
   cursor: pointer;
 }
 
@@ -441,14 +438,14 @@ onMounted(async () => {
   border-top: 1px solid #e5e5e5;
   padding: 2.5rem 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #888888;
 }
 
 .footer-logo-small {
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
 }

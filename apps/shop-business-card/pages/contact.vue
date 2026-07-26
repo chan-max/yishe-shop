@@ -5,90 +5,90 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <NuxtLink to="/" class="back-link">
-            ‹ Back to Collection
+            ‹ 返回名片工坊首页
           </NuxtLink>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            B U S I N E S S  C A R D
+            名 片 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">Search</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link">搜索名片</NuxtLink>
         </div>
       </div>
     </header>
 
     <main class="gucci-contact-container">
       <section class="contact-hero">
-        <span class="sub-tag">BUSINESS CARD SERVICES</span>
-        <h1 class="main-heading">BOOK AN APPOINTMENT & CONTACT US</h1>
+        <span class="sub-tag">ATELIER SERVICES · 定制服务</span>
+        <h1 class="main-heading">预约 1对1 资深名片设计师</h1>
         <p class="heading-lead">
-          Connect with our master craftsmen for bespoke letterpress typesetting, 24K gold foil stamping, and specialty paper consultation.
+          提交您的品牌视觉规范或名片文字需求，资深名片大师将为您提供专业的特种纸张搭配、活字排字与 24K 烫金试样指导。
         </p>
       </section>
 
       <div class="contact-grid">
         <!-- VIP Appointment Form -->
         <div class="form-card">
-          <h2 class="card-title">VIP DESIGNER CONSULTATION</h2>
-          <p class="form-sub font-serif">Fill out your details to schedule a 1-on-1 typography session.</p>
+          <h2 class="card-title">预约设计师沟通与打样</h2>
+          <p class="form-sub font-serif">填写您的联系方式与名片需求，我们将于 24 小时内为您出具免费矢量排版方案。</p>
 
           <form @submit.prevent="submitForm" class="appointment-form">
             <div class="field-group">
-              <label>FULL NAME</label>
-              <input v-model="form.name" type="text" placeholder="e.g. Executive Alexander Smith" required />
+              <label>您的姓名 (FULL NAME)</label>
+              <input v-model="form.name" type="text" placeholder="例如：张总 / Alexander" required />
             </div>
 
             <div class="field-group">
-              <label>COMPANY / HOUSE TITLE</label>
-              <input v-model="form.company" type="text" placeholder="e.g. Apex Luxury Holdings" required />
+              <label>公司名称 / 职务 (COMPANY & TITLE)</label>
+              <input v-model="form.company" type="text" placeholder="例如：极客风尚科技 · 创始人兼 CEO" required />
             </div>
 
             <div class="field-group">
-              <label>EMAIL ADDRESS</label>
-              <input v-model="form.email" type="email" placeholder="alexander@apexluxury.com" required />
+              <label>联系电话 / 电子邮箱 (CONTACT)</label>
+              <input v-model="form.email" type="text" placeholder="手机号或邮箱，方便发送矢量试样稿" required />
             </div>
 
             <div class="field-group">
-              <label>PREFERRED CRAFT</label>
+              <label>意向工艺与纸张 (PREFERRED CRAFT)</label>
               <select v-model="form.craft">
-                <option value="letterpress">Executive Letterpress Printing</option>
-                <option value="gold-foil">24K Gold / Silver Mirror Foil Stamping</option>
-                <option value="metal-steel">Metal Steel & Laser Engraving</option>
-                <option value="custom">Full Custom Specialty Paper Portfolio</option>
+                <option value="letterpress">600g 棉纸活字凹版压印 (Letterpress)</option>
+                <option value="gold-foil">24K 浮雕烫金/烫银工艺 (Gold Foil)</option>
+                <option value="metal-steel">钛钢/金属拉丝极客名片 (Metal Steel)</option>
+                <option value="custom">申请全套特种纸纸样盒 (Sample Kit)</option>
               </select>
             </div>
 
             <div class="field-group">
-              <label>SPECIAL DESIGN REQUESTS</label>
-              <textarea v-model="form.notes" rows="4" placeholder="Tell us about your brand vision, paper preferences, or logo vector specifications..."></textarea>
+              <label>详细排版要求或品牌 Logo 说明</label>
+              <textarea v-model="form.notes" rows="4" placeholder="请简述名片文字内容、期望的风格（如极简双色、黑金高定）或 Logo 矢量文件情况…"></textarea>
             </div>
 
             <button type="submit" class="submit-btn-black">
-              SUBMIT APPOINTMENT REQUEST
+              提交预约打样需求
             </button>
           </form>
         </div>
 
-        <!-- Boutique Information -->
+        <!-- Atelier Information -->
         <div class="info-card">
           <div class="info-block">
-            <h3 class="info-title">FLAGSHIP CRAFT BOUTIQUE</h3>
-            <p>Fifth Avenue Atelier, Suite 880<br />New York, NY 10022</p>
-            <p class="contact-line">☎️ +1 (800) 888-CARD</p>
-            <p class="contact-line">✉️ concierge@businesscard.1s.design</p>
+            <h3 class="info-title">名片工坊工匠工坊地址</h3>
+            <p>名片工坊高定艺术中心<br />上海 / 北京 / 深圳 专属打样中心</p>
+            <p class="contact-line">☎️ 服务热线：400-888-CARD</p>
+            <p class="contact-line">✉️ 设计邮箱：concierge@businesscard.1s.design</p>
           </div>
 
           <div class="info-block">
-            <h3 class="info-title">ATELIER HOURS</h3>
-            <p>Monday – Friday: 10:00 AM – 7:00 PM EST</p>
-            <p>Saturday: 11:00 AM – 5:00 PM EST (By Appointment Only)</p>
+            <h3 class="info-title">工作与打样时间</h3>
+            <p>周一至周五: 09:00 – 19:00</p>
+            <p>周六至周日: 10:00 – 18:00 (设计师 1对1 专场预约)</p>
           </div>
 
           <div class="info-block">
-            <h3 class="info-title">EXPRESS PROOFING GUARANTEE</h3>
-            <p>All digital vector proofs are provided within 24 hours of inquiry submission by our lead typography master.</p>
+            <h3 class="info-title">24小时矢量初稿承诺</h3>
+            <p>所有提交的设计打样需求，名片工坊资深设计师均会在 24 小时内免费出具高清 PDF / SVG 矢量初稿供您审核确认。</p>
           </div>
         </div>
       </div>
@@ -96,8 +96,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">B U S I N E S S  C A R D</div>
-      <p>© 2026 Business Card Workshop S.p.A. All rights reserved.</p>
+      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -132,7 +132,7 @@ const form = ref({
 });
 
 const submitForm = () => {
-  alert(`Thank you, ${form.value.name}! Your VIP consultation request for ${form.value.company} has been received.`);
+  alert(`感谢您，${form.value.name}！您的名片打样与设计预约（${form.value.company}）已成功提交。资深设计师将在 24 小时内联系您并发送矢量初稿。`);
   form.value = { name: '', company: '', email: '', craft: 'letterpress', notes: '' };
 };
 </script>
@@ -142,7 +142,7 @@ const submitForm = () => {
   background: #ffffff;
   color: #000000;
   min-height: 100vh;
-  font-family: Didot, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
 .gucci-header {
@@ -165,15 +165,15 @@ const submitForm = () => {
 .back-link, .header-icon-link {
   color: #000000;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.05em;
 }
 
 .gucci-brand-logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #000000;
   text-decoration: none;
 }
@@ -201,7 +201,7 @@ const submitForm = () => {
 .main-heading {
   font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   margin: 0 0 1rem;
 }
 
@@ -234,7 +234,6 @@ const submitForm = () => {
 .card-title {
   font-size: 1.1rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
   margin: 0 0 0.35rem;
 }
 
@@ -257,9 +256,8 @@ const submitForm = () => {
 }
 
 .field-group label {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
   color: #000000;
 }
 
@@ -267,7 +265,7 @@ const submitForm = () => {
   border: none;
   border-bottom: 1px solid #cccccc;
   padding: 0.65rem 0;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   outline: none;
   font-family: inherit;
   background: none;
@@ -282,9 +280,9 @@ const submitForm = () => {
   color: #ffffff;
   border: none;
   padding: 1.1rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   cursor: pointer;
   margin-top: 1rem;
   transition: background 0.2s ease;
@@ -304,14 +302,14 @@ const submitForm = () => {
 }
 
 .info-title {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   margin: 0 0 0.75rem;
 }
 
 .info-block p {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #555555;
   line-height: 1.6;
   margin: 0 0 0.35rem;
@@ -326,14 +324,14 @@ const submitForm = () => {
   border-top: 1px solid #e5e5e5;
   padding: 2.5rem 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #888888;
 }
 
 .footer-logo-small {
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
 }

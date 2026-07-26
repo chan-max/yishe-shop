@@ -5,16 +5,16 @@
       <div class="gucci-header-inner">
         <div class="header-left">
           <button type="button" class="back-link-btn" @click="goBack">
-            ‹ Back to Collection
+            ‹ 返回名片工坊灵感库
           </button>
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            B U S I N E S S  C A R D
+            名 片 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">Search</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link">搜索名片</NuxtLink>
         </div>
       </div>
     </header>
@@ -22,13 +22,13 @@
     <main class="gucci-detail-container">
       <div v-if="loading" class="detail-loading">
         <div class="loading-spinner"></div>
-        <span>Fetching business card details...</span>
+        <span>正在读取名片高定工艺参数…</span>
       </div>
 
       <div v-else-if="!product" class="detail-not-found">
-        <h2>Card Edition Not Found</h2>
-        <p>The requested business card collection is unavailable.</p>
-        <NuxtLink to="/search" class="gucci-btn-black">View Collection</NuxtLink>
+        <h2>名片样式不存在或已下架</h2>
+        <p>抱歉，您查看的名片定制样式暂不可用。</p>
+        <NuxtLink to="/search" class="gucci-btn-black">查看全系列名片库</NuxtLink>
       </div>
 
       <div v-else class="detail-content-grid">
@@ -43,7 +43,7 @@
             />
             <div v-else class="main-img-placeholder">
               <span class="placeholder-emoji">📇</span>
-              <span class="placeholder-text">LUXURY BUSINESS CARD</span>
+              <span class="placeholder-text">HIGH-END BUSINESS CARD</span>
             </div>
           </div>
 
@@ -62,23 +62,23 @@
         <!-- Product Specs & Purchase Options -->
         <div class="specs-section">
           <div class="specs-header">
-            <span class="collection-tag">EXECUTIVE COLLECTION</span>
+            <span class="collection-tag">EXECUTIVE COLLECTION · 商务高定</span>
             <h1 class="product-title">{{ product.name }}</h1>
             <div class="product-price-line">
               <span class="price-val">${{ product.price || '88.00' }}</span>
-              <span class="tax-note">Taxes included</span>
+              <span class="tax-note">含基础打样与设计微调费</span>
             </div>
           </div>
 
           <div class="divider"></div>
 
           <p class="product-full-desc">
-            {{ product.description || 'Precision letterpress business cards crafted with 600gsm imported specialty cotton paper and hand-applied hot foil stamping.' }}
+            {{ product.description || '精选 600g 进口纯棉触感纸，结合传统活字压印与 24K 浮雕烫金工艺，触感沉稳大气，彰显商务精英气度。' }}
           </p>
 
           <!-- Craftsmanship Options -->
           <div class="craft-option-group">
-            <label class="option-label">PAPER STOCK & WEIGHT</label>
+            <label class="option-label">选择纸张材质与克重 (PAPER STOCK)</label>
             <div class="option-chips">
               <button
                 v-for="paper in paperOptions"
@@ -94,7 +94,7 @@
           </div>
 
           <div class="craft-option-group">
-            <label class="option-label">FOIL STAMPING COLOR</label>
+            <label class="option-label">选择烫金/烫银色彩 (FOIL COLOR)</label>
             <div class="option-chips">
               <button
                 v-for="foil in foilOptions"
@@ -110,10 +110,10 @@
           </div>
 
           <div class="craft-option-group">
-            <label class="option-label">QUANTITY BOX (100 CARDS / BOX)</label>
+            <label class="option-label">定制数量 (100张/盒)</label>
             <div class="quantity-selector">
               <button type="button" @click="qty > 1 && qty--">-</button>
-              <span>{{ qty }} Box ({{ qty * 100 }} Cards)</span>
+              <span>{{ qty }} 盒 (共 {{ qty * 100 }} 张)</span>
               <button type="button" @click="qty++">+</button>
             </div>
           </div>
@@ -121,10 +121,10 @@
           <!-- Purchase Action Button -->
           <div class="action-btn-row">
             <button type="button" class="btn-checkout-black" @click="handleOrder">
-              ORDER NOW - ${{ ((product.price || 88) * qty).toFixed(2) }}
+              立即定制名片 - ${{ ((product.price || 88) * qty).toFixed(2) }}
             </button>
             <button type="button" class="btn-inquire-border" @click="inquireDesigner">
-              1-on-1 Designer Consultation
+              预约 1对1 名片设计师
             </button>
           </div>
 
@@ -132,11 +132,11 @@
           <div class="guarantee-row">
             <div class="g-item">
               <span class="g-icon">✈️</span>
-              <span>Express Insured Shipping</span>
+              <span>顺丰特快 免费送达</span>
             </div>
             <div class="g-item">
               <span class="g-icon">📐</span>
-              <span>Free Vector Proofing</span>
+              <span>24小时 免费矢量打样</span>
             </div>
           </div>
         </div>
@@ -145,8 +145,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">B U S I N E S S  C A R D</div>
-      <p>© 2026 Business Card Workshop S.p.A. All rights reserved.</p>
+      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -167,18 +167,18 @@ const product = ref<any>(null);
 const currentImage = ref<string>('');
 const qty = ref(1);
 
-const paperOptions = ['600gsm Cotton Paper', '500gsm Black Matte', '400gsm Kraft Velvet'];
-const selectedPaper = ref('600gsm Cotton Paper');
+const paperOptions = ['600g 进口纯棉纸', '500g 哑光黑卡', '400g 绒面触感纸'];
+const selectedPaper = ref('600g 进口纯棉纸');
 
-const foilOptions = ['24K Matte Gold Foil', 'Silver Mirror Foil', 'Deep Emerald Foil', 'Black Embossed'];
-const selectedFoil = ref('24K Matte Gold Foil');
+const foilOptions = ['24K 哑光金箔', '亮银镜面箔', '璀璨黑金', '无色凹压字'];
+const selectedFoil = ref('24K 哑光金箔');
 
 const goBack = () => {
   router.back();
 };
 
 const handleOrder = () => {
-  alert(`Thank you for ordering ${qty.value} box of ${product.value?.name}! Our master craftsman will prepare your vector proof.`);
+  alert(`感谢定制 ${product.value?.name}！共 ${qty.value} 盒（${selectedPaper.value} / ${selectedFoil.value}）。资深名片大师将在 24 小时内联系您并提供矢量排版稿。`);
 };
 
 const inquireDesigner = () => {
@@ -194,7 +194,6 @@ onMounted(async () => {
       product.value = res;
       currentImage.value = (res.images && res.images[0]) || getPublishedProductImage(res);
 
-      // Dynamically set page SEO meta based on product details!
       useSeoMeta({
         title: `${res.name} - 高端商务名片定制 | BUSINESS CARD`,
         ogTitle: `${res.name} - BUSINESS CARD`,
@@ -215,7 +214,7 @@ onMounted(async () => {
   background: #ffffff;
   color: #000000;
   min-height: 100vh;
-  font-family: Didot, "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
 .gucci-header {
@@ -239,17 +238,16 @@ onMounted(async () => {
   background: none;
   border: none;
   color: #000000;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
   cursor: pointer;
   text-decoration: none;
 }
 
 .gucci-brand-logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #000000;
   text-decoration: none;
 }
@@ -330,16 +328,16 @@ onMounted(async () => {
 }
 
 .collection-tag {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: #888888;
   display: block;
   margin-bottom: 0.35rem;
 }
 
 .product-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   margin: 0 0 1rem;
@@ -358,7 +356,7 @@ onMounted(async () => {
 }
 
 .tax-note {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #777777;
 }
 
@@ -369,7 +367,7 @@ onMounted(async () => {
 }
 
 .product-full-desc {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #444444;
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -380,9 +378,9 @@ onMounted(async () => {
 }
 
 .option-label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   color: #000000;
   display: block;
   margin-bottom: 0.6rem;
@@ -398,7 +396,7 @@ onMounted(async () => {
   background: #ffffff;
   border: 1px solid #cccccc;
   padding: 0.55rem 1rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -426,7 +424,7 @@ onMounted(async () => {
 
 .quantity-selector span {
   padding: 0.5rem 1rem;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
@@ -443,9 +441,9 @@ onMounted(async () => {
   color: #ffffff;
   border: none;
   padding: 1.1rem;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -459,9 +457,8 @@ onMounted(async () => {
   color: #000000;
   border: 1px solid #000000;
   padding: 0.9rem;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -473,7 +470,7 @@ onMounted(async () => {
 .guarantee-row {
   display: flex;
   gap: 2rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #666666;
   border-top: 1px solid #e5e5e5;
   padding-top: 1.5rem;
@@ -496,9 +493,8 @@ onMounted(async () => {
   color: #ffffff;
   padding: 0.75rem 2rem;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
   display: inline-block;
   margin-top: 1rem;
 }
@@ -507,14 +503,14 @@ onMounted(async () => {
   border-top: 1px solid #e5e5e5;
   padding: 2.5rem 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: #888888;
 }
 
 .footer-logo-small {
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
 }
