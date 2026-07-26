@@ -4,42 +4,42 @@
     <header class="gucci-header">
       <div class="gucci-header-inner">
         <div class="header-left">
-          <button type="button" class="back-link-btn" @click="goBack">
+          <button type="button" class="back-link-btn underline-slide" @click="goBack">
             ‹ 返回全量名片设计库
           </button>
         </div>
         <div class="header-center">
-          <NuxtLink to="/" class="gucci-brand-logo">
+          <NuxtLink to="/" class="gucci-brand-logo logo-hover-effect">
             名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/search" class="header-icon-link">搜索设计灵感</NuxtLink>
+          <NuxtLink to="/search" class="header-icon-link underline-slide">搜索设计灵感</NuxtLink>
         </div>
       </div>
     </header>
 
     <main class="gucci-detail-container">
       <div v-if="loading" class="detail-loading">
-        <div class="loading-spinner"></div>
+        <div class="spinner-ring"></div>
         <span>正在读取名片设计方案与排版参数…</span>
       </div>
 
       <div v-else-if="!product" class="detail-not-found">
         <h2>名片设计方案不存在或已更新</h2>
         <p>抱歉，您查看的名片设计样稿暂不可用。</p>
-        <NuxtLink to="/search" class="gucci-btn-black">查看全量名片设计库</NuxtLink>
+        <NuxtLink to="/search" class="gucci-btn-black ripple-btn">查看全量名片设计库</NuxtLink>
       </div>
 
       <div v-else class="detail-content-grid">
         <!-- Gallery Section -->
         <div class="gallery-section">
-          <div class="main-image-box">
+          <div class="main-image-box zoom-box-wrapper">
             <img
               v-if="currentImage"
               :src="currentImage"
               :alt="product.name"
-              class="main-img"
+              class="main-img zoom-on-hover"
             />
             <div v-else class="main-img-placeholder">
               <svg class="placeholder-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -56,7 +56,7 @@
               v-for="(img, idx) in product.images"
               :key="idx"
               :src="img"
-              class="thumb-item"
+              class="thumb-item interactive-thumb"
               :class="{ active: currentImage === img }"
               @click="currentImage = img"
             />
@@ -66,10 +66,10 @@
         <!-- Product Specs & Purchase Options -->
         <div class="specs-section">
           <div class="specs-header">
-            <span class="collection-tag">DESIGN STYLE · 热门名片设计作品</span>
+            <span class="collection-tag badge-pulse">DESIGN STYLE · 热门名片设计作品</span>
             <h1 class="product-title">{{ product.name }}</h1>
             <div class="product-price-line">
-              <span class="price-val">设计同款指导价 ${{ product.price || '88.00' }}</span>
+              <span class="price-val">设计服务：0元免费设计 (印制参考 ${{ product.price || '88.00' }})</span>
               <span class="tax-note">包含设计师 1对1 文字与 Logo 适配服务</span>
             </div>
           </div>
@@ -77,7 +77,7 @@
           <div class="divider"></div>
 
           <p class="product-full-desc">
-            {{ product.description || '支持一键设计同款。挑选此设计风格，资深设计师将为您替换姓名、职务、公司 Logo 与联系信息，并出具高清 24 小时矢量打印方案。' }}
+            {{ product.description || '支持一键免费设计同款。挑选此设计风格，资深设计师将为您免费替换姓名、职务、公司 Logo 与联系信息，并出具高清 24 小时矢量打印方案。' }}
           </p>
 
           <!-- Craftsmanship Options -->
@@ -88,7 +88,7 @@
                 v-for="paper in paperOptions"
                 :key="paper"
                 type="button"
-                class="chip-btn"
+                class="chip-btn ripple-btn"
                 :class="{ selected: selectedPaper === paper }"
                 @click="selectedPaper = paper"
               >
@@ -104,7 +104,7 @@
                 v-for="foil in foilOptions"
                 :key="foil"
                 type="button"
-                class="chip-btn"
+                class="chip-btn ripple-btn"
                 :class="{ selected: selectedFoil === foil }"
                 @click="selectedFoil = foil"
               >
@@ -116,36 +116,36 @@
           <div class="craft-option-group">
             <label class="option-label">定制印制盒数 (100张/盒)</label>
             <div class="quantity-selector">
-              <button type="button" @click="qty > 1 && qty--">-</button>
-              <span>{{ qty }} 盒 (共 {{ qty * 100 }} 张)</span>
-              <button type="button" @click="qty++">+</button>
+              <button type="button" class="qty-btn" @click="qty > 1 && qty--">-</button>
+              <span class="qty-num">{{ qty }} 盒 (共 {{ qty * 100 }} 张)</span>
+              <button type="button" class="qty-btn" @click="qty++">+</button>
             </div>
           </div>
 
-          <!-- Action Button Focus on Design Same Style -->
+          <!-- Action Button Focus on Free Design Same Style -->
           <div class="action-btn-row">
-            <button type="button" class="btn-checkout-black" @click="handleOrder">
-              立即设计同款 - 指导价 ${{ ((product.price || 88) * qty).toFixed(2) }}
+            <button type="button" class="btn-checkout-black ripple-btn" @click="handleOrder">
+              ✨ 立即申请 0 元免费设计同款
             </button>
-            <button type="button" class="btn-inquire-border" @click="inquireDesigner">
-              预约 1对1 灵感沟通与定制
+            <button type="button" class="btn-inquire-border ripple-btn" @click="inquireDesigner">
+              预约 1对1 灵感沟通与排版
             </button>
           </div>
 
-          <!-- Guarantee Vector SVG Icons (NO Emojis) -->
+          <!-- Guarantee Vector SVG Icons -->
           <div class="guarantee-row">
-            <div class="g-item">
+            <div class="g-item hover-lift-sm">
               <svg class="g-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M12 19l7-73-7-7-7 7 7 7zm0 0v-8"></path>
               </svg>
-              <span>资深设计师 1对1 排版</span>
+              <span>资深设计师 1对1 免费排版</span>
             </div>
-            <div class="g-item">
+            <div class="g-item hover-lift-sm">
               <svg class="g-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <rect x="3" y="3" width="18" height="18" rx="0"></rect>
                 <path d="M3 9h18M9 21V9"></path>
               </svg>
-              <span>24小时 免费矢量试样</span>
+              <span>24小时 免费矢量试样稿</span>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ const goBack = () => {
 };
 
 const handleOrder = () => {
-  alert(`为您开启 ${product.value?.name} 的【设计同款】排版流程！资深设计师将在 24 小时内为您出具专属姓名、职务与 Logo 的矢量试样稿。`);
+  alert(`为您开启 ${product.value?.name} 的【0元免费设计同款】排版流程！资深设计师将在 24 小时内为您免费出具专属姓名、职务与 Logo 的矢量试样稿。`);
 };
 
 const inquireDesigner = () => {
@@ -204,10 +204,10 @@ onMounted(async () => {
       currentImage.value = (res.images && res.images[0]) || getPublishedProductImage(res);
 
       useSeoMeta({
-        title: `${res.name} - 设计同款 | 名片设计工坊 | BUSINESS CARD`,
-        ogTitle: `${res.name} - 设计同款 | BUSINESS CARD`,
-        description: res.description || '挑选名片设计风格，一键设计同款。',
-        ogDescription: res.description || '挑选名片设计风格，一键设计同款。'
+        title: `${res.name} - 0元免费设计同款 | 名片设计工坊 | BUSINESS CARD`,
+        ogTitle: `${res.name} - 免费设计同款 | BUSINESS CARD`,
+        description: res.description || '挑选名片设计风格，一键免费设计同款。',
+        ogDescription: res.description || '挑选名片设计风格，一键免费设计同款。'
       });
     }
   } catch (e) {
@@ -228,6 +228,59 @@ onMounted(async () => {
 
 input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-border, .gucci-btn-black {
   border-radius: 0 !important;
+}
+
+/* Micro-Interactions */
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ripple-btn:active {
+  transform: scale(0.96) !important;
+}
+
+.zoom-on-hover {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.zoom-box-wrapper:hover .zoom-on-hover {
+  transform: scale(1.06);
+}
+
+.interactive-thumb {
+  transition: all 0.25s ease;
+}
+
+.interactive-thumb:hover {
+  transform: scale(1.08);
+  border-color: #d4a337 !important;
+}
+
+.hover-lift-sm:hover {
+  transform: translateY(-2px);
+  color: #d4a337;
+}
+
+.underline-slide {
+  position: relative;
+  text-decoration: none !important;
+}
+
+.underline-slide::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #000000;
+  transition: width 0.3s ease;
+}
+
+.underline-slide:hover::after {
+  width: 100%;
 }
 
 .gucci-header {
@@ -430,16 +483,22 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
   border-radius: 0 !important;
 }
 
-.quantity-selector button {
+.qty-btn {
   background: none;
   border: none;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
+  transition: background 0.2s ease;
   border-radius: 0 !important;
 }
 
-.quantity-selector span {
+.qty-btn:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.qty-num {
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
   font-weight: 700;
@@ -499,6 +558,7 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: transform 0.25s ease;
 }
 
 .g-svg {
@@ -511,6 +571,23 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
   text-align: center;
   padding: 6rem 1rem;
   color: #666666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner-ring {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #000000;
+  border-radius: 50% !important;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .gucci-btn-black {

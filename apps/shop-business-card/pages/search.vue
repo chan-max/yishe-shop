@@ -4,17 +4,17 @@
     <header class="gucci-header">
       <div class="gucci-header-inner">
         <div class="header-left">
-          <NuxtLink to="/" class="back-link">
+          <NuxtLink to="/" class="back-link underline-slide">
             ‹ 返回工坊首页
           </NuxtLink>
         </div>
         <div class="header-center">
-          <NuxtLink to="/" class="gucci-brand-logo">
+          <NuxtLink to="/" class="gucci-brand-logo logo-hover-effect">
             名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink to="/" class="header-icon-link">首页</NuxtLink>
+          <NuxtLink to="/" class="header-icon-link underline-slide">首页</NuxtLink>
         </div>
       </div>
     </header>
@@ -22,7 +22,7 @@
     <main class="gucci-main-container">
       <!-- Search Banner & Filter Bar -->
       <section class="search-hero-banner">
-        <h1 class="search-title">全量名片设计库 · 点击设计同款</h1>
+        <h1 class="search-title">全量名片设计库 · 点击免费设计同款</h1>
         <p class="search-sub">探寻 600g 触感棉纸、活字凹版压印、24K 浮雕烫金与极客钛钢名片设计灵感。</p>
 
         <!-- Search Input Bar -->
@@ -31,10 +31,10 @@
             v-model="searchQuery"
             type="text"
             placeholder="搜索设计风格（如：极简黑金、活字压印、钛钢、莫兰迪色系）…"
-            class="search-input"
+            class="search-input sharp-input"
             @keyup.enter="handleSearch"
           />
-          <button type="button" class="search-btn" @click="handleSearch">
+          <button type="button" class="search-btn icon-hover-bounce" @click="handleSearch">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -48,7 +48,7 @@
             v-for="cat in categories"
             :key="cat.key"
             type="button"
-            class="tag-btn"
+            class="tag-btn ripple-btn"
             :class="{ active: selectedCategory === cat.key }"
             @click="selectCategory(cat.key)"
           >
@@ -60,20 +60,20 @@
       <!-- Products Grid Section -->
       <section class="products-grid-section">
         <div v-if="loading" class="gucci-loading">
-          <div class="loading-spinner"></div>
+          <div class="spinner-ring"></div>
           <span>正在检索名片设计灵感库…</span>
         </div>
 
         <div v-else-if="filteredProducts.length === 0" class="gucci-empty">
-          <p>暂无符合条件的名片设计样式，请输入其他关键字搜索，或直接预约设计师定制。</p>
-          <button type="button" class="reset-btn" @click="resetFilters">重置搜索条件</button>
+          <p>暂无符合条件的名片设计样式，请输入其他关键字搜索，或直接预约设计师免费定制。</p>
+          <button type="button" class="reset-btn ripple-btn" @click="resetFilters">重置搜索条件</button>
         </div>
 
         <div v-else class="gucci-products-grid">
           <div
             v-for="item in filteredProducts"
             :key="item.id"
-            class="gucci-product-card"
+            class="gucci-product-card interactive-product-card"
             @click="navigateToProduct(item)"
           >
             <div class="product-photo-wrapper">
@@ -81,25 +81,25 @@
                 v-if="getProductImage(item)"
                 :src="getProductImage(item)"
                 :alt="item.name"
-                class="product-photo"
+                class="product-photo zoom-on-hover"
               />
               <div v-else class="product-fallback-photo">
-                <svg class="fallback-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <svg class="fallback-svg icon-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <rect x="3" y="4" width="18" height="16" rx="0"></rect>
                   <line x1="7" y1="8" x2="17" y2="8"></line>
                   <line x1="7" y1="12" x2="13" y2="12"></line>
                 </svg>
                 <span class="fallback-tag">DESIGN PORTFOLIO</span>
               </div>
-              <span class="luxury-badge">可设计同款</span>
+              <span class="luxury-badge">可免费设计同款</span>
             </div>
 
             <div class="product-details">
               <h3 class="product-name">{{ item.name }}</h3>
-              <div class="product-price">设计同款指导价 ${{ item.price || '88.00' }}</div>
+              <div class="product-price">设计服务：0元免费设计 (同款印制参考 ${{ item.price || '88.00' }})</div>
               <p class="product-desc">{{ item.description || '特种纸结合 24K 浮雕烫金与活字凹版压印设计。' }}</p>
-              <div class="card-action-link">
-                <span>设计同款风格</span>
+              <div class="card-action-link underline-slide">
+                <span>免费设计同款风格</span>
                 <span class="arrow">›</span>
               </div>
             </div>
@@ -124,14 +124,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '全量名片设计库 · 设计同款 | 名片设计工坊 | BUSINESS CARD',
+  title: '全量名片设计库 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
   ogTitle: '全量名片设计库 · BUSINESS CARD',
-  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片设计，支持一键设计同款。',
-  ogDescription: '搜索并挑选专属的高端商务名片设计，支持一键设计同款。'
+  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片设计，支持一键免费设计同款。',
+  ogDescription: '搜索并挑选专属的高端商务名片设计，支持一键免费设计同款。'
 });
 
 useHead({
-  title: '全量名片设计库 · 设计同款 | 名片设计工坊 | BUSINESS CARD',
+  title: '全量名片设计库 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -213,6 +213,67 @@ onMounted(async () => {
 
 input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   border-radius: 0 !important;
+}
+
+/* Micro-Interactions */
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ripple-btn:active {
+  transform: scale(0.96) !important;
+}
+
+.zoom-on-hover {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.interactive-product-card:hover .zoom-on-hover {
+  transform: scale(1.08);
+}
+
+.interactive-product-card {
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.interactive-product-card:hover {
+  transform: translateY(-6px);
+}
+
+.icon-hover-bounce:hover svg {
+  transform: scale(1.15);
+  stroke: #d4a337;
+}
+
+.underline-slide {
+  position: relative;
+  text-decoration: none !important;
+}
+
+.underline-slide::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #000000;
+  transition: width 0.3s ease;
+}
+
+.underline-slide:hover::after {
+  width: 100%;
+}
+
+.sharp-input {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sharp-input:focus {
+  border-bottom-color: #d4a337 !important;
+  box-shadow: 0 2px 8px rgba(212, 163, 55, 0.2);
 }
 
 .gucci-header {
@@ -360,11 +421,6 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.gucci-product-card:hover .product-photo {
-  transform: scale(1.05);
 }
 
 .product-fallback-photo {
@@ -422,8 +478,7 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
 .card-action-link {
   font-size: 0.78rem;
   font-weight: 800;
-  text-decoration: underline;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.3rem;
 }
@@ -432,6 +487,23 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   text-align: center;
   padding: 4rem 1rem;
   color: #666666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner-ring {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #000000;
+  border-radius: 50% !important;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .reset-btn {
