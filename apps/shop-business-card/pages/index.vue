@@ -12,7 +12,7 @@
 
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            名 片 设计 工 坊 · B U S I N E S S  C A R D  D E S I G N
+            名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
 
@@ -50,51 +50,61 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Full-Bleed High-Fashion Hero Campaign Showcase -->
+      <!-- 1. Dynamic Hero Campaign Showcase (Displays Real Product Designs, NO simulated cards) -->
       <section class="gucci-hero-section">
         <div class="hero-bg-light-effects"></div>
 
         <div class="hero-center-stage">
           <div class="hero-headline-group">
-            <span class="hero-top-badge">DESIGN ATELIER · 汇聚全网名片设计灵感库</span>
+            <span class="hero-top-badge">DESIGN GALLERY · 全量真实名片设计库</span>
             <h1 class="hero-main-title">全风格名片设计 · 一键设计同款</h1>
-            <p class="hero-sub-text">极简黑金 · 活字凹版 · 24K 浮雕烫金 · 钛钢精印 — 喜欢哪款，即刻为你设计同款</p>
+            <p class="hero-sub-text">极简黑金 · 活字凹版 · 24K 浮雕烫金 · 钛钢精印 — 喜欢哪款，即刻为您设计同款</p>
           </div>
 
-          <!-- Dual 3D Floating Realistic Business Cards Showcase -->
-          <div class="hero-cards-stage">
-            <div class="hero-card-item card-ebony-gold">
-              <div class="card-foil-texture"></div>
-              <div class="card-inner-content">
-                <div class="card-header-row">
-                  <span class="card-brand-initials">BC</span>
-                  <span class="card-serial">DESIGN NO. 008824</span>
+          <!-- Dynamic Real Product Showcase Stage (NO simulated cards) -->
+          <div class="hero-dynamic-stage">
+            <div v-if="heroProducts.length === 0" class="hero-placeholder-grid">
+              <div class="hero-photo-card card-1">
+                <div class="card-editorial-tag">FEATURED DESIGN</div>
+                <div class="card-info-overlay">
+                  <span class="c-title">24K 浮雕热压金名片设计</span>
+                  <span class="c-sub">可一键设计同款</span>
                 </div>
-                <div class="card-center-body">
-                  <span class="card-person-name">ALEXANDER SMITH</span>
-                  <span class="card-person-title">DESIGNED BY ATELIER · 资深设计师作品</span>
-                </div>
-                <div class="card-footer-row">
-                  <span>DESIGN ATELIER</span>
-                  <span>可一键设计同款</span>
+              </div>
+              <div class="hero-photo-card card-2">
+                <div class="card-editorial-tag">NEW COLLECTION</div>
+                <div class="card-info-overlay">
+                  <span class="c-title">600g 活字凹版棉纸设计</span>
+                  <span class="c-sub">可一键设计同款</span>
                 </div>
               </div>
             </div>
 
-            <div class="hero-card-item card-crimson-silver">
-              <div class="card-foil-texture silver"></div>
-              <div class="card-inner-content">
-                <div class="card-header-row">
-                  <span class="card-brand-initials silver-text">1S</span>
-                  <span class="card-serial">SAME STYLE</span>
+            <div v-else class="hero-products-showcase">
+              <div
+                v-for="item in heroProducts"
+                :key="item.id"
+                class="hero-real-product-card"
+                @click="navigateToProduct(item)"
+              >
+                <div class="hero-product-img-box">
+                  <img
+                    v-if="getProductImage(item)"
+                    :src="getProductImage(item)"
+                    :alt="item.name"
+                    class="hero-product-img"
+                  />
+                  <div v-else class="hero-img-fallback">
+                    <svg class="fallback-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="3" y="4" width="18" height="16" rx="0"></rect>
+                      <line x1="7" y1="8" x2="17" y2="8"></line>
+                      <line x1="7" y1="12" x2="13" y2="12"></line>
+                    </svg>
+                  </div>
                 </div>
-                <div class="card-center-body">
-                  <span class="card-person-name">VICTORIA CHEN</span>
-                  <span class="card-person-title">CHIEF CREATIVE OFFICER · 品牌高定</span>
-                </div>
-                <div class="card-footer-row">
-                  <span>600GSM COTTON</span>
-                  <span>支持专属排字</span>
+                <div class="hero-product-meta">
+                  <span class="h-name">{{ item.name }}</span>
+                  <span class="h-btn">设计同款 ›</span>
                 </div>
               </div>
             </div>
@@ -140,7 +150,13 @@
               />
               <div v-else class="photo-product-mockup" :class="getMockupBgClass(idx)">
                 <div class="card-mockup-inner">
-                  <div class="card-shadow-3d">{{ getCardEmoji(idx) }}</div>
+                  <div class="card-icon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="3" y="4" width="18" height="16" rx="0"></rect>
+                      <line x1="7" y1="8" x2="17" y2="8"></line>
+                      <line x1="7" y1="12" x2="13" y2="12"></line>
+                    </svg>
+                  </div>
                   <span class="mockup-label">{{ getCardLabel(idx) }}</span>
                   <span class="mockup-sublabel">{{ getCardSublabel(idx) }}</span>
                 </div>
@@ -163,7 +179,7 @@
         </div>
       </section>
 
-      <!-- 3. Business Card Atelier Services Section -->
+      <!-- 3. Business Card Atelier Services Section (SVG Vector Icons, NO Emojis) -->
       <section class="gucci-services-section">
         <span class="section-badge">DESIGN SERVICES</span>
         <h2 class="services-main-title">名片工坊 专属设计服务</h2>
@@ -173,7 +189,12 @@
           <div class="service-card" @click="goTo('/contact')">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-boutique">
-                <div class="photo-overlay-icon">✍️</div>
+                <div class="photo-svg-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path d="M12 19l7-73-7-7-7 7 7 7zm0 0v-8"></path>
+                    <path d="M18 13l-6 6-6-6"></path>
+                  </svg>
+                </div>
                 <div class="service-hover-shine"></div>
               </div>
             </div>
@@ -188,7 +209,12 @@
           <div class="service-card" @click="goTo('/search')">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-types">
-                <div class="photo-overlay-icon">🎨</div>
+                <div class="photo-svg-icon gold-svg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <rect x="3" y="3" width="18" height="18" rx="0"></rect>
+                    <path d="M3 9h18M9 21V9"></path>
+                  </svg>
+                </div>
                 <div class="service-hover-shine"></div>
               </div>
             </div>
@@ -203,7 +229,11 @@
           <div class="service-card" @click="goTo('/contact')">
             <div class="service-photo-wrapper">
               <div class="service-photo photo-collect">
-                <div class="photo-overlay-icon">⚡</div>
+                <div class="photo-svg-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
                 <div class="service-hover-shine"></div>
               </div>
             </div>
@@ -328,6 +358,13 @@ const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
 
+const heroProducts = computed(() => {
+  if (products.value.length > 0) {
+    return products.value.slice(0, 3);
+  }
+  return [];
+});
+
 const fallbackPreset = [
   { id: 'pres-1', name: '凹版活字压印设计 (Executive Letterpress)', key: 'letterpress' },
   { id: 'pres-2', name: '24K 浮雕烫金设计 (Gold Foil Embossed)', key: 'gold-foil' },
@@ -369,11 +406,6 @@ const getMockupBgClass = (idx: number) => {
   return mockups[idx % mockups.length];
 };
 
-const getCardEmoji = (idx: number) => {
-  const emojis = ['📇', '✨', '💳', '📜'];
-  return emojis[idx % emojis.length];
-};
-
 const getCardLabel = (idx: number) => {
   const labels = ['LETTERPRESS', 'GOLD FOIL', 'METAL STEEL', 'SPECIALTY PAPER'];
   return labels[idx % labels.length];
@@ -408,7 +440,7 @@ const submitEmail = () => {
 onMounted(async () => {
   try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 4 });
+    const res = await fetchPublishedProducts({ page: 1, limit: 8 });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -423,7 +455,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI High-Fashion Luxury Design System - Pure Design & Creative Atelier Focus */
+/* GUCCI High-Fashion Luxury Design System - Zero Border-Radius Inputs & SVG Vector Icons */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -432,6 +464,11 @@ onMounted(async () => {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Didot, "Times New Roman", serif;
   min-height: 100vh;
   width: 100%;
+}
+
+/* ALL INPUTS, BUTTONS, SELECTS NO BORDER RADIUS */
+input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn {
+  border-radius: 0 !important;
 }
 
 .gucci-header {
@@ -506,6 +543,7 @@ onMounted(async () => {
   margin-left: 0.3rem;
 }
 
+/* 1. Dynamic Hero Section (Displays Real Product Designs, NO simulated cards) */
 .gucci-hero-section {
   position: relative;
   width: 100%;
@@ -567,121 +605,144 @@ onMounted(async () => {
   letter-spacing: 0.05em;
 }
 
-.hero-cards-stage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
+/* Dynamic Real Product Showcase Stage (NO simulated cards) */
+.hero-dynamic-stage {
+  width: 100%;
   margin-bottom: 3.5rem;
-  perspective: 1200px;
 }
 
-@media (max-width: 768px) {
-  .hero-cards-stage {
-    flex-direction: column;
-    gap: 2rem;
-  }
+.hero-placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 840px;
+  margin: 0 auto;
 }
 
-.hero-card-item {
-  width: 320px;
-  height: 190px;
-  border-radius: 8px;
-  padding: 1.35rem;
+@media (max-width: 640px) {
+  .hero-placeholder-grid { grid-template-columns: 1fr; }
+}
+
+.hero-photo-card {
+  height: 240px;
+  border: 1px solid rgba(212, 163, 55, 0.5);
   position: relative;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 1.5rem;
+  transition: transform 0.4s ease;
 }
 
-.card-ebony-gold {
-  background: linear-gradient(135deg, #181818 0%, #0a0a0a 100%);
-  border: 1.5px solid rgba(212, 163, 55, 0.75);
-  transform: rotateY(-14deg) rotateX(8deg);
+.hero-photo-card:hover {
+  transform: translateY(-6px);
+  border-color: #d4a337;
 }
 
-.card-crimson-silver {
-  background: linear-gradient(135deg, #4a1521 0%, #2b0b13 100%);
-  border: 1.5px solid rgba(200, 210, 220, 0.6);
-  transform: rotateY(12deg) rotateX(6deg);
+.card-1 {
+  background: linear-gradient(135deg, #1f1a14 0%, #0d0b08 100%);
 }
 
-.hero-card-item:hover {
-  transform: rotateY(0deg) rotateX(0deg) scale(1.04);
-  box-shadow: 0 35px 70px rgba(212, 163, 55, 0.25);
+.card-2 {
+  background: linear-gradient(135deg, #18222a 0%, #0a0e12 100%);
 }
 
-.card-foil-texture {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(212, 163, 55, 0.1) 0%, transparent 100%);
-  pointer-events: none;
-}
-
-.card-foil-texture.silver {
-  background: linear-gradient(135deg, rgba(220, 230, 240, 0.15) 0%, transparent 100%);
-}
-
-.card-inner-content {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-brand-initials {
-  font-family: Didot, serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: #d4a337;
-  letter-spacing: 0.1em;
-}
-
-.silver-text {
-  color: #e0e6ed !important;
-}
-
-.card-serial {
+.card-editorial-tag {
   font-size: 0.65rem;
-  color: #888888;
-  letter-spacing: 0.15em;
-}
-
-.card-center-body {
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: #d4a337;
   text-align: left;
 }
 
-.card-person-name {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #ffffff;
-  display: block;
-  letter-spacing: 0.15em;
-  margin-bottom: 0.2rem;
-}
-
-.card-person-title {
-  font-size: 0.68rem;
-  color: #bbbbbb;
-  letter-spacing: 0.08em;
-}
-
-.card-footer-row {
+.card-info-overlay {
+  text-align: left;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.62rem;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.c-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.c-sub {
+  font-size: 0.75rem;
   color: #d4a337;
   letter-spacing: 0.1em;
+}
+
+.hero-products-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .hero-products-showcase { grid-template-columns: 1fr; }
+}
+
+.hero-real-product-card {
+  background: #11141a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hero-real-product-card:hover {
+  transform: translateY(-6px);
+  border-color: #d4a337;
+}
+
+.hero-product-img-box {
+  height: 220px;
+  width: 100%;
+  background: #000;
+}
+
+.hero-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4a337;
+}
+
+.fallback-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.hero-product-meta {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0d1117;
+  color: #ffffff;
+}
+
+.h-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.h-btn {
+  font-size: 0.75rem;
+  color: #d4a337;
+  font-weight: 800;
 }
 
 .hero-action-row {
@@ -808,9 +869,10 @@ onMounted(async () => {
   gap: 0.75rem;
 }
 
-.card-shadow-3d {
-  font-size: 4rem;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+.card-icon-svg svg {
+  width: 54px;
+  height: 54px;
+  stroke: #d4a337;
 }
 
 .mockup-label {
@@ -890,6 +952,7 @@ onMounted(async () => {
   transform: translateY(-2px);
 }
 
+/* 3. Services Section (SVG Vector Icons, NO Emojis) */
 .gucci-services-section {
   padding: 5rem 2rem 4rem;
   background: #fcfcfc;
@@ -943,11 +1006,18 @@ onMounted(async () => {
 
 .service-card:hover .service-photo { transform: scale(1.04); }
 
-.photo-boutique { background: #e8e8e8; }
+.photo-boutique { background: #e8e8e8; color: #000000; }
 .photo-types { background: #1a1a1a; color: #d4a337; }
-.photo-collect { background: #dcdcdc; }
+.photo-collect { background: #dcdcdc; color: #000000; }
 
-.photo-overlay-icon { font-size: 3.8rem; }
+.photo-svg-icon svg {
+  width: 52px;
+  height: 52px;
+}
+
+.gold-svg svg {
+  stroke: #d4a337;
+}
 
 .service-title {
   font-size: 0.95rem;
@@ -1079,6 +1149,7 @@ onMounted(async () => {
   padding: 0.5rem 2rem 0.5rem 0;
   font-size: 0.82rem;
   outline: none;
+  border-radius: 0 !important;
 }
 
 .arrow-right {

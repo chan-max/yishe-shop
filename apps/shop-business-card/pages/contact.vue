@@ -10,7 +10,7 @@
         </div>
         <div class="header-center">
           <NuxtLink to="/" class="gucci-brand-logo">
-            名 片 工 坊 · B U S I N E S S  C A R D
+            名 片 设 计 工 坊 · B U S I N E S S  C A R D
           </NuxtLink>
         </div>
         <div class="header-right">
@@ -76,8 +76,19 @@
           <div class="info-block">
             <h3 class="info-title">名片工坊工匠工坊地址</h3>
             <p>名片工坊高定艺术中心<br />上海 / 北京 / 深圳 专属打样中心</p>
-            <p class="contact-line">☎️ 服务热线：400-888-CARD</p>
-            <p class="contact-line">✉️ 设计邮箱：concierge@businesscard.1s.design</p>
+            <p class="contact-line">
+              <svg class="info-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>服务热线：400-888-CARD</span>
+            </p>
+            <p class="contact-line">
+              <svg class="info-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <span>设计邮箱：concierge@businesscard.1s.design</span>
+            </p>
           </div>
 
           <div class="info-block">
@@ -96,8 +107,8 @@
 
     <!-- Footer -->
     <footer class="gucci-mini-footer">
-      <div class="footer-logo-small">名 片 工 坊 · B U S I N E S S  C A R D</div>
-      <p>© 2026 名片工坊 Business Card Atelier. 保留所有权利。</p>
+      <div class="footer-logo-small">名 片 设 计 工 坊 · B U S I N E S S  C A R D</div>
+      <p>© 2026 名片设计工坊 Business Card Design Atelier. 保留所有权利。</p>
     </footer>
   </div>
 </template>
@@ -143,6 +154,10 @@ const submitForm = () => {
   color: #000000;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
+}
+
+input, select, textarea, button, .submit-btn-black {
+  border-radius: 0 !important;
 }
 
 .gucci-header {
@@ -269,6 +284,7 @@ const submitForm = () => {
   outline: none;
   font-family: inherit;
   background: none;
+  border-radius: 0 !important;
 }
 
 .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
@@ -286,6 +302,7 @@ const submitForm = () => {
   cursor: pointer;
   margin-top: 1rem;
   transition: background 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .submit-btn-black:hover {
@@ -318,6 +335,15 @@ const submitForm = () => {
 .contact-line {
   color: #000000 !important;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-svg {
+  width: 16px;
+  height: 16px;
+  stroke: #000000;
 }
 
 .gucci-mini-footer {

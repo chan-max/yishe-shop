@@ -42,7 +42,11 @@
               class="main-img"
             />
             <div v-else class="main-img-placeholder">
-              <span class="placeholder-emoji">📇</span>
+              <svg class="placeholder-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="4" width="18" height="16" rx="0"></rect>
+                <line x1="7" y1="8" x2="17" y2="8"></line>
+                <line x1="7" y1="12" x2="13" y2="12"></line>
+              </svg>
               <span class="placeholder-text">DESIGN PORTFOLIO SAMPLE</span>
             </div>
           </div>
@@ -121,21 +125,26 @@
           <!-- Action Button Focus on Design Same Style -->
           <div class="action-btn-row">
             <button type="button" class="btn-checkout-black" @click="handleOrder">
-              ✨ 立即设计同款 - 指导价 ${{ ((product.price || 88) * qty).toFixed(2) }}
+              立即设计同款 - 指导价 ${{ ((product.price || 88) * qty).toFixed(2) }}
             </button>
             <button type="button" class="btn-inquire-border" @click="inquireDesigner">
               预约 1对1 灵感沟通与定制
             </button>
           </div>
 
-          <!-- Guarantee Icons -->
+          <!-- Guarantee Vector SVG Icons (NO Emojis) -->
           <div class="guarantee-row">
             <div class="g-item">
-              <span class="g-icon">🎨</span>
+              <svg class="g-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 19l7-73-7-7-7 7 7 7zm0 0v-8"></path>
+              </svg>
               <span>资深设计师 1对1 排版</span>
             </div>
             <div class="g-item">
-              <span class="g-icon">📐</span>
+              <svg class="g-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="0"></rect>
+                <path d="M3 9h18M9 21V9"></path>
+              </svg>
               <span>24小时 免费矢量试样</span>
             </div>
           </div>
@@ -215,6 +224,10 @@ onMounted(async () => {
   color: #000000;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
+}
+
+input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-border, .gucci-btn-black {
+  border-radius: 0 !important;
 }
 
 .gucci-header {
@@ -302,7 +315,7 @@ onMounted(async () => {
   gap: 0.75rem;
 }
 
-.placeholder-emoji { font-size: 4rem; }
+.placeholder-svg { width: 56px; height: 56px; stroke: #d4a337; }
 .placeholder-text { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.2em; color: #ffffff; }
 
 .thumb-list {
@@ -316,6 +329,7 @@ onMounted(async () => {
   object-fit: cover;
   border: 1px solid transparent;
   cursor: pointer;
+  border-radius: 0 !important;
 }
 
 .thumb-item.active {
@@ -400,6 +414,7 @@ onMounted(async () => {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .chip-btn.selected, .chip-btn:hover {
@@ -412,6 +427,7 @@ onMounted(async () => {
   display: inline-flex;
   align-items: center;
   border: 1px solid #cccccc;
+  border-radius: 0 !important;
 }
 
 .quantity-selector button {
@@ -420,6 +436,7 @@ onMounted(async () => {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
+  border-radius: 0 !important;
 }
 
 .quantity-selector span {
@@ -446,6 +463,7 @@ onMounted(async () => {
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: background 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .btn-checkout-black:hover {
@@ -461,6 +479,7 @@ onMounted(async () => {
   font-weight: 800;
   cursor: pointer;
   transition: background 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .btn-inquire-border:hover {
@@ -479,7 +498,13 @@ onMounted(async () => {
 .g-item {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+}
+
+.g-svg {
+  width: 18px;
+  height: 18px;
+  stroke: #000000;
 }
 
 .detail-loading, .detail-not-found {
@@ -497,6 +522,7 @@ onMounted(async () => {
   font-weight: 800;
   display: inline-block;
   margin-top: 1rem;
+  border-radius: 0 !important;
 }
 
 .gucci-mini-footer {

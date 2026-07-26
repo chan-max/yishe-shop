@@ -84,7 +84,11 @@
                 class="product-photo"
               />
               <div v-else class="product-fallback-photo">
-                <span class="fallback-icon">📇</span>
+                <svg class="fallback-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="16" rx="0"></rect>
+                  <line x1="7" y1="8" x2="17" y2="8"></line>
+                  <line x1="7" y1="12" x2="13" y2="12"></line>
+                </svg>
                 <span class="fallback-tag">DESIGN PORTFOLIO</span>
               </div>
               <span class="luxury-badge">可设计同款</span>
@@ -207,6 +211,10 @@ onMounted(async () => {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
+input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
+  border-radius: 0 !important;
+}
+
 .gucci-header {
   border-bottom: 1px solid #e5e5e5;
   background: #ffffff;
@@ -277,6 +285,7 @@ onMounted(async () => {
     font-size: 1rem;
     outline: none;
     font-family: inherit;
+    border-radius: 0 !important;
   }
 
   .search-btn {
@@ -311,6 +320,7 @@ onMounted(async () => {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .tag-btn.active, .tag-btn:hover {
@@ -369,7 +379,7 @@ onMounted(async () => {
   gap: 0.5rem;
 }
 
-.fallback-icon { font-size: 3rem; }
+.fallback-svg { width: 44px; height: 44px; stroke: #d4a337; }
 .fallback-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; color: #ffffff; }
 
 .luxury-badge {
@@ -382,6 +392,7 @@ onMounted(async () => {
   font-weight: 800;
   padding: 0.25rem 0.5rem;
   letter-spacing: 0.1em;
+  border-radius: 0 !important;
 }
 
 .product-details {
@@ -432,6 +443,7 @@ onMounted(async () => {
   font-size: 0.78rem;
   font-weight: 800;
   cursor: pointer;
+  border-radius: 0 !important;
 }
 
 .gucci-mini-footer {
