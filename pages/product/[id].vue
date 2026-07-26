@@ -1079,22 +1079,28 @@ onMounted(() => {
 
 .product-gallery-arrow {
   position: absolute;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border: 0;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111;
-  transition: transform 180ms ease, background-color 180ms ease;
-}
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #111111;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 180ms ease;
 
-.product-gallery-arrow:hover {
-  transform: scale(1.06);
-  background: #111;
-  color: #fff;
+  &:hover {
+    background: #111111;
+    color: #ffffff;
+    border-color: #111111;
+    transform: translateY(-50%) scale(1.08);
+  }
 }
 
 .product-gallery-arrow--left {
