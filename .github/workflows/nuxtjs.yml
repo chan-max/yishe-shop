@@ -114,9 +114,9 @@ jobs:
 
             cd /www/wwwroot/shop-business-card.1s.design
             if pm2 describe yishe-shop-business-card >/dev/null 2>&1; then
-              NODE_ENV=production PORT=15202 HOST=0.0.0.0 pm2 restart yishe-shop-business-card --update-env
+              NODE_ENV=production PORT=15203 HOST=0.0.0.0 pm2 restart yishe-shop-business-card --update-env
             else
-              NODE_ENV=production PORT=15202 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-business-card
+              NODE_ENV=production PORT=15203 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-business-card
             fi
 
             pm2 save
