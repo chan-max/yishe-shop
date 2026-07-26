@@ -14,6 +14,8 @@
           </NuxtLink>
         </div>
         <div class="header-right">
+          <NuxtLink v-if="!user" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
+          <span v-else class="user-greeting">欢迎，{{ user.username || 'VIP 会员' }}</span>
           <NuxtLink to="/" class="header-icon-link underline-slide">首页</NuxtLink>
         </div>
       </div>
@@ -22,7 +24,7 @@
     <main class="gucci-main-container">
       <!-- Search Banner & Filter Bar -->
       <section class="search-hero-banner">
-        <h1 class="search-title">全量名片设计库 · 点击免费设计同款</h1>
+        <h1 class="search-title">全量名片高级搜索 · 点击免费设计同款</h1>
         <p class="search-sub">探寻 600g 触感棉纸、活字凹版压印、24K 浮雕烫金与极客钛钢名片设计灵感。</p>
 
         <!-- Search Input Bar -->
@@ -30,7 +32,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="搜索设计风格（如：极简黑金、活字压印、钛钢、莫兰迪色系）…"
+            placeholder="输入设计关键词（如：极简黑金、活字压印、钛钢、莫兰迪色系、创业公司）…"
             class="search-input sharp-input"
             @keyup.enter="handleSearch"
           />
@@ -41,32 +43,81 @@
             </svg>
           </button>
         </div>
+      </section>
 
-        <!-- Filter Tags -->
-        <div class="category-tags-row">
-          <button
-            v-for="cat in categories"
-            :key="cat.key"
-            type="button"
-            class="tag-btn ripple-btn"
-            :class="{ active: selectedCategory === cat.key }"
-            @click="selectCategory(cat.key)"
-          >
-            {{ cat.label }}
-          </button>
+      <!-- Advanced Filters Section -->
+      <section class="advanced-filter-panel">
+        <div class="filter-row">
+          <span class="filter-row-label">设计工艺流派 (CRAFT)</span>
+          <div class="filter-options">
+            <button
+              v-for="cat in categories"
+              :key="cat.key"
+              type="button"
+              class="filter-chip-btn ripple-btn"
+              :class="{ active: selectedCategory === cat.key }"
+              @click="selectCategory(cat.key)"
+            >
+              {{ cat.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-row-label">纸张与材质 (STOCK)</span>
+          <div class="filter-options">
+            <button
+              v-for="paper in paperStocks"
+              :key="paper.key"
+              type="button"
+              class="filter-chip-btn ripple-btn"
+              :class="{ active: selectedPaperStock === paper.key }"
+              @click="selectedPaperStock = paper.key"
+            >
+              {{ paper.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-row filter-row-flex">
+          <div class="filter-sub-group">
+            <span class="filter-row-label">排序方式 (SORT BY)</span>
+            <select v-model="sortBy" class="filter-select sharp-input">
+              <option value="recommended">综合推荐 (RECOMMENDED)</option>
+              <option value="popular">最受欢迎 (MOST POPULAR)</option>
+              <option value="price-asc">指导价：从低到高</option>
+              <option value="price-desc">指导价：从高到低</option>
+            </select>
+          </div>
+
+          <div class="filter-sub-group">
+            <span class="filter-row-label">指导价区间 (PRICE RANGE)</span>
+            <div class="price-range-inputs">
+              <input v-model.number="minPrice" type="number" placeholder="Min $" class="price-num-input sharp-input" />
+              <span>-</span>
+              <input v-model.number="maxPrice" type="number" placeholder="Max $" class="price-num-input sharp-input" />
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Products Grid Section -->
       <section class="products-grid-section">
+        <div class="results-header-line">
+          <span class="results-count">为您找到 <strong>{{ filteredProducts.length }}</strong> 项匹配的名片设计灵感稿</span>
+          <button type="button" class="clear-filters-btn underline-slide" @click="resetFilters">重置筛选条件</button>
+        </div>
+
         <div v-if="loading" class="gucci-loading">
           <div class="spinner-ring"></div>
-          <span>正在检索名片设计灵感库…</span>
+          <span>正在进行高级搜索与数据检索…</span>
         </div>
 
         <div v-else-if="filteredProducts.length === 0" class="gucci-empty">
           <p>暂无符合条件的名片设计样式，请输入其他关键字搜索，或直接预约设计师免费定制。</p>
-          <button type="button" class="reset-btn ripple-btn" @click="resetFilters">重置搜索条件</button>
+          <NuxtLink to="/contact" class="reset-btn ripple-btn">
+            申请 0元免费设计专属样稿
+          </NuxtLink>
         </div>
 
         <div v-else class="gucci-products-grid">
@@ -124,14 +175,14 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: '全量名片设计库 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
-  ogTitle: '全量名片设计库 · BUSINESS CARD',
-  description: '搜索并挑选专属的高端商务名片、特种纸工艺名片与金属凸字名片设计，支持一键免费设计同款。',
-  ogDescription: '搜索并挑选专属的高端商务名片设计，支持一键免费设计同款。'
+  title: '全量名片高级搜索 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
+  ogTitle: '全量名片高级搜索 · BUSINESS CARD',
+  description: '多维度高级检索高端商务名片、特种纸工艺名片与金属凸字名片设计，支持一键免费设计同款。',
+  ogDescription: '多维度高级检索高端商务名片设计，支持一键免费设计同款。'
 });
 
 useHead({
-  title: '全量名片设计库 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
+  title: '全量名片高级搜索 · 免费设计同款 | 名片设计工坊 | BUSINESS CARD',
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>' }
   ]
@@ -141,17 +192,30 @@ const route = useRoute();
 const router = useRouter();
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
 
+const user = ref<any>(null);
 const loading = ref(true);
 const products = ref<any[]>([]);
 const searchQuery = ref((route.query.q as string) || '');
 const selectedCategory = ref((route.query.category as string) || 'all');
+const selectedPaperStock = ref('all');
+const sortBy = ref('recommended');
+const minPrice = ref<number | null>(null);
+const maxPrice = ref<number | null>(null);
 
 const categories = [
-  { key: 'all', label: '全部分类 (All Designs)' },
+  { key: 'all', label: '全部工艺 (All)' },
   { key: 'letterpress', label: '凹版活字压印 (Letterpress)' },
   { key: 'gold-foil', label: '24K 浮雕烫金 (Gold Foil)' },
   { key: 'steel', label: '钛钢极客精印 (Metal Steel)' },
   { key: 'specialty', label: '触感特种纸艺 (Specialty Paper)' }
+];
+
+const paperStocks = [
+  { key: 'all', label: '全部纸张 (All)' },
+  { key: 'cotton', label: '600g 进口纯棉纸' },
+  { key: 'black', label: '500g 哑光黑卡' },
+  { key: 'velvet', label: '400g 绒面触感纸' },
+  { key: 'metal', label: '钛钢拉丝合金' }
 ];
 
 const getProductImage = (item: any) => {
@@ -171,15 +235,30 @@ const selectCategory = (key: string) => {
 const resetFilters = () => {
   searchQuery.value = '';
   selectedCategory.value = 'all';
+  selectedPaperStock.value = 'all';
+  sortBy.value = 'recommended';
+  minPrice.value = null;
+  maxPrice.value = null;
   router.replace({ query: {} });
 };
 
 const filteredProducts = computed(() => {
-  return products.value.filter((item) => {
+  let result = products.value.filter((item) => {
     const matchesQuery = !searchQuery.value || item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || (item.description && item.description.toLowerCase().includes(searchQuery.value.toLowerCase()));
     const matchesCategory = selectedCategory.value === 'all' || item.category === selectedCategory.value || (item.name && item.name.toLowerCase().includes(selectedCategory.value));
-    return matchesQuery && matchesCategory;
+    const price = parseFloat(item.price || 88);
+    const matchesMin = minPrice.value === null || price >= minPrice.value;
+    const matchesMax = maxPrice.value === null || price <= maxPrice.value;
+    return matchesQuery && matchesCategory && matchesMin && matchesMax;
   });
+
+  if (sortBy.value === 'price-asc') {
+    result.sort((a, b) => (parseFloat(a.price) || 88) - (parseFloat(b.price) || 88));
+  } else if (sortBy.value === 'price-desc') {
+    result.sort((a, b) => (parseFloat(b.price) || 88) - (parseFloat(a.price) || 88));
+  }
+
+  return result;
 });
 
 const navigateToProduct = (item: any) => {
@@ -188,8 +267,15 @@ const navigateToProduct = (item: any) => {
 
 onMounted(async () => {
   try {
+    const publicUserStore = usePublicUserStore();
+    if (publicUserStore.user) {
+      user.value = publicUserStore.user;
+    }
+  } catch (e) {}
+
+  try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 16 });
+    const res = await fetchPublishedProducts({ page: 1, limit: 20 });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -211,7 +297,7 @@ onMounted(async () => {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", Didot, "Times New Roman", serif;
 }
 
-input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
+input, select, textarea, button, .tag-btn, .reset-btn, .search-input, .filter-chip-btn, .filter-select, .price-num-input {
   border-radius: 0 !important;
 }
 
@@ -298,7 +384,12 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+}
+
+.user-greeting {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #d4a337;
 }
 
 .gucci-brand-logo {
@@ -317,7 +408,7 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
 
 .search-hero-banner {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .search-title {
@@ -334,8 +425,8 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
 }
 
 .search-bar-wrapper {
-  max-width: 600px;
-  margin: 0 auto 2rem;
+  max-width: 680px;
+  margin: 0 auto;
   position: relative;
 
   .search-input {
@@ -346,7 +437,6 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
     font-size: 1rem;
     outline: none;
     font-family: inherit;
-    border-radius: 0 !important;
   }
 
   .search-btn {
@@ -366,28 +456,112 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   }
 }
 
-.category-tags-row {
+/* Advanced Filter Panel */
+.advanced-filter-panel {
+  background: #fcfcfc;
+  border: 1px solid #eeeeee;
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.tag-btn {
-  background: none;
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.filter-row-flex {
+  justify-content: space-between;
+  border-top: 1px dashed #e5e5e5;
+  padding-top: 1rem;
+}
+
+.filter-row-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #888888;
+  min-width: 130px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-chip-btn {
+  background: #ffffff;
   border: 1px solid #cccccc;
-  padding: 0.55rem 1.25rem;
+  padding: 0.45rem 1rem;
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 0 !important;
 }
 
-.tag-btn.active, .tag-btn:hover {
+.filter-chip-btn.active, .filter-chip-btn:hover {
   background: #000000;
   color: #ffffff;
   border-color: #000000;
+}
+
+.filter-sub-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-select {
+  border: 1px solid #cccccc;
+  padding: 0.45rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  outline: none;
+  background: #ffffff;
+}
+
+.price-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-num-input {
+  width: 90px;
+  border: 1px solid #cccccc;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.78rem;
+  outline: none;
+  text-align: center;
+}
+
+.results-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.82rem;
+  color: #666666;
+}
+
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: #000000;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .gucci-products-grid {
@@ -448,7 +622,6 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   font-weight: 800;
   padding: 0.25rem 0.5rem;
   letter-spacing: 0.1em;
-  border-radius: 0 !important;
 }
 
 .product-details {
@@ -511,11 +684,11 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input {
   background: #000000;
   color: #ffffff;
   border: none;
-  padding: 0.65rem 1.75rem;
-  font-size: 0.78rem;
+  padding: 0.75rem 2rem;
+  font-size: 0.8rem;
   font-weight: 800;
   cursor: pointer;
-  border-radius: 0 !important;
+  text-decoration: none;
 }
 
 .gucci-mini-footer {

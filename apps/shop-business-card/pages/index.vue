@@ -17,6 +17,8 @@
         </div>
 
         <div class="header-right">
+          <NuxtLink v-if="!user" to="/login" class="header-contact-btn underline-slide" style="margin-right: 0.5rem;">登录 / 注册</NuxtLink>
+          <span v-else class="user-greeting" style="font-size: 0.8rem; font-weight: 700; color: #d4a337; margin-right: 0.5rem;">{{ user.username || 'VIP 会员' }}</span>
           <NuxtLink to="/search" class="header-icon-btn icon-hover-bounce" title="搜索设计灵感">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
@@ -472,7 +474,16 @@ const submitEmail = () => {
   }
 };
 
+const user = ref<any>(null);
+
 onMounted(async () => {
+  try {
+    const publicUserStore = usePublicUserStore();
+    if (publicUserStore.user) {
+      user.value = publicUserStore.user;
+    }
+  } catch (e) {}
+
   try {
     loading.value = true;
     const res = await fetchPublishedProducts({ page: 1, limit: 8 });
