@@ -1,361 +1,171 @@
 <template>
-  <div class="woonuxt-theme" data-site="keychain">
-    <!-- ===== HEADER ===== -->
-    <header class="wx-header" :class="{ 'is-scrolled': isScrolled }">
-      <div class="wx-container wx-header-inner">
-        <NuxtLink to="/" class="wx-logo">
-          <span>🔑</span>
-          <span>KEYCHAIN POP</span>
-        </NuxtLink>
-
-        <nav class="wx-nav">
-          <NuxtLink to="/" class="wx-nav-link active">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-nav-link">全部配件</NuxtLink>
-          <NuxtLink to="/search?type=亚克力" class="wx-nav-link">亚克力</NuxtLink>
-          <NuxtLink to="/search?type=金属" class="wx-nav-link">金属</NuxtLink>
-          <NuxtLink to="/about" class="wx-nav-link">关于我们</NuxtLink>
-          <NuxtLink to="/contact" class="wx-nav-link">联系我们</NuxtLink>
-        </nav>
-
-        <div class="wx-header-actions">
-          <NuxtLink to="/login" class="wx-header-btn" title="登录">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </NuxtLink>
-          <NuxtLink to="/search" class="wx-header-btn" title="收藏">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </NuxtLink>
-        </div>
-
-        <button class="wx-hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
-          <span /><span /><span />
-        </button>
+  <div class="kc-site">
+    <header class="hdr" :class="{ scrolled }">
+      <div class="hdr-inner">
+        <NuxtLink to="/" class="hdr-logo">🔑 <span>{{ cfg.brand }}</span></NuxtLink>
+        <nav class="hdr-nav"><NuxtLink v-for="n in cfg.nav" :key="n.to" :to="n.to" class="hdr-link">{{ n.label }}</NuxtLink></nav>
+        <NuxtLink to="/login" class="hdr-login">登录</NuxtLink>
+        <button class="hdr-burger" @click="menuOpen = !menuOpen"><span/><span/><span/></button>
       </div>
     </header>
+    <div class="drawer" :class="{ open: menuOpen }" @click.self="menuOpen = false"><div class="drawer-inner"><NuxtLink v-for="n in cfg.nav" :key="n.to" :to="n.to" class="drawer-link" @click="menuOpen = false">{{ n.label }}</NuxtLink></div></div>
 
-    <!-- Mobile drawer -->
-    <div class="wx-mobile-drawer" :class="{ 'is-open': mobileMenuOpen }">
-      <div class="wx-mobile-backdrop" @click="mobileMenuOpen = false" />
-      <div class="wx-mobile-panel">
-        <nav class="wx-mobile-nav">
-          <NuxtLink to="/" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">全部配件</NuxtLink>
-          <NuxtLink to="/search?type=亚克力" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">💎 亚克力</NuxtLink>
-          <NuxtLink to="/search?type=金属" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">⚙️ 金属</NuxtLink>
-          <NuxtLink to="/search?type=硅胶" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">🧸 硅胶</NuxtLink>
-          <NuxtLink to="/search?type=木质" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">🪵 木质</NuxtLink>
-          <NuxtLink to="/about" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">关于我们</NuxtLink>
-          <NuxtLink to="/contact" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">联系我们</NuxtLink>
-          <NuxtLink to="/login" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">🔑 登录 / 注册</NuxtLink>
-        </nav>
+    <!-- Hero — 渐变活力 -->
+    <section class="hero">
+      <div class="hero-gradient"/>
+      <div class="hero-body">
+        <span class="hero-badge">NEW ARRIVAL</span>
+        <h1>{{ cfg.hero.title }}</h1>
+        <p>{{ cfg.hero.desc }}</p>
+        <NuxtLink to="/search" class="hero-btn">{{ cfg.hero.cta }}</NuxtLink>
       </div>
-    </div>
-
-    <!-- ===== HERO ===== -->
-    <section class="wx-hero">
-      <div class="wx-hero-overlay" />
-      <div class="wx-hero-content">
-        <span class="wx-hero-eyebrow">✨ KEYCHAIN POP · 创意配件工坊</span>
-        <h1 class="wx-hero-title">把个性<br/>挂在钥匙上</h1>
-        <p class="wx-hero-desc">从可爱卡通到极简几何，从金属质感到底层亚克力，每一条钥匙链都是你风格的延伸。探索数百款创意设计，或定制专属于你的那一款。</p>
-        <NuxtLink to="/search" class="wx-hero-cta">探索全部配件 →</NuxtLink>
-      </div>
+      <div class="hero-shapes" aria-hidden="true"><span class="s1"/><span class="s2"/><span class="s3"/></div>
     </section>
 
-    <!-- ===== BRAND LOGOS BAR ===== -->
-    <section class="wx-brands">
-      <div class="wx-container">
-        <div class="wx-brands-grid">
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">BRAND</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">STYLE</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">CRAFT</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">DESIGN</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">MAKER</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">STUDIO</text></svg>
-        </div>
+    <!-- Categories — 彩色卡片 -->
+    <section class="cats"><div class="wrap">
+      <h2>材质分类</h2>
+      <div class="cats-grid">
+        <NuxtLink v-for="(c, i) in cfg.categories" :key="c.slug" :to="`/search?type=${c.slug}`" class="cat-card" :style="{ '--c': palette[i % palette.length] }">
+          <div class="cat-emoji">{{ catEmoji[c.slug] }}</div>
+          <span>{{ c.name }}</span>
+        </NuxtLink>
       </div>
-    </section>
+    </div></section>
 
-    <!-- ===== CATEGORIES ===== -->
-    <section class="wx-categories">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">材质分类</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
-        <div class="wx-categories-grid">
-          <NuxtLink v-for="cat in categories" :key="cat.name" :to="`/search?type=${cat.name}`" class="wx-category-card">
-            <div class="wx-category-placeholder" :style="{ background: cat.bg }">{{ cat.icon }}</div>
-            <div class="wx-category-card-overlay">
-              <span class="wx-category-card-name">{{ cat.name }}</span>
-            </div>
-          </NuxtLink>
-        </div>
+    <!-- Products — 大图卡片 -->
+    <section class="prods"><div class="wrap">
+      <div class="prods-head"><h2>精选配件</h2><NuxtLink to="/search" class="more">查看全部 →</NuxtLink></div>
+      <div v-if="loading" class="empty">加载中…</div>
+      <div v-else class="prods-grid">
+        <NuxtLink v-for="p in products" :key="p.id" :to="getPath(p)" class="p-card">
+          <div class="p-img"><img v-if="getImg(p)" :src="getImg(p)" :alt="p.title" loading="lazy"/><span v-if="p.originalPrice > p.price" class="p-badge">{{ Math.round((1 - p.price / p.originalPrice) * 100) }}%</span></div>
+          <div class="p-info"><h3>{{ p.title }}</h3><b v-if="p.price">¥{{ p.price }}</b></div>
+        </NuxtLink>
       </div>
-    </section>
+    </div></section>
 
-    <!-- ===== TRUST BADGES ===== -->
-    <section class="wx-trust">
-      <div class="wx-container">
-        <div class="wx-trust-grid">
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>免费配送</h4>
-              <p>满 ¥99 全国包邮</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>品质保证</h4>
-              <p>精选材质，匠心工艺</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>7天退换</h4>
-              <p>不满意可无条件退换</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>24/7 客服</h4>
-              <p>全天候在线客服支持</p>
-            </div>
-          </div>
-        </div>
+    <footer class="ftr"><div class="wrap">
+      <div class="ftr-grid">
+        <div class="ftr-brand"><b>{{ cfg.emoji }} {{ cfg.brand }}</b><p>{{ cfg.footer.desc }}</p></div>
+        <div v-for="col in cfg.footer.cols" :key="col.title" class="ftr-col"><h4>{{ col.title }}</h4><NuxtLink v-for="l in col.links" :key="l.label" :to="l.to">{{ l.label }}</NuxtLink></div>
       </div>
-    </section>
-
-    <!-- ===== PRODUCTS ===== -->
-    <section class="wx-products">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">精选配件</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
-
-        <div v-if="loading" class="wx-loading">
-          <div class="wx-loading-spinner" />
-          正在加载精选配件…
-        </div>
-        <div v-else-if="products.length === 0" class="wx-empty">暂无商品，请稍后刷新</div>
-        <div v-else class="wx-products-grid">
-          <NuxtLink v-for="item in products" :key="item.id" :to="getPublishedProductPath(item)" class="wx-product-card">
-            <div class="wx-product-image">
-              <img v-if="getPublishedProductImage(item)" :src="getPublishedProductImage(item)" :alt="item.title" class="img-primary" loading="lazy" />
-              <img v-if="getPublishedProductImage(item, 800)" :src="getPublishedProductImage(item, 800)" :alt="item.title" class="img-hover" loading="lazy" />
-              <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-sale-badge">-{{ Math.round((1 - item.price / item.originalPrice) * 100) }}%</span>
-            </div>
-            <div class="wx-product-info">
-              <div class="wx-product-rating">
-                <span class="wx-stars">★★★★★</span>
-                <span class="wx-rating-count">({{ getRatingCount(item.id) }})</span>
-              </div>
-              <h3 class="wx-product-title">{{ item.title }}</h3>
-              <div class="wx-product-price">
-                <span v-if="item.price" class="wx-price-current">¥{{ item.price }}</span>
-                <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-price-original">¥{{ item.originalPrice }}</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== NEWSLETTER ===== -->
-    <section class="wx-newsletter">
-      <div class="wx-container">
-        <h2 class="wx-newsletter-title">订阅获取独家优惠</h2>
-        <p class="wx-newsletter-desc">第一时间获取新品上市、限时折扣和创意灵感</p>
-        <form class="wx-newsletter-form" @submit.prevent>
-          <input type="email" class="wx-newsletter-input" placeholder="输入你的邮箱地址" />
-          <button type="submit" class="wx-newsletter-btn">立即订阅</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="wx-footer">
-      <div class="wx-container">
-        <div class="wx-footer-grid">
-          <div class="wx-footer-brand">
-            <div class="wx-footer-brand-logo">
-              <span>🔑</span>
-              <span>KEYCHAIN POP</span>
-            </div>
-            <p class="wx-footer-brand-desc">创意钥匙链与个性配件定制。每一件都承载着你的独特风格。</p>
-          </div>
-          <div class="wx-footer-col">
-            <h4>快速链接</h4>
-            <ul>
-              <li><NuxtLink to="/">首页</NuxtLink></li>
-              <li><NuxtLink to="/search">全部商品</NuxtLink></li>
-              <li><NuxtLink to="/about">关于我们</NuxtLink></li>
-              <li><NuxtLink to="/contact">联系我们</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>客户服务</h4>
-            <ul>
-              <li><NuxtLink to="/faq">常见问题</NuxtLink></li>
-              <li><NuxtLink to="/shipping">配送说明</NuxtLink></li>
-              <li><NuxtLink to="/returns">退换政策</NuxtLink></li>
-              <li><NuxtLink to="/contact">在线客服</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>联系我们</h4>
-            <ul>
-              <li>📧 hi@keychain.1s.design</li>
-              <li>📞 400-KEY-CHAIN</li>
-              <li>📍 中国·上海</li>
-            </ul>
-          </div>
-        </div>
-        <div class="wx-footer-bottom">
-          <span>© 2026 KEYCHAIN POP. All rights reserved.</span>
-          <div class="wx-footer-social">
-            <a href="#" aria-label="微信">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/><path d="M23.925 14.725c0-3.29-3.166-5.963-7.07-5.963-3.949 0-7.07 2.672-7.07 5.963 0 3.29 3.121 5.963 7.07 5.963.779 0 1.537-.112 2.25-.326a.72.72 0 01.59.078l1.518.89a.264.264 0 00.137.044.234.234 0 00.235-.237c0-.058-.023-.115-.039-.17l-.31-1.184a.477.477 0 01.169-.528c1.506-1.113 2.513-2.783 2.513-4.534zm-9.503-1.067c-.515 0-.933-.424-.933-.947s.418-.947.933-.947c.515 0 .933.424.933.947s-.418.947-.933.947zm5.146 0c-.515 0-.933-.424-.933-.947s.418-.947.933-.947c.515 0 .933.424.933.947s-.418.947-.933.947z"/></svg>
-            </a>
-            <a href="#" aria-label="微博">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443z"/></svg>
-            </a>
-            <a href="#" aria-label="小红书">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14h-9a.5.5 0 01-.5-.5v-7a.5.5 0 01.5-.5h9a.5.5 0 01.5.5v7a.5.5 0 01-.5.5z"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Back to top -->
-    <button v-show="isScrolled" class="wx-back-to-top is-visible" @click="scrollToTop" aria-label="回到顶部">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
-    </button>
+      <div class="ftr-copy">© 2026 {{ cfg.brand }}.</div>
+    </div></footer>
+    <button v-show="scrolled" class="go-top" @click="scrollTo({top:0,behavior:'smooth'})">↑</button>
   </div>
 </template>
 
-<script setup>
-import '~/apps/_shared/woonuxt-theme.css';
+<script setup lang="ts">
+import cfg from '../site.config';
+import { usePublishedProducts } from '~/composables/use-published-products';
 
 definePageMeta({ layout: false });
+useSeoMeta({ title: cfg.seo.title, description: cfg.seo.description, ogTitle: cfg.seo.ogTitle, ogDescription: cfg.seo.ogDescription });
+useHead({ htmlAttrs: { lang: 'zh-CN' }, link: [{ rel: 'icon', type: 'image/svg+xml', href: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>" }] });
 
-useSeoMeta({
-  title: '创意钥匙链工坊 — KEYCHAIN POP | 个性定制钥匙链',
-  description: '探索数百款创意钥匙链设计，从可爱卡通到极简几何，从金属质感到底层亚克力。满 ¥99 包邮，每周上新，定制 ¥1 起。',
-  ogTitle: 'KEYCHAIN POP — 创意钥匙链与个性配件',
-  ogDescription: '创意钥匙链与个性配件定制平台。精选亚克力、金属、硅胶、木质等材质，打造专属于你的钥匙链。',
-});
-
-useHead({
-  htmlAttrs: { lang: 'zh-CN' },
-  link: [
-    {
-      rel: 'icon',
-      type: 'image/svg+xml',
-      href: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>",
-    },
-  ],
-});
-
-const isScrolled = ref(false);
-const mobileMenuOpen = ref(false);
+const { fetchPublishedProducts, getPublishedProductImage: getImg, getPublishedProductPath: getPath } = usePublishedProducts();
 const loading = ref(true);
-const products = ref([]);
+const products = ref<any[]>([]);
+const scrolled = ref(false);
+const menuOpen = ref(false);
 
-const categories = [
-  { name: '亚克力', icon: '💎', bg: 'linear-gradient(135deg, #e8d5f5, #f0e6ff)' },
-  { name: '金属', icon: '⚙️', bg: 'linear-gradient(135deg, #d5e8f5, #e6f0ff)' },
-  { name: '硅胶', icon: '🧸', bg: 'linear-gradient(135deg, #f5d5d5, #ffe6e6)' },
-  { name: '木质', icon: '🪵', bg: 'linear-gradient(135deg, #f5edd5, #fff5e6)' },
-  { name: '皮革', icon: '👜', bg: 'linear-gradient(135deg, #f5e6d5, #fff0e6)' },
-  { name: '树脂', icon: '✨', bg: 'linear-gradient(135deg, #d5f5e8, #e6fff0)' },
-];
+const palette = ['#6c5ce7', '#00b894', '#e17055', '#0984e3', '#d63031', '#e84393'];
+const catEmoji: Record<string, string> = { '亚克力': '💎', '金属': '⚙️', '硅胶': '🧸', '木质': '🪵', '皮革': '👜', '树脂': '✨' };
 
-const { fetchPublishedProducts, getPublishedProductImage, getPublishedProductPath } = usePublishedProducts();
-
-// Deterministic rating count based on product ID
-function getRatingCount(id) {
-  const hash = String(id).split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return (hash % 80) + 10;
-}
-
-// Countdown timer
-const cd = ref({ days: '00', hours: '00', minutes: '00', seconds: '00' });
-let timer = null;
-function updateCountdown() {
-  const now = new Date();
-  const end = new Date(now);
-  end.setDate(end.getDate() + 3);
-  end.setHours(23, 59, 59, 0);
-  const diff = end - now;
-  cd.value = {
-    days: String(Math.floor(diff / 86400000)).padStart(2, '0'),
-    hours: String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0'),
-    minutes: String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0'),
-    seconds: String(Math.floor((diff % 60000) / 1000)).padStart(2, '0'),
-  };
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function handleScroll() {
-  isScrolled.value = window.scrollY > 50;
+function getCatImg(slug: string) {
+  const m = products.value.find(p => (p.type || p.category || '').toLowerCase().includes(slug));
+  return m ? getImg(m, 600) : '';
 }
 
 onMounted(async () => {
-  updateCountdown();
-  timer = setInterval(updateCountdown, 1000);
-  try {
-    products.value = (await fetchPublishedProducts({ pageSize: 12, random: true })) || [];
-  } catch (e) { console.error(e); } finally { loading.value = false; }
-  window.addEventListener('scroll', handleScroll);
-});
-
-onUnmounted(() => {
-  if (timer) clearInterval(timer);
-  window.removeEventListener('scroll', handleScroll);
+  try { products.value = (await fetchPublishedProducts({ pageSize: 12, random: true })) || []; } catch {} finally { loading.value = false; }
+  addEventListener('scroll', () => { scrolled.value = scrollY > 50; });
 });
 </script>
 
-<style scoped>
-/* Site-specific overrides */
-.woonuxt-theme[data-site="keychain"] {
-  --wx-accent: #6c5ce7;
-  --wx-accent-light: #a29bfe;
-  --wx-accent-dark: #4834d4;
-}
+<style>
+/* ===== KEYCHAIN — 潮流年轻活力 ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.kc-site { font-family: "Inter", "PingFang SC", system-ui, sans-serif; color: #1a1a2e; background: #fff; line-height: 1.6; }
+.kc-site a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* Category placeholder (no real images) */
-.wx-category-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-}
+/* Header — 圆润活泼 */
+.hdr { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); border-bottom: 2px solid #f0f0f5; }
+.hdr.scrolled { box-shadow: 0 4px 20px rgba(108,92,231,0.08); }
+.hdr-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.hdr-logo { display: flex; align-items: center; gap: .4rem; font-weight: 800; font-size: 1.05rem; color: #6c5ce7; }
+.hdr-nav { display: flex; gap: .15rem; }
+.hdr-link { padding: .4rem .8rem; font-size: .82rem; font-weight: 500; color: #666; border-radius: 999px; transition: all .15s; }
+.hdr-link:hover { background: #f0eeff; color: #6c5ce7; }
+.hdr-login { font-size: .8rem; font-weight: 600; color: #6c5ce7; padding: .4rem 1rem; border: 2px solid #6c5ce7; border-radius: 999px; transition: all .15s; }
+.hdr-login:hover { background: #6c5ce7; color: #fff; }
+.hdr-burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+.hdr-burger span { display: block; width: 20px; height: 2px; background: #6c5ce7; border-radius: 1px; }
+@media (max-width: 768px) { .hdr-nav, .hdr-login { display: none; } .hdr-burger { display: flex; } }
 
-/* Hero background gradient for keychain */
-.woonuxt-theme[data-site="keychain"] .wx-hero {
-  background: linear-gradient(135deg, #f8f7ff 0%, #fff0f6 50%, #f0fffe 100%);
-}
+.drawer { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.drawer.open { opacity: 1; pointer-events: auto; }
+.drawer-inner { position: fixed; top: 0; left: 0; bottom: 0; width: 260px; background: #fff; padding: 1.5rem; transform: translateX(-100%); transition: transform .25s; display: flex; flex-direction: column; gap: .25rem; }
+.drawer.open .drawer-inner { transform: translateX(0); }
+.drawer-link { padding: .7rem 1rem; border-radius: 10px; font-size: .88rem; color: #444; transition: background .15s; }
+.drawer-link:hover { background: #f0eeff; color: #6c5ce7; }
 
-.woonuxt-theme[data-site="keychain"] .wx-hero-overlay {
-  background: linear-gradient(to right, rgba(108, 92, 231, 0.4) 0%, rgba(108, 92, 231, 0.1) 60%, transparent 100%);
-}
+/* Hero — 渐变 + 装饰形状 */
+.hero { position: relative; overflow: hidden; padding: 5rem 1.5rem 4rem; background: linear-gradient(135deg, #f8f7ff 0%, #fff0f6 50%, #f0fffe 100%); }
+.hero-gradient { position: absolute; inset: 0; background: radial-gradient(circle at 80% 20%, rgba(108,92,231,0.1) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(232,67,147,0.08) 0%, transparent 50%); }
+.hero-body { position: relative; z-index: 1; max-width: 560px; }
+.hero-badge { display: inline-block; padding: .3rem .8rem; background: #6c5ce7; color: #fff; font-size: .65rem; font-weight: 800; letter-spacing: .1em; border-radius: 999px; margin-bottom: 1rem; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; color: #1a1a2e; }
+.hero p { font-size: .95rem; color: #555; margin-bottom: 1.5rem; line-height: 1.7; }
+.hero-btn { display: inline-block; padding: .8rem 2rem; background: #6c5ce7; color: #fff; border-radius: 999px; font-size: .88rem; font-weight: 700; transition: all .2s; box-shadow: 0 4px 16px rgba(108,92,231,0.25); }
+.hero-btn:hover { background: #4834d4; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,92,231,0.35); }
+.hero-shapes { position: absolute; top: 50%; right: 10%; transform: translateY(-50%); z-index: 0; }
+.s1, .s2, .s3 { position: absolute; border-radius: 50%; }
+.s1 { width: 120px; height: 120px; background: rgba(108,92,231,0.08); top: -60px; left: 0; }
+.s2 { width: 80px; height: 80px; background: rgba(232,67,147,0.08); top: 20px; left: 140px; }
+.s3 { width: 60px; height: 60px; background: rgba(0,184,148,0.08); top: -20px; left: 240px; }
+
+/* Categories — 彩色边框卡片 */
+.cats { padding: 4rem 0; }
+.cats h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; }
+.cats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: .75rem; }
+@media (max-width: 768px) { .cats-grid { grid-template-columns: repeat(2, 1fr); } }
+.cat-card { display: flex; flex-direction: column; align-items: center; padding: 1.5rem .75rem; background: #fff; border: 2px solid #f0f0f5; border-radius: 16px; transition: all .2s; }
+.cat-card:hover { border-color: var(--c); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.cat-emoji { font-size: 2rem; margin-bottom: .5rem; }
+.cat-card span { font-size: .82rem; font-weight: 600; color: #444; }
+
+/* Products */
+.prods { padding: 0 0 4rem; background: #fafafe; }
+.prods-head { display: flex; justify-content: space-between; align-items: baseline; padding: 4rem 0 1.5rem; }
+.prods-head h2 { font-size: 1.3rem; font-weight: 800; }
+.more { font-size: .82rem; color: #6c5ce7; font-weight: 600; }
+.empty { text-align: center; padding: 3rem; color: #aaa; }
+.prods-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+@media (max-width: 768px) { .prods-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem; } }
+.p-card { display: block; text-decoration: none; color: inherit; border-radius: 14px; overflow: hidden; background: #fff; border: 2px solid #f0f0f5; transition: all .2s; }
+.p-card:hover { border-color: #6c5ce7; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(108,92,231,0.1); }
+.p-img { position: relative; aspect-ratio: 1; overflow: hidden; }
+.p-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
+.p-card:hover .p-img img { transform: scale(1.04); }
+.p-badge { position: absolute; top: .5rem; right: .5rem; background: #e84393; color: #fff; font-size: .68rem; font-weight: 800; padding: .2rem .5rem; border-radius: 999px; }
+.p-info { padding: .6rem .75rem; }
+.p-info h3 { font-size: .82rem; font-weight: 500; line-height: 1.3; margin-bottom: .2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.p-info b { font-size: .9rem; color: #6c5ce7; }
+
+/* Footer */
+.ftr { background: #1a1a2e; color: #ccc; padding: 2.5rem 0 0; }
+.ftr-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+@media (max-width: 768px) { .ftr-grid { grid-template-columns: 1fr; } }
+.ftr-brand b { font-size: 1rem; color: #6c5ce7; display: block; margin-bottom: .5rem; }
+.ftr-brand p { font-size: .78rem; line-height: 1.6; opacity: .5; }
+.ftr-col h4 { font-size: .82rem; font-weight: 600; color: #fff; margin-bottom: .6rem; }
+.ftr-col a { display: block; font-size: .78rem; padding: .25rem 0; opacity: .45; transition: opacity .15s; }
+.ftr-col a:hover { opacity: 1; }
+.ftr-copy { text-align: center; padding: 1rem; font-size: .68rem; opacity: .3; }
+
+.go-top { position: fixed; bottom: 2rem; right: 2rem; width: 42px; height: 42px; border-radius: 50%; border: none; background: #6c5ce7; color: #fff; font-size: 1rem; cursor: pointer; z-index: 50; box-shadow: 0 4px 16px rgba(108,92,231,0.3); transition: all .2s; }
+.go-top:hover { background: #4834d4; transform: translateY(-2px); }
 </style>

@@ -1,365 +1,667 @@
 <template>
-  <div class="woonuxt-theme" data-site="wall-art">
-    <!-- ===== HEADER ===== -->
-    <header class="wx-header" :class="{ 'is-scrolled': isScrolled }">
-      <div class="wx-container wx-header-inner">
-        <NuxtLink to="/" class="wx-logo">
-          <span>🖼️</span>
-          <span>墙面艺术馆</span>
-        </NuxtLink>
-
-        <nav class="wx-nav">
-          <NuxtLink to="/" class="wx-nav-link active">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-nav-link">全部装饰画</NuxtLink>
-          <NuxtLink to="/search?type=客厅" class="wx-nav-link">客厅</NuxtLink>
-          <NuxtLink to="/search?type=卧室" class="wx-nav-link">卧室</NuxtLink>
-          <NuxtLink to="/about" class="wx-nav-link">关于我们</NuxtLink>
-          <NuxtLink to="/contact" class="wx-nav-link">联系我们</NuxtLink>
+  <div class="wa-page">
+    <header class="wa-header">
+      <div class="wa-header__inner">
+        <a href="/" class="wa-logo">
+          <span class="wa-logo__emoji">🖼️</span>
+          <span class="wa-logo__text">墙面艺术馆</span>
+        </a>
+        <nav class="wa-nav">
+          <a href="#categories" class="wa-nav__link">分类</a>
+          <a href="#products" class="wa-nav__link">全部作品</a>
+          <a href="#about" class="wa-nav__link">关于</a>
+          <a href="#contact" class="wa-nav__link">联系</a>
         </nav>
-
-        <div class="wx-header-actions">
-          <NuxtLink to="/login" class="wx-header-btn" title="登录">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </NuxtLink>
-          <NuxtLink to="/search" class="wx-header-btn" title="收藏">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </NuxtLink>
+        <div class="wa-header__actions">
+          <a href="/login" class="wa-login-btn">登录</a>
+          <button
+            class="wa-hamburger"
+            :class="{ 'wa-hamburger--open': mobileMenuOpen }"
+            @click="mobileMenuOpen = !mobileMenuOpen"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
-
-        <button class="wx-hamburger" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="菜单">
-          <span /><span /><span />
-        </button>
+      </div>
+      <div
+        class="wa-mobile-menu"
+        :class="{ 'wa-mobile-menu--open': mobileMenuOpen }"
+      >
+        <a href="#categories" class="wa-mobile-menu__link" @click="mobileMenuOpen = false">分类</a>
+        <a href="#products" class="wa-mobile-menu__link" @click="mobileMenuOpen = false">全部作品</a>
+        <a href="#about" class="wa-mobile-menu__link" @click="mobileMenuOpen = false">关于</a>
+        <a href="#contact" class="wa-mobile-menu__link" @click="mobileMenuOpen = false">联系</a>
+        <a href="/login" class="wa-mobile-menu__link wa-mobile-menu__link--accent" @click="mobileMenuOpen = false">登录</a>
       </div>
     </header>
 
-    <!-- Mobile drawer -->
-    <div class="wx-mobile-drawer" :class="{ 'is-open': mobileMenuOpen }">
-      <div class="wx-mobile-backdrop" @click="mobileMenuOpen = false" />
-      <div class="wx-mobile-panel">
-        <nav class="wx-mobile-nav">
-          <NuxtLink to="/" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">全部装饰画</NuxtLink>
-          <NuxtLink to="/search?type=客厅" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">🛋️ 客厅装饰</NuxtLink>
-          <NuxtLink to="/search?type=卧室" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">🛏️ 卧室装饰</NuxtLink>
-          <NuxtLink to="/search?type=办公室" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">💼 办公室装饰</NuxtLink>
-          <NuxtLink to="/search?type=咖啡馆" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">☕ 咖啡馆装饰</NuxtLink>
-          <NuxtLink to="/about" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">关于我们</NuxtLink>
-          <NuxtLink to="/login" class="wx-mobile-nav-link" @click="mobileMenuOpen = false">登录 / 注册</NuxtLink>
-        </nav>
-      </div>
-    </div>
-
-    <!-- ===== HERO ===== -->
-    <section class="wx-hero">
-      <div class="wx-hero-overlay" />
-      <div class="wx-hero-content">
-        <span class="wx-hero-eyebrow">WALL ART · CONTEMPORARY LIVING</span>
-        <h1 class="wx-hero-title">为每一面墙<br/>注入艺术灵魂</h1>
-        <p class="wx-hero-desc">现代装饰画、抽象艺术与创意挂画定制。从客厅到卧室，从办公室到咖啡馆，让空间讲述你的故事。</p>
-        <NuxtLink to="/search" class="wx-hero-cta">探索装饰画 →</NuxtLink>
+    <section class="wa-hero">
+      <div class="wa-hero__inner">
+        <p class="wa-hero__eyebrow">WALL ART · CONTEMPORARY LIVING</p>
+        <h1 class="wa-hero__title">为每一面墙注入艺术灵魂</h1>
+        <p class="wa-hero__desc">现代装饰画、抽象艺术与创意挂画定制。从客厅到卧室，从办公室到咖啡馆，让空间讲述你的故事。</p>
+        <a href="#products" class="wa-hero__cta">探索装饰画</a>
       </div>
     </section>
 
-    <!-- ===== BRAND LOGOS BAR ===== -->
-    <section class="wx-brands">
-      <div class="wx-container">
-        <div class="wx-brands-grid">
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">GALLERY</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">ART</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">DESIGN</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">HOME</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">DECOR</text></svg>
-          <svg class="wx-brand-logo" viewBox="0 0 120 30" fill="currentColor"><text x="10" y="22" font-size="16" font-weight="700" font-family="sans-serif">STUDIO</text></svg>
+    <section id="categories" class="wa-categories">
+      <div class="wa-categories__inner">
+        <h2 class="wa-section-title">浏览分类</h2>
+        <div class="wa-categories__scroll">
+          <a
+            v-for="cat in categories"
+            :key="cat.id"
+            href="#products"
+            class="wa-pill"
+          >
+            <span class="wa-pill__dot" :style="{ backgroundColor: cat.color }"></span>
+            <span class="wa-pill__label">{{ cat.name }}</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ===== CATEGORIES ===== -->
-    <section class="wx-categories">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">空间灵感</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
-        <div class="wx-categories-grid">
-          <NuxtLink v-for="room in rooms" :key="room.name" :to="`/search?type=${room.name}`" class="wx-category-card">
-            <div class="wx-category-placeholder" :style="{ background: room.bg }">{{ room.icon }}</div>
-            <div class="wx-category-card-overlay">
-              <span class="wx-category-card-name">{{ room.name }}</span>
-            </div>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== TRUST BADGES ===== -->
-    <section class="wx-trust">
-      <div class="wx-container">
-        <div class="wx-trust-grid">
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>免费配送</h4>
-              <p>满 ¥199 全国包邮</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>品质保证</h4>
-              <p>精选材质，匠心工艺</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>7天退换</h4>
-              <p>不满意可无条件退换</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>免费设计咨询</h4>
-              <p>专业设计师在线服务</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== PRODUCTS ===== -->
-    <section class="wx-products">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">精选装饰画</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
-
-        <div v-if="loading" class="wx-loading">
-          <div class="wx-loading-spinner" />
-          正在加载精选作品…
-        </div>
-        <div v-else-if="products.length === 0" class="wx-empty">暂无商品，请稍后刷新</div>
-        <div v-else class="wx-products-grid">
-          <NuxtLink v-for="item in products" :key="item.id" :to="getPublishedProductPath(item)" class="wx-product-card">
-            <div class="wx-product-image">
-              <img v-if="getPublishedProductImage(item)" :src="getPublishedProductImage(item)" :alt="item.title" class="img-primary" loading="lazy" />
-              <img v-if="getPublishedProductImage(item, 800)" :src="getPublishedProductImage(item, 800)" :alt="item.title" class="img-hover" loading="lazy" />
-              <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-sale-badge">-{{ Math.round((1 - item.price / item.originalPrice) * 100) }}%</span>
-            </div>
-            <div class="wx-product-info">
-              <div class="wx-product-rating">
-                <span class="wx-stars">★★★★★</span>
-                <span class="wx-rating-count">({{ getRatingCount(item.id) }})</span>
-              </div>
-              <h3 class="wx-product-title">{{ item.title }}</h3>
-              <div class="wx-product-price">
-                <span v-if="item.price" class="wx-price-current">¥{{ item.price }}</span>
-                <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-price-original">¥{{ item.originalPrice }}</span>
+    <section id="products" class="wa-products">
+      <div class="wa-products__inner">
+        <h2 class="wa-section-title">精选作品</h2>
+        <div class="wa-masonry">
+          <a
+            v-for="p in products"
+            :key="p.id"
+            :href="`/products/${p.slug || p.id}`"
+            class="wa-card"
+          >
+            <div class="wa-card__img-wrap">
+              <img
+                :src="p.cover || p.image"
+                :alt="p.title"
+                class="wa-card__img"
+                loading="lazy"
+              />
+              <div class="wa-card__overlay">
+                <span class="wa-card__overlay-title">{{ p.title }}</span>
+                <span class="wa-card__overlay-price">¥{{ p.price }}</span>
               </div>
             </div>
-          </NuxtLink>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ===== NEWSLETTER ===== -->
-    <section class="wx-newsletter">
-      <div class="wx-container">
-        <h2 class="wx-newsletter-title">订阅获取艺术灵感</h2>
-        <p class="wx-newsletter-desc">第一时间获取新品上市、限量发售和设计灵感</p>
-        <form class="wx-newsletter-form" @submit.prevent>
-          <input type="email" class="wx-newsletter-input" placeholder="请输入您的邮箱地址" />
-          <button type="submit" class="wx-newsletter-btn">订阅</button>
-        </form>
+    <footer id="contact" class="wa-footer">
+      <div class="wa-footer__inner">
+        <div class="wa-footer__brand">
+          <span class="wa-footer__logo">🖼️ 墙面艺术馆</span>
+          <p class="wa-footer__tagline">为每一面墙注入艺术灵魂</p>
+        </div>
+        <div class="wa-footer__col">
+          <h4 class="wa-footer__col-title">探索</h4>
+          <a href="#categories" class="wa-footer__link">全部分类</a>
+          <a href="#products" class="wa-footer__link">精选作品</a>
+          <a href="#about" class="wa-footer__link">关于我们</a>
+        </div>
+        <div class="wa-footer__col">
+          <h4 class="wa-footer__col-title">服务</h4>
+          <a href="#" class="wa-footer__link">定制挂画</a>
+          <a href="#" class="wa-footer__link">空间搭配</a>
+          <a href="#" class="wa-footer__link">企业采购</a>
+        </div>
+        <div class="wa-footer__col">
+          <h4 class="wa-footer__col-title">支持</h4>
+          <a href="#" class="wa-footer__link">配送说明</a>
+          <a href="#" class="wa-footer__link">退换政策</a>
+          <a href="#" class="wa-footer__link">联系我们</a>
+        </div>
       </div>
-    </section>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="wx-footer">
-      <div class="wx-container">
-        <div class="wx-footer-grid">
-          <div class="wx-footer-brand">
-            <div class="wx-footer-brand-logo">
-              <span>🖼️</span>
-              <span>墙面艺术馆</span>
-            </div>
-            <p class="wx-footer-brand-desc">专注于家庭装饰画、现代墙面艺术与创意挂画定制服务，为每一面墙注入艺术灵魂。</p>
-          </div>
-          <div class="wx-footer-col">
-            <h4>快速链接</h4>
-            <ul>
-              <li><NuxtLink to="/search">新品到货</NuxtLink></li>
-              <li><NuxtLink to="/search">热销推荐</NuxtLink></li>
-              <li><NuxtLink to="/search?type=客厅">客厅装饰</NuxtLink></li>
-              <li><NuxtLink to="/search?type=卧室">卧室装饰</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>客户服务</h4>
-            <ul>
-              <li><NuxtLink to="/contact">帮助中心</NuxtLink></li>
-              <li><NuxtLink to="/login">订单查询</NuxtLink></li>
-              <li><NuxtLink to="/contact">配送信息</NuxtLink></li>
-              <li><NuxtLink to="/contact">退换政策</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>关于我们</h4>
-            <ul>
-              <li><NuxtLink to="/about">品牌故事</NuxtLink></li>
-              <li><NuxtLink to="/about">艺术家入驻</NuxtLink></li>
-              <li><NuxtLink to="/about">合作伙伴</NuxtLink></li>
-            </ul>
-          </div>
-        </div>
-        <div class="wx-footer-bottom">
-          <span>© 2026 墙面艺术馆 · Wall Art Gallery. All Rights Reserved.</span>
-          <div class="wx-footer-social">
-            <a href="#" aria-label="微信">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/><path d="M23.997 14.637c0-3.2-3.095-5.794-6.913-5.794-3.818 0-6.913 2.594-6.913 5.794 0 3.2 3.095 5.794 6.913 5.794.713 0 1.403-.1 2.052-.289a.725.725 0 01.59.076l1.584.926a.264.264 0 00.14.045.244.244 0 00.241-.244c0-.06-.023-.118-.039-.177l-.325-1.228a.49.49 0 01.177-.552c1.515-1.115 2.492-2.783 2.492-4.346zm-9.043-1.047c-.535 0-.969-.44-.969-.983s.434-.983.969-.983c.535 0 .969.44.969.983s-.434.983-.969.983zm4.258 0c-.535 0-.969-.44-.969-.983s.434-.983.969-.983c.535 0 .969.44.969.983s-.434.983-.969.983z"/></svg>
-            </a>
-            <a href="#" aria-label="微博">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439z"/></svg>
-            </a>
-            <a href="#" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-          </div>
-        </div>
+      <div class="wa-footer__bottom">
+        <span>© 2024 墙面艺术馆 All rights reserved.</span>
       </div>
     </footer>
 
-    <!-- Back to top -->
-    <button v-show="isScrolled" class="wx-back-to-top is-visible" @click="scrollToTop" aria-label="回到顶部">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    <button
+      v-show="showBackToTop"
+      class="wa-back-top"
+      @click="scrollToTop"
+    >
+      ↑
     </button>
   </div>
 </template>
 
-<script setup lang="ts">
-import '~/apps/_shared/woonuxt-theme.css';
+<script setup>
+import cfg from '../site.config'
+import { usePublishedProducts } from '~/composables/use-published-products'
 
-definePageMeta({ layout: false });
-
-useSeoMeta({
-  title: '墙面艺术馆 · 家庭装饰画与现代墙面艺术定制平台',
-  ogTitle: '墙面艺术馆 · 家庭装饰画与现代墙面艺术定制',
-  description: '墙面艺术馆专注于家庭装饰画、现代墙面艺术与个性创意挂画定制服务，为每一面墙注入艺术灵魂。',
-  ogDescription: '为每一面墙注入艺术灵魂，现代装饰画与创意挂画专属定制。'
-});
+definePageMeta({ layout: false })
 
 useHead({
-  htmlAttrs: { lang: 'zh-CN' },
-  link: [
-    { rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖼️</text></svg>' }
-  ]
-});
+  title: cfg.seo.title,
+  meta: [
+    { name: 'description', content: cfg.seo.description },
+    { property: 'og:title', content: cfg.seo.ogTitle },
+    { property: 'og:description', content: cfg.seo.ogDescription },
+  ],
+})
 
-const isScrolled = ref(false);
-const mobileMenuOpen = ref(false);
+const mobileMenuOpen = ref(false)
+const showBackToTop = ref(false)
 
-const { fetchPublishedProducts, getPublishedProductImage, getPublishedProductPath } = usePublishedProducts();
-const loading = ref(true);
-const products = ref<any[]>([]);
+const { data: publishedProducts } = await usePublishedProducts()
 
-const rooms = [
-  { icon: '🛋️', name: '客厅', bg: 'linear-gradient(135deg, #d4e4ea 0%, #e8f0f4 100%)' },
-  { icon: '🛏️', name: '卧室', bg: 'linear-gradient(135deg, #e2d8d0 0%, #f0e8e2 100%)' },
-  { icon: '💼', name: '办公室', bg: 'linear-gradient(135deg, #c8d8d4 0%, #dceae6 100%)' },
-  { icon: '☕', name: '咖啡馆', bg: 'linear-gradient(135deg, #ddd4c8 0%, #ece6dc 100%)' },
-  { icon: '🍽️', name: '餐厅', bg: 'linear-gradient(135deg, #f0e0d0 0%, #f8ede2 100%)' },
-  { icon: '🧸', name: '儿童房', bg: 'linear-gradient(135deg, #e8d5f5 0%, #f5eaff 100%)' },
-];
+const products = computed(() => {
+  return (publishedProducts.value || []).map((item) => ({
+    id: item.id,
+    slug: item.slug || item.id,
+    title: item.title || item.name,
+    cover: item.cover || item.image || '/placeholder.jpg',
+    price: item.price || 0,
+  }))
+})
 
-// Deterministic rating count based on product ID
-function getRatingCount(id: string | number) {
-  const hash = String(id).split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0);
-  return (hash % 80) + 10;
-}
-
-// Countdown timer
-const cd = ref({ days: '00', hours: '00', minutes: '00', seconds: '00' });
-let timer: ReturnType<typeof setInterval> | null = null;
-
-function updateCountdown() {
-  const now = new Date();
-  const end = new Date(now);
-  end.setDate(end.getDate() + 3);
-  end.setHours(23, 59, 59, 0);
-  const diff = end.getTime() - now.getTime();
-  if (diff <= 0) {
-    cd.value = { days: '00', hours: '00', minutes: '00', seconds: '00' };
-    return;
-  }
-  cd.value = {
-    days: String(Math.floor(diff / 86400000)).padStart(2, '0'),
-    hours: String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0'),
-    minutes: String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0'),
-    seconds: String(Math.floor((diff % 60000) / 1000)).padStart(2, '0'),
-  };
-}
+const categories = [
+  { id: 1, name: '抽象艺术', color: '#5b7e8a' },
+  { id: 2, name: '风景装饰', color: '#7a9e6e' },
+  { id: 3, name: '现代极简', color: '#c4a35a' },
+  { id: 4, name: '人像艺术', color: '#8a6b5e' },
+  { id: 5, name: '植物花卉', color: '#6e9e8a' },
+  { id: 6, name: '城市建筑', color: '#6b7e9e' },
+  { id: 7, name: '创意挂画', color: '#9e6b7e' },
+  { id: 8, name: '儿童房', color: '#d4a0c0' },
+  { id: 9, name: '黑白摄影', color: '#555555' },
+  { id: 10, name: '金属质感', color: '#8a8a8a' },
+]
 
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-function handleScroll() {
-  isScrolled.value = window.scrollY > 50;
-}
-
-onMounted(async () => {
-  updateCountdown();
-  timer = setInterval(updateCountdown, 1000);
-  try {
-    products.value = (await fetchPublishedProducts({ pageSize: 12, random: true })) || [];
-  } catch (e) {
-    console.error('Failed to fetch products:', e);
-  } finally {
-    loading.value = false;
-  }
-  window.addEventListener('scroll', handleScroll);
-});
-
-onUnmounted(() => {
-  if (timer) clearInterval(timer);
-  window.removeEventListener('scroll', handleScroll);
-});
+onMounted(() => {
+  window.addEventListener('scroll', () => {
+    showBackToTop.value = window.scrollY > 400
+  })
+})
 </script>
 
-<style scoped>
-/* Site-specific overrides */
-.woonuxt-theme[data-site="wall-art"] {
-  --wx-accent: #5b7e8a;
-  --wx-accent-light: #7fa3b0;
-  --wx-accent-dark: #3d5f6b;
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Category placeholder (no real images) */
-.wx-category-placeholder {
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif CN", Georgia, "Times New Roman", serif;
+  background: #fafafa;
+  color: #222;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Header ── */
+.wa-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 250, 250, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.wa-header__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wa-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+
+.wa-logo__emoji {
+  font-size: 24px;
+}
+
+.wa-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.wa-nav__link {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.wa-nav__link:hover {
+  color: #5b7e8a;
+}
+
+.wa-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wa-login-btn {
+  font-size: 13px;
+  padding: 6px 18px;
+  border: 1px solid #5b7e8a;
+  border-radius: 4px;
+  color: #5b7e8a;
+  transition: all 0.2s;
+}
+
+.wa-login-btn:hover {
+  background: #5b7e8a;
+  color: #fff;
+}
+
+.wa-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.wa-hamburger span {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: 2px;
+  background: #222;
+  border-radius: 1px;
+  transition: all 0.3s;
+}
+
+.wa-hamburger--open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.wa-hamburger--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.wa-hamburger--open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.wa-mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 0 24px 24px;
+  gap: 4px;
+}
+
+.wa-mobile-menu--open {
+  display: flex;
+}
+
+.wa-mobile-menu__link {
+  font-size: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: #444;
+}
+
+.wa-mobile-menu__link--accent {
+  color: #5b7e8a;
+  font-weight: 600;
+  border-bottom: none;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .wa-nav {
+    display: none;
+  }
+
+  .wa-login-btn {
+    display: none;
+  }
+
+  .wa-hamburger {
+    display: flex;
+  }
+}
+
+/* ── Hero ── */
+.wa-hero {
+  min-height: 70vh;
+  min-height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  background: linear-gradient(135deg, #e8e4de 0%, #d4e4ea 50%, #f0e8e2 100%);
+  text-align: center;
+  padding: 80px 24px;
 }
 
-/* Hero background for wall-art */
-.woonuxt-theme[data-site="wall-art"] .wx-hero {
-  background: linear-gradient(135deg, #f3efe9 0%, #e8f0f4 50%, #f8f6f3 100%);
+.wa-hero__inner {
+  max-width: 680px;
 }
 
-.woonuxt-theme[data-site="wall-art"] .wx-hero-overlay {
-  background: linear-gradient(to right, rgba(91, 126, 138, 0.35) 0%, rgba(91, 126, 138, 0.1) 60%, transparent 100%);
+.wa-hero__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.wa-hero__title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.wa-hero__desc {
+  font-size: clamp(14px, 2vw, 16px);
+  color: #666;
+  margin-bottom: 32px;
+  line-height: 1.8;
+}
+
+.wa-hero__cta {
+  display: inline-block;
+  padding: 14px 36px;
+  background: #5b7e8a;
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.wa-hero__cta:hover {
+  background: #4a6b75;
+  transform: translateY(-1px);
+}
+
+/* ── Section Title ── */
+.wa-section-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 24px;
+  color: #222;
+}
+
+/* ── Categories (horizontal scroll pills) ── */
+.wa-categories {
+  padding: 64px 24px;
+  background: #fafafa;
+}
+
+.wa-categories__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.wa-categories__scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wa-categories__scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.wa-categories__scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
+.wa-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  font-size: 14px;
+  color: #444;
+  transition: all 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wa-pill:hover {
+  border-color: #5b7e8a;
+  color: #5b7e8a;
+  box-shadow: 0 2px 8px rgba(91, 126, 138, 0.1);
+}
+
+.wa-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Products (masonry columns) ── */
+.wa-products {
+  padding: 0 24px 64px;
+  background: #fafafa;
+}
+
+.wa-products__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.wa-masonry {
+  column-count: 4;
+  column-gap: 16px;
+}
+
+.wa-card {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  display: block;
+}
+
+.wa-card__img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.wa-card__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.wa-card:hover .wa-card__img {
+  transform: scale(1.04);
+}
+
+.wa-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.wa-card:hover .wa-card__overlay {
+  opacity: 1;
+}
+
+.wa-card__overlay-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.wa-card__overlay-price {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .wa-masonry {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .wa-masonry {
+    column-count: 2;
+    column-gap: 10px;
+  }
+
+  .wa-card {
+    margin-bottom: 10px;
+  }
+}
+
+/* ── Footer ── */
+.wa-footer {
+  background: #222;
+  color: #ccc;
+  padding: 56px 24px 0;
+}
+
+.wa-footer__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.wa-footer__logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.wa-footer__tagline {
+  font-size: 13px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.wa-footer__col-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.wa-footer__link {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.wa-footer__link:hover {
+  color: #fff;
+}
+
+.wa-footer__bottom {
+  max-width: 1280px;
+  margin: 40px auto 0;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .wa-footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wa-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ── Back to Top ── */
+.wa-back-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #5b7e8a;
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(91, 126, 138, 0.3);
+  transition: background 0.2s, transform 0.2s;
+  z-index: 90;
+}
+
+.wa-back-top:hover {
+  background: #4a6b75;
+  transform: translateY(-2px);
 }
 </style>

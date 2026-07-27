@@ -1,6 +1,6 @@
 {
   "name": "yishe-shop",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Platform for fashion design, POD products, and custom design services",
   "author": "jackie c",
   "private": false,
@@ -121,5 +121,6 @@
     "git": {
       "commitMessage": "chore(release): release v${version}"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

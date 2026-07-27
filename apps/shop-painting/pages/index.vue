@@ -1,506 +1,213 @@
 <template>
-  <div class="woonuxt-theme" data-site="painting">
-    <!-- ===== HEADER ===== -->
-    <header class="wx-header" :class="{ 'is-scrolled': isScrolled }">
-      <div class="wx-container wx-header-inner">
-        <NuxtLink to="/" class="wx-logo">
-          <span>🎨</span>
-          <span>名画艺廊</span>
-        </NuxtLink>
-
-        <nav class="wx-nav">
-          <NuxtLink to="/" class="wx-nav-link active">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-nav-link">全部作品</NuxtLink>
-          <NuxtLink to="/about" class="wx-nav-link">关于艺廊</NuxtLink>
-          <NuxtLink to="/contact" class="wx-nav-link">定制咨询</NuxtLink>
-        </nav>
-
-        <div class="wx-header-actions">
-          <NuxtLink to="/login" class="wx-header-btn" title="登录">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </NuxtLink>
-        </div>
-
-        <button class="wx-hamburger" @click="mobileOpen = !mobileOpen" aria-label="菜单">
-          <span /><span /><span />
-        </button>
+  <div class="pnt-site">
+    <header class="hdr" :class="{ scrolled }">
+      <div class="hdr-inner">
+        <NuxtLink to="/" class="hdr-logo">🎨 <span>{{ cfg.brand }}</span></NuxtLink>
+        <nav class="hdr-nav"><NuxtLink v-for="n in cfg.nav" :key="n.to" :to="n.to" class="hdr-nav-link">{{ n.label }}</NuxtLink></nav>
+        <div class="hdr-actions"><NuxtLink to="/login" class="hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></NuxtLink></div>
+        <button class="hdr-burger" @click="menuOpen = !menuOpen"><span/><span/><span/></button>
       </div>
     </header>
+    <div class="mm" :class="{ open: menuOpen }" @click.self="menuOpen = false"><div class="mm-panel"><NuxtLink v-for="n in cfg.nav" :key="n.to" :to="n.to" class="mm-link" @click="menuOpen = false">{{ n.label }}</NuxtLink></div></div>
 
-    <!-- Mobile drawer -->
-    <div class="wx-mobile-drawer" :class="{ 'is-open': mobileOpen }">
-      <div class="wx-mobile-backdrop" @click="mobileOpen = false" />
-      <div class="wx-mobile-panel">
-        <nav class="wx-mobile-nav">
-          <NuxtLink to="/" class="wx-mobile-nav-link" @click="mobileOpen = false">首页</NuxtLink>
-          <NuxtLink to="/search" class="wx-mobile-nav-link" @click="mobileOpen = false">全部作品</NuxtLink>
-          <NuxtLink to="/about" class="wx-mobile-nav-link" @click="mobileOpen = false">关于艺廊</NuxtLink>
-          <NuxtLink to="/contact" class="wx-mobile-nav-link" @click="mobileOpen = false">定制咨询</NuxtLink>
-          <NuxtLink to="/login" class="wx-mobile-nav-link" @click="mobileOpen = false">登录</NuxtLink>
-        </nav>
-      </div>
-    </div>
-
-    <!-- ===== HERO ===== -->
-    <section class="wx-hero wx-hero--dark">
-      <div class="wx-hero-overlay" />
-      <div class="wx-hero-content">
-        <span class="wx-hero-eyebrow">GALLERY MASTERS · EST. 2026</span>
-        <h1 class="wx-hero-title">将世界名画<br/>带入您的空间</h1>
-        <p class="wx-hero-desc">博物馆级品质复制品，从莫奈到梵高，从毕加索到达利。每一幅都是对经典的致敬与对品质的执着。</p>
-        <NuxtLink to="/search" class="wx-hero-cta">浏览馆藏 →</NuxtLink>
+    <!-- Dark hero -->
+    <section class="hero">
+      <div class="hero-glow"/>
+      <div class="hero-inner">
+        <span class="hero-eyebrow">{{ cfg.hero.eyebrow }}</span>
+        <h1>{{ cfg.hero.title }}</h1>
+        <p>{{ cfg.hero.desc }}</p>
+        <NuxtLink to="/search" class="cta-gold">{{ cfg.hero.cta }}</NuxtLink>
       </div>
     </section>
 
-    <!-- ===== ARTIST STRIP ===== -->
-    <section class="wx-artist-strip">
-      <div class="wx-container">
-        <div class="wx-artist-strip-inner">
-          <span v-for="(name, i) in artistNames" :key="i" class="wx-artist-name">{{ name }}</span>
-        </div>
+    <!-- Artist strip -->
+    <section class="artists"><div class="wrap"><div class="artists-row"><span v-for="a in (cfg as any).artists" :key="a" class="artist-name">{{ a }}</span></div></div></section>
+
+    <!-- Categories -->
+    <section class="cats"><div class="wrap">
+      <h2>艺术流派</h2>
+      <div class="cats-grid">
+        <NuxtLink v-for="c in cfg.categories" :key="c.slug" :to="`/search?type=${c.slug}`" class="cat-card" :style="{ background: catBg[c.slug] }">
+          <img v-if="getCatImg(c.slug)" :src="getCatImg(c.slug)" :alt="c.name" loading="lazy" class="cat-bg"/>
+          <div class="cat-shade"/><span class="cat-label">{{ c.name }}</span>
+        </NuxtLink>
       </div>
-    </section>
+    </div></section>
 
-    <!-- ===== CATEGORIES (Art Periods) ===== -->
-    <section class="wx-categories">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">艺术流派</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
-        <div class="wx-categories-grid">
-          <NuxtLink v-for="cat in categories" :key="cat.name" :to="`/search?type=${cat.name}`" class="wx-category-card">
-            <div class="wx-category-placeholder" :style="{ background: cat.bg }">{{ cat.icon }}</div>
-            <div class="wx-category-card-overlay">
-              <span class="wx-category-card-name">{{ cat.name }}</span>
-            </div>
-          </NuxtLink>
-        </div>
+    <!-- Products -->
+    <section class="prods"><div class="wrap">
+      <h2>馆藏作品</h2>
+      <div v-if="loading" class="msg">加载中…</div>
+      <div v-else class="prods-grid">
+        <NuxtLink v-for="p in products" :key="p.id" :to="getPath(p)" class="prod-card">
+          <div class="prod-img"><img v-if="getImg(p)" :src="getImg(p)" :alt="p.title" loading="lazy"/></div>
+          <div class="prod-info"><h3>{{ p.title }}</h3><b v-if="p.price">¥{{ p.price }}</b></div>
+        </NuxtLink>
       </div>
-    </section>
+    </div></section>
 
-    <!-- ===== TRUST BADGES ===== -->
-    <section class="wx-trust">
-      <div class="wx-container">
-        <div class="wx-trust-grid">
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>全球包邮</h4>
-              <p>专业防震包装，全球免费配送</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>博物馆级复刻</h4>
-              <p>Giclée 微喷，色彩还原度 99%</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>7天退换</h4>
-              <p>不满意可无条件退换</p>
-            </div>
-          </div>
-          <div class="wx-trust-item">
-            <div class="wx-trust-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            </div>
-            <div class="wx-trust-text">
-              <h4>定制咨询</h4>
-              <p>专业艺术顾问在线服务</p>
-            </div>
-          </div>
-        </div>
+    <!-- Quality -->
+    <section class="quality"><div class="wrap">
+      <h2>品质承诺</h2>
+      <div class="quality-grid">
+        <div v-for="q in (cfg as any).quality" :key="q.num" class="quality-item"><span class="q-num">{{ q.num }}</span><h3>{{ q.title }}</h3><p>{{ q.desc }}</p></div>
       </div>
-    </section>
+    </div></section>
 
-    <!-- ===== PRODUCTS ===== -->
-    <section class="wx-products">
-      <div class="wx-container">
-        <div class="wx-section-header">
-          <h2 class="wx-section-title">馆藏作品</h2>
-          <NuxtLink to="/search" class="wx-section-link">查看全部 →</NuxtLink>
-        </div>
+    <!-- Quote -->
+    <section class="quote-section"><div class="wrap">
+      <blockquote>{{ (cfg as any).quote.text }}</blockquote>
+      <cite>{{ (cfg as any).quote.cite }}</cite>
+    </div></section>
 
-        <div v-if="loading" class="wx-loading">
-          <div class="wx-loading-spinner" />
-          正在加载馆藏作品…
-        </div>
-        <div v-else-if="products.length === 0" class="wx-empty">暂无作品，请稍后刷新</div>
-        <div v-else class="wx-products-grid">
-          <NuxtLink v-for="item in products" :key="item.id" :to="getPublishedProductPath(item)" class="wx-product-card">
-            <div class="wx-product-image">
-              <img v-if="getPublishedProductImage(item)" :src="getPublishedProductImage(item)" :alt="item.title" class="img-primary" loading="lazy" />
-              <img v-if="getPublishedProductImage(item, 800)" :src="getPublishedProductImage(item, 800)" :alt="item.title" class="img-hover" loading="lazy" />
-              <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-sale-badge">-{{ Math.round((1 - item.price / item.originalPrice) * 100) }}%</span>
-            </div>
-            <div class="wx-product-info">
-              <div class="wx-product-rating">
-                <span class="wx-stars">★★★★★</span>
-                <span class="wx-rating-count">({{ getRatingCount(item.id) }})</span>
-              </div>
-              <h3 class="wx-product-title">{{ item.title }}</h3>
-              <div class="wx-product-price">
-                <span v-if="item.price" class="wx-price-current">¥{{ item.price }}</span>
-                <span v-if="item.originalPrice && item.originalPrice > item.price" class="wx-price-original">¥{{ item.originalPrice }}</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </div>
+    <!-- CTA -->
+    <section class="cta-block"><div class="wrap">
+      <h2>{{ (cfg as any).cta.title }}</h2>
+      <p>{{ (cfg as any).cta.desc }}</p>
+      <NuxtLink to="/contact" class="cta-gold">{{ (cfg as any).cta.action }}</NuxtLink>
+    </div></section>
+
+    <footer class="ftr"><div class="wrap">
+      <div class="ftr-grid">
+        <div class="ftr-brand"><b>{{ cfg.emoji }} {{ cfg.brand }}</b><p>{{ cfg.footer.desc }}</p></div>
+        <div v-for="col in cfg.footer.cols" :key="col.title" class="ftr-col"><h4>{{ col.title }}</h4><NuxtLink v-for="l in col.links" :key="l.label" :to="l.to">{{ l.label }}</NuxtLink></div>
       </div>
-    </section>
-
-    <!-- ===== QUALITY SECTION ===== -->
-    <section class="wx-quality">
-      <div class="wx-container">
-        <div class="wx-section-header wx-section-header--center">
-          <h2 class="wx-section-title">品质承诺</h2>
-        </div>
-        <div class="wx-quality-grid">
-          <div v-for="q in qualityPoints" :key="q.num" class="wx-quality-item">
-            <span class="wx-quality-num">{{ q.num }}</span>
-            <h3>{{ q.title }}</h3>
-            <p>{{ q.desc }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== QUOTE ===== -->
-    <section class="wx-quote">
-      <div class="wx-container">
-        <blockquote class="wx-quote-text">
-          "艺术的目的不是再现可见，而是使不可见成为可见。"
-        </blockquote>
-        <cite class="wx-quote-cite">— Paul Klee</cite>
-      </div>
-    </section>
-
-    <!-- ===== CTA ===== -->
-    <section class="wx-cta-section">
-      <div class="wx-container">
-        <h2>寻找您的心仪之作？</h2>
-        <p>告诉我们您想要的画作，我们为您定制博物馆级复制品。</p>
-        <NuxtLink to="/contact" class="wx-hero-cta">提交定制需求 →</NuxtLink>
-      </div>
-    </section>
-
-    <!-- ===== NEWSLETTER ===== -->
-    <section class="wx-newsletter">
-      <div class="wx-container">
-        <h2 class="wx-newsletter-title">订阅艺术资讯</h2>
-        <p class="wx-newsletter-desc">第一时间获取新作品上架、艺术展览和独家优惠</p>
-        <form class="wx-newsletter-form" @submit.prevent>
-          <input type="email" class="wx-newsletter-input" placeholder="请输入您的邮箱地址" />
-          <button type="submit" class="wx-newsletter-btn">订阅</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="wx-footer">
-      <div class="wx-container">
-        <div class="wx-footer-grid">
-          <div class="wx-footer-brand">
-            <div class="wx-footer-brand-logo">
-              <span>🎨</span>
-              <span>名画艺廊</span>
-            </div>
-            <p class="wx-footer-brand-desc">专注于世界经典名画高品质复制品、博物馆级艺术版画与大师作品定制复刻服务。</p>
-          </div>
-          <div class="wx-footer-col">
-            <h4>浏览</h4>
-            <ul>
-              <li><NuxtLink to="/search">全部作品</NuxtLink></li>
-              <li><NuxtLink to="/about">关于艺廊</NuxtLink></li>
-              <li><NuxtLink to="/contact">定制咨询</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>支持</h4>
-            <ul>
-              <li><NuxtLink to="/contact">联系我们</NuxtLink></li>
-              <li><NuxtLink to="/login">账户登录</NuxtLink></li>
-            </ul>
-          </div>
-          <div class="wx-footer-col">
-            <h4>服务</h4>
-            <ul>
-              <li><NuxtLink to="/about">品牌故事</NuxtLink></li>
-              <li><NuxtLink to="/about">艺术家入驻</NuxtLink></li>
-            </ul>
-          </div>
-        </div>
-        <div class="wx-footer-bottom">
-          <span>© 2026 名画艺廊. All rights reserved.</span>
-          <div class="wx-footer-social">
-            <a href="#" aria-label="微信">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/><path d="M23.997 14.637c0-3.2-3.095-5.794-6.913-5.794-3.818 0-6.913 2.594-6.913 5.794 0 3.2 3.095 5.794 6.913 5.794.713 0 1.403-.1 2.052-.289a.725.725 0 01.59.076l1.584.926a.264.264 0 00.14.045.244.244 0 00.241-.244c0-.06-.023-.118-.039-.177l-.325-1.228a.49.49 0 01.177-.552c1.515-1.115 2.492-2.783 2.492-4.346zm-9.043-1.047c-.535 0-.969-.44-.969-.983s.434-.983.969-.983c.535 0 .969.44.969.983s-.434.983-.969.983zm4.258 0c-.535 0-.969-.44-.969-.983s.434-.983.969-.983c.535 0 .969.44.969.983s-.434.983-.969.983z"/></svg>
-            </a>
-            <a href="#" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Back to top -->
-    <button v-show="isScrolled" class="wx-back-to-top is-visible" @click="scrollToTop" aria-label="回到顶部">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
-    </button>
+      <div class="ftr-copy">© 2026 {{ cfg.brand }}.</div>
+    </div></footer>
+    <button v-show="scrolled" class="go-top" @click="scrollTo({top:0,behavior:'smooth'})">↑</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import '~/apps/_shared/woonuxt-theme.css';
+import cfg from '../site.config';
+import { usePublishedProducts } from '~/composables/use-published-products';
 
 definePageMeta({ layout: false });
+useSeoMeta({ title: cfg.seo.title, description: cfg.seo.description, ogTitle: cfg.seo.ogTitle, ogDescription: cfg.seo.ogDescription });
+useHead({ htmlAttrs: { lang: 'zh-CN' }, link: [{ rel: 'icon', type: 'image/svg+xml', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>' }] });
 
-useSeoMeta({
-  title: '名画艺廊 · 世界名画复制品与艺术版画定制平台',
-  ogTitle: '名画艺廊 · 世界名画复制品与艺术版画定制',
-  description: '名画艺廊专注于世界经典名画高品质复制品、博物馆级艺术版画与大师作品定制复刻服务。',
-  ogDescription: '博物馆级品质，将世界经典名画带入您的生活空间。',
-});
-
-useHead({
-  htmlAttrs: { lang: 'zh-CN' },
-  link: [
-    {
-      rel: 'icon',
-      type: 'image/svg+xml',
-      href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>',
-    },
-  ],
-});
-
-const { fetchPublishedProducts, getPublishedProductImage, getPublishedProductPath } = usePublishedProducts();
-
+const { fetchPublishedProducts, getPublishedProductImage: getImg, getPublishedProductPath: getPath } = usePublishedProducts();
 const loading = ref(true);
 const products = ref<any[]>([]);
-const isScrolled = ref(false);
-const mobileOpen = ref(false);
+const scrolled = ref(false);
+const menuOpen = ref(false);
 
-const artistNames = [
-  'Monet', 'Van Gogh', 'Picasso', 'Dalí', 'Klimt',
-  'Vermeer', 'Rembrandt', 'Renoir', 'Cézanne', 'Matisse',
-];
+const catBg: Record<string, string> = { '印象派': '#f0e6ff', '后印象派': '#fff3e0', '立体主义': '#e3f2fd', '超现实主义': '#fce4ec', '古典主义': '#f5f0e1', '现代艺术': '#e0f7fa' };
 
-const categories = [
-  { icon: '🌊', name: '印象派', bg: 'linear-gradient(135deg, #e8d5f5, #f0e6ff)' },
-  { icon: '🌻', name: '后印象派', bg: 'linear-gradient(135deg, #fff3e0, #ffe0b2)' },
-  { icon: '🎭', name: '立体主义', bg: 'linear-gradient(135deg, #e3f2fd, #bbdefb)' },
-  { icon: '⏰', name: '超现实主义', bg: 'linear-gradient(135deg, #fce4ec, #f8bbd0)' },
-  { icon: '🏛️', name: '古典主义', bg: 'linear-gradient(135deg, #f5f0e1, #e8e0d0)' },
-  { icon: '🎨', name: '现代艺术', bg: 'linear-gradient(135deg, #e0f7fa, #b2ebf2)' },
-];
-
-const qualityPoints = [
-  { num: '01', title: '博物馆级复刻', desc: '采用 Giclée 微喷技术，色彩还原度达 99%，历久弥新。' },
-  { num: '02', title: '艺术纸与画布', desc: '精选 300gsm 棉浆艺术纸或亚麻画布，质感媲美原作。' },
-  { num: '03', title: '专业装裱', desc: '提供实木画框、无酸卡纸装裱，保护画作同时提升格调。' },
-  { num: '04', title: '全球包邮', desc: '专业防震包装，全球主要地区免费配送。' },
-];
-
-// Deterministic rating count based on product ID
-function getRatingCount(id: string | number) {
-  const hash = String(id).split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0);
-  return (hash % 80) + 10;
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function handleScroll() {
-  isScrolled.value = window.scrollY > 50;
+function getCatImg(slug: string) {
+  const m = products.value.find(p => (p.type || p.category || '').toLowerCase().includes(slug));
+  return m ? getImg(m, 600) : '';
 }
 
 onMounted(async () => {
-  try {
-    const res = await fetchPublishedProducts({ pageSize: 12, random: true });
-    products.value = res || [];
-  } catch (e) {
-    console.error('Failed to fetch painting products:', e);
-  } finally {
-    loading.value = false;
-  }
-  window.addEventListener('scroll', handleScroll);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
+  try { products.value = (await fetchPublishedProducts({ pageSize: 12, random: true })) || []; } catch {} finally { loading.value = false; }
+  addEventListener('scroll', () => { scrolled.value = scrollY > 50; });
 });
 </script>
 
-<style scoped>
-/* Site-specific overrides */
-.woonuxt-theme[data-site="painting"] {
-  --wx-accent: #C9A96E;
-  --wx-accent-light: #dcc499;
-  --wx-accent-dark: #a8893e;
-}
+<style>
+/* ===== PAINTING — 博物馆暗色画廊 ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.pnt-site { font-family: "Playfair Display", "Noto Serif SC", Georgia, serif; color: #e8e0d0; background: #0a0a0a; line-height: 1.6; }
+.pnt-site a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* Category placeholder (no real images) */
-.wx-category-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-}
+.hdr { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.hdr.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+.hdr-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.hdr-logo { display: flex; align-items: center; gap: .4rem; font-weight: 700; font-size: 1rem; color: #fff; }
+.hdr-nav { display: flex; gap: .25rem; }
+.hdr-nav-link { padding: .4rem .75rem; font-size: .82rem; font-weight: 500; color: #999; border-radius: 6px; transition: all .15s; }
+.hdr-nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.hdr-actions { display: flex; }
+.hdr-icon { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; color: #999; transition: all .15s; }
+.hdr-icon:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.hdr-icon svg { width: 18px; height: 18px; }
+.hdr-burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+.hdr-burger span { display: block; width: 20px; height: 1.5px; background: #ccc; }
+@media (max-width: 768px) { .hdr-nav { display: none; } .hdr-burger { display: flex; } }
 
-/* Dark hero for painting */
-.woonuxt-theme[data-site="painting"] .wx-hero--dark {
-  background: #0a0a0a;
-}
+.mm { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity .25s; }
+.mm.open { opacity: 1; pointer-events: auto; }
+.mm-panel { position: fixed; top: 0; left: 0; bottom: 0; width: 260px; background: #141414; padding: 1.5rem; transform: translateX(-100%); transition: transform .25s; display: flex; flex-direction: column; gap: .25rem; }
+.mm.open .mm-panel { transform: translateX(0); }
+.mm-link { padding: .7rem 1rem; border-radius: 8px; font-size: .9rem; color: #999; transition: all .15s; }
+.mm-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
-.woonuxt-theme[data-site="painting"] .wx-hero--dark .wx-hero-overlay {
-  background: radial-gradient(ellipse at 30% 50%, rgba(201, 169, 110, 0.15) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 30%, rgba(201, 169, 110, 0.1) 0%, transparent 50%);
-}
+/* Hero — dark museum */
+.hero { position: relative; min-height: 520px; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(201,169,110,0.08) 0%, transparent 50%); }
+.hero-inner { position: relative; z-index: 1; padding: 4rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+.hero-eyebrow { font-size: .7rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: #C9A96E; display: block; margin-bottom: .75rem; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; color: #fff; }
+.hero p { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 480px; margin-bottom: 1.5rem; line-height: 1.7; }
+.cta-gold { display: inline-block; padding: .75rem 2rem; background: #C9A96E; color: #0a0a0a; border-radius: 4px; font-size: .85rem; font-weight: 700; letter-spacing: .03em; transition: background .2s; }
+.cta-gold:hover { background: #dcc499; }
 
-.woonuxt-theme[data-site="painting"] .wx-hero--dark .wx-hero-eyebrow {
-  color: var(--wx-accent);
-}
+/* Artists */
+.artists { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 1.25rem 0; overflow: hidden; }
+.artists-row { display: flex; gap: 2rem; white-space: nowrap; }
+.artist-name { font-size: .85rem; color: #666; letter-spacing: .05em; }
 
-.woonuxt-theme[data-site="painting"] .wx-hero--dark .wx-hero-title {
-  color: #ffffff;
-}
+/* Cats */
+.cats { padding: 4rem 0; }
+.cats h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; }
+.cats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: .75rem; }
+@media (max-width: 768px) { .cats-grid { grid-template-columns: repeat(2, 1fr); } }
+.cat-card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4/5; border-radius: 6px; overflow: hidden; text-decoration: none; color: #fff; transition: transform .25s; }
+.cat-card:hover { transform: translateY(-3px); }
+.cat-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; transition: opacity .3s, transform .35s; }
+.cat-card:hover .cat-bg { opacity: .7; transform: scale(1.05); }
+.cat-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%); }
+.cat-label { position: relative; z-index: 1; padding: .75rem; font-size: .82rem; font-weight: 600; }
 
-.woonuxt-theme[data-site="painting"] .wx-hero--dark .wx-hero-desc {
-  color: rgba(255, 255, 255, 0.7);
-}
+/* Prods */
+.prods { padding: 4rem 0; background: #111; }
+.prods h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; }
+.msg { text-align: center; padding: 3rem; color: #666; }
+.prods-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+@media (max-width: 768px) { .prods-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem; } }
+.prod-card { display: block; text-decoration: none; color: inherit; border-radius: 6px; overflow: hidden; background: #1a1a1a; transition: transform .2s; }
+.prod-card:hover { transform: translateY(-2px); }
+.prod-img { aspect-ratio: 1; overflow: hidden; }
+.prod-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.prod-card:hover .prod-img img { transform: scale(1.04); }
+.prod-info { padding: .6rem .75rem; }
+.prod-info h3 { font-size: .82rem; font-weight: 500; color: #ccc; line-height: 1.3; margin-bottom: .2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.prod-info b { font-size: .88rem; color: #C9A96E; }
 
-/* Artist strip */
-.wx-artist-strip {
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--wx-border);
-  overflow: hidden;
-}
+/* Quality */
+.quality { padding: 4rem 0; background: #0e0e0e; }
+.quality h2 { font-size: 1.3rem; font-weight: 700; color: #fff; text-align: center; margin-bottom: 2rem; }
+.quality-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+@media (max-width: 768px) { .quality-grid { grid-template-columns: repeat(2, 1fr); } }
+.quality-item { text-align: center; }
+.q-num { display: block; font-size: 1.8rem; font-weight: 800; color: #C9A96E; margin-bottom: .4rem; }
+.quality-item h3 { font-size: .9rem; font-weight: 600; color: #fff; margin-bottom: .3rem; }
+.quality-item p { font-size: .78rem; color: #888; line-height: 1.5; }
 
-.wx-artist-strip-inner {
-  display: flex;
-  gap: 2rem;
-  white-space: nowrap;
-}
+/* Quote */
+.quote-section { padding: 4rem 0; text-align: center; }
+.quote-section blockquote { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-style: italic; color: #e8e0d0; max-width: 600px; margin: 0 auto .75rem; line-height: 1.6; }
+.quote-section cite { font-size: .85rem; color: #C9A96E; font-style: normal; }
 
-.wx-artist-name {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--wx-text-muted);
-  letter-spacing: 0.05em;
-}
+/* CTA */
+.cta-block { padding: 4rem 0; text-align: center; background: #111; }
+.cta-block h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+.cta-block p { font-size: .9rem; color: #888; margin-bottom: 1.5rem; }
 
-/* Quality section */
-.wx-quality {
-  padding: var(--wx-section-py) 0;
-  background: var(--wx-surface);
-}
+/* Footer */
+.ftr { border-top: 1px solid rgba(255,255,255,0.06); padding: 2.5rem 0 0; }
+.ftr-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+@media (max-width: 768px) { .ftr-grid { grid-template-columns: 1fr; } }
+.ftr-brand b { font-size: 1rem; color: #fff; display: block; margin-bottom: .5rem; }
+.ftr-brand p { font-size: .78rem; line-height: 1.6; color: #888; }
+.ftr-col h4 { font-size: .82rem; font-weight: 600; color: #fff; margin-bottom: .6rem; }
+.ftr-col a { display: block; font-size: .78rem; padding: .25rem 0; color: #666; transition: color .15s; }
+.ftr-col a:hover { color: #C9A96E; }
+.ftr-copy { text-align: center; padding: 1rem; font-size: .68rem; color: #444; }
 
-.wx-section-header--center {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.wx-quality-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-}
-
-.wx-quality-item {
-  text-align: center;
-}
-
-.wx-quality-num {
-  display: block;
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--wx-accent);
-  margin-bottom: 0.5rem;
-}
-
-.wx-quality-item h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.wx-quality-item p {
-  font-size: 0.8125rem;
-  color: var(--wx-text-secondary);
-  line-height: 1.5;
-}
-
-/* Quote section */
-.wx-quote {
-  padding: clamp(3rem, 6vw, 5rem) 0;
-  text-align: center;
-}
-
-.wx-quote-text {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  font-style: italic;
-  color: var(--wx-text);
-  max-width: 700px;
-  margin: 0 auto 1rem;
-  line-height: 1.6;
-  border: none;
-  padding: 0;
-}
-
-.wx-quote-cite {
-  font-size: 0.9375rem;
-  color: var(--wx-accent);
-  font-style: normal;
-}
-
-/* CTA section */
-.wx-cta-section {
-  padding: var(--wx-section-py) 0;
-  background: #0a0a0a;
-  text-align: center;
-  color: #ffffff;
-}
-
-.wx-cta-section h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-}
-
-.wx-cta-section p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 1.5rem;
-}
-
-/* Responsive overrides for painting-specific sections */
-@media (max-width: 1024px) {
-  .wx-quality-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .wx-quality-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .wx-artist-strip-inner {
-    gap: 1.5rem;
-  }
-}
+.go-top { position: fixed; bottom: 2rem; right: 2rem; width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(201,169,110,0.3); background: rgba(10,10,10,0.9); color: #C9A96E; font-size: 1rem; cursor: pointer; z-index: 50; transition: all .2s; }
+.go-top:hover { background: #C9A96E; color: #0a0a0a; }
 </style>
