@@ -70,6 +70,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { api } from '~/utils/api';
 
 definePageMeta({
   layout: false
@@ -102,13 +103,30 @@ const handleLogin = async () => {
   errorMessage.value = '';
 
   try {
-    const publicUserStore = usePublicUserStore();
-    await publicUserStore.login({
+    const response = await api.publicUser.login({
+      account: form.value.username,
       username: form.value.username,
       password: form.value.password
     });
-    alert('登录成功！欢迎回到名片设计工坊。');
-    router.push('/');
+
+    if (response.code === 0 || response.code === 200 || response.status === true) {
+      if (response.data && response.data.token) {
+        const publicUserStore = usePublicUserStore();
+        publicUserStore.setToken(response.data.token);
+        try {
+          const infoRes = await api.publicUser.getUserInfo();
+          if (infoRes.data) {
+            publicUserStore.setUserInfo(infoRes.data);
+          }
+        } catch (e) {}
+        alert('登录成功！欢迎回到名片设计工坊。');
+        router.push('/');
+      } else {
+        errorMessage.value = '登录失败，请检查账号与密码。';
+      }
+    } else {
+      errorMessage.value = response.message || '登录失败，请检查账号与密码。';
+    }
   } catch (e: any) {
     errorMessage.value = e?.message || '登录失败，请检查账号与密码。';
   } finally {

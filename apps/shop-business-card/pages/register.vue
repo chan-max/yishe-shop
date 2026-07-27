@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { api } from '~/utils/api';
 
 definePageMeta({
   layout: false
@@ -119,13 +120,18 @@ const handleRegister = async () => {
   errorMessage.value = '';
 
   try {
-    const publicUserStore = usePublicUserStore();
-    await publicUserStore.register({
-      username: form.value.username,
-      password: form.value.password
+    const res = await api.publicUser.register({
+      account: form.value.username,
+      password: form.value.password,
+      name: form.value.username
     });
-    alert('注册成功！已为您自动登录名片设计工坊。');
-    router.push('/');
+
+    if (res.code === 0 || res.code === 200) {
+      alert('注册成功！正在跳转至登录页面…');
+      router.push('/login');
+    } else {
+      errorMessage.value = res.message || '注册失败，该账号可能已被占用。';
+    }
   } catch (e: any) {
     errorMessage.value = e?.message || '注册失败，该账号可能已被占用。';
   } finally {
