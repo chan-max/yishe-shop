@@ -30,7 +30,6 @@
               <span class="user-menu-copy">
                 <strong>{{ displayName }}</strong>
               </span>
-              <span class="user-menu-chevron" aria-hidden="true">⌄</span>
             </button>
             <div v-if="userMenuOpen" class="user-menu-panel" role="menu">
               <NuxtLink to="/profile" role="menuitem" @click="userMenuOpen = false">个人资料</NuxtLink>
@@ -1710,7 +1709,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 .user-menu-copy { display: flex; flex-direction: row; align-items: center; gap: 0.3rem; min-width: 0; }
 .user-menu-copy strong { max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
-.user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
 .user-menu-panel {
   position: absolute;
   top: calc(100% + 0.7rem);

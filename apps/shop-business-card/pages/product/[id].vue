@@ -21,7 +21,6 @@
               <span class="user-menu-copy">
                 <strong>{{ displayName }}</strong>
               </span>
-              <span class="user-menu-chevron" aria-hidden="true">⌄</span>
             </button>
             <div v-if="userMenuOpen" class="user-menu-panel" role="menu">
               <NuxtLink to="/profile" role="menuitem" @click="userMenuOpen = false">个人资料</NuxtLink>
@@ -936,7 +935,6 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
 .user-avatar { width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #111111; border-radius: 50%; background: #111111; color: #ffffff; font-size: 0.72rem; font-weight: 700; }
 .user-menu-copy { display: flex; flex-direction: row; align-items: center; gap: 0.3rem; min-width: 0; }
 .user-menu-copy strong { max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
-.user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
 .user-menu-panel { position: absolute; top: calc(100% + 0.7rem); right: 0; min-width: 8.5rem; padding: 0.35rem 0; border: 1px solid #d8d8d8; background: #ffffff; }
 .user-menu-panel a, .user-menu-panel button { display: block; width: 100%; box-sizing: border-box; padding: 0.65rem 0.8rem; border: 0; background: transparent; color: #222222; font: inherit; font-size: 0.72rem; text-align: left; text-decoration: none; cursor: pointer; }
 .user-menu-panel a:hover, .user-menu-panel button:hover { background: #f3f3f3; }
