@@ -29,7 +29,6 @@
               <span class="user-avatar">{{ userInitial }}</span>
               <span class="user-menu-copy">
                 <strong>{{ displayName }}</strong>
-                <small>{{ currentUser?.account || '会员账号' }}</small>
               </span>
               <span class="user-menu-chevron" aria-hidden="true">⌄</span>
             </button>
@@ -392,7 +391,7 @@ const isScrolled = ref(false);
 const userMenuOpen = ref(false);
 const isLoggedIn = computed(() => publicUserStore.isLoggedIn);
 const currentUser = computed(() => publicUserStore.currentUser);
-const displayName = computed(() => currentUser.value?.name || currentUser.value?.account || '会员');
+const displayName = computed(() => currentUser.value?.name || '会员');
 const userInitial = computed(() => displayName.value.trim().slice(0, 1).toUpperCase());
 
 const handleLogout = async () => {
@@ -1711,8 +1710,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 .user-menu-copy { display: flex; flex-direction: row; align-items: center; gap: 0.3rem; min-width: 0; }
 .user-menu-copy strong { max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
-.user-menu-copy small { max-width: 6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #777777; font-size: 0.62rem; }
-.user-menu-copy small::before { content: '·'; margin-right: 0.3rem; color: #aaaaaa; }
 .user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
 .user-menu-panel {
   position: absolute;
@@ -1747,7 +1744,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   .header-right { gap: 0.75rem; }
   .header-right .header-contact-btn { display: none; }
   .menu-label { display: none; }
-  .user-menu-copy small { display: none; }
   .gucci-atelier-hero { min-height: 640px; padding: 4.5rem 0 3rem; }
   .hero-layout { grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.15fr); }
   .hero-copy { padding: 3rem 2.25rem; }
