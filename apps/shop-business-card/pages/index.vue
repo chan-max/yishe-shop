@@ -1,6 +1,6 @@
 <template>
   <div class="gucci-storefront-wrapper">
-    <!-- Transparent Header Bar - Blends with Banner, Transitions to White on Scroll -->
+    <!-- Transparent Header Bar - Blends seamlessly with light top banner, turns solid white on scroll -->
     <header class="gucci-header" :class="{ 'header-scrolled': isScrolled }">
       <div class="gucci-header-inner">
         <div class="header-left">
@@ -52,7 +52,7 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Taller Studio Grey Gradient Hero with Pure Ultra-Clean Typography (#f0f0f0 -> #c8c8c8) -->
+      <!-- 1. Taller Light-to-Dark Studio Grey Gradient Hero Stage (上面浅 #f9f9f9 -> 下面深 #5d626a + 氛围商品图墙 + 极致视觉细节) -->
       <section class="gucci-gradient-wall-hero">
         <!-- Background Layer 1: Atmospheric Product Image Wall Mosaic -->
         <div class="hero-bg-product-wall">
@@ -73,15 +73,17 @@
               </div>
             </div>
           </div>
-          <!-- Pure Grey Studio Radial Mask Gradient -->
+          <!-- Studio Light-to-Dark Gradient Mask -->
           <div class="wall-gradient-mask"></div>
           <div class="hero-studio-ambient-glow"></div>
         </div>
 
-        <!-- Foreground Stage: Ultra-Clean Typography Only -->
+        <!-- Foreground Stage: Ultra-Clean High-Fashion Typography -->
         <div class="hero-center-stage">
           <div class="hero-headline-group">
-            <span class="hero-top-badge badge-pulse">BUSINESS CARD ATELIER</span>
+            <div class="badge-pill-container">
+              <span class="hero-top-badge">BUSINESS CARD ATELIER · 0 YUAN FREE DESIGN</span>
+            </div>
             <h1 class="hero-main-title">名 片 免 费 设 计</h1>
             <p class="hero-sub-text">
               个人与小微企业 0 元免费定制 · 全网灵感免费设计同款
@@ -498,7 +500,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Pure Neutral Studio Grey Gradient (#f0f0f0 -> #c8c8c8), Taller Banner Stage & Ultra-Clean Typography */
+/* GUCCI Luxury Design System - Light-to-Dark Studio Grey Gradient (#f9f9f9 -> #5d626a), Taller Hero & Polished Details */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -582,7 +584,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   box-shadow: 0 2px 8px rgba(212, 163, 55, 0.2);
 }
 
-/* Dynamic Header - Transparent at top, turns solid white on scroll */
+/* Dynamic Header - Transparent at top (Integrated with light studio top), turns solid white on scroll */
 .gucci-header {
   width: 100%;
   position: fixed;
@@ -665,17 +667,18 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. Taller Studio Neutral Grey Gradient Hero Stage (#f0f0f0 -> #c8c8c8, min-height: 760px) */
+/* 1. Taller Light-to-Dark Studio Grey Gradient Hero Stage (上面浅 #f9f9f9 -> 下面深 #5d626a) */
 .gucci-gradient-wall-hero {
   position: relative;
   width: 100%;
-  min-height: 760px;
-  background: linear-gradient(180deg, #f2f2f2 0%, #dedede 50%, #c4c4c4 100%);
+  min-height: 780px;
+  background: linear-gradient(180deg, #f9f9f9 0%, #dedede 35%, #9b9fa6 70%, #5d626a 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12rem 2rem 8rem;
+  padding: 12.5rem 2rem 8.5rem;
+  border-bottom: 1px solid #4d525a;
 }
 
 /* Background Layer 1: Atmospheric Product Wall Grid Mosaic */
@@ -695,8 +698,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: -15%;
   margin-top: -5%;
   transform: rotate(-3deg) scale(1.05);
-  opacity: 0.24;
-  filter: grayscale(1) contrast(1.1);
+  opacity: 0.28;
+  filter: grayscale(0.8) contrast(1.15);
 }
 
 @media (max-width: 900px) {
@@ -707,7 +710,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 
 .wall-tile-item {
   height: 240px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -726,10 +729,10 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   padding: 1rem;
 }
 
-.wall-bg-1 { background: #e0e0e0; color: #000; }
+.wall-bg-1 { background: #e2e2e2; color: #000; }
 .wall-bg-2 { background: #1a1a1a; color: #fff; }
-.wall-bg-3 { background: #d0d0d0; color: #000; }
-.wall-bg-4 { background: #333333; color: #fff; }
+.wall-bg-3 { background: #cecece; color: #000; }
+.wall-bg-4 { background: #2f343b; color: #fff; }
 
 .wall-tile-label {
   font-size: 0.7rem;
@@ -738,13 +741,13 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   opacity: 0.8;
 }
 
-/* Neutral Grey Studio Mask Layer */
+/* Light-to-Dark Studio Grey Radial Mask Layer */
 .wall-gradient-mask {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(242, 242, 242, 0.4) 0%, rgba(196, 196, 196, 0.88) 75%),
-    linear-gradient(180deg, rgba(242, 242, 242, 0.5) 0%, rgba(196, 196, 196, 0.95) 100%);
+    radial-gradient(circle at 50% 30%, rgba(249, 249, 249, 0.35) 0%, rgba(93, 98, 106, 0.85) 80%),
+    linear-gradient(180deg, rgba(249, 249, 249, 0.4) 0%, rgba(93, 98, 106, 0.94) 100%);
   z-index: 2;
 }
 
@@ -752,8 +755,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.75) 0%, transparent 60%),
-    radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
+    radial-gradient(circle at 80% 85%, rgba(212, 163, 55, 0.2) 0%, transparent 50%);
   pointer-events: none;
   z-index: 3;
 }
@@ -761,7 +764,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .hero-center-stage {
   position: relative;
   z-index: 10;
-  max-width: 900px;
+  max-width: 920px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -770,41 +773,53 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .hero-headline-group {
-  margin-bottom: 3rem;
+  margin-bottom: 3.25rem;
   max-width: 860px;
 }
 
+.badge-pill-container {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0.35rem 1.4rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
 .hero-top-badge {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 800;
-  letter-spacing: 0.35em;
-  color: #555555;
+  letter-spacing: 0.3em;
+  color: #222222;
   display: block;
-  margin-bottom: 1.25rem;
 }
 
 .hero-main-title {
-  font-size: 3.8rem;
+  font-size: 4rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   color: #000000;
   margin: 0 0 1.25rem;
   line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
   .hero-main-title {
-    font-size: 2.5rem;
-    letter-spacing: 0.1em;
+    font-size: 2.6rem;
+    letter-spacing: 0.12em;
   }
 }
 
 .hero-sub-text {
-  font-size: 1.15rem;
-  color: #333333;
-  letter-spacing: 0.08em;
-  max-width: 720px;
+  font-size: 1.18rem;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  max-width: 760px;
   margin: 0 auto;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .hero-action-row {
@@ -822,36 +837,42 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .gucci-btn-gold {
   background: #000000;
   color: #ffffff;
-  padding: 1.05rem 3.25rem;
-  font-size: 0.85rem;
+  padding: 1.1rem 3.5rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-decoration: none;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+  border: 1px solid #000000;
 }
 
 .gucci-btn-gold:hover {
-  background: #222222;
-  transform: translateY(-2px);
+  background: #d4a337;
+  color: #000000;
+  border-color: #d4a337;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(212, 163, 55, 0.4);
 }
 
 .gucci-btn-outline-dark {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
   color: #000000;
   border: 1px solid #000000;
-  padding: 1.05rem 3.25rem;
-  font-size: 0.85rem;
+  padding: 1.1rem 3.5rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .gucci-btn-outline-dark:hover {
   background: #000000;
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 /* Free Design Banner */
