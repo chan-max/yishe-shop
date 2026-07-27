@@ -1709,9 +1709,10 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   font-size: 0.72rem;
   font-weight: 700;
 }
-.user-menu-copy { display: flex; flex-direction: column; gap: 0.08rem; min-width: 0; }
-.user-menu-copy strong { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
-.user-menu-copy small { color: #777777; font-size: 0.58rem; }
+.user-menu-copy { display: flex; flex-direction: row; align-items: center; gap: 0.3rem; min-width: 0; }
+.user-menu-copy strong { max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
+.user-menu-copy small { max-width: 6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #777777; font-size: 0.62rem; }
+.user-menu-copy small::before { content: '·'; margin-right: 0.3rem; color: #aaaaaa; }
 .user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
 .user-menu-panel {
   position: absolute;

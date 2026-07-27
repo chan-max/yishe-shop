@@ -935,9 +935,10 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
 .user-menu { position: relative; z-index: 120; }
 .user-menu-trigger { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0; border: 0; background: transparent; color: #111111; cursor: pointer; text-align: left; }
 .user-avatar { width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #111111; border-radius: 50%; background: #111111; color: #ffffff; font-size: 0.72rem; font-weight: 700; }
-.user-menu-copy { display: flex; flex-direction: column; gap: 0.08rem; min-width: 0; }
-.user-menu-copy strong { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
-.user-menu-copy small { color: #777777; font-size: 0.58rem; }
+.user-menu-copy { display: flex; flex-direction: row; align-items: center; gap: 0.3rem; min-width: 0; }
+.user-menu-copy strong { max-width: 5.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
+.user-menu-copy small { max-width: 6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #777777; font-size: 0.62rem; }
+.user-menu-copy small::before { content: '·'; margin-right: 0.3rem; color: #aaaaaa; }
 .user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
 .user-menu-panel { position: absolute; top: calc(100% + 0.7rem); right: 0; min-width: 8.5rem; padding: 0.35rem 0; border: 1px solid #d8d8d8; background: #ffffff; }
 .user-menu-panel a, .user-menu-panel button { display: block; width: 100%; box-sizing: border-box; padding: 0.65rem 0.8rem; border: 0; background: transparent; color: #222222; font: inherit; font-size: 0.72rem; text-align: left; text-decoration: none; cursor: pointer; }
