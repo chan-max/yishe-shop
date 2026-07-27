@@ -1,7 +1,7 @@
 <template>
   <div class="gucci-storefront-wrapper">
-    <!-- Top White Luxury Header Bar -->
-    <header class="gucci-header">
+    <!-- Transparent Header Bar - Blends with Banner, Transitions to White on Scroll -->
+    <header class="gucci-header" :class="{ 'header-scrolled': isScrolled }">
       <div class="gucci-header-inner">
         <div class="header-left">
           <NuxtLink to="/contact" class="header-contact-btn animated-hover-link">
@@ -18,7 +18,7 @@
 
         <div class="header-right">
           <NuxtLink v-if="!user" to="/login" class="header-contact-btn underline-slide" style="margin-right: 0.5rem;">登录 / 注册</NuxtLink>
-          <span v-else class="user-greeting" style="font-size: 0.8rem; font-weight: 700; color: #d4a337; margin-right: 0.5rem;">{{ user.username || 'VIP 会员' }}</span>
+          <span v-else class="user-greeting" style="font-size: 0.8rem; font-weight: 700; color: #b38218; margin-right: 0.5rem;">{{ user.username || 'VIP 会员' }}</span>
           <NuxtLink to="/search" class="header-icon-btn icon-hover-bounce" title="搜索设计灵感">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
@@ -52,7 +52,7 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Pure Editorial Typography Hero (质感渐变背景 + 背景商品图墙 + 纯纯大牌 Banner 文字) -->
+      <!-- 1. GUCCI Reference Studio Gradient Hero (参考图片影棚质感渐变色 #eceae5 -> #d8d3c8 + 背景商品图墙 + Header 透明融合) -->
       <section class="gucci-gradient-wall-hero">
         <!-- Background Layer 1: Atmospheric Product Image Wall Mosaic -->
         <div class="hero-bg-product-wall">
@@ -73,9 +73,9 @@
               </div>
             </div>
           </div>
-          <!-- Dark Radial Mask Gradient -->
+          <!-- Soft Studio Mask Gradient -->
           <div class="wall-gradient-mask"></div>
-          <div class="hero-gold-ambient-glow"></div>
+          <div class="hero-studio-ambient-glow"></div>
         </div>
 
         <!-- Foreground Stage: Clean Editorial Typography Only -->
@@ -92,7 +92,7 @@
             <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
               申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
-            <NuxtLink to="/search" class="gucci-btn-outline-white ripple-btn">
+            <NuxtLink to="/search" class="gucci-btn-outline-dark ripple-btn">
               探索名片设计灵感库
             </NuxtLink>
           </div>
@@ -344,7 +344,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 definePageMeta({
   layout: 'default'
@@ -371,6 +371,13 @@ const user = ref<any>(null);
 const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
+const isScrolled = ref(false);
+
+const handleScroll = () => {
+  if (typeof window !== 'undefined') {
+    isScrolled.value = window.scrollY > 40;
+  }
+};
 
 const wallProducts = computed(() => {
   if (products.value.length > 0) {
@@ -456,6 +463,11 @@ const submitEmail = () => {
 };
 
 onMounted(async () => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+  }
+
   try {
     const publicUserStore = usePublicUserStore();
     if (publicUserStore.user) {
@@ -477,10 +489,16 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('scroll', handleScroll);
+  }
+});
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Pure Editorial Typography Hero (Clean Luxury Banner) */
+/* GUCCI Luxury Design System - Reference Studio Gradient (#eceae5 -> #d8d3c8) & Dynamic Transparent/White Header */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -491,7 +509,7 @@ onMounted(async () => {
   width: 100%;
 }
 
-input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-outline-white, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
+input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-outline-dark, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
   border-radius: 0 !important;
 }
 
@@ -564,19 +582,30 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   box-shadow: 0 2px 8px rgba(212, 163, 55, 0.2);
 }
 
+/* Dynamic Header - Initially Transparent (Integrated with Studio Gradient), Transitions to Solid White on Scroll */
 .gucci-header {
   width: 100%;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gucci-header.header-scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom-color: #e5e5e5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .gucci-header-inner {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 1.1rem 2.2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -636,17 +665,17 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. Pure Editorial Typography Hero */
+/* 1. GUCCI Reference Studio Gradient Hero (#eceae5 -> #d8d3c8) */
 .gucci-gradient-wall-hero {
   position: relative;
   width: 100%;
-  min-height: 520px;
-  background: linear-gradient(135deg, #0c0f14 0%, #151c27 40%, #0d121a 70%, #07090d 100%);
+  min-height: 580px;
+  background: linear-gradient(180deg, #eceae5 0%, #e3dfd7 45%, #d8d3c8 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6.5rem 2rem 5.5rem;
+  padding: 8.5rem 2rem 5.5rem;
 }
 
 /* Background Layer 1: Atmospheric Product Wall Grid Mosaic */
@@ -661,13 +690,13 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .wall-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
+  gap: 1.2rem;
   width: 130%;
   margin-left: -15%;
   margin-top: -5%;
   transform: rotate(-3deg) scale(1.05);
-  opacity: 0.26;
-  filter: saturate(0.8) contrast(1.1);
+  opacity: 0.22;
+  filter: saturate(0.85) contrast(1.05);
 }
 
 @media (max-width: 900px) {
@@ -678,7 +707,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 
 .wall-tile-item {
   height: 220px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -697,34 +726,34 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   padding: 1rem;
 }
 
-.wall-bg-1 { background: linear-gradient(135deg, #2b221a 0%, #110d0a 100%); color: #d4a337; }
-.wall-bg-2 { background: linear-gradient(135deg, #1b2631 0%, #0d131a 100%); color: #ffffff; }
+.wall-bg-1 { background: linear-gradient(135deg, #e8e3da 0%, #cfc8ba 100%); color: #000; }
+.wall-bg-2 { background: linear-gradient(135deg, #18222a 0%, #0a0e12 100%); color: #fff; }
 .wall-bg-3 { background: linear-gradient(135deg, #3a2228 0%, #1f1115 100%); color: #e5b448; }
-.wall-bg-4 { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: #ffffff; }
+.wall-bg-4 { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: #fff; }
 
 .wall-tile-label {
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.2em;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
-/* Dark Radial Mask Layer */
+/* Soft Studio Mask Layer */
 .wall-gradient-mask {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 50%, rgba(12, 15, 20, 0.3) 0%, rgba(7, 9, 13, 0.94) 75%),
-    linear-gradient(180deg, rgba(12, 15, 20, 0.6) 0%, rgba(7, 9, 13, 0.98) 100%);
+    radial-gradient(circle at 50% 40%, rgba(236, 234, 229, 0.45) 0%, rgba(216, 211, 200, 0.88) 75%),
+    linear-gradient(180deg, rgba(236, 234, 229, 0.6) 0%, rgba(216, 211, 200, 0.95) 100%);
   z-index: 2;
 }
 
-.hero-gold-ambient-glow {
+.hero-studio-ambient-glow {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 30%, rgba(212, 163, 55, 0.28) 0%, transparent 60%),
-    radial-gradient(circle at 80% 80%, rgba(53, 92, 125, 0.2) 0%, transparent 50%);
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(212, 163, 55, 0.15) 0%, transparent 50%);
   pointer-events: none;
   z-index: 3;
 }
@@ -732,7 +761,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .hero-center-stage {
   position: relative;
   z-index: 10;
-  max-width: 900px;
+  max-width: 920px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -749,7 +778,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.25em;
-  color: #d4a337;
+  color: #b38218;
   display: block;
   margin-bottom: 1rem;
 }
@@ -758,10 +787,9 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   font-size: 3.2rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 1.25rem;
   line-height: 1.2;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
 }
 
 @media (max-width: 768px) {
@@ -772,9 +800,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 
 .hero-sub-text {
   font-size: 1.15rem;
-  color: #e5e5e5;
+  color: #444444;
   line-height: 1.7;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
   max-width: 760px;
   margin: 0 auto;
 }
@@ -808,10 +835,10 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
-.gucci-btn-outline-white {
+.gucci-btn-outline-dark {
   background: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
   padding: 1rem 3rem;
   font-size: 0.85rem;
   font-weight: 800;
@@ -820,8 +847,9 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transition: all 0.2s ease;
 }
 
-.gucci-btn-outline-white:hover {
-  background: rgba(255, 255, 255, 0.15);
+.gucci-btn-outline-dark:hover {
+  background: #000000;
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
