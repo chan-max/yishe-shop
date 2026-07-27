@@ -15,7 +15,20 @@
         </div>
         <div class="header-right">
           <NuxtLink v-if="!publicUserStore.isLoggedIn" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
-          <span v-else class="user-greeting">欢迎，{{ publicUserStore.currentUser?.name || publicUserStore.currentUser?.account || 'VIP 会员' }}</span>
+          <div v-else class="user-menu">
+            <button type="button" class="user-menu-trigger" :aria-expanded="userMenuOpen" aria-haspopup="menu" @click="userMenuOpen = !userMenuOpen">
+              <span class="user-avatar">{{ userInitial }}</span>
+              <span class="user-menu-copy">
+                <strong>{{ displayName }}</strong>
+                <small>{{ publicUserStore.currentUser?.account || '会员账号' }}</small>
+              </span>
+              <span class="user-menu-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div v-if="userMenuOpen" class="user-menu-panel" role="menu">
+              <NuxtLink to="/profile" role="menuitem" @click="userMenuOpen = false">个人资料</NuxtLink>
+              <button type="button" role="menuitem" @click="handleLogout">退出登录</button>
+            </div>
+          </div>
           <NuxtLink to="/" class="header-icon-link underline-slide">首页</NuxtLink>
         </div>
       </div>
@@ -171,6 +184,8 @@
 import { ref, computed, onMounted } from 'vue';
 import type { StorefrontPublishedProduct } from '~/composables/use-published-products';
 import { usePublicUserStore } from '~/stores/public-user';
+import { api } from '~/utils/api';
+import { useToast } from '~/composables/use-toast';
 
 definePageMeta({
   layout: 'default'
@@ -194,6 +209,23 @@ const route = useRoute();
 const router = useRouter();
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
 const publicUserStore = usePublicUserStore();
+const toast = useToast();
+const userMenuOpen = ref(false);
+const displayName = computed(() => publicUserStore.currentUser?.name || publicUserStore.currentUser?.account || '会员');
+const userInitial = computed(() => displayName.value.trim().slice(0, 1).toUpperCase());
+
+const handleLogout = async () => {
+  try {
+    await api.publicUser.logout();
+  } catch (error) {
+    console.error('退出登录失败:', error);
+  } finally {
+    publicUserStore.clearToken();
+    userMenuOpen.value = false;
+    toast.success('已退出登录');
+    await router.push('/');
+  }
+};
 
 const loading = ref(true);
 const products = ref<StorefrontPublishedProduct[]>([]);
@@ -725,12 +757,24 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input, .filter-ch
   margin-bottom: 0.5rem;
 }
 
+.user-menu { position: relative; z-index: 120; }
+.user-menu-trigger { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0; border: 0; background: transparent; color: #111111; cursor: pointer; text-align: left; }
+.user-avatar { width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #111111; border-radius: 50%; background: #111111; color: #ffffff; font-size: 0.72rem; font-weight: 700; }
+.user-menu-copy { display: flex; flex-direction: column; gap: 0.08rem; min-width: 0; }
+.user-menu-copy strong { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.72rem; font-weight: 700; }
+.user-menu-copy small { color: #777777; font-size: 0.58rem; }
+.user-menu-chevron { color: #777777; font-size: 0.9rem; line-height: 1; }
+.user-menu-panel { position: absolute; top: calc(100% + 0.7rem); right: 0; min-width: 8.5rem; padding: 0.35rem 0; border: 1px solid #d8d8d8; background: #ffffff; }
+.user-menu-panel a, .user-menu-panel button { display: block; width: 100%; box-sizing: border-box; padding: 0.65rem 0.8rem; border: 0; background: transparent; color: #222222; font: inherit; font-size: 0.72rem; text-align: left; text-decoration: none; cursor: pointer; }
+.user-menu-panel a:hover, .user-menu-panel button:hover { background: #f3f3f3; }
+
 @media (max-width: 768px) {
   .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.75rem; }
   .header-left, .header-right { min-width: 0; }
   .header-center { flex: 1; min-width: 0; text-align: center; }
   .gucci-brand-logo { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.88rem; letter-spacing: 0.07em; }
   .header-right { gap: 0.65rem; }
+  .user-menu-copy small { display: none; }
   .header-icon-link { font-size: 0.72rem; white-space: nowrap; }
   .gucci-main-container { padding: 2.5rem 1rem; }
   .search-title { font-size: 1.35rem; line-height: 1.45; letter-spacing: 0.04em; }
@@ -755,6 +799,7 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input, .filter-ch
 @media (max-width: 420px) {
   .back-link { font-size: 0.7rem; }
   .header-right .header-icon-link:last-child { display: none; }
+  .user-menu-copy { display: none; }
   .gucci-products-grid { grid-template-columns: 1fr; }
   .product-photo-wrapper { height: 300px; }
 }
