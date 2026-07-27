@@ -98,8 +98,21 @@ export const usePublishedProducts = () => {
   const getPublishedProductPath = (product: StorefrontPublishedProduct) =>
     getProductPath(product);
 
+  const fetchProductDetail = async (id: string) => {
+    const response = await api.productList.getById(id, false);
+    if (
+      response.code !== 0 &&
+      response.status !== true &&
+      response.code !== 200
+    ) {
+      return null;
+    }
+    return response.data || null;
+  };
+
   return {
     fetchPublishedProducts,
+    fetchProductDetail,
     getPublishedProductImage,
     getPublishedProductPath,
   };

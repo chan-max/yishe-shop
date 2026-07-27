@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { api } from '~/utils/api';
+import { useToast } from '~/composables/use-toast';
 
 definePageMeta({
   layout: false
@@ -101,6 +102,7 @@ useHead({
 });
 
 const router = useRouter();
+const toast = useToast();
 const loading = ref(false);
 const errorMessage = ref('');
 
@@ -126,14 +128,16 @@ const handleRegister = async () => {
       name: form.value.username
     });
 
-    if (res.code === 0 || res.code === 200) {
-      alert('注册成功！正在跳转至登录页面…');
-      router.push('/login');
+    if (res.code === 0 || res.code === 200 || res.status === true) {
+      toast.success('注册成功', '正在跳转至登录页面。', 1600);
+      setTimeout(() => router.push('/login'), 1600);
     } else {
       errorMessage.value = res.message || '注册失败，该账号可能已被占用。';
+      toast.error('注册失败', errorMessage.value);
     }
   } catch (e: any) {
     errorMessage.value = e?.message || '注册失败，该账号可能已被占用。';
+    toast.error('注册失败', errorMessage.value);
   } finally {
     loading.value = false;
   }
@@ -342,5 +346,19 @@ input, select, textarea, button, .auth-submit-btn {
   letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.6rem; }
+  .gucci-brand-logo { min-width: 0; max-width: 50vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.82rem; letter-spacing: 0.06em; }
+  .back-link, .header-auth-link { font-size: 0.7rem; white-space: nowrap; }
+  .auth-main-container { margin: 2rem auto; padding: 0 1rem; }
+  .auth-box { padding: 2rem 1.25rem; }
+  .auth-title { font-size: 1.45rem; }
+  .auth-subtitle { font-size: 0.8rem; line-height: 1.65; }
+  .auth-form { gap: 1.35rem; }
+  .auth-footer-links { flex-wrap: wrap; line-height: 1.5; }
+  .gucci-mini-footer { padding: 2rem 1rem; }
+  .footer-logo-small { font-size: 0.82rem; letter-spacing: 0.08em; }
 }
 </style>

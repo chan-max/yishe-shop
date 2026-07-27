@@ -71,6 +71,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { api } from '~/utils/api';
+import { usePublicUserStore } from '~/stores/public-user';
+import { useToast } from '~/composables/use-toast';
 
 definePageMeta({
   layout: false
@@ -90,6 +92,8 @@ useHead({
 });
 
 const router = useRouter();
+const publicUserStore = usePublicUserStore();
+const toast = useToast();
 const loading = ref(false);
 const errorMessage = ref('');
 
@@ -104,14 +108,12 @@ const handleLogin = async () => {
 
   try {
     const response = await api.publicUser.login({
-      account: form.value.username,
       username: form.value.username,
       password: form.value.password
     });
 
     if (response.code === 0 || response.code === 200 || response.status === true) {
       if (response.data && response.data.token) {
-        const publicUserStore = usePublicUserStore();
         publicUserStore.setToken(response.data.token);
         try {
           const infoRes = await api.publicUser.getUserInfo();
@@ -119,16 +121,19 @@ const handleLogin = async () => {
             publicUserStore.setUserInfo(infoRes.data);
           }
         } catch (e) {}
-        alert('登录成功！欢迎回到名片设计工坊。');
-        router.push('/');
+        toast.success('登录成功', '欢迎回到名片设计工坊。', 1600);
+        setTimeout(() => router.push('/'), 1600);
       } else {
         errorMessage.value = '登录失败，请检查账号与密码。';
+        toast.error('登录失败', errorMessage.value);
       }
     } else {
       errorMessage.value = response.message || '登录失败，请检查账号与密码。';
+      toast.error('登录失败', errorMessage.value);
     }
   } catch (e: any) {
     errorMessage.value = e?.message || '登录失败，请检查账号与密码。';
+    toast.error('登录失败', errorMessage.value);
   } finally {
     loading.value = false;
   }
@@ -337,5 +342,19 @@ input, select, textarea, button, .auth-submit-btn {
   letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.6rem; }
+  .gucci-brand-logo { min-width: 0; max-width: 50vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.82rem; letter-spacing: 0.06em; }
+  .back-link, .header-auth-link { font-size: 0.7rem; white-space: nowrap; }
+  .auth-main-container { margin: 2rem auto; padding: 0 1rem; }
+  .auth-box { padding: 2rem 1.25rem; }
+  .auth-title { font-size: 1.45rem; }
+  .auth-subtitle { font-size: 0.8rem; line-height: 1.65; }
+  .auth-form { gap: 1.35rem; }
+  .auth-footer-links { flex-wrap: wrap; line-height: 1.5; }
+  .gucci-mini-footer { padding: 2rem 1rem; }
+  .footer-logo-small { font-size: 0.82rem; letter-spacing: 0.08em; }
 }
 </style>

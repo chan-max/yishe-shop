@@ -14,8 +14,8 @@
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink v-if="!user" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
-          <span v-else class="user-greeting">欢迎，{{ user.username || 'VIP 会员' }}</span>
+          <NuxtLink v-if="!publicUserStore.isLoggedIn" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
+          <span v-else class="user-greeting">欢迎，{{ publicUserStore.currentUser?.name || publicUserStore.currentUser?.account || 'VIP 会员' }}</span>
           <NuxtLink to="/" class="header-icon-link underline-slide">首页</NuxtLink>
         </div>
       </div>
@@ -131,7 +131,7 @@
               <img
                 v-if="getProductImage(item)"
                 :src="getProductImage(item)"
-                :alt="item.name"
+                :alt="item.title"
                 class="product-photo zoom-on-hover"
               />
               <div v-else class="product-fallback-photo">
@@ -146,8 +146,8 @@
             </div>
 
             <div class="product-details">
-              <h3 class="product-name">{{ item.name }}</h3>
-              <div class="product-price">设计服务：0元免费设计 (同款印制参考 ${{ item.price || '88.00' }})</div>
+              <h3 class="product-name">{{ item.title }}</h3>
+              <div class="product-price">{{ item.type || '名片定制' }} · {{ formatPrice(item) }}</div>
               <p class="product-desc">{{ item.description || '特种纸结合 24K 浮雕烫金与活字凹版压印设计。' }}</p>
               <div class="card-action-link underline-slide">
                 <span>免费设计同款风格</span>
@@ -169,6 +169,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import type { StorefrontPublishedProduct } from '~/composables/use-published-products';
+import { usePublicUserStore } from '~/stores/public-user';
 
 definePageMeta({
   layout: 'default'
@@ -191,10 +193,10 @@ useHead({
 const route = useRoute();
 const router = useRouter();
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
+const publicUserStore = usePublicUserStore();
 
-const user = ref<any>(null);
 const loading = ref(true);
-const products = ref<any[]>([]);
+const products = ref<StorefrontPublishedProduct[]>([]);
 const searchQuery = ref((route.query.q as string) || '');
 const selectedCategory = ref((route.query.category as string) || 'all');
 const selectedPaperStock = ref('all');
@@ -219,8 +221,12 @@ const paperStocks = [
 ];
 
 const getProductImage = (item: any) => {
-  if (item.images && item.images.length > 0) return item.images[0];
-  return getPublishedProductImage(item);
+  return item?.imageUrl ? getPublishedProductImage(item) : '';
+};
+
+const formatPrice = (item: StorefrontPublishedProduct) => {
+  if (!item.price) return '可定制';
+  return `¥${Number(item.price).toFixed(Number(item.price) % 1 === 0 ? 0 : 2)}`;
 };
 
 const handleSearch = () => {
@@ -244,38 +250,50 @@ const resetFilters = () => {
 
 const filteredProducts = computed(() => {
   let result = products.value.filter((item) => {
-    const matchesQuery = !searchQuery.value || item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || (item.description && item.description.toLowerCase().includes(searchQuery.value.toLowerCase()));
-    const matchesCategory = selectedCategory.value === 'all' || item.category === selectedCategory.value || (item.name && item.name.toLowerCase().includes(selectedCategory.value));
-    const price = parseFloat(item.price || 88);
-    const matchesMin = minPrice.value === null || price >= minPrice.value;
-    const matchesMax = maxPrice.value === null || price <= maxPrice.value;
-    return matchesQuery && matchesCategory && matchesMin && matchesMax;
+    const searchableText = [item.title, item.description, item.category, item.type].join(' ').toLowerCase();
+    const query = searchQuery.value.trim().toLowerCase();
+    const categoryTerms: Record<string, string[]> = {
+      letterpress: ['letterpress', '凹版', '活字', '棉纸'],
+      'gold-foil': ['gold', 'foil', '烫金', '浮雕', '黑金'],
+      steel: ['steel', 'metal', '钛钢', '金属', '拉丝'],
+      specialty: ['specialty', 'paper', '特种纸', '绒面', '触感']
+    };
+    const paperTerms: Record<string, string[]> = {
+      cotton: ['cotton', '棉纸', '600g'],
+      black: ['black', '黑卡', '哑光'],
+      velvet: ['velvet', '绒面', '触感'],
+      metal: ['metal', 'steel', '钛钢', '合金']
+    };
+    const matchesQuery = !query || searchableText.includes(query);
+    const matchesCategory = selectedCategory.value === 'all' || (categoryTerms[selectedCategory.value] || [selectedCategory.value]).some((term) => searchableText.includes(term));
+    const matchesPaperStock = selectedPaperStock.value === 'all' || (paperTerms[selectedPaperStock.value] || [selectedPaperStock.value]).some((term) => searchableText.includes(term));
+    const price = item.price;
+    const matchesMin = minPrice.value === null || (price !== null && price >= minPrice.value);
+    const matchesMax = maxPrice.value === null || (price !== null && price <= maxPrice.value);
+    return matchesQuery && matchesCategory && matchesPaperStock && matchesMin && matchesMax;
   });
 
   if (sortBy.value === 'price-asc') {
-    result.sort((a, b) => (parseFloat(a.price) || 88) - (parseFloat(b.price) || 88));
+    result.sort((a, b) => (a.price ?? Number.POSITIVE_INFINITY) - (b.price ?? Number.POSITIVE_INFINITY));
   } else if (sortBy.value === 'price-desc') {
-    result.sort((a, b) => (parseFloat(b.price) || 88) - (parseFloat(a.price) || 88));
+    result.sort((a, b) => (b.price ?? -1) - (a.price ?? -1));
   }
 
   return result;
 });
 
 const navigateToProduct = (item: any) => {
-  router.push(`/product/${item.id}`);
+  router.push(`/product/${encodeURIComponent(item.id)}`);
 };
 
 onMounted(async () => {
   try {
-    const publicUserStore = usePublicUserStore();
-    if (publicUserStore.user) {
-      user.value = publicUserStore.user;
-    }
+    publicUserStore.initToken();
   } catch (e) {}
 
   try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 20 });
+    const res = await fetchPublishedProducts({ pageSize: 48, random: false });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -705,5 +723,39 @@ input, select, textarea, button, .tag-btn, .reset-btn, .search-input, .filter-ch
   letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.75rem; }
+  .header-left, .header-right { min-width: 0; }
+  .header-center { flex: 1; min-width: 0; text-align: center; }
+  .gucci-brand-logo { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.88rem; letter-spacing: 0.07em; }
+  .header-right { gap: 0.65rem; }
+  .header-icon-link { font-size: 0.72rem; white-space: nowrap; }
+  .gucci-main-container { padding: 2.5rem 1rem; }
+  .search-title { font-size: 1.35rem; line-height: 1.45; letter-spacing: 0.04em; }
+  .search-sub { font-size: 0.8rem; line-height: 1.65; }
+  .search-bar-wrapper .search-input { font-size: 0.9rem; padding: 0.8rem 2.5rem 0.8rem 0.25rem; }
+  .advanced-filter-panel { padding: 1.25rem 1rem; margin-bottom: 2rem; }
+  .filter-row-flex { align-items: stretch; }
+  .filter-sub-group { width: 100%; flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+  .filter-select { width: 100%; box-sizing: border-box; }
+  .price-range-inputs { width: 100%; }
+  .price-num-input { flex: 1; width: auto; }
+  .results-header-line { align-items: flex-start; gap: 0.75rem; flex-direction: column; margin-bottom: 1.5rem; }
+  .gucci-products-grid { gap: 1.5rem 1rem; }
+  .product-photo-wrapper { height: 250px; }
+  .product-details { padding: 0.8rem 0; }
+  .product-name { font-size: 0.86rem; line-height: 1.45; }
+  .product-desc { font-size: 0.76rem; }
+  .gucci-mini-footer { padding: 2rem 1rem; }
+  .footer-logo-small { font-size: 0.82rem; letter-spacing: 0.08em; }
+}
+
+@media (max-width: 420px) {
+  .back-link { font-size: 0.7rem; }
+  .header-right .header-icon-link:last-child { display: none; }
+  .gucci-products-grid { grid-template-columns: 1fr; }
+  .product-photo-wrapper { height: 300px; }
 }
 </style>

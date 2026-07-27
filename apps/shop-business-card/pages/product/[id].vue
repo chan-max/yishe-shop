@@ -14,8 +14,8 @@
           </NuxtLink>
         </div>
         <div class="header-right">
-          <NuxtLink v-if="!user" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
-          <span v-else class="user-greeting">欢迎，{{ user.username || 'VIP 会员' }}</span>
+          <NuxtLink v-if="!publicUserStore.isLoggedIn" to="/login" class="header-icon-link underline-slide">登录 / 注册</NuxtLink>
+          <span v-else class="user-greeting">欢迎，{{ publicUserStore.currentUser?.name || publicUserStore.currentUser?.account || 'VIP 会员' }}</span>
           <NuxtLink to="/search" class="header-icon-link underline-slide">高级搜索</NuxtLink>
         </div>
       </div>
@@ -142,12 +142,14 @@
 
             <!-- Action Button Focus on Free Design Same Style -->
             <div class="action-btn-row">
-              <button type="button" class="btn-checkout-black ripple-btn" @click="handleOrder">
-                ✨ 0 元免费申请此款设计 (APPLY FOR FREE DESIGN)
+              <button type="button" class="btn-checkout-black ripple-btn" :disabled="requestLoading" @click="handleOrder">
+                {{ requestLoading ? '正在提交申请…' : '0 元免费申请此款设计' }}
               </button>
               <button type="button" class="btn-inquire-border ripple-btn" @click="inquireDesigner">
                 预约 1对1 灵感沟通与排版
               </button>
+              <p v-if="submitSuccess" class="submit-success" role="status">{{ submitSuccess }}</p>
+              <p v-if="submitError" class="submit-error" role="alert">{{ submitError }}</p>
             </div>
 
             <!-- Guarantee Vector SVG Icons -->
@@ -236,6 +238,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { usePublicUserStore } from '~/stores/public-user';
+import { useDesignRequest } from '~/composables/use-design-request';
 
 definePageMeta({
   layout: 'default'
@@ -243,13 +247,16 @@ definePageMeta({
 
 const route = useRoute();
 const router = useRouter();
-const { fetchProductDetail, getPublishedProductImage } = usePublishedProducts();
+const { fetchProductDetail } = usePublishedProducts();
+const publicUserStore = usePublicUserStore();
+const { submitDesignRequest, loading: requestLoading } = useDesignRequest();
 
-const user = ref<any>(null);
 const loading = ref(true);
 const product = ref<any>(null);
 const currentImage = ref<string>('');
 const qty = ref(1);
+const submitSuccess = ref('');
+const submitError = ref('');
 
 const paperOptions = ['600g 进口纯棉纸', '500g 哑光黑卡', '400g 绒面触感纸'];
 const selectedPaper = ref('600g 进口纯棉纸');
@@ -275,8 +282,34 @@ const goBack = () => {
   router.back();
 };
 
-const handleOrder = () => {
-  alert(`申请成功！已为您开启 ${product.value?.name} 的【0元免费设计同款】排版流程！资深设计师将在 24 小时内为您免费出具专属姓名 (${customForm.value.name || '定制'})、职务与 Logo 的矢量试样稿。`);
+const handleOrder = async () => {
+  submitSuccess.value = '';
+  submitError.value = '';
+  const designName = customForm.value.name.trim() || '名片定制';
+
+  try {
+    const response = await submitDesignRequest({
+      name: `${designName} / ${customForm.value.company.trim() || product.value?.name || '商务名片'}`,
+      description: [
+        `参考商品：${product.value?.name || '名片设计'}`,
+        `纸张：${selectedPaper.value}`,
+        `箔色：${selectedFoil.value}`,
+        `数量：${qty.value} 盒（${qty.value * 100} 张）`,
+        `职务：${customForm.value.title.trim()}`,
+        `地址：${customForm.value.address.trim()}`
+      ].join('\n'),
+      ...(customForm.value.email.trim() ? { email: customForm.value.email.trim() } : {}),
+      ...(customForm.value.mobile.trim() ? { phoneNumber: customForm.value.mobile.trim() } : {})
+    });
+
+    if (response.code === 0 || response.code === 200 || response.status === true) {
+      submitSuccess.value = '申请已提交，设计师会尽快与您联系。';
+    } else {
+      submitError.value = response.message || '提交失败，请稍后重试。';
+    }
+  } catch (error: any) {
+    submitError.value = error?.message || '提交失败，请稍后重试。';
+  }
 };
 
 const inquireDesigner = () => {
@@ -285,10 +318,7 @@ const inquireDesigner = () => {
 
 onMounted(async () => {
   try {
-    const publicUserStore = usePublicUserStore();
-    if (publicUserStore.user) {
-      user.value = publicUserStore.user;
-    }
+    publicUserStore.initToken();
   } catch (e) {}
 
   const id = route.params.id as string;
@@ -297,7 +327,7 @@ onMounted(async () => {
     const res = await fetchProductDetail(id);
     if (res) {
       product.value = res;
-      currentImage.value = (res.images && res.images[0]) || getPublishedProductImage(res);
+      currentImage.value = (Array.isArray(res.images) && res.images[0]) || '';
 
       useSeoMeta({
         title: `${res.name} - 0元免费设计同款 | 名片设计工坊 | BUSINESS CARD`,
@@ -853,5 +883,49 @@ input, select, textarea, button, .chip-btn, .btn-checkout-black, .btn-inquire-bo
   letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
+}
+
+.btn-checkout-black:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.submit-success,
+.submit-error {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.submit-success { color: #286342; }
+.submit-error { color: #9b1c1c; }
+
+@media (max-width: 640px) {
+  .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.6rem; }
+  .header-left, .header-right { min-width: 0; }
+  .header-center { flex: 1; min-width: 0; text-align: center; }
+  .gucci-brand-logo { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.82rem; letter-spacing: 0.06em; }
+  .back-link-btn, .header-icon-link { font-size: 0.7rem; white-space: nowrap; }
+  .header-right { gap: 0.55rem; }
+  .gucci-detail-container { padding: 2.5rem 1rem; }
+  .detail-main-layout { gap: 3rem; }
+  .detail-content-grid { gap: 2rem; }
+  .main-image-box { height: min(105vw, 420px); }
+  .product-title { font-size: 1.4rem; line-height: 1.45; letter-spacing: 0.02em; }
+  .product-price-line { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+  .price-val { font-size: 1rem; }
+  .product-full-desc { font-size: 0.82rem; line-height: 1.7; }
+  .online-custom-fields { padding: 1rem; }
+  .quantity-selector { width: 100%; justify-content: space-between; box-sizing: border-box; }
+  .qty-num { flex: 1; text-align: center; padding-left: 0.4rem; padding-right: 0.4rem; }
+  .guarantee-row { flex-wrap: wrap; gap: 0.9rem 1.2rem; }
+  .technical-specs-section { padding-top: 2.5rem; gap: 2.5rem; }
+  .specs-table { font-size: 0.76rem; }
+  .specs-table td { vertical-align: top; line-height: 1.5; }
+  .tbl-label { width: 105px; }
+  .rating-summary { flex-wrap: wrap; }
+  .rev-header { flex-direction: column; gap: 0.25rem; }
+  .gucci-mini-footer { padding: 2rem 1rem; }
+  .footer-logo-small { font-size: 0.82rem; letter-spacing: 0.08em; }
 }
 </style>

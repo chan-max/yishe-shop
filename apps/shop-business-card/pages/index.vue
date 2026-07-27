@@ -17,8 +17,8 @@
         </div>
 
         <div class="header-right">
-          <NuxtLink v-if="!user" to="/login" class="header-contact-btn underline-slide" style="margin-right: 0.5rem;">登录 / 注册</NuxtLink>
-          <span v-else class="user-greeting" style="font-size: 0.8rem; font-weight: 700; color: #b38218; margin-right: 0.5rem;">{{ user.username || 'VIP 会员' }}</span>
+          <NuxtLink v-if="!isLoggedIn" to="/login" class="header-contact-btn underline-slide" style="margin-right: 0.5rem;">登录 / 注册</NuxtLink>
+          <span v-else class="user-greeting" style="font-size: 0.8rem; font-weight: 700; color: #b38218; margin-right: 0.5rem;">{{ currentUser?.name || currentUser?.account || 'VIP 会员' }}</span>
           <NuxtLink to="/search" class="header-icon-btn icon-hover-bounce" title="搜索设计灵感">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="11" cy="11" r="8"></circle>
@@ -52,101 +52,43 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Luxury Business Card Atelier Studio Hero Stage (高定名片设计工坊专属舞台: 标尺裁切线 + 3D 实体名片质感展台) -->
+      <!-- 1. Product-first atelier hero -->
       <section class="gucci-atelier-hero">
-        <!-- Technical Artboard Overlay: Corner Crop Marks & Designer Grid Lines -->
-        <div class="artboard-crop-marks">
-          <div class="crop-mark top-left">+ 90 × 54 MM</div>
-          <div class="crop-mark top-right">300 DPI VECTOR +</div>
-          <div class="crop-mark bottom-left">+ BLEED 2MM</div>
-          <div class="crop-mark bottom-right">ATELIER CRAFTS +</div>
-        </div>
-
-        <!-- Background Studio Gradient & Grid Backdrop -->
         <div class="hero-studio-backdrop">
-          <div class="designer-grid-lines"></div>
           <div class="studio-light-spot"></div>
         </div>
 
-        <!-- Foreground Content & 3D Tactile Card Stage -->
-        <div class="hero-center-stage">
-          <div class="hero-headline-group">
-            <div class="badge-pill-container">
-              <span class="hero-top-badge">BUSINESS CARD ATELIER · 个人与小微企业 0 元免费定制</span>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <span class="hero-top-badge">BUSINESS CARD ATELIER</span>
+            <h1 class="hero-main-title">名片，<br /><em>应该被记住。</em></h1>
+            <p class="hero-sub-text">为个人、品牌和团队定制具有触感的商务名片。</p>
+            <div class="hero-action-row">
+              <NuxtLink to="/contact" class="hero-primary-link">
+                开始定制 <span aria-hidden="true">↗</span>
+              </NuxtLink>
+              <NuxtLink to="/search" class="hero-secondary-link">
+                浏览作品
+              </NuxtLink>
             </div>
-            <h1 class="hero-main-title">全 网 名 片 设 计 灵 感 库</h1>
-            <p class="hero-sub-text">
-              汇聚活字凹版、24K 浮雕烫金、钛钢精印与特种纸工艺 — 任意风格 0 元免费设计同款
-            </p>
-          </div>
-
-          <!-- 3D Physical Business Card Showcase Cards (3D 质感名片展示台) -->
-          <div class="hero-card-deck-container">
-            <!-- Card 1: Letterpress Executive Cotton -->
-            <div class="physical-card-mockup card-letterpress-mockup tilt-hover" @click="goTo('/search')">
-              <div class="card-paper-texture"></div>
-              <div class="card-inner-layout">
-                <div class="card-top-row">
-                  <span class="brand-monogram">ATELIER</span>
-                  <span class="craft-chip">600GSM COTTON</span>
-                </div>
-                <div class="card-debossed-body">
-                  <span class="debossed-title">凹版活字压印名片</span>
-                  <span class="debossed-sub">Executive Letterpress Edition</span>
-                </div>
-                <div class="card-bottom-row">
-                  <span class="card-user-name">ALEXANDER SMITH</span>
-                  <span class="card-hover-tip">免费设计同款 ➔</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Card 2: 24K Gold Foil Embossed Black Card (Featured Hero Card) -->
-            <div class="physical-card-mockup card-gold-foil-mockup tilt-hover featured-card" @click="goTo('/search')">
-              <div class="gold-foil-shine-overlay"></div>
-              <div class="card-inner-layout">
-                <div class="card-top-row">
-                  <span class="brand-monogram gold-text">24K GOLD</span>
-                  <span class="craft-chip gold-chip">500GSM MATTE BLACK</span>
-                </div>
-                <div class="card-debossed-body">
-                  <span class="debossed-title gold-text">24K 浮雕烫金名片</span>
-                  <span class="debossed-sub gold-sub">Embossed Gold Stamp Edition</span>
-                </div>
-                <div class="card-bottom-row">
-                  <span class="card-user-name gold-text">VICTORIA CHEN</span>
-                  <span class="card-hover-tip gold-text">0元免费定制 ➔</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Card 3: Metal Steel / Frosted Specialty -->
-            <div class="physical-card-mockup card-metal-mockup tilt-hover" @click="goTo('/search')">
-              <div class="card-brushed-metal-texture"></div>
-              <div class="card-inner-layout">
-                <div class="card-top-row">
-                  <span class="brand-monogram">TITANIUM</span>
-                  <span class="craft-chip">TITANIUM STEEL</span>
-                </div>
-                <div class="card-debossed-body">
-                  <span class="debossed-title">钛钢拉丝极客名片</span>
-                  <span class="debossed-sub">Brushed Metal Edition</span>
-                </div>
-                <div class="card-bottom-row">
-                  <span class="card-user-name">MARCUS VANCE</span>
-                  <span class="card-hover-tip">免费设计同款 ➔</span>
-                </div>
-              </div>
+            <div class="hero-meta-line">
+              <span>01</span>
+              <span>原创设计 · 按需定制</span>
             </div>
           </div>
 
-          <div class="hero-action-row">
-            <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
-              申请 0 元免费名片设计 (FREE DESIGN)
+          <div v-if="heroProducts.length" class="hero-gallery" aria-label="名片作品预览">
+            <NuxtLink
+              v-for="item in heroProducts"
+              :key="item.id"
+              :to="`/product/${item.id}`"
+              class="hero-gallery-cell"
+            >
+              <img :src="getProductImage(item)" :alt="item.title" />
             </NuxtLink>
-            <NuxtLink to="/search" class="gucci-btn-outline-dark ripple-btn">
-              探索名片设计灵感库
-            </NuxtLink>
+          </div>
+          <div v-else class="hero-gallery hero-gallery-placeholder" aria-hidden="true">
+            <div></div><div></div><div></div><div></div>
           </div>
         </div>
       </section>
@@ -210,7 +152,7 @@
               <img
                 v-if="getProductImage(item)"
                 :src="getProductImage(item)"
-                :alt="item.name"
+                :alt="item.title || item.name || getCardTitle(idx)"
                 class="photo-img-cover zoom-on-hover"
               />
               <div v-else class="photo-product-mockup" :class="getMockupBgClass(idx)">
@@ -231,8 +173,8 @@
               </div>
             </div>
             <div class="card-caption">
-              <span class="caption-title">{{ item.name || getCardTitle(idx) }}</span>
-              <span class="caption-price">设计服务：0元免费设计 (同款印制参考 ${{ item.price || '88.00' }})</span>
+              <span class="caption-title">{{ item.title || item.name || getCardTitle(idx) }}</span>
+              <span class="caption-price">{{ item.type || '名片定制' }} · {{ formatPrice(item) }}</span>
             </div>
           </div>
         </div>
@@ -397,6 +339,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { usePublicUserStore } from '~/stores/public-user';
 
 definePageMeta({
   layout: 'default'
@@ -418,12 +361,14 @@ useHead({
 
 const router = useRouter();
 const { fetchPublishedProducts, getPublishedProductImage } = usePublishedProducts();
+const publicUserStore = usePublicUserStore();
 
-const user = ref<any>(null);
 const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
 const isScrolled = ref(false);
+const isLoggedIn = computed(() => publicUserStore.isLoggedIn);
+const currentUser = computed(() => publicUserStore.currentUser);
 
 const handleScroll = () => {
   if (typeof window !== 'undefined') {
@@ -432,10 +377,10 @@ const handleScroll = () => {
 };
 
 const fallbackPreset = [
-  { id: 'pres-1', name: '凹版活字压印设计 (Executive Letterpress)', key: 'letterpress' },
-  { id: 'pres-2', name: '24K 浮雕烫金设计 (Gold Foil Embossed)', key: 'gold-foil' },
-  { id: 'pres-3', name: '钛钢极客精印设计 (Metal Steel Edition)', key: 'steel' },
-  { id: 'pres-4', name: '触感特种纸艺设计 (Specialty Paper Crafts)', key: 'specialty' }
+  { id: 'pres-1', title: '凹版活字压印设计 (Executive Letterpress)', type: 'letterpress', key: 'letterpress' },
+  { id: 'pres-2', title: '24K 浮雕烫金设计 (Gold Foil Embossed)', type: 'gold-foil', key: 'gold-foil' },
+  { id: 'pres-3', title: '钛钢极客精印设计 (Metal Steel Edition)', type: 'steel', key: 'steel' },
+  { id: 'pres-4', title: '触感特种纸艺设计 (Specialty Paper Crafts)', type: 'specialty', key: 'specialty' }
 ];
 
 const displayProducts = computed(() => {
@@ -445,9 +390,15 @@ const displayProducts = computed(() => {
   return fallbackPreset;
 });
 
+const heroProducts = computed(() => products.value.filter((item) => item?.imageUrl).slice(0, 4));
+
 const getProductImage = (item: any) => {
-  if (item && item.images && item.images.length > 0) return item.images[0];
-  return getPublishedProductImage(item);
+  return item?.imageUrl ? getPublishedProductImage(item) : '';
+};
+
+const formatPrice = (item: any) => {
+  if (!item?.price) return '可定制';
+  return `¥${Number(item.price).toFixed(Number(item.price) % 1 === 0 ? 0 : 2)}`;
 };
 
 const goTo = (path: string) => {
@@ -493,12 +444,12 @@ const getCardTitle = (idx: number) => {
 };
 
 const subscribeEmail = () => {
-  alert('感谢订阅名片设计工坊！电子版《商务精英名片排字与设计灵感手册》已发至您的邮箱。');
+  router.push('/contact');
 };
 
 const submitEmail = () => {
   if (emailInput.value) {
-    alert(`感谢订阅！${emailInput.value} 已成功加入名片设计灵感推送列表。`);
+    router.push('/contact');
     emailInput.value = '';
   }
 };
@@ -510,15 +461,12 @@ onMounted(async () => {
   }
 
   try {
-    const publicUserStore = usePublicUserStore();
-    if (publicUserStore.user) {
-      user.value = publicUserStore.user;
-    }
+    publicUserStore.initToken();
   } catch (e) {}
 
   try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 12 });
+    const res = await fetchPublishedProducts({ pageSize: 12, random: true });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -1542,5 +1490,231 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .logo-glow-on-hover:hover {
   color: #d4a337;
   text-shadow: 0 0 30px rgba(212, 163, 55, 0.4);
+}
+
+/* The hero uses the products themselves as the only visual material. */
+.gucci-atelier-hero {
+  min-height: min(760px, 86vh);
+  padding: 5.5rem 0 0;
+  background: #f2f1ee;
+  border-bottom: 1px solid #d8d6d0;
+  align-items: stretch;
+}
+
+.hero-studio-backdrop,
+.studio-light-spot { display: none; }
+
+.hero-layout {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.35fr);
+  align-items: stretch;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(3rem, 7vw, 7rem) clamp(1.5rem, 5vw, 6rem);
+  text-align: left;
+}
+
+.hero-top-badge {
+  color: #686762;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+}
+
+.hero-main-title {
+  margin: 1.7rem 0 1.1rem;
+  color: #111111;
+  font-size: clamp(2.1rem, 3.5vw, 3.55rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.22;
+  text-shadow: none;
+}
+
+.hero-main-title em { font-style: normal; font-weight: 700; }
+
+.hero-sub-text {
+  max-width: 20rem;
+  margin: 0;
+  color: #6e6d69;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  text-shadow: none;
+}
+
+.hero-action-row {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+  margin-top: 2.3rem;
+}
+
+.hero-primary-link,
+.hero-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.7rem;
+  box-sizing: border-box;
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-primary-link {
+  padding: 0 1.15rem;
+  background: #111111;
+  border: 1px solid #111111;
+  color: #ffffff;
+}
+
+.hero-primary-link:hover { background: #3a3936; border-color: #3a3936; }
+
+.hero-secondary-link {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #111111;
+  color: #111111;
+}
+
+.hero-secondary-link:hover { color: #77736c; border-color: #77736c; }
+
+.hero-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 4.5rem;
+  color: #9a9892;
+  font-size: 0.63rem;
+  letter-spacing: 0.12em;
+}
+
+.hero-meta-line span:first-child { color: #111111; font-weight: 700; }
+
+.hero-gallery {
+  min-height: 500px;
+  max-height: 560px;
+  aspect-ratio: 1.45;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.hero-gallery-cell {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  background: #e5e3de;
+}
+
+.hero-gallery-cell:first-child { grid-row: auto; }
+
+.hero-gallery-cell img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: saturate(0.72) contrast(1.02);
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
+}
+
+.hero-gallery-cell:hover img { transform: scale(1.035); filter: saturate(0.92) contrast(1.04); }
+
+.hero-gallery-placeholder div { background: #dedcd6; }
+.hero-gallery-placeholder div:nth-child(2) { background: #d1cfca; }
+.hero-gallery-placeholder div:nth-child(3) { background: #c8c6c1; }
+.hero-gallery-placeholder div:nth-child(4) { background: #e9e8e4; }
+
+@media (max-width: 900px) {
+  .gucci-header-inner { padding: 0.9rem 1.25rem; }
+  .gucci-brand-logo { font-size: 1rem; letter-spacing: 0.08em; }
+  .header-right { gap: 0.75rem; }
+  .header-right .header-contact-btn { display: none; }
+  .menu-label { display: none; }
+  .gucci-atelier-hero { min-height: 640px; padding: 4.5rem 0 0; }
+  .hero-layout { grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.15fr); }
+  .hero-copy { padding: 3rem 2.25rem; }
+  .hero-gallery { min-height: 440px; max-height: 500px; }
+  .hero-main-title { font-size: 2.8rem; letter-spacing: 0.08em; }
+  .hero-sub-text { font-size: 0.92rem; letter-spacing: 0.05em; }
+  .free-title { font-size: 1.7rem; }
+  .services-3col-grid { gap: 1.5rem; }
+  .footer-columns { gap: 2rem; }
+}
+
+@media (max-width: 640px) {
+  .gucci-header-inner { padding: 0.8rem 0.9rem; }
+  .header-left .header-contact-btn span:last-child { display: none; }
+  .header-center { min-width: 0; flex: 1; text-align: center; padding: 0 0.5rem; }
+  .gucci-brand-logo { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.78rem; }
+  .header-right { gap: 0.55rem; }
+  .header-icon-btn svg, .header-menu-btn svg { width: 17px; height: 17px; }
+  .gucci-atelier-hero { min-height: 0; padding: 4.5rem 0 0; }
+  .hero-layout { display: flex; flex-direction: column; }
+  .hero-copy { padding: 3.5rem 1.25rem 3rem; }
+  .badge-pill-container { padding: 0.35rem 0.8rem; margin-bottom: 1rem; }
+  .hero-top-badge { font-size: 0.62rem; letter-spacing: 0.2em; }
+  .hero-main-title { font-size: clamp(2rem, 9vw, 2.5rem); letter-spacing: 0.04em; line-height: 1.25; }
+  .hero-sub-text { font-size: 0.86rem; line-height: 1.7; max-width: 20rem; }
+  .hero-action-row { width: min(100%, 18rem); flex-direction: column; align-items: stretch; gap: 0.7rem; margin-top: 1.8rem; }
+  .hero-primary-link, .hero-secondary-link { justify-content: center; width: 100%; }
+  .hero-meta-line { margin-top: 2.5rem; }
+  .hero-gallery { min-height: 340px; max-height: none; aspect-ratio: 1.35; }
+  .gucci-free-design-banner { padding: 3.25rem 1rem; }
+  .free-title { font-size: 1.4rem; line-height: 1.45; letter-spacing: 0.04em; }
+  .free-desc { font-size: 0.84rem; line-height: 1.75; }
+  .free-features-row { gap: 0.75rem; align-items: flex-start; }
+  .free-feature-item { font-size: 0.8rem; }
+  .free-cta-btn { width: 100%; box-sizing: border-box; padding: 0.9rem 1rem; font-size: 0.78rem; }
+  .gucci-collection-section { padding-top: 3rem; }
+  .section-title-bar { padding: 0 1rem; margin-bottom: 2rem; }
+  .section-main-heading { font-size: 1.3rem; line-height: 1.45; letter-spacing: 0.04em; }
+  .collection-4col-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card-photo-container { height: 260px; }
+  .card-caption { padding: 0.85rem 0.6rem; text-align: left; }
+  .caption-title { font-size: 0.78rem; line-height: 1.4; }
+  .caption-price { font-size: 0.7rem; line-height: 1.4; }
+  .card-mockup-inner { gap: 0.45rem; }
+  .card-icon-svg svg { width: 38px; height: 38px; }
+  .mockup-label { font-size: 0.62rem; letter-spacing: 0.12em; }
+  .mockup-sublabel { font-size: 0.62rem; }
+  .collection-action-center { padding: 2.5rem 1rem; }
+  .gucci-btn-gray { width: 100%; box-sizing: border-box; padding: 0.85rem 0.75rem; font-size: 0.72rem; }
+  .gucci-services-section { padding: 3.5rem 1rem 3rem; }
+  .services-main-title { font-size: 1.3rem; line-height: 1.45; margin-bottom: 2.2rem; }
+  .service-photo-wrapper { height: 220px; }
+  .service-title { font-size: 0.86rem; line-height: 1.4; }
+  .service-desc { font-size: 0.76rem; }
+  .gucci-subscribe-section { padding: 3.5rem 1rem; }
+  .subscribe-headline { font-size: 1rem; line-height: 1.7; }
+  .subscribe-plus-btn { width: 100%; justify-content: center; box-sizing: border-box; padding: 0.8rem 1rem; font-size: 0.75rem; }
+  .gucci-footer { padding: 3rem 1rem 1.5rem; }
+  .footer-columns { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+  .footer-secondary-links { margin-bottom: 2rem; }
+  .link-inline-row { flex-wrap: wrap; gap: 0.75rem 1rem; }
+  .footer-copyright-line { font-size: 0.68rem; line-height: 1.6; margin-bottom: 2rem; }
+  .footer-giant-brand { font-size: clamp(1.6rem, 9vw, 2.8rem); letter-spacing: 0.1em; }
+}
+
+@media (max-width: 420px) {
+  .collection-4col-grid { grid-template-columns: 1fr; }
+  .card-photo-container { height: 310px; }
 }
 </style>

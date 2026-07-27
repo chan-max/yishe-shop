@@ -65,9 +65,11 @@
               <textarea v-model="form.notes" rows="4" placeholder="请填写真实的名片文字（姓名、职务、电话、地址、网址）或对排版风格的具体想法…"></textarea>
             </div>
 
-            <button type="submit" class="submit-btn-black">
-              立即提交 0 元免费设计申请
+            <button type="submit" class="submit-btn-black" :disabled="requestLoading">
+              {{ requestLoading ? '正在提交申请…' : '立即提交 0 元免费设计申请' }}
             </button>
+            <p v-if="submitSuccess" class="submit-success" role="status">{{ submitSuccess }}</p>
+            <p v-if="submitError" class="submit-error" role="alert">{{ submitError }}</p>
           </form>
         </div>
 
@@ -110,6 +112,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useDesignRequest } from '~/composables/use-design-request';
 
 definePageMeta({
   layout: 'default'
@@ -136,10 +139,31 @@ const form = ref({
   craft: 'letterpress',
   notes: ''
 });
+const { submitDesignRequest, loading: requestLoading } = useDesignRequest();
+const submitSuccess = ref('');
+const submitError = ref('');
 
-const submitForm = () => {
-  alert(`申请成功！感谢您，${form.value.name}（${form.value.company}）。名片工坊资深设计师已收到您的 0 元免费设计申请，将在 24 小时内把高清矢量试样图发送至您的联系方式。`);
-  form.value = { name: '', company: '', email: '', craft: 'letterpress', notes: '' };
+const submitForm = async () => {
+  submitSuccess.value = '';
+  submitError.value = '';
+  const contact = form.value.email.trim();
+
+  try {
+    const response = await submitDesignRequest({
+      name: `${form.value.name.trim()} / ${form.value.company.trim()}`,
+      description: `期望风格：${form.value.craft}\n${form.value.notes.trim()}`,
+      ...(contact.includes('@') ? { email: contact } : { phoneNumber: contact })
+    });
+
+    if (response.code === 0 || response.code === 200 || response.status === true) {
+      submitSuccess.value = '申请已提交，设计师会尽快与您联系。';
+      form.value = { name: '', company: '', email: '', craft: 'letterpress', notes: '' };
+    } else {
+      submitError.value = response.message || '提交失败，请稍后重试。';
+    }
+  } catch (error: any) {
+    submitError.value = error?.message || '提交失败，请稍后重试。';
+  }
 };
 </script>
 
@@ -304,6 +328,21 @@ input, select, textarea, button, .submit-btn-black {
   background: #222222;
 }
 
+.submit-btn-black:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.submit-success,
+.submit-error {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.submit-success { color: #286342; }
+.submit-error { color: #9b1c1c; }
+
 .info-card {
   display: flex;
   flex-direction: column;
@@ -355,5 +394,24 @@ input, select, textarea, button, .submit-btn-black {
   letter-spacing: 0.15em;
   color: #000000;
   margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .gucci-header-inner { padding: 0.85rem 1rem; gap: 0.6rem; }
+  .header-center { min-width: 0; flex: 1; text-align: center; }
+  .gucci-brand-logo { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.82rem; letter-spacing: 0.06em; }
+  .back-link, .header-icon-link { font-size: 0.7rem; white-space: nowrap; }
+  .gucci-contact-container { padding: 2.5rem 1rem; }
+  .contact-hero { margin-bottom: 2.5rem; }
+  .main-heading { font-size: 1.5rem; line-height: 1.45; letter-spacing: 0.02em; }
+  .heading-lead { font-size: 0.82rem; line-height: 1.7; }
+  .contact-grid { gap: 1.5rem; }
+  .form-card, .info-card { padding: 1.5rem 1.1rem; }
+  .card-title { font-size: 1rem; line-height: 1.5; }
+  .form-sub { font-size: 0.78rem; line-height: 1.65; }
+  .field-group input, .field-group select, .field-group textarea { font-size: 0.86rem; }
+  .submit-btn-black { width: 100%; font-size: 0.78rem; letter-spacing: 0.06em; }
+  .gucci-mini-footer { padding: 2rem 1rem; }
+  .footer-logo-small { font-size: 0.82rem; letter-spacing: 0.08em; }
 }
 </style>
