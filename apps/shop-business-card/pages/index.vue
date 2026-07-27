@@ -1,6 +1,6 @@
 <template>
   <div class="gucci-storefront-wrapper">
-    <!-- Transparent Header Bar - Blends seamlessly with light top banner, turns solid white on scroll -->
+    <!-- Transparent Header Bar - Blends with Studio Banner, turns solid white on scroll -->
     <header class="gucci-header" :class="{ 'header-scrolled': isScrolled }">
       <div class="gucci-header-inner">
         <div class="header-left">
@@ -52,50 +52,100 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Taller Light-to-Dark Studio Grey Gradient Hero Stage (上面浅 #f9f9f9 -> 下面深 #5d626a + 氛围商品图墙 + 极致视觉细节) -->
-      <section class="gucci-gradient-wall-hero">
-        <!-- Background Layer 1: Atmospheric Product Image Wall Mosaic -->
-        <div class="hero-bg-product-wall">
-          <div class="wall-grid">
-            <div
-              v-for="(item, idx) in wallProducts"
-              :key="idx"
-              class="wall-tile-item"
-            >
-              <img
-                v-if="getProductImage(item)"
-                :src="getProductImage(item)"
-                :alt="item.name"
-                class="wall-tile-img"
-              />
-              <div v-else class="wall-tile-fallback" :class="'wall-bg-' + ((idx % 4) + 1)">
-                <span class="wall-tile-label">{{ getCardLabel(idx) }}</span>
-              </div>
-            </div>
-          </div>
-          <!-- Studio Light-to-Dark Gradient Mask -->
-          <div class="wall-gradient-mask"></div>
-          <div class="hero-studio-ambient-glow"></div>
+      <!-- 1. Luxury Business Card Atelier Studio Hero Stage (高定名片设计工坊专属舞台: 标尺裁切线 + 3D 实体名片质感展台) -->
+      <section class="gucci-atelier-hero">
+        <!-- Technical Artboard Overlay: Corner Crop Marks & Designer Grid Lines -->
+        <div class="artboard-crop-marks">
+          <div class="crop-mark top-left">+ 90 × 54 MM</div>
+          <div class="crop-mark top-right">300 DPI VECTOR +</div>
+          <div class="crop-mark bottom-left">+ BLEED 2MM</div>
+          <div class="crop-mark bottom-right">ATELIER CRAFTS +</div>
         </div>
 
-        <!-- Foreground Stage: Ultra-Clean High-Fashion Typography -->
+        <!-- Background Studio Gradient & Grid Backdrop -->
+        <div class="hero-studio-backdrop">
+          <div class="designer-grid-lines"></div>
+          <div class="studio-light-spot"></div>
+        </div>
+
+        <!-- Foreground Content & 3D Tactile Card Stage -->
         <div class="hero-center-stage">
           <div class="hero-headline-group">
             <div class="badge-pill-container">
-              <span class="hero-top-badge">BUSINESS CARD ATELIER · 0 YUAN FREE DESIGN</span>
+              <span class="hero-top-badge">BUSINESS CARD ATELIER · 个人与小微企业 0 元免费定制</span>
             </div>
-            <h1 class="hero-main-title">名 片 免 费 设 计</h1>
+            <h1 class="hero-main-title">全 网 名 片 设 计 灵 感 库</h1>
             <p class="hero-sub-text">
-              个人与小微企业 0 元免费定制 · 全网灵感免费设计同款
+              汇聚活字凹版、24K 浮雕烫金、钛钢精印与特种纸工艺 — 任意风格 0 元免费设计同款
             </p>
+          </div>
+
+          <!-- 3D Physical Business Card Showcase Cards (3D 质感名片展示台) -->
+          <div class="hero-card-deck-container">
+            <!-- Card 1: Letterpress Executive Cotton -->
+            <div class="physical-card-mockup card-letterpress-mockup tilt-hover" @click="goTo('/search')">
+              <div class="card-paper-texture"></div>
+              <div class="card-inner-layout">
+                <div class="card-top-row">
+                  <span class="brand-monogram">ATELIER</span>
+                  <span class="craft-chip">600GSM COTTON</span>
+                </div>
+                <div class="card-debossed-body">
+                  <span class="debossed-title">凹版活字压印名片</span>
+                  <span class="debossed-sub">Executive Letterpress Edition</span>
+                </div>
+                <div class="card-bottom-row">
+                  <span class="card-user-name">ALEXANDER SMITH</span>
+                  <span class="card-hover-tip">免费设计同款 ➔</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: 24K Gold Foil Embossed Black Card (Featured Hero Card) -->
+            <div class="physical-card-mockup card-gold-foil-mockup tilt-hover featured-card" @click="goTo('/search')">
+              <div class="gold-foil-shine-overlay"></div>
+              <div class="card-inner-layout">
+                <div class="card-top-row">
+                  <span class="brand-monogram gold-text">24K GOLD</span>
+                  <span class="craft-chip gold-chip">500GSM MATTE BLACK</span>
+                </div>
+                <div class="card-debossed-body">
+                  <span class="debossed-title gold-text">24K 浮雕烫金名片</span>
+                  <span class="debossed-sub gold-sub">Embossed Gold Stamp Edition</span>
+                </div>
+                <div class="card-bottom-row">
+                  <span class="card-user-name gold-text">VICTORIA CHEN</span>
+                  <span class="card-hover-tip gold-text">0元免费定制 ➔</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Metal Steel / Frosted Specialty -->
+            <div class="physical-card-mockup card-metal-mockup tilt-hover" @click="goTo('/search')">
+              <div class="card-brushed-metal-texture"></div>
+              <div class="card-inner-layout">
+                <div class="card-top-row">
+                  <span class="brand-monogram">TITANIUM</span>
+                  <span class="craft-chip">TITANIUM STEEL</span>
+                </div>
+                <div class="card-debossed-body">
+                  <span class="debossed-title">钛钢拉丝极客名片</span>
+                  <span class="debossed-sub">Brushed Metal Edition</span>
+                </div>
+                <div class="card-bottom-row">
+                  <span class="card-user-name">MARCUS VANCE</span>
+                  <span class="card-hover-tip">免费设计同款 ➔</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="hero-action-row">
             <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
-              0元免费申请设计
+              申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
             <NuxtLink to="/search" class="gucci-btn-outline-dark ripple-btn">
-              探索设计灵感
+              探索名片设计灵感库
             </NuxtLink>
           </div>
         </div>
@@ -381,17 +431,6 @@ const handleScroll = () => {
   }
 };
 
-const wallProducts = computed(() => {
-  if (products.value.length > 0) {
-    const list = [...products.value];
-    while (list.length < 12) {
-      list.push(...products.value);
-    }
-    return list.slice(0, 12);
-  }
-  return Array(12).fill({ name: 'Business Card Design' });
-});
-
 const fallbackPreset = [
   { id: 'pres-1', name: '凹版活字压印设计 (Executive Letterpress)', key: 'letterpress' },
   { id: 'pres-2', name: '24K 浮雕烫金设计 (Gold Foil Embossed)', key: 'gold-foil' },
@@ -500,7 +539,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Light-to-Dark Studio Grey Gradient (#f9f9f9 -> #5d626a), Taller Hero & Polished Details */
+/* GUCCI Luxury Business Card Atelier Design System */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -584,7 +623,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   box-shadow: 0 2px 8px rgba(212, 163, 55, 0.2);
 }
 
-/* Dynamic Header - Transparent at top (Integrated with light studio top), turns solid white on scroll */
+/* Header Bar */
 .gucci-header {
   width: 100%;
   position: fixed;
@@ -598,7 +637,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .gucci-header.header-scrolled {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
   border-bottom-color: #e5e5e5;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -667,104 +706,71 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. Taller Light-to-Dark Studio Grey Gradient Hero Stage (上面浅 #f9f9f9 -> 下面深 #5d626a) */
-.gucci-gradient-wall-hero {
+/* 1. GUCCI Luxury Business Card Atelier Studio Hero Stage */
+.gucci-atelier-hero {
   position: relative;
   width: 100%;
-  min-height: 780px;
-  background: linear-gradient(180deg, #f9f9f9 0%, #dedede 35%, #9b9fa6 70%, #5d626a 100%);
+  min-height: 820px;
+  background: linear-gradient(180deg, #f7f7f7 0%, #e6e6e6 40%, #c4c6ca 75%, #767a82 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12.5rem 2rem 8.5rem;
-  border-bottom: 1px solid #4d525a;
+  padding: 10.5rem 2rem 6.5rem;
+  border-bottom: 1px solid #5a5e66;
 }
 
-/* Background Layer 1: Atmospheric Product Wall Grid Mosaic */
-.hero-bg-product-wall {
+/* Artboard Crop Marks & Rulers Overlay */
+.artboard-crop-marks {
+  position: absolute;
+  inset: 1.5rem;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.crop-mark {
+  position: absolute;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.crop-mark.top-left { top: 4rem; left: 1rem; }
+.crop-mark.top-right { top: 4rem; right: 1rem; }
+.crop-mark.bottom-left { bottom: 1rem; left: 1rem; }
+.crop-mark.bottom-right { bottom: 1rem; right: 1rem; }
+
+/* Backdrop Studio Light Spot */
+.hero-studio-backdrop {
   position: absolute;
   inset: 0;
-  overflow: hidden;
   pointer-events: none;
   z-index: 1;
 }
 
-.wall-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1.2rem;
-  width: 130%;
-  margin-left: -15%;
-  margin-top: -5%;
-  transform: rotate(-3deg) scale(1.05);
-  opacity: 0.28;
-  filter: grayscale(0.8) contrast(1.15);
+.designer-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-@media (max-width: 900px) {
-  .wall-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.wall-tile-item {
-  height: 240px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-}
-
-.wall-tile-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.wall-tile-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.wall-bg-1 { background: #e2e2e2; color: #000; }
-.wall-bg-2 { background: #1a1a1a; color: #fff; }
-.wall-bg-3 { background: #cecece; color: #000; }
-.wall-bg-4 { background: #2f343b; color: #fff; }
-
-.wall-tile-label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  opacity: 0.8;
-}
-
-/* Light-to-Dark Studio Grey Radial Mask Layer */
-.wall-gradient-mask {
+.studio-light-spot {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 30%, rgba(249, 249, 249, 0.35) 0%, rgba(93, 98, 106, 0.85) 80%),
-    linear-gradient(180deg, rgba(249, 249, 249, 0.4) 0%, rgba(93, 98, 106, 0.94) 100%);
-  z-index: 2;
-}
-
-.hero-studio-ambient-glow {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.85) 0%, transparent 55%),
-    radial-gradient(circle at 80% 85%, rgba(212, 163, 55, 0.2) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 3;
+    radial-gradient(circle at 50% 25%, rgba(255, 255, 255, 0.85) 0%, transparent 60%),
+    radial-gradient(circle at 50% 90%, rgba(0, 0, 0, 0.25) 0%, transparent 65%);
 }
 
 .hero-center-stage {
   position: relative;
   z-index: 10;
-  max-width: 920px;
+  max-width: 1140px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -773,53 +779,215 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .hero-headline-group {
-  margin-bottom: 3.25rem;
-  max-width: 860px;
+  margin-bottom: 3rem;
+  max-width: 900px;
 }
 
 .badge-pill-container {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 0.35rem 1.4rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 0.4rem 1.6rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
 
 .hero-top-badge {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.3em;
-  color: #222222;
+  letter-spacing: 0.32em;
+  color: #111111;
   display: block;
 }
 
 .hero-main-title {
-  font-size: 4rem;
+  font-size: 3.6rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.25em;
   color: #000000;
   margin: 0 0 1.25rem;
   line-height: 1.15;
-  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 2px 14px rgba(255, 255, 255, 0.7);
 }
 
 @media (max-width: 768px) {
   .hero-main-title {
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     letter-spacing: 0.12em;
   }
 }
 
 .hero-sub-text {
-  font-size: 1.18rem;
+  font-size: 1.15rem;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.12em;
-  max-width: 760px;
+  max-width: 780px;
   margin: 0 auto;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* 3D Physical Business Card Deck Showcase Stage */
+.hero-card-deck-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  margin-bottom: 3.5rem;
+  perspective: 1000px;
+}
+
+@media (max-width: 900px) {
+  .hero-card-deck-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.physical-card-mockup {
+  height: 220px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.tilt-hover:hover {
+  transform: translateY(-10px) rotateX(4deg) rotateY(-2deg) scale(1.03);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  border-color: #d4a337;
+  z-index: 5;
+}
+
+/* Card 1: Letterpress Cotton */
+.card-letterpress-mockup {
+  background: #fcfbf9;
+  border-color: #dcd8ce;
+  color: #2b2b2b;
+}
+
+.card-paper-texture {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#dcd6c8 1px, transparent 1px);
+  background-size: 8px 8px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Card 2: 24K Gold Foil Embossed Black Card (Featured Hero Card) */
+.card-gold-foil-mockup {
+  background: #111317;
+  border: 1px solid #d4a337;
+  color: #ffffff;
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
+}
+
+.featured-card {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.gold-foil-shine-overlay {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 163, 55, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Card 3: Metal Titanium */
+.card-metal-mockup {
+  background: linear-gradient(135deg, #e0e2e5 0%, #b8bcce 50%, #9094a6 100%);
+  color: #111111;
+  border-color: #a8acc0;
+}
+
+.card-brushed-metal-texture {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+}
+
+.card-inner-layout {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-monogram {
+  font-family: Didot, serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+}
+
+.craft-chip {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  opacity: 0.75;
+}
+
+.gold-chip { color: #d4a337 !important; opacity: 1; }
+
+.card-debossed-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 1rem 0;
+}
+
+.debossed-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.debossed-sub {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
+.gold-text { color: #d4a337 !important; }
+.gold-sub { color: #e5b448 !important; opacity: 0.85; }
+
+.card-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.card-user-name {
+  letter-spacing: 0.1em;
+}
+
+.card-hover-tip {
+  font-weight: 800;
+  letter-spacing: 0.08em;
 }
 
 .hero-action-row {
@@ -856,7 +1024,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .gucci-btn-outline-dark {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   color: #000000;
   border: 1px solid #000000;
