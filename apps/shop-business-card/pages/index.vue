@@ -1495,10 +1495,11 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 /* The hero uses the products themselves as the only visual material. */
 .gucci-atelier-hero {
   min-height: min(760px, 86vh);
-  padding: 5.5rem 0 0;
+  box-sizing: border-box;
+  padding: 5.5rem 0 4rem;
   background: #f2f1ee;
   border-bottom: 1px solid #d8d6d0;
-  align-items: stretch;
+  align-items: center;
 }
 
 .hero-studio-backdrop,
@@ -1512,7 +1513,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.35fr);
-  align-items: stretch;
+  align-items: center;
 }
 
 .hero-copy {
@@ -1615,6 +1616,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   gap: 2px;
   background: #ffffff;
   overflow: hidden;
+  align-self: center;
+  justify-self: center;
 }
 
 .hero-gallery-cell {
@@ -1648,7 +1651,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   .header-right { gap: 0.75rem; }
   .header-right .header-contact-btn { display: none; }
   .menu-label { display: none; }
-  .gucci-atelier-hero { min-height: 640px; padding: 4.5rem 0 0; }
+  .gucci-atelier-hero { min-height: 640px; padding: 4.5rem 0 3rem; }
   .hero-layout { grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.15fr); }
   .hero-copy { padding: 3rem 2.25rem; }
   .hero-gallery { min-height: 440px; max-height: 500px; }
