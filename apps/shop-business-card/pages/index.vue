@@ -1614,7 +1614,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   grid-template-rows: 1fr 1fr;
-  gap: 2px;
+  gap: 0;
   background: #ffffff;
   overflow: hidden;
   align-self: center;
