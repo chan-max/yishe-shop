@@ -52,7 +52,7 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Rich Textured Gradient Hero with Background Product Image Wall (有质感的奢华渐变背景 + 背景商品图墙) -->
+      <!-- 1. Pure Editorial Typography Hero (质感渐变背景 + 背景商品图墙 + 纯纯大牌 Banner 文字) -->
       <section class="gucci-gradient-wall-hero">
         <!-- Background Layer 1: Atmospheric Product Image Wall Mosaic -->
         <div class="hero-bg-product-wall">
@@ -78,7 +78,7 @@
           <div class="hero-gold-ambient-glow"></div>
         </div>
 
-        <!-- Foreground Stage -->
+        <!-- Foreground Stage: Clean Editorial Typography Only -->
         <div class="hero-center-stage">
           <div class="hero-headline-group">
             <span class="hero-top-badge badge-pulse">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
@@ -86,33 +86,6 @@
             <p class="hero-sub-text">
               专为个人创作者、独立创业者与初创小微团队提供 0 元免费名片设计服务 — 喜欢任意风格，即刻免费设计同款
             </p>
-          </div>
-
-          <!-- Featured Products Showcase Grid (Horizontal Row) -->
-          <div class="hero-showcase-row">
-            <div
-              v-for="(item, idx) in heroProducts.slice(0, 3)"
-              :key="item.id || idx"
-              class="hero-showcase-card interactive-hero-card"
-              @click="navigateToProduct(item)"
-            >
-              <div class="hero-card-img-box">
-                <img
-                  v-if="getProductImage(item)"
-                  :src="getProductImage(item)"
-                  :alt="item.name"
-                  class="hero-card-img zoom-on-hover"
-                />
-                <div v-else class="hero-card-fallback" :class="'fallback-bg-' + (idx + 1)">
-                  <span class="fallback-tag-text">{{ getCardLabel(idx) }}</span>
-                  <span class="fallback-title-text">{{ getCardTitle(idx) }}</span>
-                </div>
-              </div>
-              <div class="hero-card-meta">
-                <span class="meta-title">{{ item.name || getCardTitle(idx) }}</span>
-                <span class="meta-action">免费设计同款 ➔</span>
-              </div>
-            </div>
           </div>
 
           <div class="hero-action-row">
@@ -399,16 +372,8 @@ const loading = ref(true);
 const products = ref<any[]>([]);
 const emailInput = ref('');
 
-const heroProducts = computed(() => {
-  if (products.value.length > 0) {
-    return products.value;
-  }
-  return [];
-});
-
 const wallProducts = computed(() => {
   if (products.value.length > 0) {
-    // Repeat products to fill a 12-item background product image wall mosaic
     const list = [...products.value];
     while (list.length < 12) {
       list.push(...products.value);
@@ -515,7 +480,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Rich Gradient Stage & Background Product Wall Mosaic */
+/* GUCCI Luxury Design System - Pure Editorial Typography Hero (Clean Luxury Banner) */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -566,7 +531,6 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.interactive-hero-card:hover .zoom-on-hover,
 .interactive-collection-card:hover .zoom-on-hover {
   transform: scale(1.06);
 }
@@ -672,17 +636,17 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. Rich Textured Gradient Hero with Background Product Image Wall */
+/* 1. Pure Editorial Typography Hero */
 .gucci-gradient-wall-hero {
   position: relative;
   width: 100%;
-  min-height: 680px;
+  min-height: 520px;
   background: linear-gradient(135deg, #0c0f14 0%, #151c27 40%, #0d121a 70%, #07090d 100%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5.5rem 2rem 4.5rem;
+  padding: 6.5rem 2rem 5.5rem;
 }
 
 /* Background Layer 1: Atmospheric Product Wall Grid Mosaic */
@@ -702,7 +666,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: -15%;
   margin-top: -5%;
   transform: rotate(-3deg) scale(1.05);
-  opacity: 0.28;
+  opacity: 0.26;
   filter: saturate(0.8) contrast(1.1);
 }
 
@@ -750,8 +714,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(12, 15, 20, 0.4) 0%, rgba(7, 9, 13, 0.92) 80%),
-    linear-gradient(180deg, rgba(12, 15, 20, 0.7) 0%, rgba(7, 9, 13, 0.98) 100%);
+    radial-gradient(circle at 50% 50%, rgba(12, 15, 20, 0.3) 0%, rgba(7, 9, 13, 0.94) 75%),
+    linear-gradient(180deg, rgba(12, 15, 20, 0.6) 0%, rgba(7, 9, 13, 0.98) 100%);
   z-index: 2;
 }
 
@@ -759,7 +723,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 20%, rgba(212, 163, 55, 0.25) 0%, transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(212, 163, 55, 0.28) 0%, transparent 60%),
     radial-gradient(circle at 80% 80%, rgba(53, 92, 125, 0.2) 0%, transparent 50%);
   pointer-events: none;
   z-index: 3;
@@ -768,7 +732,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 .hero-center-stage {
   position: relative;
   z-index: 10;
-  max-width: 1200px;
+  max-width: 900px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -777,145 +741,65 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .hero-headline-group {
-  margin-bottom: 3.5rem;
+  margin-bottom: 2.5rem;
   max-width: 860px;
 }
 
 .hero-top-badge {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.25em;
   color: #d4a337;
   display: block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .hero-main-title {
-  font-size: 2.75rem;
+  font-size: 3.2rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #ffffff;
-  margin: 0 0 1rem;
-  line-height: 1.25;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
 }
 
-.hero-sub-text {
-  font-size: 1.05rem;
-  color: #dcdcdc;
-  line-height: 1.7;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Horizontal Showcase Row */
-.hero-showcase-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  width: 100%;
-  max-width: 1100px;
-  margin-bottom: 3.5rem;
-}
-
-@media (max-width: 860px) {
-  .hero-showcase-row {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .hero-main-title {
+    font-size: 2.2rem;
   }
 }
 
-.hero-showcase-card {
-  background: rgba(18, 24, 34, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 163, 55, 0.35);
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.interactive-hero-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 25px 50px rgba(212, 163, 55, 0.3);
-  border-color: #d4a337;
-}
-
-.hero-card-img-box {
-  height: 240px;
-  width: 100%;
-  overflow: hidden;
-  background: #000;
-  position: relative;
-}
-
-.hero-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-card-fallback {
-  width: 100%;
-  height: 100%;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
-}
-
-.fallback-bg-1 { background: linear-gradient(135deg, #2b221a 0%, #110d0a 100%); color: #d4a337; }
-.fallback-bg-2 { background: linear-gradient(135deg, #18222a 0%, #0a0e12 100%); color: #ffffff; }
-.fallback-bg-3 { background: linear-gradient(135deg, #3a2228 0%, #1f1115 100%); color: #e5b448; }
-
-.fallback-tag-text {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  opacity: 0.8;
-}
-
-.fallback-title-text {
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-}
-
-.hero-card-meta {
-  padding: 1.1rem 1.25rem;
-  background: #0b0e14;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.meta-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-}
-
-.meta-action {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #d4a337;
+.hero-sub-text {
+  font-size: 1.15rem;
+  color: #e5e5e5;
+  line-height: 1.7;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .hero-action-row {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .hero-action-row {
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 .gucci-btn-gold {
   background: #d4a337;
   color: #000000;
-  padding: 0.85rem 2.5rem;
-  font-size: 0.82rem;
+  padding: 1rem 3rem;
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
-  box-shadow: 0 4px 15px rgba(212, 163, 55, 0.3);
+  box-shadow: 0 6px 20px rgba(212, 163, 55, 0.35);
   transition: all 0.2s ease;
 }
 
@@ -928,8 +812,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   background: transparent;
   color: #ffffff;
   border: 1px solid #ffffff;
-  padding: 0.85rem 2.5rem;
-  font-size: 0.82rem;
+  padding: 1rem 3rem;
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-decoration: none;
