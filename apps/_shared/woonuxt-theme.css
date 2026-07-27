@@ -1,0 +1,811 @@
+/* ============================================
+   Woonuxt-inspired E-commerce Theme
+   Shared across all independent sites
+   ============================================ */
+
+/* ---------- Base Reset & Typography ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.woonuxt-theme {
+  /* --- Base palette --- */
+  --wx-bg: #ffffff;
+  --wx-text: #1a1a1a;
+  --wx-text-secondary: #6b7280;
+  --wx-text-muted: #9ca3af;
+  --wx-border: #e5e7eb;
+  --wx-surface: #f9fafb;
+  --wx-surface-hover: #f3f4f6;
+  --wx-footer-bg: #111827;
+  --wx-footer-text: #d1d5db;
+  --wx-footer-heading: #f9fafb;
+
+  /* --- Accent (overridden per-site via data-site) --- */
+  --wx-accent: #7f54b2;
+  --wx-accent-light: #9b7dc7;
+  --wx-accent-dark: #5c3d82;
+
+  /* --- Spacing --- */
+  --wx-section-py: clamp(3rem, 6vw, 5rem);
+  --wx-container-px: clamp(1rem, 4vw, 2rem);
+  --wx-container-max: 1280px;
+
+  /* --- Radii --- */
+  --wx-radius: 9999px;
+  --wx-radius-sm: 6px;
+  --wx-radius-card: 8px;
+  --wx-radius-lg: 12px;
+
+  /* --- Shadows --- */
+  --wx-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --wx-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --wx-shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --wx-shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+
+  /* --- Transitions --- */
+  --wx-transition: 200ms ease;
+  --wx-transition-slow: 300ms ease;
+
+  /* --- Star rating --- */
+  --wx-star: #fbbf24;
+  --wx-star-empty: #d1d5db;
+
+  /* --- Typography --- */
+  --wx-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+
+  font-family: var(--wx-font);
+  color: var(--wx-text);
+  background: var(--wx-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Brand Color Overrides ---------- */
+.woonuxt-theme[data-site="mug"]      { --wx-accent: #c4704b; --wx-accent-light: #d4916e; --wx-accent-dark: #a85a3a; }
+.woonuxt-theme[data-site="kitchen"]  { --wx-accent: #2d6a4f; --wx-accent-light: #52b788; --wx-accent-dark: #1b4332; }
+.woonuxt-theme[data-site="painting"] { --wx-accent: #C9A96E; --wx-accent-light: #dcc499; --wx-accent-dark: #a8893e; }
+.woonuxt-theme[data-site="wall-art"] { --wx-accent: #5b7e8a; --wx-accent-light: #7fa3b0; --wx-accent-dark: #3d5f6b; }
+.woonuxt-theme[data-site="keychain"] { --wx-accent: #6c5ce7; --wx-accent-light: #a29bfe; --wx-accent-dark: #4834d4; }
+
+/* ---------- Container ---------- */
+.wx-container {
+  max-width: var(--wx-container-max);
+  margin: 0 auto;
+  padding: 0 var(--wx-container-px);
+}
+
+/* ---------- Links ---------- */
+.woonuxt-theme a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--wx-transition);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.wx-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--wx-bg);
+  border-bottom: 1px solid var(--wx-border);
+  transition: box-shadow var(--wx-transition);
+}
+
+.wx-header.is-scrolled {
+  box-shadow: var(--wx-shadow-md);
+}
+
+.wx-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 1.5rem;
+}
+
+.wx-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--wx-text);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.wx-logo img {
+  height: 32px;
+  width: auto;
+}
+
+/* Desktop nav */
+.wx-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.wx-nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--wx-text-secondary);
+  transition: color var(--wx-transition);
+  white-space: nowrap;
+}
+
+.wx-nav-link:hover,
+.wx-nav-link.active {
+  color: var(--wx-text);
+}
+
+/* Header actions */
+.wx-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.wx-header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--wx-radius);
+  background: transparent;
+  border: none;
+  color: var(--wx-text-secondary);
+  cursor: pointer;
+  transition: background var(--wx-transition), color var(--wx-transition);
+}
+
+.wx-header-btn:hover {
+  background: var(--wx-surface);
+  color: var(--wx-text);
+}
+
+.wx-header-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Mobile hamburger */
+.wx-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.wx-hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--wx-text);
+  border-radius: 1px;
+  transition: transform var(--wx-transition), opacity var(--wx-transition);
+}
+
+/* Mobile drawer */
+.wx-mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.wx-mobile-drawer.is-open {
+  pointer-events: auto;
+}
+
+.wx-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: opacity var(--wx-transition-slow);
+}
+
+.wx-mobile-drawer.is-open .wx-mobile-backdrop {
+  opacity: 1;
+}
+
+.wx-mobile-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: var(--wx-bg);
+  transform: translateX(-100%);
+  transition: transform var(--wx-transition-slow);
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.wx-mobile-drawer.is-open .wx-mobile-panel {
+  transform: translateX(0);
+}
+
+.wx-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.wx-mobile-nav-link {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--wx-text-secondary);
+  transition: background var(--wx-transition), color var(--wx-transition);
+}
+
+.wx-mobile-nav-link:hover {
+  background: var(--wx-surface);
+  color: var(--wx-text);
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+.wx-hero {
+  position: relative;
+  width: 100%;
+  height: clamp(420px, 50vw, 640px);
+  overflow: hidden;
+  background: var(--wx-surface);
+}
+
+.wx-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.wx-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+}
+
+.wx-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  max-width: var(--wx-container-max);
+  margin: 0 auto;
+  padding: 0 var(--wx-container-px);
+  color: #ffffff;
+}
+
+.wx-hero-eyebrow {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0.9;
+}
+
+.wx-hero-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  max-width: 600px;
+}
+
+.wx-hero-desc {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.wx-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--wx-accent);
+  border: none;
+  border-radius: var(--wx-radius);
+  cursor: pointer;
+  transition: background var(--wx-transition), transform var(--wx-transition);
+  text-decoration: none;
+  width: fit-content;
+}
+
+.wx-hero-cta:hover {
+  background: var(--wx-accent-dark);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   BRAND LOGOS BAR
+   ============================================ */
+.wx-brands {
+  padding: var(--wx-section-py) 0;
+  border-bottom: 1px solid var(--wx-border);
+}
+
+.wx-brands-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem 3rem;
+}
+
+.wx-brand-logo {
+  height: clamp(28px, 4vw, 40px);
+  width: auto;
+  opacity: 0.4;
+  filter: grayscale(100%);
+  transition: opacity var(--wx-transition), filter var(--wx-transition);
+}
+
+.wx-brand-logo:hover {
+  opacity: 0.7;
+  filter: grayscale(50%);
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+.wx-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.wx-section-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  color: var(--wx-text);
+  line-height: 1.2;
+}
+
+.wx-section-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--wx-accent);
+  transition: color var(--wx-transition);
+  white-space: nowrap;
+}
+
+.wx-section-link:hover {
+  color: var(--wx-accent-dark);
+}
+
+/* ============================================
+   CATEGORY GRID
+   ============================================ */
+.wx-categories {
+  padding: var(--wx-section-py) 0;
+}
+
+/* ============================================
+   FEATURES
+   ============================================ */
+.wx-features {
+  padding: var(--wx-section-py) 0;
+  background: var(--wx-surface);
+}
+
+/* ============================================
+   PRODUCT GRID
+   ============================================ */
+.wx-products {
+  padding: var(--wx-section-py) 0;
+}
+
+.wx-products-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+}
+
+/* Product Card */
+.wx-product-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wx-product-image {
+  position: relative;
+  aspect-ratio: 8 / 9;
+  border-radius: var(--wx-radius-card);
+  overflow: hidden;
+  background: var(--wx-surface);
+  margin-bottom: 0.75rem;
+}
+
+.wx-product-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: opacity var(--wx-transition-slow);
+}
+
+.wx-product-image .img-primary {
+  opacity: 1;
+}
+
+.wx-product-image .img-hover {
+  opacity: 0;
+}
+
+.wx-product-card:hover .img-primary {
+  opacity: 0;
+}
+
+.wx-product-card:hover .img-hover {
+  opacity: 1;
+}
+
+/* Sale badge */
+.wx-sale-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ef4444;
+  border-radius: var(--wx-radius-sm);
+  line-height: 1.5;
+}
+
+/* Product info */
+.wx-product-info {
+  padding: 0 0.25rem;
+}
+
+.wx-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.375rem;
+}
+
+.wx-stars {
+  display: flex;
+  gap: 1px;
+  color: var(--wx-star);
+  font-size: 0.75rem;
+}
+
+.wx-rating-count {
+  font-size: 0.75rem;
+  color: var(--wx-text-muted);
+}
+
+.wx-product-title {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--wx-text);
+  line-height: 1.3;
+  margin-bottom: 0.375rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--wx-transition);
+}
+
+.wx-product-card:hover .wx-product-title {
+  color: var(--wx-accent);
+}
+
+.wx-product-price {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.wx-price-current {
+  color: var(--wx-text);
+}
+
+.wx-price-original {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--wx-text-muted);
+  text-decoration: line-through;
+}
+
+/* ============================================
+   NEWSLETTER
+   ============================================ */
+.wx-newsletter {
+  padding: var(--wx-section-py) 0;
+  background: var(--wx-surface);
+  text-align: center;
+}
+
+.wx-newsletter-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.wx-newsletter-desc {
+  font-size: 0.9375rem;
+  color: var(--wx-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.wx-footer {
+  background: var(--wx-footer-bg);
+  color: var(--wx-footer-text);
+  padding: clamp(2.5rem, 5vw, 4rem) 0 0;
+}
+
+.wx-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: 2rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.wx-footer-brand {
+  padding-right: 2rem;
+}
+
+.wx-footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--wx-footer-heading);
+  margin-bottom: 0.75rem;
+}
+
+.wx-footer-brand-desc {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--wx-footer-text);
+  opacity: 0.8;
+}
+
+.wx-footer-col h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--wx-footer-heading);
+  margin-bottom: 1rem;
+}
+
+.wx-footer-col ul {
+  list-style: none;
+}
+
+.wx-footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.wx-footer-col a {
+  font-size: 0.8125rem;
+  color: var(--wx-footer-text);
+  opacity: 0.8;
+  transition: opacity var(--wx-transition);
+}
+
+.wx-footer-col a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.wx-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+  font-size: 0.75rem;
+  color: var(--wx-footer-text);
+  opacity: 0.6;
+}
+
+.wx-footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.wx-footer-social a {
+  color: var(--wx-footer-text);
+  opacity: 0.7;
+  transition: opacity var(--wx-transition);
+}
+
+.wx-footer-social a:hover {
+  opacity: 1;
+}
+
+.wx-footer-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============================================
+   LOADING & EMPTY STATES
+   ============================================ */
+.wx-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  color: var(--wx-text-muted);
+  font-size: 0.9375rem;
+}
+
+.wx-loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--wx-border);
+  border-top-color: var(--wx-accent);
+  border-radius: 50%;
+  animation: wx-spin 0.6s linear infinite;
+  margin-right: 0.75rem;
+}
+
+@keyframes wx-spin {
+  to { transform: rotate(360deg); }
+}
+
+.wx-empty {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--wx-text-muted);
+}
+
+/* ============================================
+   BACK TO TOP
+   ============================================ */
+.wx-back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wx-accent);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--wx-radius);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--wx-transition), transform var(--wx-transition), background var(--wx-transition);
+  z-index: 50;
+  box-shadow: var(--wx-shadow-md);
+}
+
+.wx-back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wx-back-to-top:hover {
+  background: var(--wx-accent-dark);
+}
+
+.wx-back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablet: < 1024px */
+@media (max-width: 1024px) {
+  .wx-nav {
+    display: none;
+  }
+
+  .wx-hamburger {
+    display: flex;
+  }
+
+  .wx-products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: < 768px */
+@media (max-width: 768px) {
+  .wx-header-inner {
+    height: 56px;
+  }
+
+  .wx-hero {
+    height: clamp(280px, 70vw, 400px);
+  }
+
+  .wx-hero-title {
+    font-size: clamp(1.5rem, 6vw, 2.25rem);
+  }
+
+  .wx-hero-desc {
+    font-size: 0.875rem;
+    max-width: 320px;
+  }
+
+  .wx-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .wx-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .wx-footer-bottom {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}
+
+/* Small mobile: < 480px */
+@media (max-width: 480px) {
+  .wx-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .wx-brands-grid {
+    gap: 1rem 2rem;
+  }
+
+  .wx-brand-logo {
+    height: 24px;
+  }
+}

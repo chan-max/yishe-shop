@@ -37,6 +37,21 @@ jobs:
       - name: Build Couplet Storefront (shop-couplets)
         run: npm run build:couplet
 
+      - name: Build Mug Storefront (shop-mug)
+        run: npm run build:mug
+
+      - name: Build Kitchen Storefront (shop-kitchen)
+        run: npm run build:kitchen
+
+      - name: Build Painting Storefront (shop-painting)
+        run: npm run build:painting
+
+      - name: Build Wall Art Storefront (shop-wall-art)
+        run: npm run build:wallart
+
+      - name: Build Keychain Storefront (shop-keychain)
+        run: npm run build:keychain
+
       - name: Include unhead runtime files for main storefront
         shell: bash
         run: |
@@ -64,6 +79,51 @@ jobs:
             cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-couplets/.output/server/node_modules/unhead/
           fi
 
+      - name: Include unhead runtime files for mug storefront
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-mug/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-mug/.output/server/node_modules/unhead
+            mkdir -p apps/shop-mug/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-mug/.output/server/node_modules/unhead/
+          fi
+
+      - name: Include unhead runtime files for kitchen storefront
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-kitchen/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-kitchen/.output/server/node_modules/unhead
+            mkdir -p apps/shop-kitchen/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-kitchen/.output/server/node_modules/unhead/
+          fi
+
+      - name: Include unhead runtime files for painting storefront
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-painting/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-painting/.output/server/node_modules/unhead
+            mkdir -p apps/shop-painting/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-painting/.output/server/node_modules/unhead/
+          fi
+
+      - name: Include unhead runtime files for wall-art storefront
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-wall-art/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-wall-art/.output/server/node_modules/unhead
+            mkdir -p apps/shop-wall-art/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-wall-art/.output/server/node_modules/unhead/
+          fi
+
+      - name: Include unhead runtime files for keychain storefront
+        shell: bash
+        run: |
+          if grep -R "from 'unhead/\|from \"unhead/" apps/shop-keychain/.output/server/chunks >/dev/null 2>&1; then
+            rm -rf apps/shop-keychain/.output/server/node_modules/unhead
+            mkdir -p apps/shop-keychain/.output/server/node_modules/unhead
+            cp -R node_modules/@unhead/vue/node_modules/unhead/. apps/shop-keychain/.output/server/node_modules/unhead/
+          fi
+
       - name: Verify build outputs
         run: |
           echo "Checking shop-main build output..."
@@ -72,12 +132,27 @@ jobs:
           test -f apps/shop-business-card/.output/server/index.mjs
           echo "Checking shop-couplets build output..."
           test -f apps/shop-couplets/.output/server/index.mjs
+          echo "Checking shop-mug build output..."
+          test -f apps/shop-mug/.output/server/index.mjs
+          echo "Checking shop-kitchen build output..."
+          test -f apps/shop-kitchen/.output/server/index.mjs
+          echo "Checking shop-painting build output..."
+          test -f apps/shop-painting/.output/server/index.mjs
+          echo "Checking shop-wall-art build output..."
+          test -f apps/shop-wall-art/.output/server/index.mjs
+          echo "Checking shop-keychain build output..."
+          test -f apps/shop-keychain/.output/server/index.mjs
 
       - name: Package build artifacts
         run: |
           tar -czf nuxt-output-main.tar.gz .output
           tar -czf nuxt-output-card.tar.gz -C apps/shop-business-card .output
           tar -czf nuxt-output-couplet.tar.gz -C apps/shop-couplets .output
+          tar -czf nuxt-output-mug.tar.gz -C apps/shop-mug .output
+          tar -czf nuxt-output-kitchen.tar.gz -C apps/shop-kitchen .output
+          tar -czf nuxt-output-painting.tar.gz -C apps/shop-painting .output
+          tar -czf nuxt-output-wallart.tar.gz -C apps/shop-wall-art .output
+          tar -czf nuxt-output-keychain.tar.gz -C apps/shop-keychain .output
 
       - name: Upload packages to Tencent Cloud
         uses: appleboy/scp-action@v0.1.7
@@ -86,7 +161,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
-          source: "nuxt-output-main.tar.gz,nuxt-output-card.tar.gz,nuxt-output-couplet.tar.gz"
+          source: "nuxt-output-main.tar.gz,nuxt-output-card.tar.gz,nuxt-output-couplet.tar.gz,nuxt-output-mug.tar.gz,nuxt-output-kitchen.tar.gz,nuxt-output-painting.tar.gz,nuxt-output-wallart.tar.gz,nuxt-output-keychain.tar.gz"
           target: "/tmp"
           command_timeout: "10m"
           timeout: "10m"
@@ -147,6 +222,81 @@ jobs:
               NODE_ENV=production PORT=15205 HOST=0.0.0.0 pm2 restart yishe-shop-couplet --update-env
             else
               NODE_ENV=production PORT=15205 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-couplet
+            fi
+
+            # 4. 部署杯子独立站 (shop-mug -> mug.1s.design, 端口 15206/15207)
+            mkdir -p /www/wwwroot/mug.1s.design
+            mkdir -p /tmp/mug-unpack
+            tar -xzf /tmp/nuxt-output-mug.tar.gz -C /tmp/mug-unpack
+            rm -rf /www/wwwroot/mug.1s.design/.output
+            cp -r /tmp/mug-unpack/.output /www/wwwroot/mug.1s.design/.output
+            rm -rf /tmp/mug-unpack /tmp/nuxt-output-mug.tar.gz
+
+            cd /www/wwwroot/mug.1s.design
+            if pm2 describe yishe-shop-mug >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15207 HOST=0.0.0.0 pm2 restart yishe-shop-mug --update-env
+            else
+              NODE_ENV=production PORT=15207 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-mug
+            fi
+
+            # 5. 部署厨房独立站 (shop-kitchen -> kitchen.1s.design, 端口 15208/15209)
+            mkdir -p /www/wwwroot/kitchen.1s.design
+            mkdir -p /tmp/kitchen-unpack
+            tar -xzf /tmp/nuxt-output-kitchen.tar.gz -C /tmp/kitchen-unpack
+            rm -rf /www/wwwroot/kitchen.1s.design/.output
+            cp -r /tmp/kitchen-unpack/.output /www/wwwroot/kitchen.1s.design/.output
+            rm -rf /tmp/kitchen-unpack /tmp/nuxt-output-kitchen.tar.gz
+
+            cd /www/wwwroot/kitchen.1s.design
+            if pm2 describe yishe-shop-kitchen >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15209 HOST=0.0.0.0 pm2 restart yishe-shop-kitchen --update-env
+            else
+              NODE_ENV=production PORT=15209 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-kitchen
+            fi
+
+            # 6. 部署名画独立站 (shop-painting -> painting.1s.design, 端口 15210/15211)
+            mkdir -p /www/wwwroot/painting.1s.design
+            mkdir -p /tmp/painting-unpack
+            tar -xzf /tmp/nuxt-output-painting.tar.gz -C /tmp/painting-unpack
+            rm -rf /www/wwwroot/painting.1s.design/.output
+            cp -r /tmp/painting-unpack/.output /www/wwwroot/painting.1s.design/.output
+            rm -rf /tmp/painting-unpack /tmp/nuxt-output-painting.tar.gz
+
+            cd /www/wwwroot/painting.1s.design
+            if pm2 describe yishe-shop-painting >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15211 HOST=0.0.0.0 pm2 restart yishe-shop-painting --update-env
+            else
+              NODE_ENV=production PORT=15211 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-painting
+            fi
+
+            # 7. 部署装饰画独立站 (shop-wall-art -> wallart.1s.design, 端口 15212/15213)
+            mkdir -p /www/wwwroot/wallart.1s.design
+            mkdir -p /tmp/wallart-unpack
+            tar -xzf /tmp/nuxt-output-wallart.tar.gz -C /tmp/wallart-unpack
+            rm -rf /www/wwwroot/wallart.1s.design/.output
+            cp -r /tmp/wallart-unpack/.output /www/wwwroot/wallart.1s.design/.output
+            rm -rf /tmp/wallart-unpack /tmp/nuxt-output-wallart.tar.gz
+
+            cd /www/wwwroot/wallart.1s.design
+            if pm2 describe yishe-shop-wallart >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15213 HOST=0.0.0.0 pm2 restart yishe-shop-wallart --update-env
+            else
+              NODE_ENV=production PORT=15213 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-wallart
+            fi
+
+            # 8. 部署钥匙链独立站 (shop-keychain -> keychain.1s.design, 端口 15214/15215)
+            mkdir -p /www/wwwroot/keychain.1s.design
+            mkdir -p /tmp/keychain-unpack
+            tar -xzf /tmp/nuxt-output-keychain.tar.gz -C /tmp/keychain-unpack
+            rm -rf /www/wwwroot/keychain.1s.design/.output
+            cp -r /tmp/keychain-unpack/.output /www/wwwroot/keychain.1s.design/.output
+            rm -rf /tmp/keychain-unpack /tmp/nuxt-output-keychain.tar.gz
+
+            cd /www/wwwroot/keychain.1s.design
+            if pm2 describe yishe-shop-keychain >/dev/null 2>&1; then
+              NODE_ENV=production PORT=15215 HOST=0.0.0.0 pm2 restart yishe-shop-keychain --update-env
+            else
+              NODE_ENV=production PORT=15215 HOST=0.0.0.0 pm2 start .output/server/index.mjs --name yishe-shop-keychain
             fi
 
             pm2 save

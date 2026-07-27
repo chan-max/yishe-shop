@@ -1,0 +1,11 @@
+{
+  "name": "shop-wall-art",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 15212 --host",
+    "build": "nuxt build",
+    "preview": "nuxt preview"
+  }
+}

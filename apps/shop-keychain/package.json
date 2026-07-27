@@ -1,0 +1,11 @@
+{
+  "name": "shop-keychain",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 15214 --host",
+    "build": "nuxt build",
+    "preview": "nuxt preview"
+  }
+}
