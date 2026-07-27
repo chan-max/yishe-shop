@@ -52,11 +52,36 @@
 
     <!-- Main Full-Bleed Editorial Layout -->
     <main class="gucci-main">
-      <!-- 1. Single Unified Color Stage Hero (单一高定象牙暖背景色，去双栏分割) -->
-      <section class="gucci-unified-hero-section">
+      <!-- 1. Rich Textured Gradient Hero with Background Product Image Wall (有质感的奢华渐变背景 + 背景商品图墙) -->
+      <section class="gucci-gradient-wall-hero">
+        <!-- Background Layer 1: Atmospheric Product Image Wall Mosaic -->
+        <div class="hero-bg-product-wall">
+          <div class="wall-grid">
+            <div
+              v-for="(item, idx) in wallProducts"
+              :key="idx"
+              class="wall-tile-item"
+            >
+              <img
+                v-if="getProductImage(item)"
+                :src="getProductImage(item)"
+                :alt="item.name"
+                class="wall-tile-img"
+              />
+              <div v-else class="wall-tile-fallback" :class="'wall-bg-' + ((idx % 4) + 1)">
+                <span class="wall-tile-label">{{ getCardLabel(idx) }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- Dark Radial Mask Gradient -->
+          <div class="wall-gradient-mask"></div>
+          <div class="hero-gold-ambient-glow"></div>
+        </div>
+
+        <!-- Foreground Stage -->
         <div class="hero-center-stage">
           <div class="hero-headline-group">
-            <span class="hero-top-badge">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
+            <span class="hero-top-badge badge-pulse">FREE BUSINESS CARD DESIGN & INSPIRATION ATELIER</span>
             <h1 class="hero-main-title">名片免费设计 · 汇聚全网灵感库</h1>
             <p class="hero-sub-text">
               专为个人创作者、独立创业者与初创小微团队提供 0 元免费名片设计服务 — 喜欢任意风格，即刻免费设计同款
@@ -94,7 +119,7 @@
             <NuxtLink to="/contact" class="gucci-btn-gold ripple-btn">
               申请 0 元免费名片设计 (FREE DESIGN)
             </NuxtLink>
-            <NuxtLink to="/search" class="gucci-btn-outline-dark ripple-btn">
+            <NuxtLink to="/search" class="gucci-btn-outline-white ripple-btn">
               探索名片设计灵感库
             </NuxtLink>
           </div>
@@ -381,6 +406,18 @@ const heroProducts = computed(() => {
   return [];
 });
 
+const wallProducts = computed(() => {
+  if (products.value.length > 0) {
+    // Repeat products to fill a 12-item background product image wall mosaic
+    const list = [...products.value];
+    while (list.length < 12) {
+      list.push(...products.value);
+    }
+    return list.slice(0, 12);
+  }
+  return Array(12).fill({ name: 'Business Card Design' });
+});
+
 const fallbackPreset = [
   { id: 'pres-1', name: '凹版活字压印设计 (Executive Letterpress)', key: 'letterpress' },
   { id: 'pres-2', name: '24K 浮雕烫金设计 (Gold Foil Embossed)', key: 'gold-foil' },
@@ -463,7 +500,7 @@ onMounted(async () => {
 
   try {
     loading.value = true;
-    const res = await fetchPublishedProducts({ page: 1, limit: 8 });
+    const res = await fetchPublishedProducts({ page: 1, limit: 12 });
     if (res && Array.isArray(res)) {
       products.value = res;
     } else if (res && Array.isArray(res.items)) {
@@ -478,7 +515,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* GUCCI Luxury Design System - Single Unified Color Hero Stage (象牙暖白统一色调，去除双栏) */
+/* GUCCI Luxury Design System - Rich Gradient Stage & Background Product Wall Mosaic */
 .gucci-storefront-wrapper {
   margin: 0;
   padding: 0;
@@ -489,7 +526,7 @@ onMounted(async () => {
   width: 100%;
 }
 
-input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-outline-dark, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
+input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn-outline-white, .gucci-btn-white, .gucci-btn-gray, .subscribe-plus-btn, .free-cta-btn {
   border-radius: 0 !important;
 }
 
@@ -635,18 +672,102 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   margin-left: 0.3rem;
 }
 
-/* 1. GUCCI Single Unified Color Hero Section (统一象牙暖色背景 #f5f2eb，无双栏) */
-.gucci-unified-hero-section {
+/* 1. Rich Textured Gradient Hero with Background Product Image Wall */
+.gucci-gradient-wall-hero {
+  position: relative;
   width: 100%;
-  background: #f5f2eb;
-  border-bottom: 1px solid #e5e0d5;
-  padding: 5rem 2rem 4rem;
+  min-height: 680px;
+  background: linear-gradient(135deg, #0c0f14 0%, #151c27 40%, #0d121a 70%, #07090d 100%);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5.5rem 2rem 4.5rem;
+}
+
+/* Background Layer 1: Atmospheric Product Wall Grid Mosaic */
+.hero-bg-product-wall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  width: 130%;
+  margin-left: -15%;
+  margin-top: -5%;
+  transform: rotate(-3deg) scale(1.05);
+  opacity: 0.28;
+  filter: saturate(0.8) contrast(1.1);
+}
+
+@media (max-width: 900px) {
+  .wall-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wall-tile-item {
+  height: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.wall-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wall-tile-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.wall-bg-1 { background: linear-gradient(135deg, #2b221a 0%, #110d0a 100%); color: #d4a337; }
+.wall-bg-2 { background: linear-gradient(135deg, #1b2631 0%, #0d131a 100%); color: #ffffff; }
+.wall-bg-3 { background: linear-gradient(135deg, #3a2228 0%, #1f1115 100%); color: #e5b448; }
+.wall-bg-4 { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); color: #ffffff; }
+
+.wall-tile-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+}
+
+/* Dark Radial Mask Layer */
+.wall-gradient-mask {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(12, 15, 20, 0.4) 0%, rgba(7, 9, 13, 0.92) 80%),
+    linear-gradient(180deg, rgba(12, 15, 20, 0.7) 0%, rgba(7, 9, 13, 0.98) 100%);
+  z-index: 2;
+}
+
+.hero-gold-ambient-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(212, 163, 55, 0.25) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(53, 92, 125, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 3;
 }
 
 .hero-center-stage {
+  position: relative;
+  z-index: 10;
   max-width: 1200px;
   width: 100%;
   display: flex;
@@ -664,24 +785,26 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.25em;
-  color: #b38218;
+  color: #d4a337;
   display: block;
   margin-bottom: 0.75rem;
 }
 
 .hero-main-title {
-  font-size: 2.6rem;
+  font-size: 2.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #000000;
+  color: #ffffff;
   margin: 0 0 1rem;
   line-height: 1.25;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
 }
 
 .hero-sub-text {
   font-size: 1.05rem;
-  color: #555555;
+  color: #dcdcdc;
   line-height: 1.7;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 /* Horizontal Showcase Row */
@@ -701,18 +824,19 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 }
 
 .hero-showcase-card {
-  background: #ffffff;
-  border: 1px solid #e2ddd2;
+  background: rgba(18, 24, 34, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 163, 55, 0.35);
   cursor: pointer;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .interactive-hero-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 25px 50px rgba(212, 163, 55, 0.3);
   border-color: #d4a337;
 }
 
@@ -720,7 +844,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   height: 240px;
   width: 100%;
   overflow: hidden;
-  background: #eae6dd;
+  background: #000;
   position: relative;
 }
 
@@ -740,9 +864,9 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   text-align: left;
 }
 
-.fallback-bg-1 { background: linear-gradient(135deg, #f0eae0 0%, #dcd4c6 100%); color: #000; }
-.fallback-bg-2 { background: linear-gradient(135deg, #181c24 0%, #0a0d12 100%); color: #fff; }
-.fallback-bg-3 { background: linear-gradient(135deg, #3d2c30 0%, #201316 100%); color: #fff; }
+.fallback-bg-1 { background: linear-gradient(135deg, #2b221a 0%, #110d0a 100%); color: #d4a337; }
+.fallback-bg-2 { background: linear-gradient(135deg, #18222a 0%, #0a0e12 100%); color: #ffffff; }
+.fallback-bg-3 { background: linear-gradient(135deg, #3a2228 0%, #1f1115 100%); color: #e5b448; }
 
 .fallback-tag-text {
   font-size: 0.65rem;
@@ -759,23 +883,23 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 
 .hero-card-meta {
   padding: 1.1rem 1.25rem;
-  background: #ffffff;
+  background: #0b0e14;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #f0ebe0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .meta-title {
   font-size: 0.88rem;
   font-weight: 700;
-  color: #000000;
 }
 
 .meta-action {
   font-size: 0.78rem;
   font-weight: 800;
-  color: #b38218;
+  color: #d4a337;
 }
 
 .hero-action-row {
@@ -800,10 +924,10 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transform: translateY(-2px);
 }
 
-.gucci-btn-outline-dark {
+.gucci-btn-outline-white {
   background: transparent;
-  color: #000000;
-  border: 1px solid #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
   padding: 0.85rem 2.5rem;
   font-size: 0.82rem;
   font-weight: 800;
@@ -812,9 +936,8 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   transition: all 0.2s ease;
 }
 
-.gucci-btn-outline-dark:hover {
-  background: #000000;
-  color: #ffffff;
+.gucci-btn-outline-white:hover {
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
 
