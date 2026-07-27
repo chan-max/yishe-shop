@@ -1507,6 +1507,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
 
 .hero-layout {
   position: relative;
+  top: clamp(1rem, 3vh, 2.25rem);
   z-index: 2;
   width: 100%;
   max-width: 1440px;
@@ -1671,6 +1672,7 @@ input, select, textarea, button, .gucci-btn-gold, .gucci-btn-outline, .gucci-btn
   .header-icon-btn svg, .header-menu-btn svg { width: 17px; height: 17px; }
   .gucci-atelier-hero { min-height: 0; padding: 4.5rem 0 0; }
   .hero-layout { display: flex; flex-direction: column; }
+  .hero-layout { top: 0.75rem; }
   .hero-copy { padding: 3.5rem 1.25rem 3rem; }
   .badge-pill-container { padding: 0.35rem 0.8rem; margin-bottom: 1rem; }
   .hero-top-badge { font-size: 0.62rem; letter-spacing: 0.2em; }
