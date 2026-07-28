@@ -1,0 +1,67 @@
+export default {
+  brand: '春联',
+  brandFull: '春联 · 传世楹联定制',
+  seo: {
+    title: '春联 · 传世名家手写与烫金春联定制平台',
+    description: '春联网专注于传世名家手写对联、烫金企业门联与创意新春楹联定制。采用特级万年红宣纸与耐候金墨，让每一副春联都承载吉祥安康。',
+    ogTitle: '春联 · 传世名家手写与烫金春联定制平台',
+    ogDescription: '传世名家手写对联，烫金企业门联与创意新春楹联定制。',
+    keywords: '春联定制, 手写春联, 烫金对联, 万年红宣纸, 名家书法, 新春楹联, 企业门联',
+  },
+  nav: [
+    { label: '首页', to: '/' },
+    { label: '全部春联', to: '/search' },
+    { label: '手写真迹', to: '/search?type=手写春联' },
+    { label: '烫金门联', to: '/search?type=烫金春联' },
+    { label: '联系我们', to: '/contact' },
+  ],
+  hero: {
+    tagline: '传世楹联',
+    title: '笔墨千秋\n福泽万家',
+    desc: '名家手写，万年红宣，耐候金墨。每一副春联都是一件值得传世的书法藏品。',
+    cta: '浏览春联',
+    secondaryCta: '定制专属',
+    coupletLeft: '迎喜迎春迎富贵',
+    coupletRight: '接财接福接平安',
+    coupletCenter: '吉星高照',
+  },
+  categories: [
+    { name: '手写真迹', slug: '手写春联', desc: '名家亲笔，笔力遒劲' },
+    { name: '烫金门联', slug: '烫金春联', desc: '金墨璀璨，气派非凡' },
+    { name: '万年红宣', slug: '万年红宣', desc: '百年不褪，传世之选' },
+    { name: '企业定制', slug: '企业春联', desc: '品牌专属，彰显格调' },
+    { name: '创意楹联', slug: '创意春联', desc: '古今融合，别出心裁' },
+  ],
+  features: [
+    { title: '万年红宣纸', desc: '特级万年红宣纸，历经岁月依然鲜艳如初，连续数年不褪色。', icon: 'paper' },
+    { title: '耐候金墨', desc: '进口金墨手工书写，阳光下熠熠生辉，风雨中依然璀璨。', icon: 'ink' },
+    { title: '名家手写', desc: '书法家亲笔真迹，笔力遒劲，气韵生动，每一笔都是艺术。', icon: 'brush' },
+    { title: '精美装裱', desc: '传统手工装裱工艺，送礼收藏两相宜，开箱即是艺术品。', icon: 'frame' },
+  ],
+  specs: [
+    { label: '传承工艺', value: '100+', unit: '年' },
+    { label: '合作书法家', value: '50+', unit: '位' },
+    { label: '客户好评', value: '4.9', unit: '/5' },
+    { label: '不褪色保证', value: '5', unit: '年' },
+  ],
+  trustSignals: [
+    { value: '30,000+', label: '家庭选择' },
+    { value: '500+', label: '企业客户' },
+    { value: '4.9', label: '平均评分' },
+    { value: '48h', label: '极速发货' },
+  ],
+  newsletter: {
+    title: '新春福礼，抢先知晓',
+    desc: '第一时间获取新品上架、限时折扣与春节特惠信息。',
+    placeholder: '输入您的邮箱地址',
+    cta: '订阅',
+  },
+  footer: {
+    desc: '传世名家手写对联，烫金企业门联与创意新春楹联定制平台。',
+    cols: [
+      { title: '商品浏览', links: [{ label: '新品到货', to: '/search' }, { label: '手写真迹', to: '/search?type=手写春联' }, { label: '烫金门联', to: '/search?type=烫金春联' }] },
+      { title: '客户服务', links: [{ label: '联系我们', to: '/contact' }, { label: '配送信息', to: '/contact' }, { label: '退换政策', to: '/contact' }] },
+      { title: '我的账户', links: [{ label: '登录', to: '/login' }, { label: '收藏夹', to: '/search' }] },
+    ],
+  },
+}
