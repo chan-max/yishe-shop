@@ -75,7 +75,10 @@
     "build:dev": "NODE_ENV=development nuxt generate",
     "build:locales": "node scripts/build-locales.js",
     "build:en": "NUXT_PUBLIC_LOCALE=en nuxt generate",
-    "build:zh": "NUXT_PUBLIC_LOCALE=zh nuxt generate"
+    "build:zh": "NUXT_PUBLIC_LOCALE=zh nuxt generate",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:start:all": "ENABLE_SUB_SITES=all pm2 start ecosystem.config.cjs",
+    "pm2:stop:subs": "pm2 stop yishe-shop-business-card yishe-shop-couplet yishe-shop-mug yishe-shop-kitchen yishe-shop-painting yishe-shop-wallart yishe-shop-keychain yishe-shop-mousepad"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
