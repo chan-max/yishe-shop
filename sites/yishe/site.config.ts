@@ -17,7 +17,7 @@ export const yisheSiteConfig: SiteDefinition = {
   },
   urls: {
     site: siteUrl,
-    apiBase: "https://1s.design:1520/api",
+    apiBase: "https://api.1s.design/api",
   },
   locale: "zh-CN",
   social: {
